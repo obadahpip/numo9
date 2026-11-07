@@ -44,7 +44,11 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0 \
     PORT=3000
 WORKDIR /app
-RUN addgroup -S -g 10001 numo9 && adduser -S -u 10001 -G numo9 -h /app numo9
+# The runtime only executes `node`. Remove the package managers bundled with the base image
+# (npm, npx, corepack, yarn): unused here, and their vendored deps carry HIGH CVEs (Trivy).
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn-* \
+        /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /usr/local/bin/yarn /usr/local/bin/yarnpkg \
+    && addgroup -S -g 10001 numo9 && adduser -S -u 10001 -G numo9 -h /app numo9
 COPY --from=builder --chown=numo9:numo9 /repo/frontend/.next/standalone ./
 COPY --from=builder --chown=numo9:numo9 /repo/frontend/.next/static ./frontend/.next/static
 USER numo9
