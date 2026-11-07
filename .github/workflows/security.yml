@@ -1,0 +1,125 @@
+name: Security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * 1" # weekly, Monday 06:17 UTC — catches newly published CVEs
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.30.0"
+  PIP_AUDIT_VERSION: "2.10.1"
+  GITLEAKS_IMAGE: ghcr.io/gitleaks/gitleaks:v8.30.1
+  TRIVY_IMAGE: aquasec/trivy:0.76.2
+
+jobs:
+  pip-audit:
+    name: pip-audit (backend dependencies)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements/*.txt
+      - name: Install pip-audit
+        run: pip install "pip-audit==${PIP_AUDIT_VERSION}"
+      - name: Audit runtime + dev requirements (fails on any known vulnerability)
+        run: pip-audit -r backend/requirements/dev.txt --progress-spinner off --desc
+
+  npm-audit:
+    name: npm audit (pnpm lockfile, fail on high)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: pnpm audit
+        run: pnpm audit --audit-level high
+
+  gitleaks:
+    name: gitleaks (full history)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Scan git history for secrets
+        run: docker run --rm -v "$PWD:/repo" "$GITLEAKS_IMAGE" git /repo --redact --no-banner --verbose
+
+  semgrep:
+    name: semgrep (django, python, react, typescript)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: semgrep/semgrep:1.184.0
+    steps:
+      - uses: actions/checkout@v7
+      - name: semgrep scan (fail on ERROR-severity findings)
+        run: >-
+          semgrep scan
+          --config p/django
+          --config p/python
+          --config p/react
+          --config p/typescript
+          --severity ERROR
+          --error
+          --metrics off
+
+  trivy:
+    name: trivy (${{ matrix.image }} image)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: backend
+            context: backend
+            dockerfile: backend/Dockerfile
+          - image: frontend
+            context: .
+            dockerfile: frontend/Dockerfile
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build runtime image
+        run: docker build --target runtime -f "${{ matrix.dockerfile }}" -t "numo9-${{ matrix.image }}:ci" "${{ matrix.context }}"
+      - name: Cache Trivy vulnerability DB
+        uses: actions/cache@v6
+        with:
+          path: .trivy-cache
+          key: trivy-db-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: trivy-db-${{ runner.os }}-
+      - name: Scan image (fail on fixable HIGH/CRITICAL)
+        # --ignore-unfixed: OS CVEs with no published fix cannot be remediated; the justified
+        # allow-list for accepted findings is added in S-03-T09.
+        run: >-
+          docker run --rm
+          -v /var/run/docker.sock:/var/run/docker.sock
+          -v "$PWD/.trivy-cache:/root/.cache"
+          "$TRIVY_IMAGE" image
+          --severity HIGH,CRITICAL
+          --ignore-unfixed
+          --scanners vuln,secret
+          --exit-code 1
+          --no-progress
+          "numo9-${{ matrix.image }}:ci"

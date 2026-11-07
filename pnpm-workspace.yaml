@@ -1,3 +1,8 @@
 packages:
   - "frontend"
   - "mobile"
+
+# Security overrides for transitive dependencies (S-01-T09 audit gate).
+overrides:
+  # next@15.5 pins postcss 8.4.x: GHSA-r28c-9q8g-f849 and related (high). Fixed in >= 8.5.23.
+  postcss: "8.5.32"
