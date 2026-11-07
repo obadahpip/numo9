@@ -1,0 +1,64 @@
+# pre-commit hooks — install once per clone:  pre-commit install
+# Run on everything:                           pre-commit run --all-files
+# Prerequisites: backend venv with requirements/dev.txt (provides pre-commit), and `pnpm install`
+# at the repository root (provides eslint and prettier).
+
+# Client documents and the task tracker are not reformatted.
+exclude: ^(docs/.*\.docx|To_delete/.*)$
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+        exclude: ^(docs/|status\.txt$)
+      - id: trailing-whitespace
+        exclude: ^(docs/|status\.txt$)
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=1024"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.4
+    hooks:
+      - id: ruff-check
+        args: ["--fix"]
+        files: ^(backend|tools)/.*\.py$
+      - id: ruff-format
+        files: ^(backend|tools)/.*\.py$
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (backend, strict + django-stubs)
+        language: python
+        entry: python tools/precommit/run_in.py backend python -m mypy .
+        pass_filenames: false
+        files: ^backend/.*\.py$
+        additional_dependencies:
+          - mypy==2.4.1
+          - django-stubs[compatible-mypy]==6.1.2
+          - Django==5.2.19
+          - dj-database-url==2.3.0
+          - pytest==9.2.0
+          - pytest-django==4.14.0
+
+      - id: eslint
+        name: eslint (frontend)
+        language: system
+        entry: python tools/precommit/run_in.py frontend pnpm exec eslint --max-warnings=0 --no-warn-ignored --
+        files: ^frontend/.*\.(ts|tsx|js|jsx|mjs|cjs)$
+
+      - id: prettier
+        name: prettier (frontend, mobile)
+        language: system
+        entry: python tools/precommit/run_in.py . pnpm exec prettier --write --ignore-unknown --
+        files: ^(frontend|mobile)/
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
