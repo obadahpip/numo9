@@ -90,6 +90,11 @@ jobs:
       TAG: ${{ github.ref_name }}
       SSH_HOST: ${{ vars.STAGING_SSH_HOST }}
       SSH_USER: ${{ vars.STAGING_SSH_USER }}
+      SSH_PORT: ${{ vars.STAGING_SSH_PORT || '22' }}
+      # Optional: "cloudflared" when the host is reached through a Cloudflare tunnel (temporary
+      # local staging host, infra/staging-local). Empty for a directly reachable VM.
+      SSH_PROXY: ${{ vars.STAGING_SSH_PROXY }}
+      CLOUDFLARED_VERSION: "2026.10.7"
       APP_DIR: ${{ vars.STAGING_APP_DIR }}
       HEALTH_URL: ${{ vars.STAGING_HEALTH_URL }}
     steps:
@@ -117,8 +122,23 @@ jobs:
           install -m 700 -d ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
-          printf 'Host staging\n  HostName %s\n  User %s\n  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n' \
-            "$SSH_HOST" "$SSH_USER" > ~/.ssh/config
+          {
+            printf 'Host staging\n  HostName %s\n  Port %s\n  User %s\n' "$SSH_HOST" "$SSH_PORT" "$SSH_USER"
+            printf '  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n'
+            printf '  HostKeyAlias %s\n' "$SSH_HOST"
+            if [[ "$SSH_PROXY" == "cloudflared" ]]; then
+              printf '  ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %%h\n'
+            fi
+          } > ~/.ssh/config
+
+      - name: Install cloudflared (tunnelled host only)
+        if: env.SSH_PROXY == 'cloudflared'
+        run: |
+          curl -fsSL -o /tmp/cloudflared.deb \
+            "https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64.deb"
+          sudo dpkg -i /tmp/cloudflared.deb
+          sudo ln -sf "$(command -v cloudflared)" /usr/local/bin/cloudflared
+          cloudflared --version
 
       - name: Upload deploy script
         run: scp -q infra/deploy/deploy.sh "staging:$APP_DIR/deploy.sh"
