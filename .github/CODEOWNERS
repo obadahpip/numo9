@@ -1,0 +1,12 @@
+# CODEOWNERS — reviewers requested automatically on pull requests.
+# Later rules override earlier ones.
+
+*                   @obadahpip
+
+/backend/           @obadahpip
+/frontend/          @obadahpip
+/mobile/            @obadahpip
+/infra/             @obadahpip
+/tools/             @obadahpip
+/docs/              @obadahpip
+/.github/           @obadahpip
