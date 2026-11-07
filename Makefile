@@ -3,7 +3,10 @@
 COMPOSE_DEV := docker compose -f docker-compose.dev.yml
 WAIT_TIMEOUT ?= 900
 
-.PHONY: help up down restart ps logs build clean images
+PYTHON ?= python
+MAKEMESSAGES := python manage.py makemessages -l en_CA -l fr_CA --no-location --no-wrap
+
+.PHONY: help up down restart ps logs build clean images i18n i18n-check
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-10s %s\n", $$1, $$2}'
@@ -32,3 +35,14 @@ clean: ## Stop the dev stack and remove its data volumes
 images: ## Build production (runtime) images for backend and frontend
 	docker build --target runtime -t numo9-backend:local backend
 	docker build -f frontend/Dockerfile --target runtime -t numo9-frontend:local .
+
+i18n: ## Regenerate catalogues: FormatJS extract (+ add missing keys) and Django makemessages (dev stack)
+	pnpm --filter @numo9/frontend run i18n:extract
+	$(PYTHON) backend/tools/check_i18n.py frontend --extracted frontend/.i18n/extracted.json --write
+	$(COMPOSE_DEV) exec -T backend $(MAKEMESSAGES)
+
+i18n-check: ## Run the frontend i18n lint, missing-key check and glossary lint locally
+	pnpm --filter @numo9/frontend run lint:i18n
+	pnpm --filter @numo9/frontend run i18n:extract
+	$(PYTHON) backend/tools/check_i18n.py frontend --extracted frontend/.i18n/extracted.json
+	$(PYTHON) backend/tools/check_glossary.py

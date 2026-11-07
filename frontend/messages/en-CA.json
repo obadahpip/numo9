@@ -1,0 +1,15 @@
+{
+  "common": {
+    "brand": "Numo9",
+    "tagline": "Numbers build a brighter tomorrow"
+  },
+  "home": {
+    "placeholder": "Application shell placeholder.",
+    "title": "Home"
+  },
+  "shell": {
+    "nav": {
+      "main": "Main"
+    }
+  }
+}

@@ -23,6 +23,10 @@ RUN pip install -r requirements/base.txt
 
 # ---- dev: + dev/test dependencies, source bind-mounted by compose -------------
 FROM builder AS dev
+# GNU gettext for `manage.py makemessages` / `compilemessages` (make i18n).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gettext \
+    && rm -rf /var/lib/apt/lists/*
 COPY requirements/dev.txt requirements/dev.txt
 RUN pip install -r requirements/dev.txt
 COPY . .
