@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Placeholder tokens — replaced by the design-system tokens in A-10. */
+:root {
+  --color-surface: #ffffff;
+  --color-text: #111827;
+  --color-border: #e5e7eb;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
