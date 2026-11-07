@@ -1,0 +1,29 @@
+# Fixture for infra/deploy/tests/test_deploy.sh — a minimal stack shaped like the staging contract
+# (images tagged ${NUMO9_TAG}, a `backend` service that runs migrations). Local test only.
+name: numo9-deploytest
+
+services:
+  postgres:
+    image: postgres:16.15-alpine
+    environment:
+      POSTGRES_DB: numo9
+      POSTGRES_USER: numo9
+      POSTGRES_PASSWORD: deploytest
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U numo9 -d numo9"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    image: numo9-deploytest-backend:${NUMO9_TAG:?NUMO9_TAG is required}
+    environment:
+      DJANGO_SETTINGS_MODULE: numo9.settings.staging
+      DJANGO_SECRET_KEY: deploytest-not-a-secret
+      DJANGO_ALLOWED_HOSTS: 127.0.0.1,localhost
+      DATABASE_URL: postgres://numo9:deploytest@postgres:5432/numo9
+    ports:
+      - "127.0.0.1:${DEPLOYTEST_PORT:-18080}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
