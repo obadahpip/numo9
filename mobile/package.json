@@ -1,0 +1,14 @@
+{
+  "name": "@numo9/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Numo9 native apps (React Native / Expo). Placeholder until Phase 7 (Y-01); Expo SDK is pinned at Phase 7 kickoff.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node -e \"console.log('@numo9/mobile: placeholder workspace, nothing to build (Phase 7)')\"",
+    "typecheck": "node -e \"console.log('@numo9/mobile: placeholder workspace, nothing to type-check (Phase 7)')\"",
+    "test": "node -e \"console.log('@numo9/mobile: placeholder workspace, no tests yet (Phase 7)')\""
+  }
+}
