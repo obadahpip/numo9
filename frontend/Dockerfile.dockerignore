@@ -1,0 +1,14 @@
+# Build context is the repository root; only workspace manifests and frontend/ are needed.
+.git
+**/node_modules
+**/.next
+**/*.tsbuildinfo
+**/coverage
+backend
+infra
+tools
+docs
+To_delete
+status.txt
+**/.env
+**/.env.*

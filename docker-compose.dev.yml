@@ -1,0 +1,124 @@
+# Numo9 local development stack.  Start with:  make up
+# All credentials below are local-development defaults only; never reuse them elsewhere.
+# Host ports are bound to 127.0.0.1 and can be overridden with the *_HOST_PORT variables.
+
+name: numo9-dev
+
+x-dev-env: &dev-env
+  DJANGO_SETTINGS_MODULE: numo9.settings.dev
+  DJANGO_DEBUG: "true"
+  DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,backend
+  DATABASE_URL: postgres://numo9:numo9@postgres:5432/numo9
+  REDIS_URL: redis://redis:6379/0
+
+services:
+  postgres:
+    image: postgres:16.15-alpine
+    environment:
+      POSTGRES_DB: numo9
+      POSTGRES_USER: numo9
+      POSTGRES_PASSWORD: numo9
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-15432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U numo9 -d numo9"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.4.12-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "127.0.0.1:${REDIS_HOST_PORT:-16379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    # Official minio/minio images are no longer published; pgsty/minio is a maintained community build.
+    image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: numo9
+      MINIO_ROOT_PASSWORD: numo9-dev-secret
+    ports:
+      - "127.0.0.1:${MINIO_HOST_PORT:-9000}:9000"
+      - "127.0.0.1:${MINIO_CONSOLE_HOST_PORT:-9001}:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:v1.33.0
+    ports:
+      - "127.0.0.1:${MAILPIT_SMTP_HOST_PORT:-1025}:1025"
+      - "127.0.0.1:${MAILPIT_UI_HOST_PORT:-8025}:8025"
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  clamav:
+    image: clamav/clamav:1.5.4
+    ports:
+      - "127.0.0.1:${CLAMAV_HOST_PORT:-3310}:3310"
+    volumes:
+      - clamav-db:/var/lib/clamav
+    healthcheck:
+      # First start downloads signature databases (several minutes); later starts reuse the volume.
+      test: ["CMD", "clamdcheck.sh"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 600s
+
+  backend:
+    build:
+      context: ./backend
+      target: dev
+    environment:
+      <<: *dev-env
+    ports:
+      - "127.0.0.1:${BACKEND_HOST_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: dev
+    environment:
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "127.0.0.1:${FRONTEND_HOST_PORT:-3000}:3000"
+    volumes:
+      - ./frontend:/repo/frontend
+      - /repo/frontend/node_modules
+      - /repo/frontend/.next
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:
+  clamav-db:
