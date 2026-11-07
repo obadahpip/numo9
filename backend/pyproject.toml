@@ -1,0 +1,10 @@
+[project]
+name = "numo9-backend"
+version = "0.0.0"
+description = "Numo9 platform backend (Django)"
+requires-python = ">=3.12,<3.13"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "numo9.settings.test"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"

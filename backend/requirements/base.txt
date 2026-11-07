@@ -1,0 +1,4 @@
+# Runtime dependencies (all environments)
+Django==5.2.19
+dj-database-url==2.3.0
+psycopg[binary]==3.3.8
