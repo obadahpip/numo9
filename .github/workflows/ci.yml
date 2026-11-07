@@ -145,3 +145,56 @@ jobs:
 
       - name: next build
         run: pnpm --filter @numo9/frontend run build
+
+  i18n:
+    name: i18n (formatjs, makemessages, glossary)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DJANGO_SETTINGS_MODULE: numo9.settings.test
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements/*.txt
+
+      - name: Install GNU gettext
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends gettext
+
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements/dev.txt
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: No hard-coded strings (eslint formatjs rules)
+        run: pnpm --filter @numo9/frontend run lint:i18n
+
+      - name: FormatJS extract
+        run: pnpm --filter @numo9/frontend run i18n:extract
+
+      - name: Frontend catalogues complete (en-CA, fr-CA)
+        run: python backend/tools/check_i18n.py frontend --extracted frontend/.i18n/extracted.json
+
+      - name: Django makemessages + backend catalogues complete (en_CA, fr_CA)
+        run: |
+          cp -r backend/locale "$RUNNER_TEMP/locale-committed"
+          (cd backend && python manage.py makemessages -l en_CA -l fr_CA --no-location --no-wrap)
+          python backend/tools/check_i18n.py backend \
+            --committed "$RUNNER_TEMP/locale-committed" --generated backend/locale
+
+      - name: Glossary lint (banned terms)
+        run: python backend/tools/check_glossary.py

@@ -1,0 +1,54 @@
+# Numo9 en-CA glossary — banned terms in en-CA catalogues (S-01-T10; gaps #31, #38).
+# Source: Phase 0 plan §4 (Glossary lint) and A-10-T15.
+# `pattern` is a Python regex; `case_sensitive` defaults to false.
+# `allow` lists catalogue keys (frontend message id or backend msgid) where the term is accepted,
+# each with a justification comment.
+
+[[banned]]
+term = "VAT"
+pattern = '\bVAT\b|\bvalue[ -]added tax\b'
+case_sensitive = false
+use = "GST/HST (or QST for Québec)"
+gap = "gap-31"
+
+[[banned]]
+term = "State"
+pattern = '\bStates?\b'
+case_sensitive = true
+use = "Province (or Province/territory)"
+gap = "gap-31"
+
+[[banned]]
+term = "ZIP"
+# Upper-case ZIP only (".zip archive" is fine); "zip code" in any case.
+pattern = '\bZIP\b|(?i:\bzip ?codes?\b)'
+case_sensitive = true
+use = "Postal code"
+gap = "gap-31"
+
+[[banned]]
+term = "annual leave"
+pattern = '\bannual leave\b'
+use = "vacation (vacation pay)"
+gap = "gap-31"
+
+[[banned]]
+term = "Organization"
+pattern = '\borgani[sz]ations?\b'
+# "organisation" is the single en-CA spelling; this pattern matches both, so exclude it below.
+exclude = '\borganisations?\b'
+use = "organisation"
+gap = "gap-38"
+
+[[banned]]
+term = "Check(s)"
+pattern = '\bChecks?\b'
+case_sensitive = true
+use = "cheque (payment instrument); for the verb use 'Verify' or 'Review'"
+gap = "gap-31"
+
+[[banned]]
+term = "Advisor"
+pattern = '\badvisors?\b'
+use = "Accountant (practice role)"
+gap = "gap-38"

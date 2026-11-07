@@ -3,6 +3,8 @@
 from pathlib import Path
 from typing import Any
 
+from django.utils.translation import gettext_lazy as _
+
 from .env import env_str
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -61,7 +63,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = "en-ca"
-LANGUAGES = [("en-ca", "English (Canada)"), ("fr-ca", "Français (Canada)")]
+LANGUAGES = [("en-ca", _("English (Canada)")), ("fr-ca", _("French (Canada)"))]
+# gettext catalogues: backend/locale/<en_CA|fr_CA>/LC_MESSAGES/django.po (S-01-T10).
+LOCALE_PATHS = [BASE_DIR / "locale"]
 TIME_ZONE = env_str("DJANGO_TIME_ZONE", "America/Toronto")
 USE_I18N = True
 USE_TZ = True

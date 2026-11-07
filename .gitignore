@@ -87,3 +87,6 @@ junit.xml
 
 # ---- Security scan caches ----
 .trivy-cache/
+
+# ---- i18n extraction output ----
+.i18n/
