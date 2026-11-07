@@ -146,6 +146,61 @@ jobs:
       - name: next build
         run: pnpm --filter @numo9/frontend run build
 
+  tenant-sweep:
+    # Placeholder (S-01-T11): runs tests marked @pytest.mark.tenant_isolation and passes while
+    # none exist. A-01-T09 adds `manage.py tenant_sweep` (router sweep, Org 1 vs Org 2) here.
+    name: tenant-sweep (isolation)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16.15-alpine
+        env:
+          POSTGRES_DB: numo9
+          POSTGRES_USER: numo9
+          POSTGRES_PASSWORD: numo9
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U numo9 -d numo9"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DJANGO_SETTINGS_MODULE: numo9.settings.test
+      DATABASE_URL: postgres://numo9:numo9@localhost:5432/numo9
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements/*.txt
+      - name: Install dependencies
+        run: pip install -r backend/requirements/dev.txt
+      - name: Tenant isolation tests (marker tenant_isolation)
+        run: bash tools/ci/pytest_marker.sh tenant_isolation -v
+
+  gap-tests:
+    # Placeholder (S-01-T11): runs tests marked @pytest.mark.gap("gap-NN") and passes while none
+    # exist. Playwright gap specs (e.g. gap-02, S-01-T14) are added to this job when they land.
+    name: gap-tests (xero_teardown gaps)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DJANGO_SETTINGS_MODULE: numo9.settings.test
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements/*.txt
+      - name: Install dependencies
+        run: pip install -r backend/requirements/dev.txt
+      - name: Gap-closure tests (marker gap)
+        run: bash tools/ci/pytest_marker.sh gap -v
+
   i18n:
     name: i18n (formatjs, makemessages, glossary)
     runs-on: ubuntu-latest
