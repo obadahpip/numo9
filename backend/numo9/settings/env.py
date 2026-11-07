@@ -14,7 +14,9 @@ def env_str(name: str, default: str | None = None, *, required: bool = False) ->
         if required:
             raise ImproperlyConfigured(f"Environment variable {name} is required.")
         if default is None:
-            raise ImproperlyConfigured(f"Environment variable {name} is not set and has no default.")
+            raise ImproperlyConfigured(
+                f"Environment variable {name} is not set and has no default."
+            )
         return default
     return value
 

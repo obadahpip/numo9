@@ -11,7 +11,8 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 
 PROBE = (
     "import django; django.setup(); from django.conf import settings; "
-    "print(settings.DEBUG, ','.join(settings.ALLOWED_HOSTS), settings.DATABASES['default']['ENGINE'])"
+    "print(settings.DEBUG, ','.join(settings.ALLOWED_HOSTS), "
+    "settings.DATABASES['default']['ENGINE'])"
 )
 
 ENV_KEYS = ("DJANGO_SECRET_KEY", "DJANGO_DEBUG", "DJANGO_ALLOWED_HOSTS", "DATABASE_URL")

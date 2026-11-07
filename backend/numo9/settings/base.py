@@ -1,6 +1,7 @@
 """Settings shared by every environment. Environment modules import * from here."""
 
 from pathlib import Path
+from typing import Any
 
 from .env import env_str
 
@@ -50,7 +51,7 @@ TEMPLATES = [
 ]
 
 # Overridden per environment.
-DATABASES: dict[str, dict[str, object]] = {}
+DATABASES: dict[str, Any] = {}
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

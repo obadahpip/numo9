@@ -4,6 +4,41 @@ version = "0.0.0"
 description = "Numo9 platform backend (Django)"
 requires-python = ">=3.12,<3.13"
 
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [".venv", "staticfiles", "media"]
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "B",   # bugbear
+  "UP",  # pyupgrade
+  "C4",  # comprehensions
+  "SIM", # simplify
+  "DJ",  # flake8-django
+  "S",   # bandit (security)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S603"] # assert and subprocess are expected in tests
+"*/settings/*.py" = ["F405"]  # star-imported names from base settings
+
+[tool.ruff.lint.isort]
+known-first-party = ["numo9"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["mypy_django_plugin.main"]
+exclude = ["^\\.venv/", "^staticfiles/"]
+
+[tool.django-stubs]
+django_settings_module = "numo9.settings.test"
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "numo9.settings.test"
 testpaths = ["tests"]
