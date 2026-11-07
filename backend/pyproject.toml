@@ -43,3 +43,7 @@ django_settings_module = "numo9.settings.test"
 DJANGO_SETTINGS_MODULE = "numo9.settings.test"
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
+markers = [
+  "gap(*ids): gap-closure test for xero_teardown gap(s), e.g. @pytest.mark.gap('gap-06'); run by the CI gap-tests job",
+  "tenant_isolation: cross-tenant isolation test; run by the CI tenant-sweep job (A-01 adds manage.py tenant_sweep)",
+]
