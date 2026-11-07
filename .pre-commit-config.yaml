@@ -45,6 +45,7 @@ repos:
           - dj-database-url==2.3.0
           - pytest==9.2.0
           - pytest-django==4.14.0
+          - django-migration-linter==6.0.0 # imported by numo9.settings.test (mypy plugin loads it)
 
       - id: eslint
         name: eslint (frontend)

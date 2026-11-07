@@ -1,0 +1,147 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.30.0"
+
+jobs:
+  backend:
+    name: backend (ruff, mypy, pytest, migrations)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      postgres:
+        image: postgres:16.15-alpine
+        env:
+          POSTGRES_DB: numo9
+          POSTGRES_USER: numo9
+          POSTGRES_PASSWORD: numo9
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U numo9 -d numo9"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DJANGO_SETTINGS_MODULE: numo9.settings.test
+      DATABASE_URL: postgres://numo9:numo9@localhost:5432/numo9
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # migration linter compares against the base branch
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements/*.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements/dev.txt
+
+      - name: Cache mypy
+        uses: actions/cache@v6
+        with:
+          path: backend/.mypy_cache
+          key: mypy-${{ runner.os }}-${{ hashFiles('backend/requirements/*.txt') }}-${{ github.sha }}
+          restore-keys: mypy-${{ runner.os }}-${{ hashFiles('backend/requirements/*.txt') }}-
+
+      - name: ruff check
+        run: ruff check --output-format=github . ../tools
+
+      - name: ruff format
+        run: ruff format --check . ../tools
+
+      - name: mypy
+        run: mypy .
+
+      - name: Migrations are up to date
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Migration linter
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python manage.py lintmigrations --git-commit-id "origin/${{ github.base_ref }}"
+          else
+            python manage.py lintmigrations
+          fi
+
+      - name: pytest + coverage (PostgreSQL 16)
+        run: >-
+          pytest
+          --cov=numo9
+          --cov-report=term-missing
+          --cov-report=xml:coverage.xml
+          --junitxml=junit.xml
+
+      - name: Upload coverage and test report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: backend-coverage
+          path: |
+            backend/coverage.xml
+            backend/junit.xml
+          if-no-files-found: ignore
+
+  frontend:
+    name: frontend (eslint, tsc, vitest, build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache Next.js build
+        uses: actions/cache@v6
+        with:
+          path: frontend/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('frontend/src/**', 'frontend/*.ts', 'frontend/*.mjs') }}
+          restore-keys: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
+      - name: eslint
+        run: pnpm --filter @numo9/frontend run lint
+
+      - name: prettier
+        run: pnpm run format:check
+
+      - name: tsc
+        run: pnpm --filter @numo9/frontend run typecheck
+
+      - name: vitest
+        run: pnpm --filter @numo9/frontend run test
+
+      - name: next build
+        run: pnpm --filter @numo9/frontend run build

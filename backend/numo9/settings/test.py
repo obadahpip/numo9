@@ -3,7 +3,11 @@
 import dj_database_url
 
 from .base import *  # noqa: F403
+from .base import INSTALLED_APPS
 from .env import env_list, env_str
+
+# Test/CI-only tooling: `manage.py lintmigrations` (S-01-T08).
+INSTALLED_APPS = [*INSTALLED_APPS, "django_migration_linter"]
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")
 DEBUG = False
