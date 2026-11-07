@@ -84,3 +84,6 @@ To_delete/
 
 # ---- CI reports ----
 junit.xml
+
+# ---- Security scan caches ----
+.trivy-cache/

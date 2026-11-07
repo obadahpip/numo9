@@ -1,0 +1,9 @@
+# Paths semgrep does not scan (S-01-T09). Client documents and generated/vendored code only.
+docs/
+To_delete/
+node_modules/
+.venv/
+.next/
+coverage/
+staticfiles/
+pnpm-lock.yaml
