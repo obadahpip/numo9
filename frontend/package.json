@@ -16,6 +16,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "lodash": "4.17.15",
     "next": "15.5.29",
     "react": "19.1.10",
     "react-dom": "19.1.10"

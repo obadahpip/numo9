@@ -17,6 +17,9 @@ importers:
 
   frontend:
     dependencies:
+      lodash:
+        specifier: 4.17.15
+        version: 4.17.15
       next:
         specifier: 15.5.29
         version: 15.5.29(@babel/core@7.29.13)(@types/node@22.20.5)(react-dom@19.1.10(react@19.1.10))(react@19.1.10)
@@ -2090,6 +2093,9 @@ packages:
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  lodash@4.17.15:
+    resolution: {integrity: sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -4737,6 +4743,8 @@ snapshots:
       p-locate: 5.0.0
 
   lodash.merge@4.6.2: {}
+
+  lodash@4.17.15: {}
 
   loose-envify@1.4.0:
     dependencies:

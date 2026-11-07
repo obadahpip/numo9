@@ -3,3 +3,4 @@ Django==5.2.19
 dj-database-url==2.3.0
 psycopg[binary]==3.3.8
 gunicorn==26.2.0
+PyYAML==5.3  # S-01-T09 PROBE: known-vulnerable (CVE-2020-14343). Never merge.
