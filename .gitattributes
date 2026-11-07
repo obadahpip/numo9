@@ -1,0 +1,9 @@
+# Files executed or parsed inside Linux containers/runners must keep LF line endings even on
+# Windows checkouts with core.autocrlf=true (a CRLF entrypoint.sh or sshd_config breaks the image).
+*.sh            text eol=lf
+Dockerfile      text eol=lf
+*.dockerignore  text eol=lf
+sshd_config     text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+Makefile        text eol=lf
