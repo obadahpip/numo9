@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 6   Remaining: 2781
+TOTAL ATOMIC TASKS: 2787   Completed: 7   Remaining: 2780
 
 ================================================================================
 Phase 0 Foundation and SaaS Core  (443 atomic tasks)
@@ -15,7 +15,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)
 ✅ S-01-T04 — Frontend skeleton: Next.js 15 App Router + TS strict + Tailwind; / renders shell placeholder
 ✅ S-01-T05 — mobile/ Expo placeholder workspace (pnpm workspace) so CI paths exist
 ✅ S-01-T06 — Docker: multi-stage images for backend/frontend; docker-compose.dev.yml with Postgres 16, Redis 7, MinIO, Mailpit, ClamAV; make up
-❌ S-01-T07 — pre-commit: ruff, ruff-format, mypy, eslint, prettier, gitleaks, end-of-file fixers
+✅ S-01-T07 — pre-commit: ruff, ruff-format, mypy, eslint, prettier, gitleaks, end-of-file fixers
 ❌ S-01-T08 — GitHub Actions ci.yml: backend job (ruff, mypy, pytest + coverage, migration linter), frontend job (eslint, tsc, vitest, build), caching
 ❌ S-01-T09 — CI security jobs: pip-audit, npm audit, gitleaks, Trivy image scan, semgrep
 ❌ S-01-T10 — i18n extraction job: FormatJS + Django makemessages; fail on missing en-CA or fr-CA key; glossary lint (banned terms list)
