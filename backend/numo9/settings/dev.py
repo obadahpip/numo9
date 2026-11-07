@@ -3,8 +3,11 @@
 import dj_database_url
 
 from .base import *  # noqa: F403
-from .base import BASE_DIR
+from .base import BASE_DIR, INSTALLED_APPS
 from .env import env_bool, env_list, env_str
+
+# Dev-only tooling (not installed in runtime images).
+INSTALLED_APPS = [*INSTALLED_APPS, "django_migration_linter"]
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "dev-insecure-secret-key-do-not-use-in-production")
 DEBUG = env_bool("DJANGO_DEBUG", True)
