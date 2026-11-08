@@ -4,13 +4,13 @@ terraform {
   required_version = ">= 1.10.0"
 
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.70"
+    hcloud = {
+      source  = "hetznercloud/hcloud"
+      version = "~> 1.70"
     }
   }
 
-  # Remote state in ca-central-1 (bucket created by ../bootstrap). Settings are supplied at
-  # init time:  tofu init -backend-config=backend.hcl   (see backend.hcl.example)
+  # Remote state in Hetzner Object Storage, hel1 (S3-compatible). Settings at init time:
+  #   tofu init -backend-config=backend.hcl        (see backend.hcl.example)
   backend "s3" {}
 }

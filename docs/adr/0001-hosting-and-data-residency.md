@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | accepted — 2026-11-08 (sign-off recorded below) |
+| **Status** | superseded by [ADR-0002](0002-hetzner-helsinki-hosting.md) on 2026-11-08 (was accepted 2026-11-08) |
 | **Date** | 2026-11-08 |
 | **Deciders** | Obadah Abu Odeh — project lead and decision-maker (sign-off, Agreement §6.4) |
 | **Deliverable / task** | S-02-T01 (S-02 · Hosting and data residency) |

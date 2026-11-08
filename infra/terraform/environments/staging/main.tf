@@ -1,41 +1,39 @@
-# Numo9 staging — network, host and firewall (S-02-T02). Region and residency: ADR-0001.
+# Numo9 staging on Hetzner Cloud, Helsinki (S-02-T02, ADR-0002): private network, app server,
+# primary IPv4 and Cloud Firewall. Production reuses the same modules with protection = true.
 
 locals {
   name = "numo9-staging"
+  labels = {
+    project     = "numo9"
+    environment = "staging"
+    managed-by  = "opentofu"
+    residency   = "eu-fi"
+  }
 }
 
-provider "aws" {
-  region              = var.region
-  allowed_account_ids = length(var.allowed_account_ids) > 0 ? var.allowed_account_ids : null
-
-  default_tags {
-    tags = {
-      Project       = "numo9"
-      Environment   = "staging"
-      ManagedBy     = "opentofu"
-      DataResidency = "CA"
-      Source        = "infra/terraform/environments/staging"
-    }
-  }
+provider "hcloud" {
+  token = var.hcloud_token
 }
 
 module "network" {
   source = "../../modules/network"
 
-  name               = local.name
-  cidr_block         = var.vpc_cidr
-  availability_zones = var.availability_zones
+  name     = local.name
+  ip_range = "10.20.0.0/16"
+  labels   = local.labels
 }
 
-module "host" {
-  source = "../../modules/app_host"
+module "server" {
+  source = "../../modules/app_server"
 
   name                     = local.name
-  vpc_id                   = module.network.vpc_id
-  subnet_id                = module.network.public_subnet_ids[0]
-  instance_type            = var.instance_type
-  root_volume_size_gb      = var.root_volume_size_gb
+  location                 = "hel1"
+  server_type              = var.server_type
+  network_id               = module.network.network_id
+  subnet_id                = module.network.subnet_id
+  private_ip               = "10.20.1.10"
   ssh_allowed_cidrs        = var.ssh_allowed_cidrs
   bootstrap_ssh_public_key = var.bootstrap_ssh_public_key
-  termination_protection   = false
+  protection               = false
+  labels                   = local.labels
 }

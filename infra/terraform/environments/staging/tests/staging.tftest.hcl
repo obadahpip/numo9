@@ -1,61 +1,41 @@
-# Offline tests for the staging stack (S-02-T02): mocked AWS provider, plan only.
+# Offline tests for the staging stack (S-02-T02): mocked hcloud provider, plan only.
 # Run from environments/staging:  tofu init -backend=false && tofu test
-# Module behaviour (firewall, subnets) is tested in modules/*/tests.
 
-mock_provider "aws" {
-  mock_data "aws_ssm_parameter" {
-    defaults = {
-      value = "ami-0123456789abcdef0"
-    }
+mock_provider "hcloud" {
+  # Hetzner IDs are numeric; the mock's random string IDs would fail type conversion.
+  mock_resource "hcloud_network" {
+    defaults = { id = "1001" }
   }
-
-  mock_data "aws_iam_policy_document" {
-    defaults = {
-      json = "{\"Version\":\"2012-10-17\",\"Statement\":[]}"
-    }
+  mock_resource "hcloud_firewall" {
+    defaults = { id = "2001" }
+  }
+  mock_resource "hcloud_ssh_key" {
+    defaults = { id = "3001" }
+  }
+  mock_resource "hcloud_primary_ip" {
+    defaults = { id = "4001", ip_address = "192.0.2.10" }
+  }
+  mock_resource "hcloud_server" {
+    defaults = { id = "5001", ipv6_address = "2001:db8::1" }
   }
 }
 
 variables {
+  hcloud_token             = "test-token-not-real"
   ssh_allowed_cidrs        = ["203.0.113.10/32"]
   bootstrap_ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAITestKeyOnlyForPlanTests test@numo9"
 }
 
-run "plans_in_canada_central" {
+run "staging_composes_in_helsinki" {
   command = plan
 
   assert {
-    condition     = var.region == "ca-central-1"
-    error_message = "Default region must be ca-central-1 (ADR-0001)."
+    condition     = output.server_private_ip == "10.20.1.10"
+    error_message = "App server must sit at 10.20.1.10 on the private network."
   }
 
   assert {
-    condition     = alltrue([for az in var.availability_zones : startswith(az, "ca-central-1")])
-    error_message = "Every availability zone must belong to ca-central-1."
+    condition     = module.network.servers_subnet == "10.20.1.0/24"
+    error_message = "Staging servers subnet must be 10.20.1.0/24."
   }
-
-  assert {
-    condition     = length(output.public_subnet_ids) == 2 && length(output.private_subnet_ids) == 2
-    error_message = "Staging needs two public and two private subnets."
-  }
-}
-
-run "rejects_region_outside_adr" {
-  command = plan
-
-  variables {
-    region = "us-east-1" # adr-0001: allow (negative test)
-  }
-
-  expect_failures = [var.region]
-}
-
-run "rejects_backup_region_for_workloads" {
-  command = plan
-
-  variables {
-    region = "ca-west-1"
-  }
-
-  expect_failures = [var.region]
 }

@@ -28,8 +28,8 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)
 ✅ S-01-T17 — docs/ MkDocs site skeleton + ADR template + CONTRIBUTING (branch policy, commit style)
 
 [S-02]
-✅ S-02-T01 — Write ADR-001 (hosting provider + region, residency, cost owner, alternatives) and get client sign-off
-❌ S-02-T02 — Terraform: VPC/network, staging VM(s), firewall (80/443 public, 22 restricted to bastion IPs)   [code + offline tests done: infra/terraform (branch feature/S-02-terraform-network) — awaiting AWS account for apply + reproducible re-plan]
+✅ S-02-T01 — Write ADR-001 (hosting provider + region, residency, cost owner, alternatives) and get client sign-off   [revised: ADR-0002 Hetzner Helsinki supersedes ADR-0001]
+❌ S-02-T02 — Terraform: VPC/network, staging VM(s), firewall (80/443 public, 22 restricted to bastion IPs)   [Hetzner hel1 code + offline tests done (ADR-0002, branch feature/S-02-terraform-network) — apply + reproducible re-plan at deployment when the server is bought]
 ❌ S-02-T03 — Terraform: S3-compatible buckets (files, quarantine, backups) in Canadian region, versioning, lifecycle, encryption at rest
 ❌ S-02-T04 — Managed or self-hosted PostgreSQL 16 in region with PITR enabled; PgBouncer
 ❌ S-02-T05 — Ansible: harden host (unattended upgrades, fail2ban, non-root deploy user, SSH keys only, auditd)
