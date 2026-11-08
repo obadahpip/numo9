@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 13   Remaining: 2774
+TOTAL ATOMIC TASKS: 2787   Completed: 14   Remaining: 2773
 
 ================================================================================
 Phase 0 Foundation and SaaS Core  (443 atomic tasks)
@@ -22,7 +22,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)
 ✅ S-01-T11 — Placeholder jobs for tenant sweep and gap tests (wired to real ones in A-01 / later)
 ✅ S-01-T12 — Image build & push to GHCR on tag; deploy-staging.yml triggered by v* tag via SSH/Compose pull; migrations then health-gate; rollback to previous tag on failed health
 ✅ S-01-T13 — deploy-prod.yml with GitHub Environment manual approval (project lead only)
-❌ S-01-T14 — Redirect map: root → Home, /o/:org → Home, legacy-style paths (/dashboard, /settings, /home, trailing slash/case variants) → correct module; custom 404 with search
+✅ S-01-T14 — Redirect map: root → Home, /o/:org → Home, legacy-style paths (/dashboard, /settings, /home, trailing slash/case variants) → correct module; custom 404 with search
 ❌ S-01-T15 — PR template with Rule 10 sections (Problem understanding, Task breakdown, Plan, Changes, Testing results, Remaining issues, Status) + Rule 11 checklist; issue template per atomic task
 ❌ S-01-T16 — Renovate/Dependabot config (weekly, grouped)
 ❌ S-01-T17 — docs/ MkDocs site skeleton + ADR template + CONTRIBUTING (branch policy, commit style)

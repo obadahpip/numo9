@@ -146,6 +146,9 @@ jobs:
       - name: next build
         run: pnpm --filter @numo9/frontend run build
 
+      - name: gap-02 redirect crawl (Playwright, request-level)
+        run: pnpm --filter @numo9/frontend run test:e2e
+
   tenant-sweep:
     # Placeholder (S-01-T11): runs tests marked @pytest.mark.tenant_isolation and passes while
     # none exist. A-01-T09 adds `manage.py tenant_sweep` (router sweep, Org 1 vs Org 2) here.

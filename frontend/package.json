@@ -15,7 +15,8 @@
     "lint:i18n": "eslint --config eslint.i18n.config.mjs --max-warnings=0 src",
     "i18n:extract": "formatjs extract \"src/**/*.{ts,tsx}\" --ignore \"src/**/*.test.{ts,tsx}\" --out-file .i18n/extracted.json --throws",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "15.5.29",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "3.3.7",
     "@formatjs/cli": "6.18.0",
+    "@playwright/test": "1.64.1",
     "@tailwindcss/postcss": "4.3.5",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "6.10.0",
