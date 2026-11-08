@@ -124,7 +124,10 @@ jobs:
             echo "| Tag | Deploy | Dry run | Reason |"
             echo "|---|---|---|---|"
             echo "| \`${TAG:-n/a}\` | $DEPLOY | $DRY_RUN | $REASON |"
-            [[ "$DEPLOY" == "true" ]] && echo "" && echo "Waiting for approval in environment **production**."
+            if [[ "$DEPLOY" == "true" ]]; then
+              echo ""
+              echo "Waiting for approval in environment **production**."
+            fi
           } >>"$GITHUB_STEP_SUMMARY"
 
   deploy:
