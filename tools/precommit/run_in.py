@@ -9,7 +9,8 @@ Usage:
 
 - DIR is relative to the repository root.
 - CMD "python" resolves to the interpreter running this script (the hook's environment).
-- Other commands are resolved with shutil.which (handles .cmd shims on Windows).
+- Other commands are resolved with shutil.which; on Windows a PATHEXT match (.cmd/.exe) wins
+  over an extensionless Git Bash shim.
 - FILES after "--" are converted to paths relative to DIR.
 """
 
@@ -22,6 +23,22 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def resolve_executable(executable: str) -> str | None:
+    """Full path of `executable`; on Windows prefer a PATHEXT match (pnpm.CMD over pnpm).
+
+    Git Bash puts extensionless POSIX shims (e.g. `pnpm`) on PATH next to the `.cmd` ones, and
+    shutil.which can return the shim, which CreateProcess cannot run (WinError 193).
+    """
+    if executable == "python":
+        return sys.executable
+    if os.name == "nt" and not os.path.splitext(executable)[1]:
+        for ext in os.environ.get("PATHEXT", ".COM;.EXE;.BAT;.CMD").split(";"):
+            found = shutil.which(executable + ext) if ext else None
+            if found:
+                return found
+    return shutil.which(executable)
 
 
 def main(argv: list[str]) -> int:
@@ -38,10 +55,7 @@ def main(argv: list[str]) -> int:
         command, files = rest, []
 
     executable = command[0]
-    if executable == "python":
-        resolved: str | None = sys.executable
-    else:
-        resolved = shutil.which(executable)
+    resolved = resolve_executable(executable)
     if resolved is None:
         print(f"run_in.py: command not found: {executable}", file=sys.stderr)
         return 127
