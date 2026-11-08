@@ -7,6 +7,33 @@
     "placeholder": "Application shell placeholder.",
     "title": "Home"
   },
+  "notFound": {
+    "body": "The address may be mistyped, or the page may have moved. Search for the page or go to Home.",
+    "home": "Go to Home",
+    "search": {
+      "label": "Search pages",
+      "noResults": "No matching pages. Try another word.",
+      "results": "Matching pages"
+    },
+    "title": "We can't find that page"
+  },
+  "routes": {
+    "chartOfAccounts": "Chart of accounts",
+    "contacts": "Contacts",
+    "documents": "Documents",
+    "home": "Home",
+    "journals": "Journals",
+    "placeholder": "This screen is a placeholder until its deliverable is built.",
+    "settingsAuditLog": "Settings: Audit log",
+    "settingsCustomFields": "Settings: Custom fields",
+    "settingsEmailDomain": "Settings: Email domain",
+    "settingsGeneral": "Settings: General",
+    "settingsLockDates": "Settings: Lock dates",
+    "settingsNumbering": "Settings: Numbering",
+    "settingsRegistrations": "Settings: Tax registrations",
+    "settingsSubscription": "Settings: Subscription",
+    "settingsUsersRoles": "Settings: Users and roles"
+  },
   "shell": {
     "nav": {
       "main": "Main"
