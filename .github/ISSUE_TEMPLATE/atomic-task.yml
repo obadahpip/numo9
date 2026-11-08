@@ -1,0 +1,110 @@
+name: Atomic task
+description: One atomic task from a phase plan deliverable card (Rule 3 plan structure).
+title: "[<TASK-ID>] <short title>"
+labels: ["atomic-task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue per atomic task (`docs/phase_plans`). Keep it small: one to two hours of focused work.
+        If it grows during UNDERSTAND, split it and link the new issues here.
+        Replace `<TASK-ID>` in the title, e.g. `[S-01-T15] PR and issue templates`.
+  - type: input
+    id: task_id
+    attributes:
+      label: Task ID
+      description: Exactly as in the phase plan.
+      placeholder: S-01-T15
+    validations:
+      required: true
+  - type: input
+    id: deliverable
+    attributes:
+      label: Deliverable and branch
+      placeholder: S-01 · feature/S-01-repo-ci-envs
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options:
+        - "0 — Foundation and SaaS core"
+        - "1 — Core books"
+        - "2 — Operations, finance and two books"
+        - "3 — People, HR and payroll"
+        - "4 — Practice, payments, tax payments and website"
+        - "5 — Migration, UAT and go-live"
+        - "6 — French language"
+        - "7 — Native mobile apps"
+        - "8 — Companion-app roadmap"
+        - "H — Hypercare and warranty"
+    validations:
+      required: true
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      options: [BE, FE, DB, API, OPS, QA, DOC, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What the task accomplishes.
+    validations:
+      required: true
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current behavior
+      description: How the project behaves before the change.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: How it must behave afterwards.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Prerequisite tasks (IDs or issue links). Write "none" if there are none.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Implementation steps
+      description: Numbered actions in logical order, in plain English (no framework code).
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Observable conditions that prove the task is complete.
+    validations:
+      required: true
+  - type: textarea
+    id: testing
+    attributes:
+      label: Testing approach
+      description: How correctness will be verified (unit, integration, functional, regression, security).
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Potential risks
+      description: Possible bugs, conflicts or regressions.
+    validations:
+      required: false
