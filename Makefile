@@ -6,7 +6,7 @@ WAIT_TIMEOUT ?= 900
 PYTHON ?= python
 MAKEMESSAGES := python manage.py makemessages -l en_CA -l fr_CA --no-location --no-wrap
 
-.PHONY: help up down restart ps logs build clean images i18n i18n-check
+.PHONY: help up down restart ps logs build clean images i18n i18n-check docs docs-serve
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-10s %s\n", $$1, $$2}'
@@ -46,3 +46,9 @@ i18n-check: ## Run the frontend i18n lint, missing-key check and glossary lint l
 	pnpm --filter @numo9/frontend run i18n:extract
 	$(PYTHON) backend/tools/check_i18n.py frontend --extracted frontend/.i18n/extracted.json
 	$(PYTHON) backend/tools/check_glossary.py
+
+docs: ## Build the documentation site (strict) into site/
+	$(PYTHON) -m mkdocs build --strict
+
+docs-serve: ## Preview the documentation site on http://127.0.0.1:8001
+	$(PYTHON) -m mkdocs serve --dev-addr 127.0.0.1:8001

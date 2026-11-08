@@ -1,0 +1,81 @@
+# Numo9 documentation site (S-01-T17). Build: `make docs`  ·  Preview: `make docs-serve`
+site_name: Numo9 documentation
+site_description: Numo9 platform — engineering, architecture decisions and phase plans
+repo_url: https://github.com/obadahpip/numo9
+edit_uri: edit/main/docs/
+docs_dir: docs
+site_dir: site
+strict: true
+
+# Client contracts (.docx) and tooling files are never published to the site.
+exclude_docs: |
+  *.docx
+  requirements.txt
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: index.md
+  - Contributing: contributing.md
+  - Branch policy: branching.md
+  - Architecture decisions:
+      - adr/index.md
+      - ADR template: adr/template.md
+  - Project:
+      - Project plan: Numo9_Project_Plan.md
+      - Project phases: Project_Phases.md
+      - Xero teardown: xero_teardown.md
+  - Phase plans:
+      - "Phase 0 — Foundation and SaaS core": phase_plans/Phase_0_Foundation_and_SaaS_Core.md
+      - "Phase 1 — Core books": phase_plans/Phase_1_Core_Books.md
+      - "Phase 2 — Operations, finance and two books": phase_plans/Phase_2_Operations_Finance_and_Two_Books.md
+      - "Phase 3 — People, HR and payroll": phase_plans/Phase_3_People_HR_and_Payroll.md
+      - "Phase 4 — Practice, payments, tax payments and website": phase_plans/Phase_4_Practice_Payments_Tax_Payments_and_Website.md
+      - "Phase 5 — Migration, UAT and go-live": phase_plans/Phase_5_Migration_UAT_and_Go-Live.md
+      - "Phase 6 — French language": phase_plans/Phase_6_French_Language.md
+      - "Phase 7 — Native mobile apps": phase_plans/Phase_7_Native_Mobile_Apps.md
+      - "Phase 8 — Companion-app roadmap": phase_plans/Phase_8_Companion-App_Roadmap.md
+      - "Phase H — Hypercare and warranty": phase_plans/Phase_H_Hypercare_and_Warranty.md

@@ -34,11 +34,16 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
-          cache-dependency-path: backend/requirements/*.txt
+          cache-dependency-path: |
+            backend/requirements/*.txt
+            docs/requirements.txt
       - name: Install pip-audit
         run: pip install "pip-audit==${PIP_AUDIT_VERSION}"
       - name: Audit runtime + dev requirements (fails on any known vulnerability)
         run: pip-audit -r backend/requirements/dev.txt --progress-spinner off --desc
+
+      - name: Audit documentation tooling (docs/requirements.txt)
+        run: pip-audit -r docs/requirements.txt --progress-spinner off --desc
 
   npm-audit:
     name: npm audit (pnpm lockfile, fail on high)

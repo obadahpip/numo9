@@ -1,0 +1,4 @@
+# Documentation site (S-01-T17): `pip install -r docs/requirements.txt && mkdocs build`
+mkdocs==1.6.1
+mkdocs-material==9.8.0
+pymdown-extensions==12.3

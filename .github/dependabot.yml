@@ -67,6 +67,24 @@ updates:
       - dependency-name: "django"
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
 
+  # ---- Python: documentation site (docs/requirements.txt) ----------------------------------
+  - package-ecosystem: pip
+    directory: "/docs"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: "07:00"
+      timezone: Asia/Amman
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 2
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      docs-minor-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
   # ---- GitHub Actions used by .github/workflows -----------------------------------------------
   - package-ecosystem: github-actions
     directory: "/"
