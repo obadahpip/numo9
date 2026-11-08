@@ -1,19 +1,19 @@
-output "vpc_id" {
-  description = "ID of the VPC."
-  value       = aws_vpc.this.id
+output "network_id" {
+  description = "ID of the private network."
+  value       = hcloud_network.this.id
 }
 
-output "vpc_cidr_block" {
-  description = "IPv4 CIDR of the VPC."
-  value       = aws_vpc.this.cidr_block
+output "ip_range" {
+  description = "Private range of the network."
+  value       = hcloud_network.this.ip_range
 }
 
-output "public_subnet_ids" {
-  description = "Public subnet IDs (one per availability zone)."
-  value       = aws_subnet.public[*].id
+output "servers_subnet" {
+  description = "Subnet for cloud servers."
+  value       = hcloud_network_subnet.servers.ip_range
 }
 
-output "private_subnet_ids" {
-  description = "Private subnet IDs without an internet route (RDS, S-02-T04)."
-  value       = aws_subnet.private[*].id
+output "subnet_id" {
+  description = "ID of the servers subnet (servers attach after it exists)."
+  value       = hcloud_network_subnet.servers.id
 }

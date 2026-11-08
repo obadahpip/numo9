@@ -171,9 +171,9 @@ jobs:
         run: mkdocs build --strict
 
   infra:
-    # S-02-T02: OpenTofu fmt/validate/test (mocked AWS provider, no credentials) and the
-    # ADR-0001 region fitness check (only ca-central-1 / ca-west-1 may appear under infra/).
-    name: infra (opentofu, ADR-0001 regions)
+    # S-02-T02: OpenTofu fmt/validate/test (mocked hcloud provider, no credentials) and the
+    # ADR-0002 location fitness check (only Hetzner hel1 / fsn1 may appear under infra/).
+    name: infra (opentofu, ADR-0002 locations)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -186,10 +186,10 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Region fitness check (ADR-0001)
-        run: python tools/ci/check_infra_regions.py infra
+      - name: Location fitness check (ADR-0002)
+        run: python tools/ci/check_infra_locations.py infra
 
-      - name: Region check unit tests
+      - name: Location check unit tests
         run: |
           pip install pytest==9.2.0
           python -m pytest -q tools/tests

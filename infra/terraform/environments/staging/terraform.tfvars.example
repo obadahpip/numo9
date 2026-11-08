@@ -1,6 +1,4 @@
-# Copy to terraform.tfvars (git-ignored). Values are not secret but are environment-specific.
-allowed_account_ids      = ["123456789012"]                 # the Client's AWS account (ADR-0001)
-ssh_allowed_cidrs        = ["203.0.113.10/32"]              # bastion / named admin IPs only
+# Copy to terraform.tfvars (git-ignored). The API token goes in TF_VAR_hcloud_token, not here.
+ssh_allowed_cidrs        = ["203.0.113.10/32"]   # bastion / named admin IPs only
 bootstrap_ssh_public_key = "ssh-ed25519 AAAA... numo9-staging-bootstrap"
-# instance_type          = "t3.medium"
-# root_volume_size_gb    = 40
+# server_type            = "cpx32"

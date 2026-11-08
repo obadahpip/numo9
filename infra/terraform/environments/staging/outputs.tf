@@ -1,34 +1,24 @@
-output "vpc_id" {
-  description = "Staging VPC ID."
-  value       = module.network.vpc_id
+output "server_public_ipv4" {
+  description = "Primary IPv4 — GitHub STAGING_SSH_HOST and DNS A records (S-02-T07)."
+  value       = module.server.public_ipv4
 }
 
-output "public_subnet_ids" {
-  description = "Public subnets (app hosts)."
-  value       = module.network.public_subnet_ids
+output "server_public_ipv6" {
+  description = "Server IPv6 — DNS AAAA records (S-02-T07)."
+  value       = module.server.public_ipv6
 }
 
-output "private_subnet_ids" {
-  description = "Private subnets without internet route (RDS, S-02-T04)."
-  value       = module.network.private_subnet_ids
+output "server_private_ip" {
+  description = "Private IP of the app server (PostgreSQL listens here only, S-02-T04)."
+  value       = module.server.private_ip
 }
 
-output "host_public_ip" {
-  description = "Staging host Elastic IP — STAGING_SSH_HOST and DNS A records (S-02-T07)."
-  value       = module.host.public_ip
+output "network_id" {
+  description = "Private network ID (PostgreSQL server/volume in S-02-T04)."
+  value       = module.network.network_id
 }
 
-output "host_instance_id" {
-  description = "Staging host instance ID."
-  value       = module.host.instance_id
-}
-
-output "host_security_group_id" {
-  description = "Staging host security group."
-  value       = module.host.security_group_id
-}
-
-output "host_iam_role_name" {
-  description = "Staging host instance role."
-  value       = module.host.iam_role_name
+output "firewall_id" {
+  description = "Cloud Firewall ID."
+  value       = module.server.firewall_id
 }

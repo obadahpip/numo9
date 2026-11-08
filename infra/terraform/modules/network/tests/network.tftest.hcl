@@ -1,77 +1,77 @@
-# Offline tests for the network module (S-02-T02): mocked AWS provider, plan only.
+# Offline tests for the network module (S-02-T02): mocked hcloud provider, plan only.
 # Run from modules/network:  tofu init && tofu test
 
-mock_provider "aws" {}
+mock_provider "hcloud" {
+  # Hetzner IDs are numeric; the mock's random string IDs would fail type conversion.
+  mock_resource "hcloud_network" {
+    defaults = { id = "1001" }
+  }
+  mock_resource "hcloud_firewall" {
+    defaults = { id = "2001" }
+  }
+  mock_resource "hcloud_ssh_key" {
+    defaults = { id = "3001" }
+  }
+  mock_resource "hcloud_primary_ip" {
+    defaults = { id = "4001", ip_address = "192.0.2.10" }
+  }
+  mock_resource "hcloud_server" {
+    defaults = { id = "5001", ipv6_address = "2001:db8::1" }
+  }
+}
 
 variables {
-  name               = "numo9-test"
-  cidr_block         = "10.20.0.0/16"
-  availability_zones = ["ca-central-1a", "ca-central-1b"]
+  name = "numo9-test"
 }
 
-run "subnet_layout" {
+run "private_network_layout" {
   command = plan
 
   assert {
-    condition     = [for s in aws_subnet.public : s.cidr_block] == ["10.20.0.0/20", "10.20.16.0/20"]
-    error_message = "Public subnets must be the first two /20s."
+    condition     = hcloud_network.this.ip_range == "10.20.0.0/16"
+    error_message = "Default private range must be 10.20.0.0/16."
   }
 
   assert {
-    condition     = [for s in aws_subnet.private : s.cidr_block] == ["10.20.128.0/20", "10.20.144.0/20"]
-    error_message = "Private subnets must be /20s in the upper half of the VPC."
+    condition     = hcloud_network_subnet.servers.ip_range == "10.20.1.0/24"
+    error_message = "Servers subnet must be 10.20.1.0/24."
   }
 
   assert {
-    condition     = [for s in aws_subnet.public : s.availability_zone] == ["ca-central-1a", "ca-central-1b"]
-    error_message = "One public subnet per availability zone."
-  }
-
-  assert {
-    condition     = alltrue([for s in aws_subnet.public : s.map_public_ip_on_launch == false])
-    error_message = "Public subnets must not auto-assign public IPs (hosts use Elastic IPs)."
+    condition     = hcloud_network_subnet.servers.network_zone == "eu-central" && hcloud_network_subnet.servers.type == "cloud"
+    error_message = "Subnet must be a cloud subnet in eu-central."
   }
 }
 
-run "only_public_route_table_reaches_internet" {
-  command = plan
-
-  assert {
-    condition     = aws_route.public_internet.destination_cidr_block == "0.0.0.0/0"
-    error_message = "Public route table needs the default route to the internet gateway."
-  }
-
-  assert {
-    condition     = length(aws_route_table.private.route) == 0
-    error_message = "Private route table must have no route besides the implicit local one."
-  }
-}
-
-run "default_security_group_locked" {
-  command = plan
-
-  assert {
-    condition     = length(aws_default_security_group.this.ingress) == 0 && length(aws_default_security_group.this.egress) == 0
-    error_message = "The VPC default security group must have no rules."
-  }
-}
-
-run "rejects_one_availability_zone" {
+run "small_range_still_gets_a_subnet" {
   command = plan
 
   variables {
-    availability_zones = ["ca-central-1a"]
+    ip_range = "10.30.0.0/23"
   }
 
-  expect_failures = [var.availability_zones]
+  assert {
+    condition     = hcloud_network_subnet.servers.ip_range == "10.30.1.0/24"
+    error_message = "A /23 network must yield the second /24 as the servers subnet."
+  }
 }
 
-run "rejects_oversized_vpc" {
+run "rejects_other_network_zone" {
   command = plan
 
   variables {
-    cidr_block = "10.0.0.0/8"
+    network_zone = "us-east" # adr-0002: allow (negative test)
   }
 
-  expect_failures = [var.cidr_block]
+  expect_failures = [var.network_zone]
+}
+
+run "rejects_oversized_range" {
+  command = plan
+
+  variables {
+    ip_range = "10.0.0.0/8"
+  }
+
+  expect_failures = [var.ip_range]
 }

@@ -1,6 +1,15 @@
-# Copy to backend.hcl (git-ignored) and run:  tofu init -backend-config=backend.hcl
-bucket       = "numo9-tfstate-<account-id>"   # output state_bucket of ../bootstrap
-key          = "staging/network-host.tfstate"
-region       = "ca-central-1"
-encrypt      = true
-use_lockfile = true                           # S3-native state locking (no DynamoDB table)
+# Copy to backend.hcl (git-ignored), export the Object Storage S3 keys, then:
+#   export AWS_ACCESS_KEY_ID=<hetzner s3 access key> AWS_SECRET_ACCESS_KEY=<secret>
+#   tofu init -backend-config=backend.hcl
+# The bucket is created once in the Hetzner console (Object Storage, location hel1, private).
+bucket                      = "numo9-tfstate"
+key                         = "staging/network-server.tfstate"
+region                      = "hel1"
+endpoints                   = { s3 = "https://hel1.your-objectstorage.com" }
+use_lockfile                = true
+skip_credentials_validation = true
+skip_region_validation      = true
+skip_requesting_account_id  = true
+skip_metadata_api_check     = true
+skip_s3_checksum            = true
+use_path_style              = true
