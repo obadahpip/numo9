@@ -3,11 +3,11 @@
 #   docker build -f frontend/Dockerfile --target dev     -t numo9-frontend:dev .
 #   docker build -f frontend/Dockerfile --target runtime -t numo9-frontend .
 
-ARG NODE_IMAGE=node:22.23.4-alpine
 ARG PNPM_VERSION=10.30.0
 
 # ---- base: node + pnpm via corepack ------------------------------------------
-FROM ${NODE_IMAGE} AS base
+# Base images pinned in the FROM lines so Dependabot can update them (S-01-T16).
+FROM node:22.23.4-alpine AS base
 ARG PNPM_VERSION
 ENV NEXT_TELEMETRY_DISABLED=1 \
     PNPM_HOME=/pnpm \
@@ -38,7 +38,7 @@ ENV NEXT_OUTPUT=standalone
 RUN pnpm --filter @numo9/frontend run build
 
 # ---- runtime: minimal production image, non-root ------------------------------
-FROM ${NODE_IMAGE} AS runtime
+FROM node:22.23.4-alpine AS runtime
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     HOSTNAME=0.0.0.0 \

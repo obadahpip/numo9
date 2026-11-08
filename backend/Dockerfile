@@ -3,10 +3,9 @@
 #   docker build --target dev     -t numo9-backend:dev .
 #   docker build --target runtime -t numo9-backend .
 
-ARG PYTHON_IMAGE=python:3.12.16-slim-bookworm
-
 # ---- base: shared OS layer ---------------------------------------------------
-FROM ${PYTHON_IMAGE} AS base
+# Base image pinned in the FROM line so Dependabot can update it (S-01-T16).
+FROM python:3.12.16-slim-bookworm AS base
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
