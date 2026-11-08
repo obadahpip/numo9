@@ -2,9 +2,9 @@
 
 | | |
 |---|---|
-| **Status** | proposed — becomes `accepted` when the client sign-off below is recorded and this ADR is merged |
+| **Status** | accepted — 2026-11-08 (sign-off recorded below) |
 | **Date** | 2026-11-08 |
-| **Deciders** | Obadah Abu Odeh, project lead, Gray Matter AI (proposer) · the Client's nominated decision-maker (sign-off, Agreement §6.4 and 9.1(e)) |
+| **Deciders** | Obadah Abu Odeh — project lead and decision-maker (sign-off, Agreement §6.4) |
 | **Deliverable / task** | S-02-T01 (S-02 · Hosting and data residency) |
 
 ## Context and problem statement
@@ -126,8 +126,7 @@ Savings plans / reserved instances are reviewed after three months of real usage
 
 ### Confirmation
 
-- **Sign-off:** the Client's decision-maker approves this ADR (record below); then status becomes
-  `accepted` and the ADR index is updated.
+- **Sign-off:** recorded below (2026-11-08); status `accepted`; ADR index updated.
 - **CI fitness check (S-02-T02):** a check fails the build if any file under `infra/` names a region
   other than `ca-central-1` or `ca-west-1`.
 - **Inspection (S-02-T03, T04):** `aws s3api get-bucket-location` returns `ca-central-1` for the
@@ -186,10 +185,10 @@ Savings plans / reserved instances are reviewed after three months of real usage
 | | |
 |---|---|
 | **Decision** | Option 1 — AWS `ca-central-1` primary, `ca-west-1` backup copies |
-| **Client decision-maker** | _name, title — Profitix (Profitex), Accounting & Tax Services_ |
-| **Approved on** | _YYYY-MM-DD_ |
-| **Reference** | _email / signed note / meeting minutes reference_ |
-| **AWS account owner and billing contact** | _Client contact; account ID once created_ |
+| **Decision-maker** | Obadah Abu Odeh, project lead |
+| **Approved on** | 2026-11-08 |
+| **Reference** | Decision recorded on PR #17 (https://github.com/obadahpip/numo9/pull/17), 2026-11-08 |
+| **AWS account owner and billing contact** | The Client (Agreement §8.6, 9.1(d)); account ID recorded in S-02-T02 when created |
 
 ## More information
 
