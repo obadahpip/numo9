@@ -1,0 +1,6 @@
+# Copy to backend.hcl (git-ignored) and run:  tofu init -backend-config=backend.hcl
+bucket       = "numo9-tfstate-<account-id>"   # output state_bucket of ../bootstrap
+key          = "staging/network-host.tfstate"
+region       = "ca-central-1"
+encrypt      = true
+use_lockfile = true                           # S3-native state locking (no DynamoDB table)

@@ -170,6 +170,49 @@ jobs:
       - name: mkdocs build --strict
         run: mkdocs build --strict
 
+  infra:
+    # S-02-T02: OpenTofu fmt/validate/test (mocked AWS provider, no credentials) and the
+    # ADR-0001 region fitness check (only ca-central-1 / ca-west-1 may appear under infra/).
+    name: infra (opentofu, ADR-0001 regions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TOFU_VERSION: "1.13.9"
+      TF_IN_AUTOMATION: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Region fitness check (ADR-0001)
+        run: python tools/ci/check_infra_regions.py infra
+
+      - name: Region check unit tests
+        run: |
+          pip install pytest==9.2.0
+          python -m pytest -q tools/tests
+
+      - uses: opentofu/setup-opentofu@v2
+        with:
+          tofu_version: ${{ env.TOFU_VERSION }}
+          tofu_wrapper: false
+
+      - name: tofu fmt
+        run: tofu fmt -recursive -check -diff infra/terraform
+
+      - name: tofu validate + test (modules and environments)
+        run: |
+          set -euo pipefail
+          for dir in infra/terraform/modules/* infra/terraform/environments/*; do
+            echo "::group::$dir"
+            tofu -chdir="$dir" init -backend=false -input=false
+            tofu -chdir="$dir" validate
+            if [ -d "$dir/tests" ]; then tofu -chdir="$dir" test; fi
+            echo "::endgroup::"
+          done
+
   tenant-sweep:
     # Placeholder (S-01-T11): runs tests marked @pytest.mark.tenant_isolation and passes while
     # none exist. A-01-T09 adds `manage.py tenant_sweep` (router sweep, Org 1 vs Org 2) here.
