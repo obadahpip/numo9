@@ -1,2 +1,5 @@
 # tools/ scripts follow the same lint rules as the backend.
 extend = "../backend/pyproject.toml"
+
+[lint.per-file-ignores]
+"tests/**" = ["S101"] # assert is expected in tests

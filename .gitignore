@@ -71,6 +71,11 @@ test-results/
 crash.log
 *.tfplan
 .terraform.lock.hcl.bak
+# Environment-specific inputs (examples are committed as *.example)
+*.tfvars
+backend.hcl
+# Lock files are committed for root stacks (environments/) only, not for reusable modules
+infra/terraform/modules/**/.terraform.lock.hcl
 
 # ---- Docs build ----
 site/
