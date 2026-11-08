@@ -1,0 +1,224 @@
+name: Deploy production
+
+# Promotes a release that is already deployed and healthy on staging to production (S-01-T13).
+# Nothing is rebuilt: production runs the exact GHCR images that staging runs for that tag.
+#
+# Triggers
+#   - automatically after "Deploy staging" succeeds for a stable tag vX.Y.Z (pre-release tags such
+#     as v1.2.0-rc.1 stay on staging; mobile-vX.Y.Z never reaches either workflow);
+#   - manually (Actions -> Deploy production -> Run workflow) with a tag, optionally as a dry run.
+#
+# The deploy job runs in the GitHub Environment "production", whose protection rule requires the
+# project lead's approval (infra/deploy/configure-production-environment.sh). The job, and with
+# it every production secret, waits until that approval is given. A dry run passes the same gate
+# and the same checks but does not connect to the host.
+#
+# Both triggers only work from the workflow file on the default branch (main).
+on:
+  workflow_run:
+    workflows: ["Deploy staging"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag already deployed to staging (vX.Y.Z)"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run: pass the approval gate and checks, do not deploy"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false # never interrupt a deploy midway; later runs queue
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/numo9
+
+jobs:
+  resolve:
+    name: resolve release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: read
+      deployments: read
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      dry_run: ${{ steps.release.outputs.dry_run }}
+      deploy: ${{ steps.release.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # tags and main history for the checks below
+
+      - id: release
+        name: Resolve tag
+        env:
+          EVENT: ${{ github.event_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          RUN_TAG: ${{ github.event.workflow_run.head_branch }}
+          RUN_EVENT: ${{ github.event.workflow_run.event }}
+          RUN_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+        run: bash infra/deploy/resolve-release.sh
+
+      - name: Tag is on main
+        if: steps.release.outputs.deploy == 'true'
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          git rev-parse -q --verify "refs/tags/$TAG^{commit}" >/dev/null \
+            || { echo "::error::tag $TAG does not exist"; exit 1; }
+          git merge-base --is-ancestor "refs/tags/$TAG" origin/main \
+            || { echo "::error::tag $TAG is not on main; production deploys only released main commits"; exit 1; }
+          echo "TAG_SHA=$(git rev-parse "refs/tags/$TAG^{commit}")" >>"$GITHUB_ENV"
+
+      - name: Tag is deployed and healthy on staging
+        if: steps.release.outputs.deploy == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          id="$(gh api "repos/$GITHUB_REPOSITORY/deployments?environment=staging&sha=$TAG_SHA&per_page=1" --jq '.[0].id // empty')"
+          [[ -n "$id" ]] || { echo "::error::$TAG ($TAG_SHA) has never been deployed to staging"; exit 1; }
+          state="$(gh api "repos/$GITHUB_REPOSITORY/deployments/$id/statuses?per_page=1" --jq '.[0].state // empty')"
+          [[ "$state" == "success" ]] \
+            || { echo "::error::latest staging deployment of $TAG is '${state:-none}', not success"; exit 1; }
+          echo "staging deployment $id of $TAG: $state"
+
+      - uses: docker/login-action@v4
+        if: steps.release.outputs.deploy == 'true'
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Images exist in GHCR
+        if: steps.release.outputs.deploy == 'true'
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          for image in backend frontend; do
+            docker buildx imagetools inspect "$IMAGE_PREFIX-$image:$TAG" >/dev/null \
+              || { echo "::error::$IMAGE_PREFIX-$image:$TAG not found in GHCR"; exit 1; }
+            echo "found $IMAGE_PREFIX-$image:$TAG"
+          done
+
+      - name: Summary
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          DRY_RUN: ${{ steps.release.outputs.dry_run }}
+          DEPLOY: ${{ steps.release.outputs.deploy }}
+          REASON: ${{ steps.release.outputs.reason }}
+        run: |
+          {
+            echo "### Production release"
+            echo "| Tag | Deploy | Dry run | Reason |"
+            echo "|---|---|---|---|"
+            echo "| \`${TAG:-n/a}\` | $DEPLOY | $DRY_RUN | $REASON |"
+            [[ "$DEPLOY" == "true" ]] && echo "" && echo "Waiting for approval in environment **production**."
+          } >>"$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: deploy to production
+    needs: resolve
+    if: needs.resolve.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Required reviewer (project lead) is enforced by the environment, not by this file.
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_PUBLIC_URL }}
+    permissions:
+      contents: read
+      packages: read
+    env:
+      TAG: ${{ needs.resolve.outputs.tag }}
+      DRY_RUN: ${{ needs.resolve.outputs.dry_run }}
+      SSH_HOST: ${{ vars.PRODUCTION_SSH_HOST }}
+      SSH_USER: ${{ vars.PRODUCTION_SSH_USER }}
+      SSH_PORT: ${{ vars.PRODUCTION_SSH_PORT || '22' }}
+      APP_DIR: ${{ vars.PRODUCTION_APP_DIR }}
+      HEALTH_URL: ${{ vars.PRODUCTION_HEALTH_URL }}
+      COMPOSE_FILE: ${{ vars.PRODUCTION_COMPOSE_FILE || 'docker-compose.prod.yml' }}
+    steps:
+      - name: Approved
+        env:
+          REQUESTED_BY: ${{ github.triggering_actor }}
+        run: echo "production deploy of $TAG approved (requested by $REQUESTED_BY, dry_run=$DRY_RUN)"
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.resolve.outputs.tag }} # deploy.sh from the released commit
+
+      - name: Check production configuration
+        env:
+          SSH_KEY: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.PRODUCTION_SSH_KNOWN_HOSTS }}
+        run: |
+          missing=()
+          for name in SSH_HOST SSH_USER APP_DIR HEALTH_URL SSH_KEY KNOWN_HOSTS; do
+            [[ -n "${!name}" ]] || missing+=("$name")
+          done
+          if ((${#missing[@]})); then
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "::warning::dry run: production environment not fully configured; missing: ${missing[*]} (see infra/deploy/README.md)"
+            else
+              echo "::error::production environment is not configured; missing: ${missing[*]} (see infra/deploy/README.md)"
+              exit 1
+            fi
+          else
+            echo "production configuration complete"
+          fi
+
+      - name: Dry run — stop before touching production
+        if: env.DRY_RUN == 'true'
+        run: |
+          echo "dry run: approval gate passed; would deploy $TAG to $APP_DIR on ${SSH_HOST:-<unset>} using $COMPOSE_FILE"
+          {
+            echo "### Dry run"
+            echo "Approval gate passed for \`$TAG\`. No connection was made to production."
+          } >>"$GITHUB_STEP_SUMMARY"
+
+      - name: Configure SSH
+        if: env.DRY_RUN != 'true'
+        env:
+          SSH_KEY: ${{ secrets.PRODUCTION_SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.PRODUCTION_SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts && chmod 644 ~/.ssh/known_hosts
+          {
+            printf 'Host production\n  HostName %s\n  Port %s\n  User %s\n' "$SSH_HOST" "$SSH_PORT" "$SSH_USER"
+            printf '  IdentityFile ~/.ssh/deploy_key\n  IdentitiesOnly yes\n  StrictHostKeyChecking yes\n'
+            printf '  HostKeyAlias %s\n' "$SSH_HOST"
+          } > ~/.ssh/config
+
+      - name: Upload deploy script
+        if: env.DRY_RUN != 'true'
+        run: scp -q infra/deploy/deploy.sh "production:$APP_DIR/deploy.sh"
+
+      - name: Deploy ${{ needs.resolve.outputs.tag }} (migrate, health gate, rollback on failure)
+        if: env.DRY_RUN != 'true'
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        # Values below are expanded on the runner on purpose and passed to the host (SC2029).
+        run: |
+          # shellcheck disable=SC2029
+          printf '%s' "$GHCR_TOKEN" | ssh production "docker login ghcr.io -u '$GHCR_USER' --password-stdin"
+          # shellcheck disable=SC2029
+          ssh production "cd '$APP_DIR' && HEALTH_URL='$HEALTH_URL' COMPOSE_FILE='$COMPOSE_FILE' bash deploy.sh '$TAG'"
+
+      - name: Log out of GHCR on host
+        if: always() && env.DRY_RUN != 'true'
+        run: ssh production "docker logout ghcr.io" || true
