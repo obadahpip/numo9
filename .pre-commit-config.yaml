@@ -16,6 +16,12 @@ repos:
         exclude: ^(docs/|status\.txt$)
       - id: check-merge-conflict
       - id: check-yaml
+        exclude: ^mkdocs\.yml$
+      # mkdocs.yml uses a !!python/name tag (Mermaid fence): syntax-only check (S-01-T17).
+      - id: check-yaml
+        name: check yaml (mkdocs.yml, syntax only)
+        args: ["--unsafe"]
+        files: ^mkdocs\.yml$
       - id: check-toml
       - id: check-json
       - id: check-added-large-files

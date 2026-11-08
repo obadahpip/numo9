@@ -149,6 +149,27 @@ jobs:
       - name: gap-02 redirect crawl (Playwright, request-level)
         run: pnpm --filter @numo9/frontend run test:e2e
 
+  docs:
+    name: docs (mkdocs build --strict)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NO_MKDOCS_2_WARNING: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: docs/requirements.txt
+
+      - name: Install MkDocs
+        run: pip install -r docs/requirements.txt
+
+      - name: mkdocs build --strict
+        run: mkdocs build --strict
+
   tenant-sweep:
     # Placeholder (S-01-T11): runs tests marked @pytest.mark.tenant_isolation and passes while
     # none exist. A-01-T09 adds `manage.py tenant_sweep` (router sweep, Org 1 vs Org 2) here.
