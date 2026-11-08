@@ -21,4 +21,4 @@ consequences. ADRs follow [MADR](https://adr.github.io/madr/) and live in `docs/
 
 | ADR | Title | Status |
 |---|---|---|
-| [ADR-0001](0001-hosting-and-data-residency.md) | Host Numo9 on AWS Canada (Central) with Canada (West) for backups (S-02-T01) | proposed — awaiting client sign-off |
+| [ADR-0001](0001-hosting-and-data-residency.md) | Host Numo9 on AWS Canada (Central) with Canada (West) for backups (S-02-T01) | accepted (2026-11-08) |
