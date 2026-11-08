@@ -42,3 +42,16 @@ Rules:
 1. One deliverable per branch (each deliverable card in `docs/phase_plans` is one branch).
 2. Each atomic task within the deliverable is one or more commits prefixed with its task ID, e.g. `S-01-T02: ...`.
 3. Release tags: `vX.Y.Z` (web/backend deploy), `mobile-vX.Y.Z` (reserved for mobile).
+
+## Exceptions: automated dependency updates (S-01-T16)
+
+Dependabot (`.github/dependabot.yml`) opens its own pull requests every Sunday 07:00 Amman time:
+
+- Branches `dependabot/<ecosystem>/<dependency>` and commits prefixed `chore(deps):` are exempt from
+  the naming rule and the task-ID commit prefix above.
+- Everything else still applies: required status checks green, one approving review (Dependabot is
+  the author, so the project lead can approve), rebase merge.
+- Minor and patch updates arrive grouped, one PR per ecosystem (npm, pip, GitHub Actions, Docker,
+  Compose); each major update arrives on its own and is reviewed against the phase plans before it
+  is merged. Majors pinned by the plan (Next.js 15, React 19, Django 5.2 LTS, Python 3.12, Node 22,
+  PostgreSQL 16, Redis 7) are ignored in the config.

@@ -1,0 +1,137 @@
+# Dependency updates (S-01-T16): weekly, grouped, one PR per ecosystem for minor/patch updates.
+#
+# - Runs Sunday 07:00 Amman time (start of the GMA work week); PRs arrive with green-or-red CI
+#   and are merged like any other PR (CI + 1 approving review; Dependabot is the author, so the
+#   project lead can approve).
+# - minor + patch are grouped per ecosystem; a major update opens its own PR so it is reviewed
+#   on its own.
+# - Majors the project plan pins are ignored: Next.js 15 / React 19 (plan §4), Django 5.2 LTS,
+#   Python 3.12 (pyproject requires-python <3.13), Node 22, PostgreSQL 16, Redis 7.
+# - cooldown: a release must be 7 days old before it is proposed (supply-chain safety).
+# - Branches are named dependabot/<ecosystem>/<dependency>; commits are prefixed "chore(deps)".
+#   Both are documented exceptions in docs/branching.md.
+version: 2
+
+updates:
+  # ---- JavaScript: pnpm workspace (frontend, mobile) — root pnpm-lock.yaml ------------------
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: "07:00"
+      timezone: Asia/Amman
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      npm-minor-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+  # ---- Python: backend/requirements/{base,dev}.txt ------------------------------------------
+  - package-ecosystem: pip
+    directory: "/backend"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: "07:00"
+      timezone: Asia/Amman
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      pip-minor-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "django"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+
+  # ---- GitHub Actions used by .github/workflows -----------------------------------------------
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: "07:00"
+      timezone: Asia/Amman
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # ---- Dockerfile base images ----------------------------------------------------------------
+  - package-ecosystem: docker
+    directories:
+      - "/backend"
+      - "/frontend"
+      - "/infra/staging-local"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: "07:00"
+      timezone: Asia/Amman
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      docker-images:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "python"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
+
+  # ---- Compose service images (dev stack, staging, deploy test) ------------------------------
+  - package-ecosystem: docker-compose
+    directories:
+      - "/"
+      - "/infra/staging"
+      - "/infra/deploy/tests"
+    schedule:
+      interval: weekly
+      day: sunday
+      time: "07:00"
+      timezone: Asia/Amman
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      compose-images:
+        patterns: ["*"]
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "postgres"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "redis"
+        update-types: ["version-update:semver-major"]
