@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 26   Remaining: 2761
+TOTAL ATOMIC TASKS: 2787   Completed: 27   Remaining: 2760
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -46,7 +46,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-01-T04 — OrgScopedManager default manager filtering by current_org(); raises if no context (except unscoped() explicit, logged)
 ✅ A-01-T05 — Access resolver can_access(user, org) = org member OR member of an assigned practice and (practice-wide role or assigned staff/group)
 ✅ A-01-T06 — DRF permission IsOrgMemberOrAssigned + object-level check returning 404 on foreign objects
-❌ A-01-T08 — Django system check + import-linter rule: every model in business apps inherits OrgOwnedModel (allow-list for platform models)
+✅ A-01-T08 — Django system check + import-linter rule: every model in business apps inherits OrgOwnedModel (allow-list for platform models)
 ❌ A-01-T09 — Router sweep tool manage.py tenant_sweep: enumerates every URL pattern, creates objects in Org 1, requests as Org 2 user → expects 404 for each verb
 ❌ A-01-T10 — Revocation test: remove assignment mid-session → next request 404 (no caching of access)
 ❌ A-01-T11 — Property test over random membership graphs (Hypothesis) vs. resolver
