@@ -66,6 +66,8 @@ nav:
       - "ADR-0001 — Hosting and data residency": adr/0001-hosting-and-data-residency.md
       - "ADR-0002 — Hetzner Helsinki hosting": adr/0002-hetzner-helsinki-hosting.md
       - ADR template: adr/template.md
+  - Architecture:
+      - "Tenancy model": architecture/tenancy.md
   - Security:
       - "Data-residency register": security/data-residency-register.md
   - Project:
