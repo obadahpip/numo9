@@ -4,6 +4,7 @@ UUID public id, verified through the test-only concrete models in tests.testapp.
 from __future__ import annotations
 
 import uuid
+from collections.abc import Iterator
 from datetime import timedelta
 
 import pytest
@@ -13,6 +14,7 @@ from django.db.models import ProtectedError
 from django.utils import timezone
 
 from numo9.accounts.models import User
+from numo9.tenancy.context import org_context
 from numo9.tenancy.models import Organisation, OrgOwnedModel
 from tests.testapp.models import Gadget, Widget
 
@@ -29,6 +31,16 @@ EXPECTED = {
 @pytest.fixture
 def org() -> Organisation:
     return Organisation.objects.create(name="Maple Bakery")
+
+
+@pytest.fixture(autouse=True)
+def _active_org(request: pytest.FixtureRequest) -> Iterator[None]:
+    """Database tests run inside the organisation's context (OrgScopedManager, A-01-T04)."""
+    if request.node.get_closest_marker("django_db") is None:
+        yield
+        return
+    with org_context(request.getfixturevalue("org")):
+        yield
 
 
 @pytest.fixture
@@ -88,7 +100,7 @@ def test_organisation_is_required(org: Organisation) -> None:
         widget.full_clean()
     assert "organisation" in exc.value.message_dict
     with pytest.raises(IntegrityError), transaction.atomic():
-        Widget.objects.create(label="orphan")
+        Widget(label="orphan").save()  # bypasses the manager, which would fill the organisation
 
 
 @pytest.mark.django_db

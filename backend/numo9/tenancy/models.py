@@ -34,6 +34,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from .managers import OrgScopedManager
+
 DEFAULT_TIME_ZONE = "America/Toronto"
 
 
@@ -293,8 +295,9 @@ class OrgOwnedModel(models.Model):
     - ``deleted_at`` — soft delete: records are never removed (CRA six-year retention); use
       ``soft_delete()`` / ``restore()``.
 
-    Scoping every query to the active organisation is added by ``OrgScopedManager`` (A-01-T04);
-    the A-01-T08 check makes inheriting this class mandatory for business models.
+    ``objects`` is an ``OrgScopedManager`` (A-01-T04): every query is limited to the active
+    organisation and fails without one; ``objects.unscoped(reason=...)`` is the logged way out.
+    The A-01-T08 check makes inheriting this class mandatory for business models.
     """
 
     organisation = models.ForeignKey(
@@ -315,6 +318,8 @@ class OrgOwnedModel(models.Model):
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
     deleted_at = models.DateTimeField(_("deleted at"), null=True, blank=True, editable=False)
+
+    objects: ClassVar[OrgScopedManager[Any]] = OrgScopedManager()
 
     class Meta:
         abstract = True
