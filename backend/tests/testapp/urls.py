@@ -5,6 +5,7 @@ from django.urls import path, re_path
 
 from numo9.tenancy.context import acting_practice, current_org
 
+from . import api
 from .models import Widget
 
 
@@ -36,4 +37,12 @@ urlpatterns = [
     re_path(r"^o/[^/]+/ctx/$", context_view),
     re_path(r"^o/[^/]+/widgets/$", widgets_view),
     re_path(r"^api/v1/o/[^/]+/ctx/$", context_view),
+    re_path(r"^api/v1/o/[^/]+/widgets/$", api.WidgetList.as_view()),
+    re_path(r"^api/v1/o/[^/]+/widgets/(?P<public_id>[0-9a-f-]+)/$", api.WidgetDetail.as_view()),
+    re_path(
+        r"^api/v1/o/[^/]+/unscoped-widgets/(?P<public_id>[0-9a-f-]+)/$",
+        api.UnscopedWidgetDetail.as_view(),
+    ),
+    re_path(r"^api/v1/o/(?P<org_id>[^/]+)/organisation/$", api.OrganisationDetail.as_view()),
+    path("api/v1/no-org/widgets/", api.WidgetList.as_view()),
 ]

@@ -17,6 +17,9 @@ Acting practice (only when an organisation is active):
 - otherwise derived: the single practice that the signed-in user belongs to and that is actively
   assigned to the organisation; none when there is no such practice or more than one.
 
+API requests (``/api/…``) get the same JSON ``404`` body as DRF's ``NotFound``, so an unknown
+organisation and one the user may not access (A-01-T06) are indistinguishable.
+
 The context is set for the whole request and always cleared afterwards, even on errors.
 Install after ``AuthenticationMiddleware``.
 """
@@ -27,7 +30,8 @@ import re
 import uuid
 from collections.abc import Callable
 
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from rest_framework.exceptions import NotFound
 
 from .context import org_context
 from .models import Organisation, Practice
@@ -75,16 +79,29 @@ def resolve_acting_practice(request: HttpRequest, organisation: Organisation) ->
     return candidates[0] if len(candidates) == 1 else None
 
 
+def _is_api(request: HttpRequest) -> bool:
+    return request.path_info.startswith("/api/")
+
+
 class TenantContextMiddleware:
     def __init__(self, get_response: Callable[[HttpRequest], HttpResponse]) -> None:
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         try:
+            return self._call(request)
+        except Http404:
+            if not _is_api(request):
+                raise
+            return JsonResponse({"detail": str(NotFound.default_detail)}, status=404)
+
+    def _call(self, request: HttpRequest) -> HttpResponse:
+        try:
             org_id = org_id_from_request(request)
         except ValueError:
-            return HttpResponseBadRequest(
-                f"The organisation in the URL and the {ORG_HEADER} header differ."
+            return JsonResponse(
+                {"detail": f"The organisation in the URL and the {ORG_HEADER} header differ."},
+                status=400,
             )
         organisation = practice = None
         if org_id is not None:
