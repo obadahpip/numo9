@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from django.core import checks
 from django.utils.translation import gettext_lazy as _
 
 
@@ -6,3 +7,8 @@ class TenancyConfig(AppConfig):
     name = "numo9.tenancy"
     label = "tenancy"
     verbose_name = _("Tenancy")
+
+    def ready(self) -> None:
+        from .checks import check_business_models_are_org_owned
+
+        checks.register(check_business_models_are_org_owned, checks.Tags.models)
