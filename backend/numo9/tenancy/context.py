@@ -17,8 +17,15 @@ from __future__ import annotations
 from collections.abc import Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar
+from typing import TYPE_CHECKING
 
-from .models import Organisation, Practice
+if TYPE_CHECKING:  # runtime import would be circular (models → managers → context)
+    from .models import Organisation, Practice
+
+
+class TenantContextMissing(RuntimeError):
+    """An organisation-scoped query ran with no active organisation (A-01-T04)."""
+
 
 _current_org: ContextVar[Organisation | None] = ContextVar("numo9_current_org", default=None)
 _acting_practice: ContextVar[Practice | None] = ContextVar("numo9_acting_practice", default=None)

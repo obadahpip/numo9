@@ -5,6 +5,8 @@ from django.urls import path, re_path
 
 from numo9.tenancy.context import acting_practice, current_org
 
+from .models import Widget
+
 
 def context_view(request: HttpRequest) -> JsonResponse:
     org, practice = current_org(), acting_practice()
@@ -19,6 +21,10 @@ def context_view(request: HttpRequest) -> JsonResponse:
     )
 
 
+def widgets_view(request: HttpRequest) -> JsonResponse:
+    return JsonResponse({"labels": sorted(Widget.objects.values_list("label", flat=True))})
+
+
 def boom_view(request: HttpRequest) -> JsonResponse:
     raise RuntimeError("view failed")
 
@@ -26,6 +32,8 @@ def boom_view(request: HttpRequest) -> JsonResponse:
 urlpatterns = [
     path("boom/", boom_view),
     path("ctx/", context_view),
+    path("widgets/", widgets_view),
     re_path(r"^o/[^/]+/ctx/$", context_view),
+    re_path(r"^o/[^/]+/widgets/$", widgets_view),
     re_path(r"^api/v1/o/[^/]+/ctx/$", context_view),
 ]
