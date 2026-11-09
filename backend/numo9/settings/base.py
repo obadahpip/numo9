@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,12 @@ TEMPLATES = [
 
 # Custom user model (A-02-T01); set before the first migration, never change afterwards.
 AUTH_USER_MODEL = "accounts.User"
+
+# Django REST framework (A-01-T06). Secure default: an endpoint must opt out of authentication
+# explicitly. Organisation-scoped endpoints add IsOrgMemberOrAssigned (404 on foreign data).
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+}
 
 # Overridden per environment.
 DATABASES: dict[str, Any] = {}
