@@ -3,6 +3,7 @@
 pytest==9.2.0
 pytest-django==4.14.0
 pytest-cov==7.1.0
+hypothesis==6.170.10
 django-migration-linter==6.0.0
 pre-commit==4.7.0
 ruff==0.17.4
