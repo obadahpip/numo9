@@ -55,3 +55,14 @@ class OrganisationDetail(APIView):
         self.check_object_permissions(request, organisation)
         active = current_org()
         return Response({"name": organisation.name, "active": active.name if active else None})
+
+
+class LeakyWidgetDetail(generics.RetrieveUpdateDestroyAPIView[Widget]):
+    """Deliberately broken for the tenant sweep: no organisation permission, unscoped queryset."""
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = WidgetSerializer
+    lookup_field = "public_id"
+
+    def get_queryset(self) -> Any:
+        return Widget.objects.unscoped(reason="test: leaky endpoint for the tenant sweep")
