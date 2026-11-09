@@ -31,6 +31,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 DEFAULT_TIME_ZONE = "America/Toronto"
@@ -277,3 +278,58 @@ def _staff_must_belong_to_the_assigned_practice(
             _("Assigned staff must be members of the assigned practice."),
             code="staff_not_in_practice",
         )
+
+
+class OrgOwnedModel(models.Model):
+    """Abstract base for every business record (A-01-T02).
+
+    Every row belongs to exactly one organisation and carries:
+
+    - ``organisation`` — the owning tenant (required, never cascade-deleted);
+    - ``public_id`` — random UUID used in URLs and APIs instead of the sequential primary key;
+    - ``created_by`` — the user who created the row (empty for system processes such as imports,
+      seeders and scheduled jobs);
+    - ``created_at`` / ``updated_at`` — set automatically;
+    - ``deleted_at`` — soft delete: records are never removed (CRA six-year retention); use
+      ``soft_delete()`` / ``restore()``.
+
+    Scoping every query to the active organisation is added by ``OrgScopedManager`` (A-01-T04);
+    the A-01-T08 check makes inheriting this class mandatory for business models.
+    """
+
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.PROTECT,
+        related_name="%(app_label)s_%(class)s_set",
+        verbose_name=_("organisation"),
+    )
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("created by"),
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+    deleted_at = models.DateTimeField(_("deleted at"), null=True, blank=True, editable=False)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def is_deleted(self) -> bool:
+        return self.deleted_at is not None
+
+    def soft_delete(self) -> None:
+        """Mark the row deleted (idempotent: the first deletion time is kept)."""
+        if self.deleted_at is None:
+            self.deleted_at = timezone.now()
+            self.save(update_fields=["deleted_at", "updated_at"])
+
+    def restore(self) -> None:
+        if self.deleted_at is not None:
+            self.deleted_at = None
+            self.save(update_fields=["deleted_at", "updated_at"])
