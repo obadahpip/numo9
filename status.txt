@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 32   Remaining: 2755
+TOTAL ATOMIC TASKS: 2787   Completed: 33   Remaining: 2754
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -52,7 +52,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-01-T11 — Property test over random membership graphs (Hypothesis) vs. resolver
 ✅ A-01-T12 — Postgres RLS policies on top 5 sensitive tables as defence in depth (app.current_org GUC set per transaction)
 ✅ A-01-T13 — API: GET /api/v1/me/organisations (memberships + assignments), POST /api/v1/practices, POST /api/v1/organisations
-❌ A-01-T15 — Admin site scoping (Django admin restricted to platform staff; org-scoped admin views use explicit unscoped with audit)
+✅ A-01-T15 — Admin site scoping (Django admin restricted to platform staff; org-scoped admin views use explicit unscoped with audit)
 ❌ A-01-T16 — Doc: tenancy model diagram + rules in docs/architecture/tenancy.md
 
 [A-10]
