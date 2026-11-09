@@ -214,8 +214,9 @@ jobs:
           done
 
   tenant-sweep:
-    # Placeholder (S-01-T11): runs tests marked @pytest.mark.tenant_isolation and passes while
-    # none exist. A-01-T09 adds `manage.py tenant_sweep` (router sweep, Org 1 vs Org 2) here.
+    # A-01-T09: router sweep over every URL of the real URLconf (`manage.py tenant_sweep`: each
+    # organisation-scoped endpoint requested as another organisation's user, every verb -> 404)
+    # plus the tests marked @pytest.mark.tenant_isolation.
     name: tenant-sweep (isolation)
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -245,6 +246,12 @@ jobs:
           cache-dependency-path: backend/requirements/*.txt
       - name: Install dependencies
         run: pip install -r backend/requirements/dev.txt
+      - name: Migrate
+        working-directory: backend
+        run: python manage.py migrate --noinput
+      - name: Router sweep (manage.py tenant_sweep)
+        working-directory: backend
+        run: python manage.py tenant_sweep
       - name: Tenant isolation tests (marker tenant_isolation)
         run: bash tools/ci/pytest_marker.sh tenant_isolation -v
 
