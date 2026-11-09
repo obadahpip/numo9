@@ -8,6 +8,7 @@ SaaS built by Gray Matter AI for Profitex.
 | [Contributing](contributing.md) | Local setup, the engineering workflow, branches, commits, pull requests |
 | [Branch policy](branching.md) | Protected `main`, branch naming, release tags, Dependabot exception |
 | [Architecture decisions](adr/index.md) | Why the system is built the way it is (ADRs) |
+| [Tenancy model](architecture/tenancy.md) | Practices, organisations, access rule and the isolation layers |
 | [Data-residency register](security/data-residency-register.md) | Where every data class lives and every sub-processor (ADR-0002) |
 | [Project plan](Numo9_Project_Plan.md) | Scope, components, acceptance and the gap analysis against Xero |
 | [Phase plans](phase_plans/Phase_0_Foundation_and_SaaS_Core.md) | Deliverables and atomic tasks, phase by phase |
