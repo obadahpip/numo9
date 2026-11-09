@@ -15,6 +15,8 @@ DEBUG = False
 ALLOWED_HOSTS: list[str] = []
 
 INSTALLED_APPS = [
+    # Project apps first so their templates/static override contrib defaults.
+    "numo9.accounts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,6 +53,9 @@ TEMPLATES = [
         },
     },
 ]
+
+# Custom user model (A-02-T01); set before the first migration, never change afterwards.
+AUTH_USER_MODEL = "accounts.User"
 
 # Overridden per environment.
 DATABASES: dict[str, Any] = {}

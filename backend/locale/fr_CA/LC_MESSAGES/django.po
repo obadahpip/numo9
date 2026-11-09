@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-07 12:20-0500\n"
+"POT-Creation-Date: 2026-11-09 03:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,53 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Profile"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Important dates"
+msgstr ""
+
+msgid "Accounts"
+msgstr ""
+
 msgid "English (Canada)"
 msgstr ""
 
 msgid "French (Canada)"
+msgstr ""
+
+msgid "12-hour (1:30 p.m.)"
+msgstr ""
+
+msgid "24-hour (13:30)"
+msgstr ""
+
+msgid "email address"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "language"
+msgstr ""
+
+msgid "time format"
+msgstr ""
+
+msgid "active"
+msgstr ""
+
+msgid "staff status"
+msgstr ""
+
+msgid "date joined"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "users"
 msgstr ""
