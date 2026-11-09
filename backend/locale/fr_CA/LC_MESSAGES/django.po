@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 03:05-0500\n"
+"POT-Creation-Date: 2026-11-09 03:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,4 +66,131 @@ msgid "user"
 msgstr ""
 
 msgid "users"
+msgstr ""
+
+msgid "Tenancy"
+msgstr ""
+
+#, python-format
+msgid "%(value)s is not a valid time zone."
+msgstr ""
+
+msgid "Practice admin"
+msgstr ""
+
+msgid "Accountant"
+msgstr ""
+
+msgid "Reviewer"
+msgstr ""
+
+msgid "Payroll specialist"
+msgstr ""
+
+msgid "Read-only staff"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Accountant delegate"
+msgstr ""
+
+msgid "Sales"
+msgstr ""
+
+msgid "Purchasing"
+msgstr ""
+
+msgid "Payroll"
+msgstr ""
+
+msgid "HR"
+msgstr ""
+
+msgid "Employee"
+msgstr ""
+
+msgid "Demo"
+msgstr ""
+
+msgid "Trial"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Grace period"
+msgstr ""
+
+msgid "Read-only"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Full service"
+msgstr ""
+
+msgid "Bookkeeping"
+msgstr ""
+
+msgid "Tax"
+msgstr ""
+
+msgid "public ID"
+msgstr ""
+
+msgid "created at"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "practice"
+msgstr ""
+
+msgid "practices"
+msgstr ""
+
+msgid "role"
+msgstr ""
+
+msgid "practice member"
+msgstr ""
+
+msgid "practice members"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "time zone"
+msgstr ""
+
+msgid "organisation"
+msgstr ""
+
+msgid "organisations"
+msgstr ""
+
+msgid "organisation member"
+msgstr ""
+
+msgid "organisation members"
+msgstr ""
+
+msgid "assigned staff"
+msgstr ""
+
+msgid "practice assignment"
+msgstr ""
+
+msgid "practice assignments"
+msgstr ""
+
+msgid "Assigned staff must be members of the assigned practice."
 msgstr ""

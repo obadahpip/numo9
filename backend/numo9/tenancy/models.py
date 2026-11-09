@@ -1,0 +1,279 @@
+"""Tenancy models (A-01-T01).
+
+Two tenant levels:
+
+- ``Practice`` — an accounting firm or a sole accountant. Always free. Its staff are
+  ``PracticeMember`` rows (one practice role each).
+- ``Organisation`` — the paying business whose books live in Numo9. Its own users are
+  ``OrganisationMember`` rows (one organisation role each).
+- ``PracticeAssignment`` links a practice to an organisation it serves. An organisation can have
+  zero practices (self-managed), one, or several (e.g. a bookkeeper and a tax accountant), but a
+  practice is assigned to a given organisation at most once. ``assigned_staff`` names the practice
+  members who work on that organisation; ``active`` switches the whole assignment off without
+  losing its history.
+
+These are platform models, not organisation-owned business records, so they do not inherit
+``OrgOwnedModel`` (A-01-T02) and are allow-listed by the A-01-T08 check. Who may access what is
+decided by the resolver in A-01-T05; permissions per role arrive with A-03.
+
+Rows are never cascade-deleted: deleting a practice, organisation or user that still has
+memberships or assignments is refused (records are kept for the CRA six-year period).
+"""
+
+from __future__ import annotations
+
+import uuid
+import zoneinfo
+from typing import Any, ClassVar
+
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
+
+DEFAULT_TIME_ZONE = "America/Toronto"
+
+
+def validate_time_zone(value: str) -> None:
+    if value not in zoneinfo.available_timezones():
+        raise ValidationError(
+            _("%(value)s is not a valid time zone."),
+            code="invalid_time_zone",
+            params={"value": value},
+        )
+
+
+def _in_choices(field: str, choices: type[models.TextChoices]) -> models.Q:
+    return models.Q(**{f"{field}__in": choices.values})
+
+
+class PracticeRole(models.TextChoices):
+    """System practice roles (A-03 adds custom roles and their permissions)."""
+
+    PRACTICE_ADMIN = "practice_admin", _("Practice admin")
+    ACCOUNTANT = "accountant", _("Accountant")
+    REVIEWER = "reviewer", _("Reviewer")
+    PAYROLL_SPECIALIST = "payroll_specialist", _("Payroll specialist")
+    READ_ONLY = "read_only", _("Read-only staff")
+
+
+class OrganisationRole(models.TextChoices):
+    """System organisation roles (A-03 adds custom roles and their permissions)."""
+
+    OWNER = "owner", _("Owner")
+    ADMIN = "admin", _("Admin")
+    ACCOUNTANT_DELEGATE = "accountant_delegate", _("Accountant delegate")
+    SALES = "sales", _("Sales")
+    PURCHASING = "purchasing", _("Purchasing")
+    PAYROLL = "payroll", _("Payroll")
+    HR = "hr", _("HR")
+    EMPLOYEE = "employee", _("Employee")
+
+
+class OrganisationStatus(models.TextChoices):
+    """Commercial life-cycle; transitions are driven by billing (U-03…U-05) and demo (U-07)."""
+
+    DEMO = "demo", _("Demo")
+    TRIAL = "trial", _("Trial")
+    ACTIVE = "active", _("Active")
+    GRACE = "grace", _("Grace period")
+    READ_ONLY = "read_only", _("Read-only")
+    CANCELLED = "cancelled", _("Cancelled")
+
+
+class AssignmentRole(models.TextChoices):
+    """What the practice does for the organisation (e.g. bookkeeper + tax accountant)."""
+
+    FULL_SERVICE = "full_service", _("Full service")
+    BOOKKEEPING = "bookkeeping", _("Bookkeeping")
+    TAX = "tax", _("Tax")
+    PAYROLL = "payroll", _("Payroll")
+
+
+class Practice(models.Model):
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    name = models.CharField(_("name"), max_length=200)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("practice")
+        verbose_name_plural = _("practices")
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class PracticeMember(models.Model):
+    practice = models.ForeignKey(
+        Practice, on_delete=models.PROTECT, related_name="members", verbose_name=_("practice")
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="practice_memberships",
+        verbose_name=_("user"),
+    )
+    role = models.CharField(_("role"), max_length=32, choices=PracticeRole.choices)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("practice member")
+        verbose_name_plural = _("practice members")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["practice", "user"], name="tenancy_practicemember_unique_practice_user"
+            ),
+            models.CheckConstraint(
+                condition=_in_choices("role", PracticeRole),
+                name="tenancy_practicemember_role_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user} @ {self.practice} ({self.role})"
+
+
+class Organisation(models.Model):
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    name = models.CharField(_("name"), max_length=200)
+    status = models.CharField(
+        _("status"),
+        max_length=16,
+        choices=OrganisationStatus.choices,
+        default=OrganisationStatus.TRIAL,
+    )
+    time_zone = models.CharField(
+        _("time zone"),
+        max_length=64,
+        default=DEFAULT_TIME_ZONE,
+        validators=[validate_time_zone],
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("organisation")
+        verbose_name_plural = _("organisations")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=_in_choices("status", OrganisationStatus),
+                name="tenancy_organisation_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class OrganisationMember(models.Model):
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.PROTECT,
+        related_name="members",
+        verbose_name=_("organisation"),
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="organisation_memberships",
+        verbose_name=_("user"),
+    )
+    role = models.CharField(_("role"), max_length=32, choices=OrganisationRole.choices)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("organisation member")
+        verbose_name_plural = _("organisation members")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "user"],
+                name="tenancy_organisationmember_unique_organisation_user",
+            ),
+            models.CheckConstraint(
+                condition=_in_choices("role", OrganisationRole),
+                name="tenancy_organisationmember_role_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user} @ {self.organisation} ({self.role})"
+
+
+class PracticeAssignment(models.Model):
+    practice = models.ForeignKey(
+        Practice, on_delete=models.PROTECT, related_name="assignments", verbose_name=_("practice")
+    )
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.PROTECT,
+        related_name="practice_assignments",
+        verbose_name=_("organisation"),
+    )
+    assigned_staff = models.ManyToManyField(
+        PracticeMember,
+        blank=True,
+        related_name="assignments",
+        verbose_name=_("assigned staff"),
+    )
+    role = models.CharField(
+        _("role"),
+        max_length=32,
+        choices=AssignmentRole.choices,
+        default=AssignmentRole.FULL_SERVICE,
+    )
+    active = models.BooleanField(_("active"), default=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("practice assignment")
+        verbose_name_plural = _("practice assignments")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["practice", "organisation"],
+                name="tenancy_practiceassignment_unique_practice_organisation",
+            ),
+            models.CheckConstraint(
+                condition=_in_choices("role", AssignmentRole),
+                name="tenancy_practiceassignment_role_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.practice} → {self.organisation} ({self.role})"
+
+
+@receiver(m2m_changed, sender=PracticeAssignment.assigned_staff.through)
+def _staff_must_belong_to_the_assigned_practice(
+    sender: Any,
+    instance: PracticeAssignment | PracticeMember,
+    action: str,
+    reverse: bool,
+    pk_set: set[int] | None,
+    **kwargs: Any,
+) -> None:
+    """Only members of the assignment's own practice can be assigned to its organisation."""
+    if action != "pre_add" or not pk_set:
+        return
+    if reverse and isinstance(instance, PracticeMember):  # member.assignments.add(assignment)
+        mismatch = (
+            PracticeAssignment.objects.filter(pk__in=pk_set)
+            .exclude(practice_id=instance.practice_id)
+            .exists()
+        )
+    elif not reverse and isinstance(instance, PracticeAssignment):  # assigned_staff.add(member)
+        mismatch = (
+            PracticeMember.objects.filter(pk__in=pk_set)
+            .exclude(practice_id=instance.practice_id)
+            .exists()
+        )
+    else:
+        return
+    if mismatch:
+        raise ValidationError(
+            _("Assigned staff must be members of the assigned practice."),
+            code="staff_not_in_practice",
+        )
