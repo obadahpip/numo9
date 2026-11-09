@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 19   Remaining: 2768
+TOTAL ATOMIC TASKS: 2787   Completed: 20   Remaining: 2767
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -37,7 +37,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ S-02-T09 — Data-residency register in docs/ (where every data class lives, sub-processors list: Stripe, email provider, Sentry region)
 
 [A-02]
-❌ A-02-T01 — Custom User model (email as username, name, locale, time format pref) — created before first migration
+✅ A-02-T01 — Custom User model (email as username, name, locale, time format pref) — created before first migration
 
 [A-01]
 ❌ A-01-T01 — Models Practice, PracticeMember(role), Organisation(status: demo/trial/active/grace/read_only/cancelled, time_zone), OrganisationMember(role), PracticeAssignment(practice, org, assigned staff M2M, role, active) + migrations
