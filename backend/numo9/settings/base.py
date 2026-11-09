@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,33 @@ AUTH_USER_MODEL = "accounts.User"
 # explicitly. Organisation-scoped endpoints add IsOrgMemberOrAssigned (404 on foreign data).
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+# OpenAPI 3 schema (A-01-T13), served at /api/schema/ to signed-in users; the typed frontend
+# client is generated from `manage.py spectacular`.
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Numo9 API",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAuthenticated"],
+    "COMPONENT_SPLIT_REQUEST": True,
+    "ENUM_NAME_OVERRIDES": {
+        "PracticeRoleEnum": "numo9.tenancy.models.PracticeRole",
+        "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",
+        "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
+        "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",
+    },
+}
+
+# Routes that are not organisation-scoped and are therefore skipped by `manage.py tenant_sweep`
+# (A-01-T09). Every entry is reviewed: none of these may return one organisation's data.
+TENANT_SWEEP_EXEMPT = [
+    r"^api/schema/",  # OpenAPI schema (no tenant data)
+    r"^api/v1/me/",  # the signed-in user's own memberships (A-01-T13)
+    r"^api/v1/practices$",  # create a practice (A-01-T13)
+    r"^api/v1/organisations$",  # create an organisation (A-01-T13)
+]
 
 # Overridden per environment.
 DATABASES: dict[str, Any] = {}
