@@ -9,6 +9,8 @@ from .env import env_list, env_str
 # Test/CI-only: `manage.py lintmigrations` (S-01-T08) and the test-only app with concrete
 # models for abstract bases such as OrgOwnedModel (A-01-T02).
 INSTALLED_APPS = [*INSTALLED_APPS, "django_migration_linter", "tests.testapp"]
+# The test-only app is held to the OrgOwnedModel rule too (A-01-T08).
+TENANCY_BUSINESS_APP_PREFIXES = ("numo9.", "tests.")
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")
 DEBUG = False
