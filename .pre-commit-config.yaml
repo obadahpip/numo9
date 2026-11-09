@@ -49,6 +49,7 @@ repos:
           - django-stubs[compatible-mypy]==6.1.2
           - djangorestframework==3.18.3
           - djangorestframework-stubs==3.18.1
+          - drf-spectacular==0.30.0
           - Django==5.2.19
           - dj-database-url==2.3.0
           - pytest==9.2.0
