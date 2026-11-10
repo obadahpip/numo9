@@ -1,6 +1,7 @@
 packages:
   - "frontend"
   - "mobile"
+  - "packages/*"
 
 # Security overrides for transitive dependencies (S-01-T09 audit gate).
 overrides:

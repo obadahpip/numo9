@@ -1,13 +1,7 @@
+/* Design system (A-10-T03): Tailwind + @numo9/ui tokens, theme and base styles. */
 @import "tailwindcss";
+@import "@numo9/ui/styles.css";
 
-/* Placeholder tokens — replaced by the design-system tokens in A-10. */
-:root {
-  --color-surface: #ffffff;
-  --color-text: #111827;
-  --color-border: #e5e7eb;
-}
-
-body {
-  background-color: var(--color-surface);
-  color: var(--color-text);
-}
+/* Class names used inside @numo9/ui components (the package is symlinked under node_modules). */
+@source "../../../packages/ui/src";
+@source not "../../../packages/ui/src/**/*.stories.tsx";

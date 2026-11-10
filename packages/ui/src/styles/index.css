@@ -1,0 +1,48 @@
+/*
+ * @numo9/ui stylesheet (A-10-T03). Import it after Tailwind in the app stylesheet:
+ *
+ *   @import "tailwindcss";
+ *   @import "@numo9/ui/styles.css";
+ *   @source "<path to>/packages/ui/src";
+ *
+ * tokens.css and theme.css are generated from tokens/tokens.json (pnpm --filter @numo9/ui run tokens).
+ */
+@import "./tokens.css";
+@import "./theme.css";
+
+@layer base {
+  html {
+    font-family: var(--n9-font-family-sans);
+    color: var(--n9-text);
+    background-color: var(--n9-surface);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-size: var(--n9-font-size-sm);
+    line-height: var(--n9-font-line-height-sm);
+  }
+
+  /* One visible focus style everywhere (WCAG 2.4.7): 2 px ring, 2 px offset. */
+  :focus-visible {
+    outline: 2px solid var(--n9-border-focus);
+    outline-offset: 2px;
+  }
+
+  /* Amounts and other figures align in columns. */
+  .tabular-nums,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
