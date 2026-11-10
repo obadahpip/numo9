@@ -13,6 +13,9 @@ Element.prototype.hasPointerCapture ??= () => false;
 Element.prototype.releasePointerCapture ??= () => undefined;
 Element.prototype.setPointerCapture ??= () => undefined;
 Element.prototype.scrollIntoView ??= () => undefined;
+// axe-core probes canvas for icon ligatures; jsdom has no canvas.
+HTMLCanvasElement.prototype.getContext = (() =>
+  null) as typeof HTMLCanvasElement.prototype.getContext;
 
 afterEach(() => {
   cleanup();
