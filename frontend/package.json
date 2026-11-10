@@ -16,7 +16,9 @@
     "i18n:extract": "formatjs extract \"src/**/*.{ts,tsx}\" --ignore \"src/**/*.test.{ts,tsx}\" --out-file .i18n/extracted.json --throws",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --grep-invert @visual",
+    "test:visual": "playwright test --grep @visual",
+    "test:visual:update": "playwright test --grep @visual --update-snapshots"
   },
   "dependencies": {
     "@numo9/ui": "workspace:*",

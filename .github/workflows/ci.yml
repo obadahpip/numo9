@@ -173,6 +173,61 @@ jobs:
       - name: Playwright (@numo9/ui on the built Storybook, A-10-T10 DataGrid 10k rows at 60 fps)
         run: pnpm --filter @numo9/ui run test:e2e
 
+  visual:
+    # A-10-T18: visual regression — every @numo9/ui story (built Storybook) and every Phase 0 page
+    # (Next.js production build) against the committed Linux baselines. Pinned Ubuntu 24.04 +
+    # fonts-inter so text renders with the same font files the baselines were made with.
+    # New baselines: run the "Visual baselines" workflow and commit its artefact after review.
+    name: visual (Playwright screenshots, components + Phase 0 pages)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install fonts (Inter, DejaVu) used by the baselines
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends fonts-inter fonts-dejavu-core
+
+      - name: Install Playwright Chromium
+        run: pnpm --filter @numo9/frontend exec playwright install --with-deps chromium
+
+      - name: Storybook build (@numo9/ui)
+        run: pnpm --filter @numo9/ui run build-storybook
+
+      - name: next build
+        run: pnpm --filter @numo9/frontend run build
+
+      - name: Visual regression — components (@numo9/ui stories)
+        run: pnpm --filter @numo9/ui run test:visual
+
+      - name: Visual regression — Phase 0 pages
+        if: success() || failure()
+        run: pnpm --filter @numo9/frontend run test:visual
+
+      - name: Upload screenshot diffs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diffs
+          path: |
+            packages/ui/test-results
+            frontend/test-results
+          if-no-files-found: ignore
+
   docs:
     name: docs (mkdocs build --strict)
     runs-on: ubuntu-latest

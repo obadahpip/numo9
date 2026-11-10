@@ -16,6 +16,18 @@ export default defineConfig({
   testDir: "e2e",
   timeout: 30_000,
   forbidOnly: Boolean(process.env.CI),
+  // Visual regression (A-10-T18): one Linux baseline per screenshot, no platform suffix; run
+  // the @visual tests on Linux only (CI job `visual`). Small tolerance for anti-aliasing.
+  snapshotPathTemplate: "{testDir}/__screenshots__/{testFilePath}/{arg}{ext}",
+  expect: {
+    toHaveScreenshot: {
+      animations: "disabled",
+      caret: "hide",
+      scale: "css",
+      threshold: 0.2,
+      maxDiffPixels: 100,
+    },
+  },
   reporter: process.env.CI ? [["list"], ["github"]] : "list",
   use: {
     baseURL: BASE_URL,

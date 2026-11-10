@@ -1,0 +1,63 @@
+name: Visual baselines
+
+# A-10-T18: regenerate the visual-regression baselines on the same runner image as the CI
+# `visual` job (Ubuntu 24.04, fonts-inter, Playwright Chromium). The new PNGs are uploaded as an
+# artefact; the project lead reviews them and commits them to the branch — that commit is the
+# baseline approval.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.30.0"
+
+jobs:
+  baselines:
+    name: regenerate visual baselines
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install fonts (Inter, DejaVu)
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends fonts-inter fonts-dejavu-core
+
+      - name: Install Playwright Chromium
+        run: pnpm --filter @numo9/frontend exec playwright install --with-deps chromium
+
+      - name: Storybook build and next build
+        run: |
+          pnpm --filter @numo9/ui run build-storybook
+          pnpm --filter @numo9/frontend run build
+
+      - name: Regenerate baselines
+        run: |
+          rm -rf packages/ui/e2e/__screenshots__ frontend/e2e/__screenshots__
+          pnpm --filter @numo9/ui run test:visual:update
+          pnpm --filter @numo9/frontend run test:visual:update
+
+      - name: Upload baselines
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-baselines
+          path: |
+            packages/ui/e2e/__screenshots__
+            frontend/e2e/__screenshots__
