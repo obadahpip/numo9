@@ -233,3 +233,8 @@ each phase exit and whenever a deliverable adds a trust boundary.
 Tests: `backend/tests/test_bruteforce.py` — the 11th attempt is locked, the lock lasts exactly
 15 minutes, applies from every IP and only to that address, unknown addresses behave the same,
 casing does not dodge it, success resets the count, CAPTCHA required after 5 failures.
+
+!!! note "Key rotation and 2FA secrets"
+    TOTP secrets (A-02-T05) are encrypted with the same key ring but live in allauth's
+    `Authenticator.data` JSON, which `rotate_field_encryption` does not walk. Keep an old key in
+    the ring until every user has re-enrolled or a rotation step for `allauth.mfa` is added.

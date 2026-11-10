@@ -40,8 +40,8 @@ exclude = ["^\\.venv/", "^staticfiles/"]
 mypy_path = "../tools/ci"
 
 [[tool.mypy.overrides]]
-# django-allauth ships no type information (A-02).
-module = ["allauth", "allauth.*"]
+# django-allauth and qrcode ship no type information (A-02).
+module = ["allauth", "allauth.*", "qrcode", "qrcode.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]

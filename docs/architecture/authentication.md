@@ -76,3 +76,31 @@ Tests: `backend/tests/test_auth_login.py`.
   emailed that the password changed.
 
 Tests: `backend/tests/test_auth_password_reset.py`.
+
+## Two-factor authentication — TOTP (A-02-T05)
+
+allauth.mfa with Numo9 adjustments (`numo9/accounts/mfa.py`). Changing 2FA needs a fresh
+password confirmation: `POST /auth/reauthenticate {password}` (valid 5 minutes), otherwise the
+answer is `401` with the `reauthenticate` flow.
+
+| Step | Call |
+|---|---|
+| Set-up data | `GET /_allauth/browser/v1/account/authenticators/totp` → `404` (not enrolled) with `meta.secret`, `meta.totp_url` (`otpauth://…&issuer=Numo9`) and `meta.qr_code` (SVG as a `data:` URI — allowed by the CSP) |
+| Verify + activate | `POST …/account/authenticators/totp {code}` → `200`; `meta.recovery_codes` holds the **10 recovery codes — the only time they are shown** · wrong code `400` |
+| New recovery codes | `POST …/account/authenticators/recovery-codes` → the new 10 (old ones stop working) |
+| Login challenge | after the password, `401` with pending flow `mfa_authenticate` → `POST /auth/2fa/authenticate {code}` (TOTP or recovery code) |
+| Remember this device | then pending `mfa_trust` → `POST /auth/2fa/trust {trust: true|false}` → `200` signed in |
+
+- **TOTP**: 6 digits, 30-second steps, **±1 step** accepted for clock skew, a used code cannot be
+  replayed. The secret is stored **encrypted** with the field-encryption key ring (AES-256-GCM,
+  context `allauth.mfa.Authenticator.data`).
+- **Recovery codes**: 10 codes like `k7m2p-x9qrt` (50 bits); only a password hash of each is
+  stored (Argon2id in staging/prod), each works **once**, input is case- and dash-insensitive.
+  Implemented by `HashedRecoveryCodes`, which replaces allauth's seed-derived codes at start-up;
+  a test fails if an allauth upgrade bypasses it.
+- **Remember this device**: a signed cookie (`numo9_trusted_device`, `__Host-` prefixed in
+  staging/prod; HttpOnly, SameSite=Lax) valid **30 days**, bound to the user's password and
+  authenticators — a password change or a new/removed authenticator voids it; it does not work
+  for another account.
+
+Tests: `backend/tests/test_auth_totp.py`.
