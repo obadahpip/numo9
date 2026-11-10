@@ -126,3 +126,47 @@ Where it runs (`numo9/security/logging.py`):
 Tests: `backend/tests/test_log_scrubbing.py` — a log line with a SIN shows `[REDACTED]`
 (standard logging, structlog, tracebacks, and a fresh prod-settings process), rule tables for
 what is and is not redacted, and a real Sentry client with a capturing transport.
+
+## S-03-T09 — Dependency and image scans gate the build
+
+The Security workflow (`.github/workflows/security.yml`, on every pull request, on `main` and
+weekly) runs each scanner with JSON output and hands the report to `tools/ci/scan_gate.py`:
+
+| Scanner | Report | Fails the build on |
+|---|---|---|
+| `pip-audit` (backend `requirements/dev.txt`, `docs/requirements.txt`) | `pip-audit -f json` | any known vulnerability (pip-audit has no severity) |
+| `pnpm audit` (whole workspace lockfile) | `pnpm audit --json` | advisories rated **high** or **critical** |
+| Trivy (backend and frontend runtime images) | `trivy image --format json --ignore-unfixed` | fixable **HIGH**/**CRITICAL** vulnerabilities and **any secret** in an image |
+
+A missing or malformed report fails too, so a scanner that crashed or could not reach its
+database never counts as a pass. Reports are uploaded as workflow artefacts.
+
+### Allow-list: `.security-allowlist.toml`
+
+A finding passes only when it has an entry in the allow-list at the repository root:
+
+```toml
+[[finding]]
+scanner = "npm"                     # pip-audit | npm | trivy
+package = "example-lib"
+id = "GHSA-xxxx-xxxx-xxxx"          # or any alias: CVE-…, PYSEC-…, Trivy rule id
+justification = "Build-time only (Storybook); never shipped in the runtime image. Upgrade blocked until example-lib 3 supports React 19."
+owner = "obadahpip"
+expires = 2027-01-31
+ticket = "https://github.com/obadahpip/numo9/issues/123"   # optional
+```
+
+- **justification** is required: at least 40 characters, no placeholder (`TODO`, `TBD`, `n/a`);
+  it says why the risk is accepted and how it is mitigated;
+- **owner** re-reviews the entry; **expires** is at most **90 days** ahead — an expired entry fails
+  every scan job (and the `scan allow-list` job) until it is renewed with a fresh review or
+  removed;
+- entries match on scanner + package (pip names normalised) + id or alias; an entry that no longer
+  matches anything is reported as a warning so it can be removed;
+- the file is owned by the project lead (`CODEOWNERS`): adding an entry is a reviewed change.
+  Upgrading the package is always preferred.
+
+Tests: `tools/tests/test_scan_gate.py` (CI `infra` job) — a high npm advisory, a high/critical
+Trivy vulnerability, a Trivy secret and any pip-audit finding fail; moderate findings pass; a
+justified entry allows the finding by id or alias; missing justification/owner, expired or
+too-distant expiry, duplicates and unreadable reports fail.

@@ -11,3 +11,4 @@
 /tools/             @obadahpip
 /docs/              @obadahpip
 /.github/           @obadahpip
+/.security-allowlist.toml @obadahpip
