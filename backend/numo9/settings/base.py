@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from numo9.security.logging import configure_structlog, logging_config
 
-from .env import env_bool, env_str
+from .env import env_bool, env_int, env_str
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -32,6 +32,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    # Sign-up, email verification, login, password reset — JSON API only (A-02).
+    "allauth",
+    "allauth.account",
+    "allauth.headless",
 ]
 
 MIDDLEWARE = [
@@ -42,6 +46,8 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # django-allauth login flow state (A-02-T02).
+    "allauth.account.middleware.AccountMiddleware",
     # Request language: user's locale → numo9_locale cookie → Accept-Language (A-10-T14).
     "numo9.i18n.middleware.LocaleMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
@@ -105,6 +111,7 @@ TENANT_SWEEP_EXEMPT = [
     r"^api/v1/practices$",  # create a practice (A-01-T13)
     r"^api/v1/organisations$",  # create an organisation (A-01-T13)
     r"^api/v1/auth/csrf$",  # CSRF token for the web app (S-03-T01)
+    r"^_allauth/",  # sign-up, login, reset, 2FA for the signed-in user only (A-02)
 ]
 
 # Overridden per environment.
@@ -143,12 +150,68 @@ configure_structlog()
 FIELD_ENCRYPTION_KEYS = env_str("NUMO9_FIELD_ENCRYPTION_KEYS", "")
 FIELD_ENCRYPTION_ACTIVE_KEY = env_str("NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY", "")
 
+# ---- Passwords (A-02-T02) ---------------------------------------------------------------------
+# Argon2id for every new or changed password; older hashes are upgraded at the next login.
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 12},
+    },
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    # Pwned Passwords range API (k-anonymity: only 5 hex characters of the SHA-1 leave the server).
+    {"NAME": "numo9.accounts.validators.BreachedPasswordValidator"},
 ]
+BREACHED_PASSWORD_CHECK = env_bool("NUMO9_BREACHED_PASSWORD_CHECK", True)
+BREACHED_PASSWORD_API = "https://api.pwnedpasswords.com/range/"  # noqa: S105 — a URL
+BREACHED_PASSWORD_TIMEOUT = 3.0  # seconds; the check fails open (logged) when the API is down
+
+# ---- Authentication: django-allauth headless (A-02) ---------------------------------------------
+# allauth for the web app's JSON API (/_allauth/browser/v1/…); Django's ModelBackend still serves
+# the admin login.
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+HEADLESS_ONLY = True
+HEADLESS_CLIENTS = ("browser",)  # "app" (token) clients arrive with the mobile apps (Phase 7)
+# Links in emails open the web app, which calls the API with the key.
+FRONTEND_URL = env_str("NUMO9_FRONTEND_URL", "http://localhost:3000").rstrip("/")
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": f"{FRONTEND_URL}/verify/{{key}}",
+    "account_reset_password": f"{FRONTEND_URL}/reset",
+    "account_reset_password_from_key": f"{FRONTEND_URL}/reset/{{key}}",
+    "account_signup": f"{FRONTEND_URL}/signup",
+}
+ACCOUNT_ADAPTER = "numo9.accounts.adapter.AccountAdapter"
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_LOGIN_METHODS = {"email"}
+# 4-field sign-up: path, name, email, password (+ practice or organisation name for the path).
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
+ACCOUNT_SIGNUP_FORM_CLASS = "numo9.accounts.forms.SignupForm"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"  # unverified users cannot log in
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_UNIQUE_EMAIL = True
+# Same answer whether or not an email is registered (sign-up sends the owner a notice instead).
+ACCOUNT_PREVENT_ENUMERATION = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "Numo9 · "
+ACCOUNT_EMAIL_NOTIFICATIONS = True
+
+# ---- Email (A-07 adds the provider and custom sending domains) ---------------------------------
+EMAIL_BACKEND = env_str("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = env_str("DJANGO_EMAIL_HOST", "localhost")
+EMAIL_PORT = env_int("DJANGO_EMAIL_PORT", 1025)  # Mailpit in the dev stack
+EMAIL_HOST_USER = env_str("DJANGO_EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = env_str("DJANGO_EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = env_bool("DJANGO_EMAIL_USE_TLS", False)
+DEFAULT_FROM_EMAIL = env_str("DJANGO_DEFAULT_FROM_EMAIL", "Numo9 <no-reply@numo9.ca>")
 
 LANGUAGE_CODE = "en-ca"
 LANGUAGES = [("en-ca", _("English (Canada)")), ("fr-ca", _("French (Canada)"))]

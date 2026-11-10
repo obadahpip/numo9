@@ -30,3 +30,6 @@ if not FIELD_ENCRYPTION_KEYS:
         {"dev-local": base64.b64encode(hashlib.sha256(b"numo9-dev-field-key").digest()).decode()}
     )
     FIELD_ENCRYPTION_ACTIVE_KEY = "dev-local"
+
+# allauth headless OpenAPI description at /_allauth/openapi.html (A-02), dev only.
+HEADLESS_SERVE_SPECIFICATION = True

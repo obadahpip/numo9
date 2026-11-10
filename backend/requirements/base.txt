@@ -12,3 +12,7 @@ cryptography==50.0.2
 # Structured, scrubbed logs and error reports (S-03-T06)
 structlog==26.1.0
 sentry-sdk[django]==2.73.0
+# Sign-up, email verification, login, password reset, 2FA — headless API (A-02)
+django-allauth==65.21.1
+# Argon2id password hashing (A-02-T02)
+argon2-cffi==25.1.0

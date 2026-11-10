@@ -114,6 +114,7 @@ Listed so the register is complete; none of them receives Client or user persona
 | Bank of Canada Valet API | Daily FX rates (R-01) | Outbound request only; nothing about users |
 | Cloudflare quick tunnel (temporary local staging only, S-01-T12) | SSH path for staging deploys | Encrypted SSH traffic to a host holding synthetic data only; retired when the Hetzner server is live |
 | Expo EAS Build / Apple App Store / Google Play | Mobile builds and store listings | App binaries and store metadata |
+| Have I Been Pwned — Pwned Passwords range API (A-02-T02) | Breached-password check at sign-up and password change | The first 5 hex characters of the password's SHA-1 only (k-anonymity); no email, account or IP linkage beyond the request itself |
 
 ## Changes to this register
 
