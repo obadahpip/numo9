@@ -170,7 +170,7 @@ jobs:
       - name: Playwright (gap-02 redirect crawl, A-10-T05 shell 360–1440 px, A-01-T14 org switcher, gap-12 no banners, A-10-T19 axe + gap-60 on Phase 0 routes)
         run: pnpm --filter @numo9/frontend run test:e2e
 
-      - name: Playwright (@numo9/ui on the built Storybook: A-10-T10 DataGrid 10k rows at 60 fps, A-10-T19 axe + gap-60 on every story)
+      - name: Playwright (@numo9/ui on the built Storybook — A-10-T10 DataGrid 10k rows at 60 fps, A-10-T19 axe + gap-60 on every story)
         run: pnpm --filter @numo9/ui run test:e2e
 
   visual:
