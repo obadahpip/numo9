@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 48   Remaining: 2739
+TOTAL ATOMIC TASKS: 2787   Completed: 49   Remaining: 2738
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -74,7 +74,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-10-T11 — LineGrid (document line editor) used by journal now and invoice/bill/PO/quote later: keyboard navigation, add rows, drag reorder, column chooser, totals footer
 ✅ A-10-T12 — State components: EmptyState (illustration + 1–3 actions), Skeletons, ErrorState with retry + report, ExplainPanel (gated/permission/lock/404)
 ✅ A-10-T13 — i18n setup: next-intl, ICU catalogues en-CA/fr-CA, pseudo-locale en-XA, eslint rule banning raw string literals in JSX
-❌ A-10-T14 — Backend i18n: Django locale middleware, user/org locale, gettext catalogues, error messages as keys
+✅ A-10-T14 — Backend i18n: Django locale middleware, user/org locale, gettext catalogues, error messages as keys
 ❌ A-10-T15 — Glossary lint (en-CA terms: organisation, cheque, Province, Postal code, GST/HST, vacation pay; banned: VAT, State, ZIP, annual leave, Organization, Check(s), Advisor)
 ❌ A-10-T16 — Document template baseline (WeasyPrint): Letter 8.5×11 in, inch margins, Canadian sample data, brand header
 ❌ A-10-T17 — No-banner rule: eslint rule/component policy forbidding promo banners inside editor/list layouts; notices go to notification centre
