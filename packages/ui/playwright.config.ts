@@ -1,0 +1,28 @@
+import { defineConfig } from "@playwright/test";
+
+/**
+ * Browser checks of @numo9/ui against the built Storybook (A-10-T10: DataGrid 10,000 rows at
+ * 60 fps; keyboard paths that need real layout). Build first:
+ *   pnpm --filter @numo9/ui run build-storybook && pnpm --filter @numo9/ui run test:e2e
+ */
+const PORT = Number(process.env.UI_E2E_PORT ?? 6107);
+
+export default defineConfig({
+  testDir: "e2e",
+  timeout: 60_000,
+  forbidOnly: Boolean(process.env.CI),
+  reporter: process.env.CI ? [["list"], ["github"]] : "list",
+  use: {
+    baseURL: `http://127.0.0.1:${PORT}`,
+    browserName: "chromium",
+    launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE
+      ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE }
+      : {},
+  },
+  webServer: {
+    command: `node scripts/serve-static.mjs storybook-static ${PORT}`,
+    url: `http://127.0.0.1:${PORT}/iframe.html`,
+    reuseExistingServer: !process.env.CI,
+    timeout: 30_000,
+  },
+});
