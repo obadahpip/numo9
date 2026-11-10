@@ -44,6 +44,7 @@ Docs: `docs/design/brand-tokens.md`.
 | Formatting (`src/format/`)         | `formatMoney`, `formatDate`, `formatTime` (12/24 h), `formatDateTime`, `formatNumber`, `parseMoney`, `parseDate` (forgiving), calendar-date helpers (`addDays`, `addMonths`, `endOfMonth`, `todayIn`) | A-10-T08 |
 | Pickers (`src/pickers/`)           | `DatePicker` (calendar + shortcuts), `ProvincePicker`, `PostalCodeInput`, `CurrencyInput`, `AccountPicker` (type/side filter), `ContactPicker` (role, server search, create)                          | A-10-T09 |
 | Data grid (`src/data-grid/`)       | `DataGrid` (TanStack Table + Virtual: sort, search, filter chips, column chooser, density, selection + bulk bar, sticky header, states), `useSavedViews`, `localSavedViewsStore`                      | A-10-T10 |
+| Line grid (`src/line-grid/`)       | `LineGrid` (keyboard model, add/delete/drag reorder, column chooser, exact totals footer), `JournalLines` (journal configuration + balance indicator) — spec: `docs/design/line-grid.md`              | A-10-T11 |
 
 Components hold no user-visible text of their own: labels arrive through props (i18n messages).
 Component tests run axe-core (`src/test/axe.ts`, WCAG 2.1 A/AA); Storybook's a11y panel runs it

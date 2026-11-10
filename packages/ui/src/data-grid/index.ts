@@ -1,4 +1,5 @@
 /** Data grid (A-10-T10): the one list grid, with saved views. */
+export { ColumnChooser, type ChooserColumn } from "./ColumnChooser";
 export { DataGrid, type DataGridProps, type DataGridStatus } from "./DataGrid";
 export {
   EMPTY_VIEW,

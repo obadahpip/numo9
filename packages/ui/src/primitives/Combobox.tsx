@@ -56,6 +56,11 @@ export interface ComboboxProps {
   className?: string;
   /** Most options rendered at once (keeps long lists fast). */
   maxOptions?: number;
+  /**
+   * Runs before the combobox's own keys (e.g. a grid's ↑/↓ row navigation while the list is
+   * closed); call `preventDefault()` to take the key.
+   */
+  onKeyDownCapture?: (event: ReactKeyboardEvent<HTMLInputElement>) => void;
 }
 
 export function defaultComboboxFilter(option: ComboboxOption, query: string): boolean {
@@ -89,6 +94,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
     name,
     className,
     maxOptions = 100,
+    onKeyDownCapture,
     ...aria
   },
   ref,
@@ -145,6 +151,12 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
   };
 
   const onKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (event.defaultPrevented) return; // taken by onKeyDownCapture
+    if (event.key === "ArrowDown" && event.altKey && !open) {
+      event.preventDefault();
+      setOpen(true);
+      return;
+    }
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();
@@ -212,6 +224,7 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
               onQueryChange?.(event.target.value);
             }}
             onClick={() => setOpen(true)}
+            onKeyDownCapture={onKeyDownCapture}
             onKeyDown={onKeyDown}
             onBlur={() => close()}
             className={cn(

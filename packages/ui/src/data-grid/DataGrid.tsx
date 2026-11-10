@@ -1,6 +1,5 @@
 "use client";
 
-import * as Popover from "@radix-ui/react-popover";
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -29,6 +28,7 @@ import { cn } from "../primitives/cn";
 import { Input } from "../primitives/Input";
 import { Select } from "../primitives/Select";
 import { SearchIcon } from "../shell/icons";
+import { ColumnChooser } from "./ColumnChooser";
 import {
   EMPTY_VIEW,
   ROW_HEIGHT,
@@ -464,7 +464,11 @@ export function DataGrid<T>({
           {toolbar}
           <ColumnChooser
             label={labels.columns}
-            columns={columns}
+            columns={columns.map((column) => ({
+              id: column.id,
+              header: column.header,
+              hideable: column.hideable ?? true,
+            }))}
             hidden={view.hiddenColumns}
             onChange={(hiddenColumns) => setView({ ...view, hiddenColumns })}
           />
@@ -595,51 +599,6 @@ export function DataGrid<T>({
         </table>
       </div>
     </div>
-  );
-}
-
-function ColumnChooser<T>({
-  label,
-  columns,
-  hidden,
-  onChange,
-}: {
-  label: string;
-  columns: DataGridColumn<T>[];
-  hidden: string[];
-  onChange: (hidden: string[]) => void;
-}) {
-  return (
-    <Popover.Root>
-      <Popover.Trigger asChild>
-        <Button>{label}</Button>
-      </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content
-          align="end"
-          sideOffset={4}
-          aria-label={label}
-          className="z-50 w-64 rounded-lg border border-border bg-surface p-2 text-fg shadow-elevation-3"
-        >
-          <fieldset>
-            <legend className="sr-only">{label}</legend>
-            {columns.map((column) => (
-              <Checkbox
-                key={column.id}
-                label={column.header}
-                checked={!hidden.includes(column.id)}
-                disabled={column.hideable === false}
-                onCheckedChange={(checked) =>
-                  onChange(
-                    checked ? hidden.filter((id) => id !== column.id) : [...hidden, column.id],
-                  )
-                }
-              />
-            ))}
-          </fieldset>
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
   );
 }
 

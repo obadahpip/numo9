@@ -3,3 +3,4 @@ export * from "./dates";
 export * from "./format";
 export * from "./locale";
 export * from "./parse";
+export * from "./decimal";
