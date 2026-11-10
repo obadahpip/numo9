@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 66   Remaining: 2721
+TOTAL ATOMIC TASKS: 2787   Completed: 67   Remaining: 2720
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -100,7 +100,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ S-03-T07 — Brute-force protection: login rate limits, account lockout 15 min after 10 fails, CAPTCHA hook
 
 [A-02]
-❌ A-02-T04 — Password reset (token 1 h, single-use, invalidates sessions)
+✅ A-02-T04 — Password reset (token 1 h, single-use, invalidates sessions)
 ❌ A-02-T05 — TOTP enrolment (QR, verify, 10 recovery codes hashed), challenge at login, "remember device" signed cookie 30 days
 ❌ A-02-T08 — Invitation model (type, inviter, target practice/org, role, email, token hash, expires, accepted_at)
 ❌ A-02-T09 — Invitation service: create/send/resend/revoke/accept for the 4 flows; accept binds email; owner→accountant creates PracticeAssignment (or pending practice if accountant has none)
