@@ -1,0 +1,196 @@
+{
+  "$description": "Foreground/background token pairs that screens are allowed to combine (A-10-T01). A-10-T04 validates every pair against WCAG 2.1 AA: contrast >= minRatio (default 4.5:1). Yellow text on white is deliberately absent: it fails (1.46:1); use text.accentStrong instead.",
+  "minRatio": 4.5,
+  "pairs": [
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.default",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.subtle",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.muted",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.accentSubtle",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.dangerSubtle",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.successSubtle",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.warningSubtle",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.default",
+      "background": "semantic.surface.infoSubtle",
+      "use": "Body text"
+    },
+    {
+      "foreground": "semantic.text.muted",
+      "background": "semantic.surface.default",
+      "use": "Secondary and help text"
+    },
+    {
+      "foreground": "semantic.text.muted",
+      "background": "semantic.surface.subtle",
+      "use": "Secondary and help text"
+    },
+    {
+      "foreground": "semantic.text.muted",
+      "background": "semantic.surface.muted",
+      "use": "Secondary and help text"
+    },
+    {
+      "foreground": "semantic.text.muted",
+      "background": "semantic.surface.accentSubtle",
+      "use": "Secondary and help text"
+    },
+    {
+      "foreground": "semantic.text.subtle",
+      "background": "semantic.surface.default",
+      "use": "Placeholders, captions"
+    },
+    {
+      "foreground": "semantic.text.subtle",
+      "background": "semantic.surface.subtle",
+      "use": "Placeholders, captions"
+    },
+    {
+      "foreground": "semantic.text.inverse",
+      "background": "semantic.surface.inverse",
+      "use": "Top navigation text"
+    },
+    {
+      "foreground": "semantic.text.inverseMuted",
+      "background": "semantic.surface.inverse",
+      "use": "Secondary text in the top navigation"
+    },
+    {
+      "foreground": "semantic.text.inverseAccent",
+      "background": "semantic.surface.inverse",
+      "use": "Active navigation item: yellow on black"
+    },
+    {
+      "foreground": "semantic.text.inverse",
+      "background": "semantic.surface.inverseHover",
+      "use": "Hovered top-navigation control"
+    },
+    {
+      "foreground": "semantic.text.inverseAccent",
+      "background": "semantic.surface.inverseHover",
+      "use": "Hovered active navigation item"
+    },
+    {
+      "foreground": "semantic.text.onAccent",
+      "background": "semantic.surface.accent",
+      "use": "Primary button: black on yellow"
+    },
+    {
+      "foreground": "semantic.text.onAccent",
+      "background": "semantic.surface.accentHover",
+      "use": "Primary button: black on yellow"
+    },
+    {
+      "foreground": "semantic.text.accentStrong",
+      "background": "semantic.surface.default",
+      "use": "Dark-yellow text on light surfaces"
+    },
+    {
+      "foreground": "semantic.text.accentStrong",
+      "background": "semantic.surface.accentSubtle",
+      "use": "Dark-yellow text on light surfaces"
+    },
+    {
+      "foreground": "semantic.text.link",
+      "background": "semantic.surface.default",
+      "use": "Links"
+    },
+    {
+      "foreground": "semantic.text.link",
+      "background": "semantic.surface.subtle",
+      "use": "Links"
+    },
+    {
+      "foreground": "semantic.text.danger",
+      "background": "semantic.surface.default",
+      "use": "Error text"
+    },
+    {
+      "foreground": "semantic.text.danger",
+      "background": "semantic.surface.dangerSubtle",
+      "use": "Error text"
+    },
+    {
+      "foreground": "semantic.text.success",
+      "background": "semantic.surface.default",
+      "use": "Success text"
+    },
+    {
+      "foreground": "semantic.text.success",
+      "background": "semantic.surface.successSubtle",
+      "use": "Success text"
+    },
+    {
+      "foreground": "semantic.text.warning",
+      "background": "semantic.surface.default",
+      "use": "Warning text"
+    },
+    {
+      "foreground": "semantic.text.warning",
+      "background": "semantic.surface.warningSubtle",
+      "use": "Warning text"
+    },
+    {
+      "foreground": "semantic.text.info",
+      "background": "semantic.surface.default",
+      "use": "Information text"
+    },
+    {
+      "foreground": "semantic.text.info",
+      "background": "semantic.surface.infoSubtle",
+      "use": "Information text"
+    },
+    {
+      "foreground": "semantic.border.focus",
+      "background": "semantic.surface.default",
+      "use": "Focus ring on light and yellow surfaces"
+    },
+    {
+      "foreground": "semantic.border.focus",
+      "background": "semantic.surface.subtle",
+      "use": "Focus ring on light and yellow surfaces"
+    },
+    {
+      "foreground": "semantic.border.focus",
+      "background": "semantic.surface.muted",
+      "use": "Focus ring on light and yellow surfaces"
+    },
+    {
+      "foreground": "semantic.border.focus",
+      "background": "semantic.surface.accent",
+      "use": "Focus ring on light and yellow surfaces"
+    },
+    {
+      "foreground": "semantic.border.focusInverse",
+      "background": "semantic.surface.inverse",
+      "use": "Focus ring on the top navigation"
+    }
+  ]
+}
