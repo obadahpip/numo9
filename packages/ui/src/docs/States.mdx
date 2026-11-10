@@ -1,0 +1,67 @@
+import { Canvas, Meta } from "@storybook/blocks";
+
+import * as States from "../states/States.stories";
+import { Do, DoDont, Dont } from "./DoDont";
+
+<Meta title="Guidelines/States" />
+
+# Empty, loading, error and explain states
+
+A-10-T12. Every list and screen has all four states; none of them redirects silently.
+
+## EmptyState
+
+<Canvas of={States.Empty} />
+
+<DoDont>
+  <Do>
+    <p>
+      Say what will appear here and give 1–3 actions: "No contacts yet" → **Add contact**, **Import
+      contacts**.
+    </p>
+    <p>A different message for "no results" with a way to clear the filters.</p>
+  </Do>
+  <Dont>
+    <p>A blank grid, or "No data".</p>
+    <p>An upsell in the empty state.</p>
+  </Dont>
+</DoDont>
+
+## Skeleton
+
+<Canvas of={States.Loading} />
+
+Show a skeleton shaped like the content as soon as loading takes more than 300 ms — never a
+spinner alone. The skeleton announces "Loading …" to screen readers once.
+
+## ErrorState
+
+<Canvas of={States.LoadError} />
+
+<DoDont>
+  <Do>
+    <p>Say what failed, keep what still works, and offer **Try again** and **Report a problem**.</p>
+  </Do>
+  <Dont>
+    <p>"Something went wrong." with no next step, or a stack trace.</p>
+  </Dont>
+</DoDont>
+
+## ExplainPanel
+
+<Canvas of={States.Gated} />
+
+For a refused action or route: not in the package (gated, 402), no permission (403), locked
+period, or not found (404). It names the rule, who can change it and offers a one-click request.
+
+<DoDont>
+  <Do>
+    <p>
+      "Payroll isn't in your package (Starter). It's included in Growth and Complete." [Compare
+      packages] [Ask the owner to upgrade]
+    </p>
+  </Do>
+  <Dont>
+    <p>Redirecting to Home or a sales page without explanation (Xero's silent redirects).</p>
+  </Dont>
+</DoDont>

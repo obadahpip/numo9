@@ -1,0 +1,56 @@
+import { Canvas, Meta } from "@storybook/blocks";
+
+import * as Forms from "../forms/Form.stories";
+import * as Pickers from "../pickers/Pickers.stories";
+import { Do, DoDont, Dont } from "./DoDont";
+
+<Meta title="Guidelines/Forms and pickers" />
+
+# Forms and pickers
+
+## Form kit
+
+React Hook Form + Zod field wrappers (A-10-T07): inline errors, an error summary at the top with
+links to each field, focus moved to the first error, a sticky save bar and an unsaved-changes
+guard.
+
+<Canvas of={Forms.GeneralSettings} />
+
+<DoDont>
+  <Do>
+    <p>Validate on submit, then live for fields that already have an error.</p>
+    <p>Error text that names the field and the fix: "Postal code should look like 'M5V 2T6'."</p>
+    <p>A sticky save bar with a verb ("Save settings") on long settings pages; ⌘/Ctrl+S saves.</p>
+  </Do>
+  <Dont>
+    <p>Red outline without a message, or errors only in a toast.</p>
+    <p>
+      Asking for everything up front — ask for BN, fiscal year end and registrations in context
+      (progressive disclosure).
+    </p>
+  </Dont>
+</DoDont>
+
+## Pickers
+
+DatePicker (with shortcuts +7, +14, end of month …), Province picker, Postal code input,
+Currency input, Account picker (filtered by type and side) and Contact picker (A-10-T09).
+
+<Canvas of={Pickers.English} />
+
+<DoDont>
+  <Do>
+    <p>
+      Accept forgiving input: dates `26/10`, `oct 26`, `today`, `+30`; amounts `1,234.5`, `1234.50`,
+      `$1 234,50` (fr-CA). Show the value back in the locale's format.
+    </p>
+    <p>
+      Filter the Account picker by context — revenue accounts on a sales line, expense accounts on a
+      bill line.
+    </p>
+  </Do>
+  <Dont>
+    <p>A free-text Province field or a "State/ZIP" label.</p>
+    <p>Native `input type=date` with the browser's own format.</p>
+  </Dont>
+</DoDont>

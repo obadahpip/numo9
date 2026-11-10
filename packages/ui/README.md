@@ -17,7 +17,8 @@ pnpm --filter @numo9/ui run contrast        # CI: every contrast pair ≥ 4.5:1 
 pnpm --filter @numo9/ui run test            # Vitest
 pnpm --filter @numo9/ui run storybook       # http://localhost:6006
 pnpm --filter @numo9/ui run build-storybook # static Storybook (CI)
-pnpm --filter @numo9/ui run test:e2e        # Playwright on the built Storybook (DataGrid 10k rows at 60 fps)
+pnpm --filter @numo9/ui run test:e2e        # Playwright on the built Storybook: axe + label audit on every story, docs pages, DataGrid 10k rows at 60 fps
+pnpm --filter @numo9/ui run test:visual     # visual regression of every story (Linux baselines, A-10-T18)
 ```
 
 Using it in an app stylesheet (Tailwind v4):
@@ -50,3 +51,12 @@ Docs: `docs/design/brand-tokens.md`.
 Components hold no user-visible text of their own: labels arrive through props (i18n messages).
 Component tests run axe-core (`src/test/axe.ts`, WCAG 2.1 A/AA); Storybook's a11y panel runs it
 on every story.
+
+## Usage docs (Storybook → Guidelines)
+
+`src/docs/*.mdx` (A-10-T20): **Introduction** (the rules every screen follows), **Microcopy**
+(Phase 0 plan §3.5 rules and reference messages), and do / don't guidance for **Primitives**,
+**Forms and pickers**, **Data grids**, **States** and **Layout**, each with the live stories
+embedded. A new component's stories file must be embedded in one of these pages
+(`src/docs/docs.test.ts`); `e2e/docs.spec.ts` checks the built pages render with no serious
+accessibility violations.

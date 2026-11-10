@@ -1,0 +1,126 @@
+import { Canvas, Meta } from "@storybook/blocks";
+
+import * as Primitives from "../primitives/Primitives.stories";
+import { Do, DoDont, Dont } from "./DoDont";
+
+<Meta title="Guidelines/Primitives" />
+
+# Primitives
+
+Radix-based controls (A-10-T06). All are keyboard operable, have a visible 2 px focus ring and a
+44 px touch target. They take every label through props.
+
+## Button and IconButton
+
+<Canvas of={Primitives.Buttons} />
+
+| Variant                     | Use for                                                                          |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `primary` (black on yellow) | The one main action of the screen or dialog — at most one per view               |
+| `secondary` (default)       | Other actions                                                                    |
+| `ghost`                     | Cancel, low-emphasis actions in toolbars                                         |
+| `danger`                    | Destructive actions (delete, void); irreversible ones ask for typed confirmation |
+| `link`                      | Navigation inside text ("See plans")                                             |
+
+<DoDont>
+  <Do>
+    <p>One **primary** button per screen, labelled with a verb: "Post journal".</p>
+    <p>`loading` while the action runs — the button keeps its width and says what is happening.</p>
+    <p>`IconButton` always with `label` (its accessible name and tooltip).</p>
+  </Do>
+  <Dont>
+    <p>Two yellow buttons side by side, or a yellow button for "Cancel".</p>
+    <p>
+      Disabling a button without saying why — show the reason next to it or use an ExplainPanel.
+    </p>
+    <p>Yellow text on white (1.5 : 1 contrast).</p>
+  </Dont>
+</DoDont>
+
+## Inputs, Select and Combobox
+
+<Canvas of={Primitives.TextInputs} />
+
+<DoDont>
+  <Do>
+    <p>A visible label on every field; hints under the label; errors inline under the field.</p>
+    <p>
+      `Select` for short fixed lists (≤ 10 options); `Combobox` when people type to find (accounts,
+      contacts, currencies).
+    </p>
+  </Do>
+  <Dont>
+    <p>Placeholder text as the only label.</p>
+    <p>A 2,000-item dropdown — use a Combobox or the org switcher's search.</p>
+  </Dont>
+</DoDont>
+
+## Checkbox, Radio and Switch
+
+<Canvas of={Primitives.Choices} />
+
+- **Checkbox** — independent options, or one option that is saved with the form.
+- **Radio** — one choice out of 2–5 visible options.
+- **Switch** — a setting that takes effect immediately (no Save button).
+
+## Dialog, Drawer and Tooltip
+
+<Canvas of={Primitives.Overlays} />
+
+<DoDont>
+  <Do>
+    <p>
+      Dialog for a short decision that blocks the task ("Discard unsaved changes?"); Drawer for
+      detail or secondary work beside the list (filters, history).
+    </p>
+    <p>Tooltip for the name of an icon button or a short extra hint.</p>
+  </Do>
+  <Dont>
+    <p>Dialogs on top of dialogs, or a dialog for a long form — use a page.</p>
+    <p>Essential information only in a tooltip (not reachable on touch).</p>
+  </Dont>
+</DoDont>
+
+## Toast
+
+<Canvas of={Primitives.Toasts} />
+
+<DoDont>
+  <Do>
+    <p>
+      Confirm what the user just did and offer **Undo** for safe, reversible actions (archive, tag,
+      group) — shown for 10 seconds.
+    </p>
+  </Do>
+  <Dont>
+    <p>
+      Toasts for errors that need action — keep those on the screen, next to the field or as an
+      ErrorState. Toasts are never banners or promotions.
+    </p>
+  </Dont>
+</DoDont>
+
+## Tabs
+
+<Canvas of={Primitives.TabsStory} />
+
+Tabs switch between views of the same record; every tab has a title (no unlabelled role tabs).
+
+## Badge and StatusBadge
+
+<Canvas of={Primitives.Badges} />
+
+<DoDont>
+  <Do>
+    <p>
+      `StatusBadge` with the document's status key (`draft`, `paid`, `overdue`, `posted` …) — the
+      same colour and word on tiles, lists and detail pages.
+    </p>
+  </Do>
+  <Dont>
+    <p>
+      A custom coloured span for a status, or colour as the only signal (the badge always shows the
+      word).
+    </p>
+  </Dont>
+</DoDont>
