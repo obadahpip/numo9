@@ -161,12 +161,13 @@ export function AppShell({
             aria-label={brand.label}
             className="inline-flex size-touch-target shrink-0 items-center justify-center rounded-md"
           >
+            {/* The mark is drawn as generated content: a logo, not a text label, so the link's
+                accessible name ("Numo9 home") is the only name (WCAG 2.5.3, A-10-T19). */}
             <span
               aria-hidden="true"
-              className="inline-flex size-8 items-center justify-center rounded-md bg-surface-accent text-sm font-extrabold text-fg-on-accent"
-            >
-              N9
-            </span>
+              data-mark="N9"
+              className="inline-flex size-8 items-center justify-center rounded-md bg-surface-accent text-sm font-extrabold text-fg-on-accent before:content-[attr(data-mark)]"
+            />
           </Link>
 
           {orgSwitcher ? (
@@ -485,7 +486,16 @@ function UserMenu({ label, name, initials, items }: AppShellProps["user"]) {
         }}
       >
         <span className="inline-flex size-8 items-center justify-center rounded-full bg-surface-accent text-xs font-bold text-fg-on-accent">
-          {initials ? <span aria-hidden="true">{initials}</span> : <UserIcon />}
+          {/* Initials are a decorative avatar (generated content); the name is `label`. */}
+          {initials ? (
+            <span
+              aria-hidden="true"
+              data-initials={initials}
+              className="before:content-[attr(data-initials)]"
+            />
+          ) : (
+            <UserIcon />
+          )}
         </span>
       </button>
       <ul

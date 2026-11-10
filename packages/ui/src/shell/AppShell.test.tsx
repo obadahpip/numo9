@@ -179,6 +179,16 @@ describe("user menu", () => {
     expect(screen.queryByRole("menu")).toBeNull();
   });
 
+  it("draws the brand mark and initials as decoration, outside the accessible names", () => {
+    renderShell();
+    const home = screen.getByRole("link", { name: "Numo9 — Home" });
+    expect(home).toHaveTextContent(/^$/);
+    expect(home.querySelector("[data-mark='N9']")).toHaveAttribute("aria-hidden", "true");
+    const account = screen.getByRole("button", { name: "Account menu: Dana Lee" });
+    expect(account).toHaveTextContent(/^$/);
+    expect(account.querySelector("[data-initials]")).toHaveAttribute("aria-hidden", "true");
+  });
+
   it("falls back to an icon when there are no initials", () => {
     renderShell({ user: { label: "Account menu", items: [] } });
     const button = screen.getByRole("button", { name: "Account menu" });
