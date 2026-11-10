@@ -76,6 +76,7 @@ nav:
       - "en-CA glossary": design/glossary.md
       - "Document template baseline": design/documents.md
       - "No banners in work screens": design/no-banners.md
+      - "Visual regression": design/visual-regression.md
   - Security:
       - "Data-residency register": security/data-residency-register.md
   - Project:

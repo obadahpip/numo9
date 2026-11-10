@@ -22,7 +22,9 @@
     "test": "vitest run",
     "storybook": "storybook dev --port 6006 --no-open",
     "build-storybook": "storybook build --quiet --output-dir storybook-static",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --grep-invert @visual",
+    "test:visual": "playwright test --grep @visual",
+    "test:visual:update": "playwright test --grep @visual --update-snapshots"
   },
   "peerDependencies": {
     "react": "^19.1.0",
