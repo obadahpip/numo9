@@ -109,6 +109,21 @@ flowchart TD
 - The context lives in `contextvars` (`context.py`) and is always cleared after the request.
   Background jobs set it with `org_context(org)` (A-01-T07).
 
+## Org switcher (A-01-T14)
+
+The web app's top bar shows the active organisation and, when the user acts through a practice,
+the practice badge ("via Profitex"). The switcher panel lists the 5 organisations opened most
+recently (kept in the browser), searches every organisation from `GET /api/v1/me/organisations`
+(accent-insensitive, results capped at 20) and links to the practice directory
+(`/p/<practice>/directory`, V-01). Choosing an organisation opens the **equivalent page**: the same
+module (`/o/<a>/settings/lock-dates` → `/o/<b>/settings/lock-dates`); a record page lands on its
+module, because the record belongs to the old organisation. The badge shows the first practice
+returned by the API when the user is not a direct member. Opening an organisation also sets the
+`numo9_org` cookie used by the redirect map (S-01-T14).
+
+Code: `packages/ui/src/org-switcher/` (component, search), `frontend/src/components/OrgSwitcher.tsx`
+(API, recent list, navigation), `frontend/src/routing/routes.ts` (`equivalentOrgUrl`).
+
 ## Isolation rules
 
 | # | Rule | Enforced by |
@@ -168,6 +183,7 @@ flowchart TD
 | `rls.py` — `EnableOrgRLS`, `app.current_org` wrapper | T12 |
 | `api.py`, `serializers.py`, `urls.py` — `/api/v1/me/organisations`, practices, organisations | T13 |
 | `admin.py` — admin scoping | T15 |
+| `packages/ui/src/org-switcher/`, `frontend/src/components/OrgSwitcher.tsx` — org switcher | T14 |
 
 Tests: `backend/tests/test_tenancy_*.py`, `test_tenant_*.py`, `test_org_*.py`,
 `test_admin_scoping.py`; the isolation tests carry the `tenant_isolation` marker and run in the

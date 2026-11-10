@@ -1,7 +1,23 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import { vi } from "vitest";
+
 import { AppShell } from "./AppShell";
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+
+beforeEach(() => {
+  // The org switcher loads the user's organisations; these tests don't need the list.
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(() => new Promise(() => undefined)),
+  );
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe("Numo9 AppShell (A-10-T05)", () => {
   it("shows the organisation's primary navigation with the current module marked", () => {

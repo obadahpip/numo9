@@ -60,3 +60,20 @@ export function ChevronIcon() {
     </Icon>
   );
 }
+
+export function ChevronDownIcon() {
+  return (
+    <Icon width="16" height="16">
+      <path d="M6 9l6 6 6-6" />
+    </Icon>
+  );
+}
+
+export function SearchIcon() {
+  return (
+    <Icon width="16" height="16">
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </Icon>
+  );
+}

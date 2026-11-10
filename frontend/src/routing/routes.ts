@@ -197,3 +197,24 @@ export function findOrgModule(path: string): OrgModule | undefined {
 export function orgModuleUrl(org: string, modulePath: string): string {
   return `/o/${org}/${modulePath}`;
 }
+
+/**
+ * URL of the equivalent page in another organisation (A-01-T14 org switcher): the same module, so
+ * Contacts stays Contacts and Settings → Lock dates stays Settings → Lock dates. Paths below a
+ * module (a record such as `contacts/<id>`) belong to the old organisation, so they land on the
+ * module itself; an unknown path lands on Home.
+ */
+export function equivalentOrgUrl(targetOrg: string, currentPath?: string): string {
+  const path = (currentPath ?? "").toLowerCase().replace(/^\/+|\/+$/g, "");
+  let best: OrgModule | undefined;
+  for (const entry of ORG_MODULES) {
+    const matches = path === entry.path || path.startsWith(`${entry.path}/`);
+    if (matches && (best === undefined || entry.path.length > best.path.length)) best = entry;
+  }
+  return orgModuleUrl(targetOrg, best?.path ?? "home");
+}
+
+/** Practice directory (V-01): the accountant's list of client organisations. */
+export function practiceDirectoryUrl(practice: string): string {
+  return `/p/${practice}/directory`;
+}

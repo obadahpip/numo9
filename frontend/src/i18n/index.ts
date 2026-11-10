@@ -34,7 +34,22 @@ function lookup(catalog: Catalog, id: string): string | undefined {
   return typeof node === "string" ? node : undefined;
 }
 
-/** Resolve a message from the en-CA catalogue, falling back to its default message. */
-export function formatMessage(descriptor: MessageDescriptor): string {
-  return lookup(enCA as Catalog, descriptor.id) ?? descriptor.defaultMessage;
+/** Values for simple ICU arguments, e.g. `{practice}` in "via {practice}". */
+export type MessageValues = Record<string, string | number>;
+
+const ARGUMENT = /\{([a-zA-Z][a-zA-Z0-9]*)\}/g;
+
+/**
+ * Resolve a message from the en-CA catalogue, falling back to its default message, and fill simple
+ * `{name}` arguments (A-01-T14). Numbers are formatted for en-CA. Plural/select arguments arrive
+ * with next-intl in A-10-T13.
+ */
+export function formatMessage(descriptor: MessageDescriptor, values?: MessageValues): string {
+  const text = lookup(enCA as Catalog, descriptor.id) ?? descriptor.defaultMessage;
+  if (values === undefined) return text;
+  return text.replace(ARGUMENT, (whole, name: string) => {
+    const value = values[name];
+    if (value === undefined) return whole;
+    return typeof value === "number" ? value.toLocaleString("en-CA") : value;
+  });
 }
