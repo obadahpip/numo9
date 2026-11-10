@@ -17,6 +17,7 @@ pnpm --filter @numo9/ui run contrast        # CI: every contrast pair ≥ 4.5:1 
 pnpm --filter @numo9/ui run test            # Vitest
 pnpm --filter @numo9/ui run storybook       # http://localhost:6006
 pnpm --filter @numo9/ui run build-storybook # static Storybook (CI)
+pnpm --filter @numo9/ui run test:e2e        # Playwright on the built Storybook (DataGrid 10k rows at 60 fps)
 ```
 
 Using it in an app stylesheet (Tailwind v4):
@@ -42,6 +43,7 @@ Docs: `docs/design/brand-tokens.md`.
 | Forms (`src/forms/`)               | `Form` (RHF + Zod), `Field`, `TextField`, `SelectField`, `CheckboxField`, `ErrorSummary`, `StickySaveBar`, `useUnsavedChangesGuard`                                                                   | A-10-T07 |
 | Formatting (`src/format/`)         | `formatMoney`, `formatDate`, `formatTime` (12/24 h), `formatDateTime`, `formatNumber`, `parseMoney`, `parseDate` (forgiving), calendar-date helpers (`addDays`, `addMonths`, `endOfMonth`, `todayIn`) | A-10-T08 |
 | Pickers (`src/pickers/`)           | `DatePicker` (calendar + shortcuts), `ProvincePicker`, `PostalCodeInput`, `CurrencyInput`, `AccountPicker` (type/side filter), `ContactPicker` (role, server search, create)                          | A-10-T09 |
+| Data grid (`src/data-grid/`)       | `DataGrid` (TanStack Table + Virtual: sort, search, filter chips, column chooser, density, selection + bulk bar, sticky header, states), `useSavedViews`, `localSavedViewsStore`                      | A-10-T10 |
 
 Components hold no user-visible text of their own: labels arrive through props (i18n messages).
 Component tests run axe-core (`src/test/axe.ts`, WCAG 2.1 A/AA); Storybook's a11y panel runs it
