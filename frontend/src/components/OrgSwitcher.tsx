@@ -4,7 +4,7 @@ import { OrgSwitcher as Switcher, type ShellLinkComponent, type SwitcherOrg } fr
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { defineMessages, formatMessage } from "@/i18n";
+import { defineMessages, useFormatMessage, type FormatMessage } from "@/i18n";
 import {
   actingPractice,
   directoryPractice,
@@ -73,7 +73,8 @@ const messages = defineMessages({
   },
   moreResults: {
     id: "orgSwitcher.moreResults",
-    defaultMessage: "Showing {shown} of {total}. Refine your search or open the directory.",
+    defaultMessage:
+      "Showing {shown, number} of {total, number}. Refine your search or open the directory.",
     description: "Org switcher: results are capped; shown and total are numbers",
   },
   practiceBadge: {
@@ -86,14 +87,12 @@ const messages = defineMessages({
 
 type Status = "loading" | "ready" | "error";
 
-function toSwitcherOrg(org: MyOrganisation): SwitcherOrg {
+function toSwitcherOrg(org: MyOrganisation, fm: FormatMessage): SwitcherOrg {
   const practice = actingPractice(org);
   return {
     id: org.id,
     name: org.name,
-    badge: practice
-      ? formatMessage(messages.practiceBadge, { practice: practice.practice_name })
-      : undefined,
+    badge: practice ? fm(messages.practiceBadge, { practice: practice.practice_name }) : undefined,
   };
 }
 
@@ -112,6 +111,7 @@ interface OrgSwitcherProps {
  */
 export function OrgSwitcher({ org, modulePath, linkComponent }: Readonly<OrgSwitcherProps>) {
   const router = useRouter();
+  const fm = useFormatMessage();
   const [organisations, setOrganisations] = useState<MyOrganisation[]>([]);
   const [status, setStatus] = useState<Status>("loading");
   const [recentIds, setRecentIds] = useState<string[]>([]);
@@ -141,27 +141,30 @@ export function OrgSwitcher({ org, modulePath, linkComponent }: Readonly<OrgSwit
     writeCurrentOrgCookie(org);
   }, [org]);
 
-  const switcherOrgs = useMemo(() => organisations.map(toSwitcherOrg), [organisations]);
+  const switcherOrgs = useMemo(
+    () => organisations.map((entry) => toSwitcherOrg(entry, fm)),
+    [organisations, fm],
+  );
   const activeOrg = organisations.find((entry) => entry.id === org);
-  const active: SwitcherOrg = activeOrg ? toSwitcherOrg(activeOrg) : { id: org, name: org };
+  const active: SwitcherOrg = activeOrg ? toSwitcherOrg(activeOrg, fm) : { id: org, name: org };
   const practice =
     (activeOrg && actingPractice(activeOrg)?.practice_id) ?? directoryPractice(organisations);
 
   return (
     <Switcher
       labels={{
-        button: formatMessage(messages.button),
-        panel: formatMessage(messages.panel),
-        search: formatMessage(messages.search),
-        recent: formatMessage(messages.recent),
-        results: formatMessage(messages.results),
-        noResults: formatMessage(messages.noResults),
-        loading: formatMessage(messages.loading),
-        error: formatMessage(messages.error),
-        retry: formatMessage(messages.retry),
-        openDirectory: formatMessage(messages.openDirectory),
-        current: formatMessage(messages.current),
-        moreResults: (shown, total) => formatMessage(messages.moreResults, { shown, total }),
+        button: fm(messages.button),
+        panel: fm(messages.panel),
+        search: fm(messages.search),
+        recent: fm(messages.recent),
+        results: fm(messages.results),
+        noResults: fm(messages.noResults),
+        loading: fm(messages.loading),
+        error: fm(messages.error),
+        retry: fm(messages.retry),
+        openDirectory: fm(messages.openDirectory),
+        current: fm(messages.current),
+        moreResults: (shown, total) => fm(messages.moreResults, { shown, total }),
       }}
       active={active}
       organisations={switcherOrgs}

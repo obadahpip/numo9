@@ -2,7 +2,8 @@ import { defineConfig } from "@playwright/test";
 
 /**
  * Playwright: `gap-02` redirect crawler (S-01-T14, request-level), the responsive app-shell
- * suite (A-10-T05, Chromium at 360 / 768 / 1024 / 1440 px) and the org switcher (A-01-T14).
+ * suite (A-10-T05, Chromium at 360 / 768 / 1024 / 1440 px), the org switcher (A-01-T14) and the
+ * locale / pseudo-locale checks (A-10-T13).
  * Browser once per machine:
  *   pnpm --filter @numo9/frontend exec playwright install chromium
  *
@@ -29,5 +30,7 @@ export default defineConfig({
     url: `${BASE_URL}/`,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // The pseudo-locale en-XA is off in production builds unless enabled (A-10-T13 layout check).
+    env: { NUMO9_PSEUDO_LOCALE: "1" },
   },
 });

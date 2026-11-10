@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 
-import { defineMessages, formatMessage } from "@/i18n";
+import { defineMessages, useFormatMessage, type FormatMessage } from "@/i18n";
 import { editDistance } from "@/routing/redirects";
 import { ORG_MODULES } from "@/routing/routes";
 
@@ -34,19 +34,22 @@ interface Destination {
   terms: readonly string[];
 }
 
-const DESTINATIONS: readonly Destination[] = ORG_MODULES.map((module) => ({
-  label: formatMessage(module.label),
-  href: `/${module.path}`,
-  terms: [
-    ...new Set(
-      [formatMessage(module.label), module.path, ...module.aliases]
-        .join(" ")
-        .toLowerCase()
-        .split(/[^a-z0-9]+/)
-        .filter((term) => term.length >= 2),
-    ),
-  ],
-}));
+/** Every module as a 404 search destination, labelled in the active locale. */
+export function buildDestinations(fm: FormatMessage): Destination[] {
+  return ORG_MODULES.map((module) => ({
+    label: fm(module.label),
+    href: `/${module.path}`,
+    terms: [
+      ...new Set(
+        [fm(module.label), module.path, ...module.aliases]
+          .join(" ")
+          .toLowerCase()
+          .split(/[^a-z0-9]+/)
+          .filter((term) => term.length >= 2),
+      ),
+    ],
+  }));
+}
 
 function matches(word: string, term: string): boolean {
   if (word.length < 2) return false;
@@ -68,10 +71,13 @@ export function queryFromPath(pathname: string): string {
     .toLowerCase();
 }
 
-export function searchDestinations(query: string): Destination[] {
+export function searchDestinations(
+  query: string,
+  destinations: readonly Destination[],
+): Destination[] {
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-  if (words.length === 0) return [...DESTINATIONS];
-  return DESTINATIONS.filter((destination) =>
+  if (words.length === 0) return [...destinations];
+  return destinations.filter((destination) =>
     words.some((word) => destination.terms.some((term) => matches(word, term))),
   );
 }
@@ -80,12 +86,14 @@ export function NotFoundSearch() {
   const pathname = usePathname() ?? "";
   const [query, setQuery] = useState(() => queryFromPath(pathname));
   const inputId = useId();
-  const results = searchDestinations(query);
+  const fm = useFormatMessage();
+  const destinations = useMemo(() => buildDestinations(fm), [fm]);
+  const results = searchDestinations(query, destinations);
 
   return (
     <section className="flex flex-col gap-3" role="search">
       <label htmlFor={inputId} className="text-sm font-medium">
-        {formatMessage(messages.label)}
+        {fm(messages.label)}
       </label>
       <input
         id={inputId}
@@ -96,7 +104,7 @@ export function NotFoundSearch() {
         autoComplete="off"
       />
       {results.length > 0 ? (
-        <ul aria-label={formatMessage(messages.results)} className="flex flex-col gap-1">
+        <ul aria-label={fm(messages.results)} className="flex flex-col gap-1">
           {results.map((destination) => (
             <li key={destination.href}>
               <Link href={destination.href} className="text-sm underline">
@@ -106,7 +114,7 @@ export function NotFoundSearch() {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-fg-muted">{formatMessage(messages.noResults)}</p>
+        <p className="text-sm text-fg-muted">{fm(messages.noResults)}</p>
       )}
     </section>
   );

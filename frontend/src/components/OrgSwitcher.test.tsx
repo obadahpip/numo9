@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 
@@ -6,6 +6,7 @@ import { resetMyOrganisations, type MyOrganisation } from "@/org/myOrganisations
 import { RECENT_ORGS_KEY } from "@/org/recentOrgs";
 
 import { OrgSwitcher } from "./OrgSwitcher";
+import { renderWithIntl } from "@/test/intl";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -73,7 +74,7 @@ describe("OrgSwitcher container (A-01-T14)", () => {
   it("shows the active organisation's name and practice badge from the API", async () => {
     const fetchMock = respond(ORGS);
     vi.stubGlobal("fetch", fetchMock);
-    render(<OrgSwitcher org={MAPLE} modulePath="contacts" />);
+    renderWithIntl(<OrgSwitcher org={MAPLE} modulePath="contacts" />);
 
     const button = screen.getByRole("button", { name: /Switch organisation/ });
     await waitFor(() =>
@@ -89,7 +90,7 @@ describe("OrgSwitcher container (A-01-T14)", () => {
 
   it("shows no badge where the user is a direct member", async () => {
     vi.stubGlobal("fetch", respond(ORGS));
-    render(<OrgSwitcher org={OWN} modulePath="home" />);
+    renderWithIntl(<OrgSwitcher org={OWN} modulePath="home" />);
     await waitFor(() =>
       expect(screen.getByRole("button", { name: /Switch organisation/ })).toHaveAccessibleName(
         "Switch organisation Obadah Consulting",
@@ -100,7 +101,7 @@ describe("OrgSwitcher container (A-01-T14)", () => {
   it("records the open organisation as recent and in the current-organisation cookie", async () => {
     vi.stubGlobal("fetch", respond(ORGS));
     localStorage.setItem(RECENT_ORGS_KEY, JSON.stringify([NORTH]));
-    render(<OrgSwitcher org={MAPLE} modulePath="contacts" />);
+    renderWithIntl(<OrgSwitcher org={MAPLE} modulePath="contacts" />);
     await waitFor(() =>
       expect(JSON.parse(localStorage.getItem(RECENT_ORGS_KEY) ?? "[]")).toEqual([MAPLE, NORTH]),
     );
@@ -110,7 +111,7 @@ describe("OrgSwitcher container (A-01-T14)", () => {
   it("switches to the equivalent page of the chosen organisation", async () => {
     vi.stubGlobal("fetch", respond(ORGS));
     const user = userEvent.setup();
-    render(<OrgSwitcher org={MAPLE} modulePath="settings/lock-dates" />);
+    renderWithIntl(<OrgSwitcher org={MAPLE} modulePath="settings/lock-dates" />);
     await user.click(await screen.findByRole("button", { name: /Maple Leaf/ }));
     await user.keyboard("northern");
     await user.keyboard("{Enter}");
@@ -120,7 +121,7 @@ describe("OrgSwitcher container (A-01-T14)", () => {
   it("links Open directory to the acting practice's directory", async () => {
     vi.stubGlobal("fetch", respond(ORGS));
     const user = userEvent.setup();
-    render(<OrgSwitcher org={MAPLE} />);
+    renderWithIntl(<OrgSwitcher org={MAPLE} />);
     await user.click(await screen.findByRole("button", { name: /Maple Leaf/ }));
     expect(screen.getByRole("link", { name: "Open directory" })).toHaveAttribute(
       "href",
@@ -132,7 +133,7 @@ describe("OrgSwitcher container (A-01-T14)", () => {
     const failing = respond({ detail: "boom" }, false);
     vi.stubGlobal("fetch", failing);
     const user = userEvent.setup();
-    render(<OrgSwitcher org={MAPLE} modulePath="home" />);
+    renderWithIntl(<OrgSwitcher org={MAPLE} modulePath="home" />);
     const button = screen.getByRole("button", { name: `Switch organisation ${MAPLE}` });
     await user.click(button);
     const alert = await screen.findByRole("alert");

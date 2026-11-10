@@ -1,3 +1,5 @@
+import { testFormatMessage } from "@/test/intl";
+
 import { findOrgModule } from "./routes";
 import { navEntryFor, PRIMARY_NAV, primaryNav } from "./navigation";
 
@@ -19,7 +21,7 @@ describe("primary navigation (A-10-T05)", () => {
   });
 
   it("builds organisation URLs and marks the item that owns the current module", () => {
-    const links = primaryNav("acme", "accounting/journals");
+    const links = primaryNav(testFormatMessage(), "acme", "accounting/journals");
     expect(links.find((l) => l.id === "accounting")).toEqual({
       id: "accounting",
       label: "Accounting",
@@ -32,6 +34,6 @@ describe("primary navigation (A-10-T05)", () => {
   it("maps every settings section to Settings and leaves unknown paths unmarked", () => {
     expect(navEntryFor("settings/lock-dates")?.id).toBe("settings");
     expect(navEntryFor("settingsx")).toBeUndefined();
-    expect(primaryNav("acme").some((l) => l.current)).toBe(false);
+    expect(primaryNav(testFormatMessage(), "acme").some((l) => l.current)).toBe(false);
   });
 });

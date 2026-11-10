@@ -4,7 +4,7 @@
  * from the route registry; later deliverables add Sales, Purchases, Banking, Tax, Payroll,
  * Inventory and Reports here when their modules exist.
  */
-import { defineMessages, formatMessage, type MessageDescriptor } from "@/i18n";
+import { defineMessages, type FormatMessage, type MessageDescriptor } from "@/i18n";
 import { orgModuleUrl } from "@/routing/routes";
 
 const labels = defineMessages({
@@ -68,11 +68,11 @@ export interface NavLink {
 }
 
 /** Primary navigation links for an organisation, with the item owning `currentPath` marked. */
-export function primaryNav(org: string, currentPath?: string): NavLink[] {
+export function primaryNav(fm: FormatMessage, org: string, currentPath?: string): NavLink[] {
   const current = currentPath === undefined ? undefined : navEntryFor(currentPath);
   return PRIMARY_NAV.map((entry) => ({
     id: entry.id,
-    label: formatMessage(entry.label),
+    label: fm(entry.label),
     href: orgModuleUrl(org, entry.modulePath),
     current: entry === current,
   }));

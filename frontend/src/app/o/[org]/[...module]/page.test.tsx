@@ -1,7 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { vi } from "vitest";
 
 import OrganisationModulePage from "./page";
+import { renderWithIntl } from "@/test/intl";
+
+vi.mock("@/i18n/server", async () => {
+  const intl = await import("@/test/intl");
+  return { getFormatMessage: async () => intl.testFormatMessage() };
+});
 
 const notFound = vi.hoisted(() =>
   vi.fn(() => {
@@ -11,7 +17,7 @@ const notFound = vi.hoisted(() =>
 vi.mock("next/navigation", () => ({ notFound, useRouter: () => ({ push: vi.fn() }) }));
 
 const renderPage = async (org: string, module: string[]) =>
-  render(await OrganisationModulePage({ params: Promise.resolve({ org, module }) }));
+  renderWithIntl(await OrganisationModulePage({ params: Promise.resolve({ org, module }) }));
 
 describe("organisation module placeholder", () => {
   it("renders the module named by the URL inside the shell", async () => {

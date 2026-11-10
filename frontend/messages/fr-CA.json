@@ -22,7 +22,7 @@
     "current": "Current",
     "error": "Your organisations couldn't be loaded. Make sure you're online, then try again.",
     "loading": "Loading organisations…",
-    "moreResults": "Showing {shown} of {total}. Refine your search or open the directory.",
+    "moreResults": "Showing {shown, number} of {total, number}. Refine your search or open the directory.",
     "noResults": "No organisations match. Try another spelling, or open the directory.",
     "openDirectory": "Open directory",
     "panel": "Organisations",

@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 
 import { AppShell } from "@/components/AppShell";
-import { defineMessages, formatMessage } from "@/i18n";
+import { defineMessages } from "@/i18n";
+import { getFormatMessage } from "@/i18n/server";
 import { findOrgModule, ORG_SLUG } from "@/routing/routes";
 
 const messages = defineMessages({
@@ -27,11 +28,12 @@ export default async function OrganisationModulePage({ params }: { params: Promi
   const { org, module } = await params;
   const entry = findOrgModule(module.join("/"));
   if (!ORG_SLUG.test(org) || entry === undefined) notFound();
+  const fm = await getFormatMessage();
 
   return (
     <AppShell org={org} modulePath={entry.path}>
-      <h1 className="text-2xl font-semibold">{formatMessage(entry.label)}</h1>
-      <p className="mt-2 text-sm text-fg-muted">{formatMessage(messages.placeholder)}</p>
+      <h1 className="text-2xl font-semibold">{fm(entry.label)}</h1>
+      <p className="mt-2 text-sm text-fg-muted">{fm(messages.placeholder)}</p>
     </AppShell>
   );
 }
