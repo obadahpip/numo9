@@ -30,3 +30,36 @@ Environment variables (staging/prod): `DJANGO_SECURE_SSL_REDIRECT` (default `tru
 JavaScript cannot read the CSRF cookie. The web app calls `GET /api/v1/auth/csrf` once per
 session (response `{"csrfToken": "…"}`, never cached), then sends the token in the
 `X-CSRFToken` header on every POST/PUT/PATCH/DELETE. Requests without it are refused with 403.
+
+## S-03-T02 — Content Security Policy with nonces
+
+`frontend/src/middleware.ts` creates a 128-bit nonce per page request and sends the policy from
+`frontend/src/security/csp.ts`; Next.js puts the nonce on its own scripts and stylesheets.
+
+```text
+default-src 'self';
+script-src 'self' 'nonce-…' https://js.stripe.com https://*.js.stripe.com;
+style-src 'self' 'nonce-…'; style-src-attr 'unsafe-inline';
+img-src 'self' data: blob: https://*.stripe.com; font-src 'self' data:;
+connect-src 'self' https://api.stripe.com [NUMO9_CSP_CONNECT_SRC];
+frame-src https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com;
+worker-src 'self' blob:; manifest-src 'self'; object-src 'none';
+base-uri 'self'; form-action 'self'; frame-ancestors 'none';
+report-uri /api/csp-report
+```
+
+- **Stripe is the only third party** (Elements/Checkout for U-04). No `'unsafe-inline'` or
+  `'unsafe-eval'` for scripts (`'unsafe-eval'` is added only under `next dev`).
+- `style-src-attr 'unsafe-inline'` allows React's `style` attributes (virtualised grids); inline
+  `<style>` elements still need the nonce.
+- **Reports**: `POST /api/csp-report` (Next.js route) accepts `application/csp-report` and
+  `application/reports+json`, logs one JSON line `{"event": "csp.violation", …}` per report with
+  query strings removed, refuses bodies over 16 KB (413) and logs at most 120 reports a minute.
+- **Rollout**: `NUMO9_CSP_MODE=report-only` sends `Content-Security-Policy-Report-Only` — use it
+  for the first week on a new environment, then remove it (default `enforce`).
+- `NUMO9_CSP_CONNECT_SRC`: extra `https://` origins the browser calls (e.g. the API origin).
+
+Tests: `frontend/src/security/csp.test.ts` (Vitest) and `frontend/e2e/csp.spec.ts`
+(Playwright): every Phase 0 page has a nonce policy, all its scripts carry that nonce and the
+console shows no CSP violation; a Stripe script and frame load; a script from another origin is
+blocked and reported.
