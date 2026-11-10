@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useMemo, useState } from "react";
 
 import { Button } from "../primitives/Button";
+import { EmptyState } from "../states/EmptyState";
+import { ErrorState } from "../states/ErrorState";
 import { DataGrid } from "./DataGrid";
 import { gridLabels, orgColumns, sampleOrgs } from "./fixtures";
 import { localSavedViewsStore, useSavedViews } from "./useSavedViews";
@@ -105,7 +107,14 @@ export const LoadError: Story = {
       labels={gridLabels}
       height={320}
       status="error"
-      errorState={<p className="p-8 text-center">Organisations couldn't be loaded. Try again.</p>}
+      errorState={
+        <ErrorState
+          title="Organisations couldn't be loaded"
+          body="The connection to Numo9 dropped. Nothing was lost — try again."
+          retryLabel="Try again"
+          onRetry={() => undefined}
+        />
+      }
     />
   ),
 };
