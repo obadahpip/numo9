@@ -149,7 +149,7 @@ jobs:
       - name: Storybook build (@numo9/ui)
         run: pnpm --filter @numo9/ui run build-storybook
 
-      - name: eslint
+      - name: eslint (incl. numo9/no-work-screen-banners, A-10-T17 gap-12)
         run: pnpm --filter @numo9/frontend run lint
 
       - name: prettier
@@ -167,7 +167,7 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm --filter @numo9/frontend exec playwright install --with-deps chromium
 
-      - name: Playwright (gap-02 redirect crawl, A-10-T05 app shell 360–1440 px, A-01-T14 org switcher)
+      - name: Playwright (gap-02 redirect crawl, A-10-T05 app shell 360–1440 px, A-01-T14 org switcher, gap-12 no banners)
         run: pnpm --filter @numo9/frontend run test:e2e
 
       - name: Playwright (@numo9/ui on the built Storybook, A-10-T10 DataGrid 10k rows at 60 fps)

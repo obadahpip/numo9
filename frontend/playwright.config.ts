@@ -3,7 +3,7 @@ import { defineConfig } from "@playwright/test";
 /**
  * Playwright: `gap-02` redirect crawler (S-01-T14, request-level), the responsive app-shell
  * suite (A-10-T05, Chromium at 360 / 768 / 1024 / 1440 px), the org switcher (A-01-T14) and the
- * locale / pseudo-locale checks (A-10-T13).
+ * locale / pseudo-locale checks (A-10-T13) and the gap-12 no-banner layout check (A-10-T17).
  * Browser once per machine:
  *   pnpm --filter @numo9/frontend exec playwright install chromium
  *

@@ -75,6 +75,7 @@ nav:
       - "LineGrid (document lines)": design/line-grid.md
       - "en-CA glossary": design/glossary.md
       - "Document template baseline": design/documents.md
+      - "No banners in work screens": design/no-banners.md
   - Security:
       - "Data-residency register": security/data-residency-register.md
   - Project:
