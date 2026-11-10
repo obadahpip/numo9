@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 12:12-0500\n"
+"POT-Creation-Date: 2026-11-10 12:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,6 +123,9 @@ msgid "This practice doesn't exist or you're not a member. Choose one of your pr
 msgstr ""
 
 msgid "The organisation in the address and the one in the X-Numo9-Org header differ. Send one organisation, or the same one in both."
+msgstr ""
+
+msgid "Security"
 msgstr ""
 
 msgid "Tenancy"
