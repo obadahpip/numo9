@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 39   Remaining: 2748
+TOTAL ATOMIC TASKS: 2787   Completed: 40   Remaining: 2747
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -63,7 +63,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-10-T05 — App shell: top nav, org switcher slot, practice nav, breadcrumbs, user menu, notification bell, job tray slot, responsive
 
 [A-01]
-❌ A-01-T14 — Org switcher component (recent 5, search, "Open directory"), active-org header, practice badge
+✅ A-01-T14 — Org switcher component (recent 5, search, "Open directory"), active-org header, practice badge
 
 [A-10]
 ❌ A-10-T06 — Primitives (Radix-based): Button, IconButton, Input, Select, Combobox, Checkbox, Radio, Switch, Dialog, Drawer, Tooltip, Toast (with Undo), Tabs, Badge, StatusBadge
