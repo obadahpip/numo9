@@ -31,6 +31,7 @@ LANGUAGE_COOKIE_SECURE = True
 # (no Domain attribute, so no sibling subdomain can set or read them) and for path "/".
 SESSION_COOKIE_NAME = "__Host-numo9_session"
 CSRF_COOKIE_NAME = "__Host-numo9_csrf"
+MFA_TRUST_COOKIE_NAME = "__Host-numo9_trusted_device"  # remember-device cookie (A-02-T05)
 
 # ---- Shared cache (A-02-T03) ---------------------------------------------------------------------
 # Login rate limits and account lockouts must be shared by every worker: Redis (Compose service

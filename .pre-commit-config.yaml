@@ -62,6 +62,9 @@ repos:
           - django-migration-linter==6.0.0 # imported by numo9.settings.test (mypy plugin loads it)
           - django-allauth==65.21.1 # A-02 sign-up/login/reset/2FA (headless)
           - argon2-cffi==25.1.0 # A-02-T02 Argon2id hasher
+          - qrcode==8.2 # A-02-T05 TOTP QR code
+          - fido2==2.2.1 # A-02-T05 imported by allauth.mfa
+          - redis==8.1.0 # A-02-T03 shared cache
 
       - id: eslint
         name: eslint (frontend)

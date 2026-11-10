@@ -1,5 +1,6 @@
 """Settings shared by every environment. Environment modules import * from here."""
 
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.headless",
+    # TOTP 2FA, recovery codes, trusted browsers (A-02-T05).
+    "allauth.mfa",
 ]
 
 MIDDLEWARE = [
@@ -221,6 +224,21 @@ NUMO9_LOGIN_LOCKOUT_SECONDS = 15 * 60
 NUMO9_LOGIN_CAPTCHA_AFTER = 5
 NUMO9_CAPTCHA_VERIFIER = env_str("NUMO9_CAPTCHA_VERIFIER", "")
 ACCOUNT_EMAIL_NOTIFICATIONS = True
+
+# ---- Two-factor authentication: allauth.mfa (A-02-T05, numo9/accounts/mfa.py) -----------------
+MFA_ADAPTER = "numo9.accounts.mfa.MFAAdapter"  # TOTP secrets encrypted with the key ring
+MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
+MFA_TOTP_ISSUER = "Numo9"
+MFA_TOTP_PERIOD = 30
+MFA_TOTP_DIGITS = 6
+MFA_TOTP_TOLERANCE = 1  # accept the previous and next 30-second step (clock skew)
+MFA_RECOVERY_CODE_COUNT = 10  # hashed, shown once, each single-use
+MFA_RECOVERY_CODES_SHOW_ONCE = True
+# "Remember this device for 30 days": a signed cookie bound to the user's password and
+# authenticators — changing either invalidates it.
+MFA_TRUST_ENABLED = True
+MFA_TRUST_COOKIE_AGE = timedelta(days=30)
+MFA_TRUST_COOKIE_NAME = "numo9_trusted_device"
 
 # ---- Email (A-07 adds the provider and custom sending domains) ---------------------------------
 EMAIL_BACKEND = env_str("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
