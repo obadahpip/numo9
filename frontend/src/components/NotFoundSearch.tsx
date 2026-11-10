@@ -92,7 +92,7 @@ export function NotFoundSearch() {
         type="search"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
-        className="rounded border border-[var(--color-border)] px-3 py-2"
+        className="rounded border border-border px-3 py-2"
         autoComplete="off"
       />
       {results.length > 0 ? (
@@ -106,7 +106,7 @@ export function NotFoundSearch() {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-gray-600">{formatMessage(messages.noResults)}</p>
+        <p className="text-sm text-fg-muted">{formatMessage(messages.noResults)}</p>
       )}
     </section>
   );

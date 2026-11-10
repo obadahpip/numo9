@@ -24,12 +24,12 @@ export default function NotFound() {
     <main className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-6 p-6">
       <div>
         <h1 className="text-2xl font-semibold">{formatMessage(messages.title)}</h1>
-        <p className="mt-2 text-sm text-gray-600">{formatMessage(messages.body)}</p>
+        <p className="mt-2 text-sm text-fg-muted">{formatMessage(messages.body)}</p>
       </div>
       <NotFoundSearch />
       <Link
         href="/"
-        className="self-start rounded border border-[var(--color-border)] px-4 py-2 text-sm font-medium"
+        className="self-start rounded border border-border px-4 py-2 text-sm font-medium"
       >
         {formatMessage(messages.home)}
       </Link>

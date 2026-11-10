@@ -7,3 +7,7 @@ docs/
 To_delete/
 backend/
 status.txt
+storybook-static/
+# Generated from packages/ui/tokens/tokens.json (A-10-T03)
+packages/ui/src/styles/tokens.css
+packages/ui/src/styles/theme.css

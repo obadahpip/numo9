@@ -20,10 +20,12 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY frontend/package.json frontend/package.json
 COPY mobile/package.json mobile/package.json
+COPY packages/ui/package.json packages/ui/package.json
 RUN pnpm install --frozen-lockfile --filter @numo9/frontend...
 
 # ---- dev: next dev, source bind-mounted by compose ---------------------------
 FROM deps AS dev
+COPY packages packages
 COPY frontend frontend
 WORKDIR /repo/frontend
 EXPOSE 3000
@@ -33,6 +35,7 @@ CMD ["pnpm", "exec", "next", "dev", "--hostname", "0.0.0.0", "--port", "3000"]
 
 # ---- builder: production build (standalone output) ---------------------------
 FROM deps AS builder
+COPY packages packages
 COPY frontend frontend
 ENV NEXT_OUTPUT=standalone
 RUN pnpm --filter @numo9/frontend run build

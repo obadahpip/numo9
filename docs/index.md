@@ -8,6 +8,8 @@ SaaS built by Gray Matter AI for Profitex.
 | [Contributing](contributing.md) | Local setup, the engineering workflow, branches, commits, pull requests |
 | [Branch policy](branching.md) | Protected `main`, branch naming, release tags, Dependabot exception |
 | [Architecture decisions](adr/index.md) | Why the system is built the way it is (ADRs) |
+| [Brand tokens](design/brand-tokens.md) | Colour, type, spacing, radius and elevation tokens; accessible yellow/black pairs |
+| [Phase 0 wireframes](design/wireframes.md) | Shell, directory, settings, contacts, chart of accounts, journal, console |
 | [Tenancy model](architecture/tenancy.md) | Practices, organisations, access rule and the isolation layers |
 | [Data-residency register](security/data-residency-register.md) | Where every data class lives and every sub-processor (ADR-0002) |
 | [Project plan](Numo9_Project_Plan.md) | Scope, components, acceptance and the gap analysis against Xero |
@@ -19,6 +21,7 @@ SaaS built by Gray Matter AI for Profitex.
 backend/    Django 5.2 API and workers
 frontend/   Next.js 15 web app (App Router, TypeScript strict)
 mobile/     Expo workspace (Phase 7)
+packages/   shared workspace packages — ui/ is the @numo9/ui design system (A-10)
 infra/      deploy scripts, staging stack
 docs/       this site (MkDocs Material)
 tools/      repository tooling (CI, pre-commit helpers)
