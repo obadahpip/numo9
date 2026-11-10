@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 46   Remaining: 2741
+TOTAL ATOMIC TASKS: 2787   Completed: 47   Remaining: 2740
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -72,7 +72,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-10-T09 — Pickers: DatePicker (shortcuts: +7, +14, end of month, etc.), Province picker, PostalCode input, Currency input, Account picker (filter by type/side), Contact picker
 ✅ A-10-T10 — DataGrid (TanStack Table + Virtual): sort, filter bar, column chooser, saved views hook, row selection, bulk bar, density, sticky header, empty/loading/error states
 ✅ A-10-T11 — LineGrid (document line editor) used by journal now and invoice/bill/PO/quote later: keyboard navigation, add rows, drag reorder, column chooser, totals footer
-❌ A-10-T12 — State components: EmptyState (illustration + 1–3 actions), Skeletons, ErrorState with retry + report, ExplainPanel (gated/permission/lock/404)
+✅ A-10-T12 — State components: EmptyState (illustration + 1–3 actions), Skeletons, ErrorState with retry + report, ExplainPanel (gated/permission/lock/404)
 ❌ A-10-T13 — i18n setup: next-intl, ICU catalogues en-CA/fr-CA, pseudo-locale en-XA, eslint rule banning raw string literals in JSX
 ❌ A-10-T14 — Backend i18n: Django locale middleware, user/org locale, gettext catalogues, error messages as keys
 ❌ A-10-T15 — Glossary lint (en-CA terms: organisation, cheque, Province, Postal code, GST/HST, vacation pay; banned: VAT, State, ZIP, annual leave, Organization, Check(s), Advisor)
