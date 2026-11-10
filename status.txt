@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 50   Remaining: 2737
+TOTAL ATOMIC TASKS: 2787   Completed: 61   Remaining: 2726
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -88,7 +88,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ S-03-T03 — Secrets management: SOPS + age for env files; runtime secrets via provider secret store; rotate-secret runbook
 ✅ S-03-T04 — EncryptedField (AES-GCM, envelope key from KMS/secret, key id stored with ciphertext) + rotation command
 ✅ S-03-T06 — Log scrubbing: structlog processor + Sentry before_send removing SIN, bank, card, tokens, passwords
-❌ S-03-T09 — Dependency & image scans gating (pip-audit, npm audit, Trivy) with allow-list file requiring justification
+✅ S-03-T09 — Dependency & image scans gating (pip-audit, npm audit, Trivy) with allow-list file requiring justification
 ❌ S-03-T10 — Security headers test (securityheaders-style check) in CI
 ❌ S-03-T11 — Threat model (STRIDE) for tenancy, billing, files, auth — docs/security/threat-model.md
 
