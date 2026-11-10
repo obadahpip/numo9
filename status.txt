@@ -85,7 +85,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [S-03]
 ✅ S-03-T01 — Django security settings per env (SECURE_*, SESSION/CSRF cookie Secure/HttpOnly/SameSite, X-Frame DENY, Referrer-Policy)
 ✅ S-03-T02 — CSP with nonces (Next.js middleware) allowing Stripe domains only; report-uri endpoint
-❌ S-03-T03 — Secrets management: SOPS + age for env files; runtime secrets via provider secret store; rotate-secret runbook
+✅ S-03-T03 — Secrets management: SOPS + age for env files; runtime secrets via provider secret store; rotate-secret runbook
 ❌ S-03-T04 — EncryptedField (AES-GCM, envelope key from KMS/secret, key id stored with ciphertext) + rotation command
 ❌ S-03-T06 — Log scrubbing: structlog processor + Sentry before_send removing SIN, bank, card, tokens, passwords
 ❌ S-03-T09 — Dependency & image scans gating (pip-audit, npm audit, Trivy) with allow-list file requiring justification
