@@ -23,6 +23,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
+from numo9.i18n.errors import UNKNOWN_PRACTICE, error_detail
 
 from .access import PRACTICE_WIDE_ROLES, accessible_organisations
 from .models import (
@@ -78,6 +79,7 @@ def _describe(organisation: Organisation, user: Any) -> dict[str, Any]:
         "name": organisation.name,
         "status": organisation.status,
         "time_zone": organisation.time_zone,
+        "locale": organisation.locale,
         "membership": {"role": membership.role} if membership else None,
         "via_practices": via,
     }
@@ -135,10 +137,13 @@ class OrganisationCreateView(APIView):
                 .first()
             )
             if member is None:  # unknown practice or not a member: same answer
-                raise serializers.ValidationError({"practice": ["Unknown practice."]})
+                raise serializers.ValidationError({"practice": [error_detail(UNKNOWN_PRACTICE)]})
         with transaction.atomic():
             organisation = Organisation.objects.create(
-                name=data["name"], time_zone=data["time_zone"], status=OrganisationStatus.TRIAL
+                name=data["name"],
+                time_zone=data["time_zone"],
+                locale=data["locale"],
+                status=OrganisationStatus.TRIAL,
             )
             if member is not None:
                 assignment = PracticeAssignment.objects.create(

@@ -83,6 +83,7 @@ def test_me_organisations_lists_memberships_and_assignments(user: User, client: 
         "name": "Alder Bakery",
         "status": "trial",
         "time_zone": "America/Toronto",
+        "locale": "en-ca",
         "membership": None,
         "via_practices": [
             {
@@ -193,7 +194,11 @@ def test_create_organisation_for_a_practice_the_user_does_not_belong_to(
         ORGANISATIONS, {"name": "X", "practice": str(practice_id)}, format="json"
     )
     assert response.status_code == 400
-    assert response.json() == {"practice": ["Unknown practice."]}  # same for both cases
+    assert response.json() == {
+        "practice": [
+            "This practice doesn't exist or you're not a member. Choose one of your practices."
+        ]
+    }  # same for both cases
     assert Organisation.objects.count() == 0
 
 

@@ -40,6 +40,7 @@ i18n: ## Regenerate catalogues: FormatJS extract (+ add missing keys) and Django
 	pnpm --filter @numo9/frontend run i18n:extract
 	$(PYTHON) backend/tools/check_i18n.py frontend --extracted frontend/.i18n/extracted.json --write
 	$(COMPOSE_DEV) exec -T backend $(MAKEMESSAGES)
+	$(PYTHON) backend/tools/compile_messages.py
 
 i18n-check: ## Run the frontend i18n lint, missing-key check and glossary lint locally
 	pnpm --filter @numo9/frontend run lint:i18n

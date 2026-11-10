@@ -8,14 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 03:41-0500\n"
+"POT-Creation-Date: 2026-11-10 05:33-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: fr_CA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid "Profile"
 msgstr ""
@@ -30,10 +31,10 @@ msgid "Accounts"
 msgstr ""
 
 msgid "English (Canada)"
-msgstr ""
+msgstr "Anglais (Canada)"
 
 msgid "French (Canada)"
-msgstr ""
+msgstr "Français (Canada)"
 
 msgid "12-hour (1:30 p.m.)"
 msgstr ""
@@ -68,12 +69,18 @@ msgstr ""
 msgid "users"
 msgstr ""
 
+msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
+msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l’un de vos cabinets."
+
+msgid "The organisation in the address and the one in the X-Numo9-Org header differ. Send one organisation, or the same one in both."
+msgstr "L’organisation de l’adresse et celle de l’en-tête X-Numo9-Org diffèrent. Envoyez une seule organisation, ou la même dans les deux."
+
 msgid "Tenancy"
 msgstr ""
 
 #, python-format
 msgid "%(value)s is not a valid time zone."
-msgstr ""
+msgstr "%(value)s n’est pas un fuseau horaire valide."
 
 msgid "Practice admin"
 msgstr ""

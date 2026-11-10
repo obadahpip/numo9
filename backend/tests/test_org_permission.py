@@ -28,7 +28,7 @@ from tests.testapp.models import Widget
 
 pytestmark = [pytest.mark.django_db, pytest.mark.urls("tests.testapp.urls")]
 
-NOT_FOUND = {"detail": str(NotFound.default_detail)}
+NOT_FOUND = {"detail": str(NotFound.default_detail), "code": "not_found"}
 
 
 @pytest.fixture

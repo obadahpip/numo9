@@ -6,6 +6,8 @@ from typing import Any
 
 from rest_framework import serializers
 
+from numo9.accounts.models import Locale
+
 from .models import (
     DEFAULT_TIME_ZONE,
     AssignmentRole,
@@ -37,6 +39,9 @@ class MyOrganisationSerializer(serializers.Serializer[Any]):
     name = serializers.CharField()
     status = serializers.ChoiceField(choices=OrganisationStatus.choices)
     time_zone = serializers.CharField()
+    locale = serializers.ChoiceField(
+        choices=Locale.choices, help_text="Default language of the organisation's documents."
+    )
     membership = MembershipSerializer(
         allow_null=True, help_text="The user's own role in the organisation, if a member."
     )
@@ -58,6 +63,7 @@ class OrganisationCreateSerializer(serializers.Serializer[Any]):
     time_zone = serializers.CharField(
         max_length=64, required=False, default=DEFAULT_TIME_ZONE, validators=[validate_time_zone]
     )
+    locale = serializers.ChoiceField(choices=Locale.choices, required=False, default=Locale.EN_CA)
     practice = serializers.UUIDField(
         required=False,
         allow_null=True,
