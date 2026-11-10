@@ -47,6 +47,9 @@ services:
       DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-}
       NUMO9_FIELD_ENCRYPTION_KEYS: ${NUMO9_FIELD_ENCRYPTION_KEYS:-}
       NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY: ${NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY:-}
+      # S-03-T06: scrubbed JSON logs; Sentry only when a DSN is set.
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      NUMO9_RELEASE: ${NUMO9_TAG}
       DATABASE_URL: postgres://numo9:${POSTGRES_PASSWORD}@postgres:5432/numo9
       REDIS_URL: redis://redis:6379/0
     ports:

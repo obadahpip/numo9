@@ -99,3 +99,30 @@ Rotation (no downtime): add the new key and make it active → deploy →
 `manage.py rotate_field_encryption` (re-wraps every data key, all organisations, in batches;
 `--dry-run` counts, `--check` fails while any value is on an old key) → remove the old key.
 Tests: `backend/tests/test_encrypted_field.py`.
+
+## S-03-T06 — Log scrubbing
+
+`numo9/security/scrubbing.py` removes personal and secret data from every log line and every
+Sentry event; whatever it removes reads `[REDACTED]`.
+
+| Layer | Rule |
+|---|---|
+| By name | Values whose key names a secret: `password`, `secret`, `token`, `api_key`, `authorization`, `cookie`, `session`, `sin` / `nas` / `ssn`, `card`, `cvv`, `iban`, `bank`, `transit`, `account_number`, `dsn`, `signature`… (whole words: `business`, `account_id`, `company` are kept) |
+| By shape | SIN (`ddd-ddd-ddd`, `ddd ddd ddd`, or 9 digits passing Luhn), card numbers (13–19 digits passing Luhn), Canadian bank accounts (`ttttt-iii-aaaaaaa`), `Bearer`/`Token`/`Basic` credentials, JWTs, Stripe `sk_`/`rk_`/`whsec_` keys, age private keys, `password=…`-style pairs, passwords in URLs |
+
+Where it runs (`numo9/security/logging.py`):
+
+- **Logs** — Django `LOGGING` sends every standard-library record and every
+  `structlog.get_logger()` event through one `ProcessorFormatter`; the scrubber runs after the
+  traceback is rendered to text and again after `%s` arguments are merged. JSON lines in
+  staging/prod (`NUMO9_LOG_JSON`, default on), plain text locally; `django.db.backends` is kept at
+  WARNING (SQL parameters).
+- **Sentry** — started only when `SENTRY_DSN` is set (staging/prod); no user identity, request
+  bodies, frame variables or SQL parameters are collected, and `before_send`,
+  `before_send_transaction` and `before_breadcrumb` scrub request URL, query string, headers,
+  cookies (dropped whole), extra, contexts, breadcrumbs and exception messages; the user is
+  reduced to its id.
+
+Tests: `backend/tests/test_log_scrubbing.py` — a log line with a SIN shows `[REDACTED]`
+(standard logging, structlog, tracebacks, and a fresh prod-settings process), rule tables for
+what is and is not redacted, and a real Sentry client with a capturing transport.
