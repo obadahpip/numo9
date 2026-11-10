@@ -156,6 +156,68 @@ jobs:
           --error
           --metrics off
 
+  security-headers:
+    # S-03-T10: securityheaders.com-style grade of the running services — the production Next.js
+    # build and the backend with prod settings behind a simulated TLS proxy (X-Forwarded-Proto).
+    # Every page, API and error response must carry CSP, HSTS, X-Frame-Options, nosniff,
+    # Referrer-Policy, Permissions-Policy and COOP, with no server banner.
+    name: security headers (web app + API, prod builds)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      DJANGO_SETTINGS_MODULE: numo9.settings.prod
+      DJANGO_ALLOWED_HOSTS: 127.0.0.1,localhost
+      DATABASE_URL: sqlite:////tmp/numo9-headers.sqlite3
+      NUMO9_LOG_JSON: "false"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements/*.txt
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements/dev.txt
+      - uses: pnpm/action-setup@v6
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+      - name: next build
+        run: pnpm --filter @numo9/frontend run build
+      - name: Start backend (gunicorn, prod settings) and web app (next start)
+        run: |
+          export DJANGO_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(64))')"
+          export NUMO9_FIELD_ENCRYPTION_KEYS="{\"ci\": \"$(python -c 'import base64, os; print(base64.b64encode(os.urandom(32)).decode())')\"}"
+          export NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY=ci
+          (cd backend && python manage.py migrate --noinput -v 0 \
+            && gunicorn numo9.wsgi -b 127.0.0.1:8000 --daemon --pid /tmp/gunicorn.pid)
+          (cd frontend && nohup pnpm exec next start -H 127.0.0.1 -p 3000 > /tmp/next.log 2>&1 &)
+          for url in http://127.0.0.1:8000/healthz http://127.0.0.1:3000/; do
+            curl -fsS --retry 30 --retry-delay 1 --retry-all-errors -o /dev/null "$url"
+          done
+      - name: Grade web app responses (page, 404, API route)
+        run: >-
+          python tools/ci/check_security_headers.py --hsts
+          http://127.0.0.1:3000/o/acme/home
+          http://127.0.0.1:3000/o/acme/no-such-screen
+          http://127.0.0.1:3000/api/csp-report
+      - name: Grade API responses (JSON, 403, 404, admin)
+        if: success() || failure()
+        run: >-
+          python tools/ci/check_security_headers.py --hsts --header "X-Forwarded-Proto: https"
+          http://127.0.0.1:8000/healthz
+          http://127.0.0.1:8000/api/v1/auth/csrf
+          http://127.0.0.1:8000/api/v1/me/organisations
+          http://127.0.0.1:8000/api/v1/no-such-endpoint
+          http://127.0.0.1:8000/admin/login/
+
   trivy:
     name: trivy (${{ matrix.image }} image)
     runs-on: ubuntu-latest

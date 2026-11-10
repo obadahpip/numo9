@@ -170,3 +170,39 @@ Tests: `tools/tests/test_scan_gate.py` (CI `infra` job) — a high npm advisory,
 Trivy vulnerability, a Trivy secret and any pip-audit finding fail; moderate findings pass; a
 justified entry allows the finding by id or alias; missing justification/owner, expired or
 too-distant expiry, duplicates and unreadable reports fail.
+
+## S-03-T10 — Security headers checked in CI
+
+Every response — web pages, Next.js API routes, static assets, Django JSON, errors and the admin —
+carries the securityheaders.com set:
+
+| Header | Web app (`frontend/src/security/headers.ts`, `next.config.ts`) | Backend (`numo9/security/headers.py` + Django) |
+|---|---|---|
+| `Content-Security-Policy` | pages: nonce policy (S-03-T02); `/api/*`: `default-src 'none'; frame-ancestors 'none'` | JSON/other: `default-src 'none'; frame-ancestors 'none'`; HTML (admin): `frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'` |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains; preload` (production builds) | same, HTTPS requests in staging/prod (S-03-T01) |
+| `X-Frame-Options` | `DENY` | `DENY` |
+| `X-Content-Type-Options` | `nosniff` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | same |
+| `Permissions-Policy` | accelerometer, camera, display-capture, geolocation, gyroscope, magnetometer, microphone, usb off; `payment` for self + Stripe | same |
+| `Cross-Origin-Opener-Policy` | `same-origin` | `same-origin` |
+| Banners | no `X-Powered-By` (`poweredByHeader: false`) | gunicorn `Server` without version |
+
+A view or route that sets its own CSP or Permissions-Policy keeps it.
+
+**CI check** — `tools/ci/check_security_headers.py` grades live responses like
+securityheaders.com (missing header or weak value = fail: no `frame-ancestors`, `'unsafe-eval'`,
+`'unsafe-inline'` scripts without a nonce, HSTS under one year or without subdomains,
+`unsafe-url` referrer, camera/microphone/geolocation not disabled, version banners). The
+Security workflow job `security headers` builds the web app, starts it with `next start` and the
+backend with gunicorn and prod settings behind `X-Forwarded-Proto: https`, and grades a page, a
+404, an API route, JSON, a 403, a 404 and the admin login. Run locally:
+
+```bash
+python tools/ci/check_security_headers.py --hsts http://127.0.0.1:3000/o/acme/home
+python tools/ci/check_security_headers.py --hsts --header "X-Forwarded-Proto: https" http://127.0.0.1:8000/healthz
+```
+
+Tests: `backend/tests/test_security_headers.py` (every route over HTTPS graded by the same rules,
+each missing/weak header fails the grader), `frontend/src/security/headers.test.ts` (Vitest) and
+`frontend/e2e/security-headers.spec.ts` (Playwright on the production build: page, 404, API
+route, static asset).

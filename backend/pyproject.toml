@@ -36,6 +36,8 @@ python_version = "3.12"
 strict = true
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 exclude = ["^\\.venv/", "^staticfiles/"]
+# tools/ci scripts imported by tests (S-03-T10 header grader).
+mypy_path = "../tools/ci"
 
 [[tool.mypy.overrides]]
 # WeasyPrint ships no type information (A-10-T16).
