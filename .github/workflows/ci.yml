@@ -346,5 +346,5 @@ jobs:
           python backend/tools/check_i18n.py backend \
             --committed "$RUNNER_TEMP/locale-committed" --generated backend/locale
 
-      - name: Glossary lint (banned terms)
+      - name: Glossary lint (catalogues + design-system stories/fixtures, gap-31/gap-38)
         run: python backend/tools/check_glossary.py

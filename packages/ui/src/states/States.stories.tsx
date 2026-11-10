@@ -10,7 +10,7 @@ import { LoadingRegion, Skeleton, SkeletonTable, SkeletonText } from "./Skeleton
  * State components (A-10-T12): every list and screen uses these for nothing-yet, loading, failure
  * and "not available" — never a blank area, a bare spinner or a silent redirect.
  */
-const meta: Meta = { title: "States/Overview" };
+const meta: Meta = { title: "Feedback/Empty, loading, error and explain" };
 export default meta;
 type Story = StoryObj;
 
@@ -35,7 +35,7 @@ export const NoResults: Story = {
     <EmptyState
       illustration="search"
       title="No organisations match “retail QC”"
-      body="Check the spelling, or clear the filters to see every organisation."
+      body="Try another spelling, or clear the filters to see every organisation."
       actions={[<Button key="clear">Clear filters</Button>]}
     />
   ),

@@ -202,3 +202,80 @@ def test_glossary_allow_list_exempts_key(tmp_path: Path) -> None:
 
 def test_committed_catalogues_pass_all_checks() -> None:
     assert check_glossary.main([]) == 0
+
+
+# ---- A-10-T15: glossary lint gates (gap-31 Canadian terms, gap-38 one spelling) --------------
+
+
+@pytest.mark.gap("gap-31")
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Enter the VAT number",
+        "State",
+        "ZIP code",
+        "Annual leave balance",
+        "Print Checks",
+        "Enter the postcode",
+        "Postal Code",
+        "HST/GST registration",
+        "GST-HST number",
+        "Order a checkbook",
+    ],
+)
+def test_gap_31_non_canadian_terms_fail(text: str) -> None:
+    assert check_glossary.scan({"k.x": text}, check_glossary.load_glossary(), "t"), text
+
+
+@pytest.mark.gap("gap-38")
+@pytest.mark.parametrize("text", ["Organization settings", "3 organizations", "Your Advisor"])
+def test_gap_38_spelling_flips_fail(text: str) -> None:
+    assert check_glossary.scan({"k.x": text}, check_glossary.load_glossary(), "t"), text
+
+
+@pytest.mark.gap("gap-31", "gap-38")
+def test_gap_31_38_committed_text_uses_the_en_ca_glossary() -> None:
+    """Catalogues (frontend en-CA, backend en_CA) and the design system's stories/fixtures."""
+    assert check_glossary.main([]) == 0
+
+
+@pytest.mark.gap("gap-31", "gap-38")
+def test_preferred_terms_pass_and_every_ban_points_to_one() -> None:
+    terms = check_glossary.load_glossary()
+    preferred = check_glossary.load_preferred()
+    names = {p.term for p in preferred}
+    assert {"organisation", "cheque", "Province", "Postal code", "GST/HST", "vacation pay"} <= names
+    for term in preferred:
+        assert check_glossary.scan({"k": term.term}, terms, "t") == [], term.term
+    for ban in terms:
+        assert any(p.term.lower() in ban.use.lower() for p in preferred), ban.term
+
+
+def test_glossary_scans_story_and_fixture_text_not_code(tmp_path: Path) -> None:
+    src = tmp_path / "src" / "widgets"
+    src.mkdir(parents=True)
+    (src / "Widget.stories.tsx").write_text(
+        'import { ZIP } from "./zip"; // ZIP code helper\n'
+        "/* State machine */\n"
+        'export const A = () => <label title="Your ZIP">Postal code</label>;\n'
+        "export const B = () => <p>Choose your State</p>;\n",
+        encoding="utf-8",
+    )
+    (src / "fixtures.ts").write_text('export const t = "Organization";\n', encoding="utf-8")
+    (src / "Widget.tsx").write_text('export const ignored = "VAT";\n', encoding="utf-8")
+    texts = check_glossary.source_texts(tmp_path / "src")
+    problems = check_glossary.scan(texts, check_glossary.load_glossary(), "ui")
+    assert len(problems) == 3, problems
+    assert any("Widget.stories.tsx:3" in p and "ZIP" in p for p in problems)
+    assert any("Widget.stories.tsx:4" in p and "State" in p for p in problems)
+    assert any("fixtures.ts:1" in p for p in problems)
+
+
+def test_glossary_terms_markdown() -> None:
+    table = check_glossary.glossary_markdown()
+    assert "| Postal code |" in table and "| VAT |" in table
+
+
+def test_glossary_doc_page_is_current() -> None:
+    page = (check_glossary.REPO_ROOT / "docs" / "design" / "glossary.md").read_text("utf-8")
+    assert check_glossary.glossary_markdown() in page, "run check_glossary.py --terms"

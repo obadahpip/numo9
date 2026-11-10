@@ -52,3 +52,70 @@ term = "Advisor"
 pattern = '\badvisors?\b'
 use = "Accountant (practice role)"
 gap = "gap-38"
+
+# ---- A-10-T15: more en-CA variants -------------------------------------------------------
+
+[[banned]]
+term = "Postcode"
+pattern = '\bpost ?codes?\b'
+use = "Postal code"
+gap = "gap-31"
+
+[[banned]]
+term = "Postal Code (title case)"
+# Sentence case (microcopy rule 5): "Postal code", never "Postal Code".
+pattern = '\bPostal Codes?\b'
+case_sensitive = true
+use = "Postal code"
+gap = "gap-31"
+
+[[banned]]
+term = "HST/GST, GST-HST"
+pattern = '\bHST\s*/\s*GST\b|\bGST\s+/\s*HST\b|\bGST\s*/\s+HST\b|\bGST-HST\b'
+use = "GST/HST"
+gap = "gap-31"
+
+[[banned]]
+term = "Checkbook"
+pattern = '\bcheck ?books?\b'
+use = "chequebook"
+gap = "gap-31"
+
+# ---- Preferred en-CA terms (A-10-T15) ------------------------------------------------------
+# The words to use; each banned entry above points to one of these. `check_glossary.py --terms`
+# prints this list for docs/design (the glossary the French reviewer extends in Phase 6).
+
+[[preferred]]
+term = "organisation"
+meaning = "A business using Numo9 (the paying tenant)"
+instead_of = "organization"
+
+[[preferred]]
+term = "cheque"
+meaning = "The payment instrument (cheque number, print cheques)"
+instead_of = "check (noun)"
+
+[[preferred]]
+term = "Province"
+meaning = "Province or territory of an address or registration"
+instead_of = "State"
+
+[[preferred]]
+term = "Postal code"
+meaning = "Canadian postal code, A1A 1A1"
+instead_of = "ZIP, ZIP code, postcode"
+
+[[preferred]]
+term = "GST/HST"
+meaning = "Goods and services tax / harmonized sales tax (QST for Québec)"
+instead_of = "VAT, sales tax (for GST/HST)"
+
+[[preferred]]
+term = "vacation pay"
+meaning = "Vacation pay and vacation entitlement (payroll)"
+instead_of = "annual leave, holiday pay (for vacation)"
+
+[[preferred]]
+term = "Accountant"
+meaning = "Practice role of the firm's staff"
+instead_of = "Advisor"
