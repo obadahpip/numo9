@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 41   Remaining: 2746
+TOTAL ATOMIC TASKS: 2787   Completed: 42   Remaining: 2745
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -67,7 +67,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [A-10]
 ✅ A-10-T06 — Primitives (Radix-based): Button, IconButton, Input, Select, Combobox, Checkbox, Radio, Switch, Dialog, Drawer, Tooltip, Toast (with Undo), Tabs, Badge, StatusBadge
-❌ A-10-T07 — Form kit: RHF + Zod field wrappers, inline errors, error summary, sticky save bar, unsaved-changes guard
+✅ A-10-T07 — Form kit: RHF + Zod field wrappers, inline errors, error summary, sticky save bar, unsaved-changes guard
 ❌ A-10-T08 — Formatters: formatMoney, formatDate, formatTime (user 12/24 h), parseMoney, parseDate (forgiving) per locale
 ❌ A-10-T09 — Pickers: DatePicker (shortcuts: +7, +14, end of month, etc.), Province picker, PostalCode input, Currency input, Account picker (filter by type/side), Contact picker
 ❌ A-10-T10 — DataGrid (TanStack Table + Virtual): sort, filter bar, column chooser, saved views hook, row selection, bulk bar, density, sticky header, empty/loading/error states
