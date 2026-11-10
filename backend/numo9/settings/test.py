@@ -15,6 +15,8 @@ from .env import env_list, env_str
 INSTALLED_APPS = [*INSTALLED_APPS, "django_migration_linter", "tests.testapp"]
 # The test-only app is held to the OrgOwnedModel rule too (A-01-T08).
 TENANCY_BUSINESS_APP_PREFIXES = ("numo9.", "tests.")
+# Third-party migrations (django-allauth, A-02) are reviewed upstream, not by our linter.
+MIGRATION_LINTER_OPTIONS = {"exclude_apps": ["account", "headless", "mfa", "usersessions"]}
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")
 DEBUG = False
@@ -22,8 +24,11 @@ ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", ["testserver", "localhost"])
 
 DATABASES = {"default": dj_database_url.parse(env_str("DATABASE_URL", "sqlite://:memory:"))}
 
-# Fast hashing in tests only.
+# Fast hashing in tests only (tests/test_auth_signup.py checks the Argon2id configuration of base).
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+# No calls to the Pwned Passwords API from tests (the validator is tested with a stub).
+BREACHED_PASSWORD_CHECK = False
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —
 # for local data only; never valid in staging/prod (they require NUMO9_FIELD_ENCRYPTION_KEYS).

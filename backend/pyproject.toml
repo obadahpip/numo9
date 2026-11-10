@@ -40,6 +40,11 @@ exclude = ["^\\.venv/", "^staticfiles/"]
 mypy_path = "../tools/ci"
 
 [[tool.mypy.overrides]]
+# django-allauth ships no type information (A-02).
+module = ["allauth", "allauth.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # WeasyPrint ships no type information (A-10-T16).
 module = ["weasyprint", "weasyprint.*"]
 ignore_missing_imports = true

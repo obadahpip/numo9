@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 12:47-0500\n"
+"POT-Creation-Date: 2026-11-10 16:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,6 +28,33 @@ msgid "Important dates"
 msgstr ""
 
 msgid "Accounts"
+msgstr ""
+
+msgid "I'm an accountant"
+msgstr ""
+
+msgid "I run a business"
+msgstr ""
+
+msgid "Who are you?"
+msgstr ""
+
+msgid "Your name"
+msgstr ""
+
+msgid "Practice name"
+msgstr ""
+
+msgid "Business name"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Enter your practice's name, e.g. 'Maple Leaf Accounting'."
+msgstr ""
+
+msgid "Enter your business name, e.g. 'Refined Interiors Inc.'."
 msgstr ""
 
 msgid "English (Canada)"
@@ -67,6 +94,12 @@ msgid "user"
 msgstr ""
 
 msgid "users"
+msgstr ""
+
+msgid "This password has appeared in a data breach, so attackers try it first. Choose a different password."
+msgstr ""
+
+msgid "Your password can't be one that has appeared in a known data breach."
 msgstr ""
 
 msgid "Documents"

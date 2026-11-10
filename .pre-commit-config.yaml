@@ -60,6 +60,8 @@ repos:
           - structlog==26.1.0 # S-03-T06 log scrubbing
           - sentry-sdk[django]==2.73.0 # S-03-T06 Sentry before_send
           - django-migration-linter==6.0.0 # imported by numo9.settings.test (mypy plugin loads it)
+          - django-allauth==65.21.1 # A-02 sign-up/login/reset/2FA (headless)
+          - argon2-cffi==25.1.0 # A-02-T02 Argon2id hasher
 
       - id: eslint
         name: eslint (frontend)
