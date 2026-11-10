@@ -77,7 +77,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-10-T14 — Backend i18n: Django locale middleware, user/org locale, gettext catalogues, error messages as keys
 ✅ A-10-T15 — Glossary lint (en-CA terms: organisation, cheque, Province, Postal code, GST/HST, vacation pay; banned: VAT, State, ZIP, annual leave, Organization, Check(s), Advisor)
 ✅ A-10-T16 — Document template baseline (WeasyPrint): Letter 8.5×11 in, inch margins, Canadian sample data, brand header
-❌ A-10-T17 — No-banner rule: eslint rule/component policy forbidding promo banners inside editor/list layouts; notices go to notification centre
+✅ A-10-T17 — No-banner rule: eslint rule/component policy forbidding promo banners inside editor/list layouts; notices go to notification centre
 ❌ A-10-T18 — Visual regression setup (Chromatic or Playwright snapshots) for components and Phase 0 pages
 ❌ A-10-T19 — a11y suite: axe-core on all Storybook stories and Phase 0 routes; aria labels audit (no leaked hidden headers)
 ❌ A-10-T20 — Usage docs in Storybook (do/don't, microcopy rules §3.5)
