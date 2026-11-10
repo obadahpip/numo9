@@ -104,6 +104,9 @@ class AssignmentRole(models.TextChoices):
 class Practice(models.Model):
     public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
     name = models.CharField(_("name"), max_length=200)
+    # Created on the accountant's behalf when they accept an owner's invitation without having a
+    # practice (A-02-T09): the name is a placeholder until they finish practice onboarding.
+    setup_pending = models.BooleanField(_("set-up pending"), default=False, db_default=False)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
