@@ -104,7 +104,7 @@ flowchart LR
 
 | ID | STRIDE | Threat | Mitigation | Owner task | Status |
 |---|---|---|---|---|---|
-| AUTH-01 | Spoofing | Credential stuffing / password spraying | Login rate limit per IP and per account (429 + `Retry-After`); lockout 15 min after 10 failures; CAPTCHA hook after repeated failures | A-02-T03, S-03-T07 | Planned (this sprint) |
+| AUTH-01 | Spoofing | Credential stuffing / password spraying | Login rate limit per IP and per account (429 + `Retry-After`); lockout 15 min after 10 failures; CAPTCHA hook after repeated failures | A-02-T03, S-03-T07 | In place |
 | AUTH-02 | Spoofing | Weak or breached passwords | ≥ 12 characters, Django validators, breached-password check (HIBP k-anonymity, only a 5-character SHA-1 prefix leaves the server); Argon2id hashing | A-02-T02 | Planned (this sprint) |
 | AUTH-03 | Spoofing | Account created with someone else's email | Email verification required before the first login | A-02-T02 | Planned (this sprint) |
 | AUTH-04 | Spoofing | Stolen password used without second factor | TOTP 2FA (±1 step), 10 single-use hashed recovery codes; mandatory for platform owner and, when enabled, practice admins; remember-device cookie signed and bound to the user, 30 days | A-02-T05, T06 | Planned (this sprint / A-02-T06) |
@@ -114,7 +114,7 @@ flowchart LR
 | AUTH-08 | Tampering | CSRF on state-changing API calls | Django CSRF with HttpOnly cookie + token from `GET /api/v1/auth/csrf`; `CSRF_TRUSTED_ORIGINS`; SameSite=Lax | S-03-T01 | In place |
 | AUTH-09 | Elevation of privilege | Invitation link used by someone else or twice | Token stored as a hash, single use, 7-day expiry, accept bound to the invited email; wrong-account prompt | A-02-T08, T09, T12 | Planned (this sprint) |
 | AUTH-10 | Repudiation | User denies a login, 2FA change or invite | Audit events for login success/fail, 2FA changes, invitation events | A-02-T14 | Planned |
-| AUTH-11 | Denial of service | Attacker locks a victim out by failing their logins on purpose | Lockout is per account *and* short (15 min); successful 2FA/recovery path and reset still work; IP limit stops a single source first | S-03-T07 | Planned (this sprint) — Accepted residual: a distributed attacker can keep an account locked; monitored via audit |
+| AUTH-11 | Denial of service | Attacker locks a victim out by failing their logins on purpose | Lockout is per account *and* short (15 min); successful 2FA/recovery path and reset still work; IP limit stops a single source first | S-03-T07 | In place — Accepted residual: a distributed attacker can keep an account locked; monitored via audit |
 | AUTH-12 | Information disclosure | Passwords, tokens or SIN in logs and error reports | Log scrubbing by key and by shape; Sentry `before_send` scrubbing, no PII | S-03-T06 | In place |
 
 ## 6. Billing and payments (U-01 … U-08, P-01 … P-05)

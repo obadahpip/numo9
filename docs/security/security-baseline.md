@@ -213,3 +213,23 @@ route, static asset).
 flow and trust boundaries, assets, actors, one STRIDE table per area mapping every threat to its
 mitigation, owning atomic task and status, and the accepted residual risks. Re-reviewed before
 each phase exit and whenever a deliverable adds a trust boundary.
+
+## S-03-T07 — Brute-force protection on login
+
+`numo9/security/bruteforce.py`, wired into the allauth adapter (`numo9/accounts/adapter.py`):
+
+| Control | Rule | Answer |
+|---|---|---|
+| Account lockout | 10 failed logins for one email address within 15 minutes lock it for **15 minutes** — every attempt is refused, even with the right password, from any IP | `429`, code `too_many_login_attempts`, `Retry-After: <seconds left>` |
+| Per-IP limits (allauth) | 20 login attempts and 20 failed attempts a minute per IP | `429` |
+| CAPTCHA hook | after 5 failures for an address, a `captcha` token is required in the login body when `NUMO9_CAPTCHA_VERIFIER` names a `verify(token, remote_ip) -> bool` callable (provider wired in Q-02-T03); off when unset; a verifier error counts as "not verified" | `400`, code `captcha_required` |
+
+- The lock is per **address**, whether or not an account exists, so it reveals nothing.
+- Success clears the failure count (not an active lock); a completed password reset clears both.
+- State is in the shared cache (Redis in staging/prod); keys hold a SHA-256 of the address.
+- Settings: `NUMO9_LOGIN_LOCKOUT_THRESHOLD` (10), `NUMO9_LOGIN_LOCKOUT_SECONDS` (900),
+  `NUMO9_LOGIN_CAPTCHA_AFTER` (5), `NUMO9_CAPTCHA_VERIFIER` (env, empty).
+
+Tests: `backend/tests/test_bruteforce.py` — the 11th attempt is locked, the lock lasts exactly
+15 minutes, applies from every IP and only to that address, unknown addresses behave the same,
+casing does not dodge it, success resets the count, CAPTCHA required after 5 failures.

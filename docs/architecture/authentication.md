@@ -54,7 +54,8 @@ Tests: `backend/tests/test_auth_signup.py`.
   Domain, path `/`. The session id is rotated at login (no fixation) and the session is deleted
   at logout, so a copied cookie stops working. CSRF token required on login (`X-CSRFToken`).
 - **Rate limits** (`ACCOUNT_RATE_LIMITS`, counters in the shared Redis cache in staging/prod):
-  20 login attempts a minute per IP; 20 failed attempts a minute per IP; 10 failed attempts per
-  account in 15 minutes (S-03-T07 turns this into a fixed 15-minute lockout).
+  20 login attempts a minute per IP; 20 failed attempts a minute per IP. Per account: 10 failed
+  attempts lock the address for 15 minutes, and a CAPTCHA hook after 5 failures — see
+  [Security baseline § S-03-T07](../security/security-baseline.md#s-03-t07-brute-force-protection-on-login).
 
 Tests: `backend/tests/test_auth_login.py`.
