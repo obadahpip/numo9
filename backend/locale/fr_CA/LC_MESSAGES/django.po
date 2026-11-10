@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 16:19-0500\n"
+"POT-Creation-Date: 2026-11-10 16:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,10 +164,67 @@ msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l�
 msgid "The organisation in the address and the one in the X-Numo9-Org header differ. Send one organisation, or the same one in both."
 msgstr "L’organisation de l’adresse et celle de l’en-tête X-Numo9-Org diffèrent. Envoyez une seule organisation, ou la même dans les deux."
 
+msgid "You can't send this invitation: only the practice's admins invite its staff, and only an organisation's owner or admins invite its users and accountant."
+msgstr "Vous ne pouvez pas envoyer cette invitation : seuls les administrateurs du cabinet invitent son personnel, et seuls le propriétaire ou les administrateurs d’une organisation invitent ses utilisateurs et son comptable."
+
+#, python-format
+msgid "%(email)s is already a member. Change their role instead of inviting them again."
+msgstr "%(email)s est déjà membre. Modifiez son rôle plutôt que de l’inviter de nouveau."
+
+#, python-format
+msgid "%(email)s already has an invitation waiting. Resend it, or revoke it first."
+msgstr "%(email)s a déjà une invitation en attente. Renvoyez-la, ou annulez-la d’abord."
+
+msgid "This organisation already has an owner. Ask the owner to invite you, or to add users."
+msgstr "Cette organisation a déjà un propriétaire. Demandez au propriétaire de vous inviter ou d’ajouter des utilisateurs."
+
+msgid "This invitation link isn't valid. Make sure you copied the whole link from the email."
+msgstr "Ce lien d’invitation n’est pas valide. Assurez-vous d’avoir copié le lien complet du courriel."
+
+msgid "This invitation has already been accepted. Sign in to open it."
+msgstr "Cette invitation a déjà été acceptée. Connectez-vous pour y accéder."
+
+msgid "This invitation was withdrawn by the person who sent it. Ask them for a new one."
+msgstr "Cette invitation a été retirée par la personne qui l’a envoyée. Demandez-lui-en une nouvelle."
+
+#, python-format
+msgid "This invitation expired on %(date)s. Ask the person who sent it to resend it."
+msgstr "Cette invitation a expiré le %(date)s. Demandez à la personne qui l’a envoyée de la renvoyer."
+
+#, python-format
+msgid "This invitation is for %(email)s, but you're signed in as another account. Sign out, then sign in or sign up with %(email)s."
+msgstr "Cette invitation est destinée à %(email)s, mais vous êtes connecté à un autre compte. Déconnectez-vous, puis connectez-vous ou inscrivez-vous avec %(email)s."
+
+msgid "You belong to more than one practice. Choose the practice that will serve this client."
+msgstr "Vous faites partie de plus d’un cabinet. Choisissez le cabinet qui servira ce client."
+
+msgid "This invitation is no longer waiting (accepted, revoked or expired). Send a new one."
+msgstr "Cette invitation n’est plus en attente (acceptée, annulée ou expirée). Envoyez-en une nouvelle."
+
+msgid "This invitation was just sent. Wait a minute before sending it again."
+msgstr "Cette invitation vient d’être envoyée. Attendez une minute avant de la renvoyer."
+
+msgid "This role doesn't fit the invitation: staff get a practice role, users an organisation role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
+msgstr "Ce rôle ne convient pas à l’invitation : le personnel reçoit un rôle de cabinet, les utilisateurs un rôle d’organisation, et un comptable ce que son cabinet fera (p. ex. tenue de livres, impôts)."
+
 msgid "Security"
 msgstr "Sécurité"
 
 msgid "Tenancy"
+msgstr ""
+
+#, python-format
+msgid "%(inviter)s invited you to %(target)s on Numo9"
+msgstr ""
+
+#, python-format
+msgid ""
+"%(inviter)s invited you to join %(target)s on Numo9.\n"
+"\n"
+"Accept the invitation:\n"
+"%(link)s\n"
+"\n"
+"The link works once and expires on %(date)s. If you weren't expecting this invitation, you can ignore this email."
 msgstr ""
 
 #, python-format
@@ -241,6 +298,9 @@ msgid "Tax"
 msgstr ""
 
 msgid "public ID"
+msgstr ""
+
+msgid "set-up pending"
 msgstr ""
 
 msgid "created at"

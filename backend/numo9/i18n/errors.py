@@ -79,3 +79,78 @@ ORG_HEADER_MISMATCH = define(
         "Send one organisation, or the same one in both."
     ),
 )
+
+
+# ---- invitations (A-02-T09) ----------------------------------------------------------------
+INVITATION_NOT_ALLOWED = define(
+    "invitation.not_allowed",
+    _(
+        "You can't send this invitation: only the practice's admins invite its staff, and only "
+        "an organisation's owner or admins invite its users and accountant."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
+INVITATION_ALREADY_MEMBER = define(
+    "invitation.already_member",
+    _("%(email)s is already a member. Change their role instead of inviting them again."),
+    status.HTTP_409_CONFLICT,
+)
+INVITATION_ALREADY_PENDING = define(
+    "invitation.already_pending",
+    _("%(email)s already has an invitation waiting. Resend it, or revoke it first."),
+    status.HTTP_409_CONFLICT,
+)
+INVITATION_HAS_OWNER = define(
+    "invitation.has_owner",
+    _("This organisation already has an owner. Ask the owner to invite you, or to add users."),
+    status.HTTP_409_CONFLICT,
+)
+INVITATION_INVALID = define(
+    "invitation.invalid",
+    _("This invitation link isn't valid. Make sure you copied the whole link from the email."),
+    status.HTTP_404_NOT_FOUND,
+)
+INVITATION_USED = define(
+    "invitation.used",
+    _("This invitation has already been accepted. Sign in to open it."),
+    status.HTTP_410_GONE,
+)
+INVITATION_REVOKED = define(
+    "invitation.revoked",
+    _("This invitation was withdrawn by the person who sent it. Ask them for a new one."),
+    status.HTTP_410_GONE,
+)
+INVITATION_EXPIRED = define(
+    "invitation.expired",
+    _("This invitation expired on %(date)s. Ask the person who sent it to resend it."),
+    status.HTTP_410_GONE,
+)
+INVITATION_WRONG_ACCOUNT = define(
+    "invitation.wrong_account",
+    _(
+        "This invitation is for %(email)s, but you're signed in as another account. Sign out, "
+        "then sign in or sign up with %(email)s."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
+INVITATION_CHOOSE_PRACTICE = define(
+    "invitation.choose_practice",
+    _("You belong to more than one practice. Choose the practice that will serve this client."),
+)
+INVITATION_NOT_PENDING = define(
+    "invitation.not_pending",
+    _("This invitation is no longer waiting (accepted, revoked or expired). Send a new one."),
+    status.HTTP_409_CONFLICT,
+)
+INVITATION_RESEND_TOO_SOON = define(
+    "invitation.resend_too_soon",
+    _("This invitation was just sent. Wait a minute before sending it again."),
+    status.HTTP_429_TOO_MANY_REQUESTS,
+)
+INVITATION_ROLE_INVALID = define(
+    "invitation.role_invalid",
+    _(
+        "This role doesn't fit the invitation: staff get a practice role, users an organisation "
+        "role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
+    ),
+)

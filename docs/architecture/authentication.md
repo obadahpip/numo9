@@ -129,3 +129,34 @@ revoking frees the slot. Status: `pending`, `accepted`, `revoked` or `expired` (
 `expires_at`).
 
 Tests: `backend/tests/test_invitation_model.py`.
+
+### Invitation service and API (A-02-T09)
+
+Service: `backend/numo9/tenancy/invitations.py` · API: `backend/numo9/tenancy/invitations_api.py`.
+
+| Flow | Who may send | Accepting creates |
+|---|---|---|
+| `practice_staff` | a practice admin of the practice | `PracticeMember` with the role |
+| `organisation_owner` | a practice member who reaches the organisation through its practice assignment, while it has no owner | `OrganisationMember` (owner); the practice stays assigned |
+| `organisation_user` | the organisation's owner or an admin | `OrganisationMember` with the role |
+| `organisation_accountant` | the organisation's owner or an admin | `PracticeAssignment` of the accountant's practice (role = what the practice does) with the accountant as assigned staff — reactivated if it existed; an accountant in several practices picks one (`practice`); one with **no practice gets a pending practice** (`Practice.setup_pending`, finished in onboarding) |
+
+| Call | Answer |
+|---|---|
+| `POST /api/v1/invitations` `{kind, email, role?, practice? \| organisation?}` | `201` and the email is sent · `403 invitation.not_allowed` (also for an unknown target) · `409 already_member` / `already_pending` / `has_owner` · `400 role_invalid` |
+| `POST /api/v1/invitations/<id>/resend` | `200`: new link (the old one stops working), fresh 7-day expiry · `429 resend_too_soon` (1 minute) · `404` not yours |
+| `POST /api/v1/invitations/<id>/revoke` | `200` · `409 not_pending` · `404` not yours |
+| `POST /api/v1/invitations/preview` `{token}` | anyone with the link: target, inviter, role, expiry · `404 invalid` · `410 used` / `revoked` / `expired` |
+| `POST /api/v1/invitations/accept` `{token, practice?}` | signed in **as the invited email**: `200` · `403 wrong_account` (names the invited address so the screen can offer to switch) · `410` used/revoked/expired · `400 choose_practice` |
+
+- Links (`<NUMO9_FRONTEND_URL>/invite/<token>`) are emailed in the target's language; the token
+  goes back to the API in the request body, never in a URL, so it stays out of access logs.
+- An invitee who already has an account is attached, never duplicated; a new invitee signs up
+  with the invited email first, then accepts.
+- Sending again while one is waiting is refused (resend it); an expired one is replaced.
+- The routes are not organisation-scoped (practice invitations have no organisation), so they are
+  on the tenant-sweep exempt list; the service checks every object (404 for foreign invitations,
+  the same 403 for an unknown and a foreign target). A-03 replaces the role checks with the
+  permission catalogue.
+
+Tests: `backend/tests/test_invitations.py`.

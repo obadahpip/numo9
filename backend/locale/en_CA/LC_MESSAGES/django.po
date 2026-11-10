@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 16:19-0500\n"
+"POT-Creation-Date: 2026-11-10 16:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,10 +164,67 @@ msgstr ""
 msgid "The organisation in the address and the one in the X-Numo9-Org header differ. Send one organisation, or the same one in both."
 msgstr ""
 
+msgid "You can't send this invitation: only the practice's admins invite its staff, and only an organisation's owner or admins invite its users and accountant."
+msgstr ""
+
+#, python-format
+msgid "%(email)s is already a member. Change their role instead of inviting them again."
+msgstr ""
+
+#, python-format
+msgid "%(email)s already has an invitation waiting. Resend it, or revoke it first."
+msgstr ""
+
+msgid "This organisation already has an owner. Ask the owner to invite you, or to add users."
+msgstr ""
+
+msgid "This invitation link isn't valid. Make sure you copied the whole link from the email."
+msgstr ""
+
+msgid "This invitation has already been accepted. Sign in to open it."
+msgstr ""
+
+msgid "This invitation was withdrawn by the person who sent it. Ask them for a new one."
+msgstr ""
+
+#, python-format
+msgid "This invitation expired on %(date)s. Ask the person who sent it to resend it."
+msgstr ""
+
+#, python-format
+msgid "This invitation is for %(email)s, but you're signed in as another account. Sign out, then sign in or sign up with %(email)s."
+msgstr ""
+
+msgid "You belong to more than one practice. Choose the practice that will serve this client."
+msgstr ""
+
+msgid "This invitation is no longer waiting (accepted, revoked or expired). Send a new one."
+msgstr ""
+
+msgid "This invitation was just sent. Wait a minute before sending it again."
+msgstr ""
+
+msgid "This role doesn't fit the invitation: staff get a practice role, users an organisation role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
+msgstr ""
+
 msgid "Security"
 msgstr ""
 
 msgid "Tenancy"
+msgstr ""
+
+#, python-format
+msgid "%(inviter)s invited you to %(target)s on Numo9"
+msgstr ""
+
+#, python-format
+msgid ""
+"%(inviter)s invited you to join %(target)s on Numo9.\n"
+"\n"
+"Accept the invitation:\n"
+"%(link)s\n"
+"\n"
+"The link works once and expires on %(date)s. If you weren't expecting this invitation, you can ignore this email."
 msgstr ""
 
 #, python-format
@@ -241,6 +298,9 @@ msgid "Tax"
 msgstr ""
 
 msgid "public ID"
+msgstr ""
+
+msgid "set-up pending"
 msgstr ""
 
 msgid "created at"

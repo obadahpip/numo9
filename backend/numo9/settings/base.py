@@ -115,6 +115,9 @@ TENANT_SWEEP_EXEMPT = [
     r"^api/v1/organisations$",  # create an organisation (A-01-T13)
     r"^api/v1/auth/csrf$",  # CSRF token for the web app (S-03-T01)
     r"^_allauth/",  # sign-up, login, reset, 2FA for the signed-in user only (A-02)
+    # Invitations to a practice or an organisation (A-02-T09): not organisation-scoped (practice
+    # invitations have none); every object is checked by numo9.tenancy.invitations (404/403).
+    r"^api/v1/invitations",
 ]
 
 # Overridden per environment.
