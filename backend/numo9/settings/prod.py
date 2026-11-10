@@ -2,7 +2,7 @@
 
 import dj_database_url
 
-from .base import *  # noqa: F403
+from .deployed import *  # noqa: F403
 from .env import env_list, env_str
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", required=True)

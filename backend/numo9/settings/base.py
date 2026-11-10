@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     "numo9.tenancy",
     # Printed documents: WeasyPrint Letter template baseline (A-10-T16).
     "numo9.documents",
+    # Security baseline: CSRF token endpoint, encrypted fields, log scrubbing (S-03).
+    "numo9.security",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -98,10 +100,29 @@ TENANT_SWEEP_EXEMPT = [
     r"^api/v1/me/",  # the signed-in user's own memberships (A-01-T13)
     r"^api/v1/practices$",  # create a practice (A-01-T13)
     r"^api/v1/organisations$",  # create an organisation (A-01-T13)
+    r"^api/v1/auth/csrf$",  # CSRF token for the web app (S-03-T01)
 ]
 
 # Overridden per environment.
 DATABASES: dict[str, Any] = {}
+
+# ---- Security headers and cookies (S-03-T01) -------------------------------------------------
+# Same in every environment; the HTTPS-only flags (Secure cookies, HSTS, SSL redirect) are in
+# settings/deployed.py for staging and prod.
+X_FRAME_OPTIONS = "DENY"
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+# The web app reads the token from GET /api/v1/auth/csrf, not from the cookie.
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = "Lax"
+CSRF_USE_SESSIONS = False
+LANGUAGE_COOKIE_HTTPONLY = False  # the web app reads the locale cookie (A-10-T13)
+LANGUAGE_COOKIE_SAMESITE = "Lax"
+# Session lifetime: two weeks of inactivity at most; A-02 adds the per-practice idle timeout.
+SESSION_COOKIE_AGE = 14 * 24 * 60 * 60
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

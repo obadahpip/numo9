@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 12:12-0500\n"
+"POT-Creation-Date: 2026-11-10 12:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,6 +124,9 @@ msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l�
 
 msgid "The organisation in the address and the one in the X-Numo9-Org header differ. Send one organisation, or the same one in both."
 msgstr "L’organisation de l’adresse et celle de l’en-tête X-Numo9-Org diffèrent. Envoyez une seule organisation, ou la même dans les deux."
+
+msgid "Security"
+msgstr "Sécurité"
 
 msgid "Tenancy"
 msgstr ""

@@ -40,3 +40,15 @@ def env_list(name: str, default: list[str] | None = None, *, required: bool = Fa
             raise ImproperlyConfigured(f"Environment variable {name} is required.")
         return list(default or [])
     return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def env_int(name: str, default: int) -> int:
+    value = os.environ.get(name)
+    if value is None or value.strip() == "":
+        return default
+    try:
+        return int(value.strip())
+    except ValueError:
+        raise ImproperlyConfigured(
+            f"Environment variable {name} must be an integer, got {value!r}."
+        ) from None

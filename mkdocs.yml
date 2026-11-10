@@ -80,6 +80,7 @@ nav:
       - "Accessibility suite": design/accessibility.md
   - Security:
       - "Data-residency register": security/data-residency-register.md
+      - "Security baseline (S-03)": security/security-baseline.md
   - Project:
       - Project plan: Numo9_Project_Plan.md
       - Project phases: Project_Phases.md

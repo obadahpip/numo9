@@ -79,6 +79,15 @@ jobs:
       - name: Migrations are up to date
         run: python manage.py makemigrations --check --dry-run
 
+      - name: Security settings — check --deploy, 0 warnings (staging, prod; S-03-T01)
+        run: |
+          for module in staging prod; do
+            DJANGO_SETTINGS_MODULE="numo9.settings.$module" \
+            DJANGO_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(64))')" \
+            DJANGO_ALLOWED_HOSTS=app.numo9.ca DATABASE_URL=sqlite:///:memory: \
+              python manage.py check --deploy --fail-level WARNING
+          done
+
       - name: Migration linter
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
