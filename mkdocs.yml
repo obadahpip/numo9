@@ -71,6 +71,7 @@ nav:
   - Design:
       - "Brand tokens": design/brand-tokens.md
       - "Phase 0 wireframes": design/wireframes.md
+      - "LineGrid (document lines)": design/line-grid.md
   - Security:
       - "Data-residency register": security/data-residency-register.md
   - Project:
