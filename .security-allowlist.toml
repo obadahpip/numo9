@@ -1,0 +1,26 @@
+# Accepted scanner findings (S-03-T09) — read by tools/ci/scan_gate.py in the Security workflow.
+#
+# pip-audit (any finding), pnpm audit (high/critical) and Trivy (fixable high/critical, and any
+# secret in an image) fail the build unless the finding is listed here. Every entry needs:
+#
+#   scanner        "pip-audit" | "npm" | "trivy"
+#   package        package name as the scanner reports it (pip/npm package, OS package for Trivy)
+#   id             the finding id or one of its aliases: CVE-…, GHSA-…, PYSEC-…, Trivy rule id
+#   justification  why the risk is accepted and how it is mitigated (>= 40 characters)
+#   owner          who re-reviews it (name or GitHub handle)
+#   expires        TOML date, at most 90 days ahead; an expired entry fails the build
+#   ticket         optional link to the issue tracking the fix
+#
+# Adding an entry is a reviewed change (CODEOWNERS: project lead). Prefer upgrading the package;
+# an entry is for a finding that cannot be fixed yet or does not apply to how Numo9 uses the code.
+#
+# Example:
+#
+# [[finding]]
+# scanner = "npm"
+# package = "example-lib"
+# id = "GHSA-xxxx-xxxx-xxxx"
+# justification = "Build-time only (Storybook); never shipped in the runtime image. Upgrade blocked until example-lib 3 supports React 19."
+# owner = "obadahpip"
+# expires = 2027-01-31
+# ticket = "https://github.com/obadahpip/numo9/issues/123"

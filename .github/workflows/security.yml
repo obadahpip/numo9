@@ -39,11 +39,28 @@ jobs:
             docs/requirements.txt
       - name: Install pip-audit
         run: pip install "pip-audit==${PIP_AUDIT_VERSION}"
-      - name: Audit runtime + dev requirements (fails on any known vulnerability)
-        run: pip-audit -r backend/requirements/dev.txt --progress-spinner off --desc
+      # S-03-T09: pip-audit writes JSON; scan_gate fails on any finding not on the justified
+      # allow-list (.security-allowlist.toml) and on a missing report (pip-audit crashed).
+      - name: Audit runtime + dev requirements
+        run: |
+          pip-audit -r backend/requirements/dev.txt --progress-spinner off --desc \
+            -f json -o pip-audit-backend.json || true
+          python3 tools/ci/scan_gate.py pip-audit pip-audit-backend.json
 
       - name: Audit documentation tooling (docs/requirements.txt)
-        run: pip-audit -r docs/requirements.txt --progress-spinner off --desc
+        if: success() || failure()
+        run: |
+          pip-audit -r docs/requirements.txt --progress-spinner off --desc \
+            -f json -o pip-audit-docs.json || true
+          python3 tools/ci/scan_gate.py pip-audit pip-audit-docs.json
+
+      - name: Upload pip-audit reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pip-audit-reports
+          path: pip-audit-*.json
+          if-no-files-found: ignore
 
   npm-audit:
     name: npm audit (pnpm lockfile, fail on high)
@@ -57,8 +74,32 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: pnpm audit
-        run: pnpm audit --audit-level high
+      # S-03-T09: high/critical advisories fail unless allow-listed with a justification.
+      - name: pnpm audit (gated by scan_gate, fail on high)
+        run: |
+          pnpm audit --json > pnpm-audit.json || true
+          python3 tools/ci/scan_gate.py npm pnpm-audit.json --min-severity high
+      - name: Upload pnpm audit report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pnpm-audit-report
+          path: pnpm-audit.json
+          if-no-files-found: ignore
+
+  scan-allowlist:
+    # S-03-T09: every accepted scanner finding has a justification, an owner and an expiry at
+    # most 90 days ahead; an expired entry fails here (and in every scan job) until re-reviewed.
+    name: scan allow-list (justified, not expired)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Validate .security-allowlist.toml
+        run: python3 tools/ci/scan_gate.py validate
 
   gitleaks:
     name: gitleaks (full history)
@@ -139,17 +180,29 @@ jobs:
           path: .trivy-cache
           key: trivy-db-${{ runner.os }}-${{ github.run_id }}
           restore-keys: trivy-db-${{ runner.os }}-
-      - name: Scan image (fail on fixable HIGH/CRITICAL)
-        # --ignore-unfixed: OS CVEs with no published fix cannot be remediated; the justified
-        # allow-list for accepted findings is added in S-03-T09.
+      - name: Scan image (JSON report)
+        # --ignore-unfixed: OS CVEs with no published fix cannot be remediated. Trivy writes the
+        # report and exits 0; scan_gate decides (next step).
         run: >-
           docker run --rm
           -v /var/run/docker.sock:/var/run/docker.sock
           -v "$PWD/.trivy-cache:/root/.cache"
+          -v "$PWD:/out"
           "$TRIVY_IMAGE" image
           --severity HIGH,CRITICAL
           --ignore-unfixed
           --scanners vuln,secret
-          --exit-code 1
+          --format json
+          --output "/out/trivy-${{ matrix.image }}.json"
+          --exit-code 0
           --no-progress
           "numo9-${{ matrix.image }}:ci"
+      - name: Gate (fail on fixable HIGH/CRITICAL or any secret not on the allow-list, S-03-T09)
+        run: python3 tools/ci/scan_gate.py trivy "trivy-${{ matrix.image }}.json" --min-severity high
+      - name: Upload Trivy report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: trivy-${{ matrix.image }}-report
+          path: trivy-${{ matrix.image }}.json
+          if-no-files-found: ignore
