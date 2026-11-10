@@ -7,8 +7,8 @@ reaches the console, a file or the log pipeline unscrubbed. ``configure_structlo
 same chain for ``structlog.get_logger()``.
 
 ``init_sentry`` starts Sentry only when ``SENTRY_DSN`` is set, collecting no user identity,
-request bodies, frame variables or SQL parameters, and ``before_send`` / ``before_send_transaction`` / ``before_breadcrumb``
-scrubbing every event.
+request bodies, frame variables or SQL parameters, and ``before_send`` /
+``before_send_transaction`` / ``before_breadcrumb`` scrubbing every event.
 """
 
 from __future__ import annotations
