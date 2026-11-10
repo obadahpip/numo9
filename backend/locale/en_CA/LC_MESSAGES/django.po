@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 05:33-0500\n"
+"POT-Creation-Date: 2026-11-10 12:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,6 +67,56 @@ msgid "user"
 msgstr ""
 
 msgid "users"
+msgstr ""
+
+msgid "Documents"
+msgstr ""
+
+msgid "Prepared with Numo9"
+msgstr ""
+
+msgid "Numbers build a brighter tomorrow"
+msgstr ""
+
+#, python-format
+msgid "GST/HST registration: %(bn)s"
+msgstr ""
+
+msgid "Sample document"
+msgstr ""
+
+msgid "Bill to"
+msgstr ""
+
+msgid "Number"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Due date"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Quantity"
+msgstr ""
+
+msgid "Unit price"
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "Subtotal"
+msgstr ""
+
+msgid "Total (CAD)"
+msgstr ""
+
+#, python-format
+msgid "Page %(page)s of %(pages)s"
 msgstr ""
 
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."

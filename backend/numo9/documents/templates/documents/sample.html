@@ -1,0 +1,52 @@
+{% extends "documents/base.html" %}
+{% load i18n documents %}
+{% comment %}A-10-T16 — sample document on the baseline (Canadian sample data, gap-43).{% endcomment %}
+{% block title %}{% translate "Sample document" %} {{ document_number }}{% endblock %}
+{% block style %}
+  .parties { display: flex; justify-content: space-between; margin-block-end: 18pt; }
+  .meta td { border: 0; padding: 1pt 0 1pt 12pt; }
+  .totals { width: 45%; margin-inline-start: auto; margin-block-start: 12pt; }
+  .totals td { border: 0; }
+  .totals .grand td { border-block-start: 1.5pt solid #111111; font-weight: 700; padding-block-start: 6pt; }
+{% endblock %}
+{% block content %}
+  <h1>{% translate "Sample document" %}</h1>
+  <div class="parties">
+    <div>
+      <div class="muted">{% translate "Bill to" %}</div>
+      <strong>{{ customer.legal_name }}</strong><br>
+      {{ customer.address_line }}<br>
+      {{ customer.city }} {{ customer.province }}&nbsp;&nbsp;{{ customer.postal_code }}
+    </div>
+    <table class="meta" style="width:auto">
+      <tr><td class="muted">{% translate "Number" %}</td><td>{{ document_number }}</td></tr>
+      <tr><td class="muted">{% translate "Date" %}</td><td>{{ issue_date|docdate:document_locale }}</td></tr>
+      <tr><td class="muted">{% translate "Due date" %}</td><td>{{ due_date|docdate:document_locale }}</td></tr>
+    </table>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>{% translate "Description" %}</th>
+        <th class="num">{% translate "Quantity" %}</th>
+        <th class="num">{% translate "Unit price" %}</th>
+        <th class="num">{% translate "Amount" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for line in lines %}
+      <tr>
+        <td>{{ line.description }}</td>
+        <td class="num">{{ line.quantity }}</td>
+        <td class="num">{{ line.unit|money:document_locale }}</td>
+        <td class="num">{{ line.amount|money:document_locale }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table class="totals">
+    <tr><td>{% translate "Subtotal" %}</td><td class="num">{{ subtotal|money:document_locale }}</td></tr>
+    <tr><td>{{ tax_label }}</td><td class="num">{{ tax|money:document_locale }}</td></tr>
+    <tr class="grand"><td>{% translate "Total (CAD)" %}</td><td class="num">{{ total|money:document_locale }}</td></tr>
+  </table>
+{% endblock %}

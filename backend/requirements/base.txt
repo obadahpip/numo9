@@ -5,3 +5,5 @@ psycopg[binary]==3.3.8
 gunicorn==26.2.0
 djangorestframework==3.18.3
 drf-spectacular==0.30.0
+# PDF documents (A-10-T16); needs Pango (libpango-1.0-0, libpangoft2-1.0-0) in the image
+weasyprint==70.0

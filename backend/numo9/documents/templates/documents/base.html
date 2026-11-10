@@ -1,0 +1,75 @@
+{% load i18n documents %}<!doctype html>
+{% comment %}
+  A-10-T16 — document template baseline. Every printed document extends this file.
+  Page geometry is fixed here: Letter 8.5 × 11 in, 1 in margins (gap-43). Self-contained:
+  inline CSS only, no external URLs (the renderer refuses them).
+  Brand colours mirror packages/ui/tokens/tokens.json (checked by tests/test_documents_pdf.py).
+{% endcomment %}
+<html lang="{{ document_locale }}">
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{% endblock %}</title>
+<style>
+  @page {
+    size: letter;
+    margin: 1in;
+    @bottom-left {
+      content: "{% translate 'Prepared with Numo9' %}";
+      font: 8pt "Inter", "DejaVu Sans", sans-serif;
+      color: #5B6472;
+    }
+    @bottom-right {
+      content: {% page_counter_css %};
+      font: 8pt "Inter", "DejaVu Sans", sans-serif;
+      color: #5B6472;
+    }
+  }
+  html { font: 10pt/1.4 "Inter", "DejaVu Sans", sans-serif; color: #111111; }
+  body { margin: 0; }
+  .brand-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-block-end: 12pt;
+    border-block-end: 2pt solid #111111;
+    margin-block-end: 18pt;
+  }
+  .brand-mark {
+    display: inline-block;
+    background: #FFD100;
+    color: #111111;
+    font-weight: 700;
+    font-size: 16pt;
+    letter-spacing: 1pt;
+    padding: 4pt 10pt;
+  }
+  .brand-tagline { font-size: 8pt; color: #5B6472; margin-block-start: 4pt; }
+  .issuer { text-align: end; font-size: 9pt; }
+  .issuer strong { font-size: 11pt; }
+  h1 { font-size: 18pt; margin: 0 0 12pt; }
+  .muted { color: #5B6472; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: start; font-size: 8pt; text-transform: uppercase; color: #5B6472;
+       border-block-end: 1pt solid #D9DCE1; padding: 4pt 0; }
+  td { padding: 4pt 0; border-block-end: 0.5pt solid #EEF0F3; vertical-align: top; }
+  .num { text-align: end; font-variant-numeric: tabular-nums; }
+  {% block style %}{% endblock %}
+</style>
+</head>
+<body>
+  <header class="brand-header">
+    <div>
+      <div class="brand-mark">NUMO9</div>
+      <div class="brand-tagline">{% translate "Numbers build a brighter tomorrow" %}</div>
+    </div>
+    <div class="issuer">
+      <strong>{{ issuer.legal_name }}</strong><br>
+      {{ issuer.address_line }}<br>
+      {{ issuer.city }} {{ issuer.province }}&nbsp;&nbsp;{{ issuer.postal_code }}<br>
+      {% if issuer.business_number %}{% blocktranslate with bn=issuer.business_number %}GST/HST registration: {{ bn }}{% endblocktranslate %}<br>{% endif %}
+      {% if issuer.phone %}{{ issuer.phone }}{% endif %}{% if issuer.email %} · {{ issuer.email }}{% endif %}
+    </div>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>
