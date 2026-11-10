@@ -71,3 +71,31 @@ SOPS + age encrypted environment files in the repository, decrypted only on the 
 rotation steps: [Secrets and rotation runbook](secrets-runbook.md). Checks: gitleaks with
 `.gitleaks.toml` (security workflow + pre-commit), `tools/ci/check_secrets.py`, and
 `infra/secrets/tests/test_secrets.sh` (security workflow job `secrets`).
+
+## S-03-T04 — `EncryptedField` and key rotation
+
+`numo9.security.fields.EncryptedField` stores a value envelope-encrypted (`numo9/security/crypto.py`):
+
+- a random 256-bit **data key** per value encrypts it with AES-256-GCM; the data key is wrapped
+  (AES-256-GCM) by a **key-encryption key** from the key ring;
+- stored text: `n9e1:<key id>:<wrapped data key>:<ciphertext>` — the key id travels with the value;
+- both layers authenticate `app_label.Model.field`, so a value copied into another column or
+  edited in the database fails to decrypt;
+- only `isnull` lookups (no filtering/ordering on encrypted values); cannot be indexed or unique;
+  `max_length` validates the plain value.
+
+Key ring (from the SOPS-encrypted environment, S-03-T03):
+
+```text
+NUMO9_FIELD_ENCRYPTION_KEYS={"2026-11": "<base64 32 bytes>"}
+NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY=2026-11
+```
+
+`manage.py generate_field_key 2026-11` prints a new entry. `check --deploy` fails with
+`security.E100` when the ring is missing or invalid and `security.E102` if the development key
+(`*-local`, dev/test settings) is in it.
+
+Rotation (no downtime): add the new key and make it active → deploy →
+`manage.py rotate_field_encryption` (re-wraps every data key, all organisations, in batches;
+`--dry-run` counts, `--check` fails while any value is on an old key) → remove the old key.
+Tests: `backend/tests/test_encrypted_field.py`.

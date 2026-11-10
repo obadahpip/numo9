@@ -4,6 +4,7 @@ redirect (health check exempt) and the CSRF token endpoint."""
 
 from __future__ import annotations
 
+import base64
 import json
 import os
 import secrets
@@ -26,6 +27,8 @@ ENV_KEYS = (
     "DJANGO_SECURE_HSTS_SECONDS",
     "DJANGO_CSRF_TRUSTED_ORIGINS",
     "DJANGO_SECRET_KEY_FALLBACKS",
+    "NUMO9_FIELD_ENCRYPTION_KEYS",
+    "NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY",
 )
 
 
@@ -36,6 +39,9 @@ def _env(module: str, **extra: str) -> dict[str, str]:
         DJANGO_SECRET_KEY=secrets.token_urlsafe(64),
         DJANGO_ALLOWED_HOSTS="app.numo9.ca",
         DATABASE_URL="sqlite:///:memory:",
+        # Field-encryption key ring (S-03-T04), required by check --deploy.
+        NUMO9_FIELD_ENCRYPTION_KEYS=json.dumps({"k1": base64.b64encode(os.urandom(32)).decode()}),
+        NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY="k1",
     )
     env.update(extra)
     return env
@@ -173,6 +179,14 @@ def test_local_settings_work_over_http(module: str) -> None:
     # Headers and HttpOnly/SameSite are the same everywhere.
     assert s["X_FRAME_OPTIONS"] == "DENY"
     assert s["CSRF_COOKIE_HTTPONLY"] is True
+
+
+def test_check_deploy_requires_field_encryption_keys() -> None:
+    result = _check_deploy(
+        "prod", NUMO9_FIELD_ENCRYPTION_KEYS="", NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY=""
+    )
+    assert result.returncode != 0
+    assert "security.E100" in result.stdout + result.stderr
 
 
 def test_invalid_hsts_seconds_is_rejected() -> None:
