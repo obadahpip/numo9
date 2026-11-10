@@ -3,6 +3,8 @@ import path from "node:path";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { headerRules } from "./src/security/headers";
+
 // next-intl (A-10-T13): request config with the locale and ICU catalogues.
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -17,6 +19,8 @@ const nextConfig: NextConfig = {
   ...(process.env.NEXT_OUTPUT === "standalone" ? { output: "standalone" as const } : {}),
   // pnpm workspace: trace dependencies from the repository root.
   outputFileTracingRoot: path.join(process.cwd(), ".."),
+  // Security headers on every route (S-03-T10); pages add their nonce CSP in the middleware.
+  headers: async () => headerRules(process.env.NODE_ENV === "production"),
 };
 
 export default withNextIntl(nextConfig);
