@@ -1,9 +1,10 @@
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { vi } from "vitest";
 
 import { AppShell } from "./AppShell";
+import { renderWithIntl } from "@/test/intl";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
@@ -21,7 +22,7 @@ afterEach(() => {
 
 describe("Numo9 AppShell (A-10-T05)", () => {
   it("shows the organisation's primary navigation with the current module marked", () => {
-    render(
+    renderWithIntl(
       <AppShell org="acme" modulePath="accounting/journals">
         <h1>Journals</h1>
       </AppShell>,
@@ -46,7 +47,7 @@ describe("Numo9 AppShell (A-10-T05)", () => {
   });
 
   it("builds breadcrumbs from the organisation and the module", () => {
-    render(
+    renderWithIntl(
       <AppShell org="acme" modulePath="settings/lock-dates">
         <p>body</p>
       </AppShell>,
@@ -61,7 +62,7 @@ describe("Numo9 AppShell (A-10-T05)", () => {
 
   it("labels every control from the en-CA catalogue", async () => {
     const user = userEvent.setup();
-    render(
+    renderWithIntl(
       <AppShell org="acme" modulePath="home">
         <p>body</p>
       </AppShell>,
@@ -82,7 +83,7 @@ describe("Numo9 AppShell (A-10-T05)", () => {
   });
 
   it("outside an organisation renders the shell without module links", () => {
-    render(
+    renderWithIntl(
       <AppShell>
         <p>body</p>
       </AppShell>,

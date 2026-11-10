@@ -1,7 +1,13 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 
-import { NotFoundSearch, queryFromPath, searchDestinations } from "./NotFoundSearch";
+import {
+  buildDestinations,
+  NotFoundSearch,
+  queryFromPath,
+  searchDestinations,
+} from "./NotFoundSearch";
+import { renderWithIntl, testFormatMessage } from "@/test/intl";
 
 const pathname = vi.hoisted(() => ({ value: "/" }));
 vi.mock("next/navigation", () => ({ usePathname: () => pathname.value }));
@@ -18,7 +24,8 @@ describe("queryFromPath", () => {
 });
 
 describe("searchDestinations", () => {
-  const labels = (query: string) => searchDestinations(query).map((d) => d.label);
+  const destinations = buildDestinations(testFormatMessage());
+  const labels = (query: string) => searchDestinations(query, destinations).map((d) => d.label);
 
   it("lists every page for an empty query", () => {
     expect(labels("")).toContain("Home");
@@ -41,7 +48,7 @@ describe("searchDestinations", () => {
 describe("NotFoundSearch", () => {
   it("pre-fills the search from the broken URL and links to the page", () => {
     pathname.value = "/o/acme/jornals";
-    render(<NotFoundSearch />);
+    renderWithIntl(<NotFoundSearch />);
 
     expect(screen.getByRole("searchbox", { name: "Search pages" })).toHaveValue("jornals");
     const list = screen.getByRole("list", { name: "Matching pages" });
@@ -53,7 +60,7 @@ describe("NotFoundSearch", () => {
 
   it("filters as the user types and explains when nothing matches", () => {
     pathname.value = "/nowhere";
-    render(<NotFoundSearch />);
+    renderWithIntl(<NotFoundSearch />);
     const box = screen.getByRole("searchbox", { name: "Search pages" });
 
     fireEvent.change(box, { target: { value: "contacts" } });

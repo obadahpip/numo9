@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { OrgSwitcher } from "@/components/OrgSwitcher";
-import { defineMessages, formatMessage } from "@/i18n";
+import { defineMessages, useFormatMessage } from "@/i18n";
 import { primaryNav } from "@/routing/navigation";
 import { findOrgModule, orgModuleUrl } from "@/routing/routes";
 
@@ -84,39 +84,40 @@ interface AppShellProps {
  * (A-02) plug into the shell's slots as those deliverables land.
  */
 export function AppShell({ org, modulePath, children }: Readonly<AppShellProps>) {
+  const fm = useFormatMessage();
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
   const homeHref = org ? orgModuleUrl(org, "home") : "/";
 
   const breadcrumbs: ShellCrumb[] = [];
   if (org) breadcrumbs.push({ label: org, href: homeHref });
-  breadcrumbs.push({ label: formatMessage(entry?.label ?? messages.home) });
+  breadcrumbs.push({ label: fm(entry?.label ?? messages.home) });
 
   return (
     <Shell
       labels={{
-        skipToContent: formatMessage(messages.skipToContent),
-        primaryNav: formatMessage(messages.mainNav),
-        breadcrumbs: formatMessage(messages.breadcrumbs),
-        openMenu: formatMessage(messages.openMenu),
-        closeMenu: formatMessage(messages.closeMenu),
-        mobileNav: formatMessage(messages.mobileNav),
+        skipToContent: fm(messages.skipToContent),
+        primaryNav: fm(messages.mainNav),
+        breadcrumbs: fm(messages.breadcrumbs),
+        openMenu: fm(messages.openMenu),
+        closeMenu: fm(messages.closeMenu),
+        mobileNav: fm(messages.mobileNav),
       }}
-      brand={{ label: formatMessage(messages.brandHome), href: homeHref }}
-      nav={org ? primaryNav(org, modulePath) : []}
+      brand={{ label: fm(messages.brandHome), href: homeHref }}
+      nav={org ? primaryNav(fm, org, modulePath) : []}
       breadcrumbs={breadcrumbs}
       orgSwitcher={
         org ? (
           <OrgSwitcher org={org} modulePath={entry?.path} linkComponent={NextLink} />
         ) : undefined
       }
-      notifications={{ label: formatMessage(messages.notifications) }}
+      notifications={{ label: fm(messages.notifications) }}
       user={{
-        label: formatMessage(messages.userMenu),
+        label: fm(messages.userMenu),
         items: org
           ? [
               {
                 id: "org-settings",
-                label: formatMessage(messages.orgSettings),
+                label: fm(messages.orgSettings),
                 href: orgModuleUrl(org, "settings/general"),
               },
             ]

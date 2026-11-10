@@ -1,6 +1,10 @@
 import path from "node:path";
 
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+// next-intl (A-10-T13): request config with the locale and ICU catalogues.
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -15,4 +19,4 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(process.cwd(), ".."),
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
