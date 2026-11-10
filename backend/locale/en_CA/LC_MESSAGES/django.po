@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 16:12-0500\n"
+"POT-Creation-Date: 2026-11-10 16:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -298,4 +298,61 @@ msgid "created by"
 msgstr ""
 
 msgid "deleted at"
+msgstr ""
+
+msgid "Practice invites a staff member"
+msgstr ""
+
+msgid "Practice invites the organisation's owner"
+msgstr ""
+
+msgid "Organisation invites a user"
+msgstr ""
+
+msgid "Organisation invites its accountant"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Revoked"
+msgstr ""
+
+msgid "Expired"
+msgstr ""
+
+msgid "type"
+msgstr ""
+
+msgid "invited by"
+msgstr ""
+
+msgid "token hash"
+msgstr ""
+
+msgid "expires at"
+msgstr ""
+
+msgid "accepted at"
+msgstr ""
+
+msgid "accepted by"
+msgstr ""
+
+msgid "revoked at"
+msgstr ""
+
+msgid "times sent"
+msgstr ""
+
+msgid "last sent at"
+msgstr ""
+
+msgid "invitation"
+msgstr ""
+
+msgid "invitations"
 msgstr ""
