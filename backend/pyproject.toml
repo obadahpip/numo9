@@ -37,6 +37,11 @@ strict = true
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 exclude = ["^\\.venv/", "^staticfiles/"]
 
+[[tool.mypy.overrides]]
+# WeasyPrint ships no type information (A-10-T16).
+module = ["weasyprint", "weasyprint.*"]
+ignore_missing_imports = true
+
 [tool.django-stubs]
 django_settings_module = "numo9.settings.test"
 

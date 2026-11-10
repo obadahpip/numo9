@@ -57,6 +57,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements/dev.txt
 
+      - name: Install Pango and fonts (WeasyPrint PDF documents, A-10-T16)
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-inter fonts-dejavu-core
+
       - name: Cache mypy
         uses: actions/cache@v6
         with:
@@ -293,6 +296,8 @@ jobs:
           cache-dependency-path: backend/requirements/*.txt
       - name: Install dependencies
         run: pip install -r backend/requirements/dev.txt
+      - name: Install Pango and fonts (WeasyPrint, gap-43 document tests)
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-inter fonts-dejavu-core
       - name: Gap-closure tests (marker gap)
         run: bash tools/ci/pytest_marker.sh gap -v
 

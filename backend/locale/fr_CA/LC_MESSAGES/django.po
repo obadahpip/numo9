@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 05:33-0500\n"
+"POT-Creation-Date: 2026-11-10 12:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -68,6 +68,56 @@ msgstr ""
 
 msgid "users"
 msgstr ""
+
+msgid "Documents"
+msgstr "Documents"
+
+msgid "Prepared with Numo9"
+msgstr "Préparé avec Numo9"
+
+msgid "Numbers build a brighter tomorrow"
+msgstr "Les chiffres bâtissent un avenir meilleur"
+
+#, python-format
+msgid "GST/HST registration: %(bn)s"
+msgstr "Inscription TPS/TVH : %(bn)s"
+
+msgid "Sample document"
+msgstr "Document type"
+
+msgid "Bill to"
+msgstr "Facturer à"
+
+msgid "Number"
+msgstr "Numéro"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Due date"
+msgstr "Date d’échéance"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Quantity"
+msgstr "Quantité"
+
+msgid "Unit price"
+msgstr "Prix unitaire"
+
+msgid "Amount"
+msgstr "Montant"
+
+msgid "Subtotal"
+msgstr "Sous-total"
+
+msgid "Total (CAD)"
+msgstr "Total (CAD)"
+
+#, python-format
+msgid "Page %(page)s of %(pages)s"
+msgstr "Page %(page)s de %(pages)s"
 
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
 msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l’un de vos cabinets."

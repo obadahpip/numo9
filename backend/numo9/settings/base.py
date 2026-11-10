@@ -18,6 +18,8 @@ INSTALLED_APPS = [
     # Project apps first so their templates/static override contrib defaults.
     "numo9.accounts",
     "numo9.tenancy",
+    # Printed documents: WeasyPrint Letter template baseline (A-10-T16).
+    "numo9.documents",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

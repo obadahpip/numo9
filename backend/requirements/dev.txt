@@ -10,3 +10,4 @@ ruff==0.17.4
 mypy==2.4.1
 django-stubs[compatible-mypy]==6.1.2
 djangorestframework-stubs==3.18.1
+pypdf==6.21.4

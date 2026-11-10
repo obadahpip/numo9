@@ -13,6 +13,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     VIRTUAL_ENV=/opt/venv \
     PATH=/opt/venv/bin:$PATH
 WORKDIR /app
+# WeasyPrint (PDF documents, A-10-T16) needs Pango/HarfBuzz and fonts: Inter (brand type),
+# DejaVu as fallback for characters Inter lacks.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-inter fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
 
 # ---- builder: runtime dependencies into a venv --------------------------------
 FROM base AS builder
