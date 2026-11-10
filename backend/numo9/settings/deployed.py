@@ -24,5 +24,11 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 LANGUAGE_COOKIE_SECURE = True
 
+# ---- Secrets (S-03-T03) -----------------------------------------------------------------------
+# Rotating DJANGO_SECRET_KEY without signing everyone out: the new key signs, the previous key(s)
+# listed here still verify sessions, password-reset links and signed values until they expire
+# (docs/security/secrets-runbook.md). Values come from the SOPS-encrypted environment file.
+SECRET_KEY_FALLBACKS = env_list("DJANGO_SECRET_KEY_FALLBACKS", [])
+
 # Origins allowed to send unsafe requests, e.g. "https://app.numo9.ca,https://console.numo9.ca".
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", [])

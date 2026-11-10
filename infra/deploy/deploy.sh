@@ -24,6 +24,8 @@
 #   HEALTH_RETRIES   default: 30
 #   HEALTH_INTERVAL  default: 5 (seconds)
 #   PULL             default: 1 (set 0 to use local images; tests only)
+#   SOPS_ENV_FILE    default: secrets.sops.env — decrypted to .env when present (S-03-T03)
+#   SOPS_AGE_KEY_FILE default: /etc/numo9/age/host.key (this host's age private key)
 set -euo pipefail
 
 log() { printf '%s deploy: %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*" >&2; }
@@ -54,6 +56,22 @@ mkdir "$LOCK_DIR" 2>/dev/null || die 2 "another deploy is running (remove $LOCK_
 trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
 
 PREVIOUS_TAG="$(cat "$STATE_DIR/current_tag" 2>/dev/null || true)"
+
+# Secrets (S-03-T03): when the workflow uploaded the SOPS-encrypted environment file, decrypt it
+# to .env (mode 600, read by Compose) with this host's own age key. Never logged, never committed.
+SOPS_ENV_FILE="${SOPS_ENV_FILE:-secrets.sops.env}"
+if [[ -f "$SOPS_ENV_FILE" ]]; then
+  export SOPS_AGE_KEY_FILE="${SOPS_AGE_KEY_FILE:-/etc/numo9/age/host.key}"
+  command -v sops >/dev/null 2>&1 || die 2 "$SOPS_ENV_FILE present but sops is not installed"
+  secrets_tmp="$(mktemp "$APP_DIR/.env.XXXXXX")"
+  chmod 600 "$secrets_tmp"
+  if ! sops decrypt --input-type dotenv --output-type dotenv "$SOPS_ENV_FILE" >"$secrets_tmp"; then
+    rm -f "$secrets_tmp"
+    die 1 "could not decrypt $SOPS_ENV_FILE with $SOPS_AGE_KEY_FILE; nothing changed"
+  fi
+  mv "$secrets_tmp" .env
+  log "secrets: $SOPS_ENV_FILE decrypted to .env"
+fi
 
 compose() { NUMO9_TAG="$1" docker compose -f "$COMPOSE_FILE" "${@:2}"; }
 
