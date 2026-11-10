@@ -128,8 +128,23 @@ jobs:
         uses: actions/cache@v6
         with:
           path: frontend/.next/cache
-          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('frontend/src/**', 'frontend/*.ts', 'frontend/*.mjs') }}
+          key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('frontend/src/**', 'frontend/*.ts', 'frontend/*.mjs', 'packages/ui/src/**') }}
           restore-keys: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+
+      - name: design tokens up to date (@numo9/ui)
+        run: pnpm --filter @numo9/ui run tokens:check
+
+      - name: token contrast ≥ 4.5:1 (@numo9/ui, A-10-T04)
+        run: pnpm --filter @numo9/ui run contrast
+
+      - name: tsc (@numo9/ui)
+        run: pnpm --filter @numo9/ui run typecheck
+
+      - name: vitest (@numo9/ui)
+        run: pnpm --filter @numo9/ui run test
+
+      - name: Storybook build (@numo9/ui)
+        run: pnpm --filter @numo9/ui run build-storybook
 
       - name: eslint
         run: pnpm --filter @numo9/frontend run lint
@@ -146,7 +161,10 @@ jobs:
       - name: next build
         run: pnpm --filter @numo9/frontend run build
 
-      - name: gap-02 redirect crawl (Playwright, request-level)
+      - name: Install Playwright Chromium
+        run: pnpm --filter @numo9/frontend exec playwright install --with-deps chromium
+
+      - name: Playwright (gap-02 redirect crawl, A-10-T05 app shell 360–1440 px)
         run: pnpm --filter @numo9/frontend run test:e2e
 
   docs:
