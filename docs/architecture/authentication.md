@@ -40,3 +40,21 @@ say where the user stands: `meta.is_authenticated`, and `data.flows` with the pe
   warning in the log, if the API is unreachable (`NUMO9_BREACHED_PASSWORD_CHECK`).
 
 Tests: `backend/tests/test_auth_signup.py`.
+
+## Login, logout and sessions (A-02-T03)
+
+| Call | Answer |
+|---|---|
+| `POST /_allauth/browser/v1/auth/login` `{email, password}` | **200** signed in (`meta.is_authenticated: true`, `data.user`) · **401** pending step (e.g. `verify_email`, `mfa_authenticate`) or wrong email/password (`email_password_mismatch` — the same for an unknown email) · **400** malformed input · **429** rate limited or account locked, with `Retry-After` |
+| `GET /_allauth/browser/v1/auth/session` | 200 signed in · 401 not signed in |
+| `DELETE /_allauth/browser/v1/auth/session` | logs out: the session is flushed server-side; answer 401 (signed-out state) |
+
+- **Session cookie hardening** — HttpOnly, SameSite=Lax everywhere; in staging/prod also Secure and
+  the `__Host-` prefix (`__Host-numo9_session`, `__Host-numo9_csrf`): HTTPS only, exact host, no
+  Domain, path `/`. The session id is rotated at login (no fixation) and the session is deleted
+  at logout, so a copied cookie stops working. CSRF token required on login (`X-CSRFToken`).
+- **Rate limits** (`ACCOUNT_RATE_LIMITS`, counters in the shared Redis cache in staging/prod):
+  20 login attempts a minute per IP; 20 failed attempts a minute per IP; 10 failed attempts per
+  account in 15 minutes (S-03-T07 turns this into a fixed 15-minute lockout).
+
+Tests: `backend/tests/test_auth_login.py`.

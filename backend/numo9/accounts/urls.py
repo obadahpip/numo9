@@ -13,5 +13,10 @@ urlpatterns = [
         views.SignupView.as_api_view(client=Client.BROWSER),
         name="numo9-auth-signup",
     ),
+    path(
+        f"{BROWSER}auth/login",
+        views.LoginView.as_api_view(client=Client.BROWSER),
+        name="numo9-auth-login",
+    ),
     path("", include("allauth.headless.urls")),
 ]

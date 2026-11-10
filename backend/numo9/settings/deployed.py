@@ -27,6 +27,21 @@ SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 LANGUAGE_COOKIE_SECURE = True
+# __Host- prefix (A-02-T03): the browser only accepts these cookies over HTTPS, for the exact host
+# (no Domain attribute, so no sibling subdomain can set or read them) and for path "/".
+SESSION_COOKIE_NAME = "__Host-numo9_session"
+CSRF_COOKIE_NAME = "__Host-numo9_csrf"
+
+# ---- Shared cache (A-02-T03) ---------------------------------------------------------------------
+# Login rate limits and account lockouts must be shared by every worker: Redis (Compose service
+# `redis`, infra/staging/docker-compose.staging.yml).
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": env_str("REDIS_URL", "redis://redis:6379/0"),
+        "KEY_PREFIX": "numo9",
+    }
+}
 
 # ---- Secrets (S-03-T03) -----------------------------------------------------------------------
 # Rotating DJANGO_SECRET_KEY without signing everyone out: the new key signs, the previous key(s)
