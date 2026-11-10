@@ -10,12 +10,12 @@ const messages = defineMessages({
   },
 });
 
-/** Application shell placeholder. Replaced by the A-10 design-system shell. */
+/** Home outside an organisation: the design-system shell (A-10-T05) with a placeholder body. */
 export default function HomePage() {
   return (
     <AppShell>
       <h1 className="text-2xl font-semibold">{formatMessage(messages.title)}</h1>
-      <p className="mt-2 text-sm text-gray-600">{formatMessage(messages.placeholder)}</p>
+      <p className="mt-2 text-sm text-fg-muted">{formatMessage(messages.placeholder)}</p>
     </AppShell>
   );
 }

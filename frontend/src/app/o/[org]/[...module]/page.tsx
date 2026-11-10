@@ -29,9 +29,9 @@ export default async function OrganisationModulePage({ params }: { params: Promi
   if (!ORG_SLUG.test(org) || entry === undefined) notFound();
 
   return (
-    <AppShell>
+    <AppShell org={org} modulePath={entry.path}>
       <h1 className="text-2xl font-semibold">{formatMessage(entry.label)}</h1>
-      <p className="mt-2 text-sm text-gray-600">{formatMessage(messages.placeholder)}</p>
+      <p className="mt-2 text-sm text-fg-muted">{formatMessage(messages.placeholder)}</p>
     </AppShell>
   );
 }
