@@ -16,3 +16,5 @@ sentry-sdk[django]==2.73.0
 django-allauth==65.21.1
 # Argon2id password hashing (A-02-T02)
 argon2-cffi==25.1.0
+# Redis client for the shared cache: login rate limits and lockouts (A-02-T03, S-03-T07)
+redis==8.1.0
