@@ -206,3 +206,10 @@ Tests: `backend/tests/test_security_headers.py` (every route over HTTPS graded b
 each missing/weak header fails the grader), `frontend/src/security/headers.test.ts` (Vitest) and
 `frontend/e2e/security-headers.spec.ts` (Playwright on the production build: page, 404, API
 route, static asset).
+
+## S-03-T11 — Threat model
+
+[Threat model (STRIDE)](threat-model.md) for tenancy, authentication, billing and files: data
+flow and trust boundaries, assets, actors, one STRIDE table per area mapping every threat to its
+mitigation, owning atomic task and status, and the accepted residual risks. Re-reviewed before
+each phase exit and whenever a deliverable adds a trust boundary.

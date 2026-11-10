@@ -82,6 +82,7 @@ nav:
       - "Data-residency register": security/data-residency-register.md
       - "Security baseline (S-03)": security/security-baseline.md
       - "Secrets and rotation runbook": security/secrets-runbook.md
+      - "Threat model (STRIDE)": security/threat-model.md
   - Project:
       - Project plan: Numo9_Project_Plan.md
       - Project phases: Project_Phases.md
