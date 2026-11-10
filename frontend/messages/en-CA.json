@@ -35,8 +35,26 @@
     "settingsUsersRoles": "Settings: Users and roles"
   },
   "shell": {
+    "brandHome": "Numo9 home",
+    "breadcrumbs": "Breadcrumbs",
+    "menu": {
+      "close": "Close navigation",
+      "drawer": "Navigation",
+      "open": "Open navigation"
+    },
     "nav": {
-      "main": "Main"
+      "accounting": "Accounting",
+      "contacts": "Contacts",
+      "documents": "Documents",
+      "home": "Home",
+      "main": "Main",
+      "settings": "Settings"
+    },
+    "notifications": "Notifications",
+    "skipToContent": "Skip to content",
+    "userMenu": {
+      "label": "Account menu",
+      "orgSettings": "Organisation settings"
     }
   }
 }
