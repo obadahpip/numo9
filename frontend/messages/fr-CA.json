@@ -17,6 +17,21 @@
     },
     "title": "We can't find that page"
   },
+  "orgSwitcher": {
+    "button": "Switch organisation",
+    "current": "Current",
+    "error": "Your organisations couldn't be loaded. Make sure you're online, then try again.",
+    "loading": "Loading organisations…",
+    "moreResults": "Showing {shown} of {total}. Refine your search or open the directory.",
+    "noResults": "No organisations match. Try another spelling, or open the directory.",
+    "openDirectory": "Open directory",
+    "panel": "Organisations",
+    "practiceBadge": "via {practice}",
+    "recent": "Recent",
+    "results": "Results",
+    "retry": "Try again",
+    "search": "Search organisations"
+  },
   "routes": {
     "chartOfAccounts": "Chart of accounts",
     "contacts": "Contacts",

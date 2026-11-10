@@ -1,8 +1,9 @@
 import { defineConfig } from "@playwright/test";
 
 /**
- * Playwright: `gap-02` redirect crawler (S-01-T14, request-level) and the responsive app-shell
- * suite (A-10-T05, Chromium at 360 / 768 / 1024 / 1440 px). Browser once per machine:
+ * Playwright: `gap-02` redirect crawler (S-01-T14, request-level), the responsive app-shell
+ * suite (A-10-T05, Chromium at 360 / 768 / 1024 / 1440 px) and the org switcher (A-01-T14).
+ * Browser once per machine:
  *   pnpm --filter @numo9/frontend exec playwright install chromium
  *
  *   pnpm --filter @numo9/frontend run build && pnpm --filter @numo9/frontend run test:e2e

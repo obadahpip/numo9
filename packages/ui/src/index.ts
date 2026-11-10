@@ -10,3 +10,15 @@ export {
   type ShellNavItem,
   type ShellUserMenuItem,
 } from "./shell/AppShell";
+export {
+  OrgSwitcher,
+  type OrgSwitcherLabels,
+  type OrgSwitcherProps,
+  type OrgSwitcherStatus,
+  type SwitcherOrg,
+} from "./org-switcher/OrgSwitcher";
+export {
+  normaliseForSearch,
+  recentOrganisations,
+  searchOrganisations,
+} from "./org-switcher/search";

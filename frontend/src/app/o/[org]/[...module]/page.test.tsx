@@ -8,7 +8,7 @@ const notFound = vi.hoisted(() =>
     throw new Error("NEXT_NOT_FOUND");
   }),
 );
-vi.mock("next/navigation", () => ({ notFound }));
+vi.mock("next/navigation", () => ({ notFound, useRouter: () => ({ push: vi.fn() }) }));
 
 const renderPage = async (org: string, module: string[]) =>
   render(await OrganisationModulePage({ params: Promise.resolve({ org, module }) }));

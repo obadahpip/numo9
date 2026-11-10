@@ -164,7 +164,7 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm --filter @numo9/frontend exec playwright install --with-deps chromium
 
-      - name: Playwright (gap-02 redirect crawl, A-10-T05 app shell 360–1440 px)
+      - name: Playwright (gap-02 redirect crawl, A-10-T05 app shell 360–1440 px, A-01-T14 org switcher)
         run: pnpm --filter @numo9/frontend run test:e2e
 
   docs:

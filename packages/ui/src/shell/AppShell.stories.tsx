@@ -1,20 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { OrgSwitcher } from "../org-switcher/OrgSwitcher";
+import { sampleOrganisations, switcherLabels } from "../org-switcher/fixtures";
 import { AppShell } from "./AppShell";
 import { sampleShell } from "./fixtures";
 
 /**
- * Application shell (A-10-T05). Slots shown here with stand-ins: org switcher (A-01-T14), search
- * (A-09), job tray (A-08). Use the viewport toolbar to check 360 / 768 / 1024 / 1440 px.
+ * Application shell (A-10-T05) with the real org switcher (A-01-T14). Slots shown with stand-ins:
+ * search (A-09), job tray (A-08). Use the viewport toolbar to check 360 / 768 / 1024 / 1440 px.
  */
-const OrgSwitcherStandIn = () => (
-  <button
-    type="button"
-    className="flex h-9 min-w-0 items-center gap-2 rounded-md border border-border-inverse bg-surface-inverse-hover px-3 text-sm font-semibold text-fg-inverse"
-  >
-    <span className="truncate">Maple Leaf Supply Ltd.</span>
-    <span aria-hidden="true">▾</span>
-  </button>
+const ShellOrgSwitcher = () => (
+  <OrgSwitcher
+    labels={switcherLabels}
+    active={sampleOrganisations[0]!}
+    organisations={sampleOrganisations}
+    recentIds={sampleOrganisations.map((org) => org.id)}
+    hrefFor={(org) => `/o/${org.id}/home`}
+    onNavigate={() => undefined}
+    directoryHref="/p/abuodeh-cpa/directory"
+  />
 );
 
 const SearchStandIn = () => (
@@ -48,7 +52,7 @@ const meta: Meta<typeof AppShell> = {
   parameters: { layout: "fullscreen" },
   args: {
     ...sampleShell,
-    orgSwitcher: <OrgSwitcherStandIn />,
+    orgSwitcher: <ShellOrgSwitcher />,
     search: <SearchStandIn />,
     jobTray: <JobTrayStandIn />,
     status: <TrialChip />,
