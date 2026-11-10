@@ -42,6 +42,11 @@ services:
       DJANGO_SETTINGS_MODULE: numo9.settings.staging
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?set in .env}
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      # S-03: values come from .env, which deploy.sh decrypts from infra/secrets/staging.sops.env.
+      DJANGO_SECRET_KEY_FALLBACKS: ${DJANGO_SECRET_KEY_FALLBACKS:-}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-}
+      NUMO9_FIELD_ENCRYPTION_KEYS: ${NUMO9_FIELD_ENCRYPTION_KEYS:-}
+      NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY: ${NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY:-}
       DATABASE_URL: postgres://numo9:${POSTGRES_PASSWORD}@postgres:5432/numo9
       REDIS_URL: redis://redis:6379/0
     ports:

@@ -6,3 +6,6 @@ class SecurityConfig(AppConfig):
     name = "numo9.security"
     label = "security"
     verbose_name = _("Security")
+
+    def ready(self) -> None:
+        from . import checks  # noqa: F401 — registers the field-encryption deploy check

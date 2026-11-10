@@ -124,6 +124,13 @@ LANGUAGE_COOKIE_SAMESITE = "Lax"
 # Session lifetime: two weeks of inactivity at most; A-02 adds the per-practice idle timeout.
 SESSION_COOKIE_AGE = 14 * 24 * 60 * 60
 
+# ---- Field encryption (S-03-T04) ---------------------------------------------------------------
+# Key-encryption keys for EncryptedField: JSON {"<key id>": "<base64 32 bytes>"} and the id that
+# encrypts new values. Staging/prod read them from the SOPS-encrypted environment (S-03-T03);
+# dev/test fall back to a fixed development key (settings/dev.py, settings/test.py).
+FIELD_ENCRYPTION_KEYS = env_str("NUMO9_FIELD_ENCRYPTION_KEYS", "")
+FIELD_ENCRYPTION_ACTIVE_KEY = env_str("NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY", "")
+
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},

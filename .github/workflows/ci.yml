@@ -79,12 +79,14 @@ jobs:
       - name: Migrations are up to date
         run: python manage.py makemigrations --check --dry-run
 
-      - name: Security settings — check --deploy, 0 warnings (staging, prod; S-03-T01)
+      - name: Security settings — check --deploy, 0 warnings (staging, prod; S-03-T01, T04 keys)
         run: |
           for module in staging prod; do
             DJANGO_SETTINGS_MODULE="numo9.settings.$module" \
             DJANGO_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(64))')" \
             DJANGO_ALLOWED_HOSTS=app.numo9.ca DATABASE_URL=sqlite:///:memory: \
+            NUMO9_FIELD_ENCRYPTION_KEYS="{\"ci\": \"$(python -c 'import base64, os; print(base64.b64encode(os.urandom(32)).decode())')\"}" \
+            NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY=ci \
               python manage.py check --deploy --fail-level WARNING
           done
 
