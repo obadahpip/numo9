@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 63   Remaining: 2724
+TOTAL ATOMIC TASKS: 2787   Completed: 64   Remaining: 2723
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -93,7 +93,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ S-03-T11 — Threat model (STRIDE) for tenancy, billing, files, auth — docs/security/threat-model.md
 
 [A-02]
-❌ A-02-T02 — django-allauth headless: sign-up (accountant / organisation path), email verification required, Argon2id hashing, breached-password validator
+✅ A-02-T02 — django-allauth headless: sign-up (accountant / organisation path), email verification required, Argon2id hashing, breached-password validator
 ❌ A-02-T03 — Login/logout API, session cookie hardening, login rate limit
 
 [S-03]
