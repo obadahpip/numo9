@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — contacts list">
+<title>Numo9 wireframe — contacts list</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<rect x="60" y="12" width="230" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="72" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.  ▾</text>
+<rect x="298" y="16" width="92" height="24" rx="12" fill="#2B3038" stroke="#2B3038" stroke-width="1"/>
+<text x="344" y="32" font-size="11" fill="#D0D5DD" font-weight="500" text-anchor="middle">Practice: OA</text>
+<text x="410" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="468" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Contacts</text>
+<rect x="468" y="52" width="64" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="558" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="664" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Documents</text>
+<text x="762" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Settings</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="1440" height="40" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="24" y="81" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Maple Leaf Supply Ltd.  /  Contacts</text>
+<text x="24" y="136" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Contacts</text>
+<rect x="1264" y="112" width="152" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1340.0" y="132.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">New contact  N C</text>
+<rect x="1154" y="112" width="100" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1204.0" y="132.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Import</text>
+<text x="24" y="180" font-size="14" fill="#111111" font-weight="700" text-anchor="start">All contacts</text>
+<rect x="134" y="166" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="149" y="180" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">128</text>
+<rect x="24" y="192" width="130" height="3" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="190" y="180" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Customers</text>
+<rect x="276" y="166" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="291" y="180" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">84</text>
+<text x="332" y="180" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Suppliers</text>
+<rect x="418" y="166" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="433" y="180" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">51</text>
+<line x1="24" y1="195" x2="1416" y2="195" stroke="#EBEDF0" stroke-width="1"/>
+<circle cx="470" cy="178" r="10" fill="#B42318"/>
+<text x="470" y="182" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<rect x="24" y="212" width="380" height="36" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="34" y="234.0" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">Search name, email, BN…</text>
+<rect x="1376" y="214" width="40" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1396.0" y="234.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">⚙</text>
+<rect x="24" y="264" width="1392" height="400" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="24" y="264" width="1392" height="40" rx="6" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="38" y="277" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="68" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Name</text>
+<text x="410.7118644067796" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Role</text>
+<text x="547.7966101694915" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Email</text>
+<text x="833.3898305084745" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Phone</text>
+<text x="1004.7457627118642" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Province</text>
+<text x="1118.9830508474574" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Balance owing</text>
+<text x="1278.9152542372879" y="289" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Overdue</text>
+<line x1="24" y1="304" x2="1416" y2="304" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="317" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="319" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="319" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="319" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="319" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="319" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="319" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="319" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="344" x2="1416" y2="344" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="357" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="359" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="359" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="359" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="359" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="359" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="359" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="359" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="384" x2="1416" y2="384" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="397" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="399" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="399" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="399" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="399" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="399" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="399" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="399" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="424" x2="1416" y2="424" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="437" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="439" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="439" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="439" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="439" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="439" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="439" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="439" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="464" x2="1416" y2="464" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="477" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="479" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="479" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="479" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="479" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="479" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="479" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="479" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="504" x2="1416" y2="504" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="517" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="519" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="519" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="519" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="519" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="519" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="519" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="519" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="544" x2="1416" y2="544" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="557" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="559" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="559" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="559" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="559" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="559" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="559" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="559" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="584" x2="1416" y2="584" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="597" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="599" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="599" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="599" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="599" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="599" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="599" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="599" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="24" y1="624" x2="1416" y2="624" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="637" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="68" y="639" width="257.03389830508473" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="410.7118644067796" y="639" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="547.7966101694915" y="639" width="142.79661016949152" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="833.3898305084745" y="639" width="85.6779661016949" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1004.7457627118642" y="639" width="57.11864406779661" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1118.9830508474574" y="639" width="79.96610169491524" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1278.9152542372879" y="639" width="68.54237288135593" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<circle cx="14" cy="278" r="10" fill="#B42318"/>
+<text x="14" y="282" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="24" y="690" width="1392" height="170" rx="8" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="720" y="730" font-size="15" fill="#111111" font-weight="700" text-anchor="middle">Empty state (no contacts yet)</text>
+<text x="720" y="756" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Add your customers and suppliers, or import them from a spreadsheet.</text>
+<rect x="560" y="780" width="150" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="635.0" y="800.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">New contact</text>
+<rect x="730" y="780" width="150" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="805.0" y="800.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Import contacts</text>
+<circle cx="34" cy="700" r="10" fill="#B42318"/>
+<text x="34" y="704" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+</svg>

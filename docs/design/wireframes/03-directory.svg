@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — practice organisation directory">
+<title>Numo9 wireframe — practice organisation directory</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="260" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Directory</text>
+<rect x="260" y="52" width="72" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="358" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Dashboard</text>
+<text x="456" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Groups &amp; tags</text>
+<text x="586" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="240" height="844" rx="0" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="20" y="80" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">SAVED VIEWS</text>
+<rect x="8" y="82" width="224" height="30" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<rect x="8" y="82" width="3" height="30" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="20" y="102" font-size="13" fill="#111111" font-weight="600" text-anchor="start">All organisations</text>
+<text x="20" y="136" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">My organisations</text>
+<text x="20" y="170" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Ontario retail</text>
+<text x="20" y="204" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Trials expiring</text>
+<text x="20" y="238" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Unfiled GST/HST</text>
+<circle cx="228" cy="80" r="10" fill="#B42318"/>
+<text x="228" y="84" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<text x="264" y="100" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Organisations</text>
+<text x="264" y="124" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">2,000 organisations assigned to Abuodeh CPA</text>
+<rect x="1270" y="80" width="150" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1345.0" y="100.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">New organisation</text>
+<rect x="1150" y="80" width="110" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1205.0" y="100.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Export</text>
+<rect x="264" y="148" width="420" height="36" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="170.0" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">Search name, BN, owner, tag…   /</text>
+<circle cx="694" cy="166" r="10" fill="#B42318"/>
+<text x="694" y="170" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="700" y="150" width="104" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="752" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">Package ▾</text>
+<rect x="812" y="150" width="104" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="864" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">Status ▾</text>
+<rect x="924" y="150" width="104" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="976" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">Province ▾</text>
+<rect x="1036" y="150" width="104" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1088" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">Fiscal year end ▾</text>
+<rect x="1148" y="150" width="104" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1200" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">GST cycle ▾</text>
+<rect x="1260" y="150" width="104" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1312" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">Group ▾</text>
+<rect x="1380" y="150" width="40" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1400.0" y="170.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">⚙</text>
+<circle cx="1372" cy="140" r="10" fill="#B42318"/>
+<text x="1372" y="144" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<rect x="264" y="200" width="1156" height="44" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="284" y="227" font-size="13" fill="#FFFFFF" font-weight="700" text-anchor="start">3 selected</text>
+<rect x="400" y="208" width="110" height="28" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="455" y="227" font-size="12" fill="#FFFFFF" font-weight="500" text-anchor="middle">Add to group</text>
+<rect x="520" y="208" width="110" height="28" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="575" y="227" font-size="12" fill="#FFFFFF" font-weight="500" text-anchor="middle">Tags</text>
+<rect x="640" y="208" width="110" height="28" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="695" y="227" font-size="12" fill="#FFFFFF" font-weight="500" text-anchor="middle">Assign staff</text>
+<rect x="760" y="208" width="110" height="28" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="815" y="227" font-size="12" fill="#FFFFFF" font-weight="500" text-anchor="middle">Message</text>
+<rect x="880" y="208" width="110" height="28" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="935" y="227" font-size="12" fill="#FFFFFF" font-weight="500" text-anchor="middle">Export</text>
+<circle cx="254" cy="222" r="10" fill="#B42318"/>
+<text x="254" y="226" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<rect x="264" y="256" width="1156" height="560" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="264" y="256" width="1156" height="40" rx="6" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="278" y="269" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="308" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Organisation</text>
+<text x="581.4426229508197" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">BN</text>
+<text x="763.7377049180327" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Province</text>
+<text x="854.8852459016392" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Package</text>
+<text x="982.4918032786884" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Status</text>
+<text x="1091.8688524590161" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">FYE</text>
+<text x="1183.0163934426228" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Overdue</text>
+<text x="1274.1639344262294" y="281" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Assigned</text>
+<line x1="264" y1="296" x2="1420" y2="296" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="309" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="311" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="311" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="311" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="311" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="311" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="311" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="311" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="311" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="265" y="336" width="1154" height="40" rx="0" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<line x1="264" y1="336" x2="1420" y2="336" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="349" width="14" height="14" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="351" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="351" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="351" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="351" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="351" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="351" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="351" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="351" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="265" y="376" width="1154" height="40" rx="0" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<line x1="264" y1="376" x2="1420" y2="376" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="389" width="14" height="14" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="391" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="391" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="391" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="391" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="391" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="391" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="391" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="391" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="416" x2="1420" y2="416" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="429" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="431" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="431" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="431" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="431" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="431" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="431" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="431" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="431" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="265" y="456" width="1154" height="40" rx="0" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<line x1="264" y1="456" x2="1420" y2="456" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="469" width="14" height="14" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="471" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="471" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="471" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="471" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="471" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="471" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="471" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="471" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="496" x2="1420" y2="496" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="509" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="511" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="511" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="511" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="511" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="511" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="511" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="511" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="511" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="536" x2="1420" y2="536" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="549" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="551" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="551" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="551" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="551" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="551" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="551" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="551" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="551" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="576" x2="1420" y2="576" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="589" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="591" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="591" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="591" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="591" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="591" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="591" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="591" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="591" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="616" x2="1420" y2="616" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="629" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="631" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="631" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="631" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="631" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="631" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="631" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="631" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="631" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="656" x2="1420" y2="656" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="669" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="671" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="671" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="671" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="671" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="671" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="671" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="671" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="671" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="696" x2="1420" y2="696" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="709" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="711" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="711" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="711" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="711" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="711" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="711" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="711" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="711" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="736" x2="1420" y2="736" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="749" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="751" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="751" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="751" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="751" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="751" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="751" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="751" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="751" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<line x1="264" y1="776" x2="1420" y2="776" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="278" y="789" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="308" y="791" width="205.08196721311475" height="10" rx="3" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="581.4426229508197" y="791" width="91.14754098360655" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="763.7377049180327" y="791" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="854.8852459016392" y="791" width="63.803278688524586" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="982.4918032786884" y="791" width="54.68852459016392" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1091.8688524590161" y="791" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1183.0163934426228" y="791" width="45.57377049180327" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1274.1639344262294" y="791" width="72.91803278688523" height="10" rx="3" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<circle cx="254" cy="270" r="10" fill="#B42318"/>
+<text x="254" y="274" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">5</text>
+<text x="264" y="836" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Rows: virtualised · Space select · Enter open · B bulk bar · density toggle in ⚙ (column chooser, saved view)</text>
+</svg>
