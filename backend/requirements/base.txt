@@ -9,3 +9,6 @@ drf-spectacular==0.30.0
 weasyprint==70.0
 # AES-256-GCM envelope encryption for EncryptedField (S-03-T04)
 cryptography==50.0.2
+# Structured, scrubbed logs and error reports (S-03-T06)
+structlog==26.1.0
+sentry-sdk[django]==2.73.0

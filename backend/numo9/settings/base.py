@@ -5,7 +5,9 @@ from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
-from .env import env_str
+from numo9.security.logging import configure_structlog, logging_config
+
+from .env import env_bool, env_str
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -123,6 +125,14 @@ LANGUAGE_COOKIE_HTTPONLY = False  # the web app reads the locale cookie (A-10-T1
 LANGUAGE_COOKIE_SAMESITE = "Lax"
 # Session lifetime: two weeks of inactivity at most; A-02 adds the per-practice idle timeout.
 SESSION_COOKIE_AGE = 14 * 24 * 60 * 60
+
+# ---- Logging (S-03-T06) ------------------------------------------------------------------------
+# Every log line — Django, libraries, structlog — is scrubbed of SIN, bank and card numbers,
+# tokens and passwords (numo9.security.scrubbing). JSON lines in staging/prod, plain text locally.
+LOGGING = logging_config(
+    json=env_bool("NUMO9_LOG_JSON", False), level=env_str("NUMO9_LOG_LEVEL", "INFO")
+)
+configure_structlog()
 
 # ---- Field encryption (S-03-T04) ---------------------------------------------------------------
 # Key-encryption keys for EncryptedField: JSON {"<key id>": "<base64 32 bytes>"} and the id that

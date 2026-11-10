@@ -4,8 +4,12 @@
 reverse proxy (Caddy / Cloudflare tunnel), which sets ``X-Forwarded-Proto: https``.
 """
 
+import os
+
+from numo9.security.logging import init_sentry, logging_config
+
 from .base import *  # noqa: F403
-from .env import env_bool, env_int, env_list
+from .env import env_bool, env_int, env_list, env_str
 
 # ---- Transport -------------------------------------------------------------------------------
 # Trust the proxy's scheme header (the app is only reachable through the proxy; port 8000 is
@@ -32,3 +36,18 @@ SECRET_KEY_FALLBACKS = env_list("DJANGO_SECRET_KEY_FALLBACKS", [])
 
 # Origins allowed to send unsafe requests, e.g. "https://app.numo9.ca,https://console.numo9.ca".
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", [])
+
+# ---- Logs and error reports (S-03-T06) ------------------------------------------------------
+LOGGING = logging_config(
+    json=env_bool("NUMO9_LOG_JSON", True), level=env_str("NUMO9_LOG_LEVEL", "INFO")
+)
+# Sentry (EU region, data-residency register) only when a DSN is configured; every event scrubbed.
+SENTRY_DSN = env_str("SENTRY_DSN", "")
+init_sentry(
+    SENTRY_DSN,
+    # "staging" / "prod" from the settings module unless SENTRY_ENVIRONMENT says otherwise.
+    environment=env_str(
+        "SENTRY_ENVIRONMENT", os.environ.get("DJANGO_SETTINGS_MODULE", "").rpartition(".")[2]
+    ),
+    release=env_str("NUMO9_RELEASE", "") or None,
+)
