@@ -1,7 +1,8 @@
 import { defineConfig } from "@playwright/test";
 
 /**
- * Browser checks of @numo9/ui against the built Storybook (A-10-T10: DataGrid 10,000 rows at
+ * Browser checks of @numo9/ui against the built Storybook (A-10-T19 axe + gap-60 label audit on
+ * every story, A-10-T18 visual regression, A-10-T10: DataGrid 10,000 rows at
  * 60 fps; keyboard paths that need real layout). Build first:
  *   pnpm --filter @numo9/ui run build-storybook && pnpm --filter @numo9/ui run test:e2e
  */
