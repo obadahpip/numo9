@@ -31,3 +31,15 @@ Utilities come from the tokens only (Tailwind's default palette is removed): `bg
 `bg-surface-inverse`, `bg-surface-accent`, `text-fg`, `text-fg-muted`, `text-fg-on-accent`,
 `border-border`, `shadow-elevation-2`, `rounded-md`, `text-sm`, `p-4` (4 px grid).
 Docs: `docs/design/brand-tokens.md`.
+
+## Components
+
+| Area                               | Exports                                                                                                                                                                                     | Task     |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| Layout (`src/shell/`)              | `AppShell`, `Breadcrumbs`                                                                                                                                                                   | A-10-T05 |
+| Org switcher (`src/org-switcher/`) | `OrgSwitcher`, `searchOrganisations`, `recentOrganisations`                                                                                                                                 | A-01-T14 |
+| Primitives (`src/primitives/`)     | `Button`, `IconButton`, `Input`, `Select`, `Combobox`, `Checkbox`, `RadioGroup`, `Switch`, `Dialog`, `Drawer`, `Tooltip`, `ToastProvider`/`useToast` (Undo), `Tabs`, `Badge`, `StatusBadge` | A-10-T06 |
+
+Components hold no user-visible text of their own: labels arrive through props (i18n messages).
+Component tests run axe-core (`src/test/axe.ts`, WCAG 2.1 A/AA); Storybook's a11y panel runs it
+on every story.
