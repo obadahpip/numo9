@@ -55,6 +55,11 @@ services:
   frontend:
     image: ghcr.io/obadahpip/numo9-frontend:${NUMO9_TAG:?NUMO9_TAG is set by deploy.sh}
     restart: unless-stopped
+    environment:
+      # S-03-T02: "report-only" for the first week on a new environment, then "enforce".
+      NUMO9_CSP_MODE: ${NUMO9_CSP_MODE:-enforce}
+      # Extra https origins the browser calls (e.g. the API), comma-separated.
+      NUMO9_CSP_CONNECT_SRC: ${NUMO9_CSP_CONNECT_SRC:-}
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
