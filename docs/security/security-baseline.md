@@ -63,3 +63,11 @@ Tests: `frontend/src/security/csp.test.ts` (Vitest) and `frontend/e2e/csp.spec.t
 (Playwright): every Phase 0 page has a nonce policy, all its scripts carry that nonce and the
 console shows no CSP violation; a Stripe script and frame load; a script from another origin is
 blocked and reported.
+
+## S-03-T03 — Secrets management
+
+SOPS + age encrypted environment files in the repository, decrypted only on the deploy host by
+`infra/deploy/deploy.sh`; CI/CD credentials in GitHub Environments. Full procedure, inventory and
+rotation steps: [Secrets and rotation runbook](secrets-runbook.md). Checks: gitleaks with
+`.gitleaks.toml` (security workflow + pre-commit), `tools/ci/check_secrets.py`, and
+`infra/secrets/tests/test_secrets.sh` (security workflow job `secrets`).

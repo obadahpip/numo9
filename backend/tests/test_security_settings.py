@@ -25,6 +25,7 @@ ENV_KEYS = (
     "DJANGO_SECURE_SSL_REDIRECT",
     "DJANGO_SECURE_HSTS_SECONDS",
     "DJANGO_CSRF_TRUSTED_ORIGINS",
+    "DJANGO_SECRET_KEY_FALLBACKS",
 )
 
 
@@ -63,6 +64,55 @@ def test_check_deploy_catches_a_weak_secret_key() -> None:
     result = _check_deploy("prod", DJANGO_SECRET_KEY="short")  # noqa: S106 — deliberately weak
     assert result.returncode != 0
     assert "security.W009" in result.stdout + result.stderr
+
+
+def test_secret_key_rotation_fallbacks() -> None:
+    old = secrets.token_urlsafe(64)
+    assert _check_deploy("prod", DJANGO_SECRET_KEY_FALLBACKS=old).returncode == 0
+    # A weak fallback is reported too (security.W025), so a rotation can't reintroduce one.
+    weak = _check_deploy("prod", DJANGO_SECRET_KEY_FALLBACKS="short")  # noqa: S106
+    assert weak.returncode != 0
+    assert "security.W025" in weak.stdout + weak.stderr
+
+
+def test_sessions_signed_with_the_old_key_survive_a_rotation() -> None:
+    script = (
+        "import django; django.setup();"
+        "from django.core import signing;"
+        "print(signing.loads(%r, salt='rotation'))"
+    )
+    old_key = secrets.token_urlsafe(64)
+    signed = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "import django; django.setup(); from django.core import signing;"
+            "print(signing.dumps('dana', salt='rotation'))",
+        ],
+        cwd=BACKEND_DIR,
+        env=_env("prod", DJANGO_SECRET_KEY=old_key),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    ).stdout.strip()
+    rotated = subprocess.run(
+        [sys.executable, "-c", script % signed],
+        cwd=BACKEND_DIR,
+        env=_env("prod", DJANGO_SECRET_KEY_FALLBACKS=old_key),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert rotated.stdout.strip() == "dana", rotated.stderr
+    without_fallback = subprocess.run(
+        [sys.executable, "-c", script % signed],
+        cwd=BACKEND_DIR,
+        env=_env("prod"),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert "BadSignature" in without_fallback.stderr
 
 
 PROBE = """

@@ -68,8 +68,33 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Scan git history for secrets
-        run: docker run --rm -v "$PWD:/repo" "$GITLEAKS_IMAGE" git /repo --redact --no-banner --verbose
+      - name: Scan git history for secrets (default rules + .gitleaks.toml, S-03-T03)
+        run: >-
+          docker run --rm -v "$PWD:/repo" "$GITLEAKS_IMAGE" git /repo
+          --config /repo/.gitleaks.toml --redact --no-banner --verbose
+
+  secrets:
+    # S-03-T03: SOPS-encrypted environment files stay encrypted, recipients are public keys only,
+    # no private key or .env file is committed; secrets.sh works end to end with throw-away keys.
+    name: secrets (SOPS + age files encrypted)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SOPS_VERSION: v3.11.0
+      SOPS_SHA256: 775f1384d55decfad228e7196a3f683791914f92a473f78fc47700531c29dfef
+    steps:
+      - uses: actions/checkout@v7
+      - name: No plaintext secret files (tools/ci/check_secrets.py)
+        run: python3 tools/ci/check_secrets.py .
+      - name: Install sops (checksum-pinned) and age
+        run: |
+          curl -fsSL --retry 3 -o /tmp/sops \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_SHA256}  /tmp/sops" | sha256sum -c -
+          sudo install -m 755 /tmp/sops /usr/local/bin/sops
+          sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends age
+      - name: secrets.sh end-to-end (keygen, edit, set, decrypt, deploy.sh, rotate)
+        run: bash infra/secrets/tests/test_secrets.sh
 
   semgrep:
     name: semgrep (django, python, react, typescript)

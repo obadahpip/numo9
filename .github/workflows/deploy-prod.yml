@@ -210,6 +210,15 @@ jobs:
         if: env.DRY_RUN != 'true'
         run: scp -q infra/deploy/deploy.sh "production:$APP_DIR/deploy.sh"
 
+      - name: Upload encrypted secrets (SOPS, decrypted on the host by deploy.sh; S-03-T03)
+        if: env.DRY_RUN != 'true'
+        run: |
+          if [ -f infra/secrets/prod.sops.env ]; then
+            scp -q infra/secrets/prod.sops.env "production:$APP_DIR/secrets.sops.env"
+          else
+            echo "::notice::infra/secrets/prod.sops.env not in the repository yet; the host keeps its .env"
+          fi
+
       - name: Deploy ${{ needs.resolve.outputs.tag }} (migrate, health gate, rollback on failure)
         if: env.DRY_RUN != 'true'
         env:

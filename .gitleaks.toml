@@ -1,0 +1,40 @@
+# gitleaks configuration (S-03-T03): the default rule set plus Numo9-specific secrets.
+# Used by the security workflow (full history) and the pre-commit hook (staged changes).
+title = "Numo9 gitleaks config"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "django-secret-key"
+description = "Django SECRET_KEY / DJANGO_SECRET_KEY with a literal value"
+regex = '''(?i)\b(?:DJANGO_)?SECRET_KEY(?:_FALLBACKS)?[ \t]*[:=][ \t]*["']?([A-Za-z0-9!@#$%^&*(\-_=+)]{32,})["']?'''
+secretGroup = 1
+entropy = 3.5
+keywords = ["secret_key"]
+
+[[rules]]
+id = "numo9-field-encryption-key"
+description = "Field-encryption key ring (S-03-T04) in plain text"
+regex = '''NUMO9_FIELD_ENCRYPTION_KEYS[ \t]*[:=][ \t]*['"]?\{[^}]*"[A-Za-z0-9_-]+"\s*:\s*"([A-Za-z0-9+/]{43}=)"'''
+secretGroup = 1
+keywords = ["numo9_field_encryption_keys"]
+
+[[rules]]
+id = "postgres-url-password"
+description = "PostgreSQL URL with an inline password"
+regex = '''postgres(?:ql)?://[^:/\s]+:([^@\s'"]{8,})@'''
+secretGroup = 1
+entropy = 3.0
+keywords = ["postgres://", "postgresql://"]
+
+[allowlist]
+description = "Encrypted SOPS values and documented development placeholders"
+regexes = [
+  '''ENC\[AES256_GCM,data:''',
+  '''dev-insecure-secret-key-do-not-use-in-production''',
+  '''test-insecure-secret-key''',
+]
+paths = [
+  '''(^|/)infra/secrets/[^/]+\.sops\.env$''',
+]

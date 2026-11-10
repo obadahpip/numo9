@@ -74,3 +74,13 @@ repos:
     rev: v8.30.1
     hooks:
       - id: gitleaks
+        args: ["--config", ".gitleaks.toml"]
+
+  - repo: local
+    hooks:
+      - id: check-secrets
+        name: check secrets (SOPS files encrypted, no keys or .env committed; S-03-T03)
+        language: system
+        entry: python3 tools/ci/check_secrets.py .
+        pass_filenames: false
+        always_run: true
