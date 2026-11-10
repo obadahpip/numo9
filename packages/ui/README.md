@@ -45,6 +45,7 @@ Docs: `docs/design/brand-tokens.md`.
 | Pickers (`src/pickers/`)           | `DatePicker` (calendar + shortcuts), `ProvincePicker`, `PostalCodeInput`, `CurrencyInput`, `AccountPicker` (type/side filter), `ContactPicker` (role, server search, create)                          | A-10-T09 |
 | Data grid (`src/data-grid/`)       | `DataGrid` (TanStack Table + Virtual: sort, search, filter chips, column chooser, density, selection + bulk bar, sticky header, states), `useSavedViews`, `localSavedViewsStore`                      | A-10-T10 |
 | Line grid (`src/line-grid/`)       | `LineGrid` (keyboard model, add/delete/drag reorder, column chooser, exact totals footer), `JournalLines` (journal configuration + balance indicator) — spec: `docs/design/line-grid.md`              | A-10-T11 |
+| States (`src/states/`)             | `EmptyState` (illustration + 1–3 actions), `Skeleton`/`SkeletonText`/`SkeletonTable`/`LoadingRegion`, `ErrorState` (retry + report), `ExplainPanel` (gated / read-only / permission / lock / 404)     | A-10-T12 |
 
 Components hold no user-visible text of their own: labels arrive through props (i18n messages).
 Component tests run axe-core (`src/test/axe.ts`, WCAG 2.1 A/AA); Storybook's a11y panel runs it

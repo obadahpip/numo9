@@ -28,6 +28,7 @@ import { cn } from "../primitives/cn";
 import { Input } from "../primitives/Input";
 import { Select } from "../primitives/Select";
 import { SearchIcon } from "../shell/icons";
+import { Skeleton, skeletonWidth } from "../states/Skeleton";
 import { ColumnChooser } from "./ColumnChooser";
 import {
   EMPTY_VIEW,
@@ -310,10 +311,7 @@ export function DataGrid<T>({
       <tr key={`skeleton-${i}`} aria-hidden="true" style={{ height: rowHeight }}>
         {Array.from({ length: colCount }, (_, c) => (
           <td key={c} className="border-b border-border px-3">
-            <span
-              className="block h-3 animate-pulse rounded bg-surface-muted"
-              style={{ width: `${50 + ((i + c) % 4) * 12}%` }}
-            />
+            <Skeleton width={skeletonWidth(i, c)} />
           </td>
         ))}
       </tr>
