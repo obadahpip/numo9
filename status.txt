@@ -80,7 +80,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-10-T17 — No-banner rule: eslint rule/component policy forbidding promo banners inside editor/list layouts; notices go to notification centre
 ✅ A-10-T18 — Visual regression setup (Chromatic or Playwright snapshots) for components and Phase 0 pages
 ✅ A-10-T19 — a11y suite: axe-core on all Storybook stories and Phase 0 routes; aria labels audit (no leaked hidden headers)
-❌ A-10-T20 — Usage docs in Storybook (do/don't, microcopy rules §3.5)
+✅ A-10-T20 — Usage docs in Storybook (do/don't, microcopy rules §3.5)
 
 [S-03]
 ❌ S-03-T01 — Django security settings per env (SECURE_*, SESSION/CSRF cookie Secure/HttpOnly/SameSite, X-Frame DENY, Referrer-Policy)
