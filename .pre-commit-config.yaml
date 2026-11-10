@@ -55,6 +55,7 @@ repos:
           - pytest==9.2.0
           - pytest-django==4.14.0
           - hypothesis==6.170.10
+          - pypdf==6.21.4 # A-10-T16 PDF tests
           - django-migration-linter==6.0.0 # imported by numo9.settings.test (mypy plugin loads it)
 
       - id: eslint
