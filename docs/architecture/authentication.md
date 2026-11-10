@@ -104,3 +104,28 @@ answer is `401` with the `reauthenticate` flow.
   for another account.
 
 Tests: `backend/tests/test_auth_totp.py`.
+
+## Invitations (A-02-T08, A-02-T09)
+
+`tenancy.Invitation` (`backend/numo9/tenancy/models.py`) — an emailed, single-use invitation to
+join a practice or an organisation. It is a platform model (on the `OrgOwnedModel` allow-list):
+it names a tenant and the address of someone who is not a member yet.
+
+| Field | Meaning |
+|---|---|
+| `kind` | `practice_staff` · `organisation_owner` (a practice invites the owner of a client organisation it created) · `organisation_user` · `organisation_accountant` (an organisation invites its accountant) |
+| `inviter` | the user who sent it |
+| `practice` / `organisation` | the target: `practice` for `practice_staff`, `organisation` for the other three (database check) |
+| `role` | a practice role (`practice_staff`), `owner` (`organisation_owner`), an organisation role (`organisation_user`) or an assignment role — what the accountant's practice will do (`organisation_accountant`); database check per kind |
+| `email` | invited address, lower-cased |
+| `token_hash` | SHA-256 of the 256-bit link token; the token itself is never stored |
+| `expires_at` | 7 days after sending (`INVITATION_TTL`) |
+| `accepted_at` / `accepted_by`, `revoked_at` | outcome — never both accepted and revoked |
+| `send_count`, `last_sent_at` | resend bookkeeping |
+
+**At most one pending invitation per email address and target** (partial unique constraints on
+`(email, practice)` and `(email, organisation)` while neither accepted nor revoked); accepting or
+revoking frees the slot. Status: `pending`, `accepted`, `revoked` or `expired` (past
+`expires_at`).
+
+Tests: `backend/tests/test_invitation_model.py`.

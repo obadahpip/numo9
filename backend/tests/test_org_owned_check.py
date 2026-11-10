@@ -38,6 +38,7 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "tenancy.Organisation",
                 "tenancy.OrganisationMember",
                 "tenancy.PracticeAssignment",
+                "tenancy.Invitation",
             }
         )
         == PLATFORM_MODELS

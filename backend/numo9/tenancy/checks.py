@@ -28,6 +28,9 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "tenancy.Organisation",
         "tenancy.OrganisationMember",
         "tenancy.PracticeAssignment",
+        # Invitations name a practice or an organisation and the email of someone who is not a
+        # member yet; they hold no organisation business data (A-02-T08).
+        "tenancy.Invitation",
     }
 )
 
