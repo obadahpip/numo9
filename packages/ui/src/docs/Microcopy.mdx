@@ -1,0 +1,109 @@
+import { Meta } from "@storybook/blocks";
+
+import { Do, DoDont, Dont } from "./DoDont";
+
+<Meta title="Guidelines/Microcopy" />
+
+# Microcopy and error messages
+
+Phase 0 plan §3.5. These rules apply to every label, button, message and document in Numo9, in
+English and French.
+
+## The eight rules
+
+1. **Say what happened, why, and what to do.**
+2. **Name the record, the rule or the person** — the bill number, the lock date, the approver.
+3. **No codes alone, no blame.** An error code may follow the sentence, never replace it.
+4. **Canadian English** — organisation, cheque, Province, Postal code, GST/HST, vacation pay.
+5. **Sentence case** for titles, buttons, labels and menu items.
+6. **Buttons are verbs** that name the result: "Save settings", not "OK".
+7. **Never "Oops"** or other jokes in errors.
+8. **Every message is an i18n key** with a description for translators; no concatenated strings.
+
+## Reference messages
+
+| Situation                    | Message                                                                                                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lock date                    | "This entry is dated 15 Jun 2026, before the General Ledger lock date (30 Jun 2026). Change the date, or ask an adviser to move the lock in Settings → Lock dates." |
+| Approval limit               | "Your approval limit for bills is $5,000.00. This bill is $5,001.00. Send it to Dana Lee (limit $25,000.00) for approval?" [Send for approval]                      |
+| Entitlement (402)            | "Inventory isn't included in your Starter package. It's part of Growth and Complete. Your existing data stays available to view."                                   |
+| Cross-organisation / removed | "You don't have access to this organisation. It may have been unassigned from you. Ask your practice admin, or open your directory."                                |
+| Duplicate contact            | "A contact named 'Maple Leaf Supply Ltd.' with the same email already exists. Open it, or continue to create a separate contact."                                   |
+| Unbalanced journal           | "Debits ($1,250.00) and credits ($1,200.00) differ by $50.00. Adjust a line so the difference is $0.00."                                                            |
+| Numeric legal name           | "Legal name can't be only numbers — it prints on every statement. Enter the registered business name, e.g. 'Refined Interiors Inc.'"                                |
+| File too large               | "'receipts-oct.pdf' is 31 MB. The limit is 25 MB per file. Split the PDF or compress it, then upload again."                                                        |
+| Postal code                  | "Postal code should look like 'M5V 2T6'. 'M5V2T' is missing a character."                                                                                           |
+| Trial expiring               | "Your free trial ends in 3 days (Nov 30 at 11:59 pm Eastern). Choose a package to keep working — nothing you've entered will be lost."                              |
+
+## Do and don't
+
+<DoDont>
+  <Do>
+    <p>
+      "Debits ($1,250.00) and credits ($1,200.00) differ by $50.00. Adjust a line so the difference
+      is $0.00."
+    </p>
+    <p>Names both totals, the difference and the fix.</p>
+  </Do>
+  <Dont>
+    <p>"Error 4012: Journal invalid."</p>
+    <p>A code alone; the reader doesn't know what is wrong or what to do.</p>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do>
+    <p>Buttons: **Save settings**, **Post journal**, **Send for approval**, **Delete draft**.</p>
+  </Do>
+  <Dont>
+    <p>Buttons: **OK**, **Submit**, **Yes**, **Click here**.</p>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do>
+    <p>"Postal code should look like 'M5V 2T6'."</p>
+    <p>"Province", "GST/HST registration", "Cheque number", "Vacation pay".</p>
+  </Do>
+  <Dont>
+    <p>
+      US, UK or NZ terms in Canadian screens — the glossary lint lists the banned words (see
+      `docs/design/glossary.md`).
+    </p>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do>
+    <p>
+      "You don't have access to this organisation. Ask your practice admin, or open your directory."
+    </p>
+    <p>Neutral, says who can help.</p>
+  </Do>
+  <Dont>
+    <p>"Oops! You did something wrong."</p>
+    <p>Jokes and blame; no cause, no next step.</p>
+  </Dont>
+</DoDont>
+
+<DoDont>
+  <Do>
+    <p>One message with placeholders:
+    `"{count, plural, one {# organisation added} other {# organisations added}} to {group}"`.</p>
+  </Do>
+  <Dont>
+    <p>Gluing fragments: `count + " organisations added to " + group` — breaks plurals and
+    French word order.</p>
+  </Dont>
+</DoDont>
+
+## Formats inside messages
+
+|                             | en-CA             | fr-CA                 |
+| --------------------------- | ----------------- | --------------------- |
+| Date                        | 26 Oct 2026       | 26 oct. 2026          |
+| Time (12 h / 24 h per user) | 4:33 p.m. / 16:33 | 4 h 33 p.m. / 16 h 33 |
+| Money                       | $1,234.56         | 1 234,56 $            |
+
+Format values with `formatDate`, `formatTime` and `formatMoney` and pass them to the message as
+arguments; never build a date or amount by hand.

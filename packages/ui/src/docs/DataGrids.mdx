@@ -1,0 +1,58 @@
+import { Canvas, Meta } from "@storybook/blocks";
+
+import * as DataGrid from "../data-grid/DataGrid.stories";
+import * as LineGrid from "../line-grid/LineGrid.stories";
+import { Do, DoDont, Dont } from "./DoDont";
+
+<Meta title="Guidelines/Data grids" />
+
+# Data grids
+
+## DataGrid — lists
+
+TanStack Table + Virtual (A-10-T10): sort, filter bar, column chooser, saved views, row
+selection with a bulk bar, comfortable/compact density, sticky header, and empty, loading and
+error states. 10,000 rows scroll at 60 fps.
+
+<Canvas of={DataGrid.DirectoryGrid} />
+
+<DoDont>
+  <Do>
+    <p>Every list screen uses `DataGrid` — directory, contacts, chart of accounts, audit log.</p>
+    <p>
+      Right-align amounts and format them with `formatMoney`; keep the column header visible text
+      short and let the accessible name match it.
+    </p>
+    <p>Offer saved views for filters people repeat ("Ontario retail").</p>
+  </Do>
+  <Dont>
+    <p>A hand-built `table` for a list, or a second grid component in a module.</p>
+    <p>Hidden header text that differs from or repeats the visible header (gap-60).</p>
+    <p>Pagination as the only way through a long list — the grid virtualises.</p>
+  </Dont>
+</DoDont>
+
+## LineGrid — document lines
+
+The one line editor for journals now and invoices, bills, purchase orders and quotes later
+(A-10-T11): keyboard navigation, add rows, drag to reorder, column chooser and an exact totals
+footer.
+
+<Canvas of={LineGrid.Journal} />
+
+<DoDont>
+  <Do>
+    <p>
+      Use `LineGrid` (or `JournalLines`) for every document with lines; add columns through its
+      column definitions.
+    </p>
+    <p>
+      Show the balance or total in the footer and say what is off: "Debits and credits differ by
+      $50.00."
+    </p>
+  </Do>
+  <Dont>
+    <p>A separate grid for bills and another for invoices (Xero's two generations).</p>
+    <p>Floating-point totals — amounts are decimal strings, summed exactly.</p>
+  </Dont>
+</DoDont>

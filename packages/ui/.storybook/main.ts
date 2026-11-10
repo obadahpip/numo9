@@ -3,7 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 /** Storybook 8 for @numo9/ui (A-10-T03). `pnpm --filter @numo9/ui run storybook` */
 const config: StorybookConfig = {
-  stories: ["../src/**/*.stories.@(ts|tsx)"],
+  // Usage docs (do / don't, microcopy rules) live in src/docs/*.mdx (A-10-T20).
+  stories: ["../src/docs/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-essentials", "@storybook/addon-a11y"],
   framework: { name: "@storybook/react-vite", options: {} },
   core: { disableTelemetry: true },

@@ -1,0 +1,52 @@
+import { Canvas, Meta } from "@storybook/blocks";
+
+import * as Shell from "../shell/AppShell.stories";
+import * as Switcher from "../org-switcher/OrgSwitcher.stories";
+import { Do, DoDont, Dont } from "./DoDont";
+
+<Meta title="Guidelines/Layout" />
+
+# Layout: app shell and org switcher
+
+## AppShell
+
+Top navigation by job (Home · Sales · Purchases · Banking · Accounting · Tax · Payroll ·
+Inventory · Reports · Contacts), the org switcher slot, practice navigation for accountants,
+breadcrumbs, user menu, notification bell and job tray (A-10-T05). Responsive 360–1440 px: below
+1024 px the navigation moves into a drawer.
+
+<Canvas of={Shell.Organisation} />
+
+<DoDont>
+  <Do>
+    <p>Put the page's title in an `h1` at the top of `main`, right under the breadcrumbs.</p>
+    <p>
+      Send system notices (maintenance, finished jobs, trial reminders) to the notification centre
+      behind the bell; background jobs show progress in the job tray.
+    </p>
+  </Do>
+  <Dont>
+    <p>
+      Promotional or announcement banners above editors or lists — they push the work below the fold
+      (gap-12; blocked by the `numo9/no-work-screen-banners` lint rule). Commercial messages belong
+      in Settings → Subscription or the Home announcement slot only.
+    </p>
+    <p>A second page banner — the shell's top bar is the only `banner` landmark.</p>
+  </Dont>
+</DoDont>
+
+## OrgSwitcher
+
+<Canvas of={Switcher.Accountant} />
+
+<DoDont>
+  <Do>
+    <p>
+      Recent five organisations, a search box and **Open directory** — accountants with 2,000
+      clients search, they don't scroll.
+    </p>
+  </Do>
+  <Dont>
+    <p>A plain dropdown of every organisation.</p>
+  </Dont>
+</DoDont>
