@@ -202,6 +202,11 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Same answer whether or not an email is registered (sign-up sends the owner a notice instead).
 ACCOUNT_PREVENT_ENUMERATION = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "Numo9 · "
+# Password reset (A-02-T04): the emailed link is valid for one hour and works once (the token is
+# bound to the password hash); setting a new password ends every session of the user (Django's
+# session auth hash) and the user signs in again with the new password.
+PASSWORD_RESET_TIMEOUT = 60 * 60
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = False
 # Login rate limits (A-02-T03): every login attempt and every failed attempt per IP. A limited
 # request gets 429. Counters live in the cache (Redis in staging/prod, settings/deployed.py).
 ACCOUNT_RATE_LIMITS = {

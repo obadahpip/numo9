@@ -59,3 +59,20 @@ Tests: `backend/tests/test_auth_signup.py`.
   [Security baseline § S-03-T07](../security/security-baseline.md#s-03-t07-brute-force-protection-on-login).
 
 Tests: `backend/tests/test_auth_login.py`.
+
+## Password reset (A-02-T04)
+
+| Call | Answer |
+|---|---|
+| `POST /_allauth/browser/v1/auth/password/request` `{email}` | always **200** — the same for an unknown address (that mailbox is told no account exists); the account's address gets a link `<NUMO9_FRONTEND_URL>/reset/<key>` |
+| `GET /_allauth/browser/v1/auth/password/reset` with header `X-Password-Reset-Key` | 200 key valid · 400 invalid/expired/used |
+| `POST /_allauth/browser/v1/auth/password/reset` `{key, password}` | new password set → **401** (signed out; sign in again) · **400** `invalid_password_reset` or a password-rule error |
+
+- The key is valid for **1 hour** (`PASSWORD_RESET_TIMEOUT = 3600`) and works **once**: it is
+  bound to the current password hash, so it dies the moment the password changes.
+- Setting the new password **ends every session** of the user (all browsers and devices); the
+  user is not signed in automatically (`ACCOUNT_LOGIN_ON_PASSWORD_RESET = False`).
+- A completed reset clears the login failure count and any lockout (S-03-T07); the user is
+  emailed that the password changed.
+
+Tests: `backend/tests/test_auth_password_reset.py`.
