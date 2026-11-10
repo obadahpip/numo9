@@ -33,7 +33,7 @@ ENV DJANGO_SETTINGS_MODULE=numo9.settings.dev
 EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
     CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=4).status == 200 else 1)"
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python tools/compile_messages.py && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"]
 
 # ---- runtime: minimal production image, non-root ------------------------------
 FROM base AS runtime
@@ -41,6 +41,8 @@ RUN groupadd --system --gid 10001 numo9 \
     && useradd --system --uid 10001 --gid numo9 --home-dir /app --shell /usr/sbin/nologin numo9
 COPY --from=builder /opt/venv /opt/venv
 COPY --chown=numo9:numo9 . .
+# Compiled translations (.mo) are build output (A-10-T14); pure Python, no GNU gettext needed.
+RUN python tools/compile_messages.py && chown -R numo9:numo9 locale
 USER numo9
 ENV DJANGO_SETTINGS_MODULE=numo9.settings.prod
 EXPOSE 8000

@@ -11,6 +11,8 @@ export interface MyOrganisation {
   name: string;
   status: string;
   time_zone: string;
+  /** Default language of the organisation's documents (A-10-T14): "en-ca" | "fr-ca". */
+  locale?: string;
   membership: { role: string } | null;
   via_practices: {
     practice_id: string;

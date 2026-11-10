@@ -33,6 +33,8 @@ from collections.abc import Callable
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from rest_framework.exceptions import NotFound
 
+from numo9.i18n.errors import ORG_HEADER_MISMATCH
+
 from .context import org_context
 from .models import Organisation, Practice
 
@@ -93,14 +95,16 @@ class TenantContextMiddleware:
         except Http404:
             if not _is_api(request):
                 raise
-            return JsonResponse({"detail": str(NotFound.default_detail)}, status=404)
+            return JsonResponse(
+                {"detail": str(NotFound.default_detail), "code": NotFound.default_code}, status=404
+            )
 
     def _call(self, request: HttpRequest) -> HttpResponse:
         try:
             org_id = org_id_from_request(request)
         except ValueError:
             return JsonResponse(
-                {"detail": f"The organisation in the URL and the {ORG_HEADER} header differ."},
+                {"detail": ORG_HEADER_MISMATCH.text(), "code": ORG_HEADER_MISMATCH.code},
                 status=400,
             )
         organisation = practice = None

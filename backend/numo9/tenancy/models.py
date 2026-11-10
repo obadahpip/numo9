@@ -34,6 +34,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from numo9.accounts.models import Locale
+
 from .managers import OrgScopedManager
 
 DEFAULT_TIME_ZONE = "America/Toronto"
@@ -154,6 +156,15 @@ class Organisation(models.Model):
         default=DEFAULT_TIME_ZONE,
         validators=[validate_time_zone],
     )
+    # Default language of the organisation's own output (emails, documents) when no user's
+    # preference applies (A-10-T14; per-contact document language arrives in X-02).
+    locale = models.CharField(
+        _("language"),
+        max_length=5,
+        choices=Locale.choices,
+        default=Locale.EN_CA,
+        db_default=Locale.EN_CA,
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
@@ -164,6 +175,10 @@ class Organisation(models.Model):
             models.CheckConstraint(
                 condition=_in_choices("status", OrganisationStatus),
                 name="tenancy_organisation_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=_in_choices("locale", Locale),
+                name="tenancy_organisation_locale_valid",
             ),
         ]
 

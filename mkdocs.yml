@@ -68,6 +68,7 @@ nav:
       - ADR template: adr/template.md
   - Architecture:
       - "Tenancy model": architecture/tenancy.md
+      - "Localisation": architecture/i18n.md
   - Design:
       - "Brand tokens": design/brand-tokens.md
       - "Phase 0 wireframes": design/wireframes.md

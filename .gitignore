@@ -96,3 +96,6 @@ junit.xml
 
 # ---- i18n extraction output ----
 .i18n/
+
+# Compiled gettext catalogues: build output of backend/tools/compile_messages.py (A-10-T14)
+backend/locale/**/*.mo

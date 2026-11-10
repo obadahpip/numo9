@@ -34,6 +34,8 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # Request language: user's locale → numo9_locale cookie → Accept-Language (A-10-T14).
+    "numo9.i18n.middleware.LocaleMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
     "numo9.tenancy.middleware.TenantContextMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -67,6 +69,8 @@ AUTH_USER_MODEL = "accounts.User"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # Error bodies carry a stable `code` next to the localised message (A-10-T14).
+    "EXCEPTION_HANDLER": "numo9.i18n.exceptions.exception_handler",
 }
 
 # OpenAPI 3 schema (A-01-T13), served at /api/schema/ to signed-in users; the typed frontend
@@ -106,8 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-ca"
 LANGUAGES = [("en-ca", _("English (Canada)")), ("fr-ca", _("French (Canada)"))]
-# gettext catalogues: backend/locale/<en_CA|fr_CA>/LC_MESSAGES/django.po (S-01-T10).
+# gettext catalogues: backend/locale/<en_CA|fr_CA>/LC_MESSAGES/django.po (S-01-T10); the .mo
+# files are compiled at build time (tools/compile_messages.py, A-10-T14), never committed.
 LOCALE_PATHS = [BASE_DIR / "locale"]
+# Same cookie as the web app's language (A-10-T13); read by numo9.i18n.middleware.
+LANGUAGE_COOKIE_NAME = "numo9_locale"
 TIME_ZONE = env_str("DJANGO_TIME_ZONE", "America/Toronto")
 USE_I18N = True
 USE_TZ = True
