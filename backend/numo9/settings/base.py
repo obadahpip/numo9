@@ -202,14 +202,19 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Same answer whether or not an email is registered (sign-up sends the owner a notice instead).
 ACCOUNT_PREVENT_ENUMERATION = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "Numo9 · "
-# Login rate limits (A-02-T03): every login attempt per IP, failed attempts per IP and per
-# account. A limited request gets 429 with Retry-After. Counters live in the cache (Redis in
-# staging/prod, settings/deployed.py).
-NUMO9_LOGIN_LOCKOUT_SECONDS = 15 * 60
+# Login rate limits (A-02-T03): every login attempt and every failed attempt per IP. A limited
+# request gets 429. Counters live in the cache (Redis in staging/prod, settings/deployed.py).
 ACCOUNT_RATE_LIMITS = {
     "login": "20/m/ip",
-    "login_failed": f"20/m/ip,10/{NUMO9_LOGIN_LOCKOUT_SECONDS}s/key",
+    "login_failed": "20/m/ip",  # per account: the lockout below
 }
+# Brute-force protection (S-03-T07, numo9/security/bruteforce.py): 10 failed logins for one
+# address lock it for 15 minutes; after 5 failures a CAPTCHA token is required when a verifier
+# is configured (dotted path to verify(token, remote_ip) -> bool; the provider arrives in Q-02).
+NUMO9_LOGIN_LOCKOUT_THRESHOLD = 10
+NUMO9_LOGIN_LOCKOUT_SECONDS = 15 * 60
+NUMO9_LOGIN_CAPTCHA_AFTER = 5
+NUMO9_CAPTCHA_VERIFIER = env_str("NUMO9_CAPTCHA_VERIFIER", "")
 ACCOUNT_EMAIL_NOTIFICATIONS = True
 
 # ---- Email (A-07 adds the provider and custom sending domains) ---------------------------------

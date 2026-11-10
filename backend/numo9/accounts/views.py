@@ -21,6 +21,8 @@ from django.conf import settings
 from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 
+from numo9.security import bruteforce
+
 # allauth error codes on the login form and the HTTP status Numo9 answers with.
 LOGIN_ERROR_STATUS = {
     "too_many_login_attempts": HTTPStatus.TOO_MANY_REQUESTS,
@@ -44,5 +46,7 @@ class LoginView(headless.LoginView):  # type: ignore[misc]  # allauth is untyped
         )
         response: HttpResponse = ErrorResponse(self.request, input=input, status=status)
         if status == HTTPStatus.TOO_MANY_REQUESTS:
-            response["Retry-After"] = str(settings.NUMO9_LOGIN_LOCKOUT_SECONDS)
+            email = str(input.data.get("email", "")) if hasattr(input, "data") else ""
+            locked = bruteforce.locked_for(email)
+            response["Retry-After"] = str(locked or settings.NUMO9_LOGIN_LOCKOUT_SECONDS)
         return response
