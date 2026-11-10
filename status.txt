@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 34   Remaining: 2753
+TOTAL ATOMIC TASKS: 2787   Completed: 39   Remaining: 2748
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -56,11 +56,11 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-01-T16 — Doc: tenancy model diagram + rules in docs/architecture/tenancy.md
 
 [A-10]
-❌ A-10-T01 — Figma: brand tokens (colour incl. accessible yellow/black pairs, type scale, spacing, radius, elevation) from client assets
-❌ A-10-T02 — Figma: wireframes for shell, directory, settings, contacts, CoA, journal, console (Phase 0 screens)
-❌ A-10-T03 — packages/ui workspace, Tailwind config from tokens, CSS variables, Storybook 8
-❌ A-10-T04 — Contrast validation script for token pairs
-❌ A-10-T05 — App shell: top nav, org switcher slot, practice nav, breadcrumbs, user menu, notification bell, job tray slot, responsive
+✅ A-10-T01 — Figma: brand tokens (colour incl. accessible yellow/black pairs, type scale, spacing, radius, elevation) from client assets
+✅ A-10-T02 — Figma: wireframes for shell, directory, settings, contacts, CoA, journal, console (Phase 0 screens)
+✅ A-10-T03 — packages/ui workspace, Tailwind config from tokens, CSS variables, Storybook 8
+✅ A-10-T04 — Contrast validation script for token pairs
+✅ A-10-T05 — App shell: top nav, org switcher slot, practice nav, breadcrumbs, user menu, notification bell, job tray slot, responsive
 
 [A-01]
 ❌ A-01-T14 — Org switcher component (recent 5, search, "Open directory"), active-org header, practice badge
