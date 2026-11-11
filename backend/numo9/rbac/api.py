@@ -8,6 +8,8 @@ Organisation-scoped (``/api/v1/o/<org>/…``; the organisation must be accessibl
 - ``members/<user>/roles`` — POST give a role (``roles.assignment.manage``);
 - ``members/<user>/roles/<role>`` — DELETE take a custom role away (``roles.assignment.manage``);
 - ``invitations`` — GET pending invitations (``organisation.members.view``);
+- ``my-permissions`` — GET the signed-in user's permissions here (``organisation.profile.view``,
+  which every role has), so screens show only the actions that work (A-03-T11);
 - ``approval-limits`` — GET list (``roles.limit.view``) · POST create (``roles.limit.manage``);
 - ``approval-limits/<limit>`` — GET (view) · PATCH · DELETE, soft (manage).
 
@@ -46,6 +48,7 @@ from .permissions import (
     ROLES_MANAGE,
     ROLES_VIEW,
 )
+from .resolver import organisation_permissions
 from .serializers import (
     ApprovalLimitCreateSerializer,
     ApprovalLimitSerializer,
@@ -93,6 +96,24 @@ class PermissionCatalogueView(APIView):
             "permissions": [permission_data(p) for p in catalogue],
         }
         return Response(CatalogueSerializer(body).data)
+
+
+class MyPermissionsSerializer(serializers.Serializer[Any]):
+    permissions = serializers.ListField(child=serializers.CharField())
+
+
+class MyPermissionsView(APIView):
+    """What the signed-in user may do here, so screens show only what works (A-03-T11)."""
+
+    @requires_permission("organisation.profile.view")  # every role here has it
+    @extend_schema(
+        operation_id="my_permissions",
+        summary="My permissions in the organisation (to show or hide actions)",
+        responses=MyPermissionsSerializer,
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        keys = sorted(organisation_permissions(request.user, _org()))
+        return Response(MyPermissionsSerializer({"permissions": keys}).data)
 
 
 # ---- roles ---------------------------------------------------------------------------------

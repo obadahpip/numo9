@@ -211,6 +211,65 @@
     "settingsSubscription": "Settings: Subscription",
     "settingsUsersRoles": "Settings: Users and roles"
   },
+  "settings": {
+    "usersRoles": {
+      "cancel": "Cancel",
+      "close": "Close",
+      "denied": {
+        "title": "You can't see this yet"
+      },
+      "failed": "That didn't work and nothing was changed. Try again in a moment.",
+      "intro": "Who can work in this organisation, what each role allows, and how much each person can approve.",
+      "loadFailed": "The list couldn't be loaded. Nothing was changed.",
+      "loading": "Loading users and roles…",
+      "notFound": {
+        "body": "It doesn't exist, or you no longer have access to it. Choose another organisation from the switcher.",
+        "title": "This organisation isn't available"
+      },
+      "orgRole": "{role, select, owner {Owner} admin {Admin} accountant_delegate {Accountant delegate} sales {Sales} purchasing {Purchasing} payroll {Payroll} hr {HR} employee {Employee} other {{role}}}",
+      "retry": "Try again",
+      "tab": {
+        "limits": "Approval limits",
+        "roles": "Roles",
+        "users": "Users"
+      },
+      "tabs": "Users and roles sections",
+      "title": "Users and roles",
+      "toastRegion": "Notifications ({hotkey})",
+      "users": {
+        "accessMember": "Member",
+        "accessPractice": "Through {practice} ({role})",
+        "colAccess": "Access",
+        "colActions": "Actions",
+        "colName": "Name",
+        "colRoles": "Roles",
+        "email": "Email",
+        "emailInvalid": "Enter an email address like 'sam@refined.ca'.",
+        "give": "Give role",
+        "giveRole": "Give a role",
+        "giveRoleHelp": "A main role replaces the one they have. A custom role is added to what they already have.",
+        "giveRolePracticeHelp": "{name} works here through their practice, so you can add custom roles; their practice role stays.",
+        "giveRoleTo": "Give a role to {name}",
+        "groupCustom": "Custom roles",
+        "groupMain": "Main roles",
+        "heading": "Users",
+        "invite": "Invite a user",
+        "inviteHelp": "They get an email with a link that works once and expires in 7 days. You can change their role later.",
+        "invited": "Invitation sent to {email}",
+        "mainRole": "{role} (main role)",
+        "none": "Nobody else works here yet. Invite your team to share the work.",
+        "pending": "Invitations waiting for an answer",
+        "pendingRow": "{email} · {role} · invited by {inviter} · expires {expires}",
+        "removeRole": "Take {role} away from {name}",
+        "role": "Role",
+        "roleGiven": "{name} now has the role {role}",
+        "rolePlaceholder": "Choose a role",
+        "roleTaken": "{role} taken away from {name}",
+        "sendInvite": "Send invitation",
+        "table": "People who can work in this organisation"
+      }
+    }
+  },
   "shell": {
     "brandHome": "Numo9 home",
     "breadcrumbs": "Breadcrumbs",

@@ -595,3 +595,15 @@ def test_openapi_documents_every_route(tmp_path: Path) -> None:
     assert set(paths[f"{org}approval-limits"]) == {"get", "post"}
     assert set(paths[f"{org}approval-limits/{{public_id}}"]) == {"get", "patch", "delete"}
     assert "201" in paths[f"{org}roles"]["post"]["responses"]
+
+
+def test_my_permissions(org: Organisation, owner: User) -> None:
+    mine = client_for(owner).get(url(org, "my-permissions")).json()["permissions"]
+    assert "organisation.close" in mine and mine == sorted(mine)
+    sales = client_for(member(org, "sales", "sam@refined.ca", "Sam Patel"))
+    assert sales.get(url(org, "my-permissions")).json() == {
+        "permissions": ["organisation.profile.view"]
+    }
+    other = Organisation.objects.create(name="Elsewhere Ltd.")
+    outsider = client_for(member(other, "owner", "x@elsewhere.ca", "Out Sider"))
+    assert outsider.get(url(org, "my-permissions")).status_code == 404
