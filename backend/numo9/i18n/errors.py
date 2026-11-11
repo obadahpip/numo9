@@ -186,3 +186,11 @@ APPROVAL_NOBODY = _(
     "Nobody here can approve that amount yet: ask someone who manages roles to raise an "
     "approval limit."
 )
+
+
+# ---- segregation of duties (A-03-T08) ------------------------------------------------------
+SELF_APPROVAL = define(
+    "approval.self_approval",
+    _("You created this %(record)s, so someone else has to approve it."),
+    status.HTTP_403_FORBIDDEN,
+)

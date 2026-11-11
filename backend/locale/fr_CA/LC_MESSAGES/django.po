@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:09-0500\n"
+"POT-Creation-Date: 2026-11-11 12:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -228,6 +228,10 @@ msgstr "Demandez à %(names)s de l’approuver."
 
 msgid "Nobody here can approve that amount yet: ask someone who manages roles to raise an approval limit."
 msgstr "Personne ici ne peut encore approuver ce montant : demandez à une personne qui gère les rôles de relever une limite d’approbation."
+
+#, python-format
+msgid "You created this %(record)s, so someone else has to approve it."
+msgstr "Vous avez créé ce document (%(record)s) : une autre personne doit l’approuver."
 
 msgid "manual journals"
 msgstr "écritures de journal manuelles"
