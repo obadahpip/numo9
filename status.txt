@@ -125,7 +125,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-03-T08 — Segregation-of-duties helper assert_not_creator(user, obj)
 ✅ A-03-T09 — API: roles CRUD (custom only editable), assign/unassign, limits CRUD, GET /permissions/catalogue
 ✅ A-03-T10 — Parameterised matrix test (role × endpoint × method) generated from catalogue + router
-❌ A-03-T11 — Users & roles screen: members list, role chips, invite (reuses A-02)
+✅ A-03-T11 — Users & roles screen: members list, role chips, invite (reuses A-02)
 ❌ A-03-T12 — Role editor: permission matrix by module, search, copy from role, risk badges
 ❌ A-03-T13 — Approval-limit editor per user/role per document type
 ❌ A-03-T16 — Docs: permission catalogue page auto-generated into MkDocs
