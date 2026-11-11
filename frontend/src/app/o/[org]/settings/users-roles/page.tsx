@@ -17,14 +17,14 @@ export default async function UsersRolesPage({
   searchParams,
 }: {
   params: Promise<Params>;
-  searchParams: Promise<{ tab?: string }>;
+  searchParams: Promise<{ tab?: string; saved?: string; deleted?: string }>;
 }) {
-  const [{ org }, { tab }] = await Promise.all([params, searchParams]);
+  const [{ org }, { tab, saved, deleted }] = await Promise.all([params, searchParams]);
   if (!ORG_SLUG.test(org)) notFound();
   const initial = tab === "roles" || tab === "limits" ? tab : "users";
   return (
     <AppShell org={org} modulePath="settings/users-roles">
-      <UsersRolesScreen org={org} tab={initial} />
+      <UsersRolesScreen org={org} tab={initial} saved={saved} deleted={deleted} />
     </AppShell>
   );
 }

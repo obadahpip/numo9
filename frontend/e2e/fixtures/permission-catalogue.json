@@ -1,0 +1,292 @@
+{
+  "modules": [
+    {
+      "key": "settings",
+      "label": "Settings"
+    },
+    {
+      "key": "users",
+      "label": "Users and roles"
+    },
+    {
+      "key": "practice",
+      "label": "Practice"
+    },
+    {
+      "key": "platform",
+      "label": "Platform"
+    }
+  ],
+  "permissions": [
+    {
+      "key": "organisation.close",
+      "label": "Close the organisation",
+      "module": "settings",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "organisation",
+      "owner_only": true,
+      "read_only": false
+    },
+    {
+      "key": "organisation.profile.view",
+      "label": "View the organisation's details",
+      "module": "settings",
+      "risk": "low",
+      "risk_label": "Low risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "organisation.settings.manage",
+      "label": "Change organisation settings",
+      "module": "settings",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "organisation.accountant.invite",
+      "label": "Invite an accountant to look after the organisation",
+      "module": "users",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "organisation.members.invite",
+      "label": "Invite users to the organisation",
+      "module": "users",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "organisation.members.manage",
+      "label": "Change or remove the organisation's users",
+      "module": "users",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "organisation.members.view",
+      "label": "See the organisation's users",
+      "module": "users",
+      "risk": "low",
+      "risk_label": "Low risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "roles.assignment.manage",
+      "label": "Give and remove roles",
+      "module": "users",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "roles.limit.manage",
+      "label": "Set approval limits",
+      "module": "users",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "roles.limit.view",
+      "label": "View approval limits",
+      "module": "users",
+      "risk": "low",
+      "risk_label": "Low risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "roles.role.manage",
+      "label": "Create and edit custom roles",
+      "module": "users",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "roles.role.view",
+      "label": "View roles and what they allow",
+      "module": "users",
+      "risk": "low",
+      "risk_label": "Low risk",
+      "scope": "organisation",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "practice.clients.assign",
+      "label": "Assign staff to client organisations",
+      "module": "practice",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.clients.create",
+      "label": "Create client organisations",
+      "module": "practice",
+      "risk": "medium",
+      "risk_label": "Medium risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.clients.invite_owner",
+      "label": "Invite a client organisation's owner",
+      "module": "practice",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.profile.view",
+      "label": "View the practice",
+      "module": "practice",
+      "risk": "low",
+      "risk_label": "Low risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "practice.roles.manage",
+      "label": "Create, edit and give the practice's roles",
+      "module": "practice",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.settings.manage",
+      "label": "Change practice settings",
+      "module": "practice",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.staff.invite",
+      "label": "Invite staff to the practice",
+      "module": "practice",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.staff.manage",
+      "label": "Change or remove the practice's staff",
+      "module": "practice",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "practice.staff.view",
+      "label": "See the practice's staff",
+      "module": "practice",
+      "risk": "low",
+      "risk_label": "Low risk",
+      "scope": "practice",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "platform.catalogue.manage",
+      "label": "Manage products, packages and prices",
+      "module": "platform",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "platform",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "platform.console.view",
+      "label": "Open the platform console",
+      "module": "platform",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "platform",
+      "owner_only": false,
+      "read_only": true
+    },
+    {
+      "key": "platform.flags.manage",
+      "label": "Turn feature flags on and off",
+      "module": "platform",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "platform",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "platform.impersonate",
+      "label": "Sign in as a user for support (time-limited, audited)",
+      "module": "platform",
+      "risk": "critical",
+      "risk_label": "Critical",
+      "scope": "platform",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "platform.jobs.manage",
+      "label": "Retry or purge background jobs",
+      "module": "platform",
+      "risk": "high",
+      "risk_label": "High risk",
+      "scope": "platform",
+      "owner_only": false,
+      "read_only": false
+    },
+    {
+      "key": "platform.jobs.view",
+      "label": "See background jobs and failures",
+      "module": "platform",
+      "risk": "medium",
+      "risk_label": "Medium risk",
+      "scope": "platform",
+      "owner_only": false,
+      "read_only": true
+    }
+  ]
+}
