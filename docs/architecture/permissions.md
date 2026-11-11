@@ -90,3 +90,29 @@ Every practice and organisation role includes `organisation.profile.view`. "Crit
 they are built, and the sync grants them.
 
 Tests: `backend/tests/test_system_roles.py`.
+
+## Resolver (A-03-T04)
+
+`numo9.rbac.resolver.has_perm(user, organisation, key)` — whether the user may do an
+organisation permission in an organisation. The user's set there is the **union** of:
+
+1. as a **member**: the system role of `OrganisationMember.role` + organisation roles assigned in
+   that organisation (custom roles);
+2. through each **practice** actively assigned to the organisation that gives the user access
+   (A-01-T05: practice-wide role, or assigned staff): the system role of `PracticeMember.role` +
+   practice roles assigned in that practice.
+
+No access → no permissions, whatever roles the user holds; inactive and anonymous users have none;
+Django `is_staff`/`is_superuser` grant nothing. `has_practice_perm(user, practice, key)` and
+`has_platform_perm(user, key)` answer for practice and platform permissions; asking a resolver
+for another scope's key, or an unknown key, raises (programming error). Entitlements (U-03) will
+intersect the set.
+
+**Cache: one request.** `PermissionCacheMiddleware` opens a cache per request, so several checks
+in one view query once; nothing is cached across requests — a removed role, membership or
+assignment applies on the next request. Outside a request (jobs, scripts) every call reads the
+database.
+
+Tests: `backend/tests/test_permission_resolver.py` (truth table over member roles and practice
+access, union, custom organisation and practice roles, no-access, practice and platform
+permissions, cache scope).
