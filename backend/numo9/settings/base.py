@@ -60,6 +60,8 @@ MIDDLEWARE = [
     "numo9.i18n.middleware.LocaleMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
     "numo9.tenancy.middleware.TenantContextMiddleware",
+    # Permission sets cached for one request only — never across requests (A-03-T04).
+    "numo9.rbac.resolver.PermissionCacheMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
