@@ -607,3 +607,48 @@ def test_my_permissions(org: Organisation, owner: User) -> None:
     other = Organisation.objects.create(name="Elsewhere Ltd.")
     outsider = client_for(member(other, "owner", "x@elsewhere.ca", "Out Sider"))
     assert outsider.get(url(org, "my-permissions")).status_code == 404
+
+
+def test_limit_saved_through_the_api_is_enforced_by_the_check(
+    org: Organisation, owner: User
+) -> None:
+    """A-03-T13 acceptance (backend half): a limit saved in the editor is the one enforced."""
+    sam = member(org, "purchasing", "sam@refined.ca", "Sam Patel")
+    client = client_for(owner)
+    client.post(
+        url(org, "approval-limits"),
+        {"doc_type": "bill", "max_amount": "5000", "user": str(sam.public_id)},
+        format="json",
+    )
+    client.post(
+        url(org, "approval-limits"),
+        {"doc_type": "bill", "max_amount": "50000", "user": str(owner.public_id)},
+        format="json",
+    )
+    check = url(org, "approval-limits/check")
+    ok = client.get(check, {"doc_type": "bill", "amount": "5000", "user": str(sam.public_id)})
+    assert ok.json() == {
+        "allowed": True,
+        "limit": "5000.00",
+        "code": None,
+        "detail": None,
+        "approvers": [],
+    }
+    over = client.get(
+        check, {"doc_type": "bill", "amount": "5001", "user": str(sam.public_id)}
+    ).json()
+    assert over["allowed"] is False and over["code"] == "approval.limit_exceeded"
+    assert over["detail"].startswith("This bill is for $5,001.00, above your approval limit")
+    assert [a["name"] for a in over["approvers"]] == ["Avery Owner"]
+    none = client.get(
+        check, {"doc_type": "pay_run", "amount": "1", "user": str(sam.public_id)}
+    ).json()
+    assert none["allowed"] is False and none["code"] == "approval.no_limit"
+    stranger = make_user("x@elsewhere.ca", "Stranger")
+    assert (
+        client.get(
+            check, {"doc_type": "bill", "amount": "1", "user": str(stranger.public_id)}
+        ).status_code
+        == 400
+    )
+    assert client.get(check, {"doc_type": "bill"}).status_code == 400

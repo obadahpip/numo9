@@ -29,6 +29,11 @@ urlpatterns = [
     path(f"{ORG}invitations", api.PendingInvitationsView.as_view(), name="pending-invitations"),
     path(f"{ORG}approval-limits", api.ApprovalLimitListView.as_view(), name="approval-limits"),
     path(
+        f"{ORG}approval-limits/check",
+        api.ApprovalLimitCheckView.as_view(),
+        name="approval-limits-check",
+    ),
+    path(
         f"{ORG}approval-limits/<uuid:public_id>",
         api.ApprovalLimitDetailView.as_view(),
         name="approval-limit",

@@ -410,3 +410,152 @@ export const rm = defineMessages({
     description: "Why delete is unavailable",
   },
 });
+
+/** Approval limits tab (A-03-T13). */
+export const lm = defineMessages({
+  heading: {
+    id: "settings.usersRoles.limits.heading",
+    defaultMessage: "Approval limits",
+    description: "Heading of the approval limits tab",
+  },
+  intro: {
+    id: "settings.usersRoles.limits.intro",
+    defaultMessage:
+      "The highest amount (CAD) a person, or everyone with a role, can approve for each kind of document. When a person has several limits, the lowest applies. Without a limit they can't approve.",
+    description: "Approval limits explanation",
+  },
+  docType: {
+    id: "settings.usersRoles.limits.docType",
+    defaultMessage:
+      "{type, select, journal {Manual journals} bill {Bills} purchase_order {Purchase orders} pay_run {Pay runs} other {{type}}}",
+    description: "Document type of an approval limit (plural, as a heading or option)",
+  },
+  table: {
+    id: "settings.usersRoles.limits.table",
+    defaultMessage: "Approval limits for {type}",
+    description: "Caption of one document type's limits table",
+  },
+  colWho: {
+    id: "settings.usersRoles.limits.colWho",
+    defaultMessage: "Person or role",
+    description: "Column",
+  },
+  colAmount: {
+    id: "settings.usersRoles.limits.colAmount",
+    defaultMessage: "Up to (CAD)",
+    description: "Column: the limit amount",
+  },
+  roleBadge: {
+    id: "settings.usersRoles.limits.roleBadge",
+    defaultMessage: "Everyone with {role}",
+    description: "Limit row naming a role",
+  },
+  none: {
+    id: "settings.usersRoles.limits.none",
+    defaultMessage: "No limits yet, so nobody can approve {type}.",
+    description: "Empty limits list of a document type",
+  },
+  add: {
+    id: "settings.usersRoles.limits.add",
+    defaultMessage: "Add a limit",
+    description: "Heading/button of the add-limit form",
+  },
+  type: {
+    id: "settings.usersRoles.limits.type",
+    defaultMessage: "Document type",
+    description: "Label",
+  },
+  who: { id: "settings.usersRoles.limits.who", defaultMessage: "For", description: "Label" },
+  whoPlaceholder: {
+    id: "settings.usersRoles.limits.whoPlaceholder",
+    defaultMessage: "Choose a person or a role",
+    description: "Placeholder",
+  },
+  people: {
+    id: "settings.usersRoles.limits.people",
+    defaultMessage: "People",
+    description: "Group",
+  },
+  roles: { id: "settings.usersRoles.limits.roles", defaultMessage: "Roles", description: "Group" },
+  amount: {
+    id: "settings.usersRoles.limits.amount",
+    defaultMessage: "Up to (CAD)",
+    description: "Label of the amount field",
+  },
+  amountInvalid: {
+    id: "settings.usersRoles.limits.amountInvalid",
+    defaultMessage: "Enter an amount like 5,000.00.",
+    description: "Validation",
+  },
+  whoRequired: {
+    id: "settings.usersRoles.limits.whoRequired",
+    defaultMessage: "Choose who this limit is for.",
+    description: "Validation",
+  },
+  save: {
+    id: "settings.usersRoles.limits.save",
+    defaultMessage: "Save limit",
+    description: "Button",
+  },
+  saved: {
+    id: "settings.usersRoles.limits.saved",
+    defaultMessage: "Limit saved: {who} can approve {type} up to {amount}",
+    description: "Toast after saving a limit",
+  },
+  edit: {
+    id: "settings.usersRoles.limits.edit",
+    defaultMessage: "Change the limit of {who}",
+    description: "Accessible name of the edit button / amount field of a row",
+  },
+  editShort: {
+    id: "settings.usersRoles.limits.editShort",
+    defaultMessage: "Change",
+    description: "Row button",
+  },
+  remove: {
+    id: "settings.usersRoles.limits.remove",
+    defaultMessage: "Remove the limit of {who}",
+    description: "Accessible name of the remove button of a row",
+  },
+  removeShort: {
+    id: "settings.usersRoles.limits.removeShort",
+    defaultMessage: "Remove",
+    description: "Row button",
+  },
+  removed: {
+    id: "settings.usersRoles.limits.removed",
+    defaultMessage: "Limit of {who} removed",
+    description: "Toast after removing a limit",
+  },
+  checkHeading: {
+    id: "settings.usersRoles.limits.check",
+    defaultMessage: "Verify an amount",
+    description: "Heading of the check form",
+  },
+  checkHelp: {
+    id: "settings.usersRoles.limits.checkHelp",
+    defaultMessage:
+      "See whether someone can approve a document of this amount with today's limits.",
+    description: "Check form explanation",
+  },
+  person: {
+    id: "settings.usersRoles.limits.person",
+    defaultMessage: "Person",
+    description: "Label",
+  },
+  personPlaceholder: {
+    id: "settings.usersRoles.limits.personPlaceholder",
+    defaultMessage: "Choose a person",
+    description: "Placeholder",
+  },
+  checkButton: {
+    id: "settings.usersRoles.limits.checkButton",
+    defaultMessage: "Verify",
+    description: "Button",
+  },
+  allowed: {
+    id: "settings.usersRoles.limits.allowed",
+    defaultMessage: "{name} can approve this: their limit is {limit}.",
+    description: "Check result: allowed",
+  },
+});
