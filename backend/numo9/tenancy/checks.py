@@ -31,6 +31,12 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Invitations name a practice or an organisation and the email of someone who is not a
         # member yet; they hold no organisation business data (A-02-T08).
         "tenancy.Invitation",
+        # Roles (A-03-T02): system roles belong to no tenant; custom roles, their permissions and
+        # assignments name an organisation or practice but hold none of its business data.
+        # Approval limits are organisation records (rbac.ApprovalLimit is an OrgOwnedModel).
+        "rbac.Role",
+        "rbac.RolePermission",
+        "rbac.RoleAssignment",
     }
 )
 
