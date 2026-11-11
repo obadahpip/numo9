@@ -410,3 +410,27 @@ screens reuse it for their refusals.
 Tests: `backend/tests/test_why_cant_i.py`; `frontend/e2e/why-cant-i.spec.ts` (the real refusal
 body as fixture: the refusal shows names; request access; nobody to ask; counted overflow;
 managers' list; 360 / 1280 px, axe).
+
+## Audit hooks (A-03-T15)
+
+Every role, assignment, approval-limit and access-request change made through the services
+(`services.py`, `access.py`, the API) emits one **`RbacChange`** (`numo9/rbac/audit.py`):
+actor, organisation, object (type, public id, label) and the **diff** `{field: [before, after]}`
+of the fields that changed — permission sets as sorted key lists, amounts as `"5000.00"`.
+
+| Action | Object | Diff |
+|---|---|---|
+| `role.created` / `role.updated` / `role.deleted` | `rbac.Role` | name, description, permissions |
+| `role.assigned` / `role.unassigned` | `rbac.RoleAssignment` ("Buyer → Sam Patel") | role, user |
+| `member.main_role_changed` | `accounts.User` | main_role |
+| `limit.created` / `limit.updated` / `limit.deleted` | `rbac.ApprovalLimit` | doc_type, max_amount, user / role |
+| `access_request.created` / `access_request.closed` | `rbac.AccessRequest` | permission, note, notified / requester |
+
+No-op changes (same name, a role already held) and refused requests emit nothing.
+
+**Delivery today:** the `rbac_changed` signal and a structured `numo9.audit` log line (`audit`
+field). **Pending A-04:** the audit log (`AuditEvent`, hash chain, viewer with DiffViewer) does
+not exist yet; A-04-T03 connects `audit.record()` to `rbac_changed`, which makes these diffs
+visible in the audit log — the task's acceptance ("diff visible") is checked then.
+
+Tests: `backend/tests/test_rbac_audit.py`.

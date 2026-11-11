@@ -43,6 +43,7 @@ from numo9.tenancy.models import (
     PracticeMember,
 )
 
+from . import audit
 from .catalogue import Scope, UnknownPermission, catalogue
 from .models import ApprovalLimit, Role, RoleAssignment, RolePermission, RoleScope
 from .resolver import organisation_permissions
@@ -155,6 +156,14 @@ def create_role(
         )
         _save_name(role)
         RolePermission.objects.bulk_create([RolePermission(role=role, permission=k) for k in keys])
+        audit.record(
+            "role.created",
+            actor=actor,
+            organisation=organisation,
+            obj=role,
+            label=role.name,
+            after=audit.role_state(role),
+        )
     return role
 
 
@@ -168,6 +177,7 @@ def update_role(
     permissions: Iterable[str] | None = None,
 ) -> Role:
     _assert_editable(role)
+    before = audit.role_state(role)
     with transaction.atomic():
         if name is not None:
             role.name = name.strip()
@@ -182,6 +192,17 @@ def update_role(
             RolePermission.objects.bulk_create(
                 [RolePermission(role=role, permission=k) for k in keys if k not in have]
             )
+        after = audit.role_state(role)
+        if after != before:
+            audit.record(
+                "role.updated",
+                actor=actor,
+                organisation=organisation,
+                obj=role,
+                label=role.name,
+                before=before,
+                after=after,
+            )
     return role
 
 
@@ -195,12 +216,21 @@ def holders(organisation: Organisation, role: Role) -> int:
     return assigned
 
 
-def delete_role(organisation: Organisation, role: Role) -> None:
+def delete_role(organisation: Organisation, role: Role, *, actor: Any = None) -> None:
     _assert_editable(role)
     count = holders(organisation, role)
     if count:
         raise api_error(errors.ROLE_IN_USE, role=role.name, count=count)
     with transaction.atomic():
+        before = audit.role_state(role)
+        audit.record(
+            "role.deleted",
+            actor=actor,
+            organisation=organisation,
+            obj=role,
+            label=role.name,
+            before=before,
+        )
         ApprovalLimit.objects.filter(role=role, organisation=organisation).delete()
         role.delete()
 
@@ -283,14 +313,33 @@ def assign_role(actor: Any, organisation: Organisation, person: Person, role: Ro
                 organisation, membership
             ):
                 raise api_error(errors.LAST_OWNER, name=person.user.name)
+            previous = membership.role
             membership.role = role.key
             membership.save(update_fields=["role"])
+            audit.record(
+                "member.main_role_changed",
+                actor=actor,
+                organisation=organisation,
+                obj=person.user,
+                label=person.user.name,
+                before={"main_role": previous},
+                after={"main_role": role.key},
+            )
         return True
     if not can_access(person.user, organisation):
         raise api_error(errors.PERSON_NOT_FOUND)
-    _, created = RoleAssignment.objects.get_or_create(
+    assignment, created = RoleAssignment.objects.get_or_create(
         role=role, user=person.user, organisation=organisation, defaults={"assigned_by": actor}
     )
+    if created:
+        audit.record(
+            "role.assigned",
+            actor=actor,
+            organisation=organisation,
+            obj=assignment,
+            label=f"{role.name} → {person.user.name}",
+            after={"role": str(role.public_id), "user": str(person.user.public_id)},
+        )
     return created
 
 
@@ -301,16 +350,28 @@ def _other_owner(organisation: Organisation, membership: OrganisationMember) -> 
     return owners.exclude(pk=membership.pk).filter(user__is_active=True).exists()
 
 
-def unassign_role(organisation: Organisation, person: Person, role: Role) -> None:
+def unassign_role(
+    organisation: Organisation, person: Person, role: Role, *, actor: Any = None
+) -> None:
     if role.is_system:
         if person.membership is not None and person.membership.role == role.key:
             raise api_error(errors.MAIN_ROLE)
         raise api_error(errors.ROLE_NOT_FOUND)
-    deleted, _ = RoleAssignment.objects.filter(
+    assignment = RoleAssignment.objects.filter(
         role=role, user=person.user, organisation=organisation
-    ).delete()
-    if not deleted:
+    ).first()
+    if assignment is None:
         raise api_error(errors.ROLE_NOT_FOUND)
+    with transaction.atomic():
+        audit.record(
+            "role.unassigned",
+            actor=actor,
+            organisation=organisation,
+            obj=assignment,
+            label=f"{role.name} → {person.user.name}",
+            before={"role": str(role.public_id), "user": str(person.user.public_id)},
+        )
+        assignment.delete()
 
 
 # ---- approval limits -----------------------------------------------------------------------
@@ -359,17 +420,48 @@ def create_limit(
     try:
         with transaction.atomic():
             row.save()
+            audit.record(
+                "limit.created",
+                actor=actor,
+                organisation=organisation,
+                obj=row,
+                label=_who(row),
+                after=audit.limit_state(row),
+            )
     except IntegrityError:
         raise api_error(errors.LIMIT_DUPLICATE, who=_who(row)) from None
     return row
 
 
-def update_limit(row: ApprovalLimit, *, max_amount: Decimal) -> ApprovalLimit:
+def update_limit(row: ApprovalLimit, *, max_amount: Decimal, actor: Any = None) -> ApprovalLimit:
+    before = audit.limit_state(row)
     row.max_amount = max_amount
     row.full_clean(validate_unique=False, validate_constraints=False)
-    row.save(update_fields=["max_amount", "updated_at"])
+    with transaction.atomic():
+        row.save(update_fields=["max_amount", "updated_at"])
+        row.refresh_from_db(fields=["max_amount"])
+        after = audit.limit_state(row)
+        if after != before:
+            audit.record(
+                "limit.updated",
+                actor=actor,
+                organisation=row.organisation,
+                obj=row,
+                label=_who(row),
+                before=before,
+                after=after,
+            )
     return row
 
 
-def delete_limit(row: ApprovalLimit) -> None:
-    row.soft_delete()
+def delete_limit(row: ApprovalLimit, *, actor: Any = None) -> None:
+    with transaction.atomic():
+        row.soft_delete()
+        audit.record(
+            "limit.deleted",
+            actor=actor,
+            organisation=row.organisation,
+            obj=row,
+            label=_who(row),
+            before=audit.limit_state(row),
+        )

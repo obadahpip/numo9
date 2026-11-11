@@ -29,6 +29,7 @@ from numo9.i18n import errors
 from numo9.i18n.errors import api_error, error_detail
 from numo9.tenancy.models import Organisation
 
+from . import audit
 from .catalogue import Scope, UnknownPermission, catalogue
 from .explain import managers_for
 from .models import AccessRequest
@@ -100,6 +101,14 @@ def request_access(user: Any, organisation: Organisation, key: str, note: str = 
                 note=note.strip(),
                 notified=len(recipients),
                 created_by=user,
+            )
+            audit.record(
+                "access_request.created",
+                actor=user,
+                organisation=organisation,
+                obj=row,
+                label=f"{user.name} → {key}",
+                after={"permission": key, "note": row.note, "notified": len(recipients)},
             )
     except IntegrityError:  # a parallel request won the race
         row = AccessRequest.objects.get(requester=user, permission=key, deleted_at__isnull=True)
