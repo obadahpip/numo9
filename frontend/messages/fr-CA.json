@@ -1,7 +1,81 @@
 {
+  "auth": {
+    "common": {
+      "email": "Email",
+      "emailInvalid": "Enter an email address like 'dana@mapleleaf.ca'.",
+      "offline": "Numo9 couldn't be reached. Make sure you're online, then try again.",
+      "password": "Password",
+      "passwordRequired": "Enter your password.",
+      "passwordTooShort": "Use at least 12 characters. A few unrelated words work well.",
+      "rateLimited": "Too many attempts. For your security, wait {minutes, plural, one {# minute} other {# minutes}} before trying again.",
+      "serverError": "Something went wrong on our side and nothing was changed. Try again in a moment.",
+      "signIn": "Sign in",
+      "signUp": "Create an account",
+      "unexpected": "That didn't work (error {status}). Try again; if it keeps happening, contact support.",
+      "working": "Please wait…"
+    },
+    "password": {
+      "hide": "Hide password",
+      "hint": "At least 12 characters. A few unrelated words make a strong, memorable password.",
+      "show": "Show password",
+      "strength": "Password strength: {strength, select, tooShort {too short} fair {fair} good {good} strong {strong} other {}}"
+    },
+    "signup": {
+      "accountant": "I'm an accountant",
+      "accountantDetail": "Free for accountants, always. Set up your practice and invite your clients.",
+      "alreadySignedIn": "You're already signed in. Go to Home, or sign out first to create another account.",
+      "changePath": "Choose a different account type",
+      "chooseLead": "Tell us who you are so we set up the right workspace.",
+      "chooseTitle": "Create your Numo9 account",
+      "formTitleAccountant": "Create your free accountant account",
+      "formTitleOrganisation": "Start your free 30-day trial",
+      "goHome": "Go to Home",
+      "haveAccount": "Already have an account?",
+      "name": "Your name",
+      "nameRequired": "Enter your full name, e.g. 'Dana Lee'.",
+      "organisation": "I run a business",
+      "organisationDetail": "Start a 30-day free trial for your organisation. No card needed to start.",
+      "organisationHint": "You can add the legal name, BN and Province later.",
+      "organisationName": "Business name",
+      "organisationRequired": "Enter your business name, e.g. 'Refined Interiors Inc.'.",
+      "pageTitle": "Create your account · Numo9",
+      "practiceHint": "As your clients know it, e.g. 'Maple Leaf Accounting'.",
+      "practiceName": "Practice name",
+      "practiceRequired": "Enter your practice's name, e.g. 'Maple Leaf Accounting'.",
+      "sentBody": "We sent a link to {email}. Open it within 3 days to verify your address — then you can sign in.",
+      "sentRetry": "Use a different email address",
+      "sentSpam": "Nothing after a few minutes? Look in your spam or junk folder. If the address was mistyped, sign up again with the right one.",
+      "sentTitle": "Open the link we emailed you",
+      "submit": "Create account"
+    },
+    "verify": {
+      "checkingTitle": "Verifying your email…",
+      "continue": "Continue to Numo9",
+      "failedTitle": "We couldn't check your link",
+      "invalidBody": "Verification links work once and for 3 days. If you already verified, just sign in. Otherwise sign in anyway — we'll email you a new link.",
+      "invalidTitle": "This link doesn't work any more",
+      "pageTitle": "Verify your email · Numo9",
+      "retry": "Try again",
+      "verifiedSignIn": "Sign in with your email and password to continue.",
+      "verifiedSignedIn": "You're signed in. Your workspace is ready.",
+      "verifiedTitle": "Your email is verified"
+    }
+  },
   "common": {
     "brand": "Numo9",
     "tagline": "Numbers build a brighter tomorrow"
+  },
+  "form": {
+    "close": "Close",
+    "discard": "Discard changes",
+    "errorSummaryTitle": "{count, plural, one {There is # problem with this form} other {There are # problems with this form}}",
+    "leave": "Leave without saving",
+    "leaveBody": "Your changes on this page will be lost.",
+    "leaveTitle": "Leave without saving?",
+    "save": "Save",
+    "saving": "Saving…",
+    "stay": "Stay on this page",
+    "unsavedChanges": "You have unsaved changes."
   },
   "home": {
     "placeholder": "Application shell placeholder.",

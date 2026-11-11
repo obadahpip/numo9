@@ -7,7 +7,7 @@ import json
 import dj_database_url
 
 from .base import *  # noqa: F403
-from .base import BASE_DIR, FIELD_ENCRYPTION_KEYS, INSTALLED_APPS
+from .base import BASE_DIR, FIELD_ENCRYPTION_KEYS, FRONTEND_URL, INSTALLED_APPS
 from .env import env_bool, env_list, env_str
 
 # Dev-only tooling (not installed in runtime images).
@@ -16,6 +16,9 @@ INSTALLED_APPS = [*INSTALLED_APPS, "django_migration_linter"]
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "dev-insecure-secret-key-do-not-use-in-production")
 DEBUG = env_bool("DJANGO_DEBUG", True)
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", ["localhost", "127.0.0.1", "[::1]"])
+# The web app (Next.js dev server) forwards /api/v1 and /_allauth here (A-02-T10), so unsafe
+# requests carry the web app's Origin, not the backend's: trust it for the CSRF origin check.
+CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", [FRONTEND_URL])
 
 _DEFAULT_DB_URL = "sqlite:///" + (BASE_DIR / "db.sqlite3").as_posix()
 

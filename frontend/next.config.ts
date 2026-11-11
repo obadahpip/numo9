@@ -3,6 +3,7 @@ import path from "node:path";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { backendRewrites } from "./src/routing/backend";
 import { headerRules } from "./src/security/headers";
 
 // next-intl (A-10-T13): request config with the locale and ICU catalogues.
@@ -21,6 +22,8 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(process.cwd(), ".."),
   // Security headers on every route (S-03-T10); pages add their nonce CSP in the middleware.
   headers: async () => headerRules(process.env.NODE_ENV === "production"),
+  // Local development: forward /api/v1 and /_allauth to the Django backend (A-02-T10).
+  rewrites: async () => backendRewrites(process.env.NUMO9_BACKEND_URL),
 };
 
 export default withNextIntl(nextConfig);

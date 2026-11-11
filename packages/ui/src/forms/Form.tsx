@@ -148,13 +148,20 @@ export function Form<Schema extends z.ZodType<FieldValues, FieldValues>>({
     [fieldId],
   );
 
-  // Keep the summary in step while the user fixes fields.
+  // Keep the summary in step while the user fixes fields. It closes only when the errors go
+  // from some to none (the user fixed the last one): right after a first failed submit on an
+  // untouched form, the summary renders before the rendered form state carries the errors, and
+  // that empty error set must not close it (seen in browsers, A-02-T10).
   const errorKey = JSON.stringify(flattenErrors(errors));
+  const previousErrorKey = useRef(errorKey);
   const showingSummary = summary !== null;
   useEffect(() => {
+    const previous = previousErrorKey.current;
+    previousErrorKey.current = errorKey;
     if (!showingSummary) return;
     const next = orderedErrors(form.formState.errors);
-    setSummary(next.length ? next : null);
+    if (next.length) setSummary(next);
+    else if (previous !== "[]") setSummary(null);
     // errorKey captures every change to the errors.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorKey, showingSummary]);
