@@ -88,10 +88,12 @@ TEMPLATES = [
 # Custom user model (A-02-T01); set before the first migration, never change afterwards.
 AUTH_USER_MODEL = "accounts.User"
 
-# Django REST framework (A-01-T06). Secure default: an endpoint must opt out of authentication
-# explicitly. Organisation-scoped endpoints add IsOrgMemberOrAssigned (404 on foreign data).
+# Django REST framework (A-01-T06). Secure default: every API method declares the permission
+# it needs — a catalogue key, or PUBLIC / AUTHENTICATED — and RequiresPermission enforces it
+# (A-03-T05; system check rbac.E001-E004). Organisation-scoped endpoints add
+# IsOrgMemberOrAssigned first (404 on foreign data).
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    "DEFAULT_PERMISSION_CLASSES": ["numo9.rbac.drf.RequiresPermission"],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     # Error bodies carry a stable `code` next to the localised message (A-10-T14).
     "EXCEPTION_HANDLER": "numo9.i18n.exceptions.exception_handler",
@@ -111,6 +113,13 @@ SPECTACULAR_SETTINGS = {
         "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
         "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",
     },
+}
+
+# Third-party DRF views without a permission declaration (rbac.E004): dotted path -> why safe.
+RBAC_EXEMPT_VIEWS = {
+    "drf_spectacular.views.SpectacularAPIView": (
+        "OpenAPI schema: no tenant data; SPECTACULAR_SETTINGS limits it to signed-in users"
+    ),
 }
 
 # Routes that are not organisation-scoped and are therefore skipped by `manage.py tenant_sweep`

@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.apps import AppConfig
+from django.core import checks
 from django.db.models.signals import post_migrate
 from django.utils.module_loading import autodiscover_modules
 
@@ -15,6 +16,10 @@ class RbacConfig(AppConfig):
     def ready(self) -> None:
         # Fill the permission catalogue from every installed app's permissions.py (A-03-T01).
         autodiscover_modules("permissions")
+        from .checks import check_permission_declarations
+
+        # Every API method declares its permission (A-03-T05).
+        checks.register(check_permission_declarations, checks.Tags.urls)
         # Keep the system roles' permission sets in step with the catalogue (A-03-T03).
         post_migrate.connect(_sync_after_migrate, sender=self)
 

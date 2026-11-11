@@ -19,10 +19,15 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from numo9.rbac.drf import PUBLIC, RequiresPermission
+
 
 @method_decorator([ensure_csrf_cookie, never_cache], name="dispatch")
 class CsrfTokenView(APIView):
-    permission_classes = [AllowAny]
+    # AllowAny adds nothing to RequiresPermission (both must pass); it marks the OpenAPI
+    # operation as open to signed-out callers.
+    permission_classes = [RequiresPermission, AllowAny]
+    required_permission = PUBLIC  # the web app needs the token before signing in
     authentication_classes: list[type] = []
 
     @extend_schema(

@@ -15,6 +15,8 @@ from .env import env_list, env_str
 INSTALLED_APPS = [*INSTALLED_APPS, "django_migration_linter", "tests.testapp"]
 # The test-only app is held to the OrgOwnedModel rule too (A-01-T08).
 TENANCY_BUSINESS_APP_PREFIXES = ("numo9.", "tests.")
+# ...and the test-only API views to the permission-declaration check (A-03-T05).
+RBAC_VIEW_MODULE_PREFIXES = ("numo9.", "tests.")
 # Third-party migrations (django-allauth, A-02) are reviewed upstream, not by our linter.
 MIGRATION_LINTER_OPTIONS = {"exclude_apps": ["account", "headless", "mfa", "usersessions"]}
 
