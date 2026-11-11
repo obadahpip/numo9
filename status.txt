@@ -321,7 +321,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ❌ A-02-T15 — i18n keys EN/FR for all auth emails and screens
 
 [A-03]
-❌ A-03-T14 — "Why can't I?" ExplainPanel payload (rule, required permission, who has it) + request-access notification
+✅ A-03-T14 — "Why can't I?" ExplainPanel payload (rule, required permission, who has it) + request-access notification   [notification by email + open requests on Users and roles; notification-centre delivery with A-07]
 
 [S-03]
 ❌ S-03-T05 — MaskedValue serializer + "reveal" endpoint with permission, re-auth and audit hook
