@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 16:29-0500\n"
+"POT-Creation-Date: 2026-11-11 04:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,6 +205,42 @@ msgid "This invitation was just sent. Wait a minute before sending it again."
 msgstr ""
 
 msgid "This role doesn't fit the invitation: staff get a practice role, users an organisation role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
+msgstr ""
+
+msgid "View roles and what they allow"
+msgstr ""
+
+msgid "Create and edit custom roles"
+msgstr ""
+
+msgid "Give and remove roles"
+msgstr ""
+
+msgid "View approval limits"
+msgstr ""
+
+msgid "Set approval limits"
+msgstr ""
+
+msgid "Create, edit and give the practice's roles"
+msgstr ""
+
+msgid "Open the platform console"
+msgstr ""
+
+msgid "Manage products, packages and prices"
+msgstr ""
+
+msgid "Sign in as a user for support (time-limited, audited)"
+msgstr ""
+
+msgid "See background jobs and failures"
+msgstr ""
+
+msgid "Retry or purge background jobs"
+msgstr ""
+
+msgid "Turn feature flags on and off"
 msgstr ""
 
 msgid "Security"
@@ -415,4 +451,49 @@ msgid "invitation"
 msgstr ""
 
 msgid "invitations"
+msgstr ""
+
+msgid "View the organisation's details"
+msgstr ""
+
+msgid "Change organisation settings"
+msgstr ""
+
+msgid "Close the organisation"
+msgstr ""
+
+msgid "See the organisation's users"
+msgstr ""
+
+msgid "Invite users to the organisation"
+msgstr ""
+
+msgid "Change or remove the organisation's users"
+msgstr ""
+
+msgid "Invite an accountant to look after the organisation"
+msgstr ""
+
+msgid "View the practice"
+msgstr ""
+
+msgid "Change practice settings"
+msgstr ""
+
+msgid "See the practice's staff"
+msgstr ""
+
+msgid "Invite staff to the practice"
+msgstr ""
+
+msgid "Change or remove the practice's staff"
+msgstr ""
+
+msgid "Create client organisations"
+msgstr ""
+
+msgid "Assign staff to client organisations"
+msgstr ""
+
+msgid "Invite a client organisation's owner"
 msgstr ""

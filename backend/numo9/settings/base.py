@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     # Project apps first so their templates/static override contrib defaults.
     "numo9.accounts",
     "numo9.tenancy",
+    # Roles, permission catalogue, approval limits (A-03).
+    "numo9.rbac",
     # Printed documents: WeasyPrint Letter template baseline (A-10-T16).
     "numo9.documents",
     # Security baseline: CSRF token endpoint, encrypted fields, log scrubbing (S-03).

@@ -71,6 +71,7 @@ nav:
       - "Localisation": architecture/i18n.md
       - "Authentication and sign-up": architecture/authentication.md
       - "Background jobs": architecture/jobs.md
+      - "Roles and permissions": architecture/permissions.md
   - Design:
       - "Brand tokens": design/brand-tokens.md
       - "Phase 0 wireframes": design/wireframes.md
