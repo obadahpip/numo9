@@ -124,6 +124,34 @@ returned by the API when the user is not a direct member. Opening an organisatio
 Code: `packages/ui/src/org-switcher/` (component, search), `frontend/src/components/OrgSwitcher.tsx`
 (API, recent list, navigation), `frontend/src/routing/routes.ts` (`equivalentOrgUrl`).
 
+## Background jobs (A-01-T07)
+
+A Celery job has no request, so nothing sets the tenant context for it. Organisation-scoped
+tasks use `OrgTask` as their base (`@org_task(...)`, `numo9/tenancy/tasks.py`):
+
+- **Enqueue** without an explicit `org_id=<organisation public id>` keyword argument (or with
+  something that is not a UUID) raises `OrgIdRequired` in the caller; nothing is sent.
+- **Run** of a message without one (sent by name, old producer) fails with `OrgIdRequired`; an
+  unknown organisation fails with `UnknownOrganisation`. Neither is retried.
+- The task body runs inside `org_context(organisation, practice)`: `OrgScopedManager` queries and
+  the RLS setting `app.current_org` are scoped to that organisation; the context is restored
+  afterwards (also when the task fails), so a worker never carries one job's organisation into
+  the next. The organisation is loaded for every run, never cached.
+- `practice_id` (optional) sets the acting practice; the body reads it with `acting_practice()`.
+
+```python
+@org_task(queue=queues.DEFAULT)
+def send_trial_reminder(*, org_id: str, days_left: int) -> None:
+    organisation = current_org()
+    ...
+
+send_trial_reminder.delay(org_id=str(organisation.public_id), days_left=3)
+```
+
+Platform tasks that hold no organisation's data (`numo9.jobs.ping`) use plain `shared_task`.
+Tests: `backend/tests/test_org_task.py` (refused at enqueue and at run, context and isolation,
+practice, failure restores the context, through a worker thread).
+
 ## Isolation rules
 
 | # | Rule | Enforced by |
@@ -136,6 +164,7 @@ Code: `packages/ui/src/org-switcher/` (component, search), `frontend/src/compone
 | 6 | Every organisation-scoped endpoint is swept as another organisation's user for GET/POST/PUT/PATCH/DELETE; endpoints without an organisation must be on `TENANT_SWEEP_EXEMPT` | `manage.py tenant_sweep` (`sweep.py`), CI job `tenant-sweep` |
 | 7 | Sensitive tables have PostgreSQL row-level security; `app.current_org` is set per transaction | `EnableOrgRLS` migration operation + execute wrapper (`rls.py`) |
 | 8 | Django admin only for active platform staff; business models read with logged `unscoped()`, delete is soft | `admin.py` (`OrgOwnedAdmin`) |
+| 9 | A background job that touches organisation data names its organisation explicitly (`org_id`) and runs in its context | `OrgTask` (`tasks.py`) |
 
 ## Building on it — checklist for a new feature
 
@@ -147,6 +176,7 @@ Code: `packages/ui/src/org-switcher/` (component, search), `frontend/src/compone
       it returns no organisation's data.
 - [ ] Never use `_base_manager` or raw SQL to reach other organisations; use `unscoped(reason=…)`.
 - [ ] Register the model in the admin with `OrgOwnedAdmin`.
+- [ ] Background task touching organisation data? Use `@org_task` and pass `org_id=`.
 - [ ] `manage.py tenant_sweep` passes.
 
 ## Deployment requirements
@@ -182,6 +212,7 @@ Code: `packages/ui/src/org-switcher/` (component, search), `frontend/src/compone
 | `sweep.py`, `management/commands/tenant_sweep.py` | T09 |
 | `rls.py` — `EnableOrgRLS`, `app.current_org` wrapper | T12 |
 | `api.py`, `serializers.py`, `urls.py` — `/api/v1/me/organisations`, practices, organisations | T13 |
+| `tasks.py` — `OrgTask` / `@org_task`, organisation-scoped background jobs | T07 |
 | `admin.py` — admin scoping | T15 |
 | `packages/ui/src/org-switcher/`, `frontend/src/components/OrgSwitcher.tsx` — org switcher | T14 |
 
