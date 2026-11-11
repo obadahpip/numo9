@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 70   Remaining: 2717
+TOTAL ATOMIC TASKS: 2787   Completed: 90   Remaining: 2697
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -128,7 +128,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-03-T11 — Users & roles screen: members list, role chips, invite (reuses A-02)
 ✅ A-03-T12 — Role editor: permission matrix by module, search, copy from role, risk badges
 ✅ A-03-T13 — Approval-limit editor per user/role per document type
-❌ A-03-T16 — Docs: permission catalogue page auto-generated into MkDocs
+✅ A-03-T16 — Docs: permission catalogue page auto-generated into MkDocs
 
 [A-08]
 ❌ A-08-T02 — JobRun model (org, type, status, progress, result, error, idempotency_key unique, started/finished)
