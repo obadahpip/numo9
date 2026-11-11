@@ -9,6 +9,7 @@ export {
 } from "./Button";
 export { Checkbox, type CheckboxProps } from "./Checkbox";
 export { cn } from "./cn";
+export { CodeInput, codeDigits, type CodeInputHandle, type CodeInputProps } from "./CodeInput";
 export {
   Combobox,
   defaultComboboxFilter,

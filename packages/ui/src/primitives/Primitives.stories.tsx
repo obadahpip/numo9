@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
+import { CodeInput } from "./CodeInput";
 import { Combobox } from "./Combobox";
 import { Dialog, DialogClose, Drawer } from "./Dialog";
 import { IconButton } from "./IconButton";
@@ -242,3 +243,35 @@ export const Badges: Story = {
     </div>
   ),
 };
+
+function CodeInputDemo() {
+  const [code, setCode] = useState("4829");
+  const [wrong, setWrong] = useState("135790");
+  const digit = (n: number, total: number) => `Digit ${n} of ${total}`;
+  return (
+    <div className="grid max-w-sm gap-6">
+      <div className="grid gap-2">
+        <p className="text-sm font-medium">
+          Authentication code (paste the whole code into any box)
+        </p>
+        <CodeInput value={code} onChange={setCode} label="Authentication code" digitLabel={digit} />
+      </div>
+      <div className="grid gap-2">
+        <p className="text-sm font-medium">Wrong code</p>
+        <CodeInput
+          value={wrong}
+          onChange={setWrong}
+          label="Authentication code, wrong"
+          digitLabel={digit}
+          invalid
+        />
+        <p className="text-sm font-medium text-fg-danger">
+          That code didn&apos;t work. Enter the code your app shows now.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** One-time code (A-02-T11): auto-advance, paste-aware, Backspace/arrows between boxes. */
+export const CodeInputStory: Story = { name: "CodeInput", render: () => <CodeInputDemo /> };

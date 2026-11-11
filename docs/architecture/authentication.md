@@ -191,3 +191,17 @@ origin (`DJANGO_CSRF_TRUSTED_ORIGINS` overrides). In staging/prod the reverse pr
 Focus moves to the heading at each step. Tests: `frontend/e2e/auth-signup.spec.ts` (flows at
 360 and 1280 px, axe 0 serious/critical at every step, keyboard-only sign-up, validation, server
 errors, rate limit, offline, every verify state), `frontend/src/auth/*.test.ts`.
+
+### Login, 2FA challenge and password reset (A-02-T11)
+
+| Route | Screen |
+|---|---|
+| `/login` | Email + password. Wrong email and wrong password get **one** message (no enumeration); a locked account (429) says for how many minutes and points to the reset, which unlocks it; an unverified address is told a new link was emailed. `?next=` returns to a same-site path after signing in (absolute, `//host`, back-slash and auth-screen targets go Home — no open redirect). `?reset=done` confirms a completed reset. |
+| (step) / `/2fa` | **Authentication code** when the answer is the pending `mfa_authenticate` flow: `CodeInput` (6 boxes, auto-advance, submits when complete, Backspace/←/→/Home/End, **paste-aware** — the whole code pasted into any box, or an email line such as "Your Numo9 code: 482 913", fills every box; `autocomplete="one-time-code"`), *Remember this device for 30 days* (answers `mfa_trust`), *Use a recovery code instead*, guidance for a lost device. Wrong code: the boxes clear and focus returns to the first. A timed-out pending login sends the user back to sign in. `/2fa` shows the same step after a reload, or explains that no sign-in is waiting. |
+| `/reset` | Request a link; the confirmation is the same for any address. |
+| `/reset/<key>` | The key is checked first (dead link says so before any typing); new password + confirmation (strength meter, ≥ 12 characters); server password rules land on the field; success goes to `/login?reset=done` (every session was ended). |
+
+`CodeInput` lives in the design system (`packages/ui/src/primitives/CodeInput.tsx`, story
+*Primitives / CodeInput*). Tests: `frontend/e2e/auth-login.spec.ts` (keyboard-only sign-in with
+2FA and remember-device, paste, recovery codes, lockout, unverified, `next` safety, `/2fa`, reset
+request / new password / dead link; axe on every screen), `CodeInput.test.tsx`, `nextUrl.test.ts`.
