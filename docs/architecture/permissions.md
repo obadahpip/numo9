@@ -276,3 +276,24 @@ Rules (`numo9/rbac/services.py`), whoever calls them:
 - People are referred to by `User.public_id`, never the database id.
 
 Tests: `backend/tests/test_rbac_api.py`; the tenant sweep covers every new organisation route.
+
+## Permission matrix test (A-03-T10)
+
+`backend/tests/test_rbac_matrix.py` checks **every role × every endpoint × every method**, all
+generated:
+
+- endpoints — every method of every Numo9 API view in `ROOT_URLCONF` with its declaration (the
+  same walk as `permission_check`, A-03-T06);
+- roles — the 15 system roles (organisation roles as members, practice roles as assigned staff
+  of a serving practice, platform roles as platform assignments), a custom organisation role
+  holding exactly the endpoint's permission, and a signed-out visitor;
+- expected — from the catalogue rules: allowed exactly when the role's permission set contains
+  the key (`PUBLIC`: everyone; `AUTHENTICATED`: every signed-in user).
+
+A refusal must be `403 permission.denied` (`401`/`403` signed out; platform staff get `404` for
+organisation endpoints — they are not in the organisation); an allowed call must get past the
+check and never fail with a server error. Today: 24 endpoint methods × 17 subjects = 408 cases,
+plus guards that the matrix covers every endpoint and every system role, that each organisation
+key splits the roles, and that no practice-scope endpoint appears without extending the matrix.
+New endpoints and permissions join the matrix by themselves; a mutation that grants one key to
+everyone fails 30 cases.
