@@ -39,6 +39,10 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "tenancy.OrganisationMember",
                 "tenancy.PracticeAssignment",
                 "tenancy.Invitation",
+                # Roles (A-03-T02): reviewed — no organisation business data.
+                "rbac.Role",
+                "rbac.RolePermission",
+                "rbac.RoleAssignment",
             }
         )
         == PLATFORM_MODELS

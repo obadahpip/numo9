@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 04:50-0500\n"
+"POT-Creation-Date: 2026-11-11 04:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -207,6 +207,119 @@ msgstr "Cette invitation vient d’être envoyée. Attendez une minute avant de 
 msgid "This role doesn't fit the invitation: staff get a practice role, users an organisation role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
 msgstr "Ce rôle ne convient pas à l’invitation : le personnel reçoit un rôle de cabinet, les utilisateurs un rôle d’organisation, et un comptable ce que son cabinet fera (p. ex. tenue de livres, impôts)."
 
+msgid "Platform"
+msgstr "Plateforme"
+
+msgid "Practice"
+msgstr "Cabinet"
+
+msgid "Organisation"
+msgstr "Organisation"
+
+msgid "public ID"
+msgstr ""
+
+msgid "scope"
+msgstr ""
+
+msgid "key"
+msgstr ""
+
+msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "system role"
+msgstr ""
+
+msgid "organisation"
+msgstr ""
+
+msgid "practice"
+msgstr ""
+
+msgid "created at"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "role"
+msgstr ""
+
+msgid "roles"
+msgstr ""
+
+msgid "permission"
+msgstr ""
+
+msgid "role permission"
+msgstr ""
+
+msgid "role permissions"
+msgstr ""
+
+#, python-format
+msgid "There is no permission '%(key)s'."
+msgstr "La permission « %(key)s » n’existe pas."
+
+#, python-format
+msgid "'%(key)s' is a %(permission_scope)s permission; a %(role_scope)s role can't grant it."
+msgstr "« %(key)s » est une permission de niveau %(permission_scope)s; un rôle de niveau %(role_scope)s ne peut pas l’accorder."
+
+msgid "assigned by"
+msgstr ""
+
+msgid "role assignment"
+msgstr ""
+
+msgid "role assignments"
+msgstr ""
+
+msgid "platform"
+msgstr ""
+
+msgid "An organisation role is given in an organisation."
+msgstr "Un rôle d’organisation s’attribue dans une organisation."
+
+msgid "A practice role is given in a practice."
+msgstr "Un rôle de cabinet s’attribue dans un cabinet."
+
+msgid "A platform role is given without an organisation or practice."
+msgstr "Un rôle de plateforme s’attribue sans organisation ni cabinet."
+
+msgid "This custom role belongs to another organisation or practice."
+msgstr "Ce rôle personnalisé appartient à une autre organisation ou à un autre cabinet."
+
+msgid "Manual journal"
+msgstr "Écriture de journal manuelle"
+
+msgid "Bill"
+msgstr "Facture fournisseur"
+
+msgid "Purchase order"
+msgstr "Bon de commande"
+
+msgid "Pay run"
+msgstr "Paie"
+
+msgid "document type"
+msgstr ""
+
+msgid "maximum amount (CAD)"
+msgstr ""
+
+msgid "approval limit"
+msgstr ""
+
+msgid "approval limits"
+msgstr ""
+
+msgid "Choose a role used in this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
 msgid "View roles and what they allow"
 msgstr "Voir les rôles et ce qu’ils permettent"
 
@@ -333,25 +446,10 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
-msgid "public ID"
-msgstr ""
-
 msgid "set-up pending"
 msgstr ""
 
-msgid "created at"
-msgstr ""
-
-msgid "updated at"
-msgstr ""
-
-msgid "practice"
-msgstr ""
-
 msgid "practices"
-msgstr ""
-
-msgid "role"
 msgstr ""
 
 msgid "practice member"
@@ -364,9 +462,6 @@ msgid "status"
 msgstr ""
 
 msgid "time zone"
-msgstr ""
-
-msgid "organisation"
 msgstr ""
 
 msgid "organisations"
