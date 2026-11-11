@@ -121,7 +121,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-03-T04 — Resolver has_perm(user, org, key) with request-level cache; union of practice + org roles
 ✅ A-03-T05 — DRF RequiresPermission(key) decorator/class; every view must declare required_permission per method
 ✅ A-03-T06 — CI check: undeclared permission on any endpoint fails
-❌ A-03-T07 — Approval limit service assert_can_approve(user, doc_type, amount) raising ApprovalLimitExceeded with next eligible approvers
+✅ A-03-T07 — Approval limit service assert_can_approve(user, doc_type, amount) raising ApprovalLimitExceeded with next eligible approvers
 ❌ A-03-T08 — Segregation-of-duties helper assert_not_creator(user, obj)
 ❌ A-03-T09 — API: roles CRUD (custom only editable), assign/unassign, limits CRUD, GET /permissions/catalogue
 ❌ A-03-T10 — Parameterised matrix test (role × endpoint × method) generated from catalogue + router
