@@ -31,7 +31,7 @@ from numo9.rbac.catalogue import Scope, catalogue
 from numo9.rbac.checks import Declaration, declarations
 from numo9.rbac.drf import AUTHENTICATED, PUBLIC
 from numo9.rbac.models import ApprovalLimit, Role, RoleAssignment, RoleScope
-from numo9.rbac.system_roles import SYSTEM_ROLES, SystemRole
+from numo9.rbac.system_roles import PROFILE_VIEW, SYSTEM_ROLES, SystemRole
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import (
     AssignmentRole,
@@ -239,13 +239,14 @@ def test_no_practice_scope_endpoint_yet() -> None:
 
 
 def test_each_organisation_key_splits_the_roles() -> None:
-    """Every organisation key on an endpoint is allowed to some roles and refused to others."""
+    """Every organisation key on an endpoint is allowed to some roles and refused to others —
+    except ``organisation.profile.view``, which every role includes by design (A-03-T03)."""
     keys = {
         d.permission
         for d in ENDPOINTS
         if d.permission not in (PUBLIC, AUTHENTICATED, None)
         and catalogue.get(d.permission).scope == Scope.ORGANISATION
-    }
+    } - {PROFILE_VIEW}
     assert keys
     members = [s for s in SUBJECTS if s.kind == "member"]
     for key in keys:

@@ -25,6 +25,7 @@ urlpatterns = [
         api.MemberRoleDetailView.as_view(),
         name="member-role",
     ),
+    path(f"{ORG}my-permissions", api.MyPermissionsView.as_view(), name="my-permissions"),
     path(f"{ORG}invitations", api.PendingInvitationsView.as_view(), name="pending-invitations"),
     path(f"{ORG}approval-limits", api.ApprovalLimitListView.as_view(), name="approval-limits"),
     path(

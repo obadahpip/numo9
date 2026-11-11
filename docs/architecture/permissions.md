@@ -256,6 +256,7 @@ accessible → `404`). Documented in the OpenAPI schema (`/api/schema/`).
 | `o/<org>/members` | GET | `organisation.members.view` | people with access: members (main role + custom roles) and staff of serving practices (practice + practice role + custom roles) |
 | `o/<org>/members/<user>/roles` | POST | `roles.assignment.manage` | `{role}`: a system organisation role **replaces** a member's main role; a custom role is **added** (201; 200 if already held) |
 | `o/<org>/members/<user>/roles/<role>` | DELETE | `roles.assignment.manage` | take a custom role away; the main role can only be replaced (`409 roles.main_role`) |
+| `o/<org>/my-permissions` | GET | `organisation.profile.view` (every role) | the signed-in user's permissions here — screens show only the actions that work (A-03-T11) |
 | `o/<org>/invitations` | GET | `organisation.members.view` | pending user/owner invitations (sending them: `POST /api/v1/invitations`, A-02-T09) |
 | `o/<org>/approval-limits` | GET · POST | `roles.limit.view` · `roles.limit.manage` | live limits; create `{doc_type, max_amount, user | role}` (one per person/role and type: `409 limits.duplicate`) |
 | `o/<org>/approval-limits/<limit>` | GET · PATCH · DELETE | view · manage | PATCH `{max_amount}`; DELETE is a soft delete (kept for retention) |
@@ -297,3 +298,25 @@ plus guards that the matrix covers every endpoint and every system role, that ea
 key splits the roles, and that no practice-scope endpoint appears without extending the matrix.
 New endpoints and permissions join the matrix by themselves; a mutation that grants one key to
 everyone fails 30 cases.
+
+## Users and roles screen (A-03-T11)
+
+`/o/<org>/settings/users-roles` (`frontend/src/settings/users-roles/`), tab **Users**:
+
+- loads `my-permissions` first: without `organisation.members.view` (and `roles.role.view`) the
+  screen is the permission refusal panel; an organisation the user can't access looks unknown
+  (404 panel);
+- the people table — name and email, **role chips** (main role "Purchasing (main role)", the
+  practice role of practice staff, custom roles with a × to take them away), access ("Member" or
+  "Through Profitex (Accountant)");
+- **Give a role** (needs `roles.assignment.manage`): a dialog with the main roles (members only;
+  replaces the current one) and the custom roles not yet held; practice roles are never offered;
+  a refusal shows the API's own sentence (e.g. `roles.grant_exceeds_own`, `roles.last_owner`);
+- **Invite a user** — email + main role through the A-02 invitation API
+  (`POST /api/v1/invitations`, kind `organisation_user`); pending invitations are listed below
+  the table with role, inviter and expiry;
+- a person who may only look sees no buttons; success is a toast naming the person and role.
+
+Tests: `frontend/e2e/users-roles.spec.ts` (Playwright, 360 and 1280 px, axe): give a custom
+role and take it away, a main role replaces the main one, refusal reason, invite, read-only,
+not accessible.
