@@ -27,7 +27,8 @@ Checks by the key's scope:
 
 - **organisation** — needs the active organisation (``/o/<org>/`` routes; else 404) the user can
   access (else 404 — never reveals that it exists), then ``has_perm``; missing permission →
-  ``403`` ``permission.denied`` naming what is not allowed;
+  ``403`` ``permission.denied`` naming what is not allowed, with the ``explain`` payload
+  (``explain.py``: the permission, who has it here, who could give it, A-03-T14);
 - **practice** — needs the acting practice (else 404), then ``has_practice_perm``;
 - **platform** — ``has_platform_perm``.
 
@@ -137,5 +138,10 @@ class RequiresPermission(BasePermission):
         else:
             allowed = has_platform_perm(user, key)
         if not allowed:
-            raise api_error(errors.PERMISSION_DENIED, action=_action_text(key))
+            from .explain import explain  # "why can't I?" payload (A-03-T14)
+
+            error = api_error(errors.PERMISSION_DENIED, action=_action_text(key))
+            in_org = current_org() if scope == Scope.ORGANISATION else None
+            error.extra = {"explain": explain(user, key, in_org)}
+            raise error
         return True

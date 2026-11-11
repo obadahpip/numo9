@@ -86,13 +86,32 @@ export interface ApiError extends Numo9Error {
   explain?: Explain;
 }
 
-/** "Why can't I?" payload of `403 permission.denied` (A-03-T14). */
+/** "Why can't I?" payload of `403 permission.denied` (A-03-T14, backend numo9/rbac/explain.py). */
 export interface Explain {
   rule: "permission";
-  permission: { key: string; label: string; module: string; risk: string; risk_label: string };
+  permission: {
+    key: string;
+    label: string;
+    module: string;
+    module_label: string;
+    risk: string;
+    risk_label: string;
+  };
   holders: { id: string; name: string; roles: string[] }[];
+  holders_total: number;
   managers: { id: string; name: string }[];
   can_request: boolean;
+}
+
+/** An open access request (`…/access-requests`). */
+export interface AccessRequest {
+  id: string;
+  requester: { id: string; name: string };
+  permission: Explain["permission"];
+  note: string;
+  created_at: string;
+  notified: number;
+  already_open: boolean;
 }
 
 export const orgApi = (org: string, path: string) => `/api/v1/o/${encodeURIComponent(org)}/${path}`;
@@ -146,10 +165,14 @@ export const usersRolesApi = {
   deleteLimit: (org: string, id: string) =>
     apiRequest<ApiError>(orgApi(org, `approval-limits/${id}`), { method: "DELETE" }),
   requestAccess: (org: string, permission: string, note: string) =>
-    apiRequest<ApiError>(orgApi(org, "access-requests"), {
+    apiRequest<AccessRequest | ApiError>(orgApi(org, "access-requests"), {
       method: "POST",
       body: { permission, note },
     }),
+  accessRequests: (org: string) =>
+    apiRequest<AccessRequest[] | ApiError>(orgApi(org, "access-requests")),
+  closeAccessRequest: (org: string, id: string) =>
+    apiRequest<ApiError>(orgApi(org, `access-requests/${id}`), { method: "DELETE" }),
 };
 
 export function isOk<Body>(result: ApiResult<Body | ApiError>): result is ApiResult<Body> {

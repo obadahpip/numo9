@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:22-0500\n"
+"POT-Creation-Date: 2026-11-11 12:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,6 +291,35 @@ msgstr ""
 msgid "Choose either a person or a role for this limit, not both."
 msgstr ""
 
+msgid "You already have this permission here. Reload the page and try again."
+msgstr ""
+
+msgid "Nobody here can give this permission yet. Ask the organisation's owner to give you a role that allows it."
+msgstr ""
+
+msgid "You can only ask for one of this organisation's permissions, e.g. organisation.settings.manage."
+msgstr ""
+
+#, python-format
+msgid "%(name)s asks for access in %(organisation)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"%(name)s (%(email)s) can't do this in %(organisation)s and asks you for a role that allows it:\n"
+"\n"
+"%(permission)s\n"
+"\n"
+"%(note)sGive them a role on Users and roles:\n"
+"%(link)s\n"
+"\n"
+"You get this email because you can give roles in %(organisation)s."
+msgstr ""
+
+#, python-format
+msgid "Their note: %(note)s"
+msgstr ""
+
 msgid "manual journals"
 msgstr ""
 
@@ -462,6 +491,24 @@ msgid "approval limits"
 msgstr ""
 
 msgid "Choose a role used in this organisation."
+msgstr ""
+
+msgid "requester"
+msgstr ""
+
+msgid "note"
+msgstr ""
+
+msgid "people notified"
+msgstr ""
+
+msgid "How many people were emailed."
+msgstr ""
+
+msgid "access request"
+msgstr ""
+
+msgid "access requests"
 msgstr ""
 
 msgid "View roles and what they allow"

@@ -289,3 +289,26 @@ LIMIT_DUPLICATE = define(
 LIMIT_TARGET = define(
     "limits.target", _("Choose either a person or a role for this limit, not both.")
 )
+
+
+# ---- "why can't I?" and access requests (A-03-T14) -----------------------------------------
+ACCESS_ALREADY_HAVE = define(
+    "access.already_have",
+    _("You already have this permission here. Reload the page and try again."),
+    status.HTTP_409_CONFLICT,
+)
+ACCESS_NOBODY = define(
+    "access.nobody",
+    _(
+        "Nobody here can give this permission yet. Ask the organisation's owner to give you a "
+        "role that allows it."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+ACCESS_PERMISSION = define(
+    "access.permission",
+    _(
+        "You can only ask for one of this organisation's permissions, e.g. "
+        "organisation.settings.manage."
+    ),
+)

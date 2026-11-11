@@ -370,3 +370,38 @@ class ApprovalLimit(OrgOwnedModel):
             raise ValidationError(
                 {"role": _("Choose a role used in this organisation.")}, code="limit_role"
             )
+
+
+class AccessRequest(OrgOwnedModel):
+    """Someone refused a permission asks for it ("Request access", A-03-T14).
+
+    The people who could give it (``roles.assignment.manage`` + the permission themselves) are
+    emailed, and see open requests on Users and roles until the notification centre (A-07)
+    takes over delivery. One open request per person and permission; closing is a soft delete.
+    """
+
+    requester = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="access_requests",
+        verbose_name=_("requester"),
+    )
+    permission = models.CharField(_("permission"), max_length=100)
+    note = models.CharField(_("note"), max_length=500, blank=True)
+    notified = models.PositiveSmallIntegerField(
+        _("people notified"), default=0, help_text=_("How many people were emailed.")
+    )
+
+    class Meta:
+        verbose_name = _("access request")
+        verbose_name_plural = _("access requests")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "requester", "permission"],
+                condition=models.Q(deleted_at__isnull=True),
+                name="rbac_accessrequest_one_open",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.requester} → {self.permission}"

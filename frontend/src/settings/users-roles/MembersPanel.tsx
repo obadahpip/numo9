@@ -25,11 +25,12 @@ import {
   errorText,
   isOk,
   usersRolesApi,
+  type AccessRequest,
   type Member,
   type PendingInvitation,
   type Role,
 } from "./api";
-import { m, orgRoleNames } from "./messages";
+import { m, orgRoleNames, xm } from "./messages";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -63,26 +64,39 @@ export function MembersPanel({
   const toast = useToast();
   const [members, setMembers] = useState<Member[] | null>(null);
   const [invitations, setInvitations] = useState<PendingInvitation[]>([]);
+  const [requests, setRequests] = useState<AccessRequest[]>([]);
   const [failed, setFailed] = useState(false);
   const [assignFor, setAssignFor] = useState<Member | null>(null);
 
   const load = useCallback(async () => {
     setFailed(false);
-    const [people, pending] = await Promise.all([
+    const [people, pending, asked] = await Promise.all([
       usersRolesApi.members(org),
       usersRolesApi.invitations(org),
+      canAssign ? usersRolesApi.accessRequests(org) : Promise.resolve(null),
     ]);
+    setRequests(asked && isOk<AccessRequest[]>(asked) ? asked.body : []);
     if (!isOk<Member[]>(people)) {
       setFailed(true);
       return;
     }
     setMembers(people.body);
     setInvitations(isOk<PendingInvitation[]>(pending) ? pending.body : []);
-  }, [org]);
+  }, [org, canAssign]);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  const closeRequest = async (request: AccessRequest) => {
+    const result = await usersRolesApi.closeAccessRequest(org, request.id);
+    if (result.status === 204) {
+      toast.toast({ title: fm(xm.closed, { name: request.requester.name }) });
+      await load();
+    } else {
+      toast.toast({ title: errorText(result.body) ?? fm(m.failed), tone: "danger" });
+    }
+  };
 
   const takeAway = async (member: Member, role: { id: string; name: string }) => {
     const result = await usersRolesApi.unassignRole(org, member.id, role.id);
@@ -128,6 +142,56 @@ export function MembersPanel({
           />
         ) : null}
       </div>
+      {requests.length ? (
+        <section
+          aria-labelledby="access-requests"
+          className="flex flex-col gap-2 rounded-lg border-2 border-border bg-surface-warning-subtle p-4"
+        >
+          <h3 id="access-requests" className="text-base font-semibold">
+            {fm(xm.requestsHeading)}
+          </h3>
+          <ul className="flex flex-col gap-3">
+            {requests.map((request) => {
+              const person = members.find((p) => p.id === request.requester.id);
+              return (
+                <li key={request.id} className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-sm">
+                    <p className="font-semibold">
+                      {fm(xm.requestRow, {
+                        name: request.requester.name,
+                        permission: request.permission.label,
+                      })}
+                    </p>
+                    {request.note ? (
+                      <p className="text-fg-muted">{fm(xm.requestNote, { note: request.note })}</p>
+                    ) : null}
+                  </div>
+                  <span className="inline-flex gap-2">
+                    {person ? (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        aria-label={fm(m.giveRoleTo, { name: person.name })}
+                        onClick={() => setAssignFor(person)}
+                      >
+                        {fm(m.giveRole)}
+                      </Button>
+                    ) : null}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      aria-label={fm(xm.close, { name: request.requester.name })}
+                      onClick={() => void closeRequest(request)}
+                    >
+                      {fm(xm.closeShort)}
+                    </Button>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
       {members.length === 0 ? (
         <EmptyState title={fm(m.noUsers)} compact headingLevel={3} />
       ) : (

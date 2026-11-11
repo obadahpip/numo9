@@ -27,6 +27,12 @@ urlpatterns = [
     ),
     path(f"{ORG}my-permissions", api.MyPermissionsView.as_view(), name="my-permissions"),
     path(f"{ORG}invitations", api.PendingInvitationsView.as_view(), name="pending-invitations"),
+    path(f"{ORG}access-requests", api.AccessRequestListView.as_view(), name="access-requests"),
+    path(
+        f"{ORG}access-requests/<uuid:public_id>",
+        api.AccessRequestDetailView.as_view(),
+        name="access-request",
+    ),
     path(f"{ORG}approval-limits", api.ApprovalLimitListView.as_view(), name="approval-limits"),
     path(
         f"{ORG}approval-limits/check",

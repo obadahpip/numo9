@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:22-0500\n"
+"POT-Creation-Date: 2026-11-11 12:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -291,6 +291,43 @@ msgstr "%(who)s a déjà une limite d’approbation pour ce type de document. Mo
 msgid "Choose either a person or a role for this limit, not both."
 msgstr "Choisissez une personne ou un rôle pour cette limite, pas les deux."
 
+msgid "You already have this permission here. Reload the page and try again."
+msgstr "Vous avez déjà cette permission ici. Rechargez la page et réessayez."
+
+msgid "Nobody here can give this permission yet. Ask the organisation's owner to give you a role that allows it."
+msgstr "Personne ici ne peut encore accorder cette permission. Demandez au propriétaire de l’organisation de vous attribuer un rôle qui la permet."
+
+msgid "You can only ask for one of this organisation's permissions, e.g. organisation.settings.manage."
+msgstr "Vous ne pouvez demander qu’une des permissions de cette organisation, p. ex. organisation.settings.manage."
+
+#, python-format
+msgid "%(name)s asks for access in %(organisation)s"
+msgstr "%(name)s demande un accès dans %(organisation)s"
+
+#, python-format
+msgid ""
+"%(name)s (%(email)s) can't do this in %(organisation)s and asks you for a role that allows it:\n"
+"\n"
+"%(permission)s\n"
+"\n"
+"%(note)sGive them a role on Users and roles:\n"
+"%(link)s\n"
+"\n"
+"You get this email because you can give roles in %(organisation)s."
+msgstr ""
+"%(name)s (%(email)s) ne peut pas faire ceci dans %(organisation)s et vous demande un rôle qui le permet :\n"
+"\n"
+"%(permission)s\n"
+"\n"
+"%(note)sAttribuez-lui un rôle dans Utilisateurs et rôles :\n"
+"%(link)s\n"
+"\n"
+"Vous recevez ce courriel parce que vous pouvez attribuer des rôles dans %(organisation)s."
+
+#, python-format
+msgid "Their note: %(note)s"
+msgstr "Sa note : %(note)s"
+
 msgid "manual journals"
 msgstr "écritures de journal manuelles"
 
@@ -463,6 +500,24 @@ msgstr ""
 
 msgid "Choose a role used in this organisation."
 msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+msgid "requester"
+msgstr "demandeur"
+
+msgid "note"
+msgstr "note"
+
+msgid "people notified"
+msgstr "personnes avisées"
+
+msgid "How many people were emailed."
+msgstr "Nombre de personnes avisées par courriel."
+
+msgid "access request"
+msgstr "demande d’accès"
+
+msgid "access requests"
+msgstr "demandes d’accès"
 
 msgid "View roles and what they allow"
 msgstr "Voir les rôles et ce qu’ils permettent"
