@@ -112,6 +112,9 @@ SPECTACULAR_SETTINGS = {
         "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",
         "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
         "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",
+        "RoleScopeEnum": "numo9.rbac.models.RoleScope",
+        "MemberKindEnum": "numo9.rbac.serializers.MEMBER_KINDS",
+        "InvitationKindEnum": "numo9.tenancy.models.InvitationKind",
     },
 }
 
@@ -134,6 +137,7 @@ TENANT_SWEEP_EXEMPT = [
     # Invitations to a practice or an organisation (A-02-T09): not organisation-scoped (practice
     # invitations have none); every object is checked by numo9.tenancy.invitations (404/403).
     r"^api/v1/invitations",
+    r"^api/v1/permissions/catalogue$",  # the permission catalogue: same for everyone (A-03-T09)
 ]
 
 # Overridden per environment.

@@ -142,7 +142,9 @@ class CsrfTokenView(APIView):
 | platform key | `has_platform_perm` |
 
 `HEAD` follows `GET`; `OPTIONS` follows `GET` or needs a signed-in user. An undeclared method is
-refused at runtime (403, logged on `numo9.rbac`).
+refused at runtime (403, logged on `numo9.rbac`). A method the view does not implement gets
+DRF's `405` (A-03-T09: answering `403` there, before the organisation check, would let a caller
+tell a foreign organisation's URL from its own).
 
 **System check** (runs with every `manage.py` command, the test suite and CI's `check --deploy`):
 
@@ -239,3 +241,38 @@ applies.
   `assert_can_approve` so the creator is never suggested as the next approver.
 
 Tests: `backend/tests/test_segregation_of_duties.py`.
+
+## API: roles, assignments, approval limits, catalogue (A-03-T09)
+
+All under `/api/v1/`; organisation routes are `o/<org>/…` (organisation public id; not
+accessible → `404`). Documented in the OpenAPI schema (`/api/schema/`).
+
+| Route | Method | Permission | What |
+|---|---|---|---|
+| `permissions/catalogue` | GET | signed in | every permission (key, label, module, risk + label, scope, owner-only, read-only) and the modules in order, in the request's language |
+| `o/<org>/roles` | GET | `roles.role.view` | system organisation roles, the organisation's custom roles, then the system practice roles (not assignable here; limits may name them) — each with permissions, `editable`, `assignable`, `holders` |
+| `o/<org>/roles` | POST | `roles.role.manage` | create a custom role: `name`, `description`, `permissions`, `copy_from` (any role's id) |
+| `o/<org>/roles/<role>` | GET · PATCH · DELETE | view · manage | PATCH `name` / `description` / `permissions` (the complete new set); system roles → `409 roles.system_role`; DELETE refused while anyone holds it (`409 roles.in_use`), removes its approval limits |
+| `o/<org>/members` | GET | `organisation.members.view` | people with access: members (main role + custom roles) and staff of serving practices (practice + practice role + custom roles) |
+| `o/<org>/members/<user>/roles` | POST | `roles.assignment.manage` | `{role}`: a system organisation role **replaces** a member's main role; a custom role is **added** (201; 200 if already held) |
+| `o/<org>/members/<user>/roles/<role>` | DELETE | `roles.assignment.manage` | take a custom role away; the main role can only be replaced (`409 roles.main_role`) |
+| `o/<org>/invitations` | GET | `organisation.members.view` | pending user/owner invitations (sending them: `POST /api/v1/invitations`, A-02-T09) |
+| `o/<org>/approval-limits` | GET · POST | `roles.limit.view` · `roles.limit.manage` | live limits; create `{doc_type, max_amount, user | role}` (one per person/role and type: `409 limits.duplicate`) |
+| `o/<org>/approval-limits/<limit>` | GET · PATCH · DELETE | view · manage | PATCH `{max_amount}`; DELETE is a soft delete (kept for retention) |
+
+Rules (`numo9/rbac/services.py`), whoever calls them:
+
+- **No escalation** — you can only put into a role, or give someone a role with, permissions you
+  hold yourself here (`403 roles.grant_exceeds_own`, body `permissions`: the missing keys). An
+  admin can't create a role with `organisation.close` or make someone an owner; editing keeps
+  permissions already in a role but can't add ones you lack.
+- **Custom roles** grant organisation permissions only (`400 roles.permission_scope`), names are
+  unique per organisation ignoring case (`409 roles.name_taken`); another organisation's role is
+  unknown (`404` / `400`).
+- **Main role** — each member has exactly one (their membership role); the last active owner
+  keeps it (`409 roles.last_owner`). People who work here through a practice have no main role
+  (`400 roles.not_a_member`) and can get custom roles; practice roles are given by the practice
+  (`400 roles.not_assignable`).
+- People are referred to by `User.public_id`, never the database id.
+
+Tests: `backend/tests/test_rbac_api.py`; the tenant sweep covers every new organisation route.

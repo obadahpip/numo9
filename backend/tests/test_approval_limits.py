@@ -208,6 +208,7 @@ def test_next_eligible_approvers(org: Organisation) -> None:
     approvers = refused.value.next_approvers
     assert [a.name for a in approvers] == ["Avery Owner", "Zoe Admin"]  # creator left out
     assert "Ask Avery Owner, Zoe Admin to approve it." in str(refused.value.detail)
+    assert refused.value.extra is not None
     assert refused.value.extra["approvers"] == [
         {"id": str(approvers[0].public_id), "name": "Avery Owner", "limit": "100000.00"},
         {"id": str(approvers[1].public_id), "name": "Zoe Admin", "limit": "25000.00"},

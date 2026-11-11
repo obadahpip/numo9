@@ -12,6 +12,7 @@ urlpatterns = [
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path("api/v1/", include("numo9.tenancy.urls")),
     path("api/v1/", include("numo9.security.urls")),
+    path("api/v1/", include("numo9.rbac.urls")),  # roles, assignments, limits (A-03-T09)
     # Sign-up, email verification, login, logout, password reset (A-02): django-allauth headless,
     # browser client only (/_allauth/browser/v1/…). OpenAPI: /_allauth/openapi.html in dev.
     path("_allauth/", include("numo9.accounts.urls")),

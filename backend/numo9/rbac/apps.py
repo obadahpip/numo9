@@ -22,6 +22,10 @@ class RbacConfig(AppConfig):
         checks.register(check_permission_declarations, checks.Tags.urls)
         # Keep the system roles' permission sets in step with the catalogue (A-03-T03).
         post_migrate.connect(_sync_after_migrate, sender=self)
+        # Tenant sweep (A-01-T09): rows of ApprovalLimit for the approval-limits endpoints.
+        from numo9.tenancy.sweep import SWEEP_FACTORIES
+
+        SWEEP_FACTORIES["rbac.ApprovalLimit"] = _sweep_limit
 
 
 def _sync_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
@@ -29,3 +33,15 @@ def _sync_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
     from .system_roles import sync_system_roles
 
     sync_system_roles(Role, RolePermission)
+
+
+def _sweep_limit(organisation: Any) -> Any:
+    from .models import ApprovalLimit, Role
+
+    owner = Role.objects.get(is_system=True, scope="organisation", key="owner")
+    existing = ApprovalLimit._base_manager.filter(
+        organisation=organisation, role=owner, doc_type="bill", deleted_at__isnull=True
+    ).first()
+    return existing or ApprovalLimit._base_manager.create(
+        organisation=organisation, role=owner, doc_type="bill", max_amount=1000
+    )

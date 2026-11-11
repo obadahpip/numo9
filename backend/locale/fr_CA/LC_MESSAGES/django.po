@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:13-0500\n"
+"POT-Creation-Date: 2026-11-11 12:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -233,6 +233,64 @@ msgstr "Personne ici ne peut encore approuver ce montant : demandez à une perso
 msgid "You created this %(record)s, so someone else has to approve it."
 msgstr "Vous avez créé ce document (%(record)s) : une autre personne doit l’approuver."
 
+#, python-format
+msgid "%(role)s is a system role, so it can't be changed or deleted. Copy it into a custom role and change that instead."
+msgstr "%(role)s est un rôle système : il ne peut être ni modifié ni supprimé. Copiez-le dans un rôle personnalisé et modifiez celui-ci."
+
+#, python-format
+msgid "%(role)s is still given to people here (%(count)s). Take it away from them first, then delete it."
+msgstr "%(role)s est encore attribué à des personnes ici (%(count)s). Retirez-le-leur d’abord, puis supprimez-le."
+
+#, python-format
+msgid "There's already a role called %(name)s here. Choose another name."
+msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
+
+#, python-format
+msgid "You can only give permissions you have yourself. You don't have: %(permissions)s. Ask an owner to do this."
+msgstr "Vous ne pouvez accorder que les permissions que vous avez vous-même. Vous n’avez pas : %(permissions)s. Demandez à un propriétaire de le faire."
+
+#, python-format
+msgid "There's no permission called %(key)s. Verify the key."
+msgstr "Il n’existe aucune permission nommée %(key)s. Vérifiez la clé."
+
+#, python-format
+msgid "%(key)s is a %(scope)s permission, so an organisation role can't give it."
+msgstr "%(key)s est une permission de niveau %(scope)s : un rôle d’organisation ne peut pas l’accorder."
+
+msgid "This role doesn't exist in this organisation. Choose one from its list of roles."
+msgstr "Ce rôle n’existe pas dans cette organisation. Choisissez-en un dans sa liste de rôles."
+
+msgid "This person doesn't work in this organisation. Choose someone from its list of users."
+msgstr "Cette personne ne travaille pas dans cette organisation. Choisissez quelqu’un dans sa liste d’utilisateurs."
+
+msgid "This role doesn't exist here. Choose one of this organisation's roles."
+msgstr "Ce rôle n’existe pas ici. Choisissez l’un des rôles de cette organisation."
+
+#, python-format
+msgid "%(role)s is a practice role: practices give it to their own staff. Choose an organisation role."
+msgstr "%(role)s est un rôle de cabinet : les cabinets l’attribuent à leur propre personnel. Choisissez un rôle d’organisation."
+
+#, python-format
+msgid "%(name)s works here through their practice, so they have no main role in this organisation. Give them a custom role instead."
+msgstr "%(name)s travaille ici par l’intermédiaire de son cabinet et n’a donc pas de rôle principal dans cette organisation. Attribuez-lui plutôt un rôle personnalisé."
+
+#, python-format
+msgid "%(name)s is the only owner. Make someone else an owner first."
+msgstr "%(name)s est le seul propriétaire. Nommez d’abord une autre personne propriétaire."
+
+msgid "Every member has one main role, so it can't be removed. Choose another main role for them instead."
+msgstr "Chaque membre a un rôle principal, qui ne peut donc pas être retiré. Choisissez plutôt un autre rôle principal pour cette personne."
+
+msgid "This person doesn't work in this organisation. Choose someone from its users."
+msgstr "Cette personne ne travaille pas dans cette organisation. Choisissez quelqu’un parmi ses utilisateurs."
+
+#, python-format
+msgid "%(who)s already has an approval limit for this document type. Change that one instead."
+msgstr "%(who)s a déjà une limite d’approbation pour ce type de document. Modifiez plutôt celle-ci."
+
+msgid "Choose either a person or a role for this limit, not both."
+msgstr "Choisissez une personne ou un rôle pour cette limite, pas les deux."
+
 msgid "manual journals"
 msgstr "écritures de journal manuelles"
 
@@ -245,11 +303,62 @@ msgstr "bons de commande"
 msgid "pay runs"
 msgstr "paies"
 
-msgid "Platform"
-msgstr "Plateforme"
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Sales"
+msgstr "Ventes"
+
+msgid "Purchases"
+msgstr "Achats"
+
+msgid "Banking"
+msgstr "Banque"
+
+msgid "Accounting"
+msgstr "Comptabilité"
+
+msgid "Tax"
+msgstr "Taxes"
+
+msgid "Payroll"
+msgstr "Paie"
+
+msgid "HR"
+msgstr "RH"
+
+msgid "Inventory"
+msgstr "Stocks"
+
+msgid "Reports"
+msgstr "Rapports"
+
+msgid "Contacts"
+msgstr "Contacts"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Users and roles"
+msgstr "Utilisateurs et rôles"
 
 msgid "Practice"
 msgstr "Cabinet"
+
+msgid "Platform"
+msgstr "Plateforme"
+
+msgid "Low risk"
+msgstr "Risque faible"
+
+msgid "Medium risk"
+msgstr "Risque moyen"
+
+msgid "High risk"
+msgstr "Risque élevé"
+
+msgid "Critical"
+msgstr "Critique"
 
 msgid "Organisation"
 msgstr "Organisation"
@@ -451,9 +560,6 @@ msgstr "Délégué comptable"
 msgid "An in-house bookkeeper: the books, without user or critical settings."
 msgstr "Un teneur de livres interne : la comptabilité, sans les utilisateurs ni les paramètres critiques."
 
-msgid "Sales"
-msgstr "Ventes"
-
 msgid "Quotes, invoices and customers."
 msgstr "Soumissions, factures et clients."
 
@@ -463,14 +569,8 @@ msgstr "Achats"
 msgid "Purchase orders, bills and suppliers."
 msgstr "Bons de commande, factures fournisseurs et fournisseurs."
 
-msgid "Payroll"
-msgstr "Paie"
-
 msgid "Pay runs and employees' pay."
 msgstr "Paies et rémunération des employés."
-
-msgid "HR"
-msgstr "RH"
 
 msgid "Employees, leave and HR records."
 msgstr "Employés, congés et dossiers RH."
@@ -527,9 +627,6 @@ msgid "Full service"
 msgstr ""
 
 msgid "Bookkeeping"
-msgstr ""
-
-msgid "Tax"
 msgstr ""
 
 msgid "set-up pending"
