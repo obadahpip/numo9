@@ -109,7 +109,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-02-T12 — Invitation accept screen (wrong-account handling, expired, used)
 
 [A-08]
-❌ A-08-T01 — Celery app config (Redis broker/result, acks_late, prefetch 1, time limits, queues: default/high/io/reports)
+✅ A-08-T01 — Celery app config (Redis broker/result, acks_late, prefetch 1, time limits, queues: default/high/io/reports)
 
 [A-01]
 ❌ A-01-T07 — Celery task base class requiring explicit org_id and setting context
