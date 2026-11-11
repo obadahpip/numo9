@@ -93,6 +93,11 @@ jobs:
       - name: Permission declarations — every endpoint method (A-03-T06)
         run: python manage.py permission_check
 
+      - name: Permission catalogue docs page up to date (A-03-T16)
+        run: |
+          python tools/compile_messages.py --quiet
+          python manage.py permcat_docs --check
+
       - name: Permission declarations — canary, an undeclared fixture view must fail (A-03-T06)
         run: |
           if python manage.py permission_check --quiet --urlconf tests.testapp.rbac_urls_ci_canary; then

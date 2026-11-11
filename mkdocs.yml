@@ -72,6 +72,8 @@ nav:
       - "Authentication and sign-up": architecture/authentication.md
       - "Background jobs": architecture/jobs.md
       - "Roles and permissions": architecture/permissions.md
+  - Reference:
+      - "Permission catalogue (generated)": reference/permission-catalogue.md
   - Design:
       - "Brand tokens": design/brand-tokens.md
       - "Phase 0 wireframes": design/wireframes.md
