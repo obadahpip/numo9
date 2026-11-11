@@ -19,6 +19,7 @@ export const authMessages = defineMessages({
     defaultMessage: "Please wait…",
     description: "Busy button",
   },
+  retry: { id: "auth.common.retry", defaultMessage: "Try again", description: "Retry button" },
   emailInvalid: {
     id: "auth.common.emailInvalid",
     defaultMessage: "Enter an email address like 'dana@mapleleaf.ca'.",
