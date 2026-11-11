@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 05:14-0500\n"
+"POT-Creation-Date: 2026-11-11 12:09-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,6 +73,9 @@ msgid "12-hour (1:30 p.m.)"
 msgstr ""
 
 msgid "24-hour (13:30)"
+msgstr ""
+
+msgid "public ID"
 msgstr ""
 
 msgid "email address"
@@ -211,6 +214,33 @@ msgstr ""
 msgid "You don't have permission to %(action)s. Ask someone who manages roles here to give you a role that allows it."
 msgstr ""
 
+#, python-format
+msgid "This %(document)s is for %(amount)s, above your approval limit of %(limit)s. %(next_step)s"
+msgstr ""
+
+#, python-format
+msgid "You don't have an approval limit for %(documents)s in this organisation, so you can't approve this one (%(amount)s). %(next_step)s"
+msgstr ""
+
+#, python-format
+msgid "Ask %(names)s to approve it."
+msgstr ""
+
+msgid "Nobody here can approve that amount yet: ask someone who manages roles to raise an approval limit."
+msgstr ""
+
+msgid "manual journals"
+msgstr ""
+
+msgid "bills"
+msgstr ""
+
+msgid "purchase orders"
+msgstr ""
+
+msgid "pay runs"
+msgstr ""
+
 msgid "Platform"
 msgstr ""
 
@@ -218,9 +248,6 @@ msgid "Practice"
 msgstr ""
 
 msgid "Organisation"
-msgstr ""
-
-msgid "public ID"
 msgstr ""
 
 msgid "scope"

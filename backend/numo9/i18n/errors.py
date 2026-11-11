@@ -165,3 +165,24 @@ PERMISSION_DENIED = define(
     ),
     status.HTTP_403_FORBIDDEN,
 )
+
+# ---- approval limits (A-03-T07) --------------------------------------------------------------
+APPROVAL_LIMIT_EXCEEDED = define(
+    "approval.limit_exceeded",
+    _("This %(document)s is for %(amount)s, above your approval limit of %(limit)s. %(next_step)s"),
+    status.HTTP_403_FORBIDDEN,
+)
+APPROVAL_NO_LIMIT = define(
+    "approval.no_limit",
+    _(
+        "You don't have an approval limit for %(documents)s in this organisation, so you can't "
+        "approve this one (%(amount)s). %(next_step)s"
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
+#: The sentences that end the two messages above (``next_step``).
+APPROVAL_ASK = _("Ask %(names)s to approve it.")
+APPROVAL_NOBODY = _(
+    "Nobody here can approve that amount yet: ask someone who manages roles to raise an "
+    "approval limit."
+)

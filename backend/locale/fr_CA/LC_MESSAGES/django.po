@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 05:14-0500\n"
+"POT-Creation-Date: 2026-11-11 12:09-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,6 +74,9 @@ msgstr ""
 
 msgid "24-hour (13:30)"
 msgstr ""
+
+msgid "public ID"
+msgstr "identifiant public"
 
 msgid "email address"
 msgstr ""
@@ -211,6 +214,33 @@ msgstr "Ce rôle ne convient pas à l’invitation : le personnel reçoit un rô
 msgid "You don't have permission to %(action)s. Ask someone who manages roles here to give you a role that allows it."
 msgstr "Vous n’avez pas la permission de %(action)s. Demandez à une personne qui gère les rôles ici de vous attribuer un rôle qui le permet."
 
+#, python-format
+msgid "This %(document)s is for %(amount)s, above your approval limit of %(limit)s. %(next_step)s"
+msgstr "Ce document (%(document)s) s’élève à %(amount)s, au-delà de votre limite d’approbation de %(limit)s. %(next_step)s"
+
+#, python-format
+msgid "You don't have an approval limit for %(documents)s in this organisation, so you can't approve this one (%(amount)s). %(next_step)s"
+msgstr "Vous n’avez pas de limite d’approbation pour les %(documents)s dans cette organisation : vous ne pouvez donc pas approuver ce document (%(amount)s). %(next_step)s"
+
+#, python-format
+msgid "Ask %(names)s to approve it."
+msgstr "Demandez à %(names)s de l’approuver."
+
+msgid "Nobody here can approve that amount yet: ask someone who manages roles to raise an approval limit."
+msgstr "Personne ici ne peut encore approuver ce montant : demandez à une personne qui gère les rôles de relever une limite d’approbation."
+
+msgid "manual journals"
+msgstr "écritures de journal manuelles"
+
+msgid "bills"
+msgstr "factures fournisseurs"
+
+msgid "purchase orders"
+msgstr "bons de commande"
+
+msgid "pay runs"
+msgstr "paies"
+
 msgid "Platform"
 msgstr "Plateforme"
 
@@ -219,9 +249,6 @@ msgstr "Cabinet"
 
 msgid "Organisation"
 msgstr "Organisation"
-
-msgid "public ID"
-msgstr ""
 
 msgid "scope"
 msgstr ""

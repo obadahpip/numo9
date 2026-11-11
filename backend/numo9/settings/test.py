@@ -18,7 +18,14 @@ TENANCY_BUSINESS_APP_PREFIXES = ("numo9.", "tests.")
 # ...and the test-only API views to the permission-declaration check (A-03-T05).
 RBAC_VIEW_MODULE_PREFIXES = ("numo9.", "tests.")
 # Third-party migrations (django-allauth, A-02) are reviewed upstream, not by our linter.
-MIGRATION_LINTER_OPTIONS = {"exclude_apps": ["account", "headless", "mfa", "usersessions"]}
+MIGRATION_LINTER_OPTIONS = {
+    "exclude_apps": ["account", "headless", "mfa", "usersessions"],
+    # Reviewed (A-03-T07): User.public_id is added nullable, filled row by row, then made
+    # required + unique in one migration. The linter flags the NOT NULL / UNIQUE steps; they are
+    # safe here — every existing row is filled first, and in Phase 0 there is no production
+    # deployment whose old code could insert users while the migration runs.
+    "ignore_name": ["0002_user_public_id"],
+}
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")
 DEBUG = False
