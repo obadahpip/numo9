@@ -9,16 +9,24 @@ For every DRF view reachable from ``ROOT_URLCONF``:
 - ``rbac.E003`` — the view's ``permission_classes`` don't include ``RequiresPermission``, so the
   declaration would not be enforced;
 - ``rbac.E004`` — a third-party DRF view (module outside ``RBAC_VIEW_MODULE_PREFIXES``, default
-  ``numo9.``) that is not on ``settings.RBAC_EXEMPT_VIEWS`` (dotted path → why it is safe).
+  ``numo9.``) that is not on ``settings.RBAC_EXEMPT_VIEWS`` (dotted path → why it is safe);
+- ``rbac.E005`` — a view that is not a DRF view mounted under ``/api/`` (it would bypass
+  ``RequiresPermission`` entirely), unless it is on ``settings.RBAC_EXEMPT_VIEWS`` (A-03-T06).
 
-Non-DRF views (django-allauth's headless authentication API, Django admin, the health check)
-are outside the catalogue: authentication endpoints act only on the caller's own account, and
-the admin is limited to platform staff (A-01-T15).
+Non-DRF views outside ``/api/`` (django-allauth's headless authentication API, Django admin, the
+health check) are outside the catalogue: authentication endpoints act only on the caller's own
+account, and the admin is limited to platform staff (A-01-T15).
+
+CI (A-03-T06): the backend job runs ``manage.py permission_check`` — the readable report of every
+endpoint and method with its declaration, failing on any of these errors — and a canary that runs
+it on a fixture URLconf with an undeclared view and must fail.
 """
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterator, Sequence
+from dataclasses import dataclass
 from typing import Any
 
 from django.apps import AppConfig
@@ -30,6 +38,27 @@ from .catalogue import catalogue
 from .drf import SENTINELS, RequiresPermission, declared_permission
 
 HTTP_METHODS = ("get", "post", "put", "patch", "delete")
+
+
+#: Routes whose views must all be DRF views (so ``RequiresPermission`` applies), A-03-T06.
+API_ROUTE = re.compile(r"^api/")
+
+
+def _callback_path(callback: Any) -> str:
+    target = getattr(callback, "view_class", None) or getattr(callback, "cls", None) or callback
+    return f"{target.__module__}.{getattr(target, '__qualname__', type(target).__qualname__)}"
+
+
+def _non_drf_api_views(urlconf: str | None = None) -> Iterator[tuple[str, str]]:
+    """(route, dotted path) of every non-DRF view mounted under ``api/``."""
+    from numo9.tenancy.sweep import iter_endpoints
+
+    for endpoint in iter_endpoints(urlconf):
+        view_class = endpoint.view_class
+        if isinstance(view_class, type) and issubclass(view_class, APIView):
+            continue
+        if API_ROUTE.match(endpoint.route):
+            yield endpoint.display or endpoint.route, _callback_path(endpoint.callback)
 
 
 def _drf_views(urlconf: str | None = None) -> Iterator[tuple[str, type[APIView], dict[str, str]]]:
@@ -53,6 +82,40 @@ def _drf_views(urlconf: str | None = None) -> Iterator[tuple[str, type[APIView],
 
 def _path(view_class: type) -> str:
     return f"{view_class.__module__}.{view_class.__qualname__}"
+
+
+def _declaration(view_class: type, method: str, handler: str) -> str | None:
+    # ViewSets declare on the action (e.g. "list"); plain views on the method.
+    return declared_permission(view_class, handler) or declared_permission(view_class, method)
+
+
+@dataclass(frozen=True)
+class Declaration:
+    """One endpoint method and what it requires (``manage.py permission_check`` report)."""
+
+    route: str
+    method: str
+    view: str
+    permission: str | None  # catalogue key, PUBLIC / AUTHENTICATED, or None (undeclared)
+
+
+def declarations(urlconf: str | None = None) -> list[Declaration]:
+    """Every method of every Numo9 DRF view reachable from the URLconf, with its declaration."""
+    own = tuple(getattr(settings, "RBAC_VIEW_MODULE_PREFIXES", ("numo9.",)))
+    rows: list[Declaration] = []
+    for route, view_class, actions in _drf_views(urlconf):
+        if not view_class.__module__.startswith(own):
+            continue
+        for method, handler in sorted(actions.items()):
+            rows.append(
+                Declaration(
+                    route,
+                    method.upper(),
+                    _path(view_class),
+                    _declaration(view_class, method, handler),
+                )
+            )
+    return rows
 
 
 def check_permission_declarations(
@@ -89,10 +152,7 @@ def check_permission_declarations(
                 )
             )
         for method, handler in sorted(actions.items()):
-            # ViewSets declare on the action (e.g. "list"); plain views on the method.
-            key = declared_permission(view_class, handler) or declared_permission(
-                view_class, method
-            )
+            key = _declaration(view_class, method, handler)
             if key is None:
                 messages.append(
                     checks.Error(
@@ -113,4 +173,16 @@ def check_permission_declarations(
                         id="rbac.E002",
                     )
                 )
+    for route, path in _non_drf_api_views(urlconf):
+        if path in exempt:
+            continue
+        messages.append(
+            checks.Error(
+                f"/{route}: {path} is not a DRF view, so no permission is checked.",
+                hint="Write API endpoints as DRF views with required_permission, or add the view "
+                "to settings.RBAC_EXEMPT_VIEWS with the reason it is safe.",
+                obj=path,
+                id="rbac.E005",
+            )
+        )
     return messages
