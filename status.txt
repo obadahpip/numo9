@@ -161,7 +161,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ❌ A-04-T13 — Tests: export equality, append-only, masking, performance (1M rows list < 1 s with index)
 
 [A-03]
-❌ A-03-T15 — Audit hooks for role/limit changes
+❌ A-03-T15 — Audit hooks for role/limit changes   [hooks done: rbac_changed signal + numo9.audit log with diffs; ✅ once A-04-T03 stores them and the diff is visible in the audit log]
 
 [U-01]
 ❌ U-01-T01 — Design catalogue data model ERD (Product, FeatureKey, ProductFeature), naming convention for keys; record in docs/architecture/feature-keys.md
