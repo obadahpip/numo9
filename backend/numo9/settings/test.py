@@ -30,6 +30,12 @@ PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 BREACHED_PASSWORD_CHECK = False
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
+# Celery (A-08-T01): in-process broker and results, so tests run a real worker thread without a
+# Redis server (tests/test_celery.py). The Redis integration test runs when
+# NUMO9_TEST_REDIS_URL is set.
+CELERY_BROKER_URL = "memory://"
+CELERY_RESULT_BACKEND = "cache+memory://"
+
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —
 # for local data only; never valid in staging/prod (they require NUMO9_FIELD_ENCRYPTION_KEYS).
 if not FIELD_ENCRYPTION_KEYS:

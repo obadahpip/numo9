@@ -1,6 +1,7 @@
 """Helpers for reading configuration from environment variables."""
 
 import os
+from urllib.parse import urlsplit, urlunsplit
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -52,3 +53,11 @@ def env_int(name: str, default: int) -> int:
         raise ImproperlyConfigured(
             f"Environment variable {name} must be an integer, got {value!r}."
         ) from None
+
+
+def redis_database(url: str, database: int) -> str:
+    """``redis://host:6379/0`` → ``redis://host:6379/<database>`` (query string kept)."""
+    parts = urlsplit(url)
+    if parts.scheme not in ("redis", "rediss"):
+        raise ImproperlyConfigured(f"Expected a redis:// or rediss:// URL, got {parts.scheme!r}.")
+    return urlunsplit(parts._replace(path=f"/{database}"))

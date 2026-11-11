@@ -100,6 +100,28 @@ services:
       redis:
         condition: service_healthy
 
+  # Celery worker for every queue (A-08-T01); health = it answers the ping task.
+  worker:
+    build:
+      context: ./backend
+      target: dev
+    command: ["celery", "-A", "numo9", "worker", "-Q", "high,default,io,reports", "--loglevel", "INFO"]
+    environment:
+      <<: *dev-env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "manage.py", "celery_ping", "--timeout", "10"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 30s
+
   frontend:
     build:
       context: .
