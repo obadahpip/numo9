@@ -11,7 +11,9 @@ Organisation-scoped (``/api/v1/o/<org>/…``; the organisation must be accessibl
 - ``my-permissions`` — GET the signed-in user's permissions here (``organisation.profile.view``,
   which every role has), so screens show only the actions that work (A-03-T11);
 - ``approval-limits`` — GET list (``roles.limit.view``) · POST create (``roles.limit.manage``);
-- ``approval-limits/<limit>`` — GET (view) · PATCH · DELETE, soft (manage).
+- ``approval-limits/<limit>`` — GET (view) · PATCH · DELETE, soft (manage);
+- ``approval-limits/check?doc_type&amount&user`` — GET whether that person may approve the
+  amount (``assert_can_approve``: limit, refusal message, next approvers; ``roles.limit.view``).
 
 Not organisation-scoped: ``GET /api/v1/permissions/catalogue`` (any signed-in user — it is the
 same for everyone and holds no tenant data).
@@ -21,6 +23,7 @@ Rules (system roles read-only, no escalation, main role, last owner, …): ``ser
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import Any, cast
 
 from django.db import transaction
@@ -38,9 +41,10 @@ from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Invitation, InvitationKind, Organisation
 
 from . import services
+from .approvals import ApprovalLimitExceeded, assert_can_approve
 from .catalogue import MODULES, catalogue
 from .drf import AUTHENTICATED, requires_permission
-from .models import Role, RoleScope
+from .models import ApprovalDocumentType, Role, RoleScope
 from .permissions import (
     LIMITS_MANAGE,
     LIMITS_VIEW,
@@ -361,6 +365,66 @@ class ApprovalLimitListView(APIView):
             role=role,
         )
         return Response(ApprovalLimitSerializer(row).data, status=status.HTTP_201_CREATED)
+
+
+class ApproverSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    limit = serializers.DecimalField(max_digits=18, decimal_places=2)
+
+
+class LimitCheckQuerySerializer(serializers.Serializer[Any]):
+    doc_type = serializers.ChoiceField(choices=ApprovalDocumentType.choices)
+    amount = serializers.DecimalField(max_digits=18, decimal_places=2, min_value=Decimal("0"))
+    user = serializers.UUIDField(help_text="The person whose approval is checked")
+
+
+class LimitCheckSerializer(serializers.Serializer[Any]):
+    allowed = serializers.BooleanField()
+    limit = serializers.DecimalField(max_digits=18, decimal_places=2, allow_null=True)
+    code = serializers.CharField(allow_null=True)
+    detail = serializers.CharField(allow_null=True)
+    approvers = ApproverSerializer(many=True)
+
+
+class ApprovalLimitCheckView(APIView):
+    """Would this person be allowed to approve this amount? (A-03-T13 "Verify an amount")."""
+
+    @requires_permission(LIMITS_VIEW.key)
+    @extend_schema(
+        operation_id="approval_limits_check",
+        summary="Check an amount against a person's effective approval limit",
+        parameters=[LimitCheckQuerySerializer],
+        responses=LimitCheckSerializer,
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        organisation = _org()
+        query = LimitCheckQuerySerializer(data=request.query_params)
+        query.is_valid(raise_exception=True)
+        data = query.validated_data
+        person = next(
+            (
+                p
+                for p in services.people(organisation)
+                if str(p.user.public_id) == str(data["user"])
+            ),
+            None,
+        )
+        if person is None:
+            raise serializers.ValidationError({"user": [error_detail(errors.UNKNOWN_PERSON)]})
+        try:
+            limit = assert_can_approve(person.user, data["doc_type"], data["amount"])
+        except ApprovalLimitExceeded as refused:
+            body = {
+                "allowed": False,
+                "limit": refused.limit,
+                "code": refused.get_codes(),
+                "detail": str(refused.detail),
+                "approvers": (refused.extra or {}).get("approvers", []),
+            }
+        else:
+            body = {"allowed": True, "limit": limit, "code": None, "detail": None, "approvers": []}
+        return Response(LimitCheckSerializer(body).data)
 
 
 class ApprovalLimitDetailView(APIView):

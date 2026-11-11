@@ -260,6 +260,7 @@ accessible → `404`). Documented in the OpenAPI schema (`/api/schema/`).
 | `o/<org>/invitations` | GET | `organisation.members.view` | pending user/owner invitations (sending them: `POST /api/v1/invitations`, A-02-T09) |
 | `o/<org>/approval-limits` | GET · POST | `roles.limit.view` · `roles.limit.manage` | live limits; create `{doc_type, max_amount, user | role}` (one per person/role and type: `409 limits.duplicate`) |
 | `o/<org>/approval-limits/<limit>` | GET · PATCH · DELETE | view · manage | PATCH `{max_amount}`; DELETE is a soft delete (kept for retention) |
+| `o/<org>/approval-limits/check?doc_type&amount&user` | GET | `roles.limit.view` | would that person be allowed to approve the amount? — `assert_can_approve` itself: `{allowed, limit, code, detail, approvers}` (A-03-T13) |
 
 Rules (`numo9/rbac/services.py`), whoever calls them:
 
@@ -349,3 +350,24 @@ Tests: `frontend/e2e/role-editor.spec.ts` with the real catalogue and roles list
 (`frontend/e2e/fixtures/`, generated from the API): creating a role by copy + search + tick +
 save takes well under a minute (asserted < 60 s), module grouping and risk badges, select-all,
 no-escalation, read-only system role, edit + delete at 360 / 1280 px, axe.
+
+## Approval-limit editor (A-03-T13)
+
+Settings → Users and roles → **Approval limits** (`LimitsPanel.tsx`):
+
+- one table per document type (manual journals, bills, purchase orders, pay runs): each limit's
+  person — or "Everyone with <role>" — and amount in CAD (`formatMoney`); an empty type says
+  "No limits yet, so nobody can approve bills.";
+- **Add a limit** (needs `roles.limit.manage`): document type, a person or a role (organisation
+  roles and the system practice roles), amount with the currency input (forgiving: `5,000`,
+  `$5 000,00`); **Change** / **Remove** per row; the API's refusals (duplicate, validation) are
+  shown in place;
+- **Verify an amount** — document type, person, amount → the server's `assert_can_approve`
+  answer, word for word ("This bill is for $5,001.00, above your approval limit of $5,000.00.
+  Ask Avery Owner to approve it." / "Sam Patel can approve this: their limit is $5,000.00.").
+  The explanation above the tables says the lowest limit applies and no limit means no approval.
+
+Saved and enforced: `backend/tests/test_rbac_api.py::test_limit_saved_through_the_api_is_enforced_by_the_check`
+saves limits through the API and checks them through the same service the documents use;
+`frontend/e2e/approval-limits.spec.ts` covers the screen (save, check, role limit, change,
+remove, validation, view-only; 360 / 1280 px, axe).

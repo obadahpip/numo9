@@ -14,6 +14,7 @@ import { defineMessages, useFormatMessage } from "@/i18n";
 
 import { errorText, isOk, orgApi, usersRolesApi, type ApiError, type Role } from "./api";
 import { apiRequest } from "@/auth/client";
+import { LimitsPanel } from "./LimitsPanel";
 import { MembersPanel } from "./MembersPanel";
 import { m, rm } from "./messages";
 import { RolesPanel } from "./RolesPanel";
@@ -74,7 +75,11 @@ export function UsersRolesScreen({
       return setState({ kind: "denied", error: refused.body as ApiError });
     }
     let roles: Role[] = [];
-    if (permissions.has("roles.role.view") || permissions.has("roles.assignment.manage")) {
+    if (
+      permissions.has("roles.role.view") ||
+      permissions.has("roles.assignment.manage") ||
+      permissions.has("roles.limit.view")
+    ) {
       const listed = await usersRolesApi.roles(org);
       if (isOk<Role[]>(listed)) roles = listed.body;
     }
@@ -137,6 +142,15 @@ export function UsersRolesScreen({
             canManage={permissions.has("roles.role.manage")}
             notice={notice}
           />
+        ),
+      });
+    }
+    if (permissions.has("roles.limit.view")) {
+      items.push({
+        value: "limits",
+        label: fm(m.tabLimits),
+        content: (
+          <LimitsPanel org={org} roles={roles} canManage={permissions.has("roles.limit.manage")} />
         ),
       });
     }
