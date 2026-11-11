@@ -4,7 +4,6 @@ import {
   Badge,
   Button,
   CurrencyInput,
-  EmptyState,
   ErrorState,
   formatMoney,
   LoadingRegion,
@@ -136,11 +135,9 @@ export function LimitsPanel({
               {label}
             </h3>
             {ofType.length === 0 ? (
-              <EmptyState
-                compact
-                headingLevel={3}
-                title={fm(lm.none, { type: label.toLocaleLowerCase(locale) })}
-              />
+              <p className="text-sm text-fg-muted">
+                {fm(lm.none, { type: label.toLocaleLowerCase(locale) })}
+              </p>
             ) : (
               <div className="relative overflow-x-auto rounded-lg border border-border">
                 <table className="w-full border-collapse text-sm [overflow-wrap:anywhere]">
