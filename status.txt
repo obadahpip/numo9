@@ -117,7 +117,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [A-03]
 ✅ A-03-T01 — Permission catalogue in code (permissions.py per app: key, label i18n key, module, risk level) + registry
 ✅ A-03-T02 — Models Role(scope platform/practice/org, system flag, owner org/practice), RolePermission, RoleAssignment, ApprovalLimit(user or role, doc_type, max_amount CAD)
-❌ A-03-T03 — Seed system roles with default permission sets (data migration)
+✅ A-03-T03 — Seed system roles with default permission sets (data migration)
 ❌ A-03-T04 — Resolver has_perm(user, org, key) with request-level cache; union of practice + org roles
 ❌ A-03-T05 — DRF RequiresPermission(key) decorator/class; every view must declare required_permission per method
 ❌ A-03-T06 — CI check: undeclared permission on any endpoint fails
