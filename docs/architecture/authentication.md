@@ -205,3 +205,20 @@ errors, rate limit, offline, every verify state), `frontend/src/auth/*.test.ts`.
 *Primitives / CodeInput*). Tests: `frontend/e2e/auth-login.spec.ts` (keyboard-only sign-in with
 2FA and remember-device, paste, recovery codes, lockout, unverified, `next` safety, `/2fa`, reset
 request / new password / dead link; axe on every screen), `CodeInput.test.tsx`, `nextUrl.test.ts`.
+
+### Invitation accept (A-02-T12)
+
+`/invite/<token>` — the link from an invitation email. The page posts the token to
+`POST /api/v1/invitations/preview` (body only, never in an API URL; the page sends
+`Referrer-Policy: no-referrer`) and reads the session, then shows one state:
+
+| State | Screen |
+|---|---|
+| Signed out | Who invited, to what, with which role ("Dana Lee invited you to join Refined Interiors Inc. as Purchasing."), the invited address and expiry date. *Sign in to accept* (returns here through `?next=`) or *Create an account* with the invited address. |
+| Signed in as the invited email | *Accept invitation* → `POST …/accept`. An accountant in several practices is asked which practice serves the client (`invitation.choose_practice` → a practice picker, then accept again). |
+| Signed in as another account | *This invitation is for another account*: names both addresses; *Sign out and continue* ends the session and shows the signed-out state; or stay and go Home. |
+| Accepted | *You've joined …* with a link to the organisation's Home (Home for a practice). |
+| Expired · already used · withdrawn · invalid | One heading per case and the server's explanation (`invitation.expired` with the date, `used`, `revoked`, `invalid`); used → sign in, others → Home. An invitation used or withdrawn between opening and accepting switches to that state. |
+| Unreachable | Message and *Try again*. |
+
+Tests: `frontend/e2e/auth-invite.spec.ts` (every state, at 360 and 1280 px, axe on each).
