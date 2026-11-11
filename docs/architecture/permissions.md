@@ -116,3 +116,48 @@ database.
 Tests: `backend/tests/test_permission_resolver.py` (truth table over member roles and practice
 access, union, custom organisation and practice roles, no-access, practice and platform
 permissions, cache scope).
+
+## Declaring permissions on API views (A-03-T05)
+
+Every method of every Numo9 API view declares the permission it needs, and
+`numo9.rbac.drf.RequiresPermission` — the DRF default permission class — enforces it.
+
+```python
+class ContactList(APIView):
+    permission_classes = [IsOrgMemberOrAssigned, RequiresPermission]
+
+    @requires_permission("contacts.contact.view")
+    def get(self, request, org): ...
+
+class CsrfTokenView(APIView):
+    required_permission = PUBLIC                     # every method; or {"GET": PUBLIC, "POST": AUTHENTICATED}
+```
+
+| Declaration | Allowed |
+|---|---|
+| `PUBLIC` | anyone, signed in or not (CSRF token, invitation preview) |
+| `AUTHENTICATED` | any signed-in user — the view or its service checks the objects (own memberships, create a practice, invitation services) |
+| organisation key | the active organisation must be accessible (else **404**, as for an unknown one), then `has_perm`; missing → **403** `permission.denied` naming the action ("You don't have permission to change organisation settings…") |
+| practice key | the acting practice (else 404), then `has_practice_perm` |
+| platform key | `has_platform_perm` |
+
+`HEAD` follows `GET`; `OPTIONS` follows `GET` or needs a signed-in user. An undeclared method is
+refused at runtime (403, logged on `numo9.rbac`).
+
+**System check** (runs with every `manage.py` command, the test suite and CI's `check --deploy`):
+
+| Id | Fails when |
+|---|---|
+| `rbac.E001` | a method of a DRF view in `ROOT_URLCONF` has no declaration |
+| `rbac.E002` | a declaration names a key that is not in the catalogue |
+| `rbac.E003` | the view's `permission_classes` don't include `RequiresPermission` |
+| `rbac.E004` | a third-party DRF view is not on `settings.RBAC_EXEMPT_VIEWS` (path → reason; today only the OpenAPI schema view) |
+
+Today's endpoints declare `PUBLIC` (CSRF token, invitation preview) or `AUTHENTICATED` (own
+organisations, create a practice or an organisation, invitation create/resend/revoke/accept —
+their services check the targets); organisation-scoped endpoints arrive with their modules and
+declare catalogue keys. django-allauth's authentication API (non-DRF) and the Django admin are
+outside the check. Public views also list `AllowAny`, which only marks the OpenAPI operation as
+open to signed-out callers.
+
+Tests: `backend/tests/test_requires_permission.py`.

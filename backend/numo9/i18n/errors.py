@@ -154,3 +154,14 @@ INVITATION_ROLE_INVALID = define(
         "role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
     ),
 )
+
+
+# ---- roles and permissions (A-03) ----------------------------------------------------------
+PERMISSION_DENIED = define(
+    "permission.denied",
+    _(
+        "You don't have permission to %(action)s. Ask someone who manages roles here to give you "
+        "a role that allows it."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)

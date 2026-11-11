@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 05:00-0500\n"
+"POT-Creation-Date: 2026-11-11 05:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -206,6 +206,10 @@ msgstr "Cette invitation vient d’être envoyée. Attendez une minute avant de 
 
 msgid "This role doesn't fit the invitation: staff get a practice role, users an organisation role, and an accountant what their practice will do (e.g. bookkeeping, tax)."
 msgstr "Ce rôle ne convient pas à l’invitation : le personnel reçoit un rôle de cabinet, les utilisateurs un rôle d’organisation, et un comptable ce que son cabinet fera (p. ex. tenue de livres, impôts)."
+
+#, python-format
+msgid "You don't have permission to %(action)s. Ask someone who manages roles here to give you a role that allows it."
+msgstr "Vous n’avez pas la permission de %(action)s. Demandez à une personne qui gère les rôles ici de vous attribuer un rôle qui le permet."
 
 msgid "Platform"
 msgstr "Plateforme"

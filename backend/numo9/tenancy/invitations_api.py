@@ -29,6 +29,7 @@ from rest_framework.views import APIView
 from numo9.accounts.models import User
 from numo9.i18n import errors
 from numo9.i18n.errors import api_error
+from numo9.rbac.drf import AUTHENTICATED, PUBLIC, RequiresPermission, requires_permission
 
 from . import invitations as service
 from .models import (
@@ -118,6 +119,8 @@ def _valid_role(kind: str, role: str) -> bool:
 
 
 class InvitationCreateView(APIView):
+    # Who may invite to what is checked per target by the invitation service (A-02-T09).
+    @requires_permission(AUTHENTICATED)
     @extend_schema(
         operation_id="invitations_create",
         summary="Invite someone to a practice or an organisation (emails a single-use link)",
@@ -157,6 +160,7 @@ class _ManageView(APIView):
 
 
 class InvitationResendView(_ManageView):
+    @requires_permission(AUTHENTICATED)  # 404 unless the user may manage the invitation
     @extend_schema(
         operation_id="invitations_resend",
         summary="Send again with a new link and a fresh 7-day expiry",
@@ -169,6 +173,7 @@ class InvitationResendView(_ManageView):
 
 
 class InvitationRevokeView(_ManageView):
+    @requires_permission(AUTHENTICATED)  # 404 unless the user may manage the invitation
     @extend_schema(
         operation_id="invitations_revoke",
         summary="Withdraw a pending invitation (its link stops working)",
@@ -181,8 +186,11 @@ class InvitationRevokeView(_ManageView):
 
 
 class InvitationPreviewView(APIView):
-    permission_classes = [AllowAny]
+    # AllowAny adds nothing to RequiresPermission (both must pass); it marks the OpenAPI
+    # operation as open to signed-out callers.
+    permission_classes = [RequiresPermission, AllowAny]
 
+    @requires_permission(PUBLIC)  # anyone holding the link sees what it invites to
     @extend_schema(
         operation_id="invitations_preview",
         summary="What an invitation link invites to (accept screen)",
@@ -197,6 +205,7 @@ class InvitationPreviewView(APIView):
 
 
 class InvitationAcceptView(APIView):
+    @requires_permission(AUTHENTICATED)  # bound to the invited email by the service
     @extend_schema(
         operation_id="invitations_accept",
         summary="Accept an invitation as the signed-in user (must be the invited email)",

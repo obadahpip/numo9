@@ -24,6 +24,7 @@ from rest_framework.views import APIView
 
 from numo9.accounts.models import User
 from numo9.i18n.errors import UNKNOWN_PRACTICE, error_detail
+from numo9.rbac.drf import AUTHENTICATED, requires_permission
 
 from .access import PRACTICE_WIDE_ROLES, accessible_organisations
 from .models import (
@@ -86,6 +87,7 @@ def _describe(organisation: Organisation, user: Any) -> dict[str, Any]:
 
 
 class MyOrganisationsView(APIView):
+    @requires_permission(AUTHENTICATED)  # the signed-in user's own memberships
     @extend_schema(
         operation_id="me_organisations_list",
         summary="Organisations I can access",
@@ -98,6 +100,7 @@ class MyOrganisationsView(APIView):
 
 
 class PracticeCreateView(APIView):
+    @requires_permission(AUTHENTICATED)  # anyone signed in may start a practice (free)
     @extend_schema(
         operation_id="practices_create",
         summary="Create a practice (the creator becomes practice admin)",
@@ -117,6 +120,9 @@ class PracticeCreateView(APIView):
 
 
 class OrganisationCreateView(APIView):
+    # Anyone signed in may create an organisation; with ``practice`` the user must be a member
+    # of that practice (checked below).
+    @requires_permission(AUTHENTICATED)
     @extend_schema(
         operation_id="organisations_create",
         summary="Create an organisation (trial)",
