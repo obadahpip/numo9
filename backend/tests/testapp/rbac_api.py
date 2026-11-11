@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from django.http import HttpRequest, JsonResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -79,3 +80,15 @@ class NotEnforced(APIView):
 
 def view_path(cls: type[Any]) -> str:
     return f"{cls.__module__}.{cls.__qualname__}"
+
+
+class CanaryUndeclared(APIView):
+    """CI canary (A-03-T06): a fixture endpoint without a permission declaration."""
+
+    def get(self, request: Request) -> Response:
+        return Response({"ok": "should never be reachable"})
+
+
+def plain_django_view(request: HttpRequest) -> JsonResponse:
+    """Not a DRF view: mounted under /api/ it would skip RequiresPermission (rbac.E005)."""
+    return JsonResponse({"ok": "no permission checked"})

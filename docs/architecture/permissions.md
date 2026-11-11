@@ -152,6 +152,7 @@ refused at runtime (403, logged on `numo9.rbac`).
 | `rbac.E002` | a declaration names a key that is not in the catalogue |
 | `rbac.E003` | the view's `permission_classes` don't include `RequiresPermission` |
 | `rbac.E004` | a third-party DRF view is not on `settings.RBAC_EXEMPT_VIEWS` (path → reason; today only the OpenAPI schema view) |
+| `rbac.E005` | a view that is not a DRF view is mounted under `/api/` (it would skip `RequiresPermission`), unless on `RBAC_EXEMPT_VIEWS` (A-03-T06) |
 
 Today's endpoints declare `PUBLIC` (CSRF token, invitation preview) or `AUTHENTICATED` (own
 organisations, create a practice or an organisation, invitation create/resend/revoke/accept —
@@ -161,3 +162,27 @@ outside the check. Public views also list `AllowAny`, which only marks the OpenA
 open to signed-out callers.
 
 Tests: `backend/tests/test_requires_permission.py`.
+
+## CI gate: undeclared permission fails (A-03-T06)
+
+The backend CI job runs, after the migration check:
+
+1. **`python manage.py permission_check`** — one line per endpoint method with what it requires
+   (catalogue key, `@public`, `@authenticated`), then every `rbac.E001`–`E005` problem with its
+   hint; exit code 1 on any problem, so the job is red;
+2. **the canary** — the same command on `tests.testapp.rbac_urls_ci_canary` (the project URLs plus
+   one fixture view without a declaration) **must fail**; if it passes, the gate itself is broken
+   and the step fails.
+
+```text
+$ python manage.py permission_check --urlconf tests.testapp.rbac_urls_ci_canary --quiet
+FAIL rbac.E001: /api/v1/ci-canary/: GET on tests.testapp.rbac_api.CanaryUndeclared declares no required permission.
+     hint: Decorate the method with @requires_permission('<catalogue key>') …
+permission_check: 10 endpoint methods, 1 problem(s)
+```
+
+The same check also runs as a Django system check on every `manage.py` command and in the test
+suite. Run `python manage.py permission_check` locally before opening a PR that adds endpoints.
+
+Tests: `backend/tests/test_permission_ci_check.py` (project passes, canary fails — through
+`call_command` and as a real process exit code —, non-DRF view under `/api/`, CI workflow wiring).

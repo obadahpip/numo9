@@ -121,5 +121,6 @@ Fill every section. Write "n/a" with a reason instead of deleting a section.
 - [ ] No secrets, credentials or personal data in the diff.
 - [ ] Every new user-visible string is an i18n message with en-CA and fr-CA keys.
 - [ ] Every new endpoint declares its feature key (U-01) and is covered by the tenant-isolation sweep (A-01), or n/a.
+- [ ] Every new endpoint method declares its permission (`@requires_permission` / `required_permission`) and `python manage.py permission_check` passes (A-03-T06).
 - [ ] Every new screen uses the design system (A-10), or n/a.
 - [ ] `status.txt` updated (✅ only for tasks whose acceptance was observed).
