@@ -434,3 +434,17 @@ not exist yet; A-04-T03 connects `audit.record()` to `rbac_changed`, which makes
 visible in the audit log — the task's acceptance ("diff visible") is checked then.
 
 Tests: `backend/tests/test_rbac_audit.py`.
+
+## Catalogue page in the docs (A-03-T16)
+
+[Permission catalogue](../reference/permission-catalogue.md) is **generated** by
+`python manage.py permcat_docs` from the code: per module (with its people-facing name) every
+permission's key, English and French label, risk, scope, owner-only flag and the system roles
+that give it, then the 15 system roles with their permission counts. Never edit it by hand —
+change an app's `permissions.py` and run the command.
+
+CI: the backend job runs `permcat_docs --check` (fails when the committed page differs from the
+code, e.g. a permission added without regenerating) and the docs job builds the site with
+`mkdocs build --strict` (the page is in the nav under *Reference*).
+
+Tests: `backend/tests/test_permission_docs.py`.
