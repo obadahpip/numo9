@@ -320,3 +320,32 @@ everyone fails 30 cases.
 Tests: `frontend/e2e/users-roles.spec.ts` (Playwright, 360 and 1280 px, axe): give a custom
 role and take it away, a main role replaces the main one, refusal reason, invite, read-only,
 not accessible.
+
+## Role editor (A-03-T12)
+
+Settings → Users and roles → **Roles** lists the organisation roles (system roles first, then
+custom ones) with a *System role* / *Custom role* badge, how many people hold each one and how
+many permissions it has; **New role** and **Copy <role>** open the editor at
+`/o/<org>/settings/users-roles/roles/new[?copy=<role>]`; `/roles/<id>` opens a role.
+
+The editor (`frontend/src/settings/users-roles/RoleEditor.tsx`):
+
+- **name**, optional description, **Copy from role** (replaces the ticked set with that role's
+  permissions, then adjust);
+- the **permission matrix by module** (catalogue order and module names from
+  `GET /permissions/catalogue`), one fieldset per module with **Everything in <module>**, each
+  permission with its label, key, **risk badge** (low neutral · medium info · high warning ·
+  critical danger, the word always shown) and *Owners only by default*; only organisation
+  permissions are listed — what a custom organisation role can give;
+- **search** across label, key, module and risk;
+- "N of M permissions selected"; **Save role** (POST / PATCH with the complete set) returns to
+  the Roles tab with a status line; **Delete role** only when nobody holds it (otherwise the
+  editor says how many people do);
+- permissions the editor doesn't hold are disabled ("You don't have this permission, so you
+  can't give it") — the API refuses them too (no escalation);
+- system roles open read-only with **Copy into a custom role**.
+
+Tests: `frontend/e2e/role-editor.spec.ts` with the real catalogue and roles list
+(`frontend/e2e/fixtures/`, generated from the API): creating a role by copy + search + tick +
+save takes well under a minute (asserted < 60 s), module grouping and risk badges, select-all,
+no-escalation, read-only system role, edit + delete at 360 / 1280 px, axe.

@@ -15,7 +15,8 @@ import { defineMessages, useFormatMessage } from "@/i18n";
 import { errorText, isOk, orgApi, usersRolesApi, type ApiError, type Role } from "./api";
 import { apiRequest } from "@/auth/client";
 import { MembersPanel } from "./MembersPanel";
-import { m } from "./messages";
+import { m, rm } from "./messages";
+import { RolesPanel } from "./RolesPanel";
 
 const toastLabels = defineMessages({
   region: {
@@ -44,7 +45,18 @@ type State =
  * themselves and approval limits. Each tab shows only what the user's permissions allow (from
  * `GET …/my-permissions`); the API enforces it either way.
  */
-export function UsersRolesScreen({ org, tab = "users" }: { org: string; tab?: UsersRolesTab }) {
+export function UsersRolesScreen({
+  org,
+  tab = "users",
+  saved,
+  deleted,
+}: {
+  org: string;
+  tab?: UsersRolesTab;
+  /** Name of the role the editor just saved / deleted (status line on the Roles tab). */
+  saved?: string;
+  deleted?: string;
+}) {
   const fm = useFormatMessage();
   const [state, setState] = useState<State>({ kind: "loading" });
   const [current, setCurrent] = useState<UsersRolesTab>(tab);
@@ -105,6 +117,25 @@ export function UsersRolesScreen({ org, tab = "users" }: { org: string; tab?: Us
             roles={roles}
             canAssign={permissions.has("roles.assignment.manage")}
             onChanged={() => void load()}
+          />
+        ),
+      });
+    }
+    if (permissions.has("roles.role.view")) {
+      const notice = saved
+        ? fm(rm.saved, { role: saved })
+        : deleted
+          ? fm(rm.deleted, { role: deleted })
+          : undefined;
+      items.push({
+        value: "roles",
+        label: fm(m.tabRoles),
+        content: (
+          <RolesPanel
+            org={org}
+            roles={roles}
+            canManage={permissions.has("roles.role.manage")}
+            notice={notice}
           />
         ),
       });
