@@ -112,7 +112,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-08-T01 — Celery app config (Redis broker/result, acks_late, prefetch 1, time limits, queues: default/high/io/reports)
 
 [A-01]
-❌ A-01-T07 — Celery task base class requiring explicit org_id and setting context
+✅ A-01-T07 — Celery task base class requiring explicit org_id and setting context
 
 [A-03]
 ❌ A-03-T01 — Permission catalogue in code (permissions.py per app: key, label i18n key, module, risk level) + registry
