@@ -220,3 +220,22 @@ raising. The service checks amounts only; each module checks its approve permiss
 Users now carry a random `public_id` (accounts migration `0002`) used for them in APIs.
 
 Tests: `backend/tests/test_approval_limits.py` (gap-25: a $5,000 limit blocks a $5,001 bill).
+
+## Segregation of duties (A-03-T08)
+
+`numo9.rbac.duties.assert_not_creator(user, obj, *, fields=("created_by",), record=None)` —
+where a workflow requires it ("approver ≠ creator": bills, purchase orders, pay runs, tax
+filings), the person who created a record may not approve it. Callers decide where the rule
+applies.
+
+- The creator is `obj.created_by_id` (every `OrgOwnedModel` has it) — no query; `fields=` checks
+  several people fields (e.g. `("created_by", "submitted_by")`).
+- No creator (system-created: imports, seeders, jobs) → anyone may approve.
+- Refusal: `SelfApprovalRefused`, a `403` API error `approval.self_approval` — "You created this
+  bill, so someone else has to approve it." (`record=` names the document; default: the model's
+  verbose name); the body adds `field`.
+- A field the object does not have raises `TypeError` (programming error).
+- `is_creator()` / `creators()` answer without raising; pass `creators(obj)` as `exclude=` to
+  `assert_can_approve` so the creator is never suggested as the next approver.
+
+Tests: `backend/tests/test_segregation_of_duties.py`.
