@@ -107,6 +107,8 @@ services:
       target: dev
     environment:
       WATCHPACK_POLLING: "true"
+      # /api/v1 and /_allauth are forwarded to Django (A-02-T10, frontend/src/routing/backend.ts).
+      NUMO9_BACKEND_URL: http://backend:8000
     ports:
       - "127.0.0.1:${FRONTEND_HOST_PORT:-3000}:3000"
     volumes:

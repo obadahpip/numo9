@@ -160,3 +160,34 @@ Service: `backend/numo9/tenancy/invitations.py` · API: `backend/numo9/tenancy/i
   permission catalogue.
 
 Tests: `backend/tests/test_invitations.py`.
+
+## Web screens (A-02-T10 … T12)
+
+Code: `frontend/src/auth/` (screens and the API client), routes in `frontend/src/app/`. The
+screens use the design system (`@numo9/ui` form kit, buttons, states) inside one public
+frame (`AuthLayout`: wordmark, one card, no app shell, no promotions); every string is an i18n
+message (`auth.*`, `form.*`).
+
+**API client** (`frontend/src/auth/client.ts`): same-origin calls to `/_allauth/browser/v1/…`
+and `/api/v1/…`; unsafe requests carry `X-CSRFToken` from `GET /api/v1/auth/csrf` (fetched once,
+fetched again once after a CSRF failure); calls never throw on an HTTP status, so each screen
+branches on the status, the pending flow and the error codes. Tokens from emailed links go in
+request bodies only; the pages that receive them send `Referrer-Policy: no-referrer`.
+
+**Local development**: `NUMO9_BACKEND_URL` (set to `http://backend:8000` in
+`docker-compose.dev.yml`) makes Next.js forward `/api/v1/*` and `/_allauth/*` to Django
+(`frontend/src/routing/backend.ts`); the dev settings trust `NUMO9_FRONTEND_URL` as a CSRF
+origin (`DJANGO_CSRF_TRUSTED_ORIGINS` overrides). In staging/prod the reverse proxy routes them.
+
+### Sign-up (A-02-T10)
+
+| Route | Screen |
+|---|---|
+| `/signup` | Step 1 — choose *I'm an accountant* (free practice) or *I run a business* (30-day trial). `?path=accountant` / `?path=organisation` skips it. |
+| | Step 2 — four fields: name, email, password (show/hide, strength meter, ≥ 12 characters), practice or business name. Client-side checks first (error summary + inline errors, focus on the first error); server field errors (e.g. breached password) land on their field; 429 / offline / 5xx get their own message. |
+| | Step 3 — *Open the link we emailed you*: names the address, says the link works 3 days, what to do if nothing arrives. The same answer for an address that already has an account (no enumeration). |
+| `/verify/<key>` | Posts the key once: **verified and signed in** (same browser) → *Continue to Numo9*; **verified, sign in** (other browser); **link doesn't work any more** (expired/used/invalid) → sign in, which emails a new link; **couldn't check** (network/server) → *Try again*. |
+
+Focus moves to the heading at each step. Tests: `frontend/e2e/auth-signup.spec.ts` (flows at
+360 and 1280 px, axe 0 serious/critical at every step, keyboard-only sign-up, validation, server
+errors, rate limit, offline, every verify state), `frontend/src/auth/*.test.ts`.
