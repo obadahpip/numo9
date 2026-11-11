@@ -26,6 +26,7 @@ class RbacConfig(AppConfig):
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
         SWEEP_FACTORIES["rbac.ApprovalLimit"] = _sweep_limit
+        SWEEP_FACTORIES["rbac.AccessRequest"] = _sweep_access_request
 
 
 def _sync_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
@@ -44,4 +45,18 @@ def _sweep_limit(organisation: Any) -> Any:
     ).first()
     return existing or ApprovalLimit._base_manager.create(
         organisation=organisation, role=owner, doc_type="bill", max_amount=1000
+    )
+
+
+def _sweep_access_request(organisation: Any) -> Any:
+    from django.contrib.auth import get_user_model
+
+    from .models import AccessRequest
+
+    requester = get_user_model().objects.create_user(
+        f"sweep-request-{organisation.public_id}-{AccessRequest._base_manager.count()}@example.invalid",
+        name="Sweep requester",
+    )
+    return AccessRequest._base_manager.create(
+        organisation=organisation, requester=requester, permission="organisation.settings.manage"
     )

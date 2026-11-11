@@ -1,0 +1,44 @@
+{
+  "detail": "You don't have permission to see the organisation's users. Ask someone who manages roles here to give you a role that allows it.",
+  "code": "permission.denied",
+  "explain": {
+    "rule": "permission",
+    "permission": {
+      "key": "organisation.members.view",
+      "label": "See the organisation's users",
+      "module": "users",
+      "module_label": "Users and roles",
+      "risk": "low",
+      "risk_label": "Low risk"
+    },
+    "holders": [
+      {
+        "id": "d78b345f-4cd6-4e15-9b85-02ce0e8db186",
+        "name": "Avery Owner",
+        "roles": ["Owner"]
+      },
+      {
+        "id": "772120ad-9b48-4ecc-9620-43d6ff68097f",
+        "name": "Bo Books",
+        "roles": ["Accountant delegate"]
+      },
+      {
+        "id": "4e72bfbc-52a0-46bf-adbe-eaed428accfe",
+        "name": "Dana Admin",
+        "roles": ["Admin"]
+      }
+    ],
+    "holders_total": 3,
+    "managers": [
+      {
+        "id": "d78b345f-4cd6-4e15-9b85-02ce0e8db186",
+        "name": "Avery Owner"
+      },
+      {
+        "id": "4e72bfbc-52a0-46bf-adbe-eaed428accfe",
+        "name": "Dana Admin"
+      }
+    ],
+    "can_request": true
+  }
+}

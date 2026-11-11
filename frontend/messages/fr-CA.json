@@ -194,6 +194,22 @@
     "retry": "Try again",
     "search": "Search organisations"
   },
+  "permissions": {
+    "explain": {
+      "alreadyOpen": "You already asked for this. It's waiting for an answer.",
+      "fixer": "{names} can give you a role that allows it.",
+      "fixerNobody": "Ask the organisation's owner to give you a role that allows it.",
+      "holder": "{name} ({roles})",
+      "holders": "Who has it here: {names}.",
+      "holdersMore": "Who has it here: {names} and {more, plural, one {# other} other {# others}}.",
+      "needs": "It needs the permission “{permission}” ({module}, {risk}).",
+      "nobodyHolds": "Nobody else here has it yet.",
+      "note": "Note for them (optional)",
+      "request": "Request access",
+      "sent": "Request sent. {count, plural, one {# person was} other {# people were}} emailed; you'll get access when one of them gives you a role.",
+      "title": "You can't do this here yet"
+    }
+  },
   "routes": {
     "chartOfAccounts": "Chart of accounts",
     "contacts": "Contacts",
@@ -215,9 +231,6 @@
     "usersRoles": {
       "cancel": "Cancel",
       "close": "Close",
-      "denied": {
-        "title": "You can't see this yet"
-      },
       "editor": {
         "allInModule": "Everything in {module}",
         "back": "Back to roles",
@@ -286,6 +299,14 @@
         "title": "This organisation isn't available"
       },
       "orgRole": "{role, select, owner {Owner} admin {Admin} accountant_delegate {Accountant delegate} sales {Sales} purchasing {Purchasing} payroll {Payroll} hr {HR} employee {Employee} other {{role}}}",
+      "requests": {
+        "close": "Close the request of {name}",
+        "closeShort": "Close",
+        "closed": "Request of {name} closed",
+        "heading": "Access requests",
+        "note": "Note: {note}",
+        "row": "{name} asks for “{permission}”"
+      },
       "retry": "Try again",
       "roles": {
         "copy": "Copy {role}",

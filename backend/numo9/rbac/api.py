@@ -12,6 +12,9 @@ Organisation-scoped (``/api/v1/o/<org>/…``; the organisation must be accessibl
   which every role has), so screens show only the actions that work (A-03-T11);
 - ``approval-limits`` — GET list (``roles.limit.view``) · POST create (``roles.limit.manage``);
 - ``approval-limits/<limit>`` — GET (view) · PATCH · DELETE, soft (manage);
+- ``access-requests`` — GET open requests (``roles.assignment.manage``) · POST ask for a refused
+  permission (``organisation.profile.view``: everyone here), A-03-T14;
+- ``access-requests/<id>`` — DELETE close a request (``roles.assignment.manage``);
 - ``approval-limits/check?doc_type&amount&user`` — GET whether that person may approve the
   amount (``assert_can_approve``: limit, refusal message, next approvers; ``roles.limit.view``).
 
@@ -30,6 +33,7 @@ from django.db import transaction
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema
 from rest_framework import serializers, status
+from rest_framework.exceptions import NotFound
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -41,10 +45,12 @@ from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Invitation, InvitationKind, Organisation
 
 from . import services
+from .access import request_access
 from .approvals import ApprovalLimitExceeded, assert_can_approve
 from .catalogue import MODULES, catalogue
 from .drf import AUTHENTICATED, requires_permission
-from .models import ApprovalDocumentType, Role, RoleScope
+from .explain import permission_info
+from .models import AccessRequest, ApprovalDocumentType, Role, RoleScope
 from .permissions import (
     LIMITS_MANAGE,
     LIMITS_VIEW,
@@ -461,4 +467,116 @@ class ApprovalLimitDetailView(APIView):
     )
     def delete(self, request: Request, org: Any, public_id: Any) -> Response:
         services.delete_limit(services.get_limit(_org(), public_id))
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ---- access requests (A-03-T14) ------------------------------------------------------------
+
+
+class AccessRequestModelSerializer(serializers.ModelSerializer[AccessRequest]):
+    """Names the model for the tenant sweep (rows are rendered by AccessRequestSerializer)."""
+
+    class Meta:
+        model = AccessRequest
+        fields = ("public_id",)
+
+
+class AccessRequestCreateSerializer(serializers.Serializer[Any]):
+    permission = serializers.CharField(max_length=100, help_text="The refused permission's key")
+    note = serializers.CharField(max_length=500, required=False, allow_blank=True, default="")
+
+
+class PermissionInfoSerializer(serializers.Serializer[Any]):
+    key = serializers.CharField()
+    label = serializers.CharField()  # type: ignore[assignment]
+    module = serializers.CharField()
+    module_label = serializers.CharField()
+    risk = serializers.CharField()
+    risk_label = serializers.CharField()
+
+
+class PersonSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+
+
+class AccessRequestSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    requester = PersonSerializer()
+    permission = PermissionInfoSerializer()
+    note = serializers.CharField()
+    created_at = serializers.DateTimeField()
+    notified = serializers.IntegerField(help_text="How many people were emailed")
+    already_open = serializers.BooleanField(
+        help_text="True when the same request was already waiting (nobody emailed again)"
+    )
+
+
+def _request_data(row: AccessRequest, already_open: bool = False) -> dict[str, Any]:
+    return {
+        "id": row.public_id,
+        "requester": {"id": row.requester.public_id, "name": row.requester.name},
+        "permission": permission_info(row.permission),
+        "note": row.note,
+        "created_at": row.created_at,
+        "notified": row.notified,
+        "already_open": already_open,
+    }
+
+
+class AccessRequestListView(APIView):
+    serializer_class = AccessRequestModelSerializer  # tenant sweep: rows of AccessRequest
+
+    @requires_permission(ROLES_ASSIGN.key)
+    @extend_schema(
+        operation_id="access_requests_list",
+        summary="Open access requests (people who give roles see them)",
+        responses=AccessRequestSerializer(many=True),
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        rows = (
+            AccessRequest.objects.filter(deleted_at__isnull=True)
+            .select_related("requester")
+            .order_by("-created_at")
+        )
+        data = [_request_data(r) for r in rows if r.permission in catalogue]
+        return Response(AccessRequestSerializer(data, many=True).data)
+
+    # Everyone in the organisation may ask (every role has organisation.profile.view).
+    @requires_permission("organisation.profile.view")
+    @extend_schema(
+        operation_id="access_requests_create",
+        summary="Ask the people who could give it for a refused permission",
+        request=AccessRequestCreateSerializer,
+        responses={201: AccessRequestSerializer, 200: AccessRequestSerializer},
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        payload = AccessRequestCreateSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        done = request_access(
+            request.user,
+            _org(),
+            payload.validated_data["permission"],
+            payload.validated_data.get("note", ""),
+        )
+        return Response(
+            AccessRequestSerializer(_request_data(done.request, not done.created)).data,
+            status=status.HTTP_201_CREATED if done.created else status.HTTP_200_OK,
+        )
+
+
+class AccessRequestDetailView(APIView):
+    serializer_class = AccessRequestModelSerializer
+
+    @requires_permission(ROLES_ASSIGN.key)
+    @extend_schema(
+        operation_id="access_requests_close",
+        summary="Close an access request (done or declined; kept in history)",
+        responses={204: None},
+    )
+    def delete(self, request: Request, org: Any, public_id: Any) -> Response:
+        row = AccessRequest.objects.filter(public_id=public_id, deleted_at__isnull=True).first()
+        if row is None:
+            raise NotFound
+        row.soft_delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

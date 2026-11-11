@@ -12,9 +12,11 @@ import { useCallback, useEffect, useState } from "react";
 
 import { defineMessages, useFormatMessage } from "@/i18n";
 
-import { errorText, isOk, orgApi, usersRolesApi, type ApiError, type Role } from "./api";
+import { isOk, orgApi, usersRolesApi, type ApiError, type Role } from "./api";
 import { apiRequest } from "@/auth/client";
 import { LimitsPanel } from "./LimitsPanel";
+import { PermissionExplain } from "@/components/PermissionExplain";
+
 import { MembersPanel } from "./MembersPanel";
 import { m, rm } from "./messages";
 import { RolesPanel } from "./RolesPanel";
@@ -100,13 +102,7 @@ export function UsersRolesScreen({
   } else if (state.kind === "notFound") {
     body = <ExplainPanel kind="notFound" title={fm(m.notFoundTitle)} body={fm(m.notFoundBody)} />;
   } else if (state.kind === "denied") {
-    body = (
-      <ExplainPanel
-        kind="permission"
-        title={fm(m.deniedTitle)}
-        body={errorText(state.error) ?? fm(m.failed)}
-      />
-    );
+    body = <PermissionExplain org={org} error={state.error} />;
   } else if (state.kind === "failed") {
     body = <ExplainPanel kind="notFound" title={fm(m.loadFailed)} body={fm(m.failed)} />;
   } else {

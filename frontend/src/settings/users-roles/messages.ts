@@ -190,11 +190,6 @@ export const m = defineMessages({
     description: "Generic failure of a change",
   },
   // ---- explain (A-03-T14)
-  deniedTitle: {
-    id: "settings.usersRoles.denied.title",
-    defaultMessage: "You can't see this yet",
-    description: "Permission refusal panel heading",
-  },
   notFoundTitle: {
     id: "settings.usersRoles.notFound.title",
     defaultMessage: "This organisation isn't available",
@@ -557,5 +552,101 @@ export const lm = defineMessages({
     id: "settings.usersRoles.limits.allowed",
     defaultMessage: "{name} can approve this: their limit is {limit}.",
     description: "Check result: allowed",
+  },
+});
+
+/** "Why can't I?" panel and access requests (A-03-T14). */
+export const xm = defineMessages({
+  title: {
+    id: "permissions.explain.title",
+    defaultMessage: "You can't do this here yet",
+    description: "Heading of the permission refusal panel",
+  },
+  needs: {
+    id: "permissions.explain.needs",
+    defaultMessage: "It needs the permission “{permission}” ({module}, {risk}).",
+    description: "Refusal panel: which permission is missing",
+  },
+  holders: {
+    id: "permissions.explain.holders",
+    defaultMessage: "Who has it here: {names}.",
+    description: "Refusal panel: people who hold the permission",
+  },
+  holdersMore: {
+    id: "permissions.explain.holdersMore",
+    defaultMessage: "Who has it here: {names} and {more, plural, one {# other} other {# others}}.",
+    description: "Refusal panel: people who hold the permission, {more} not listed",
+  },
+  holder: {
+    id: "permissions.explain.holder",
+    defaultMessage: "{name} ({roles})",
+    description: "One person in the holders list with the roles that give it",
+  },
+  nobodyHolds: {
+    id: "permissions.explain.nobodyHolds",
+    defaultMessage: "Nobody else here has it yet.",
+    description: "Refusal panel: no holder",
+  },
+  fixer: {
+    id: "permissions.explain.fixer",
+    defaultMessage: "{names} can give you a role that allows it.",
+    description: "Refusal panel: who can grant it",
+  },
+  fixerNobody: {
+    id: "permissions.explain.fixerNobody",
+    defaultMessage: "Ask the organisation's owner to give you a role that allows it.",
+    description: "Refusal panel: nobody can grant it in-app",
+  },
+  request: {
+    id: "permissions.explain.request",
+    defaultMessage: "Request access",
+    description: "Button: ask the people who can grant it",
+  },
+  note: {
+    id: "permissions.explain.note",
+    defaultMessage: "Note for them (optional)",
+    description: "Label of the request note",
+  },
+  sent: {
+    id: "permissions.explain.sent",
+    defaultMessage:
+      "Request sent. {count, plural, one {# person was} other {# people were}} emailed; you'll get access when one of them gives you a role.",
+    description: "Status after requesting access",
+  },
+  alreadyOpen: {
+    id: "permissions.explain.alreadyOpen",
+    defaultMessage: "You already asked for this. It's waiting for an answer.",
+    description: "Status when the same request is already open",
+  },
+  // ---- open requests on the Users tab
+  requestsHeading: {
+    id: "settings.usersRoles.requests.heading",
+    defaultMessage: "Access requests",
+    description: "Heading of the open access requests list",
+  },
+  requestRow: {
+    id: "settings.usersRoles.requests.row",
+    defaultMessage: "{name} asks for “{permission}”",
+    description: "One open access request",
+  },
+  requestNote: {
+    id: "settings.usersRoles.requests.note",
+    defaultMessage: "Note: {note}",
+    description: "The requester's note",
+  },
+  close: {
+    id: "settings.usersRoles.requests.close",
+    defaultMessage: "Close the request of {name}",
+    description: "Accessible name of the close button",
+  },
+  closeShort: {
+    id: "settings.usersRoles.requests.closeShort",
+    defaultMessage: "Close",
+    description: "Button",
+  },
+  closed: {
+    id: "settings.usersRoles.requests.closed",
+    defaultMessage: "Request of {name} closed",
+    description: "Toast",
   },
 });

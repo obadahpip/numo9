@@ -371,3 +371,42 @@ Saved and enforced: `backend/tests/test_rbac_api.py::test_limit_saved_through_th
 saves limits through the API and checks them through the same service the documents use;
 `frontend/e2e/approval-limits.spec.ts` covers the screen (save, check, role limit, change,
 remove, validation, view-only; 360 / 1280 px, axe).
+
+## "Why can't I?" and request access (A-03-T14)
+
+Every `403 permission.denied` carries an **`explain`** payload (`numo9/rbac/explain.py`):
+
+```json
+{"detail": "You don't have permission to see the organisation's users. …", "code": "permission.denied",
+ "explain": {"rule": "permission",
+   "permission": {"key": "organisation.members.view", "label": "See the organisation's users",
+                  "module": "users", "module_label": "Users and roles", "risk": "low", "risk_label": "Low risk"},
+   "holders": [{"id": "…", "name": "Avery Owner", "roles": ["Owner"]}, …], "holders_total": 3,
+   "managers": [{"id": "…", "name": "Avery Owner"}, {"id": "…", "name": "Dana Admin"}],
+   "can_request": true}}
+```
+
+- **holders** — people in this organisation who have the permission, with the roles that give
+  it (members, custom roles, practice staff); **managers** — people who may give roles *and*
+  hold the permission (nobody can give what they don't have); names only, never emails; lists
+  capped at 5 with `holders_total`; the refused user is left out. Practice / platform keys get
+  the permission part only.
+- **Request access** — `POST o/<org>/access-requests {permission, note}` (anyone in the
+  organisation): the managers are **emailed** in their own language (who asks, for what, the
+  note, a link to Users and roles); one open request per person and permission (asking again
+  returns it, `already_open`, no new email); nobody to ask → `409 access.nobody`; already have it
+  → `409 access.already_have`; only organisation permissions (`400 access.permission`).
+  `AccessRequest` (`rbac.0003`, organisation-owned) keeps the request; managers see open ones on
+  Users and roles (`GET …/access-requests`) with **Give a role** and **Close**
+  (`DELETE …/access-requests/<id>`, soft delete). The in-app notification centre (A-07) will
+  deliver the same request as a notification when it lands.
+
+Frontend: `frontend/src/components/PermissionExplain.tsx` turns any refusal body into the
+ExplainPanel — the API's sentence, "It needs the permission “…” (module, risk).", "Who has it
+here: Avery Owner (Owner), …", "Avery Owner, Dana Admin can give you a role that allows it." —
+with an optional note and **Request access**. Used by Users and roles and the role editor; other
+screens reuse it for their refusals.
+
+Tests: `backend/tests/test_why_cant_i.py`; `frontend/e2e/why-cant-i.spec.ts` (the real refusal
+body as fixture: the refusal shows names; request access; nobody to ask; counted overflow;
+managers' list; 360 / 1280 px, axe).

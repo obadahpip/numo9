@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { apiRequest } from "@/auth/client";
+import { PermissionExplain } from "@/components/PermissionExplain";
 import { useFormatMessage } from "@/i18n";
 
 import {
@@ -49,7 +50,7 @@ interface Loaded {
 type State =
   | { kind: "loading" }
   | { kind: "ready"; data: Loaded }
-  | { kind: "denied"; message: string }
+  | { kind: "denied"; error: ApiError }
   | { kind: "notFound" };
 
 /** Organisation permissions only: what a custom organisation role can grant. */
@@ -109,10 +110,10 @@ export function RoleEditor({
     ]);
     if (roles.status === 404 || mine.status === 404) return setState({ kind: "notFound" });
     if (!isOk<Role[]>(roles)) {
-      return setState({ kind: "denied", message: errorText(roles.body) ?? fm(m.failed) });
+      return setState({ kind: "denied", error: roles.body as ApiError });
     }
     if (!isOk<Catalogue>(catalogue) || !isOk<{ permissions: string[] }>(mine)) {
-      return setState({ kind: "denied", message: fm(m.failed) });
+      return setState({ kind: "denied", error: { detail: fm(m.failed) } });
     }
     let role: Role | null = null;
     if (roleId !== "new") {
@@ -161,7 +162,7 @@ export function RoleEditor({
     return <ExplainPanel kind="notFound" title={fm(m.notFoundTitle)} body={fm(m.notFoundBody)} />;
   }
   if (state.kind === "denied") {
-    return <ExplainPanel kind="permission" title={fm(m.deniedTitle)} body={state.message} />;
+    return <PermissionExplain org={org} error={state.error} headingLevel={1} />;
   }
 
   const { role, roles, mine } = state.data;
