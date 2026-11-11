@@ -186,3 +186,37 @@ suite. Run `python manage.py permission_check` locally before opening a PR that 
 
 Tests: `backend/tests/test_permission_ci_check.py` (project passes, canary fails — through
 `call_command` and as a real process exit code —, non-DRF view under `/api/`, CI workflow wiring).
+
+## Approval limits (A-03-T07)
+
+`numo9.rbac.approvals.assert_can_approve(user, doc_type, amount, *, organisation=None, exclude=())`
+— raises `ApprovalLimitExceeded` unless the amount (a `Decimal` in CAD, the base currency) is
+within the user's **effective limit** for the document type (`journal`, `bill`,
+`purchase_order`, `pay_run`) in the organisation; returns that limit otherwise.
+
+| Rule | |
+|---|---|
+| Limits that apply | the user's own `ApprovalLimit` + the limits of every role they hold in the organisation: membership system role, assigned organisation roles, system practice roles through a serving practice (`resolver.organisation_roles`) |
+| Effective limit | the **lowest** of those — a role limit tightens a user's own limit, never widens it (Phase 0 plan: `min(user limit, role limit)`) |
+| No limit | no approval (`approval.no_limit`) — owners included; limits are explicit |
+| No access | no limit, whatever rows exist (A-01-T05) |
+| Currency | compared in CAD; callers convert foreign amounts first. Floats are refused (`TypeError`), negative / NaN / infinite amounts too (`ValueError`) |
+| Freshness | read from the database on every call — a limit or role changed mid-action applies at commit |
+| Organisation | the active one (`org_context`); pass `organisation=` outside a request; never another organisation than the active one |
+
+The refusal is a `403` API error, `approval.limit_exceeded` ("This bill is for $5,001.00, above
+your approval limit of $5,000.00. Ask Avery Owner, Zoe Admin to approve it.") or
+`approval.no_limit`, with the **next eligible approvers** — people with access whose effective
+limit covers the amount, by name; the refused user and `exclude` (the document's creator, for
+segregation of duties) are left out — named in the message (first 3) and listed in the body:
+
+```json
+{"detail": "…", "code": "approval.limit_exceeded", "doc_type": "bill", "amount": "5001.00",
+ "limit": "5000.00", "approvers": [{"id": "<user public id>", "name": "Avery Owner", "limit": "100000.00"}]}
+```
+
+`effective_limit()`, `can_approve()` and `eligible_approvers()` answer the same questions without
+raising. The service checks amounts only; each module checks its approve permission itself.
+Users now carry a random `public_id` (accounts migration `0002`) used for them in APIs.
+
+Tests: `backend/tests/test_approval_limits.py` (gap-25: a $5,000 limit blocks a $5,001 bill).

@@ -3,7 +3,9 @@
 - ``{"detail": "<message in the request's language>", "code": "not_found"}`` for request-level
   errors (401, 403, 404, 405, 429, catalogue errors);
 - field errors keep DRF's shape ``{"field": ["<message>"]}`` — their keys are the
-  ``ErrorDetail.code`` of each message (see ``errors.error_detail``).
+  ``ErrorDetail.code`` of each message (see ``errors.error_detail``);
+- an exception with an ``extra`` dict adds those fields to the body next to ``detail`` and
+  ``code`` (e.g. ``approvers`` of ``approval.limit_exceeded``, A-03-T07).
 """
 
 from __future__ import annotations
@@ -24,4 +26,7 @@ def exception_handler(exc: Exception, context: dict[str, Any]) -> Response | Non
         codes = exc.get_codes()
         if isinstance(codes, str):
             data["code"] = codes
+        extra = getattr(exc, "extra", None)
+        if isinstance(extra, dict):
+            data.update({k: v for k, v in extra.items() if k not in ("detail", "code")})
     return response

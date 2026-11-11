@@ -29,7 +29,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import Any
 
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.http import HttpRequest, HttpResponse
 
 from numo9.tenancy.access import PRACTICE_WIDE_ROLES, can_access
@@ -129,6 +129,17 @@ def _organisation_roles(user: Any, organisation: Organisation) -> Q:
             )
         )
     return roles
+
+
+def organisation_roles(user: Any, organisation: Organisation) -> QuerySet[Role]:
+    """Every role the user holds in the organisation (membership, assignments, serving practices).
+
+    Empty without access (A-01-T05) or for inactive users. Used by approval limits (A-03-T07),
+    which may be set on these roles. Never cached.
+    """
+    if not _active(user) or not can_access(user, organisation):
+        return Role.objects.none()
+    return Role.objects.filter(_organisation_roles(user, organisation))
 
 
 def organisation_permissions(user: Any, organisation: Organisation) -> frozenset[str]:

@@ -171,3 +171,34 @@ def test_admin_add_user_normalises_email() -> None:
     )
     assert response.status_code == 302, response.content[:2000]
     assert User.objects.get(email="new.user@example.com").check_password(PASSWORD)
+
+
+@pytest.mark.django_db
+def test_every_user_gets_its_own_public_id() -> None:
+    """A-03-T07: users are referred to by a random public id in the API, never the pk."""
+    first = User.objects.create_user("one@maple.ca", name="One")
+    second = User.objects.create_user("two@maple.ca", name="Two")
+    assert first.public_id and second.public_id and first.public_id != second.public_id
+
+
+@pytest.mark.django_db(transaction=True)
+def test_public_id_migration_fills_existing_rows() -> None:
+    from django.db import connection
+    from django.db.migrations.executor import MigrationExecutor
+
+    executor = MigrationExecutor(connection)
+    before = [("accounts", "0001_initial")]
+    after = [("accounts", "0002_user_public_id")]
+    executor.migrate(before)
+    old_apps = executor.loader.project_state(before).apps
+    OldUser = old_apps.get_model("accounts", "User")
+    for n in range(3):
+        OldUser.objects.create(email=f"u{n}@maple.ca", name=f"U{n}", password="!")  # noqa: S106 (unusable)
+    executor = MigrationExecutor(connection)
+    executor.loader.build_graph()
+    executor.migrate(after)
+    ids = list(User.objects.values_list("public_id", flat=True))
+    assert len(ids) == 3 and None not in ids and len(set(ids)) == 3
+    executor = MigrationExecutor(connection)
+    executor.loader.build_graph()
+    executor.migrate(executor.loader.graph.leaf_nodes())

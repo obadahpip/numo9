@@ -13,6 +13,7 @@ sessions, invitations) points at ``accounts.User`` from the start.
 
 from __future__ import annotations
 
+import uuid
 from typing import Any, ClassVar
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -77,6 +78,8 @@ class UserManager(BaseUserManager["User"]):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    #: Random id used in APIs and URLs instead of the sequential primary key (A-03-T07/T09).
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
     email = models.EmailField(_("email address"), max_length=254, unique=True)
     name = models.CharField(_("name"), max_length=150)
     locale = models.CharField(
