@@ -44,7 +44,7 @@ from numo9.i18n.errors import error_detail
 from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Invitation, InvitationKind, Organisation
 
-from . import services
+from . import audit, services
 from .access import request_access
 from .approvals import ApprovalLimitExceeded, assert_can_approve
 from .catalogue import MODULES, catalogue
@@ -227,7 +227,9 @@ class RoleDetailView(APIView):
     )
     def delete(self, request: Request, org: Any, role_id: Any) -> Response:
         organisation = _org()
-        services.delete_role(organisation, services.get_role(organisation, role_id))
+        services.delete_role(
+            organisation, services.get_role(organisation, role_id), actor=_user(request)
+        )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -288,7 +290,9 @@ class MemberRoleDetailView(APIView):
     def delete(self, request: Request, org: Any, user_id: Any, role_id: Any) -> Response:
         organisation = _org()
         person = services.get_person(organisation, user_id)
-        services.unassign_role(organisation, person, services.get_role(organisation, role_id))
+        services.unassign_role(
+            organisation, person, services.get_role(organisation, role_id), actor=_user(request)
+        )
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -456,7 +460,9 @@ class ApprovalLimitDetailView(APIView):
         row = services.get_limit(_org(), public_id)
         payload = ApprovalLimitUpdateSerializer(data=request.data)
         payload.is_valid(raise_exception=True)
-        row = services.update_limit(row, max_amount=payload.validated_data["max_amount"])
+        row = services.update_limit(
+            row, max_amount=payload.validated_data["max_amount"], actor=_user(request)
+        )
         return Response(ApprovalLimitSerializer(row).data)
 
     @requires_permission(LIMITS_MANAGE.key)
@@ -466,7 +472,7 @@ class ApprovalLimitDetailView(APIView):
         responses={204: None},
     )
     def delete(self, request: Request, org: Any, public_id: Any) -> Response:
-        services.delete_limit(services.get_limit(_org(), public_id))
+        services.delete_limit(services.get_limit(_org(), public_id), actor=_user(request))
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -578,5 +584,14 @@ class AccessRequestDetailView(APIView):
         row = AccessRequest.objects.filter(public_id=public_id, deleted_at__isnull=True).first()
         if row is None:
             raise NotFound
-        row.soft_delete()
+        with transaction.atomic():
+            row.soft_delete()
+            audit.record(
+                "access_request.closed",
+                actor=_user(request),
+                organisation=_org(),
+                obj=row,
+                label=f"{row.requester.name} → {row.permission}",
+                before={"permission": row.permission, "requester": str(row.requester.public_id)},
+            )
         return Response(status=status.HTTP_204_NO_CONTENT)
