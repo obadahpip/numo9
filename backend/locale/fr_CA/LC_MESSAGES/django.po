@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 04:54-0500\n"
+"POT-Creation-Date: 2026-11-11 05:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -356,6 +356,96 @@ msgstr "Relancer ou purger les tâches en arrière-plan"
 msgid "Turn feature flags on and off"
 msgstr "Activer et désactiver les fonctionnalités expérimentales"
 
+msgid "Platform owner"
+msgstr "Propriétaire de la plateforme"
+
+msgid "Runs Numo9: products, packages, prices, feature flags and support tools."
+msgstr "Exploite Numo9 : produits, forfaits, prix, fonctionnalités expérimentales et outils de soutien."
+
+msgid "Platform support"
+msgstr "Soutien de la plateforme"
+
+msgid "Helps customers: console, background jobs, audited sign-in as a user."
+msgstr "Aide les clients : console, tâches en arrière-plan, connexion journalisée en tant qu’utilisateur."
+
+msgid "Practice admin"
+msgstr "Administrateur du cabinet"
+
+msgid "Runs the practice: staff, roles, clients, and full access to every client served."
+msgstr "Dirige le cabinet : personnel, rôles, clients, et accès complet à chaque client servi."
+
+msgid "Accountant"
+msgstr "Comptable"
+
+msgid "Keeps the books of the clients they are assigned to."
+msgstr "Tient les livres des clients qui lui sont confiés."
+
+msgid "Reviewer"
+msgstr "Réviseur"
+
+msgid "Reviews and approves work in assigned clients; changes nothing else."
+msgstr "Révise et approuve le travail chez les clients confiés; ne modifie rien d’autre."
+
+msgid "Payroll specialist"
+msgstr "Spécialiste de la paie"
+
+msgid "Runs payroll and HR for assigned clients."
+msgstr "S’occupe de la paie et des RH des clients confiés."
+
+msgid "Read-only staff"
+msgstr "Personnel en lecture seule"
+
+msgid "Sees the practice and assigned clients; changes nothing."
+msgstr "Voit le cabinet et les clients confiés; ne modifie rien."
+
+msgid "Owner"
+msgstr "Propriétaire"
+
+msgid "Owns the organisation: everything, including closing it."
+msgstr "Possède l’organisation : tout, y compris sa fermeture."
+
+msgid "Admin"
+msgstr "Administrateur"
+
+msgid "Manages the organisation and its users; can't close it."
+msgstr "Gère l’organisation et ses utilisateurs; ne peut pas la fermer."
+
+msgid "Accountant delegate"
+msgstr "Délégué comptable"
+
+msgid "An in-house bookkeeper: the books, without user or critical settings."
+msgstr "Un teneur de livres interne : la comptabilité, sans les utilisateurs ni les paramètres critiques."
+
+msgid "Sales"
+msgstr "Ventes"
+
+msgid "Quotes, invoices and customers."
+msgstr "Soumissions, factures et clients."
+
+msgid "Purchasing"
+msgstr "Achats"
+
+msgid "Purchase orders, bills and suppliers."
+msgstr "Bons de commande, factures fournisseurs et fournisseurs."
+
+msgid "Payroll"
+msgstr "Paie"
+
+msgid "Pay runs and employees' pay."
+msgstr "Paies et rémunération des employés."
+
+msgid "HR"
+msgstr "RH"
+
+msgid "Employees, leave and HR records."
+msgstr "Employés, congés et dossiers RH."
+
+msgid "Employee"
+msgstr "Employé"
+
+msgid "Their own pay stubs, leave and expense claims (self-service)."
+msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
+
 msgid "Security"
 msgstr "Sécurité"
 
@@ -379,45 +469,6 @@ msgstr ""
 #, python-format
 msgid "%(value)s is not a valid time zone."
 msgstr "%(value)s n’est pas un fuseau horaire valide."
-
-msgid "Practice admin"
-msgstr ""
-
-msgid "Accountant"
-msgstr ""
-
-msgid "Reviewer"
-msgstr ""
-
-msgid "Payroll specialist"
-msgstr ""
-
-msgid "Read-only staff"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "Admin"
-msgstr ""
-
-msgid "Accountant delegate"
-msgstr ""
-
-msgid "Sales"
-msgstr ""
-
-msgid "Purchasing"
-msgstr ""
-
-msgid "Payroll"
-msgstr ""
-
-msgid "HR"
-msgstr ""
-
-msgid "Employee"
-msgstr ""
 
 msgid "Demo"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 04:54-0500\n"
+"POT-Creation-Date: 2026-11-11 05:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -356,6 +356,96 @@ msgstr ""
 msgid "Turn feature flags on and off"
 msgstr ""
 
+msgid "Platform owner"
+msgstr ""
+
+msgid "Runs Numo9: products, packages, prices, feature flags and support tools."
+msgstr ""
+
+msgid "Platform support"
+msgstr ""
+
+msgid "Helps customers: console, background jobs, audited sign-in as a user."
+msgstr ""
+
+msgid "Practice admin"
+msgstr ""
+
+msgid "Runs the practice: staff, roles, clients, and full access to every client served."
+msgstr ""
+
+msgid "Accountant"
+msgstr ""
+
+msgid "Keeps the books of the clients they are assigned to."
+msgstr ""
+
+msgid "Reviewer"
+msgstr ""
+
+msgid "Reviews and approves work in assigned clients; changes nothing else."
+msgstr ""
+
+msgid "Payroll specialist"
+msgstr ""
+
+msgid "Runs payroll and HR for assigned clients."
+msgstr ""
+
+msgid "Read-only staff"
+msgstr ""
+
+msgid "Sees the practice and assigned clients; changes nothing."
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "Owns the organisation: everything, including closing it."
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Manages the organisation and its users; can't close it."
+msgstr ""
+
+msgid "Accountant delegate"
+msgstr ""
+
+msgid "An in-house bookkeeper: the books, without user or critical settings."
+msgstr ""
+
+msgid "Sales"
+msgstr ""
+
+msgid "Quotes, invoices and customers."
+msgstr ""
+
+msgid "Purchasing"
+msgstr ""
+
+msgid "Purchase orders, bills and suppliers."
+msgstr ""
+
+msgid "Payroll"
+msgstr ""
+
+msgid "Pay runs and employees' pay."
+msgstr ""
+
+msgid "HR"
+msgstr ""
+
+msgid "Employees, leave and HR records."
+msgstr ""
+
+msgid "Employee"
+msgstr ""
+
+msgid "Their own pay stubs, leave and expense claims (self-service)."
+msgstr ""
+
 msgid "Security"
 msgstr ""
 
@@ -378,45 +468,6 @@ msgstr ""
 
 #, python-format
 msgid "%(value)s is not a valid time zone."
-msgstr ""
-
-msgid "Practice admin"
-msgstr ""
-
-msgid "Accountant"
-msgstr ""
-
-msgid "Reviewer"
-msgstr ""
-
-msgid "Payroll specialist"
-msgstr ""
-
-msgid "Read-only staff"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "Admin"
-msgstr ""
-
-msgid "Accountant delegate"
-msgstr ""
-
-msgid "Sales"
-msgstr ""
-
-msgid "Purchasing"
-msgstr ""
-
-msgid "Payroll"
-msgstr ""
-
-msgid "HR"
-msgstr ""
-
-msgid "Employee"
 msgstr ""
 
 msgid "Demo"

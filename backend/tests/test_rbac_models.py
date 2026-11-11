@@ -90,9 +90,9 @@ def test_custom_roles_have_no_key_and_belong_to_their_scope(
 
 
 def test_system_keys_unique_per_scope() -> None:
-    system(RoleScope.ORGANISATION, "admin")
-    system(RoleScope.PRACTICE, "admin")  # same key, other scope: allowed
-    integrity(lambda: system(RoleScope.ORGANISATION, "admin"))
+    system(RoleScope.ORGANISATION, "auditor_x")
+    system(RoleScope.PRACTICE, "auditor_x")  # same key, other scope: allowed
+    integrity(lambda: system(RoleScope.ORGANISATION, "auditor_x"))
 
 
 def test_custom_names_unique_per_tenant_ignoring_case(

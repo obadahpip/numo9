@@ -52,3 +52,41 @@ system role with that key; it is not copied into `RoleAssignment`. `Role`, `Role
 `ApprovalLimit` is an organisation record.
 
 Tests: `backend/tests/test_rbac_models.py`.
+
+## System roles (A-03-T03)
+
+15 system roles, defined in `numo9/rbac/system_roles.py` and seeded by migration
+`rbac.0002_seed_system_roles`. Their keys are the membership roles of A-01, so
+`OrganisationMember.role = "sales"` means the system role *Sales*. Names are stored in English
+and shown translated by key.
+
+Permission sets are **rules over the catalogue**, not fixed lists: when a later app declares
+permissions (contacts, invoices, pay runs…) each system role receives the ones its rule selects.
+The sync runs after every `migrate` (`post_migrate`) and from `manage.py sync_system_roles`; it
+keeps each system role's set exactly equal to its rule (system roles are not editable — create a
+custom role for anything else).
+
+| Scope | Role (key) | Default permissions |
+|---|---|---|
+| platform | Platform owner (`platform_owner`) | every platform permission |
+| platform | Platform support (`platform_support`) | console, jobs (view), audited sign-in as a user |
+| practice | Practice admin (`practice_admin`) | every practice permission; every organisation permission except owner-only |
+| practice | Accountant (`accountant`) | practice: view, staff list, create clients; organisations: everything except critical, users read-only |
+| practice | Reviewer (`reviewer`) | practice: view, staff list; organisations: read-only plus approve / review actions |
+| practice | Payroll specialist (`payroll_specialist`) | practice: view; organisations: payroll and HR (not critical), read-only reports / documents / contacts |
+| practice | Read-only staff (`read_only`) | read-only practice and organisation permissions |
+| organisation | Owner (`owner`) | every organisation permission |
+| organisation | Admin (`admin`) | every organisation permission except owner-only (`organisation.close`) |
+| organisation | Accountant delegate (`accountant_delegate`) | everything except critical, users read-only |
+| organisation | Sales (`sales`) | sales and contacts (not critical); read-only reports and documents |
+| organisation | Purchasing (`purchasing`) | purchases and contacts (not critical); read-only inventory, reports, documents |
+| organisation | Payroll (`payroll`) | payroll (not critical); read-only reports and documents |
+| organisation | HR (`hr`) | HR (not critical); read-only documents |
+| organisation | Employee (`employee`) | the organisation's details (self-service comes with Phase 3) |
+
+Every practice and organisation role includes `organisation.profile.view`. "Critical" and
+"read-only" come from the catalogue (`risk`, actions `view`/`export`). Today the functional roles
+(Sales … Employee) hold only `organisation.profile.view`: their modules declare permissions as
+they are built, and the sync grants them.
+
+Tests: `backend/tests/test_system_roles.py`.
