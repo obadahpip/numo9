@@ -32,7 +32,10 @@ Checks by the key's scope:
 - **platform** — ``has_platform_perm``.
 
 ``HEAD`` follows ``GET``; ``OPTIONS`` follows ``GET`` or else needs a signed-in user.
-An undeclared method is refused (``403``) — the system check makes that a start-up error.
+An undeclared method is refused (``403``) — the system check makes that a start-up error. A
+method the view does not implement at all gets DRF's ``405`` (found by the tenant sweep with the
+first organisation-scoped endpoints, A-03-T09: refusing it with ``403`` before the ``404`` of a
+foreign organisation would tell the two apart).
 """
 
 from __future__ import annotations
@@ -103,6 +106,8 @@ def _action_text(key: str) -> str:
 class RequiresPermission(BasePermission):
     def has_permission(self, request: Request, view: APIView) -> bool:
         method = (request.method or "GET").upper()
+        if method not in view.allowed_methods:
+            return True  # DRF answers 405 — the view has no handler, so nothing to protect
         key = declared_permission(type(view), method)
         if key is None and method == "OPTIONS":
             key = declared_permission(type(view), "GET") or AUTHENTICATED

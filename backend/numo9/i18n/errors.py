@@ -58,6 +58,9 @@ def error_detail(error: ErrorMessage, **params: Any) -> ErrorDetail:
 
 
 class CatalogueError(APIException):
+    #: Extra fields for the response body next to ``detail`` and ``code`` (exception handler).
+    extra: dict[str, Any] | None = None
+
     def __init__(self, error: ErrorMessage, **params: Any) -> None:
         self.status_code = error.status
         super().__init__(detail=error.text(**params), code=error.code)
@@ -193,4 +196,96 @@ SELF_APPROVAL = define(
     "approval.self_approval",
     _("You created this %(record)s, so someone else has to approve it."),
     status.HTTP_403_FORBIDDEN,
+)
+
+
+# ---- roles, assignments and limits API (A-03-T09) ------------------------------------------
+ROLE_SYSTEM = define(
+    "roles.system_role",
+    _(
+        "%(role)s is a system role, so it can't be changed or deleted. Copy it into a custom "
+        "role and change that instead."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+ROLE_IN_USE = define(
+    "roles.in_use",
+    _(
+        "%(role)s is still given to people here (%(count)s). Take it away from them first, then "
+        "delete it."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+ROLE_NAME_TAKEN = define(
+    "roles.name_taken",
+    _("There's already a role called %(name)s here. Choose another name."),
+    status.HTTP_409_CONFLICT,
+)
+GRANT_EXCEEDS_OWN = define(
+    "roles.grant_exceeds_own",
+    _(
+        "You can only give permissions you have yourself. You don't have: %(permissions)s. Ask "
+        "an owner to do this."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
+UNKNOWN_PERMISSION = define(
+    "roles.unknown_permission", _("There's no permission called %(key)s. Verify the key.")
+)
+PERMISSION_NOT_GRANTABLE = define(
+    "roles.permission_scope",
+    _("%(key)s is a %(scope)s permission, so an organisation role can't give it."),
+)
+ROLE_NOT_FOUND = define(
+    "roles.not_found",
+    _("This role doesn't exist in this organisation. Choose one from its list of roles."),
+    status.HTTP_404_NOT_FOUND,
+)
+PERSON_NOT_FOUND = define(
+    "roles.person_not_found",
+    _("This person doesn't work in this organisation. Choose someone from its list of users."),
+    status.HTTP_404_NOT_FOUND,
+)
+UNKNOWN_ROLE = define(
+    "roles.unknown_role",
+    _("This role doesn't exist here. Choose one of this organisation's roles."),
+)
+ROLE_NOT_ASSIGNABLE = define(
+    "roles.not_assignable",
+    _(
+        "%(role)s is a practice role: practices give it to their own staff. Choose an "
+        "organisation role."
+    ),
+)
+NOT_A_MEMBER = define(
+    "roles.not_a_member",
+    _(
+        "%(name)s works here through their practice, so they have no main role in this "
+        "organisation. Give them a custom role instead."
+    ),
+)
+LAST_OWNER = define(
+    "roles.last_owner",
+    _("%(name)s is the only owner. Make someone else an owner first."),
+    status.HTTP_409_CONFLICT,
+)
+MAIN_ROLE = define(
+    "roles.main_role",
+    _(
+        "Every member has one main role, so it can't be removed. Choose another main role for "
+        "them instead."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+UNKNOWN_PERSON = define(
+    "roles.unknown_person",
+    _("This person doesn't work in this organisation. Choose someone from its users."),
+)
+LIMIT_DUPLICATE = define(
+    "limits.duplicate",
+    _("%(who)s already has an approval limit for this document type. Change that one instead."),
+    status.HTTP_409_CONFLICT,
+)
+LIMIT_TARGET = define(
+    "limits.target", _("Choose either a person or a role for this limit, not both.")
 )

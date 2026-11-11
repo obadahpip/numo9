@@ -34,6 +34,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 from django.utils.functional import Promise
+from django.utils.translation import gettext_lazy as _
 
 KEY = re.compile(r"^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*){1,3}$")
 
@@ -57,6 +58,35 @@ MODULES: tuple[str, ...] = (
     "practice",
     "platform",
 )
+
+
+#: People-facing names of the modules (role editor groups, A-03-T09/T12).
+MODULE_LABELS: dict[str, Promise] = {
+    "home": _("Home"),
+    "sales": _("Sales"),
+    "purchases": _("Purchases"),
+    "banking": _("Banking"),
+    "accounting": _("Accounting"),
+    "tax": _("Tax"),
+    "payroll": _("Payroll"),
+    "hr": _("HR"),
+    "inventory": _("Inventory"),
+    "reports": _("Reports"),
+    "contacts": _("Contacts"),
+    "documents": _("Documents"),
+    "settings": _("Settings"),
+    "users": _("Users and roles"),
+    "practice": _("Practice"),
+    "platform": _("Platform"),
+}
+
+#: People-facing names of the risk levels (risk badges).
+RISK_LABELS: dict[str, Promise] = {
+    "low": _("Low risk"),
+    "medium": _("Medium risk"),
+    "high": _("High risk"),
+    "critical": _("Critical"),
+}
 
 
 class Risk(StrEnum):

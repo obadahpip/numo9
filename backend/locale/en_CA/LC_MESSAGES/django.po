@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:13-0500\n"
+"POT-Creation-Date: 2026-11-11 12:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -233,6 +233,64 @@ msgstr ""
 msgid "You created this %(record)s, so someone else has to approve it."
 msgstr ""
 
+#, python-format
+msgid "%(role)s is a system role, so it can't be changed or deleted. Copy it into a custom role and change that instead."
+msgstr ""
+
+#, python-format
+msgid "%(role)s is still given to people here (%(count)s). Take it away from them first, then delete it."
+msgstr ""
+
+#, python-format
+msgid "There's already a role called %(name)s here. Choose another name."
+msgstr ""
+
+#, python-format
+msgid "You can only give permissions you have yourself. You don't have: %(permissions)s. Ask an owner to do this."
+msgstr ""
+
+#, python-format
+msgid "There's no permission called %(key)s. Verify the key."
+msgstr ""
+
+#, python-format
+msgid "%(key)s is a %(scope)s permission, so an organisation role can't give it."
+msgstr ""
+
+msgid "This role doesn't exist in this organisation. Choose one from its list of roles."
+msgstr ""
+
+msgid "This person doesn't work in this organisation. Choose someone from its list of users."
+msgstr ""
+
+msgid "This role doesn't exist here. Choose one of this organisation's roles."
+msgstr ""
+
+#, python-format
+msgid "%(role)s is a practice role: practices give it to their own staff. Choose an organisation role."
+msgstr ""
+
+#, python-format
+msgid "%(name)s works here through their practice, so they have no main role in this organisation. Give them a custom role instead."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is the only owner. Make someone else an owner first."
+msgstr ""
+
+msgid "Every member has one main role, so it can't be removed. Choose another main role for them instead."
+msgstr ""
+
+msgid "This person doesn't work in this organisation. Choose someone from its users."
+msgstr ""
+
+#, python-format
+msgid "%(who)s already has an approval limit for this document type. Change that one instead."
+msgstr ""
+
+msgid "Choose either a person or a role for this limit, not both."
+msgstr ""
+
 msgid "manual journals"
 msgstr ""
 
@@ -245,10 +303,61 @@ msgstr ""
 msgid "pay runs"
 msgstr ""
 
-msgid "Platform"
+msgid "Home"
+msgstr ""
+
+msgid "Sales"
+msgstr ""
+
+msgid "Purchases"
+msgstr ""
+
+msgid "Banking"
+msgstr ""
+
+msgid "Accounting"
+msgstr ""
+
+msgid "Tax"
+msgstr ""
+
+msgid "Payroll"
+msgstr ""
+
+msgid "HR"
+msgstr ""
+
+msgid "Inventory"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Contacts"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Users and roles"
 msgstr ""
 
 msgid "Practice"
+msgstr ""
+
+msgid "Platform"
+msgstr ""
+
+msgid "Low risk"
+msgstr ""
+
+msgid "Medium risk"
+msgstr ""
+
+msgid "High risk"
+msgstr ""
+
+msgid "Critical"
 msgstr ""
 
 msgid "Organisation"
@@ -451,9 +560,6 @@ msgstr ""
 msgid "An in-house bookkeeper: the books, without user or critical settings."
 msgstr ""
 
-msgid "Sales"
-msgstr ""
-
 msgid "Quotes, invoices and customers."
 msgstr ""
 
@@ -463,13 +569,7 @@ msgstr ""
 msgid "Purchase orders, bills and suppliers."
 msgstr ""
 
-msgid "Payroll"
-msgstr ""
-
 msgid "Pay runs and employees' pay."
-msgstr ""
-
-msgid "HR"
 msgstr ""
 
 msgid "Employees, leave and HR records."
@@ -527,9 +627,6 @@ msgid "Full service"
 msgstr ""
 
 msgid "Bookkeeping"
-msgstr ""
-
-msgid "Tax"
 msgstr ""
 
 msgid "set-up pending"
