@@ -6,9 +6,10 @@ from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
+from numo9.jobs.queues import QUEUES
 from numo9.security.logging import configure_structlog, logging_config
 
-from .env import env_bool, env_int, env_str
+from .env import env_bool, env_int, env_str, redis_database
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -25,6 +26,8 @@ INSTALLED_APPS = [
     "numo9.documents",
     # Security baseline: CSRF token endpoint, encrypted fields, log scrubbing (S-03).
     "numo9.security",
+    # Background jobs: Celery queues and the worker check task (A-08).
+    "numo9.jobs",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -251,6 +254,48 @@ EMAIL_HOST_USER = env_str("DJANGO_EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = env_str("DJANGO_EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = env_bool("DJANGO_EMAIL_USE_TLS", False)
 DEFAULT_FROM_EMAIL = env_str("DJANGO_DEFAULT_FROM_EMAIL", "Numo9 <no-reply@numo9.ca>")
+
+# ---- Background jobs: Celery (A-08-T01, numo9/celery.py, docs/architecture/jobs.md) -----------
+# Redis is the broker and the result backend: by default the server of REDIS_URL (the shared
+# cache uses database 0), broker in database 2 and results in database 3.
+CELERY_BROKER_URL = env_str(
+    "CELERY_BROKER_URL", redis_database(env_str("REDIS_URL", "redis://localhost:6379/0"), 2)
+)
+CELERY_RESULT_BACKEND = env_str(
+    "CELERY_RESULT_BACKEND", redis_database(env_str("REDIS_URL", "redis://localhost:6379/0"), 3)
+)
+CELERY_RESULT_EXPIRES = timedelta(days=1)  # job outcomes users see are kept in JobRun (A-08-T02)
+CELERY_RESULT_EXTENDED = True  # task name, args and queue stored with the result (job dashboard)
+# Only JSON crosses the broker: no pickle, so a message can never run code in a worker.
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "UTC"
+CELERY_ENABLE_UTC = True
+# At-least-once delivery: a task is acknowledged after it finishes, so a worker that dies
+# mid-task leaves the message to be delivered again (idempotency keys, A-08-T03, make the second
+# run harmless). One message reserved per worker process: no long job sits behind another.
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_TRACK_STARTED = True
+# Time limits: the soft limit raises SoftTimeLimitExceeded inside the task (clean up, record
+# the failure); the hard limit kills the process. Override per task for long reports.
+CELERY_TASK_SOFT_TIME_LIMIT = env_int("CELERY_TASK_SOFT_TIME_LIMIT", 25 * 60)
+CELERY_TASK_TIME_LIMIT = env_int("CELERY_TASK_TIME_LIMIT", 30 * 60)
+# Redis redelivers an unacknowledged message after the visibility timeout: it must be longer
+# than the hard time limit, or a long task would run twice while still running.
+CELERY_BROKER_TRANSPORT_OPTIONS = {"visibility_timeout": 2 * 60 * 60}
+CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {"visibility_timeout": 2 * 60 * 60}
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+# Queues: high / default / io / reports (numo9/jobs/queues.py); unnamed tasks go to default.
+CELERY_TASK_QUEUES = QUEUES
+CELERY_TASK_DEFAULT_QUEUE = "default"
+CELERY_TASK_DEFAULT_EXCHANGE = "numo9"
+CELERY_TASK_DEFAULT_ROUTING_KEY = "default"
+CELERY_TASK_CREATE_MISSING_QUEUES = False  # a typo in a queue name fails instead of piling up
+CELERY_WORKER_SEND_TASK_EVENTS = True  # job dashboard (A-08-T08)
+CELERY_TASK_SEND_SENT_EVENT = True
 
 LANGUAGE_CODE = "en-ca"
 LANGUAGES = [("en-ca", _("English (Canada)")), ("fr-ca", _("French (Canada)"))]

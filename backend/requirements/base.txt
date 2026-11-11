@@ -22,3 +22,5 @@ redis==8.1.0
 # API even though passkeys are not enabled
 qrcode==8.2
 fido2==2.2.1
+# Background jobs: Celery with Redis broker and results (A-08-T01)
+celery==5.6.3

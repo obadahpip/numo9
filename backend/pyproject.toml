@@ -45,6 +45,11 @@ module = ["allauth", "allauth.*", "qrcode", "qrcode.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
+# Celery ships no type information (A-08-T01).
+module = ["celery", "celery.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # WeasyPrint ships no type information (A-10-T16).
 module = ["weasyprint", "weasyprint.*"]
 ignore_missing_imports = true
