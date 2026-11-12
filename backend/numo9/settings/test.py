@@ -19,7 +19,7 @@ TENANCY_BUSINESS_APP_PREFIXES = ("numo9.", "tests.")
 RBAC_VIEW_MODULE_PREFIXES = ("numo9.", "tests.")
 # Third-party migrations (django-allauth, A-02) are reviewed upstream, not by our linter.
 MIGRATION_LINTER_OPTIONS = {
-    "exclude_apps": ["account", "headless", "mfa", "usersessions"],
+    "exclude_apps": ["account", "headless", "mfa", "usersessions", "django_celery_beat"],
     # Reviewed (A-03-T07): User.public_id is added nullable, filled row by row, then made
     # required + unique in one migration. The linter flags the NOT NULL / UNIQUE steps; they are
     # safe here — every existing row is filled first, and in Phase 0 there is no production

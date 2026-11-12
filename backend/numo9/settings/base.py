@@ -4,6 +4,7 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
+from celery.schedules import crontab
 from django.utils.translation import gettext_lazy as _
 
 from numo9.jobs.queues import QUEUES
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    # Schedules in the database, run by numo9.jobs.beat.LockedDatabaseScheduler (A-08-T05).
+    "django_celery_beat",
     # Sign-up, email verification, login, password reset — JSON API only (A-02).
     "allauth",
     "allauth.account",
@@ -313,6 +316,19 @@ CELERY_TASK_DEFAULT_ROUTING_KEY = "default"
 CELERY_TASK_CREATE_MISSING_QUEUES = False  # a typo in a queue name fails instead of piling up
 CELERY_WORKER_SEND_TASK_EVENTS = True  # job dashboard (A-08-T08)
 CELERY_TASK_SEND_SENT_EVENT = True
+# Beat (A-08-T05, numo9/jobs/beat.py): schedules in the database (django-celery-beat), one
+# execution per schedule tick across every running beat (Redis lock numo9:beat:<name>:<tick>).
+CELERY_BEAT_SCHEDULER = "numo9.jobs.beat:LockedDatabaseScheduler"
+JOBS_BEAT_LOCK_URL = env_str("JOBS_BEAT_LOCK_URL", "")  # empty: the broker's Redis
+DJANGO_CELERY_BEAT_TZ_AWARE = True
+# Code-defined schedules, written to the database when beat starts.
+CELERY_BEAT_SCHEDULE = {
+    # Job runs are kept 30 days after they finish (A-08 business rule).
+    "numo9.jobs.purge_job_runs": {
+        "task": "numo9.jobs.purge_job_runs",
+        "schedule": crontab(minute=17, hour=7),  # 07:17 UTC = 02:17 / 03:17 Toronto
+    },
+}
 
 LANGUAGE_CODE = "en-ca"
 LANGUAGES = [("en-ca", _("English (Canada)")), ("fr-ca", _("French (Canada)"))]
