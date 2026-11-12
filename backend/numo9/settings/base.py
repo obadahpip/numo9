@@ -321,6 +321,11 @@ CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_BEAT_SCHEDULER = "numo9.jobs.beat:LockedDatabaseScheduler"
 JOBS_BEAT_LOCK_URL = env_str("JOBS_BEAT_LOCK_URL", "")  # empty: the broker's Redis
 DJANGO_CELERY_BEAT_TZ_AWARE = True
+# Job tray event stream (A-08-T06, numo9/jobs/api.py): checks every second, ends after 25 s
+# (EventSource reconnects after JOBS_SSE_RETRY_MS) so a stream never holds a server worker long.
+JOBS_SSE_POLL_SECONDS = 1.0
+JOBS_SSE_MAX_SECONDS = 25.0
+JOBS_SSE_RETRY_MS = 2000
 # Code-defined schedules, written to the database when beat starts.
 CELERY_BEAT_SCHEDULE = {
     # Job runs are kept 30 days after they finish (A-08 business rule).

@@ -174,7 +174,8 @@ def path_for(declaration: Declaration, world: World) -> str:
 
 
 def _code(response: Any) -> str | None:
-    if not response.content or not response.get("Content-Type", "").startswith("application/json"):
+    # Content type first: a streaming answer (the job event stream, A-08-T06) has no .content.
+    if not response.get("Content-Type", "").startswith("application/json") or not response.content:
         return None
     body = response.json()
     return body.get("code") if isinstance(body, dict) else None
