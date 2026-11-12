@@ -328,3 +328,36 @@ written after the export started — including the export's own event — are no
 
 Exports run in the request. Very large ones move to a background job with a result link (A-08)
 when real volumes call for it.
+
+## The audit log viewer (A-04-T09)
+
+Settings → Audit log, `/o/<org>/settings/audit-log` (`frontend/src/audit/AuditLogScreen.tsx`):
+
+- **Dates** — presets Today, Last 7 / 30 / 90 days, This month, This quarter, This fiscal year,
+  Custom dates (From / To date pickers). **Last 90 days is the default** and is the API's own
+  default, so the first request sends no dates. Ranges are calendar dates in the organisation's
+  time zone and end today (`src/audit/presets.ts`; the fiscal year end defaults to 31 December
+  until organisation settings (A-05) provide it).
+- **Filters** — User (Everyone, System, or a person who appears in the log), Record types
+  (several, ticked in a list), Action (created / edited / deleted / restored), Search (record,
+  person or action). Filters apply on **Show**; **Reset filters** returns to the default.
+  URL parameters (`?batch=`, `?object_type=&object_id=`, `?from=`…) open the screen filtered — the
+  record history drawer and the bulk-operation summary link here.
+- **List** — the `@numo9/ui` DataGrid (column chooser, density, search within the loaded rows):
+  Date and time (the person's 12/24-hour preference, A-04-T12), User, Action, Record type,
+  Record, Changes (how many fields and which). **Show older events** loads the next cursor page;
+  the line under the grid says how many are shown and when every event of the range is.
+- **Event drawer** — a row opens the event: when, who (with the platform staff member for
+  impersonation, the background job and who started it for system changes), record type, IP,
+  device, request id, event id and the **DiffViewer**; a bulk operation's summary offers to show
+  its changes (`?batch=`).
+- **DiffViewer** (`src/audit/DiffViewer.tsx`) — each field with *Before* and *After* in words, a −
+  / + mark and red / green backgrounds: never colour alone. Masked fields read *Changed — the
+  value is hidden for privacy*; empty values *(empty)*; cut values say their length.
+- **Export** menu — CSV, Excel (XLSX), PDF links to `/api/v1/o/<org>/audit/export/<format>` with
+  the screen's applied filters (`filterParams()` builds both query strings), so a file holds the
+  rows listed.
+- **Refused** — without `audit.log.view` the screen shows the "Why can't I?" panel (A-03-T14).
+
+Tests: `frontend/e2e/audit-log.spec.ts` (filters reach the API and the export links, custom
+dates, the drawer and DiffViewer, pages, refusal, 360 px, axe), `src/audit/presets.test.ts`.
