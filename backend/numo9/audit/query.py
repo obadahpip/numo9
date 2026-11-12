@@ -31,7 +31,7 @@ import json
 import uuid
 import zoneinfo
 from collections.abc import Iterable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 from django.db.models import Q, QuerySet
@@ -108,7 +108,8 @@ class AuditQuery:
     text: str = ""
     #: Platform log only: one organisation (public id), or None for every event.
     organisation_id: uuid.UUID | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    #: Exports: events written up to this moment only (not the export's own event).
+    until: dt.datetime | None = None
 
     # ---- building ----------------------------------------------------------------------------
 
@@ -167,6 +168,8 @@ class AuditQuery:
     def apply(self, events: QuerySet[AuditEvent]) -> QuerySet[AuditEvent]:
         """The filtered, newest-first events (``events``: an organisation's, or every one)."""
         events = events.filter(created_at__gte=self.starts_at, created_at__lt=self.ends_before)
+        if self.until is not None:
+            events = events.filter(created_at__lte=self.until)
         if self.organisation_id is not None:
             events = events.filter(organisation__public_id=self.organisation_id)
         if self.users:

@@ -31,6 +31,7 @@ VERB_LABELS: dict[str, Promise] = {
 
 ACTION_LABELS: dict[str, Promise] = {
     SUMMARY_ACTION: _("Bulk operation"),
+    "audit.log.exported": _("Audit log exported"),
     "auth.login.succeeded": _("Signed in"),
     "auth.login.failed": _("Sign-in failed"),
     "auth.login.locked": _("Sign-in refused: account locked"),
@@ -60,6 +61,7 @@ ACTION_LABELS: dict[str, Promise] = {
 
 TYPE_LABELS: dict[str, Promise] = {
     SUMMARY_TYPE: _("Bulk operation"),
+    "audit.Log": _("Audit log"),
     "accounts.User": _("User"),
 }
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 05:32-0500\n"
+"POT-Creation-Date: 2026-11-12 05:42-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,8 +111,47 @@ msgstr ""
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr ""
 
+msgid "Date and time"
+msgstr "Date et heure"
+
 msgid "User"
 msgstr "Utilisateur"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Record type"
+msgstr "Type de fiche"
+
+msgid "Record"
+msgstr "Fiche"
+
+msgid "Changes"
+msgstr "Modifications"
+
+msgid "IP address"
+msgstr "Adresse IP"
+
+msgid "Request ID"
+msgstr "ID de requête"
+
+msgid "Event ID"
+msgstr "ID de l’événement"
+
+msgid "(empty)"
+msgstr "(vide)"
+
+msgid "Hidden"
+msgstr "Masqué"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Audit log"
+msgstr "Journal d’audit"
 
 msgid "System"
 msgstr "Système"
@@ -159,9 +198,6 @@ msgstr "modifications"
 msgid "details"
 msgstr "détails"
 
-msgid "IP address"
-msgstr "adresse IP"
-
 msgid "device"
 msgstr "appareil"
 
@@ -206,6 +242,9 @@ msgstr "Restauré"
 
 msgid "Bulk operation"
 msgstr "Opération groupée"
+
+msgid "Audit log exported"
+msgstr "Journal d’audit exporté"
 
 msgid "Signed in"
 msgstr "Connexion"
@@ -281,6 +320,17 @@ msgstr "Accès demandé"
 
 msgid "Access request closed"
 msgstr "Demande d’accès fermée"
+
+#, python-format
+msgid "%(start)s to %(end)s · times in %(zone)s"
+msgstr "Du %(start)s au %(end)s · heures en %(zone)s"
+
+#, python-format
+msgid "%(count)s events · exported %(when)s"
+msgstr "%(count)s événements · exporté le %(when)s"
+
+msgid "No events match these filters."
+msgstr "Aucun événement ne correspond à ces filtres."
 
 msgid "Documents"
 msgstr "Documents"
@@ -506,6 +556,13 @@ msgstr "Ce filtre n’est pas valide : %(name)s. Effacez-le et choisissez de nou
 #, python-format
 msgid "Show between 1 and %(max)s events per page."
 msgstr "Affichez entre 1 et %(max)s événements par page."
+
+msgid "Choose an export format: CSV, XLSX or PDF."
+msgstr "Choisissez un format d’exportation : CSV, XLSX ou PDF."
+
+#, python-format
+msgid "This export has more than %(limit)s events. Narrow the dates or filters, or choose CSV, which has no limit."
+msgstr "Cette exportation compte plus de %(limit)s événements. Resserrez les dates ou les filtres, ou choisissez CSV, qui n’a pas de limite."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
