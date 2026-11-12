@@ -146,10 +146,19 @@ def clean_changes(changes: Mapping[str, Any] | None) -> dict[str, list[Any]]:
     return cleaned
 
 
-def actor_label(user: Any) -> str:
+def label_of_user(user: Any) -> str:
     name = getattr(user, "name", "") or ""
     email = getattr(user, "email", "") or ""
     return (f"{name} ({email})" if name and email else name or email)[:300]
+
+
+def request_ip(request: Any) -> str | None:
+    """The client's address (``REMOTE_ADDR``; proxies are handled by A-04-T04's middleware)."""
+    return (getattr(request, "META", {}) or {}).get("REMOTE_ADDR") or None
+
+
+def request_user_agent(request: Any) -> str:
+    return str((getattr(request, "META", {}) or {}).get("HTTP_USER_AGENT", ""))[:512]
 
 
 def record(
@@ -164,6 +173,9 @@ def record(
     changes: Mapping[str, Any] | None = None,
     meta: Mapping[str, Any] | None = None,
     actor: Any = None,
+    actor_label: str = "",
+    ip: str | None = None,
+    user_agent: str = "",
 ) -> AuditEvent:
     """Write one audit event in the caller's transaction and return it."""
     if not action or len(action) > 100:
@@ -189,12 +201,14 @@ def record(
         practice=practice,
         actor_kind=ActorKind.USER if user is not None else ActorKind.SYSTEM,
         actor_user=user,
-        actor_label=actor_label(user) if user is not None else "System",
+        actor_label=(actor_label or (label_of_user(user) if user is not None else "System"))[:300],
         action=action,
         object_type=object_type[:100],
         object_id=str(object_id)[:64],
         object_label=str(object_label)[:300],
         changes=clean_changes(changes),
         meta=plain(dict(meta or {})),
+        ip=ip or None,
+        user_agent=(user_agent or "")[:512],
     )
     return event

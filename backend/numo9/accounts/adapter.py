@@ -62,6 +62,9 @@ class AccountAdapter(DefaultAccountAdapter):  # type: ignore[misc]  # allauth is
     def pre_authenticate(self, request: HttpRequest, **credentials: Any) -> None:
         email = login_email(credentials)
         if bruteforce.locked_for(email):
+            from numo9.audit.auth_events import login_locked  # A-02-T14
+
+            login_locked(request, email)
             raise self.validation_error("too_many_login_attempts")
         if bruteforce.captcha_required(email) and not bruteforce.captcha_ok(
             _captcha_token(request), request.META.get("REMOTE_ADDR")
