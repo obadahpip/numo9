@@ -349,3 +349,25 @@ JOB_CONSOLE_ORGANISATION = define(
     "job.console_organisation",
     _("Filter by an organisation's public ID, e.g. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."),
 )
+
+# ---- audit log (A-04) --------------------------------------------------------------------------
+AUDIT_BAD_DATE = define(
+    "audit.bad_date",
+    _("Enter dates as YYYY-MM-DD, e.g. 2026-10-26."),
+)
+AUDIT_DATE_ORDER = define(
+    "audit.date_order",
+    _("The start date must be on or before the end date."),
+)
+AUDIT_BAD_CURSOR = define(
+    "audit.bad_cursor",
+    _("This page link is no longer valid. Go back to the first page of the audit log."),
+)
+AUDIT_BAD_FILTER = define(
+    "audit.bad_filter",
+    _("This filter isn't valid: %(name)s. Clear it and choose again."),
+)
+AUDIT_BAD_LIMIT = define(
+    "audit.bad_limit",
+    _("Show between 1 and %(max)s events per page."),
+)

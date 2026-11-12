@@ -237,3 +237,65 @@ recode are its first users). Inside one transaction a failing block rolls back i
 summary together; a block whose rows committed one by one (a step-committing job) still writes the
 summary, with `status: "failed"`. Nested blocks join the outer batch. The viewer shows a batch as
 its summary line with the rows behind it (`?batch=<id>`, A-04-T07).
+
+## API (A-04-T07)
+
+Organisation log — `audit.log.view` (Owner, Admin, Accountant delegate, practice Admin,
+Accountant, Reviewer, Read-only staff; not Sales, Purchasing, Payroll, HR or Employee):
+
+| Route (`/api/v1/o/<org>/audit/…`) | What |
+|---|---|
+| `GET events` | The global viewer's list, newest first, cursor pages |
+| `GET events/<id>` | One event with full values (long text whole) and its hashes |
+| `GET records/<type>/<id>` | One record's history over **every date** (the record history drawer); 404 when the record has no history in the organisation |
+| `GET filters` | Filter choices: the people and record types that appear in the log (loose index scans — fast on millions of rows), and the verbs |
+
+Platform log — `GET /api/v1/platform/audit/events`, `platform.audit.view` (Platform owner,
+Platform support): every event, including sign-ins, 2FA and practice events, with the same
+filters plus `organisation=<public id>`.
+
+### The query object
+
+`numo9.audit.query.AuditQuery.from_params(params, organisation)` reads the filters; `apply()`
+returns the newest-first queryset that the list, the exports (A-04-T08) and every other consumer
+page through — one query object, so an export holds exactly the screen's rows.
+
+| Parameter | Meaning |
+|---|---|
+| `from`, `to` | Dates `YYYY-MM-DD` in the organisation's time zone, both included. **Default: the last 90 days** (today and the 89 days before). One bound alone keeps the other's default |
+| `user` | User public ids, or `system` (several: repeat or comma-separate) |
+| `type` | Record types (model labels) |
+| `action` | Full actions (`role.created`) or verbs (`created`, `updated`, `deleted`, `restored`) |
+| `object_type` + `object_id` | One record |
+| `batch` | One bulk operation |
+| `q` | Text in the record's name, the person's name or the action |
+| `cursor`, `limit` | Page token from the previous page's `next`; 1–200 rows (default 50) |
+
+**Cursor pagination** is a keyset on `(created_at, id)` descending (index
+`audit_org_time_idx`): page 1,000 is as fast as page 1 and new events never shift a page. No
+total count is computed (counting millions of rows on every page is what makes logs slow).
+
+### Response
+
+```json
+{
+  "results": [{
+    "id": "…", "at": "2026-11-12T15:00:00-05:00",
+    "action": "testapp.auditedinvoice.updated", "action_label": "Edited", "verb": "updated",
+    "actor": {"kind": "user", "label": "Avery Owner (avery@refined.ca)", "user": {…}, "impersonator": null},
+    "record": {"type": "…", "type_label": "Invoice", "id": "…", "label": "Invoice 101"},
+    "changes": [{"field": "amount", "label": "Amount", "old": "100.00", "new": "120.50", "masked": false}],
+    "meta": {}, "ip": "203.0.113.9", "device": "…", "request_id": "…",
+    "batch_id": null, "is_batch_summary": false
+  }],
+  "next": "<cursor or null>",
+  "range": {"from": "2026-08-15", "to": "2026-11-12", "default": true, "time_zone": "America/Toronto"},
+  "viewer": {"locale": "en-ca", "time_format": "12h", "time_zone": "America/Toronto"}
+}
+```
+
+Labels (`action_label`, `type_label`, field `label`) are translated (`numo9.audit.presenter`):
+named actions have their own words ("Signed in", "Invitation sent", "Role edited"), others the
+verb; record types and fields use the model's verbose names. In the list, text over 200
+characters comes back cut (`{"truncated": true, "text": …, "length": n}`); the event's detail has
+it whole. `viewer` carries the person's display preferences for the screen (A-04-T12).

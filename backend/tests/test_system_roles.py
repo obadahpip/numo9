@@ -95,6 +95,7 @@ def test_platform_roles() -> None:
         "platform.console.view",
         "platform.jobs.view",
         "platform.impersonate",
+        "platform.audit.view",  # A-04-T07
     }
 
 

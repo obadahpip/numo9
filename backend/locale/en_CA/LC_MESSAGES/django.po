@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 05:26-0500\n"
+"POT-Creation-Date: 2026-11-12 05:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,6 +181,105 @@ msgid "audit event"
 msgstr ""
 
 msgid "audit events"
+msgstr ""
+
+msgid "See the audit log and the history of records"
+msgstr ""
+
+msgid "Export the audit log"
+msgstr ""
+
+msgid "See the platform audit log: sign-ins, 2FA and practice events"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Edited"
+msgstr ""
+
+msgid "Deleted"
+msgstr ""
+
+msgid "Restored"
+msgstr ""
+
+msgid "Bulk operation"
+msgstr ""
+
+msgid "Signed in"
+msgstr ""
+
+msgid "Sign-in failed"
+msgstr ""
+
+msgid "Sign-in refused: account locked"
+msgstr ""
+
+msgid "Signed out"
+msgstr ""
+
+msgid "Two-step verification failed"
+msgstr ""
+
+msgid "Two-step verification turned on"
+msgstr ""
+
+msgid "Two-step verification turned off"
+msgstr ""
+
+msgid "Recovery codes created"
+msgstr ""
+
+msgid "Recovery codes replaced"
+msgstr ""
+
+msgid "Recovery codes removed"
+msgstr ""
+
+msgid "Invitation sent"
+msgstr ""
+
+msgid "Invitation sent again"
+msgstr ""
+
+msgid "Invitation cancelled"
+msgstr ""
+
+msgid "Invitation accepted"
+msgstr ""
+
+msgid "Role created"
+msgstr ""
+
+msgid "Role edited"
+msgstr ""
+
+msgid "Role deleted"
+msgstr ""
+
+msgid "Role given"
+msgstr ""
+
+msgid "Role removed"
+msgstr ""
+
+msgid "Main role changed"
+msgstr ""
+
+msgid "Approval limit set"
+msgstr ""
+
+msgid "Approval limit changed"
+msgstr ""
+
+msgid "Approval limit removed"
+msgstr ""
+
+msgid "Access requested"
+msgstr ""
+
+msgid "Access request closed"
 msgstr ""
 
 msgid "Documents"
@@ -389,6 +488,23 @@ msgid "Choose the jobs to purge: tick them in the list, or pick a status (dead o
 msgstr ""
 
 msgid "Filter by an organisation's public ID, e.g. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."
+msgstr ""
+
+msgid "Enter dates as YYYY-MM-DD, e.g. 2026-10-26."
+msgstr ""
+
+msgid "The start date must be on or before the end date."
+msgstr ""
+
+msgid "This page link is no longer valid. Go back to the first page of the audit log."
+msgstr ""
+
+#, python-format
+msgid "This filter isn't valid: %(name)s. Clear it and choose again."
+msgstr ""
+
+#, python-format
+msgid "Show between 1 and %(max)s events per page."
 msgstr ""
 
 msgid "Waiting to start"
@@ -728,7 +844,7 @@ msgstr ""
 msgid "Platform support"
 msgstr ""
 
-msgid "Helps customers: console, background jobs, audited sign-in as a user."
+msgid "Helps customers: console, background jobs, audit log, audited sign-in as a user."
 msgstr ""
 
 msgid "Practice admin"

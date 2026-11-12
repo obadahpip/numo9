@@ -102,8 +102,13 @@ SYSTEM_ROLES: tuple[SystemRole, ...] = (
         PLATFORM,
         "platform_support",
         _("Platform support"),
-        _("Helps customers: console, background jobs, audited sign-in as a user."),
-        _keys("platform.console.view", "platform.jobs.view", "platform.impersonate"),
+        _("Helps customers: console, background jobs, audit log, audited sign-in as a user."),
+        _keys(
+            "platform.console.view",
+            "platform.jobs.view",
+            "platform.impersonate",
+            "platform.audit.view",
+        ),
     ),
     # ---- practice (accountants) ----
     SystemRole(

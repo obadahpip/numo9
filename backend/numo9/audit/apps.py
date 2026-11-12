@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.apps import AppConfig
 
 
@@ -19,3 +21,20 @@ class AuditConfig(AppConfig):
         from . import auth_events
 
         auth_events.connect()
+        # Tenant sweep (A-01-T09): rows of AuditEvent for the audit log endpoints.
+        from numo9.tenancy.sweep import SWEEP_FACTORIES
+
+        SWEEP_FACTORIES["audit.AuditEvent"] = _sweep_event
+
+
+def _sweep_event(organisation: Any) -> Any:
+    from .service import record
+
+    return record(
+        "tests.sweep.updated",
+        organisation=organisation,
+        object_type="tests.Sweep",
+        object_id=str(organisation.public_id),
+        object_label="Sweep record",
+        changes={"amount": ["1.00", "2.00"]},
+    )

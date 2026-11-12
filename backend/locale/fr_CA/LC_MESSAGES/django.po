@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 05:26-0500\n"
+"POT-Creation-Date: 2026-11-12 05:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -182,6 +182,105 @@ msgstr "événement du journal d’audit"
 
 msgid "audit events"
 msgstr "événements du journal d’audit"
+
+msgid "See the audit log and the history of records"
+msgstr "Voir le journal d’audit et l’historique des fiches"
+
+msgid "Export the audit log"
+msgstr "Exporter le journal d’audit"
+
+msgid "See the platform audit log: sign-ins, 2FA and practice events"
+msgstr "Voir le journal d’audit de la plateforme : connexions, 2FA et événements des cabinets"
+
+msgid "Created"
+msgstr "Créé"
+
+msgid "Edited"
+msgstr "Modifié"
+
+msgid "Deleted"
+msgstr "Supprimé"
+
+msgid "Restored"
+msgstr "Restauré"
+
+msgid "Bulk operation"
+msgstr "Opération groupée"
+
+msgid "Signed in"
+msgstr "Connexion"
+
+msgid "Sign-in failed"
+msgstr "Échec de connexion"
+
+msgid "Sign-in refused: account locked"
+msgstr "Connexion refusée : compte verrouillé"
+
+msgid "Signed out"
+msgstr "Déconnexion"
+
+msgid "Two-step verification failed"
+msgstr "Échec de la vérification en deux étapes"
+
+msgid "Two-step verification turned on"
+msgstr "Vérification en deux étapes activée"
+
+msgid "Two-step verification turned off"
+msgstr "Vérification en deux étapes désactivée"
+
+msgid "Recovery codes created"
+msgstr "Codes de récupération créés"
+
+msgid "Recovery codes replaced"
+msgstr "Codes de récupération remplacés"
+
+msgid "Recovery codes removed"
+msgstr "Codes de récupération supprimés"
+
+msgid "Invitation sent"
+msgstr "Invitation envoyée"
+
+msgid "Invitation sent again"
+msgstr "Invitation renvoyée"
+
+msgid "Invitation cancelled"
+msgstr "Invitation annulée"
+
+msgid "Invitation accepted"
+msgstr "Invitation acceptée"
+
+msgid "Role created"
+msgstr "Rôle créé"
+
+msgid "Role edited"
+msgstr "Rôle modifié"
+
+msgid "Role deleted"
+msgstr "Rôle supprimé"
+
+msgid "Role given"
+msgstr "Rôle attribué"
+
+msgid "Role removed"
+msgstr "Rôle retiré"
+
+msgid "Main role changed"
+msgstr "Rôle principal modifié"
+
+msgid "Approval limit set"
+msgstr "Limite d’approbation fixée"
+
+msgid "Approval limit changed"
+msgstr "Limite d’approbation modifiée"
+
+msgid "Approval limit removed"
+msgstr "Limite d’approbation supprimée"
+
+msgid "Access requested"
+msgstr "Accès demandé"
+
+msgid "Access request closed"
+msgstr "Demande d’accès fermée"
 
 msgid "Documents"
 msgstr "Documents"
@@ -390,6 +489,23 @@ msgstr "Choisissez les tâches à purger : cochez-les dans la liste ou choisisse
 
 msgid "Filter by an organisation's public ID, e.g. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."
 msgstr "Filtrez par l’identifiant public d’une organisation, p. ex. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."
+
+msgid "Enter dates as YYYY-MM-DD, e.g. 2026-10-26."
+msgstr "Entrez les dates au format AAAA-MM-JJ, p. ex. 2026-10-26."
+
+msgid "The start date must be on or before the end date."
+msgstr "La date de début doit être égale ou antérieure à la date de fin."
+
+msgid "This page link is no longer valid. Go back to the first page of the audit log."
+msgstr "Ce lien de page n’est plus valide. Revenez à la première page du journal d’audit."
+
+#, python-format
+msgid "This filter isn't valid: %(name)s. Clear it and choose again."
+msgstr "Ce filtre n’est pas valide : %(name)s. Effacez-le et choisissez de nouveau."
+
+#, python-format
+msgid "Show between 1 and %(max)s events per page."
+msgstr "Affichez entre 1 et %(max)s événements par page."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
@@ -736,8 +852,8 @@ msgstr "Exploite Numo9 : produits, forfaits, prix, fonctionnalités expérimenta
 msgid "Platform support"
 msgstr "Soutien de la plateforme"
 
-msgid "Helps customers: console, background jobs, audited sign-in as a user."
-msgstr "Aide les clients : console, tâches en arrière-plan, connexion journalisée en tant qu’utilisateur."
+msgid "Helps customers: console, background jobs, audit log, audited sign-in as a user."
+msgstr "Aide les clients : console, tâches en arrière-plan, journal d’audit, connexion journalisée en tant qu’utilisateur."
 
 msgid "Practice admin"
 msgstr "Administrateur du cabinet"
