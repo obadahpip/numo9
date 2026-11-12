@@ -72,6 +72,7 @@ nav:
       - "Authentication and sign-up": architecture/authentication.md
       - "Background jobs": architecture/jobs.md
       - "Roles and permissions": architecture/permissions.md
+      - "Audit log and history": architecture/audit.md
   - Reference:
       - "Permission catalogue (generated)": reference/permission-catalogue.md
   - Design:
