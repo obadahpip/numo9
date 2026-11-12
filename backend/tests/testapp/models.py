@@ -2,6 +2,7 @@
 
 from django.db import models
 
+from numo9.audit.mixins import AuditedModel
 from numo9.security.fields import EncryptedField
 from numo9.tenancy.models import OrgOwnedModel
 
@@ -22,3 +23,22 @@ class Payee(OrgOwnedModel):
     name = models.CharField(max_length=50)
     sin = EncryptedField(max_length=9, blank=True)
     bank_account = EncryptedField(max_length=20, null=True, blank=True)
+
+
+class AuditedInvoice(AuditedModel, OrgOwnedModel):
+    """A business record with the audit mixin (A-04-T03): amount, related record, masked SIN."""
+
+    number = models.CharField(max_length=20)
+    amount = models.DecimalField(max_digits=18, decimal_places=2)
+    customer = models.ForeignKey(Widget, on_delete=models.PROTECT, null=True, blank=True)
+    notes = models.TextField(blank=True)
+    payee_sin = EncryptedField(max_length=9, blank=True)
+    bank_account = models.CharField(max_length=20, blank=True)  # masked by name
+    internal_code = models.CharField(max_length=20, blank=True)  # masked by audit_masked
+    search_text = models.TextField(blank=True)  # excluded
+
+    audit_masked = frozenset({"internal_code"})
+    audit_exclude = frozenset({"search_text"})
+
+    def __str__(self) -> str:
+        return f"Invoice {self.number}"

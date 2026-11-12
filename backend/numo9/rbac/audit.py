@@ -6,9 +6,8 @@ and the **diff** — ``{field: [before, after]}``, only for fields that changed 
 sorted key lists, so added/removed keys are visible).
 
 Delivery: the ``rbac_changed`` signal and a structured log line on ``numo9.audit``. The audit
-log itself (``AuditEvent`` table, hash chain, viewer — A-04) does not exist yet; A-04-T03 connects
-its ``record()`` to ``rbac_changed`` so these events land in the log with their diff. Until
-then the log line is the record.
+app stores every change in the audit log (``numo9.audit.receivers``, A-04-T03): an
+``AuditEvent`` in the organisation (or, for practice roles, the practice) with the diff.
 
 Actions: ``role.created`` · ``role.updated`` · ``role.deleted`` · ``role.assigned`` ·
 ``role.unassigned`` · ``member.main_role_changed`` · ``limit.created`` · ``limit.updated`` ·
@@ -75,6 +74,8 @@ class RbacChange:
     object_id: str
     object_label: str
     changes: dict[str, list[Any]] = field(default_factory=dict)
+    #: The practice of a practice-scoped record (practice roles and their assignments).
+    practice_id: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -101,10 +102,17 @@ def record(
         object_id=str(obj.public_id),
         object_label=label,
         changes=diff(before or {}, after or {}),
+        practice_id=_practice_id(obj),
     )
     rbac_changed.send(sender=RbacChange, change=change)
     logger.info("rbac change %s", action, extra={"audit": change.as_dict()})
     return change
+
+
+def _practice_id(obj: Any) -> str | None:
+    practice = getattr(obj, "practice", None)
+    public_id = getattr(practice, "public_id", None)
+    return str(public_id) if public_id is not None else None
 
 
 def role_state(role: Any) -> dict[str, Any]:
