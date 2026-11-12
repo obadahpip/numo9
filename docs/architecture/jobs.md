@@ -140,3 +140,37 @@ redelivered finished run does not rerun), keys per organisation, the race path, 
 sending, broker failure, the lifecycle fields and log events, rollback of an atomic job, scrubbed
 detail in the starter's language, refused messages, skip while another connection holds the lock,
 and a real worker thread running a started job.
+
+## Retry policy and dead letters (A-08-T04)
+
+`numo9/jobs/retry.py`, applied by the base class when a body raises.
+
+| Outcome of a try | Run status | What the person sees |
+|---|---|---|
+| Error retrying can help (any unexpected exception, `JobError(..., retry=True)`, soft time limit) and tries left | `retrying`, `next_retry_at` set | The error message with "Waiting to try again" |
+| Same, no tries left | `dead` (dead letter) | "Failed after several tries" + the error, **Retry** |
+| `JobError(...)` (retry=False), result not JSON (`JobResultNotJSON`), `throws` errors | `failed` at once | The error, **Retry** |
+| The worker died mid-run (OOM, hard time limit) | redelivered, counted as a try; after the last try `dead` with `job.worker_lost` | as dead |
+
+**Backoff.** Retry *n* waits `d = min(backoff_max, backoff_base × 2^(n-1))` with equal jitter —
+a random delay in `[d/2, d]` — so jobs that failed together do not return together. Defaults
+`max_retries = 5` (6 tries), `backoff_base = 30` s, `backoff_max = 1` h: 15–30 s, 30–60 s,
+1–2 min, 2–4 min, 4–8 min. Per task: `@org_job(max_retries=…, backoff_base=…, backoff_max=…)`.
+Retries are Celery retries (`task.retry(countdown=…)`, state `RETRY`; the same Celery task id).
+
+**Dead letters.** A `dead` run keeps its task, `payload` and last error; nothing retries it by
+itself. The dead-letter list is the console's failures view (A-08-T08: retry, purge); the person
+who started a job retries it from the job tray (A-08-T07).
+
+**Retry by hand** — `retry_run(run, by=user)`: only `failed` / `dead` runs (else `409
+job.not_retryable`); the same run (same idempotency key) goes back to `queued` with its error,
+result and progress cleared, a new Celery task id and a fresh retry budget, and is sent after
+commit. The status change is a conditional update, so two clicks send it once.
+
+Log events: `job.retrying` (with `retry` number and `delay_s`, WARNING), `job.dead` (ERROR),
+`job.retried_by_hand`.
+
+Tests: `backend/tests/test_job_retry.py` — backoff growth, cap and jitter range; the retrying run
+shows its error and next try; retried until it succeeds; dead after the last try with its
+arguments kept; errors that fail at once; worker-lost poison message dead-lettered; retry by hand
+(fresh budget, only failed runs, two clicks send once); a real worker retrying with backoff.
