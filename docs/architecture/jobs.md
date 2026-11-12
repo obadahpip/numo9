@@ -174,3 +174,41 @@ Tests: `backend/tests/test_job_retry.py` — backoff growth, cap and jitter rang
 shows its error and next try; retried until it succeeds; dead after the last try with its
 arguments kept; errors that fail at once; worker-lost poison message dead-lettered; retry by hand
 (fresh budget, only failed runs, two clicks send once); a real worker retrying with backoff.
+
+## Scheduled jobs: beat with a lock per tick (A-08-T05)
+
+`numo9/jobs/beat.py`. Beat runs django-celery-beat's database scheduler (schedules are
+`PeriodicTask` rows — platform staff edit them in the Django admin; entries of
+`CELERY_BEAT_SCHEDULE` are written there when beat starts) through `LockedDatabaseScheduler`
+(`CELERY_BEAT_SCHEDULER`). `make up` starts a `beat` service next to the worker:
+
+```
+celery -A numo9 beat --loglevel INFO
+```
+
+**Two beats → one execution.** When a schedule is due, the scheduler first takes the Redis lock
+`numo9:beat:<schedule name>:<tick>` (`SET NX EX`); only the beat that sets it sends the task, any
+other logs `beat.tick_skipped` (a deploy overlapping the old beat, a second server, a restart
+inside the same tick).
+
+| | |
+|---|---|
+| Tick | When the schedule fired, rounded to the **nearest** step: the minute (crontab, solar, clocked) or the interval (`every 10 minutes` → :00, :10, …). Beats whose clocks differ by less than half a step agree on the tick |
+| Lock lifetime | Two steps, at least 2 minutes, at most a day |
+| Lock store | Redis of `JOBS_BEAT_LOCK_URL` (default: the broker's server). With the in-memory broker (tests, local) a process-local store — one beat only |
+| Platform jobs | Started with `start_job(key="beat:<schedule name>:<tick>")`: the idempotency key is a second line — one run per tick even if the lock store was lost between two beats |
+| Organisation jobs | Not scheduled directly (refused): a platform job fans out with `start_job` per organisation |
+
+Log events: `beat.tick` (sent), `beat.tick_skipped` (another beat has the tick), with a `beat`
+field (`schedule`, `task`, `tick`).
+
+### Schedules
+
+| Name | Task | When | Why |
+|---|---|---|---|
+| `numo9.jobs.purge_job_runs` | platform job `numo9.jobs.purge_job_runs` | daily 07:17 UTC | Deletes job runs that finished over 30 days ago (`RETENTION`), in batches of 1,000; runs still going are kept |
+
+Tests: `backend/tests/test_job_beat.py` — ticks (crontab drift, interval steps), lock lifetime,
+the local and Redis stores, two beats racing from two threads on Redis send one task, the next
+tick is sent again, a scheduled platform job runs once even without the lock, organisation jobs
+refused, the purge.

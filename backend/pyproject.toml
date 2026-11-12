@@ -50,6 +50,11 @@ module = ["celery", "celery.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
+# django-celery-beat ships no type information (A-08-T05).
+module = ["django_celery_beat", "django_celery_beat.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # WeasyPrint ships no type information (A-10-T16).
 module = ["weasyprint", "weasyprint.*"]
 ignore_missing_imports = true

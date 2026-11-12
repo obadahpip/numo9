@@ -122,6 +122,24 @@ services:
       retries: 3
       start_period: 30s
 
+  # Celery beat: database schedules, one execution per tick (A-08-T05, numo9/jobs/beat.py).
+  beat:
+    build:
+      context: ./backend
+      target: dev
+    command: ["celery", "-A", "numo9", "beat", "--loglevel", "INFO"]
+    environment:
+      <<: *dev-env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      worker:
+        condition: service_healthy
+
   frontend:
     build:
       context: .
