@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 109   Remaining: 2678
+TOTAL ATOMIC TASKS: 2787   Completed: 110   Remaining: 2677
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -156,7 +156,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-04-T08 — Exports CSV/XLSX/PDF from the same query object as the screen
 ✅ A-04-T09 — Global audit viewer screen (DataGrid, presets, filters, DiffViewer, export menu)
 ❌ A-04-T10 — Record history drawer component reusable on every detail page   [component built + mounted on the role editor (custom roles); ✅ once the B-01 contact and C-01 account detail pages mount it]
-❌ A-04-T11 — "View as of date" reconstruct endpoint + UI [EXTRA]
+✅ A-04-T11 — "View as of date" reconstruct endpoint + UI [EXTRA]
 ❌ A-04-T12 — Time display honours user preference (24 h or 12 h with am/pm, never "16:33PM")
 ❌ A-04-T13 — Tests: export equality, append-only, masking, performance (1M rows list < 1 s with index)
 
