@@ -20,6 +20,7 @@ SIN and bank details, every ``EncryptedField``, passwords, secrets and tokens. T
 ``MAX_VALUE_CHARS`` is cut and marked (``{"truncated": true, "text": …, "length": n}``).
 
 The event is written in the caller's transaction: if the change rolls back, so does its event.
+It is sealed into the organisation's hash chain as it is written (``chain.seal``, A-04-T05).
 """
 
 from __future__ import annotations
@@ -31,13 +32,14 @@ from decimal import Decimal
 from enum import Enum
 from typing import Any
 
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 
 from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Organisation, Practice
 
-from .context import current_actor, user_label
+from .chain import seal
+from .context import current_actor, normalise_ip, user_label
 from .models import ActorKind, AuditEvent
 
 #: Stored in place of a masked field's old and new value.
@@ -194,7 +196,7 @@ def record(
             context.impersonator,
             context.label,
         )
-    event: AuditEvent = AuditEvent.platform_events.create(
+    event = AuditEvent(
         created_at=timezone.now(),
         organisation=organisation,
         practice=practice,
@@ -208,8 +210,11 @@ def record(
         object_label=str(object_label)[:300],
         changes=clean_changes(changes),
         meta=plain({**context.meta, **dict(meta or {})}),
-        ip=ip or context.ip,
+        ip=normalise_ip(ip) or context.ip,
         user_agent=(user_agent or context.user_agent)[:512],
         request_id=context.request_id[:64],
     )
+    with transaction.atomic(using=AuditEvent.platform_events.db):
+        seal(event)  # id, prev_hash and hash: the organisation's hash chain (A-04-T05)
+        event.save(using=AuditEvent.platform_events.db)
     return event

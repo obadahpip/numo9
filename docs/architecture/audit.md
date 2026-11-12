@@ -177,3 +177,37 @@ still come from the context.
   of `X-Forwarded-For` (Caddy in staging/prod: `1`). Addresses further left are written by the
   client and never trusted;
 - **device** — the `User-Agent` (first 512 characters).
+
+## Hash chain and `audit_verify` (A-04-T05)
+
+Every organisation's events form one chain in `id` order; platform and practice events (no
+organisation) form the platform chain. `numo9.audit.chain`:
+
+```
+prev_hash = hash of the chain's previous event   (GENESIS = 64 × "0" for the first)
+hash      = SHA-256( prev_hash + "\n" + canonical JSON of the event )
+```
+
+The canonical JSON (`payload()`, version 1) holds every field the log shows — id, public id, time
+(UTC, microseconds), organisation, practice, actor kind, user and impersonator (public ids),
+label, action, record type/id/label, changes, meta, IP (canonical form), device, request id, batch
+id — with sorted keys, compact separators and UTF-8, so a stored row always hashes to the same
+value.
+
+**Writing.** `record()` seals the event inside the caller's transaction: it takes a
+transaction-scoped advisory lock on the chain (`pg_advisory_xact_lock(0x41554454, organisation
+pk | 0)`), draws the next `id` from `audit_event_id_seq`, reads the chain's last hash and computes
+the new one. Concurrent writers of one organisation take turns until each transaction ends, so the
+chain follows commit order; other organisations are never blocked. A long transaction that writes
+audit events holds its organisation's chain until it commits — keep such transactions short.
+
+**Checking.** `python manage.py audit_verify [--organisation <public id>] [--quiet]` walks every
+chain, prints `OK`/`BROKEN`, the number of events and the head hash, and reports each problem:
+
+- `hash` — the event's content no longer matches its hash (the row was changed);
+- `link` — its `prev_hash` is not the previous event's hash (an earlier event was removed, or an
+  event was inserted).
+
+It exits with code 1 when any chain is broken. Removing the newest events of a chain leaves no
+broken link; compare the head (event count and hash) with an earlier run — the scheduled run and
+its kept output arrive with monitoring (S-04).
