@@ -52,3 +52,7 @@ if not FIELD_ENCRYPTION_KEYS:
         {"test-local": base64.b64encode(hashlib.sha256(b"numo9-test-field-key").digest()).decode()}
     )
     FIELD_ENCRYPTION_ACTIVE_KEY = "test-local"
+
+# Job tray event stream (A-08-T06): fast and short in tests.
+JOBS_SSE_POLL_SECONDS = 0.02
+JOBS_SSE_MAX_SECONDS = 1.0

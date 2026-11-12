@@ -212,3 +212,37 @@ Tests: `backend/tests/test_job_beat.py` — ticks (crontab drift, interval steps
 the local and Redis stores, two beats racing from two threads on Redis send one task, the next
 tick is sent again, a scheduled platform job runs once even without the lock, organisation jobs
 refused, the purge.
+
+## Progress API and event stream (A-08-T06)
+
+`numo9/jobs/api.py`, under `/api/v1/o/<org>/` (organisation must be accessible, else 404). A
+person sees **only the jobs they started** in that organisation — never a colleague's, another
+organisation's or a platform job (all answer 404). Declared `organisation.profile.view`, which
+every role has.
+
+| Method and path | What it does |
+|---|---|
+| `GET jobs` | My jobs, newest first: every job still going + the last 20 finished in the past 24 h (`?active=1`: only the ones going). `ETag`; `If-None-Match` → `304` while nothing changed (polling fallback) |
+| `GET jobs/<id>` | One job (also an older one, e.g. from a link) |
+| `POST jobs/<id>/retry` | Start my failed job again (`retry_run`) → `202` with the job; `409 job.not_retryable` unless it is `failed` / `dead` |
+| `GET jobs/events` | Server-Sent Events (`text/event-stream`): `retry: 2000`, then `event: jobs` with the list (same shape as `GET jobs`) at once and on every change, `id:` = the list's ETag; `: keep-alive` every 15 s; `event: idle` and the end of the stream when nothing is going; otherwise ends after 25 s and `EventSource` reconnects. `Last-Event-ID` = the current ETag → the unchanged list is not sent again |
+
+A job in the API: `id`, `type` (task name), `label` (the task's `label` option, else
+"Background job"), `status` + `status_label`, `progress` {`done`, `total`, `percent` (null while
+unknown), `message`}, `result_url`, `error` {`code`, `message` — in the starter's language} or
+null, `can_retry`, `attempts`, `created_at`, `started_at`, `finished_at`, `next_retry_at`. Never
+`payload` or `error_detail`.
+
+Give a job type its name with `@org_job(name=..., label=_("Import contacts"))`.
+
+Settings: `JOBS_SSE_POLL_SECONDS` (1), `JOBS_SSE_MAX_SECONDS` (25), `JOBS_SSE_RETRY_MS` (2000).
+The stream reads the database once per second per open tray while jobs are going; it holds a
+server worker for at most 25 s, and the web app falls back to polling `GET jobs` when a stream
+cannot be opened.
+
+Tests: `backend/tests/test_job_api.py` — progress written by the job reaches list and detail,
+error + retry from the API, only my jobs (colleague, other organisation, platform → 404), the
+24-hour window and the cap, ETag/304, signed-out and strangers refused, French error and status,
+the stream (ends at once when idle, progress events while another connection updates the run,
+time limit, `Last-Event-ID`), OpenAPI. The tenant sweep and the permission matrix cover the four
+endpoints.
