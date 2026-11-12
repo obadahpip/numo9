@@ -69,7 +69,7 @@ custom role for anything else).
 | Scope | Role (key) | Default permissions |
 |---|---|---|
 | platform | Platform owner (`platform_owner`) | every platform permission |
-| platform | Platform support (`platform_support`) | console, jobs (view), audited sign-in as a user |
+| platform | Platform support (`platform_support`) | console, jobs (view), audit log (view), audited sign-in as a user |
 | practice | Practice admin (`practice_admin`) | every practice permission; every organisation permission except owner-only |
 | practice | Accountant (`accountant`) | practice: view, staff list, create clients; organisations: everything except critical, users read-only |
 | practice | Reviewer (`reviewer`) | practice: view, staff list; organisations: read-only plus approve / review actions |
@@ -428,10 +428,10 @@ of the fields that changed — permission sets as sorted key lists, amounts as `
 
 No-op changes (same name, a role already held) and refused requests emit nothing.
 
-**Delivery today:** the `rbac_changed` signal and a structured `numo9.audit` log line (`audit`
-field). **Pending A-04:** the audit log (`AuditEvent`, hash chain, viewer with DiffViewer) does
-not exist yet; A-04-T03 connects `audit.record()` to `rbac_changed`, which makes these diffs
-visible in the audit log — the task's acceptance ("diff visible") is checked then.
+**Delivery:** the `rbac_changed` signal and a structured `numo9.audit` log line (`audit` field).
+The audit app stores every change in the audit log (`numo9.audit.receivers`, A-04-T03) — in the
+organisation, or as a practice event for practice roles — with the diff, visible in the audit log
+API and viewer (A-04-T07, T09). See [Audit log and history](audit.md).
 
 Tests: `backend/tests/test_rbac_audit.py`.
 

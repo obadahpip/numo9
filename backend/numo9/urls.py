@@ -14,6 +14,7 @@ urlpatterns = [
     path("api/v1/", include("numo9.security.urls")),
     path("api/v1/", include("numo9.rbac.urls")),  # roles, assignments, limits (A-03-T09)
     path("api/v1/", include("numo9.jobs.urls")),  # job tray: progress, events, retry (A-08-T06)
+    path("api/v1/", include("numo9.audit.urls")),  # audit log and record history (A-04-T07)
     # Sign-up, email verification, login, logout, password reset (A-02): django-allauth headless,
     # browser client only (/_allauth/browser/v1/…). OpenAPI: /_allauth/openapi.html in dev.
     path("_allauth/", include("numo9.accounts.urls")),

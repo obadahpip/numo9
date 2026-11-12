@@ -172,6 +172,9 @@ def path_for(declaration: Declaration, world: World) -> str:
         "user_id": str(world.target.public_id),
         "public_id": str(world.limit.public_id),
         "invitation_id": "00000000-0000-4000-8000-000000000000",
+        # Record history (A-04-T07): the custom role's history.
+        "object_type": "rbac.Role",
+        "object_id": str(world.custom_role.public_id),
     }
     path = build_path(endpoint, {k: v for k, v in values.items() if k in endpoint.groups})
     assert path is not None, f"cannot build a URL for /{declaration.route}: add its parameter"
