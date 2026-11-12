@@ -85,6 +85,11 @@ def _valid_ip(value: str) -> str | None:
         return None
 
 
+def normalise_ip(value: Any) -> str | None:
+    """An IP address in its canonical text form (as PostgreSQL returns it), or None."""
+    return _valid_ip(str(value)) if value else None
+
+
 def client_ip(request: Any) -> str | None:
     """The client's address: ``REMOTE_ADDR``, or the one the trusted proxies forwarded.
 
