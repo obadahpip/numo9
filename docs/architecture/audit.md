@@ -211,3 +211,29 @@ chain, prints `OK`/`BROKEN`, the number of events and the head hash, and reports
 It exits with code 1 when any chain is broken. Removing the newest events of a chain leaves no
 broken link; compare the head (event count and hash) with an earlier run — the scheduled run and
 its kept output arrive with monitoring (S-04).
+
+## Bulk operations: audit batches (A-04-T06)
+
+```python
+from numo9.audit.batch import audit_batch
+
+with audit_batch("Recode transactions", meta={"rule": str(rule.public_id)}) as batch:
+    for line in lines:
+        line.account = new_account
+        line.save()          # each event carries batch.id
+```
+
+Every event written in the block — through `record()` or `AuditedModel` — gets the batch's id
+(`batch_id`). When the block ends, one **summary event** is written with the same id:
+
+| Field | Value |
+|---|---|
+| `action` | `audit.batch` |
+| record | `audit.Batch`, the batch id, the label |
+| `meta` | the caller's `meta` + `events` (count), `actions` (`{action: count}`), `types` (record types), `status` (`completed` / `failed`) |
+
+So a 500-row operation is one batch: 500 row events and one summary (V-03 bulk edit and C-07
+recode are its first users). Inside one transaction a failing block rolls back its events and
+summary together; a block whose rows committed one by one (a step-committing job) still writes the
+summary, with `status: "failed"`. Nested blocks join the outer batch. The viewer shows a batch as
+its summary line with the rows behind it (`?batch=<id>`, A-04-T07).
