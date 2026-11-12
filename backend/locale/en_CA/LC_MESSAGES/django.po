@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:08-0500\n"
+"POT-Creation-Date: 2026-11-12 03:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -298,6 +298,12 @@ msgid "Nobody here can give this permission yet. Ask the organisation's owner to
 msgstr ""
 
 msgid "You can only ask for one of this organisation's permissions, e.g. organisation.settings.manage."
+msgstr ""
+
+msgid "Something went wrong while this job was running. Try again; if it fails again, contact Numo9 support with the job's reference."
+msgstr ""
+
+msgid "This job couldn't be queued. Nothing was changed. Try again in a few minutes."
 msgstr ""
 
 msgid "Waiting to start"

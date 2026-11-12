@@ -83,3 +83,60 @@ and for the platform console.
 
 Tests: `backend/tests/test_job_run_model.py` (duplicate key rejected by the database, also across
 organisations; status and progress constraints; scoping).
+
+## Job base class (A-08-T03)
+
+`numo9/jobs/runtime.py`. A *job* is a Celery task built on `JobTask` (organisation jobs, on top
+of `OrgTask` from A-01-T07) or `PlatformJobTask` (no organisation), declared with `@org_job` /
+`@platform_job` and **started with `start_job()`** — `delay()` / `apply_async()` without a run
+raise `JobRunRequired`.
+
+```python
+@org_job(name="numo9.contacts.bulk_archive", queue=queues.REPORTS)
+def bulk_archive(*, org_id: str, contact_ids: list[str]) -> dict[str, int]:
+    for done, cid in enumerate(contact_ids, 1):
+        ...
+        report_progress(done, len(contact_ids))
+    set_result_url(f"/o/{org_id}/contacts?archived=1")
+    return {"archived": len(contact_ids)}
+
+run = start_job(bulk_archive, organisation=org, key=f"archive:{batch_id}",
+                created_by=request.user, contact_ids=ids)
+```
+
+**Starting (`start_job`).** The idempotency key is `<task>:<organisation public id | platform>:<key>`
+(random when no key is given; keys over 255 characters are hashed). The run is created with that
+key; if one exists — also one another process inserted a moment earlier (the unique constraint
+decides) — it is returned with `run.started_now = False` and nothing is sent. Otherwise the message
+(`job_run_id` added to the keyword arguments, Celery task id = `run.celery_task_id`) is sent when
+the surrounding transaction commits; if the broker refuses, the run becomes `failed` with
+`job.not_queued` and the error reaches the caller. Arguments and results are JSON only.
+
+**Running.** For each delivery the base class:
+
+| Step | What happens |
+|---|---|
+| Check the message | No `job_run_id` → `JobRunRequired`; unknown run, other task or other organisation than the run's → `JobRunMismatch` (both in `throws`: logged, never retried) |
+| Lock | PostgreSQL session advisory lock on the run (`0xA08 << 40 \| run id`) for the whole run. Held by another worker → the delivery is skipped (`job.skipped_locked`). A killed worker's connection closes and releases it, so the redelivered message can take over |
+| Already finished? | A redelivered message of a finished run returns the stored result; the body does not run (`job.skipped_finished`) |
+| Mark running | `attempts + 1`, `worker` (`host:pid`), `started_at` (first try), Celery task id |
+| Run the body | Organisation jobs inside `org_context` (scoped managers, RLS setting). `atomic = True` (default): the body and the `succeeded` mark are one transaction — a job that dies half-way leaves nothing, and its rerun applies the effect once. `atomic=False` for long jobs that commit as they go (each step must be safe to repeat) |
+| Finish | `succeeded` with the result and finish time (progress set to its total), or `failed` with the error |
+
+Inside the body: `current_job()` (the run), `report_progress(done, total, note)` (written at once;
+in an atomic job visible at commit), `set_result_url(url)`. `JobError(errors.X, retry=False,
+**params)` fails the run with that catalogue message; any other exception stores the generic
+`job.failed` message. Messages are stored in the language of the person who started the job
+(else the organisation's); `error_detail` keeps the exception type and text, scrubbed of SINs,
+card and bank numbers (S-03-T06), for the console only.
+
+**Logs.** One `numo9.jobs` record per step — `job.queued`, `job.duplicate`, `job.started`,
+`job.succeeded`, `job.failed`, `job.skipped_locked`, `job.skipped_finished` — with a `job` field
+(`id`, `task`, `org_id`, `queue`, `status`, `attempt`, `duration_ms`, `error`). Lines the body logs
+carry `job_id`, `job_task` and `org_id` (structlog context variables).
+
+Tests: `backend/tests/test_job_runtime.py` — same key runs once (duplicate start sends nothing, a
+redelivered finished run does not rerun), keys per organisation, the race path, commit-time
+sending, broker failure, the lifecycle fields and log events, rollback of an atomic job, scrubbed
+detail in the starter's language, refused messages, skip while another connection holds the lock,
+and a real worker thread running a started job.
