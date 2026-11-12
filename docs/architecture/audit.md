@@ -145,3 +145,35 @@ read by platform staff in the platform audit log (A-04-T07). Their record is the
 public id, email); a failed sign-in for an address without an account has no record id and the
 typed address as its label. Passwords, codes and invitation tokens are never recorded. allauth
 sends its 2FA signals after the change commits, so those events are written just after it.
+
+## Who, from where: the audit context (A-04-T04)
+
+`record()` never needs the actor, IP or device passed in: it asks
+`numo9.audit.context.current_actor()`, which looks, in order, at
+
+1. an explicit `audit_context(...)` block (scripts, impersonation flows, tests);
+2. **a background job** (`numo9.jobs.runtime.current_job()`) — `actor_kind = system`,
+   `actor_label = "System: <job name>"` (the task's `label`, gap-44), and in `meta.job` the run's
+   id and task and, when a person started it, `started_by` (id and name);
+3. **the request** (`AuditContextMiddleware`) — the signed-in user, read when the event is written
+   (a sign-in during the request counts). When `request.audit_impersonator` is set (U-06), the
+   event is `impersonation`: `actor_user` is the person signed in as, `impersonator` the platform
+   staff member, and the label names both;
+4. **a Celery task** that is not a job — `System: <task name>`;
+5. otherwise — `System` (`System: manage.py <command>` for management commands).
+
+An explicit `actor=` passed to `record()` wins over 2–5 for the person; IP, device and request id
+still come from the context.
+
+### Request id, IP and device
+
+`AuditContextMiddleware` (after `AuthenticationMiddleware`, before the tenant middleware):
+
+- **request id** — a well-formed `X-Request-ID` from the client or proxy (8–64 of
+  `A–Z a–z 0–9 . _ -`) is kept, anything else replaced by a new random id; returned in the
+  `X-Request-ID` response header and bound to every log line of the request (structlog
+  `request_id`), so an audit event, its log lines and a support ticket can be matched;
+- **IP** — `REMOTE_ADDR`, or with `NUMO9_TRUSTED_PROXY_COUNT = n` the *n*-th address from the right
+  of `X-Forwarded-For` (Caddy in staging/prod: `1`). Addresses further left are written by the
+  client and never trusted;
+- **device** — the `User-Agent` (first 512 characters).

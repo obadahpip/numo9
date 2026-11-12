@@ -37,6 +37,7 @@ from django.utils import timezone
 from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Organisation, Practice
 
+from .context import current_actor, user_label
 from .models import ActorKind, AuditEvent
 
 #: Stored in place of a masked field's old and new value.
@@ -146,21 +147,6 @@ def clean_changes(changes: Mapping[str, Any] | None) -> dict[str, list[Any]]:
     return cleaned
 
 
-def label_of_user(user: Any) -> str:
-    name = getattr(user, "name", "") or ""
-    email = getattr(user, "email", "") or ""
-    return (f"{name} ({email})" if name and email else name or email)[:300]
-
-
-def request_ip(request: Any) -> str | None:
-    """The client's address (``REMOTE_ADDR``; proxies are handled by A-04-T04's middleware)."""
-    return (getattr(request, "META", {}) or {}).get("REMOTE_ADDR") or None
-
-
-def request_user_agent(request: Any) -> str:
-    return str((getattr(request, "META", {}) or {}).get("HTTP_USER_AGENT", ""))[:512]
-
-
 def record(
     action: str,
     *,
@@ -194,21 +180,36 @@ def record(
         object_type = object_type or obj._meta.label
         object_id = object_id or object_id_of(obj)
         object_label = object_label or label_of(obj)
+    context = current_actor()
     user = actor if getattr(actor, "is_authenticated", False) else None
+    kind: str
+    if user is not None:
+        kind, impersonator, label = ActorKind.USER.value, None, user_label(user)
+        if context.user is not None and context.user.pk == user.pk:
+            kind, impersonator, label = context.kind, context.impersonator, context.label
+    else:
+        user, kind, impersonator, label = (
+            context.user,
+            context.kind,
+            context.impersonator,
+            context.label,
+        )
     event: AuditEvent = AuditEvent.platform_events.create(
         created_at=timezone.now(),
         organisation=organisation,
         practice=practice,
-        actor_kind=ActorKind.USER if user is not None else ActorKind.SYSTEM,
+        actor_kind=kind,
         actor_user=user,
-        actor_label=(actor_label or (label_of_user(user) if user is not None else "System"))[:300],
+        impersonator=impersonator,
+        actor_label=(actor_label or label)[:300],
         action=action,
         object_type=object_type[:100],
         object_id=str(object_id)[:64],
         object_label=str(object_label)[:300],
         changes=clean_changes(changes),
-        meta=plain(dict(meta or {})),
-        ip=ip or None,
-        user_agent=(user_agent or "")[:512],
+        meta=plain({**context.meta, **dict(meta or {})}),
+        ip=ip or context.ip,
+        user_agent=(user_agent or context.user_agent)[:512],
+        request_id=context.request_id[:64],
     )
     return event

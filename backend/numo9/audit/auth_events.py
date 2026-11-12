@@ -31,7 +31,8 @@ from django.contrib.auth.signals import user_logged_in, user_logged_out, user_lo
 
 from numo9.accounts.models import normalise_email
 
-from .service import record, request_ip, request_user_agent
+from .context import client_ip, user_agent_of
+from .service import record
 
 USER_TYPE = "accounts.User"
 
@@ -53,8 +54,8 @@ def _for_user(action: str, user: Any, request: Any, meta: dict[str, Any] | None 
             object_label=user.email,
             actor=user,
             meta=meta,
-            ip=request_ip(request),
-            user_agent=request_user_agent(request),
+            ip=client_ip(request),
+            user_agent=user_agent_of(request),
         )
     else:
         email = str(meta.get("email", ""))
@@ -65,8 +66,8 @@ def _for_user(action: str, user: Any, request: Any, meta: dict[str, Any] | None 
             object_label=email,
             actor_label=email or "Unknown",
             meta=meta,
-            ip=request_ip(request),
-            user_agent=request_user_agent(request),
+            ip=client_ip(request),
+            user_agent=user_agent_of(request),
         )
 
 
