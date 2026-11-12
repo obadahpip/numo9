@@ -431,3 +431,15 @@ Tests: `frontend/src/audit/time.test.tsx` — inline snapshots of every language
 organisation's time zone, the per-language default, a sweep over a whole day that never finds a
 24-hour time with a.m./p.m., and snapshots of the `<time>` element and the DiffViewer text;
 `backend/tests/test_audit_export.py::test_times_follow_the_persons_preference`.
+
+## Tests (A-04-T13)
+
+| What | Where |
+|---|---|
+| Export rows = screen rows (CSV, XLSX by event id; PDF by record) for several filters, every row beyond one page | `backend/tests/test_audit_export.py` |
+| Append-only: raw `UPDATE`/`DELETE`, ORM bulk update/delete, the owner's privileges, an ordinary role, a role granted everything | `backend/tests/test_audit_append_only.py` |
+| Masking end to end: SIN, bank account and a model-masked field are absent from the table, the list, the detail, the history, view-as-of, CSV, XLSX, PDF and the platform log | `backend/tests/test_audit_masking.py` |
+| Performance: 1,000,000 events of one organisation (+ 200,000 of another); first page (default 90 days), a page after 2,000 rows, two-year range, user filter, record history and filter choices each under 1 s (about 20 ms on the CI database); the plan uses `audit_org_time_idx`, no sequential scan | `backend/tests/test_audit_performance.py` |
+| Hash chain tamper detection, concurrency | `backend/tests/test_audit_chain.py` |
+
+The performance test inserts its rows with `generate_series` (about 30 s in CI).
