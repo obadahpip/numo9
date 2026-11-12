@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:56-0500\n"
+"POT-Creation-Date: 2026-11-12 03:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -300,6 +300,93 @@ msgstr ""
 msgid "You can only ask for one of this organisation's permissions, e.g. organisation.settings.manage."
 msgstr ""
 
+msgid "Waiting to start"
+msgstr ""
+
+msgid "Running"
+msgstr ""
+
+msgid "Waiting to try again"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Failed after several tries"
+msgstr ""
+
+msgid "organisation"
+msgstr ""
+
+msgid "job type"
+msgstr ""
+
+msgid "queue"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "steps done"
+msgstr ""
+
+msgid "steps in total"
+msgstr ""
+
+msgid "progress note"
+msgstr ""
+
+msgid "arguments"
+msgstr ""
+
+msgid "result"
+msgstr ""
+
+msgid "result link"
+msgstr ""
+
+msgid "error code"
+msgstr ""
+
+msgid "error"
+msgstr ""
+
+msgid "error detail"
+msgstr ""
+
+msgid "idempotency key"
+msgstr ""
+
+msgid "attempts"
+msgstr ""
+
+msgid "maximum retries"
+msgstr ""
+
+msgid "Celery task id"
+msgstr ""
+
+msgid "worker"
+msgstr ""
+
+msgid "started at"
+msgstr ""
+
+msgid "finished at"
+msgstr ""
+
+msgid "next try at"
+msgstr ""
+
+msgid "job run"
+msgstr ""
+
+msgid "job runs"
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr ""
@@ -405,9 +492,6 @@ msgid "description"
 msgstr ""
 
 msgid "system role"
-msgstr ""
-
-msgid "organisation"
 msgstr ""
 
 msgid "practice"
@@ -686,9 +770,6 @@ msgid "practice member"
 msgstr ""
 
 msgid "practice members"
-msgstr ""
-
-msgid "status"
 msgstr ""
 
 msgid "time zone"

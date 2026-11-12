@@ -47,3 +47,39 @@ long report never delays a high-priority job.
 Tests: `backend/tests/test_celery.py` (configuration; a worker thread on the in-memory broker
 consumes the test task on every queue; `celery_ping`), `backend/tests/test_celery_redis.py`
 (the same against Redis — CI backend job has a Redis 7 service).
+
+## Job runs (A-08-T02)
+
+`numo9.jobs.models.JobRun` is the record of every background job: written before the Celery
+message is sent, updated by the job base class as the job runs, read by the job tray and the
+platform console. Celery's result backend keeps outcomes one day; job runs are kept 30 days
+after they finish (`RETENTION`).
+
+| Field | Meaning |
+|---|---|
+| `organisation` | The organisation the job works for; empty for platform jobs (retention purge, nightly rebuilds) |
+| `task_name`, `queue` | Job type (the Celery task name) and the queue it was sent to |
+| `status` | `queued` → `running` → `succeeded`; `retrying` between tries; `failed` (an error retrying cannot fix); `dead` (retries used up — the dead-letter state) |
+| `progress_done` / `progress_total` / `progress_message` | Progress in steps (total may be unknown); `progress_percent` 0–100 |
+| `payload` | The task's keyword arguments (JSON), kept so a failed run can be sent again |
+| `result`, `result_url` | What the job returned; a link to its output (download, report) |
+| `error_code`, `error_message` | A stable code and a message the person who started the job may read |
+| `error_detail` | Exception type and text (scrubbed) — platform console only |
+| `idempotency_key` | **Unique** across the table: a second start with the same key gets the existing run |
+| `attempts`, `max_retries`, `next_retry_at` | Tries made, tries allowed, when the next try is due |
+| `celery_task_id`, `worker`, `started_at`, `finished_at` | Where and when it ran |
+| `created_by`, `created_at`, `public_id` | From `OrgOwnedModel`: who started it (empty for scheduled jobs), when, public id for the API |
+
+Database rules: unique `idempotency_key` (`jobs_jobrun_idempotency_key_unique`, never empty),
+`status` one of the six, `progress_done ≤ progress_total` when the total is known. Indexes for
+the tray (organisation, starter, newest first), the console (status, newest first) and the purge
+(`finished_at`).
+
+**Tenancy.** `JobRun` is an `OrgOwnedModel` whose organisation may be empty. `JobRun.objects`
+(the default manager) is organisation-scoped like every business record, so API views only ever
+see the active organisation's jobs and never platform jobs. `JobRun.platform_runs` (plain
+manager) is reserved for the job machinery, which loads a run before any tenant context exists,
+and for the platform console.
+
+Tests: `backend/tests/test_job_run_model.py` (duplicate key rejected by the database, also across
+organisations; status and progress constraints; scoping).
