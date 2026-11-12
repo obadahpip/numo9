@@ -64,3 +64,62 @@ and are refused there (`tests/test_audit_append_only.py`).
 `TRUNCATE` is a table operation, not a row change: only a superuser can still empty the table (the
 test runner does between transactional tests). Retention (≥ 6 years, CRA) is handled by dropping
 whole monthly partitions once they are past retention (S-06), never by deleting rows.
+
+## Writing events (A-04-T03)
+
+### `record()`
+
+`numo9.audit.service.record(action, *, obj=None, organisation=…, practice=None, changes=None,
+meta=None, actor=None)` writes one event **in the caller's transaction** — if the change rolls back,
+its event does too.
+
+- `obj` fills the record's type (model label), id (public id) and label (`audit_label()` or
+  `str()`); its organisation is the event's organisation unless one is given; otherwise the
+  active organisation (`current_org()`).
+- `changes` is `{field: [old, new]}`. Values are stored the way people read them: decimals as
+  exact strings (`"1234.50"`), dates and times in ISO 8601, UUIDs as text, related records as
+  `{"id": <public id>, "label": <name>}`. Text longer than 10,000 characters is cut and marked
+  `{"truncated": true, "text": …, "length": n}`.
+- `actor` is the user who made the change; A-04-T04 fills it from the request or job.
+
+### `AuditedModel`
+
+Business models inherit `numo9.audit.mixins.AuditedModel` **before** `OrgOwnedModel`:
+
+```python
+class Contact(AuditedModel, OrgOwnedModel):
+    audit_masked = frozenset({"bank_account"})
+    audit_exclude = frozenset({"search_vector"})
+```
+
+The row's audited fields are snapshotted when it is loaded (*pre*); `save()` runs the save and
+the audit write in one transaction and compares with the saved values (*post*):
+
+| What happened | Action | `changes` |
+|---|---|---|
+| New row | `<app>.<model>.created` | every non-empty field as `[null, value]` |
+| Fields changed | `…updated` | `[old, new]` of each changed field (no change → no event) |
+| `soft_delete()` | `…deleted` | — |
+| `restore()` | `…restored` | — |
+| `delete()` (rare) | `…deleted` | last values as `[value, null]` |
+
+`save(update_fields=…)` compares the saved fields only. A row built with an existing primary key
+(never loaded) is read from the database first. Bookkeeping fields (`id`, `public_id`,
+`organisation`, `created_at`, `updated_at`, `created_by`, `deleted_at`) are never diffed. Bulk
+`QuerySet.update()` and `bulk_create()` bypass `save()`: code that changes many rows records them
+itself inside an audit batch (A-04-T06).
+
+### Masked fields
+
+SIN and bank details are never stored in a diff (Phase 0 business rule). A field is masked when it
+is an `EncryptedField`, is listed in the model's `audit_masked`, or its name is one of
+`numo9.audit.service.MASKED_NAMES` (sin, social_insurance_number, bank_account, institution_number,
+transit_number, account_number, password, …) or contains *password*, *secret* or *token*. Its old
+and new value are stored as `{"masked": true}`: the log shows that the field changed, never its
+value. `record()` masks such names in hand-written `changes` too.
+
+### Role and limit changes
+
+The `rbac_changed` signal of A-03-T15 (role, assignment, approval-limit and access-request
+changes) is stored by `numo9.audit.receivers.store_rbac_change`: the organisation's event, or a
+practice event for practice roles, with the A-03 diff.
