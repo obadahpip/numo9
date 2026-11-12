@@ -76,6 +76,24 @@ def time_zone_of(organisation: Organisation | None) -> zoneinfo.ZoneInfo:
         return zoneinfo.ZoneInfo(DEFAULT_TIME_ZONE)
 
 
+def as_of_moment(value: str | None, organisation: Organisation | None) -> dt.datetime:
+    """``YYYY-MM-DD`` → the end of that day in the organisation's time zone; an ISO date-time
+    (with its offset) as given (A-04-T11)."""
+    text = (value or "").strip()
+    if not text:
+        raise api_error(errors.AUDIT_BAD_DATE)
+    tz = time_zone_of(organisation)
+    if len(text) == 10:
+        day = _date(text)
+        assert day is not None  # noqa: S101 — _date raised otherwise
+        return dt.datetime.combine(day, dt.time.max, tzinfo=tz)
+    try:
+        moment = dt.datetime.fromisoformat(text)
+    except ValueError:
+        raise api_error(errors.AUDIT_BAD_DATE) from None
+    return moment if moment.tzinfo else moment.replace(tzinfo=tz)
+
+
 def encode_cursor(event: AuditEvent) -> str:
     raw = json.dumps({"t": event.created_at.isoformat(), "i": event.id}).encode()
     return base64.urlsafe_b64encode(raw).decode().rstrip("=")

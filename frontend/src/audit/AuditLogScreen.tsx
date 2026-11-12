@@ -41,7 +41,7 @@ import {
 import { DiffViewer } from "./DiffViewer";
 import { m, presetLabels } from "./messages";
 import { DEFAULT_PRESET, PRESETS, presetOf, presetRange, type Preset } from "./presets";
-import { auditDateTime } from "./time";
+import { AuditTime } from "./time";
 
 const ANY = "__any__";
 
@@ -512,11 +512,7 @@ function EventGrid({
         id: "at",
         header: fm(m.colWhen),
         accessor: (row) => row.at,
-        cell: (row) => (
-          <time dateTime={row.at} data-audit-time="">
-            {auditDateTime(row.at, { locale, viewer })}
-          </time>
-        ),
+        cell: (row) => <AuditTime at={row.at} locale={locale} viewer={viewer} />,
         width: 200,
         hideable: false,
         searchable: false,
@@ -596,7 +592,7 @@ function EventDrawer({
       <dl className="mb-4 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-[9rem_1fr]">
         <dt className="font-medium">{fm(m.when)}</dt>
         <dd>
-          <time dateTime={event.at}>{auditDateTime(event.at, { locale, viewer })}</time>
+          <AuditTime at={event.at} locale={locale} viewer={viewer} />
         </dd>
         <dt className="font-medium">{fm(m.by)}</dt>
         <dd>

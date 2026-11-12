@@ -41,11 +41,13 @@ from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Organisation
 
 from . import exports
+from .asof import reconstruct
 from .models import AuditEvent
 from .permissions import AUDIT_EXPORT, AUDIT_VIEW, PLATFORM_AUDIT_VIEW
 from .presenter import VERB_LABELS, event_data, type_label
-from .query import AuditQuery, limit_of, loose_distinct, page, time_zone_of
+from .query import AuditQuery, as_of_moment, limit_of, loose_distinct, page, time_zone_of
 from .serializers import (
+    AuditAsOfSerializer,
     AuditEventDetailSerializer,
     AuditFiltersSerializer,
     AuditHistorySerializer,
@@ -170,6 +172,56 @@ class AuditRecordHistoryView(APIView):
                 "results": [event_data(e) for e in rows],
                 "next": cursor,
                 "viewer": viewer(request, _org()),
+            }
+        )
+
+
+class AuditRecordAsOfView(APIView):
+    """A record's state at a moment, rebuilt from its history (A-04-T11)."""
+
+    queryset = AuditEvent.platform_events.none()
+
+    @requires_permission(AUDIT_VIEW.key)
+    @extend_schema(
+        operation_id="audit_record_as_of",
+        summary="View a record as of a date: its fields rebuilt from the audit log",
+        parameters=[
+            OpenApiParameter(
+                "at",
+                OpenApiTypes.STR,
+                description=(
+                    "YYYY-MM-DD (end of that day, organisation time) or an ISO date-time; "
+                    "default: now"
+                ),
+            ),
+        ],
+        responses=AuditAsOfSerializer,
+    )
+    def get(self, request: Request, org: Any, object_type: str, object_id: str) -> Response:
+        organisation = _org()
+        events = AuditEvent.objects.filter(object_type=object_type, object_id=object_id)
+        if not events.exists():
+            raise NotFound  # no history here: unknown, or another organisation's record
+        given = request.query_params.get("at")
+        at = as_of_moment(given, organisation) if given else timezone.now()
+        rebuilt = reconstruct(events, at)
+        last = rebuilt.last_event
+        return Response(
+            {
+                "record": {
+                    "type": object_type,
+                    "type_label": type_label(object_type),
+                    "id": object_id,
+                    "label": last.object_label if last else "",
+                },
+                "at": at.isoformat(),
+                "exists": rebuilt.exists,
+                "deleted": rebuilt.deleted,
+                "complete": rebuilt.complete,
+                "events_applied": rebuilt.events,
+                "last_event": event_data(last) if last else None,
+                "state": rebuilt.fields(object_type),
+                "viewer": viewer(request, organisation),
             }
         )
 

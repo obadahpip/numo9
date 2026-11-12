@@ -381,3 +381,30 @@ contact (B-01) and account (C-01) detail pages mount the same component when the
 `type` is the model label, `id` the public id.
 
 Tests: `frontend/e2e/record-history.spec.ts`.
+
+## View a record as of a date (A-04-T11) [EXTRA]
+
+`GET /api/v1/o/<org>/audit/records/<type>/<id>/as-of?at=<YYYY-MM-DD | ISO date-time>` (default: now)
+(`audit.log.view`) rebuilds the record from its history (`numo9.audit.asof.reconstruct`): the
+events up to that moment are replayed oldest first, each `changes` entry setting its field to the
+*new* value; `…deleted` marks the record deleted, `…restored` undoes it. A date means the end of
+that day in the organisation's time zone.
+
+| Field | Meaning |
+|---|---|
+| `state` | `[{field, label, value, masked}]` — the fields as they were |
+| `exists` | Created by then and not deleted |
+| `deleted` | Deleted at that moment (`state` = its last values) |
+| `complete` | The history starts at the record's creation, so every field is known (records created before their model was audited show only the fields changed since) |
+| `events_applied`, `last_event` | How many events were replayed, and the last one |
+
+Masked fields stay hidden: the log never held their values. 404 when the record has no history in
+the organisation.
+
+**UI** — the record history drawer has a *View as of* date and **Show**: the record's name at the
+end of that day and its fields, or *didn't exist yet* / *was deleted* / *history starts after it
+was created*.
+
+Tests: `backend/tests/test_audit_as_of.py` (the rebuilt state equals snapshots taken at the time,
+before creation, delete/restore, end of day in the organisation's zone, isolation),
+`frontend/e2e/record-history.spec.ts`.

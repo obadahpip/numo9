@@ -24,3 +24,17 @@ export function auditDateTime(at: string, { locale, viewer }: AuditTimeOptions):
 export function auditTime(at: string, { locale, viewer }: AuditTimeOptions): string {
   return formatTime(at, { locale, timeFormat: viewer?.time_format, timeZone: viewer?.time_zone });
 }
+
+/** A `<time>` element showing an audit timestamp the viewer's way (machine value: ISO). */
+export function AuditTime({
+  at,
+  locale,
+  viewer,
+  className,
+}: Readonly<{ at: string; className?: string } & AuditTimeOptions>) {
+  return (
+    <time dateTime={at} className={className} data-audit-time="">
+      {auditDateTime(at, { locale, viewer })}
+    </time>
+  );
+}

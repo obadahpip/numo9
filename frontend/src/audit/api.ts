@@ -161,6 +161,31 @@ export function recordHistory(
   return apiRequest<AuditHistory | AuditError>(`${auditApi(org, path)}${query}`);
 }
 
+export interface AuditAsOf {
+  record: AuditEvent["record"];
+  at: string;
+  /** Created by then and not deleted. */
+  exists: boolean;
+  deleted: boolean;
+  /** The history starts at the record's creation (every field known). */
+  complete: boolean;
+  events_applied: number;
+  last_event: AuditEvent | null;
+  state: { field: string; label: string; value: AuditValue; masked: boolean }[];
+  viewer: AuditViewer;
+}
+
+/** A record's fields as they were at `at` (a date: the end of that day), A-04-T11. */
+export function recordAsOf(
+  org: string,
+  type: string,
+  id: string,
+  at: string,
+): Promise<ApiResult<AuditAsOf | AuditError>> {
+  const path = `records/${encodeURIComponent(type)}/${encodeURIComponent(id)}/as-of`;
+  return apiRequest<AuditAsOf | AuditError>(`${auditApi(org, path)}?at=${encodeURIComponent(at)}`);
+}
+
 /** Download link of an export with the screen's filters (same-origin: the session cookie). */
 export function exportUrl(org: string, format: ExportFormat, filters: AuditFilters): string {
   const query = filterParams(filters).toString();
