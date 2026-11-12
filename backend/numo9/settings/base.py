@@ -62,6 +62,9 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     # Request language: user's locale → numo9_locale cookie → Accept-Language (A-10-T14).
     "numo9.i18n.middleware.LocaleMiddleware",
+    # Audit context (A-04-T04): request id, client IP, device and the request's user for every
+    # audit event; X-Request-ID on every response.
+    "numo9.audit.context.AuditContextMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
     "numo9.tenancy.middleware.TenantContextMiddleware",
     # Permission sets cached for one request only — never across requests (A-03-T04).
@@ -340,6 +343,10 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute=17, hour=7),  # 07:17 UTC = 02:17 / 03:17 Toronto
     },
 }
+
+# Audit log (A-04-T04): proxies in front of the app whose X-Forwarded-For is trusted for the
+# client IP (Caddy in staging/prod: 1). 0 = use REMOTE_ADDR.
+NUMO9_TRUSTED_PROXY_COUNT = env_int("NUMO9_TRUSTED_PROXY_COUNT", 0)
 
 LANGUAGE_CODE = "en-ca"
 LANGUAGES = [("en-ca", _("English (Canada)")), ("fr-ca", _("French (Canada)"))]
