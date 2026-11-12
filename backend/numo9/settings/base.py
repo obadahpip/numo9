@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "numo9.security",
     # Background jobs: Celery queues and the worker check task (A-08).
     "numo9.jobs",
+    "numo9.audit",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
