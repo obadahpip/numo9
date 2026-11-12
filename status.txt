@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 98   Remaining: 2689
+TOTAL ATOMIC TASKS: 2787   Completed: 99   Remaining: 2688
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -141,7 +141,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-08-T09 — Worker-restart test (kill worker mid-task → completes once)
 
 [A-04]
-❌ A-04-T01 — AuditEvent table (org, actor_user, actor_kind user/system/impersonation, impersonator, action, object type/id, changes JSONB, ip, ua, request_id, batch_id, created_at, prev_hash, hash) partition-ready
+✅ A-04-T01 — AuditEvent table (org, actor_user, actor_kind user/system/impersonation, impersonator, action, object type/id, changes JSONB, ip, ua, request_id, batch_id, created_at, prev_hash, hash) partition-ready
 ❌ A-04-T02 — DB trigger/permissions: REVOKE UPDATE/DELETE; trigger raising on UPDATE/DELETE
 ❌ A-04-T03 — Audit service record(event) + model mixin capturing field diffs on save (pre/post snapshot, masked fields)
 
