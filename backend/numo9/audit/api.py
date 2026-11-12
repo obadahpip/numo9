@@ -19,9 +19,13 @@ filters plus ``organisation`` (public id).
 
 from __future__ import annotations
 
+from dataclasses import replace
 from typing import Any, cast
 
 from django.db.models import QuerySet
+from django.http import HttpResponse, HttpResponseBase, StreamingHttpResponse
+from django.utils import timezone
+from django.utils.text import slugify
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework.exceptions import NotFound
@@ -30,12 +34,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
+from numo9.i18n import errors
+from numo9.i18n.errors import api_error
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Organisation
 
+from . import exports
 from .models import AuditEvent
-from .permissions import AUDIT_VIEW, PLATFORM_AUDIT_VIEW
+from .permissions import AUDIT_EXPORT, AUDIT_VIEW, PLATFORM_AUDIT_VIEW
 from .presenter import VERB_LABELS, event_data, type_label
 from .query import AuditQuery, limit_of, loose_distinct, page, time_zone_of
 from .serializers import (
@@ -44,6 +51,7 @@ from .serializers import (
     AuditHistorySerializer,
     AuditPageSerializer,
 )
+from .service import record
 
 SELECT = ("actor_user", "impersonator")
 
@@ -208,3 +216,70 @@ class PlatformAuditListView(APIView):
         query = AuditQuery.from_params(request.query_params, None, platform=True)
         events = AuditEvent.platform_events.select_related(*SELECT)
         return Response(list_body(request, events, query, None))
+
+
+class AuditExportView(APIView):
+    """CSV / XLSX / PDF of the rows the viewer shows for the same filters (A-04-T08)."""
+
+    @requires_permission(AUDIT_EXPORT.key)
+    @extend_schema(
+        operation_id="audit_export",
+        summary="Export the audit log (same filters and rows as the list): CSV, XLSX or PDF",
+        parameters=[
+            OpenApiParameter(
+                "kind",
+                OpenApiTypes.STR,
+                OpenApiParameter.PATH,
+                enum=list(exports.FORMATS),
+                description="File format: csv, xlsx or pdf",
+            ),
+            *FILTER_PARAMETERS,
+        ],
+        responses={(200, "application/octet-stream"): OpenApiTypes.BINARY},
+    )
+    def get(self, request: Request, org: Any, kind: str) -> HttpResponseBase:
+        kind = kind.lower()
+        if kind not in exports.FORMATS:
+            raise api_error(errors.AUDIT_EXPORT_FORMAT)
+        organisation = _org()
+        query = replace(
+            AuditQuery.from_params(request.query_params, organisation), until=timezone.now()
+        )
+        user = cast(User, request.user)
+        locale, time_format = user.locale, user.time_format
+        events = exports.all_events(query, org_events())
+        name = (
+            f"audit-log_{slugify(organisation.name) or 'organisation'}_"
+            f"{query.date_from.isoformat()}_{query.date_to.isoformat()}.{kind}"
+        )
+        response: HttpResponseBase
+        if kind == "csv":
+            response = StreamingHttpResponse(
+                exports.write_csv(events, query, locale, time_format),
+                content_type=exports.CONTENT_TYPES["csv"],
+            )
+        else:
+            try:
+                body = (
+                    exports.write_xlsx(events, query, locale, time_format)
+                    if kind == "xlsx"
+                    else exports.write_pdf(
+                        events, query, locale, time_format, organisation_name=organisation.name
+                    )
+                )
+            except exports.ExportTooLarge as too_large:
+                raise api_error(
+                    errors.AUDIT_EXPORT_TOO_LARGE, limit=f"{too_large.limit:,}"
+                ) from None
+            response = HttpResponse(body, content_type=exports.CONTENT_TYPES[kind])
+        response["Content-Disposition"] = f'attachment; filename="{name}"'
+        response["Cache-Control"] = "no-store"
+        record(
+            "audit.log.exported",
+            organisation=organisation,
+            object_type="audit.Log",
+            object_label=str(organisation.name),
+            meta={"format": kind, "filters": query.describe()},
+            actor=user,
+        )
+        return response

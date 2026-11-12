@@ -299,3 +299,32 @@ named actions have their own words ("Signed in", "Invitation sent", "Role edited
 verb; record types and fields use the model's verbose names. In the list, text over 200
 characters comes back cut (`{"truncated": true, "text": …, "length": n}`); the event's detail has
 it whole. `viewer` carries the person's display preferences for the screen (A-04-T12).
+
+## Exports: CSV, XLSX, PDF (A-04-T08)
+
+`GET /api/v1/o/<org>/audit/export/<csv|xlsx|pdf>` with the viewer's filters — `audit.log.export`
+(the same roles as `audit.log.view`). `numo9.audit.exports` builds the **same `AuditQuery`** as the
+list and writes every row it returns, newest first, in keyset chunks: the file holds exactly the
+rows the screen pages through (`tests/test_audit_export.py` compares them by event id). Events
+written after the export started — including the export's own event — are not in it.
+
+| Column | Content |
+|---|---|
+| Date and time | Organisation time zone, the person's language and 12/24-hour preference: `26 Oct 2026, 4:33 p.m.` / `26 Oct 2026, 16:33` / `26 oct. 2026, 16 h 33` — never "16:33PM" (`numo9.documents.formatting.format_datetime`, the same output as `formatDateTime` in `@numo9/ui`). In XLSX a real date-time cell |
+| User | The actor label (`System: <job>` for jobs) |
+| Action, Record type, Record | Translated labels and the record's name |
+| Changes | `Amount: 100.00 → 120.50; Notes: (empty) → Net 30`; masked fields `Hidden` |
+| IP address, Request ID | Where it came from |
+| Event ID | The event's public id |
+
+- **CSV** streams any number of rows, UTF-8 with a byte-order mark (Excel shows accents).
+- **XLSX** (openpyxl, write-only) up to 1,000,000 rows; bold header.
+- **PDF** (WeasyPrint, `audit/export.html` on the document baseline, Letter) up to 2,000 rows —
+  beyond that `413 audit.export_too_large` asks to narrow the filters or choose CSV.
+- Text that a spreadsheet would run as a formula (`=`, `+`, `-`, `@`, tab) is written with a
+  leading `'` (CSV/formula injection).
+- File name `audit-log_<organisation>_<from>_<to>.<ext>`; `Cache-Control: no-store`.
+- Every export writes an `audit.log.exported` event (format and filters in `meta`).
+
+Exports run in the request. Very large ones move to a background job with a result link (A-08)
+when real volumes call for it.

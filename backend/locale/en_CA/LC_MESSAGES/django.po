@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 05:32-0500\n"
+"POT-Creation-Date: 2026-11-12 05:42-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,46 @@ msgstr ""
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr ""
 
+msgid "Date and time"
+msgstr ""
+
 msgid "User"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Record type"
+msgstr ""
+
+msgid "Record"
+msgstr ""
+
+msgid "Changes"
+msgstr ""
+
+msgid "IP address"
+msgstr ""
+
+msgid "Request ID"
+msgstr ""
+
+msgid "Event ID"
+msgstr ""
+
+msgid "(empty)"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Audit log"
 msgstr ""
 
 msgid "System"
@@ -159,9 +198,6 @@ msgstr ""
 msgid "details"
 msgstr ""
 
-msgid "IP address"
-msgstr ""
-
 msgid "device"
 msgstr ""
 
@@ -205,6 +241,9 @@ msgid "Restored"
 msgstr ""
 
 msgid "Bulk operation"
+msgstr ""
+
+msgid "Audit log exported"
 msgstr ""
 
 msgid "Signed in"
@@ -280,6 +319,17 @@ msgid "Access requested"
 msgstr ""
 
 msgid "Access request closed"
+msgstr ""
+
+#, python-format
+msgid "%(start)s to %(end)s · times in %(zone)s"
+msgstr ""
+
+#, python-format
+msgid "%(count)s events · exported %(when)s"
+msgstr ""
+
+msgid "No events match these filters."
 msgstr ""
 
 msgid "Documents"
@@ -505,6 +555,13 @@ msgstr ""
 
 #, python-format
 msgid "Show between 1 and %(max)s events per page."
+msgstr ""
+
+msgid "Choose an export format: CSV, XLSX or PDF."
+msgstr ""
+
+#, python-format
+msgid "This export has more than %(limit)s events. Narrow the dates or filters, or choose CSV, which has no limit."
 msgstr ""
 
 msgid "Waiting to start"

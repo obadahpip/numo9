@@ -1,0 +1,40 @@
+{% extends "documents/base.html" %}
+{% load i18n %}
+{% comment %}
+  A-04-T08 — audit log export (PDF). The rows are the screen's rows for the same filters.
+{% endcomment %}
+{% block title %}{% translate "Audit log" %}{% endblock %}
+{% block style %}
+  .audit td, .audit th { padding-inline-end: 6pt; font-size: 7.5pt; }
+  .audit td.changes { width: 32%; }
+  .audit .mono { font-family: "DejaVu Sans Mono", monospace; font-size: 6.5pt; color: #5B6472; }
+{% endblock %}
+{% block content %}
+  <h1>{% translate "Audit log" %}</h1>
+  <p class="muted">
+    {% blocktranslate with start=range_from end=range_to zone=time_zone %}{{ start }} to {{ end }} · times in {{ zone }}{% endblocktranslate %}<br>
+    {% blocktranslate with when=generated count=rows|length %}{{ count }} events · exported {{ when }}{% endblocktranslate %}
+  </p>
+  <table class="audit">
+    <thead>
+      <tr>
+        <th>{{ columns.0 }}</th><th>{{ columns.1 }}</th><th>{{ columns.2 }}</th>
+        <th>{{ columns.4 }}</th><th>{{ columns.5 }}</th><th>{{ columns.6 }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+        <td>{{ row.2 }}</td>
+        <td>{{ row.4 }}<br><span class="muted">{{ row.3 }}</span></td>
+        <td class="changes">{{ row.5 }}</td>
+        <td>{{ row.6 }}<br><span class="mono">{{ row.8 }}</span></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">{% translate "No events match these filters." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

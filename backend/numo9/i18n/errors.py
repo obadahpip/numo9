@@ -371,3 +371,15 @@ AUDIT_BAD_LIMIT = define(
     "audit.bad_limit",
     _("Show between 1 and %(max)s events per page."),
 )
+AUDIT_EXPORT_FORMAT = define(
+    "audit.export_format",
+    _("Choose an export format: CSV, XLSX or PDF."),
+)
+AUDIT_EXPORT_TOO_LARGE = define(
+    "audit.export_too_large",
+    _(
+        "This export has more than %(limit)s events. Narrow the dates or filters, or choose CSV, "
+        "which has no limit."
+    ),
+    status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+)

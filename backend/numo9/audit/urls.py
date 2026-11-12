@@ -15,6 +15,7 @@ urlpatterns = [
         name="audit-record-history",
     ),
     path(f"{ORG}filters", api.AuditFiltersView.as_view(), name="audit-filters"),
+    path(f"{ORG}export/<str:kind>", api.AuditExportView.as_view(), name="audit-export"),
     path(
         "platform/audit/events", api.PlatformAuditListView.as_view(), name="platform-audit-events"
     ),
