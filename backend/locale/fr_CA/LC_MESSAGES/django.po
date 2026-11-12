@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-11 12:56-0500\n"
+"POT-Creation-Date: 2026-11-12 03:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -300,6 +300,93 @@ msgstr "Personne ici ne peut encore accorder cette permission. Demandez au propr
 msgid "You can only ask for one of this organisation's permissions, e.g. organisation.settings.manage."
 msgstr "Vous ne pouvez demander qu’une des permissions de cette organisation, p. ex. organisation.settings.manage."
 
+msgid "Waiting to start"
+msgstr "En attente de démarrage"
+
+msgid "Running"
+msgstr "En cours"
+
+msgid "Waiting to try again"
+msgstr "En attente d’un nouvel essai"
+
+msgid "Done"
+msgstr "Terminé"
+
+msgid "Failed"
+msgstr "Échec"
+
+msgid "Failed after several tries"
+msgstr "Échec après plusieurs essais"
+
+msgid "organisation"
+msgstr "organisation"
+
+msgid "job type"
+msgstr "type de tâche"
+
+msgid "queue"
+msgstr "file d’attente"
+
+msgid "status"
+msgstr "statut"
+
+msgid "steps done"
+msgstr "étapes faites"
+
+msgid "steps in total"
+msgstr "étapes au total"
+
+msgid "progress note"
+msgstr "note d’avancement"
+
+msgid "arguments"
+msgstr "arguments"
+
+msgid "result"
+msgstr "résultat"
+
+msgid "result link"
+msgstr "lien du résultat"
+
+msgid "error code"
+msgstr "code d’erreur"
+
+msgid "error"
+msgstr "erreur"
+
+msgid "error detail"
+msgstr "détail de l’erreur"
+
+msgid "idempotency key"
+msgstr "clé d’idempotence"
+
+msgid "attempts"
+msgstr "essais"
+
+msgid "maximum retries"
+msgstr "nombre maximal de nouveaux essais"
+
+msgid "Celery task id"
+msgstr "identifiant de tâche Celery"
+
+msgid "worker"
+msgstr "processus de travail"
+
+msgid "started at"
+msgstr "commencée le"
+
+msgid "finished at"
+msgstr "terminée le"
+
+msgid "next try at"
+msgstr "prochain essai le"
+
+msgid "job run"
+msgstr "exécution de tâche"
+
+msgid "job runs"
+msgstr "exécutions de tâches"
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr "%(name)s demande un accès dans %(organisation)s"
@@ -413,9 +500,6 @@ msgid "description"
 msgstr ""
 
 msgid "system role"
-msgstr ""
-
-msgid "organisation"
 msgstr ""
 
 msgid "practice"
@@ -694,9 +778,6 @@ msgid "practice member"
 msgstr ""
 
 msgid "practice members"
-msgstr ""
-
-msgid "status"
 msgstr ""
 
 msgid "time zone"
