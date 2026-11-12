@@ -408,3 +408,26 @@ was created*.
 Tests: `backend/tests/test_audit_as_of.py` (the rebuilt state equals snapshots taken at the time,
 before creation, delete/restore, end of day in the organisation's zone, isolation),
 `frontend/e2e/record-history.spec.ts`.
+
+## Times: the viewer's 12/24-hour preference (A-04-T12)
+
+Every audit timestamp on screen goes through `frontend/src/audit/time.tsx` — `auditDateTime()` and
+the `<AuditTime>` element — which call `formatDateTime` of `@numo9/ui` (A-10-T08) with
+
+- the viewer's `time_format` (`12h` / `24h`, the A-02-T01 user preference) and the organisation's
+  time zone, both sent by the API in `viewer` with every list and history page;
+- the viewer's language.
+
+| | 12 h | 24 h |
+|---|---|---|
+| en-CA | `5 Jan 2026, 4:33 p.m.` | `5 Jan 2026, 16:33` |
+| fr-CA | `5 janv. 2026, 4 h 33 p.m.` | `5 janv. 2026, 16 h 33` |
+
+The hour cycle and the day period always come from one formatter, so a 24-hour clock with
+"PM" — Xero's "16:33PM" (gap-44) — cannot appear. The exports use the backend twin
+(`numo9.documents.formatting.format_datetime`), which writes the same text.
+
+Tests: `frontend/src/audit/time.test.tsx` — inline snapshots of every language × preference, the
+organisation's time zone, the per-language default, a sweep over a whole day that never finds a
+24-hour time with a.m./p.m., and snapshots of the `<time>` element and the DiffViewer text;
+`backend/tests/test_audit_export.py::test_times_follow_the_persons_preference`.
