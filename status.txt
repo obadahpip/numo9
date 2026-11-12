@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 101   Remaining: 2686
+TOTAL ATOMIC TASKS: 2787   Completed: 102   Remaining: 2685
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -146,7 +146,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-04-T03 — Audit service record(event) + model mixin capturing field diffs on save (pre/post snapshot, masked fields)
 
 [A-02]
-❌ A-02-T14 — Audit hooks: login success/fail, 2FA change, invite events → A-04
+✅ A-02-T14 — Audit hooks: login success/fail, 2FA change, invite events → A-04
 
 [A-04]
 ❌ A-04-T04 — Request middleware populating actor, IP, UA, request_id; job context for Celery
