@@ -246,3 +246,21 @@ error + retry from the API, only my jobs (colleague, other organisation, platfor
 the stream (ends at once when idle, progress events while another connection updates the run,
 time limit, `Last-Event-ID`), OpenAPI. The tenant sweep and the permission matrix cover the four
 endpoints.
+
+## Job tray (A-08-T07)
+
+`frontend/src/jobs/` — `JobTray` in the application shell's job-tray slot (top bar, 768 px and
+wider), on every organisation page.
+
+| | |
+|---|---|
+| When it shows | Once the person has a job in the organisation (going, or finished in the last day): a button named "Background jobs" / "Background jobs: N running", with a count badge and a spinning icon while jobs are going |
+| Drawer | Each job: its label and status badge (`queued` neutral, `running` info, `retrying` warning, `succeeded` success, `failed` / `dead` danger — `STATUS_TONES` in `@numo9/ui`), a progress bar while running (`role="progressbar"`, `aria-valuenow` = percent, "Working…" when the total is unknown) with the progress note, "Waiting for a free server…" when queued, "Numo9 will try again at …" when retrying, **Open the result** (`result_url`) when done, the error message, **Try again** (`POST jobs/<id>/retry`) and a short reference (first 8 characters of the id) when it failed |
+| Live updates (`useJobs`) | `GET jobs` on load; while a job is going it follows `GET jobs/events` (EventSource) and replaces the list on every `jobs` event, closing on `idle`. Without EventSource or when the stream cannot open: polls `GET jobs` every 3 s while a job is going. Otherwise checks every 30 s |
+| Starting a job from a screen | Call `notifyJobsChanged()` (`frontend/src/jobs/api.ts`) after the start request: the tray loads at once and follows the new job |
+
+Tests: `frontend/src/jobs/JobTray.test.tsx` (hidden without jobs, progress, polling to done with
+the result link, error + Try again, a failed retry, `notifyJobsChanged`, the event stream);
+`frontend/e2e/job-tray.spec.ts` (Playwright, API in the backend's shape: a bulk job's progress
+20 % → 60 % → done with its result link over the event stream, a failed job retried until done,
+hidden without jobs, axe on the open tray, no horizontal scroll).

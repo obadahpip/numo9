@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 
 import { OrgSwitcher } from "@/components/OrgSwitcher";
 import { defineMessages, useFormatMessage } from "@/i18n";
+import { JobTray } from "@/jobs/JobTray";
 import { primaryNav } from "@/routing/navigation";
 import { findOrgModule, orgModuleUrl } from "@/routing/routes";
 
@@ -79,9 +80,9 @@ interface AppShellProps {
 
 /**
  * Numo9 application shell (A-10-T05): the `@numo9/ui` shell with i18n labels, the organisation's
- * primary navigation, breadcrumbs and the org switcher (A-01-T14). The notification centre (A-07),
- * job tray (A-08), command palette (A-09), practice navigation (V-01) and the signed-in user
- * (A-02) plug into the shell's slots as those deliverables land.
+ * primary navigation, breadcrumbs, the org switcher (A-01-T14) and the job tray (A-08-T07). The
+ * notification centre (A-07), command palette (A-09), practice navigation (V-01) and the
+ * signed-in user (A-02) plug into the shell's slots as those deliverables land.
  */
 export function AppShell({ org, modulePath, children }: Readonly<AppShellProps>) {
   const fm = useFormatMessage();
@@ -110,6 +111,7 @@ export function AppShell({ org, modulePath, children }: Readonly<AppShellProps>)
           <OrgSwitcher org={org} modulePath={entry?.path} linkComponent={NextLink} />
         ) : undefined
       }
+      jobTray={org ? <JobTray org={org} /> : undefined}
       notifications={{ label: fm(messages.notifications) }}
       user={{
         label: fm(messages.userMenu),
