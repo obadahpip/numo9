@@ -328,3 +328,16 @@ JOB_NOT_QUEUED = define(
     _("This job couldn't be queued. Nothing was changed. Try again in a few minutes."),
     status.HTTP_503_SERVICE_UNAVAILABLE,
 )
+JOB_WORKER_LOST = define(
+    "job.worker_lost",
+    _(
+        "This job stopped the server running it %(attempts)s times, so Numo9 stopped trying. "
+        "Contact Numo9 support with the job's reference."
+    ),
+    status.HTTP_500_INTERNAL_SERVER_ERROR,
+)
+JOB_NOT_RETRYABLE = define(
+    "job.not_retryable",
+    _("Only a job that failed can be tried again. Refresh to see where this job stands."),
+    status.HTTP_409_CONFLICT,
+)

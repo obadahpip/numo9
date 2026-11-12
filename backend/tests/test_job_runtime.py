@@ -43,12 +43,13 @@ from numo9.jobs.runtime import (
 )
 from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Organisation
+from tests.job_helpers import deliver
 from tests.testapp.models import Widget
 
 CALLS: list[dict[str, Any]] = []
 
 
-@org_job(name="tests.jobs.make_widgets", queue=REPORTS)
+@org_job(name="tests.jobs.make_widgets", queue=REPORTS, max_retries=0)  # retries: T04 tests
 def make_widgets(*, org_id: str, labels: list[str], fail: str | None = None) -> dict[str, Any]:
     """Creates one Widget per label, reporting progress; optionally fails after the writes."""
     CALLS.append({"org": current_org(), "job": current_job()})
@@ -65,7 +66,7 @@ def make_widgets(*, org_id: str, labels: list[str], fail: str | None = None) -> 
     return {"made": len(labels)}
 
 
-@org_job(name="tests.jobs.make_widgets_in_steps", atomic=False)
+@org_job(name="tests.jobs.make_widgets_in_steps", atomic=False, max_retries=0)
 def make_widgets_in_steps(*, org_id: str, labels: list[str]) -> None:
     for label in labels:
         Widget.objects.create(label=label)
@@ -85,30 +86,6 @@ def _calls() -> Iterator[None]:
     CALLS.clear()
 
 
-@pytest.fixture
-def sent_on_commit() -> Iterator[list[dict[str, Any]]]:
-    """Messages sent by start_job (captured instead of reaching the broker)."""
-    messages: list[dict[str, Any]] = []
-
-    def capture(self: Any, args: Any = None, kwargs: Any = None, **options: Any) -> None:
-        messages.append({"task": self.name, "kwargs": kwargs, **options})
-
-    with mock.patch("celery.app.task.Task.apply_async", capture):
-        yield messages
-
-
-@pytest.fixture
-def sent(sent_on_commit: list[dict[str, Any]]) -> Iterator[list[dict[str, Any]]]:
-    """As ``sent_on_commit``, with commit callbacks run at once: the test transaction never
-    commits, while in production start_job runs in autocommit or a request that commits."""
-
-    def now(func: Any, using: Any = None, robust: bool = False) -> None:
-        func()
-
-    with mock.patch.object(transaction, "on_commit", now):
-        yield sent_on_commit
-
-
 def _org(name: str = "Maple Leaf Supply Ltd.", locale: str = "en-ca") -> Organisation:
     return Organisation.objects.create(name=name, locale=locale)
 
@@ -116,11 +93,6 @@ def _org(name: str = "Maple Leaf Supply Ltd.", locale: str = "en-ca") -> Organis
 def _user(locale: str = "en-ca") -> User:
     email = f"{uuid.uuid4().hex[:8]}@maple.ca"
     return User.objects.create_user(email=email, password="x" * 12, name="Dana", locale=locale)
-
-
-def deliver(task: Any, message: dict[str, Any]) -> Any:
-    """Run a captured message the way a worker does (raises what the task raised)."""
-    return task.apply(kwargs=message["kwargs"], task_id=message["task_id"]).get(propagate=True)
 
 
 # ---- starting a job ----------------------------------------------------------------------------
@@ -161,7 +133,7 @@ def test_start_job_creates_a_queued_run_and_sends_it(sent: list[dict[str, Any]])
     assert run.task_name == "tests.jobs.make_widgets"
     assert run.payload == {"labels": ["a"], "org_id": str(org.public_id)}
     assert run.idempotency_key == f"tests.jobs.make_widgets:{org.public_id}:batch-1"
-    assert run.max_retries == 5
+    assert run.max_retries == 0  # the task's setting
     assert len(sent) == 1
     assert sent[0]["kwargs"] == {**run.payload, JOB_RUN_ID: str(run.public_id)}
     assert (sent[0]["queue"], sent[0]["task_id"]) == ("reports", run.celery_task_id)
@@ -325,7 +297,8 @@ def test_atomic_job_that_fails_leaves_nothing_behind(sent: list[dict[str, Any]])
     run.refresh_from_db()
     with org_context_of(org):
         assert Widget.objects.count() == 0  # rolled back with the job
-    assert (run.status, run.error_code) == (JobStatus.FAILED, "job.failed")
+    # An unexpected error with no retries left: dead (A-08-T04 retries it otherwise).
+    assert (run.status, run.error_code) == (JobStatus.DEAD, "job.failed")
     assert run.error_message.startswith("Une erreur")  # in the starter's language
     assert run.error_detail.startswith("builtins.RuntimeError: disk full")
     assert "046 454 286" not in run.error_detail  # scrubbed (S-03-T06)
@@ -361,7 +334,7 @@ def test_non_atomic_job_keeps_its_steps(sent: list[dict[str, Any]]) -> None:
     with org_context_of(org):
         assert Widget.objects.count() == 2
     run.refresh_from_db()
-    assert run.status == JobStatus.FAILED
+    assert run.status == JobStatus.DEAD
 
 
 @pytest.mark.django_db

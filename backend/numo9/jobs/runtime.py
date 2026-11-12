@@ -41,7 +41,8 @@ When a worker runs the message, the base class
    (the default) the body and the ``succeeded`` mark commit in **one transaction**: a job that
    dies half-way leaves nothing behind, and the rerun applies its effect exactly once. Long jobs
    that report progress or commit in steps set ``atomic=False`` and make each step safe to repeat;
-5. stores the result (JSON) and the finish time — or the error (A-08-T04 adds retries).
+5. stores the result (JSON) and the finish time — or the error, retrying with backoff when
+   retrying can help (A-08-T04, ``retry.py``: ``retrying`` → … → ``dead``).
 
 Inside the body, ``current_job()`` is the run, ``report_progress(done, total, note)`` updates the
 job tray immediately (in an atomic job it becomes visible at commit), and ``set_result_url(url)``
@@ -63,21 +64,32 @@ import uuid
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar
+from datetime import timedelta
 from typing import Any
 
 import structlog
 from celery import Task, shared_task
+from celery.exceptions import WorkerLostError
 from django.db import IntegrityError, connection, transaction
 from django.utils import timezone, translation
 
 from numo9.i18n import errors
-from numo9.i18n.errors import ErrorMessage
+from numo9.i18n.errors import ErrorMessage, api_error
 from numo9.security.scrubbing import scrub_text
 from numo9.tenancy.models import Organisation
 from numo9.tenancy.tasks import ORG_ID, OrgTask
 
 from .models import JobRun, JobStatus
 from .queues import DEFAULT
+from .retry import (
+    DEFAULT_BACKOFF_BASE,
+    DEFAULT_BACKOFF_MAX,
+    DEFAULT_MAX_RETRIES,
+    JobResultNotJSON,
+    backoff_delay,
+)
+
+DEAD = JobStatus.DEAD
 
 logger = logging.getLogger("numo9.jobs")
 
@@ -291,6 +303,11 @@ def execute(task: Task, run_id: Any, org_id: str | None, body: Callable[[], Any]
         if run.is_finished:
             _log(logging.INFO, "job.skipped_finished", run)
             return run.result
+        if _worker_lost_too_often(run):  # a poison message: dead-letter it (A-08-T04)
+            lost = WorkerLostError(f"worker lost {run.attempts} times")
+            _finish_failed(run, errors.JOB_WORKER_LOST, {"attempts": run.attempts}, lost, DEAD)
+            _log(logging.ERROR, "job.dead", run, error="WorkerLostError")
+            return None
         _mark_running(task, run)
         started = time.monotonic()
         token = _current.set(run)
@@ -315,13 +332,66 @@ def execute(task: Task, run_id: Any, org_id: str | None, body: Callable[[], Any]
 
 
 def handle_failure(task: Task, run: JobRun, exc: Exception, started: float) -> Any:
-    """The body raised: record the error on the run and re-raise (A-08-T04 adds retries)."""
+    """The body raised: retry with backoff, or record the final error (A-08-T04, retry.py)."""
+    duration = _ms(started)
     if isinstance(exc, JobError):
-        _finish_failed(run, exc.error, exc.params, exc)
+        error, params, retryable = exc.error, exc.params, exc.retry
     else:
-        _finish_failed(run, errors.JOB_FAILED, {}, exc)
-    _log(logging.ERROR, "job.failed", run, duration_ms=_ms(started), error=type(exc).__name__)
+        error, params = errors.JOB_FAILED, {}
+        retryable = not isinstance(exc, (JobResultNotJSON, *task.throws))
+    if not retryable:
+        _finish_failed(run, error, params, exc)
+        _log(logging.ERROR, "job.failed", run, duration_ms=duration, error=type(exc).__name__)
+        raise exc
+    request = task.request
+    retries_done = int(getattr(request, "retries", 0) or 0)
+    if retries_done < run.max_retries and not getattr(request, "called_directly", True):
+        delay = backoff_delay(
+            retries_done + 1,
+            base=float(getattr(task, "backoff_base", DEFAULT_BACKOFF_BASE)),
+            cap=float(getattr(task, "backoff_max", DEFAULT_BACKOFF_MAX)),
+        )
+        _record_error(run, error, params, exc)
+        run.status = JobStatus.RETRYING
+        run.next_retry_at = timezone.now() + timedelta(seconds=delay)
+        run.save(
+            update_fields=[
+                "status",
+                "error_code",
+                "error_message",
+                "error_detail",
+                "next_retry_at",
+                "updated_at",
+            ]
+        )
+        _log(
+            logging.WARNING,
+            "job.retrying",
+            run,
+            duration_ms=duration,
+            error=type(exc).__name__,
+            retry=retries_done + 1,
+            delay_s=round(delay, 1),
+        )
+        raise task.retry(exc=exc, countdown=delay, max_retries=run.max_retries)
+    _finish_failed(run, error, params, exc, status=JobStatus.DEAD)
+    _log(logging.ERROR, "job.dead", run, duration_ms=duration, error=type(exc).__name__)
     raise exc
+
+
+def _worker_lost_too_often(run: JobRun) -> bool:
+    """The run is still ``running`` (its worker died) and has used up its tries."""
+    return run.status == JobStatus.RUNNING and run.attempts > run.max_retries
+
+
+def task_for(run: JobRun) -> Task:
+    """The registered job task of a run (to send it again)."""
+    from celery import current_app
+
+    task = current_app.tasks.get(run.task_name)
+    if not isinstance(task, JobTask | PlatformJobTask):
+        raise api_error(errors.JOB_NOT_RETRYABLE)
+    return task
 
 
 def _mark_running(task: Task, run: JobRun) -> None:
@@ -352,7 +422,7 @@ def _finish_succeeded(run: JobRun, result: Any) -> None:
     try:
         json.dumps(result)
     except (TypeError, ValueError) as exc:
-        raise TypeError(f"{run.task_name}: a job's result must be JSON ({exc}).") from exc
+        raise JobResultNotJSON(f"{run.task_name}: a job's result must be JSON ({exc}).") from exc
     run.status = JobStatus.SUCCEEDED
     run.result = result
     run.finished_at = timezone.now()
@@ -450,7 +520,7 @@ class JobTask(OrgTask):
 
     abstract = True
     atomic = True
-    max_retries = 5
+    max_retries = DEFAULT_MAX_RETRIES
     typing = False  # job_run_id is not a body argument; start_job validates the call
     throws: tuple[type[Exception], ...] = (*OrgTask.throws, *_MESSAGE_ERRORS)
 
@@ -473,7 +543,7 @@ class PlatformJobTask(Task):  # type: ignore[misc]  # celery is untyped
 
     abstract = True
     atomic = True
-    max_retries = 5
+    max_retries = DEFAULT_MAX_RETRIES
     typing = False
     throws = _MESSAGE_ERRORS
 

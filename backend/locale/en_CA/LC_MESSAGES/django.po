@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:16-0500\n"
+"POT-Creation-Date: 2026-11-12 03:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -304,6 +304,13 @@ msgid "Something went wrong while this job was running. Try again; if it fails a
 msgstr ""
 
 msgid "This job couldn't be queued. Nothing was changed. Try again in a few minutes."
+msgstr ""
+
+#, python-format
+msgid "This job stopped the server running it %(attempts)s times, so Numo9 stopped trying. Contact Numo9 support with the job's reference."
+msgstr ""
+
+msgid "Only a job that failed can be tried again. Refresh to see where this job stands."
 msgstr ""
 
 msgid "Waiting to start"

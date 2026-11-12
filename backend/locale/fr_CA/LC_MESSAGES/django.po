@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:16-0500\n"
+"POT-Creation-Date: 2026-11-12 03:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -305,6 +305,13 @@ msgstr "Une erreur s’est produite pendant l’exécution de cette tâche. Rée
 
 msgid "This job couldn't be queued. Nothing was changed. Try again in a few minutes."
 msgstr "Cette tâche n’a pas pu être mise en file d’attente. Rien n’a été modifié. Réessayez dans quelques minutes."
+
+#, python-format
+msgid "This job stopped the server running it %(attempts)s times, so Numo9 stopped trying. Contact Numo9 support with the job's reference."
+msgstr "Cette tâche a arrêté le serveur qui l’exécutait %(attempts)s fois; Numo9 a donc cessé d’essayer. Communiquez avec le soutien Numo9 en indiquant la référence de la tâche."
+
+msgid "Only a job that failed can be tried again. Refresh to see where this job stands."
+msgstr "Seule une tâche en échec peut être relancée. Actualisez la page pour voir où en est cette tâche."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
