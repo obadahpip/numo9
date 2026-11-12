@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:54-0500\n"
+"POT-Creation-Date: 2026-11-12 05:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -109,6 +109,78 @@ msgid "This password has appeared in a data breach, so attackers try it first. C
 msgstr ""
 
 msgid "Your password can't be one that has appeared in a known data breach."
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+msgid "Platform staff signed in as the user"
+msgstr ""
+
+msgid "sequence number"
+msgstr ""
+
+msgid "date and time"
+msgstr ""
+
+msgid "organisation"
+msgstr ""
+
+msgid "practice"
+msgstr ""
+
+msgid "actor kind"
+msgstr ""
+
+msgid "impersonator"
+msgstr ""
+
+msgid "by"
+msgstr ""
+
+msgid "action"
+msgstr ""
+
+msgid "record type"
+msgstr ""
+
+msgid "record ID"
+msgstr ""
+
+msgid "record"
+msgstr ""
+
+msgid "changes"
+msgstr ""
+
+msgid "details"
+msgstr ""
+
+msgid "IP address"
+msgstr ""
+
+msgid "device"
+msgstr ""
+
+msgid "request ID"
+msgstr ""
+
+msgid "batch ID"
+msgstr ""
+
+msgid "previous hash"
+msgstr ""
+
+msgid "hash"
+msgstr ""
+
+msgid "audit event"
+msgstr ""
+
+msgid "audit events"
 msgstr ""
 
 msgid "Documents"
@@ -337,9 +409,6 @@ msgstr ""
 msgid "Failed after several tries"
 msgstr ""
 
-msgid "organisation"
-msgstr ""
-
 msgid "job type"
 msgstr ""
 
@@ -514,9 +583,6 @@ msgid "description"
 msgstr ""
 
 msgid "system role"
-msgstr ""
-
-msgid "practice"
 msgstr ""
 
 msgid "created at"

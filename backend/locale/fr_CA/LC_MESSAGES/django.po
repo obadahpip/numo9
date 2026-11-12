@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:54-0500\n"
+"POT-Creation-Date: 2026-11-12 05:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -110,6 +110,78 @@ msgstr ""
 
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr ""
+
+msgid "User"
+msgstr "Utilisateur"
+
+msgid "System"
+msgstr "Système"
+
+msgid "Platform staff signed in as the user"
+msgstr "Personnel de la plateforme connecté en tant qu’utilisateur"
+
+msgid "sequence number"
+msgstr "numéro de séquence"
+
+msgid "date and time"
+msgstr "date et heure"
+
+msgid "organisation"
+msgstr "organisation"
+
+msgid "practice"
+msgstr "cabinet"
+
+msgid "actor kind"
+msgstr "type d’auteur"
+
+msgid "impersonator"
+msgstr "personne connectée à sa place"
+
+msgid "by"
+msgstr "par"
+
+msgid "action"
+msgstr "action"
+
+msgid "record type"
+msgstr "type de fiche"
+
+msgid "record ID"
+msgstr "ID de la fiche"
+
+msgid "record"
+msgstr "fiche"
+
+msgid "changes"
+msgstr "modifications"
+
+msgid "details"
+msgstr "détails"
+
+msgid "IP address"
+msgstr "adresse IP"
+
+msgid "device"
+msgstr "appareil"
+
+msgid "request ID"
+msgstr "ID de requête"
+
+msgid "batch ID"
+msgstr "ID du lot"
+
+msgid "previous hash"
+msgstr "empreinte précédente"
+
+msgid "hash"
+msgstr "empreinte"
+
+msgid "audit event"
+msgstr "événement du journal d’audit"
+
+msgid "audit events"
+msgstr "événements du journal d’audit"
 
 msgid "Documents"
 msgstr "Documents"
@@ -337,9 +409,6 @@ msgstr "Échec"
 msgid "Failed after several tries"
 msgstr "Échec après plusieurs essais"
 
-msgid "organisation"
-msgstr "organisation"
-
 msgid "job type"
 msgstr "type de tâche"
 
@@ -522,9 +591,6 @@ msgid "description"
 msgstr ""
 
 msgid "system role"
-msgstr ""
-
-msgid "practice"
 msgstr ""
 
 msgid "created at"
