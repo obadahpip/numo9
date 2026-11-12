@@ -58,6 +58,33 @@ async function mockRole(page: Page, { history = true }: { history?: boolean } = 
   const asked: string[] = [];
   await page.route(`${API}/audit/records/**`, (r) => {
     const url = new URL(r.request().url());
+    if (url.pathname.endsWith("/as-of")) {
+      asked.push(url.pathname + url.search);
+      const before = url.searchParams.get("at")! < "2026-06-01";
+      return r.fulfill({
+        json: {
+          record,
+          at: `${url.searchParams.get("at")}T23:59:59.999999-04:00`,
+          exists: !before,
+          deleted: false,
+          complete: !before,
+          events_applied: before ? 0 : 1,
+          last_event: before ? null : created,
+          state: before
+            ? []
+            : [
+                { field: "name", label: "Name", value: "Purchaser", masked: false },
+                {
+                  field: "bank_account",
+                  label: "Bank account",
+                  value: { masked: true },
+                  masked: true,
+                },
+              ],
+          viewer,
+        },
+      });
+    }
     asked.push(url.pathname + url.search);
     if (!history)
       return r.fulfill({ status: 404, json: { detail: "Not found.", code: "not_found" } });
@@ -112,4 +139,30 @@ test("system roles have no History button (they are not an organisation's record
   await page.goto(`/o/${ORG}/settings/users-roles/roles/${owner.id}`);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByRole("button", { name: "History" })).toHaveCount(0);
+});
+
+test("View as of a date: the record's fields as they were then (A-04-T11)", async ({ page }) => {
+  const asked = await mockRole(page);
+  await page.goto(`/o/${ORG}/settings/users-roles/roles/${BUYER_ID}`);
+  await page.getByRole("button", { name: "History" }).click();
+  const drawer = page.getByRole("dialog", { name: "History of Buyer" });
+  await drawer.getByRole("textbox", { name: "View as of" }).fill("1 Sep 2026");
+  await drawer.getByRole("textbox", { name: "View as of" }).press("Tab");
+  await drawer.getByRole("button", { name: "Show", exact: true }).click();
+  await expect(
+    drawer.getByRole("heading", { name: "Buyer at the end of 1 Sep 2026" }),
+  ).toBeVisible();
+  const fields = drawer.getByRole("definition");
+  await expect(drawer.locator("[data-as-of-field=name] dd")).toHaveText("Purchaser");
+  await expect(drawer.locator("[data-as-of-field=bank_account] dd")).toHaveText("Hidden");
+  expect(asked.at(-1)).toBe(
+    `/api/v1/o/${ORG}/audit/records/rbac.Role/${BUYER_ID}/as-of?at=2026-09-01`,
+  );
+  await expect(fields.first()).toBeVisible();
+  await expectAccessible(page);
+
+  await drawer.getByRole("textbox", { name: "View as of" }).fill("1 Jan 2026");
+  await drawer.getByRole("textbox", { name: "View as of" }).press("Tab");
+  await drawer.getByRole("button", { name: "Show", exact: true }).click();
+  await expect(drawer.getByText("This record didn't exist yet on that date.")).toBeVisible();
 });

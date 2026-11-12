@@ -100,3 +100,22 @@ class AuditFiltersSerializer(serializers.Serializer[Any]):
     users = AuditOptionSerializer(many=True)
     types = AuditOptionSerializer(many=True)
     actions = AuditOptionSerializer(many=True)
+
+
+class AuditAsOfFieldSerializer(serializers.Serializer[Any]):
+    field = serializers.CharField()
+    label = serializers.CharField()  # type: ignore[assignment]  # field named label
+    value = serializers.JSONField(allow_null=True)
+    masked = serializers.BooleanField()
+
+
+class AuditAsOfSerializer(serializers.Serializer[Any]):
+    record = AuditRecordSerializer()
+    at = serializers.DateTimeField()
+    exists = serializers.BooleanField(help_text="Created by then and not deleted")
+    deleted = serializers.BooleanField()
+    complete = serializers.BooleanField(help_text="The history starts at the record's creation")
+    events_applied = serializers.IntegerField()
+    last_event = AuditEventSerializer(allow_null=True)
+    state = AuditAsOfFieldSerializer(many=True, help_text="The fields as they were then")
+    viewer = AuditViewerSerializer()

@@ -327,6 +327,47 @@ export const m = defineMessages({
     defaultMessage: "Changes, newest first",
     description: "Accessible name of the history timeline",
   },
+  asOf: {
+    id: "audit.asOf",
+    defaultMessage: "View as of",
+    description: "Date field: show the record as it was at the end of that day",
+  },
+  asOfShow: {
+    id: "audit.asOfShow",
+    defaultMessage: "Show",
+    description: "Button: rebuild the record as of the chosen date",
+  },
+  asOfTitle: {
+    id: "audit.asOfTitle",
+    defaultMessage: "{record} at the end of {date}",
+    description: "Heading of the record rebuilt as of a date",
+  },
+  asOfMissing: {
+    id: "audit.asOfMissing",
+    defaultMessage: "This record didn't exist yet on that date.",
+    description: "As-of date before the record was created",
+  },
+  asOfDeleted: {
+    id: "audit.asOfDeleted",
+    defaultMessage: "This record was deleted on that date. Its last values:",
+    description: "As-of date while the record was deleted",
+  },
+  asOfPartial: {
+    id: "audit.asOfPartial",
+    defaultMessage:
+      "This record's history starts after it was created, so only the fields changed since are shown.",
+    description: "History does not start at creation",
+  },
+  asOfFailed: {
+    id: "audit.asOfFailed",
+    defaultMessage: "The record couldn't be rebuilt for that date. Choose the date again.",
+    description: "As-of request failed",
+  },
+  asOfFields: {
+    id: "audit.asOfFields",
+    defaultMessage: "Fields as they were",
+    description: "Accessible name of the rebuilt fields",
+  },
   openLog: {
     id: "audit.openLog",
     defaultMessage: "Open in the audit log",
