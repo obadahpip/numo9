@@ -38,6 +38,7 @@ from django.utils import timezone
 from numo9.tenancy.context import current_org
 from numo9.tenancy.models import Organisation, Practice
 
+from .batch import current_batch
 from .chain import seal
 from .context import current_actor, normalise_ip, user_label
 from .models import ActorKind, AuditEvent
@@ -164,6 +165,7 @@ def record(
     actor_label: str = "",
     ip: str | None = None,
     user_agent: str = "",
+    batch_id: uuid.UUID | None = None,
 ) -> AuditEvent:
     """Write one audit event in the caller's transaction and return it."""
     if not action or len(action) > 100:
@@ -183,6 +185,10 @@ def record(
         object_id = object_id or object_id_of(obj)
         object_label = object_label or label_of(obj)
     context = current_actor()
+    batch = current_batch()
+    if batch_id is None and batch is not None:
+        batch_id = batch.id
+        batch.count(action, object_type)
     user = actor if getattr(actor, "is_authenticated", False) else None
     kind: str
     if user is not None:
@@ -213,6 +219,7 @@ def record(
         ip=normalise_ip(ip) or context.ip,
         user_agent=(user_agent or context.user_agent)[:512],
         request_id=context.request_id[:64],
+        batch_id=batch_id,
     )
     with transaction.atomic(using=AuditEvent.platform_events.db):
         seal(event)  # id, prev_hash and hash: the organisation's hash chain (A-04-T05)
