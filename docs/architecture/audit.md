@@ -123,3 +123,25 @@ value. `record()` masks such names in hand-written `changes` too.
 The `rbac_changed` signal of A-03-T15 (role, assignment, approval-limit and access-request
 changes) is stored by `numo9.audit.receivers.store_rbac_change`: the organisation's event, or a
 practice event for practice roles, with the A-03 diff.
+
+## Sign-in, 2FA and invitation events (A-02-T14)
+
+`numo9.audit.auth_events` connects Django's and allauth's signals; the invitation service
+(`numo9.tenancy.invitations`) calls `invitation_event()` at each step.
+
+| Action | When | Log |
+|---|---|---|
+| `auth.login.succeeded` | signed in (after 2FA when used) | platform |
+| `auth.login.failed` | wrong email or password; `meta.email` = the address typed, known or not | platform |
+| `auth.login.locked` | refused because the address is locked (S-03-T07) | platform |
+| `auth.logout` | signed out | platform |
+| `auth.2fa.failed` | wrong 2FA or recovery code | platform |
+| `auth.2fa.enabled` / `auth.2fa.disabled` | authenticator app added / removed | platform |
+| `auth.recovery_codes.created` / `regenerated` / `removed` | recovery codes | platform |
+| `tenancy.invitation.created` / `resent` / `revoked` / `accepted` | invitation flows (A-02-T09) | the organisation, or the practice for practice staff |
+
+Sign-in and 2FA events are about a person, not an organisation: they have no organisation and are
+read by platform staff in the platform audit log (A-04-T07). Their record is the user (`accounts.User`,
+public id, email); a failed sign-in for an address without an account has no record id and the
+typed address as its label. Passwords, codes and invitation tokens are never recorded. allauth
+sends its 2FA signals after the change commits, so those events are written just after it.

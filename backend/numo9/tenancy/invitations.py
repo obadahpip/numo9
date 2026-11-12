@@ -35,6 +35,7 @@ from django.utils import formats, timezone, translation
 from django.utils.translation import gettext as _
 
 from numo9.accounts.models import User, normalise_email
+from numo9.audit.auth_events import invitation_event
 from numo9.i18n import errors
 from numo9.i18n.errors import CatalogueError, api_error
 
@@ -181,6 +182,13 @@ def create(
                 raise api_error(errors.INVITATION_ALREADY_PENDING, email=email)
             waiting.revoked_at = timezone.now()  # expired: replaced by the new one
             waiting.save(update_fields=["revoked_at", "updated_at"])
+            invitation_event(
+                "revoked",
+                waiting,
+                by=inviter,
+                changes={"status": [InvitationStatus.EXPIRED, InvitationStatus.REVOKED]},
+                reason="replaced",
+            )
         token, token_hash = new_token()
         try:
             with transaction.atomic():
@@ -195,6 +203,16 @@ def create(
                 )
         except IntegrityError as error:  # a concurrent request created the same one
             raise api_error(errors.INVITATION_ALREADY_PENDING, email=email) from error
+        invitation_event(
+            "created",
+            invitation,
+            by=inviter,
+            changes={
+                "email": [None, email],
+                "role": [None, role],
+                "expires_at": [None, invitation.expires_at],
+            },
+        )
     issued = Issued(invitation, token)
     if send:
         deliver(issued)
@@ -240,8 +258,12 @@ def resend(invitation: Invitation, *, by: User) -> Issued:
         if invitation.last_sent_at and timezone.now() - invitation.last_sent_at < RESEND_COOLDOWN:
             raise api_error(errors.INVITATION_RESEND_TOO_SOON)
         token, invitation.token_hash = new_token()
+        old_expiry = invitation.expires_at
         invitation.expires_at = timezone.now() + INVITATION_TTL
         invitation.save(update_fields=["token_hash", "expires_at", "updated_at"])
+        invitation_event(
+            "resent", invitation, by=by, changes={"expires_at": [old_expiry, invitation.expires_at]}
+        )
     issued = Issued(invitation, token)
     deliver(issued)
     return issued
@@ -256,6 +278,12 @@ def revoke(invitation: Invitation, *, by: User) -> Invitation:
             raise api_error(errors.INVITATION_NOT_PENDING)
         invitation.revoked_at = timezone.now()
         invitation.save(update_fields=["revoked_at", "updated_at"])
+        invitation_event(
+            "revoked",
+            invitation,
+            by=by,
+            changes={"status": [InvitationStatus.PENDING, InvitationStatus.REVOKED]},
+        )
     return invitation
 
 
@@ -337,6 +365,12 @@ def accept(token: str, user: User, *, practice: Practice | None = None) -> Invit
         invitation.accepted_at = timezone.now()
         invitation.accepted_by = user
         invitation.save(update_fields=["accepted_at", "accepted_by", "updated_at"])
+        invitation_event(
+            "accepted",
+            invitation,
+            by=user,
+            changes={"status": [InvitationStatus.PENDING, InvitationStatus.ACCEPTED]},
+        )
     return invitation
 
 
