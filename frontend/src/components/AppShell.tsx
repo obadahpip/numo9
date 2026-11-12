@@ -75,6 +75,8 @@ interface AppShellProps {
   org?: string;
   /** Current module path in the route registry, e.g. `accounting/journals`. */
   modulePath?: string;
+  /** Breadcrumb of a page outside the organisation registry (platform console, A-08-T08). */
+  section?: string;
   children: ReactNode;
 }
 
@@ -84,14 +86,14 @@ interface AppShellProps {
  * notification centre (A-07), command palette (A-09), practice navigation (V-01) and the
  * signed-in user (A-02) plug into the shell's slots as those deliverables land.
  */
-export function AppShell({ org, modulePath, children }: Readonly<AppShellProps>) {
+export function AppShell({ org, modulePath, section, children }: Readonly<AppShellProps>) {
   const fm = useFormatMessage();
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
   const homeHref = org ? orgModuleUrl(org, "home") : "/";
 
   const breadcrumbs: ShellCrumb[] = [];
   if (org) breadcrumbs.push({ label: org, href: homeHref });
-  breadcrumbs.push({ label: fm(entry?.label ?? messages.home) });
+  breadcrumbs.push({ label: section ?? fm(entry?.label ?? messages.home) });
 
   return (
     <Shell

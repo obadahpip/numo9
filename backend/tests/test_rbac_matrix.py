@@ -142,7 +142,12 @@ def sign_in(subject: Subject, world: World, permission: str) -> Client:
         role = Role.objects.create(
             scope=RoleScope.ORGANISATION, name="Exactly this", organisation=world.org
         )
-        if permission not in (PUBLIC, AUTHENTICATED):
+        # An organisation role can only hold organisation permissions: for a platform key (the
+        # console's job dashboard, A-08-T08) the custom subject holds nothing and is refused.
+        if (
+            permission not in (PUBLIC, AUTHENTICATED)
+            and catalogue.get(permission).scope == Scope.ORGANISATION
+        ):
             role.grants.create(permission=permission)
         RoleAssignment.objects.create(role=role, user=user, organisation=world.org)
     elif subject.kind == "practice":

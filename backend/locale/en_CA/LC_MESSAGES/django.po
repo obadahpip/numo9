@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:37-0500\n"
+"POT-Creation-Date: 2026-11-12 03:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,6 +311,12 @@ msgid "This job stopped the server running it %(attempts)s times, so Numo9 stopp
 msgstr ""
 
 msgid "Only a job that failed can be tried again. Refresh to see where this job stands."
+msgstr ""
+
+msgid "Choose the jobs to purge: tick them in the list, or pick a status (dead or failed)."
+msgstr ""
+
+msgid "Filter by an organisation's public ID, e.g. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."
 msgstr ""
 
 msgid "Waiting to start"
