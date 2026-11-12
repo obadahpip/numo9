@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 107   Remaining: 2680
+TOTAL ATOMIC TASKS: 2787   Completed: 108   Remaining: 2679
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -153,7 +153,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-04-T05 — Hash chain per org (SHA-256 of prev_hash + payload) + audit_verify command
 ✅ A-04-T06 — Bulk/batch support (batch_id, summary event)
 ✅ A-04-T07 — API: list with filters (date range default 90 days, user, type, action, object), per-record timeline, cursor pagination
-❌ A-04-T08 — Exports CSV/XLSX/PDF from the same query object as the screen
+✅ A-04-T08 — Exports CSV/XLSX/PDF from the same query object as the screen
 ❌ A-04-T09 — Global audit viewer screen (DataGrid, presets, filters, DiffViewer, export menu)
 ❌ A-04-T10 — Record history drawer component reusable on every detail page
 ❌ A-04-T11 — "View as of date" reconstruct endpoint + UI [EXTRA]
