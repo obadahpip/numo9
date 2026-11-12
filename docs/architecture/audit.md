@@ -361,3 +361,23 @@ Settings → Audit log, `/o/<org>/settings/audit-log` (`frontend/src/audit/Audit
 
 Tests: `frontend/e2e/audit-log.spec.ts` (filters reach the API and the export links, custom
 dates, the drawer and DiffViewer, pages, refusal, 360 px, axe), `src/audit/presets.test.ts`.
+
+## Record history drawer (A-04-T10)
+
+`frontend/src/audit/RecordHistory.tsx` — the **History** button a detail page puts next to its
+heading, and the drawer it opens:
+
+```tsx
+<RecordHistory org={org} type="contacts.Contact" id={contact.id} label={contact.name} />
+```
+
+The drawer reads `GET …/audit/records/<type>/<id>` (every date, newest first) and shows each
+change: action, date and time (the viewer's 12/24-hour preference), who, and the DiffViewer.
+**Show older changes** pages back; **Open in the audit log** opens the global viewer filtered to
+the record. A record without history says so (the API's 404); a refusal shows the API's sentence.
+
+Mounted today on the role editor for custom roles (system roles belong to no organisation). The
+contact (B-01) and account (C-01) detail pages mount the same component when they are built —
+`type` is the model label, `id` the public id.
+
+Tests: `frontend/e2e/record-history.spec.ts`.

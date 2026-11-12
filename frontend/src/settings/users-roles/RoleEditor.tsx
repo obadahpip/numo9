@@ -18,6 +18,7 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { apiRequest } from "@/auth/client";
 import { PermissionExplain } from "@/components/PermissionExplain";
+import { RecordHistory } from "@/audit/RecordHistory";
 import { useFormatMessage } from "@/i18n";
 
 import {
@@ -253,7 +254,12 @@ export function RoleEditor({
         >
           {fm(rm.back)}
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold">{title}</h1>
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-semibold">{title}</h1>
+          {role && !role.is_system ? (
+            <RecordHistory org={org} type="rbac.Role" id={role.id} label={role.name} />
+          ) : null}
+        </div>
       </div>
       {readOnly ? (
         <div className="flex flex-col items-start gap-3 rounded-md border-2 border-border bg-surface-info-subtle px-4 py-3 text-sm">
