@@ -53,6 +53,7 @@
     "history": "History",
     "historyEmpty": "No changes recorded for this record yet.",
     "historyFailed": "The history couldn't be loaded. Close and open it again.",
+    "historyLoading": "Loading the history",
     "historyMore": "Show older changes",
     "historyOf": "History of {record}",
     "impersonated": "Signed in as this person by {name} (platform support)",

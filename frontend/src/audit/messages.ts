@@ -302,6 +302,11 @@ export const m = defineMessages({
     defaultMessage: "History of {record}",
     description: "Title of the record history drawer",
   },
+  historyLoading: {
+    id: "audit.historyLoading",
+    defaultMessage: "Loading the history",
+    description: "Loading state of the record history drawer",
+  },
   historyEmpty: {
     id: "audit.historyEmpty",
     defaultMessage: "No changes recorded for this record yet.",
