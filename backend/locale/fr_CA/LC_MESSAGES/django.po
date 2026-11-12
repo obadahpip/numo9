@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:08-0500\n"
+"POT-Creation-Date: 2026-11-12 03:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,6 +299,12 @@ msgstr "Personne ici ne peut encore accorder cette permission. Demandez au propr
 
 msgid "You can only ask for one of this organisation's permissions, e.g. organisation.settings.manage."
 msgstr "Vous ne pouvez demander qu’une des permissions de cette organisation, p. ex. organisation.settings.manage."
+
+msgid "Something went wrong while this job was running. Try again; if it fails again, contact Numo9 support with the job's reference."
+msgstr "Une erreur s’est produite pendant l’exécution de cette tâche. Réessayez; si l’erreur se reproduit, communiquez avec le soutien Numo9 en indiquant la référence de la tâche."
+
+msgid "This job couldn't be queued. Nothing was changed. Try again in a few minutes."
+msgstr "Cette tâche n’a pas pu être mise en file d’attente. Rien n’a été modifié. Réessayez dans quelques minutes."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"

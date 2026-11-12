@@ -312,3 +312,19 @@ ACCESS_PERMISSION = define(
         "organisation.settings.manage."
     ),
 )
+
+# ---- background jobs (A-08) ----------------------------------------------------------------
+# Stored on the job run in the language of the person who started it (job tray, A-08-T07).
+JOB_FAILED = define(
+    "job.failed",
+    _(
+        "Something went wrong while this job was running. Try again; if it fails again, "
+        "contact Numo9 support with the job's reference."
+    ),
+    status.HTTP_500_INTERNAL_SERVER_ERROR,
+)
+JOB_NOT_QUEUED = define(
+    "job.not_queued",
+    _("This job couldn't be queued. Nothing was changed. Try again in a few minutes."),
+    status.HTTP_503_SERVICE_UNAVAILABLE,
+)

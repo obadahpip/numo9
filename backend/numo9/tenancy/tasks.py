@@ -82,7 +82,7 @@ class OrgTask(Task):  # type: ignore[misc]  # celery is untyped
 
     abstract = True
     #: A message without org_id is a programming error: never retry it automatically.
-    throws = (OrgIdRequired, UnknownOrganisation)
+    throws: tuple[type[Exception], ...] = (OrgIdRequired, UnknownOrganisation)
 
     def apply_async(
         self,
