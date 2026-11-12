@@ -44,3 +44,23 @@ month on `created_at`:
 only returns the active organisation's events. `AuditEvent.platform_events` reads every event,
 including platform and practice events; it is used by the platform audit endpoint and the chain
 verifier only.
+
+## Append-only (A-04-T02)
+
+Migration `audit.0002_append_only`:
+
+1. **Privileges** — `UPDATE`, `DELETE` and `TRUNCATE` on `audit_event` are revoked from `PUBLIC`
+   and from the role that runs the migrations (the table owner: the application role in staging
+   and production). The application can only `INSERT` and `SELECT`.
+2. **Trigger** `audit_event_append_only` (`BEFORE UPDATE OR DELETE`, for each row) raises
+   `insufficient_privilege` with *audit_event is append-only*. It also stops roles that ignore
+   privileges (superusers) or were granted too much by mistake, and it carries over to every
+   partition when S-06-T03 partitions the table.
+
+The model refuses too: `AuditEvent.save()` on a stored event and `delete()` raise
+`AuditImmutable` before any SQL is sent. Bulk `QuerySet.update()` / `delete()` reach the database
+and are refused there (`tests/test_audit_append_only.py`).
+
+`TRUNCATE` is a table operation, not a row change: only a superuser can still empty the table (the
+test runner does between transactional tests). Retention (≥ 6 years, CRA) is handled by dropping
+whole monthly partitions once they are past retention (S-06), never by deleting rows.
