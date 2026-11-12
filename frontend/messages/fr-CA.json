@@ -169,6 +169,24 @@
     "placeholder": "Application shell placeholder.",
     "title": "Home"
   },
+  "jobs": {
+    "tray": {
+      "button": "{active, plural, =0 {Background jobs} one {Background jobs: # running} other {Background jobs: # running}}",
+      "close": "Close background jobs",
+      "description": "Jobs you started in this organisation. Finished jobs stay here for a day.",
+      "empty": "You have no background jobs right now.",
+      "finishedAt": "Finished {time}",
+      "nextTry": "Numo9 will try again at {time}.",
+      "openResult": "Open the result",
+      "progress": "{percent}% done",
+      "reference": "Reference: {reference}",
+      "retry": "Try again",
+      "retryFailed": "The job couldn't be started again. Try again in a few minutes.",
+      "title": "Background jobs",
+      "waiting": "Waiting for a free server…",
+      "working": "Working…"
+    }
+  },
   "notFound": {
     "body": "The address may be mistyped, or the page may have moved. Search for the page or go to Home.",
     "home": "Go to Home",

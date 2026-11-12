@@ -31,6 +31,12 @@ export const STATUS_TONES = {
   scanning: "info",
   infected: "danger",
   ready: "success",
+  // Background jobs (A-08-T07); `failed` is the generic one below
+  queued: "neutral",
+  running: "info",
+  retrying: "warning",
+  succeeded: "success",
+  dead: "danger",
   // Generic
   archived: "neutral",
   failed: "danger",
