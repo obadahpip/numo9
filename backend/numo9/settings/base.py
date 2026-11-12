@@ -118,6 +118,8 @@ SPECTACULAR_SETTINGS = {
         "RoleScopeEnum": "numo9.rbac.models.RoleScope",
         "MemberKindEnum": "numo9.rbac.serializers.MEMBER_KINDS",
         "InvitationKindEnum": "numo9.tenancy.models.InvitationKind",
+        "JobStatusEnum": "numo9.jobs.models.JobStatus",  # A-08-T06
+        "JobPurgeStatusEnum": [("dead", "dead"), ("failed", "failed")],  # A-08-T08
     },
 }
 
@@ -141,6 +143,8 @@ TENANT_SWEEP_EXEMPT = [
     # invitations have none); every object is checked by numo9.tenancy.invitations (404/403).
     r"^api/v1/invitations",
     r"^api/v1/permissions/catalogue$",  # the permission catalogue: same for everyone (A-03-T09)
+    # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
+    r"^api/v1/platform/",
 ]
 
 # Overridden per environment.

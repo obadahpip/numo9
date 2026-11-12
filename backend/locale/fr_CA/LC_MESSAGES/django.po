@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 03:37-0500\n"
+"POT-Creation-Date: 2026-11-12 03:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -312,6 +312,12 @@ msgstr "Cette tâche a arrêté le serveur qui l’exécutait %(attempts)s fois;
 
 msgid "Only a job that failed can be tried again. Refresh to see where this job stands."
 msgstr "Seule une tâche en échec peut être relancée. Actualisez la page pour voir où en est cette tâche."
+
+msgid "Choose the jobs to purge: tick them in the list, or pick a status (dead or failed)."
+msgstr "Choisissez les tâches à purger : cochez-les dans la liste ou choisissez un statut (abandonnée ou en échec)."
+
+msgid "Filter by an organisation's public ID, e.g. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."
+msgstr "Filtrez par l’identifiant public d’une organisation, p. ex. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"

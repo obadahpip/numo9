@@ -341,3 +341,11 @@ JOB_NOT_RETRYABLE = define(
     _("Only a job that failed can be tried again. Refresh to see where this job stands."),
     status.HTTP_409_CONFLICT,
 )
+JOB_PURGE_FILTER = define(
+    "job.purge_filter",
+    _("Choose the jobs to purge: tick them in the list, or pick a status (dead or failed)."),
+)
+JOB_CONSOLE_ORGANISATION = define(
+    "job.console_organisation",
+    _("Filter by an organisation's public ID, e.g. 7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6."),
+)

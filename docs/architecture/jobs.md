@@ -264,3 +264,37 @@ the result link, error + Try again, a failed retry, `notifyJobsChanged`, the eve
 `frontend/e2e/job-tray.spec.ts` (Playwright, API in the backend's shape: a bulk job's progress
 20 % → 60 % → done with its result link over the event stream, a failed job retried until done,
 hidden without jobs, axe on the open tray, no horizontal scroll).
+
+## Job dashboard in the platform console (A-08-T08)
+
+The dashboard is Numo9's own page, not Flower: it reads `JobRun` (which knows organisations,
+people, errors and payloads) and the broker's queue lengths, behind Numo9 sign-in and the platform
+permissions. Flower is not deployed.
+
+**API** — `numo9/jobs/console.py`, under `/api/v1/platform/jobs` (not organisation-scoped; on the
+tenant sweep's exempt list). `platform.jobs.view` to look (platform owner, platform support),
+`platform.jobs.manage` to act (platform owner).
+
+| Method and path | Permission | What it does |
+|---|---|---|
+| `GET overview` | view | Per queue: messages waiting in the broker (`null` when it cannot be reached), runs queued / running / waiting to retry. Counts: queued, running, retrying, done and failed in 24 h, dead |
+| `GET ` (list) | view | Runs of every organisation and the platform, newest first; `status`, `queue`, `type`, `organisation` (public id), `q` (task, error code, organisation name, or the short reference shown in the tray), `limit` ≤ 100, `offset`; `{count, results}` |
+| `GET <id>` | view | One run with technical detail: organisation, starter, queue, **scrubbed** arguments, error detail, worker, Celery task id, idempotency key, max retries |
+| `POST <id>/retry` | manage | `retry_run` → `202`; `409 job.not_retryable` unless failed / dead |
+| `POST purge` | manage | Deletes failed / dead runs only (the dead-letter queue): `{"ids": [...]}` or `{"status": "dead"\|"failed", "older_than_days": n}`; nothing chosen → `400 job.purge_filter`. Broker queues are never purged (their messages belong to queued runs) |
+
+Retries and purges are logged on `numo9.jobs` (`job.retried_by_hand`, `jobs.purged` with who and
+how many) until the audit log (A-04) records platform actions.
+
+**Page** — `/console/jobs` (`frontend/src/console/jobs/ConsoleJobsScreen.tsx`): count tiles,
+the queue table, the job list (dead jobs first) with status / queue / search filters, each job's
+organisation, status, tries, error and **Details** (error detail, arguments, worker, task id,
+key), **Try again**, row selection with **Purge N selected jobs**, and **Purge dead jobs older
+than 7 days**. Refused API answers are shown as they come (the refusal panel without
+`platform.jobs.view`, the API's sentence when support tries to act).
+
+Tests: `backend/tests/test_job_console.py` (owner sees a dead run with scrubbed detail and
+arguments, overview counts and queues, broker queue lengths and broker down, filters and search,
+retry, purge of dead letters only, support may look but not act, organisation people refused);
+`frontend/e2e/job-console.spec.ts` (owner sees failures and retries one, purge chosen and old
+dead letters, filters reach the API, support told why, refusal panel, 360 px + axe).
