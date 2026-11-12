@@ -2,7 +2,8 @@
 
 Partition-ready (S-06-T03): primary key ``(created_at, id)``, ``id`` from the sequence
 ``audit_event_id_seq`` (created first, then owned by the column), no unique constraint without
-the partition key, nothing references the table.
+the partition key, nothing references the table. The SQL steps run on PostgreSQL only (the
+CI jobs that build a throw-away SQLite database just to start the app skip them).
 """
 
 import uuid
@@ -11,6 +12,8 @@ import django.db.models.deletion
 import django.utils.timezone
 from django.conf import settings
 from django.db import migrations, models
+
+from numo9.audit.pg import PostgresOnly
 
 
 class Migration(migrations.Migration):
@@ -22,7 +25,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL(
+        PostgresOnly(
             sql="CREATE SEQUENCE audit_event_id_seq AS bigint",
             reverse_sql="DROP SEQUENCE IF EXISTS audit_event_id_seq",
         ),
@@ -228,7 +231,7 @@ class Migration(migrations.Migration):
                 ],
             },
         ),
-        migrations.RunSQL(
+        PostgresOnly(
             sql="ALTER SEQUENCE audit_event_id_seq OWNED BY audit_event.id",
             reverse_sql=migrations.RunSQL.noop,
         ),

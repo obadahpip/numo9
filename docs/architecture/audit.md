@@ -443,3 +443,8 @@ organisation's time zone, the per-language default, a sweep over a whole day tha
 | Hash chain tamper detection, concurrency | `backend/tests/test_audit_chain.py` |
 
 The performance test inserts its rows with `generate_series` (about 30 s in CI).
+
+**PostgreSQL only.** The sequence, the append-only trigger and the advisory-lock hash chain exist
+on PostgreSQL. The migrations' SQL steps (`numo9.audit.pg.PostgresOnly`) are skipped on other
+databases, so a throw-away SQLite database can still be migrated (the CI security-header job only
+starts the app); every job that runs tests uses PostgreSQL 16, including `gap-tests`.
