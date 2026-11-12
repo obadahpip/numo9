@@ -42,7 +42,9 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 # Celery (A-08-T01): in-process broker and results, so tests run a real worker thread without a
 # Redis server (tests/test_celery.py). The Redis integration test runs when
 # NUMO9_TEST_REDIS_URL is set.
-CELERY_BROKER_URL = "memory://"
+# The worker-restart test (A-08-T09) starts real worker processes on a Redis broker:
+# NUMO9_TEST_CELERY_BROKER_URL points them (and only them) at it.
+CELERY_BROKER_URL = env_str("NUMO9_TEST_CELERY_BROKER_URL", "memory://")
 CELERY_RESULT_BACKEND = "cache+memory://"
 
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —

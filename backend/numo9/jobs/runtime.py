@@ -33,7 +33,8 @@ When a worker runs the message, the base class
    forged or misrouted message); these are never retried;
 2. takes a PostgreSQL **advisory lock** on the run for as long as it runs (released when the
    process dies, so a crashed run can be picked up again). A second delivery of the same run while
-   the lock is held is skipped — the worker holding it finishes the job;
+   the lock is held is skipped and sent again 30 s later (it then finds the run finished — or, if
+   the holder was a worker that had just died, runs it), so no delivery is ever lost;
 3. skips a run that has **already finished** (a redelivered message after success): the stored
    result is returned and the body does not run again;
 4. marks the run ``running`` (attempt count, worker, start time) and runs the body — organisation
@@ -298,6 +299,7 @@ def execute(task: Task, run_id: Any, org_id: str | None, body: Callable[[], Any]
     with run_lock(run) as acquired:
         if not acquired:
             _log(logging.WARNING, "job.skipped_locked", run)
+            _check_again_later(task)
             return None
         run.refresh_from_db()
         if run.is_finished:
@@ -329,6 +331,30 @@ def execute(task: Task, run_id: Any, org_id: str | None, body: Callable[[], Any]
             _current.reset(token)
         _log(logging.INFO, "job.succeeded", run, duration_ms=_ms(started))
         return result
+
+
+#: A delivery that finds its run locked is sent again this much later (A-08-T09).
+LOCKED_RECHECK_SECONDS = 30
+
+
+def _check_again_later(task: Task) -> None:
+    """Send this delivery again later instead of dropping it.
+
+    The lock is normally held by a live worker that will finish the run — the later delivery then
+    finds it finished and stops. But a worker killed a moment ago may still hold the lock until
+    PostgreSQL notices its connection is gone; dropping the message then would leave the run
+    ``running`` for ever. Same Celery task id and retry count: this is not a retry of a failure.
+    """
+    request = task.request
+    if getattr(request, "called_directly", True):
+        return
+    task.apply_async(
+        kwargs=dict(request.kwargs or {}),
+        task_id=request.id,
+        countdown=LOCKED_RECHECK_SECONDS,
+        retries=request.retries or 0,
+        queue=(request.delivery_info or {}).get("routing_key") or None,
+    )
 
 
 def handle_failure(task: Task, run: JobRun, exc: Exception, started: float) -> Any:

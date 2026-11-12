@@ -309,8 +309,9 @@ CELERY_TASK_SOFT_TIME_LIMIT = env_int("CELERY_TASK_SOFT_TIME_LIMIT", 25 * 60)
 CELERY_TASK_TIME_LIMIT = env_int("CELERY_TASK_TIME_LIMIT", 30 * 60)
 # Redis redelivers an unacknowledged message after the visibility timeout: it must be longer
 # than the hard time limit, or a long task would run twice while still running.
-CELERY_BROKER_TRANSPORT_OPTIONS = {"visibility_timeout": 2 * 60 * 60}
-CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {"visibility_timeout": 2 * 60 * 60}
+CELERY_VISIBILITY_TIMEOUT = env_int("CELERY_VISIBILITY_TIMEOUT", 2 * 60 * 60)
+CELERY_BROKER_TRANSPORT_OPTIONS = {"visibility_timeout": CELERY_VISIBILITY_TIMEOUT}
+CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = {"visibility_timeout": CELERY_VISIBILITY_TIMEOUT}
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # Queues: high / default / io / reports (numo9/jobs/queues.py); unnamed tasks go to default.
 CELERY_TASK_QUEUES = QUEUES

@@ -26,7 +26,7 @@ fails (exit 1) when no worker answers — used after a deploy.
 | `task_acks_late` + `task_reject_on_worker_lost` | on | A task is acknowledged after it finishes; a worker that dies mid-task leaves it to be delivered again (A-08-T03 idempotency keys make that safe) |
 | `worker_prefetch_multiplier` | 1 | Each worker process reserves one message: no short job waits behind a long one |
 | Time limits | soft 25 min (`SoftTimeLimitExceeded` in the task), hard 30 min (process killed); env `CELERY_TASK_SOFT_TIME_LIMIT`, `CELERY_TASK_TIME_LIMIT`; per task overrides for long reports | Runaway jobs end |
-| `visibility_timeout` | 2 h | Must exceed the hard limit, or Redis would redeliver a task that is still running |
+| `visibility_timeout` | 2 h (env `CELERY_VISIBILITY_TIMEOUT`) | Must exceed the hard limit, or Redis would redeliver a task that is still running |
 | Results | kept 1 day, extended (name, args, queue) | What users see is kept in `JobRun` (A-08-T02, 30 days) |
 | Queues | `high`, `default`, `io`, `reports`; unnamed tasks → `default`; unknown queue names are refused (`task_create_missing_queues = False`) | See below |
 | Events | task events on | Job dashboard (A-08-T08) |
@@ -117,7 +117,7 @@ the surrounding transaction commits; if the broker refuses, the run becomes `fai
 | Step | What happens |
 |---|---|
 | Check the message | No `job_run_id` → `JobRunRequired`; unknown run, other task or other organisation than the run's → `JobRunMismatch` (both in `throws`: logged, never retried) |
-| Lock | PostgreSQL session advisory lock on the run (`0xA08 << 40 \| run id`) for the whole run. Held by another worker → the delivery is skipped (`job.skipped_locked`). A killed worker's connection closes and releases it, so the redelivered message can take over |
+| Lock | PostgreSQL session advisory lock on the run (`0xA08 << 40 \| run id`) for the whole run. Held by another worker → the delivery is skipped (`job.skipped_locked`) and sent again 30 s later with the same task id (`LOCKED_RECHECK_SECONDS`; it then finds the run finished, or runs it if the holder was a worker that had just died — no delivery is dropped, A-08-T09). A killed worker's connection closes and releases the lock, so the redelivered message can take over |
 | Already finished? | A redelivered message of a finished run returns the stored result; the body does not run (`job.skipped_finished`) |
 | Mark running | `attempts + 1`, `worker` (`host:pid`), `started_at` (first try), Celery task id |
 | Run the body | Organisation jobs inside `org_context` (scoped managers, RLS setting). `atomic = True` (default): the body and the `succeeded` mark are one transaction — a job that dies half-way leaves nothing, and its rerun applies the effect once. `atomic=False` for long jobs that commit as they go (each step must be safe to repeat) |
@@ -298,3 +298,25 @@ arguments, overview counts and queues, broker queue lengths and broker down, fil
 retry, purge of dead letters only, support may look but not act, organisation people refused);
 `frontend/e2e/job-console.spec.ts` (owner sees failures and retries one, purge chosen and old
 dead letters, filters reach the API, support told why, refusal panel, 360 px + axe).
+
+## Worker restart: exactly-once effect (A-08-T09)
+
+`backend/tests/test_job_worker_restart.py` runs real processes: a `celery worker` (prefork, one
+child) on a Redis broker (its own database, 9) and the PostgreSQL test database, and an atomic job
+(`tests.worker_restart.write_widget`) whose effect — one Widget — is written before it stops
+half-way and waits for the test.
+
+| Scenario | What brings the job back | Result checked |
+|---|---|---|
+| The pool child is killed (`SIGKILL`: out of memory, hard time limit) | `WorkerLostError` → `acks_late` + `reject_on_worker_lost` put the message back; a new child takes it | Job `succeeded`, 2 tries, **one** Widget |
+| The whole worker is killed and a new one started | The message was never acknowledged: the new worker restores it from Redis once the visibility timeout (3 s in the test) has passed | Same |
+
+Why the effect happens once: the killed try's transaction (body + `succeeded` mark, `atomic`)
+dies with its connection, which also releases the run's advisory lock; the next try runs the
+whole job again in a fresh transaction; a delivery that still finds the lock held is re-sent,
+not dropped. Jobs with `atomic=False` must make each step safe to repeat.
+
+The test runs when `NUMO9_TEST_REDIS_URL` is set and the database is PostgreSQL — the CI backend
+job has both. Worker processes get `NUMO9_TEST_CELERY_BROKER_URL` (test settings) and
+`CELERY_VISIBILITY_TIMEOUT`; the test process keeps the in-memory broker and sends the job's
+message through a second Celery app on the workers' broker.
