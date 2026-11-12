@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 91   Remaining: 2696
+TOTAL ATOMIC TASKS: 2787   Completed: 92   Remaining: 2695
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -132,7 +132,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [A-08]
 ✅ A-08-T02 — JobRun model (org, type, status, progress, result, error, idempotency_key unique, started/finished)
-❌ A-08-T03 — Base task class: idempotency key check, org context, JobRun lifecycle, structured logging
+✅ A-08-T03 — Base task class: idempotency key check, org context, JobRun lifecycle, structured logging
 ❌ A-08-T04 — Retry policy: exponential backoff + jitter, max retries, dead-letter queue, visible error
 ❌ A-08-T05 — django-celery-beat with Redis lock per tick (schedule_key:tick_ts)
 ❌ A-08-T06 — Progress API + SSE/websocket-lite polling endpoint for job tray
