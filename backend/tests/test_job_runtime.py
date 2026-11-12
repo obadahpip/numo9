@@ -427,6 +427,10 @@ def test_delivery_while_another_worker_runs_it_is_skipped(
     run.refresh_from_db()
     assert run.status == JobStatus.QUEUED and run.attempts == 0
     assert any(r.getMessage().startswith("job.skipped_locked") for r in caplog.records)
+    # Not dropped: sent again later (same task id), in case the holder was a dying worker.
+    assert len(sent) == 2
+    assert (sent[1]["task_id"], sent[1]["countdown"]) == (sent[0]["task_id"], 30)
+    assert sent[1]["kwargs"] == sent[0]["kwargs"]
     # The other worker is gone (its connection closed, the lock with it): the run can run.
     assert deliver(make_widgets, sent[0]) == {"made": 1}
 
