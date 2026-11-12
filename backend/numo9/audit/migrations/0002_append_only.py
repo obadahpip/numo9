@@ -14,6 +14,8 @@ empty the table (the test runner does, between transactional tests).
 
 from django.db import migrations
 
+from numo9.audit.pg import PostgresOnly
+
 FORWARD = """
 REVOKE UPDATE, DELETE, TRUNCATE ON TABLE audit_event FROM PUBLIC;
 REVOKE UPDATE, DELETE, TRUNCATE ON TABLE audit_event FROM CURRENT_USER;
@@ -42,4 +44,4 @@ GRANT UPDATE, DELETE, TRUNCATE ON TABLE audit_event TO CURRENT_USER;
 class Migration(migrations.Migration):
     dependencies = [("audit", "0001_audit_event")]
 
-    operations = [migrations.RunSQL(sql=FORWARD, reverse_sql=BACKWARD)]
+    operations = [PostgresOnly(sql=FORWARD, reverse_sql=BACKWARD)]
