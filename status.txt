@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 95   Remaining: 2692
+TOTAL ATOMIC TASKS: 2787   Completed: 96   Remaining: 2691
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -136,7 +136,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-08-T04 — Retry policy: exponential backoff + jitter, max retries, dead-letter queue, visible error
 ✅ A-08-T05 — django-celery-beat with Redis lock per tick (schedule_key:tick_ts)
 ✅ A-08-T06 — Progress API + SSE/websocket-lite polling endpoint for job tray
-❌ A-08-T07 — Job tray UI (progress, result link, error with retry)
+✅ A-08-T07 — Job tray UI (progress, result link, error with retry)
 ❌ A-08-T08 — Internal job dashboard in console (queues, failures, retry, purge) or Flower behind SSO
 ❌ A-08-T09 — Worker-restart test (kill worker mid-task → completes once)
 
