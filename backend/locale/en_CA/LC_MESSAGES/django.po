@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 07:50-0500\n"
+"POT-Creation-Date: 2026-11-14 07:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1481,6 +1481,75 @@ msgstr ""
 msgid "Use the two-letter country code, e.g. CA."
 msgstr ""
 
+msgid "Business Number (BN)"
+msgstr ""
+
+msgid "GST/HST program account (RT)"
+msgstr ""
+
+msgid "Payroll program account (RP)"
+msgstr ""
+
+msgid "Corporate income tax program account (RC)"
+msgstr ""
+
+msgid "Quebec QST number"
+msgstr ""
+
+msgid "British Columbia PST number"
+msgstr ""
+
+msgid "Saskatchewan PST number"
+msgstr ""
+
+msgid "Manitoba RST number"
+msgstr ""
+
+msgid "Applied for"
+msgstr ""
+
+msgid "Registered"
+msgstr ""
+
+msgid "Closed"
+msgstr ""
+
+msgid "number"
+msgstr ""
+
+msgid "effective from"
+msgstr ""
+
+msgid "effective to"
+msgstr ""
+
+msgid "CRA approval reference"
+msgstr ""
+
+msgid "Reference of the CRA or Revenu Québec letter approving the registration."
+msgstr ""
+
+msgid "tax registration"
+msgstr ""
+
+msgid "tax registrations"
+msgstr ""
+
+msgid "The end date is before the start date."
+msgstr ""
+
+#, python-format
+msgid "%(registration)s is already registered for these dates: end it before adding another."
+msgstr ""
+
+#, python-format
+msgid "%(registration)s carries Business Number %(bn)s: the organisation's BN and its program accounts must match."
+msgstr ""
+
+#, python-format
+msgid "This program account belongs to BN %(bn)s, not to the organisation's Business Number %(registered)s."
+msgstr ""
+
 msgid "Alberta"
 msgstr ""
 
@@ -1535,6 +1604,40 @@ msgid "Choose a province or territory."
 msgstr ""
 
 msgid "Enter a valid telephone number, e.g. 416 555 0123 or +44 20 7946 0958."
+msgstr ""
+
+msgid "A Business Number has 9 digits, e.g. 123456782."
+msgstr ""
+
+#, python-format
+msgid "%(bn)s is not a valid Business Number: check the digits (the last one is a check digit)."
+msgstr ""
+
+msgid "Enter the number."
+msgstr ""
+
+#, python-format
+msgid "A program account looks like 123456782 %(program)s 0001."
+msgstr ""
+
+#, python-format
+msgid "This is a %(letters)s number: a %(program)s registration needs %(program)s."
+msgstr ""
+
+#, python-format
+msgid "The reference number after %(program)s starts at 0001."
+msgstr ""
+
+msgid "A QST number looks like 1234567890 TQ 0001."
+msgstr ""
+
+msgid "A British Columbia PST number looks like PST-1234-5678."
+msgstr ""
+
+msgid "Enter the number's 6 to 10 digits."
+msgstr ""
+
+msgid "Choose the type of registration."
 msgstr ""
 
 #, python-format

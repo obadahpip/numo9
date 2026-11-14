@@ -153,3 +153,129 @@ def normalise_phone(value: str, region: str = DEFAULT_PHONE_REGION) -> str:
             code="orgsettings.phone.invalid",
         )
     return phonenumbers.format_number(number, phonenumbers.PhoneNumberFormat.E164)
+
+
+# ---- tax registration numbers (A-05-T03) -----------------------------------------------------
+
+
+def luhn_valid(digits: str) -> bool:
+    """The Luhn (mod 10) check the CRA uses for the 9th digit of a Business Number."""
+    if not digits.isdigit():
+        return False
+    total = 0
+    for position, character in enumerate(reversed(digits)):
+        value = int(character)
+        if position % 2 == 1:
+            value *= 2
+            if value > 9:
+                value -= 9
+        total += value
+    return total % 10 == 0
+
+
+def validate_business_number(bn: str) -> None:
+    """[EXTRA] A 9-digit Business Number whose check digit is right (Luhn)."""
+    if not re.fullmatch(r"[0-9]{9}", bn):
+        raise ValidationError(
+            _("A Business Number has 9 digits, e.g. 123456782."),
+            code="orgsettings.registration.bn_format",
+        )
+    if bn == "000000000" or not luhn_valid(bn):
+        raise ValidationError(
+            _(
+                "%(bn)s is not a valid Business Number: check the digits (the last one is a "
+                "check digit)."
+            ),
+            code="orgsettings.registration.bn_check_digit",
+            params={"bn": bn},
+        )
+
+
+def _compact(value: str) -> str:
+    return re.sub(r"[\s\-./]+", "", value or "").upper()
+
+
+#: Program identifiers of the CRA program accounts (BN9 + 2 letters + 4-digit reference).
+PROGRAM_TYPES: frozenset[str] = frozenset({"rt", "rp", "rc"})
+_PROGRAM = re.compile(r"^([0-9]{9})([A-Z]{2})([0-9]{4})$")
+_QST = re.compile(r"^([0-9]{10})TQ([0-9]{4})$")
+_PST_BC = re.compile(r"^(?:PST)?([0-9]{8})$")
+_DIGITS = re.compile(r"^[0-9]{6,10}$")
+
+
+def normalise_registration_number(kind: str, value: str) -> str:
+    """The canonical stored form of a registration number, or a ``ValidationError``.
+
+    - ``bn``: ``123456782`` (9 digits, check digit verified);
+    - ``rt`` / ``rp`` / ``rc``: ``123456782RT0001`` — the BN (check digit verified), the program
+      letters of the registration's type and a reference other than 0000;
+    - ``qst``: ``1234567890TQ0001`` (10 digits, TQ, a reference other than 0000);
+    - ``pst_bc``: ``PST-1234-5678``;
+    - ``pst_sk`` / ``rst_mb``: 6–10 digits (no published check digit).
+    """
+    compact = _compact(value)
+    if not compact:
+        raise ValidationError(_("Enter the number."), code="orgsettings.registration.required")
+    if kind == "bn":
+        validate_business_number(compact)
+        return compact
+    if kind in PROGRAM_TYPES:
+        match = _PROGRAM.match(compact)
+        program = kind.upper()
+        if match is None:
+            raise ValidationError(
+                _("A program account looks like 123456782 %(program)s 0001."),
+                code="orgsettings.registration.program_format",
+                params={"program": program},
+            )
+        bn, letters, reference = match.groups()
+        if letters != program:
+            raise ValidationError(
+                _("This is a %(letters)s number: a %(program)s registration needs %(program)s."),
+                code="orgsettings.registration.program_mismatch",
+                params={"letters": letters, "program": program},
+            )
+        validate_business_number(bn)
+        if reference == "0000":
+            raise ValidationError(
+                _("The reference number after %(program)s starts at 0001."),
+                code="orgsettings.registration.reference_zero",
+                params={"program": program},
+            )
+        return compact
+    if kind == "qst":
+        match = _QST.match(compact)
+        if match is None or match.group(2) == "0000":
+            raise ValidationError(
+                _("A QST number looks like 1234567890 TQ 0001."),
+                code="orgsettings.registration.qst_format",
+            )
+        return compact
+    if kind == "pst_bc":
+        match = _PST_BC.match(compact)
+        if match is None:
+            raise ValidationError(
+                _("A British Columbia PST number looks like PST-1234-5678."),
+                code="orgsettings.registration.pst_bc_format",
+            )
+        digits = match.group(1)
+        return f"PST-{digits[:4]}-{digits[4:]}"
+    if kind in ("pst_sk", "rst_mb"):
+        if not _DIGITS.match(compact):
+            raise ValidationError(
+                _("Enter the number's 6 to 10 digits."),
+                code="orgsettings.registration.digits_format",
+            )
+        return compact
+    raise ValidationError(
+        _("Choose the type of registration."), code="orgsettings.registration.type_invalid"
+    )
+
+
+def display_registration_number(kind: str, number: str) -> str:
+    """How a stored number reads: ``123456782 RT 0001``, ``1234567890 TQ 0001``…"""
+    if kind in PROGRAM_TYPES and len(number) == 15:
+        return f"{number[:9]} {number[9:11]} {number[11:]}"
+    if kind == "qst" and len(number) == 16:
+        return f"{number[:10]} {number[10:12]} {number[12:]}"
+    return number

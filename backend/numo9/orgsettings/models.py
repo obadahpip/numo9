@@ -32,8 +32,11 @@ from numo9.audit.mixins import AuditedModel
 from numo9.tenancy.models import DEFAULT_TIME_ZONE, OrgOwnedModel, validate_time_zone
 
 from .validators import (
+    PROGRAM_TYPES,
+    display_registration_number,
     normalise_phone,
     normalise_postal_code,
+    normalise_registration_number,
     validate_legal_name,
     validate_postal_code,
     validate_postal_code_province,
@@ -397,3 +400,211 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
             changed.append("time_zone")
         if changed:
             organisation.save(update_fields=[*changed, "updated_at"])
+
+
+# ---- tax registrations (A-05-T03) ------------------------------------------------------------
+
+
+class RegistrationType(models.TextChoices):
+    """The statutory numbers on the one Tax Registrations page (gap-39)."""
+
+    BN = "bn", _("Business Number (BN)")
+    RT = "rt", _("GST/HST program account (RT)")
+    RP = "rp", _("Payroll program account (RP)")
+    RC = "rc", _("Corporate income tax program account (RC)")
+    QST = "qst", _("Quebec QST number")
+    PST_BC = "pst_bc", _("British Columbia PST number")
+    PST_SK = "pst_sk", _("Saskatchewan PST number")
+    RST_MB = "rst_mb", _("Manitoba RST number")
+
+
+class RegistrationStatus(models.TextChoices):
+    PENDING = "pending", _("Applied for")
+    ACTIVE = "active", _("Registered")
+    CLOSED = "closed", _("Closed")
+
+
+def _periods_overlap(a: TaxRegistration, b: TaxRegistration) -> bool:
+    """Effective periods overlap (an empty start or end is open-ended)."""
+    a_starts_before_b_ends = (
+        b.effective_to is None or a.effective_from is None or (a.effective_from <= b.effective_to)
+    )
+    b_starts_before_a_ends = (
+        a.effective_to is None or b.effective_from is None or (b.effective_from <= a.effective_to)
+    )
+    return a_starts_before_b_ends and b_starts_before_a_ends
+
+
+class TaxRegistration(AuditedModel, OrgOwnedModel):
+    """One statutory registration of the organisation (A-05-T03): its Business Number, a CRA
+    program account (RT GST/HST, RP payroll, RC corporate income tax), its Quebec QST number or a
+    provincial sales tax number (BC PST, Saskatchewan PST, Manitoba RST).
+
+    ``number`` is stored in a canonical form (``123456782RT0001``) and checked for its type —
+    [EXTRA] including the Business Number's check digit, on its own and inside every program
+    account; a program account must carry the organisation's BN when one is registered for the
+    same dates (and a BN must match the program accounts already there). Periods of the same
+    registration (the BN, or the same number) may not overlap. Every change — a
+    status change above all — is in the audit log with its author (gap-44).
+    """
+
+    type = models.CharField(_("type"), max_length=16, choices=RegistrationType.choices)
+    number = models.CharField(_("number"), max_length=20)
+    effective_from = models.DateField(_("effective from"), null=True, blank=True)
+    effective_to = models.DateField(_("effective to"), null=True, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=16,
+        choices=RegistrationStatus.choices,
+        default=RegistrationStatus.ACTIVE,
+    )
+    cra_approval_ref = models.CharField(
+        _("CRA approval reference"),
+        max_length=100,
+        blank=True,
+        help_text=_("Reference of the CRA or Revenu Québec letter approving the registration."),
+    )
+
+    class Meta:
+        ordering = ("type", "number", "effective_from")
+        verbose_name = _("tax registration")
+        verbose_name_plural = _("tax registrations")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=_in("type", RegistrationType), name="orgsettings_registration_type_valid"
+            ),
+            models.CheckConstraint(
+                condition=_in("status", RegistrationStatus),
+                name="orgsettings_registration_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(effective_from__isnull=True)
+                | models.Q(effective_to__isnull=True)
+                | models.Q(effective_to__gte=models.F("effective_from")),
+                name="orgsettings_registration_period_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "type"), name="orgsettings_reg_type_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_type_display()} {self.display_number}"
+
+    def audit_label(self) -> str:
+        return str(self)
+
+    @property
+    def display_number(self) -> str:
+        return display_registration_number(self.type, self.number)
+
+    @property
+    def business_number(self) -> str:
+        """The BN the registration belongs to (empty for QST and provincial numbers)."""
+        if self.type == RegistrationType.BN or self.type in PROGRAM_TYPES:
+            return self.number[:9]
+        return ""
+
+    # ---- validation and save -------------------------------------------------------------
+
+    def clean(self) -> None:
+        errors: dict[str, list[ValidationError]] = {}
+        if self.type in RegistrationType.values:
+            try:
+                self.number = normalise_registration_number(self.type, self.number)
+            except ValidationError as error:
+                errors.setdefault("number", []).append(error)
+        if self.effective_from and self.effective_to and self.effective_to < self.effective_from:
+            errors.setdefault("effective_to", []).append(
+                ValidationError(
+                    _("The end date is before the start date."),
+                    code="orgsettings.registration.period_invalid",
+                )
+            )
+        if not errors:
+            self._check_against_others(errors)
+        if errors:
+            raise ValidationError(errors)
+
+    def _others(self) -> models.QuerySet[TaxRegistration]:
+        return (
+            TaxRegistration._base_manager.filter(
+                organisation_id=self.organisation_id, deleted_at__isnull=True
+            )
+            .exclude(pk=self.pk)
+            .order_by("effective_from")
+        )
+
+    def _check_against_others(self, errors: dict[str, list[ValidationError]]) -> None:
+        others = list(self._others())
+        if self.deleted_at is None:
+            same = [
+                other
+                for other in others
+                if other.type == self.type
+                and (self.type == RegistrationType.BN or other.number == self.number)
+                and _periods_overlap(self, other)
+            ]
+            if same:
+                errors.setdefault("effective_from", []).append(
+                    ValidationError(
+                        _(
+                            "%(registration)s is already registered for these dates: end it "
+                            "before adding another."
+                        ),
+                        code="orgsettings.registration.overlap",
+                        params={"registration": str(same[0])},
+                    )
+                )
+        if self.type == RegistrationType.BN:
+            foreign = [
+                o
+                for o in others
+                if o.type in PROGRAM_TYPES
+                and o.business_number != self.number
+                and _periods_overlap(self, o)
+            ]
+            if foreign:
+                errors.setdefault("number", []).append(
+                    ValidationError(
+                        _(
+                            "%(registration)s carries Business Number %(bn)s: the organisation's "
+                            "BN and its program accounts must match."
+                        ),
+                        code="orgsettings.registration.bn_mismatch",
+                        params={"registration": str(foreign[0]), "bn": foreign[0].business_number},
+                    )
+                )
+        if self.type in PROGRAM_TYPES:
+            bns = {
+                o.number
+                for o in others
+                if o.type == RegistrationType.BN and _periods_overlap(self, o)
+            }
+            if bns and self.business_number not in bns:
+                errors.setdefault("number", []).append(
+                    ValidationError(
+                        _(
+                            "This program account belongs to BN %(bn)s, not to the "
+                            "organisation's Business Number %(registered)s."
+                        ),
+                        code="orgsettings.registration.bn_mismatch",
+                        params={"bn": self.business_number, "registered": ", ".join(sorted(bns))},
+                    )
+                )
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.cra_approval_ref = (self.cra_approval_ref or "").strip()
+        errors: dict[str, Any] = {}
+        try:
+            self.clean_fields(exclude=["organisation", "created_by", "public_id"])
+        except ValidationError as error:
+            errors = error.update_error_dict(errors)
+        if not errors:
+            try:
+                self.clean()
+            except ValidationError as error:
+                errors = error.update_error_dict(errors)
+        if errors:
+            raise ValidationError(errors)
+        super().save(*args, **kwargs)

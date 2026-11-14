@@ -89,3 +89,20 @@ The one settings row of an organisation (A-05-T01). Business record: `OrgOwnedMo
 | `sales_terms_days`, `purchase_terms_days` | smallint | no | Days (0–365, default 30), or the day of the month (1–31) for the `day_of_*` types |
 
 Audit actions: `orgsettings.organisationsettings.created`, `.updated`.
+
+### `orgsettings_taxregistration` — Tax registration {#orgsettings-taxregistration}
+
+One statutory registration of an organisation and its period (A-05-T03): BN, RT, RP, RC, QST, BC
+PST, Saskatchewan PST, Manitoba RST. Business record: `OrgOwnedModel` and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `type` | varchar(16) | no | `bn`, `rt`, `rp`, `rc`, `qst`, `pst_bc`, `pst_sk`, `rst_mb` (`orgsettings_registration_type_valid`) |
+| `number` | varchar(20) | no | Canonical form per type (`123456782`, `123456782RT0001`, `1234567890TQ0001`, `PST-1234-5678`, digits); BN check digit verified; program accounts carry the organisation's BN |
+| `effective_from`, `effective_to` | date | yes | Period; open when empty; end ≥ start (`orgsettings_registration_period_valid`); no overlap for the BN or for the same number |
+| `status` | varchar(16) | no | `pending`, `active` (default), `closed` (`orgsettings_registration_status_valid`) |
+| `cra_approval_ref` | varchar(100) | no | Reference of the CRA / Revenu Québec approval (empty when none) |
+
+Indexes: `(organisation, type)` (`orgsettings_reg_type_idx`).
+Audit actions: `orgsettings.taxregistration.created`, `.updated`, `.deleted`, `.restored`.

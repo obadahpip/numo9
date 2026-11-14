@@ -58,3 +58,40 @@ each with a stable code — the settings form shows them inline (A-05-T11).
 | `*_terms_days` | 0–365 days, or a day 1–31 for the "of the month" terms | `orgsettings.terms_day_invalid` |
 
 The physical address is checked only when it is separate (`physical_same_as_mailing` false).
+
+## Tax registrations (A-05-T03)
+
+Every statutory number lives in one place — `TaxRegistration`, shown on the one Tax Registrations
+page (A-05-T12) — instead of Xero's split across organisation details, financial settings and the
+GST/HST settings (gap-39). One row per registration and period:
+
+| `type` | What | Stored as | Shown as | Check |
+|---|---|---|---|---|
+| `bn` | Business Number | `123456782` | `123456782` | 9 digits, [EXTRA] Luhn check digit (not `000000000`) |
+| `rt` | GST/HST program account | `123456782RT0001` | `123456782 RT 0001` | A valid BN + the type's own letters + a reference 0001–9999 |
+| `rp` | Payroll program account | `123456782RP0001` | `123456782 RP 0001` | as RT |
+| `rc` | Corporate income tax program account | `123456782RC0001` | `123456782 RC 0001` | as RT |
+| `qst` | Quebec QST number | `1234567890TQ0001` | `1234567890 TQ 0001` | 10 digits + TQ + a reference 0001–9999 |
+| `pst_bc` | British Columbia PST | `PST-1234-5678` | `PST-1234-5678` | 8 digits (the `PST` prefix is optional when typed) |
+| `pst_sk` | Saskatchewan PST | digits | digits | 6–10 digits (no published check digit) |
+| `rst_mb` | Manitoba RST | digits | digits | 6–10 digits (no published check digit) |
+
+Input is forgiving (spaces, dashes, lower case). Other fields: `effective_from` / `effective_to`
+(either may be open; the end is never before the start — also a database check),
+`status` (`pending` "Applied for", `active` "Registered", `closed` "Closed") and
+`cra_approval_ref` (the reference of the CRA or Revenu Québec approval letter).
+
+Rules (`TaxRegistration.clean`, codes `orgsettings.registration.*`):
+
+- **One BN at a time**: Business Number periods may not overlap; the same program account (same
+  number) may not be registered twice for overlapping dates — several RT accounts (RT0001, RT0002
+  for a branch that files separately) are fine (`overlap`).
+- **Program accounts carry the organisation's BN**: an RT/RP/RC number must start with the BN
+  registered for the same dates, and a BN must match the program accounts already there
+  (`bn_mismatch`).
+- A soft-deleted registration no longer blocks anything.
+- **Attribution**: every change is in the audit log (`orgsettings.taxregistration.*`) with old →
+  new values and the person or `System: <job>` who made it — no silent "GST Type – removed"
+  (gap-44).
+- Not here yet: "a Quebec organisation needs a QST number" is a prompt on the registrations page
+  (A-05-T12) and an exceptions-engine rule (K-09), not a save rule.
