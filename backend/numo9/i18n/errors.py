@@ -397,3 +397,101 @@ CATALOGUE_EXPORT_FORMAT = define(
     "catalogue.export_format",
     _("Choose an export format: CSV or XLSX."),
 )
+
+# ---- packages and pricing (U-02) ---------------------------------------------------------------
+PACKAGE_NOT_FOUND = define(
+    "packages.not_found",
+    _("This package doesn't exist. Verify the code or choose a package from the list."),
+    status.HTTP_404_NOT_FOUND,
+)
+PACKAGE_STATUS_CHANGE = define(
+    "packages.status_change",
+    _("A %(current)s package can't be made %(wanted)s."),
+    status.HTTP_409_CONFLICT,
+)
+PACKAGE_LAST_OFFERED = define(
+    "packages.last_offered",
+    _(
+        "%(package)s is the only package offered at sign-up. Activate another package before "
+        "retiring this one."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+PACKAGE_IN_USE = define(
+    "packages.in_use",
+    _(
+        "%(package)s can't be deleted: %(count)s organisations subscribe to it. Retire it "
+        "instead — it's hidden from sign-up and subscribers keep it."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+PACKAGE_DELETE_NOT_DRAFT = define(
+    "packages.delete_not_draft",
+    _(
+        "Only a draft package can be deleted. Retire %(package)s instead — it's hidden from "
+        "sign-up and its history is kept."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+PACKAGE_NO_PRODUCTS = define(
+    "packages.no_products",
+    _("Add at least one product before activating this package."),
+)
+PROMO_NOT_FOUND = define(
+    "packages.promo_not_found",
+    _("This promo code doesn't exist. Verify the spelling and try again."),
+    status.HTTP_404_NOT_FOUND,
+)
+PROMO_EXPIRED = define(
+    "packages.promo_expired",
+    _("The promo code %(code)s has expired."),
+    status.HTTP_409_CONFLICT,
+)
+PROMO_USED_UP = define(
+    "packages.promo_used_up",
+    _("The promo code %(code)s has been used the maximum number of times."),
+    status.HTTP_409_CONFLICT,
+)
+PROMO_NOT_FOR_PACKAGE = define(
+    "packages.promo_not_for_package",
+    _("The promo code %(code)s doesn't apply to the %(package)s package."),
+    status.HTTP_409_CONFLICT,
+)
+PROMO_ALREADY_REDEEMED = define(
+    "packages.promo_already_redeemed",
+    _("This organisation has already used the promo code %(code)s."),
+    status.HTTP_409_CONFLICT,
+)
+PACKAGE_CODE_TAKEN = define(
+    "packages.code_taken",
+    _("A package with the code %(code)s already exists. Choose another code."),
+)
+PACKAGE_UNKNOWN_PRODUCT = define(
+    "packages.unknown_product",
+    _("There's no product called %(product)s. Choose products from the catalogue."),
+)
+PRICE_NOT_FOUND = define(
+    "packages.price_not_found",
+    _("This price doesn't exist for this package."),
+    status.HTTP_404_NOT_FOUND,
+)
+PRICE_IN_PAST = define(
+    "packages.price_in_past",
+    _("A new price starts today or later: past renewals keep the price they had."),
+)
+PRICE_NOT_LATEST = define(
+    "packages.price_not_latest",
+    _(
+        "A %(interval)s price already starts on %(date)s. Choose a later date, or delete that "
+        "scheduled price first."
+    ),
+)
+PRICE_STARTED = define(
+    "packages.price_started",
+    _("This price has already started, so it can't be deleted. Schedule a new price instead."),
+    status.HTTP_409_CONFLICT,
+)
+PROMO_CODE_TAKEN = define(
+    "packages.promo_code_taken",
+    _("The promo code %(code)s is taken. Choose another code."),
+)

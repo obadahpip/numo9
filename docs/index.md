@@ -12,6 +12,7 @@ SaaS built by Gray Matter AI for Profitex.
 | [Phase 0 wireframes](design/wireframes.md) | Shell, directory, settings, contacts, chart of accounts, journal, console |
 | [Tenancy model](architecture/tenancy.md) | Practices, organisations, access rule and the isolation layers |
 | [Feature keys — developer guide](dev/feature-keys.md) | Declaring the feature key of every endpoint and screen, testing gating (U-01) |
+| [Packages, prices and promo codes](architecture/packages-pricing.md) | Packages of products, effective-dated prices, promo codes, public pricing, Stripe price sync (U-02) |
 | [Data-residency register](security/data-residency-register.md) | Where every data class lives and every sub-processor (ADR-0002) |
 | [Project plan](Numo9_Project_Plan.md) | Scope, components, acceptance and the gap analysis against Xero |
 | [Phase plans](phase_plans/Phase_0_Foundation_and_SaaS_Core.md) | Deliverables and atomic tasks, phase by phase |

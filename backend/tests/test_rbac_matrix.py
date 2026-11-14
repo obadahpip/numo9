@@ -176,6 +176,10 @@ def path_for(declaration: Declaration, world: World) -> str:
         "object_type": "rbac.Role",
         "object_id": str(world.custom_role.public_id),
         "kind": "csv",  # audit export format (A-04-T08)
+        # Packages console (U-02-T07): a package / promo code and a price version that don't
+        # exist — the refusal comes first; an allowed subject gets past it (404).
+        "code": "matrix",
+        "price_id": "00000000-0000-4000-8000-000000000000",
     }
     path = build_path(endpoint, {k: v for k, v in values.items() if k in endpoint.groups})
     assert path is not None, f"cannot build a URL for /{declaration.route}: add its parameter"

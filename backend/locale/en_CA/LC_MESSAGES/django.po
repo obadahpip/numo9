@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 07:56-0500\n"
+"POT-Creation-Date: 2026-11-14 10:01-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -895,6 +895,72 @@ msgstr ""
 msgid "Choose an export format: CSV or XLSX."
 msgstr ""
 
+msgid "This package doesn't exist. Verify the code or choose a package from the list."
+msgstr ""
+
+#, python-format
+msgid "A %(current)s package can't be made %(wanted)s."
+msgstr ""
+
+#, python-format
+msgid "%(package)s is the only package offered at sign-up. Activate another package before retiring this one."
+msgstr ""
+
+#, python-format
+msgid "%(package)s can't be deleted: %(count)s organisations subscribe to it. Retire it instead — it's hidden from sign-up and subscribers keep it."
+msgstr ""
+
+#, python-format
+msgid "Only a draft package can be deleted. Retire %(package)s instead — it's hidden from sign-up and its history is kept."
+msgstr ""
+
+msgid "Add at least one product before activating this package."
+msgstr ""
+
+msgid "This promo code doesn't exist. Verify the spelling and try again."
+msgstr ""
+
+#, python-format
+msgid "The promo code %(code)s has expired."
+msgstr ""
+
+#, python-format
+msgid "The promo code %(code)s has been used the maximum number of times."
+msgstr ""
+
+#, python-format
+msgid "The promo code %(code)s doesn't apply to the %(package)s package."
+msgstr ""
+
+#, python-format
+msgid "This organisation has already used the promo code %(code)s."
+msgstr ""
+
+#, python-format
+msgid "A package with the code %(code)s already exists. Choose another code."
+msgstr ""
+
+#, python-format
+msgid "There's no product called %(product)s. Choose products from the catalogue."
+msgstr ""
+
+msgid "This price doesn't exist for this package."
+msgstr ""
+
+msgid "A new price starts today or later: past renewals keep the price they had."
+msgstr ""
+
+#, python-format
+msgid "A %(interval)s price already starts on %(date)s. Choose a later date, or delete that scheduled price first."
+msgstr ""
+
+msgid "This price has already started, so it can't be deleted. Schedule a new price instead."
+msgstr ""
+
+#, python-format
+msgid "The promo code %(code)s is taken. Choose another code."
+msgstr ""
+
 msgid "Waiting to start"
 msgstr ""
 
@@ -1723,6 +1789,238 @@ msgstr ""
 msgid "Choose the type of registration."
 msgstr ""
 
+msgid "Draft"
+msgstr ""
+
+msgid "Enter the text for each language."
+msgstr ""
+
+msgid "Only English (en-CA) and French (fr-CA) are supported."
+msgstr ""
+
+msgid "Enter the English text."
+msgstr ""
+
+#, python-format
+msgid "Use at most %(max)s characters."
+msgstr ""
+
+msgid "Limits must be a list of named values."
+msgstr ""
+
+#, python-format
+msgid "Unknown limit: %(names)s."
+msgstr ""
+
+#, python-format
+msgid "Enter a whole number from 1 to %(max)s, or leave it unlimited."
+msgstr ""
+
+msgid "Stable identifier, e.g. 'growth'. Never changes once created."
+msgstr ""
+
+msgid "Name per language: {'en-CA': …, 'fr-CA': …}."
+msgstr ""
+
+msgid "Description per language."
+msgstr ""
+
+msgid "founding offer"
+msgstr ""
+
+msgid "The founding-1,000 offer applies to organisations on this package (U-08)."
+msgstr ""
+
+msgid "limits"
+msgstr ""
+
+msgid "{'max_org_users': 10}; null or missing = unlimited. Practice users never count."
+msgstr ""
+
+msgid "Stripe product"
+msgstr ""
+
+msgid "Set by the Stripe sync job (U-02-T12)."
+msgstr ""
+
+msgid "package"
+msgstr ""
+
+msgid "packages"
+msgstr ""
+
+msgid "A package's code never changes: prices and subscriptions use it."
+msgstr ""
+
+msgid "A package with subscribers is never deleted: retire it instead."
+msgstr ""
+
+msgid "Use 2–40 lower-case letters, digits and _, starting with a letter."
+msgstr ""
+
+msgid "product in a package"
+msgstr ""
+
+msgid "products in packages"
+msgstr ""
+
+#, python-format
+msgid "%(product)s is free and part of every package: it isn't added to one."
+msgstr ""
+
+#, python-format
+msgid "%(product)s isn't active yet, so it can't be put in a package."
+msgstr ""
+
+msgid "An active package keeps at least one product. Add another product first."
+msgstr ""
+
+msgid "Monthly"
+msgstr ""
+
+msgid "Annual"
+msgstr ""
+
+msgid "Before tax"
+msgstr ""
+
+msgid "billing interval"
+msgstr ""
+
+msgid "amount (cents)"
+msgstr ""
+
+msgid "Whole cents in CAD, before GST/HST."
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "tax behaviour"
+msgstr ""
+
+msgid "First day this version no longer applies; empty = no end date."
+msgstr ""
+
+msgid "Stripe price"
+msgstr ""
+
+msgid "Set once by the Stripe sync job (U-02-T12); never changed afterwards."
+msgstr ""
+
+msgid "package price"
+msgstr ""
+
+msgid "package prices"
+msgstr ""
+
+msgid "Another price is already in force on some of these days for this package and billing interval."
+msgstr ""
+
+msgid "A price version never changes: schedule a new price instead (Stripe prices can't be edited)."
+msgstr ""
+
+msgid "A price's Stripe price never changes once it is set."
+msgstr ""
+
+msgid "Prices are in Canadian dollars (CAD)."
+msgstr ""
+
+msgid "The end date must be after the start date."
+msgstr ""
+
+msgid "Percent off"
+msgstr ""
+
+msgid "Fixed amount off"
+msgstr ""
+
+msgid "Once"
+msgstr ""
+
+msgid "Number of months"
+msgstr ""
+
+msgid "Forever"
+msgstr ""
+
+msgid "Used up"
+msgstr ""
+
+msgid "Expired"
+msgstr ""
+
+msgid "Stored upper-case; organisations may type it in any case."
+msgstr ""
+
+msgid "discount"
+msgstr ""
+
+msgid "percent off"
+msgstr ""
+
+msgid "amount off (cents)"
+msgstr ""
+
+msgid "duration"
+msgstr ""
+
+msgid "months"
+msgstr ""
+
+msgid "maximum uses"
+msgstr ""
+
+msgid "Empty = no limit."
+msgstr ""
+
+msgid "uses"
+msgstr ""
+
+msgid "expires at"
+msgstr ""
+
+msgid "The packages the code applies to; none = every package."
+msgstr ""
+
+msgid "promo code"
+msgstr ""
+
+msgid "promo codes"
+msgstr ""
+
+msgid "A promo code never changes: create a new code instead."
+msgstr ""
+
+msgid "Use 3–40 letters, digits, - and _."
+msgstr ""
+
+msgid "Enter a percentage from 1 to 100."
+msgstr ""
+
+msgid "Enter an amount greater than $0.00."
+msgstr ""
+
+msgid "Choose percent off or a fixed amount off."
+msgstr ""
+
+#, python-format
+msgid "Enter a number of months from 1 to %(max)s."
+msgstr ""
+
+msgid "Choose once, a number of months or forever."
+msgstr ""
+
+#, python-format
+msgid "The maximum can't be lower than the %(count)s uses already made (or 0)."
+msgstr ""
+
+msgid "promo code redemption"
+msgstr ""
+
+msgid "promo code redemptions"
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr ""
@@ -2111,16 +2409,10 @@ msgstr ""
 msgid "Revoked"
 msgstr ""
 
-msgid "Expired"
-msgstr ""
-
 msgid "invited by"
 msgstr ""
 
 msgid "token hash"
-msgstr ""
-
-msgid "expires at"
 msgstr ""
 
 msgid "accepted at"

@@ -40,6 +40,12 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Product catalogue (U-01): products and feature keys are the same for every tenant.
         "catalogue.Product",
         "catalogue.FeatureKey",
+        # Packages (U-02): packages for sale, their products, prices and promo codes (platform data;
+        # promo redemptions are organisation records — packages.PromoRedemption is OrgOwned).
+        "packages.Package",
+        "packages.PackageProduct",
+        "packages.PackagePrice",
+        "packages.PromoCode",
         # CRA GIFI codes (C-01-T04): the published list, the same for every organisation.
         "ledger.GifiCode",
     }

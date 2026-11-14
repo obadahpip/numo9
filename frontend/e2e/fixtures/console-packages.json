@@ -1,0 +1,271 @@
+{
+  "packages": [
+    {
+      "code": "starter",
+      "name": "Starter",
+      "name_i18n": {
+        "en-CA": "Starter",
+        "fr-CA": "Démarrage"
+      },
+      "description": "Books for a small business.",
+      "description_i18n": {
+        "en-CA": "Books for a small business."
+      },
+      "status": "active",
+      "status_label": "Active",
+      "is_founding_eligible": false,
+      "limits": {
+        "max_org_users": 3
+      },
+      "sort": 1,
+      "products": [
+        {
+          "code": "accounting",
+          "name": "Accounting"
+        }
+      ],
+      "subscriber_count": 0,
+      "prices": [
+        {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 1900,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "state": "current"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "interval": "year",
+          "interval_label": "Annual",
+          "amount_cents": 19000,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "state": "current"
+        }
+      ],
+      "current_prices": {
+        "month": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 1900,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "state": "current"
+        },
+        "year": {
+          "id": "00000000-0000-4000-8000-000000000002",
+          "interval": "year",
+          "interval_label": "Annual",
+          "amount_cents": 19000,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "state": "current"
+        }
+      },
+      "today": "2026-11-14",
+      "created_at": "2026-11-14T15:00:00+00:00",
+      "updated_at": "2026-11-14T15:00:00+00:00"
+    },
+    {
+      "code": "growth",
+      "name": "Growth",
+      "name_i18n": {
+        "en-CA": "Growth",
+        "fr-CA": "Croissance"
+      },
+      "description": "For growing teams that file their own GST/HST.",
+      "description_i18n": {
+        "en-CA": "For growing teams that file their own GST/HST."
+      },
+      "status": "active",
+      "status_label": "Active",
+      "is_founding_eligible": true,
+      "limits": {
+        "max_org_users": 10
+      },
+      "sort": 2,
+      "products": [
+        {
+          "code": "accounting",
+          "name": "Accounting"
+        },
+        {
+          "code": "tax",
+          "name": "Tax"
+        }
+      ],
+      "subscriber_count": 0,
+      "prices": [
+        {
+          "id": "00000000-0000-4000-8000-000000000003",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 3900,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-12-01",
+          "state": "current"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000004",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 4900,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-12-01",
+          "effective_to": null,
+          "state": "scheduled"
+        },
+        {
+          "id": "00000000-0000-4000-8000-000000000005",
+          "interval": "year",
+          "interval_label": "Annual",
+          "amount_cents": 46800,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "state": "current"
+        }
+      ],
+      "current_prices": {
+        "month": {
+          "id": "00000000-0000-4000-8000-000000000003",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 3900,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": "2026-12-01",
+          "state": "current"
+        },
+        "year": {
+          "id": "00000000-0000-4000-8000-000000000005",
+          "interval": "year",
+          "interval_label": "Annual",
+          "amount_cents": 46800,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2026-01-01",
+          "effective_to": null,
+          "state": "current"
+        }
+      },
+      "today": "2026-11-14",
+      "created_at": "2026-11-14T15:00:00+00:00",
+      "updated_at": "2026-11-14T15:00:00+00:00"
+    },
+    {
+      "code": "complete",
+      "name": "Complete",
+      "name_i18n": {
+        "en-CA": "Complete",
+        "fr-CA": "Complet"
+      },
+      "description": "",
+      "description_i18n": {},
+      "status": "draft",
+      "status_label": "Draft",
+      "is_founding_eligible": false,
+      "limits": {
+        "max_org_users": null
+      },
+      "sort": 3,
+      "products": [
+        {
+          "code": "accounting",
+          "name": "Accounting"
+        },
+        {
+          "code": "tax",
+          "name": "Tax"
+        },
+        {
+          "code": "payroll",
+          "name": "Payroll"
+        },
+        {
+          "code": "inventory",
+          "name": "Inventory"
+        }
+      ],
+      "subscriber_count": 0,
+      "prices": [],
+      "current_prices": {
+        "month": null,
+        "year": null
+      },
+      "today": "2026-11-14",
+      "created_at": "2026-11-14T15:00:00+00:00",
+      "updated_at": "2026-11-14T15:00:00+00:00"
+    },
+    {
+      "code": "legacy",
+      "name": "Legacy",
+      "name_i18n": {
+        "en-CA": "Legacy",
+        "fr-CA": "Ancien"
+      },
+      "description": "",
+      "description_i18n": {},
+      "status": "retired",
+      "status_label": "Retired",
+      "is_founding_eligible": false,
+      "limits": {
+        "max_org_users": null
+      },
+      "sort": 9,
+      "products": [
+        {
+          "code": "accounting",
+          "name": "Accounting"
+        }
+      ],
+      "subscriber_count": 0,
+      "prices": [
+        {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 2500,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2025-01-01",
+          "effective_to": null,
+          "state": "current"
+        }
+      ],
+      "current_prices": {
+        "month": {
+          "id": "00000000-0000-4000-8000-000000000006",
+          "interval": "month",
+          "interval_label": "Monthly",
+          "amount_cents": 2500,
+          "currency": "CAD",
+          "tax_behaviour": "exclusive",
+          "effective_from": "2025-01-01",
+          "effective_to": null,
+          "state": "current"
+        },
+        "year": null
+      },
+      "today": "2026-11-14",
+      "created_at": "2026-11-14T15:00:00+00:00",
+      "updated_at": "2026-11-14T15:00:00+00:00"
+    }
+  ]
+}

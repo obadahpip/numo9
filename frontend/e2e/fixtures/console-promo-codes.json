@@ -1,0 +1,85 @@
+{
+  "promo_codes": [
+    {
+      "code": "ACCT50",
+      "description": "",
+      "kind": "fixed",
+      "kind_label": "Fixed amount off",
+      "percent_off": null,
+      "amount_off_cents": 5000,
+      "currency": "CAD",
+      "duration": "once",
+      "duration_label": "Once",
+      "duration_months": null,
+      "max_redemptions": 50,
+      "redemptions_count": 50,
+      "expires_at": null,
+      "packages": [],
+      "status": "used_up",
+      "status_label": "Used up",
+      "created_at": "2026-11-14T15:00:00+00:00"
+    },
+    {
+      "code": "FOREVER10",
+      "description": "",
+      "kind": "percent",
+      "kind_label": "Percent off",
+      "percent_off": 10,
+      "amount_off_cents": null,
+      "currency": "CAD",
+      "duration": "forever",
+      "duration_label": "Forever",
+      "duration_months": null,
+      "max_redemptions": null,
+      "redemptions_count": 3,
+      "expires_at": null,
+      "packages": [],
+      "status": "active",
+      "status_label": "Active",
+      "created_at": "2026-11-14T15:00:00+00:00"
+    },
+    {
+      "code": "LAUNCH20",
+      "description": "Launch campaign",
+      "kind": "percent",
+      "kind_label": "Percent off",
+      "percent_off": 20,
+      "amount_off_cents": null,
+      "currency": "CAD",
+      "duration": "repeating",
+      "duration_label": "Number of months",
+      "duration_months": 3,
+      "max_redemptions": 10,
+      "redemptions_count": 7,
+      "expires_at": "2026-12-31T05:00:00+00:00",
+      "packages": [
+        {
+          "code": "growth",
+          "name": "Growth"
+        }
+      ],
+      "status": "active",
+      "status_label": "Active",
+      "created_at": "2026-11-14T15:00:00+00:00"
+    },
+    {
+      "code": "SPRING",
+      "description": "",
+      "kind": "percent",
+      "kind_label": "Percent off",
+      "percent_off": 15,
+      "amount_off_cents": null,
+      "currency": "CAD",
+      "duration": "once",
+      "duration_label": "Once",
+      "duration_months": null,
+      "max_redemptions": 100,
+      "redemptions_count": 0,
+      "expires_at": "2026-06-01T04:00:00+00:00",
+      "packages": [],
+      "status": "expired",
+      "status_label": "Expired",
+      "created_at": "2026-11-14T15:00:00+00:00"
+    }
+  ]
+}

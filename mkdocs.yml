@@ -74,6 +74,7 @@ nav:
       - "Roles and permissions": architecture/permissions.md
       - "Audit log and history": architecture/audit.md
       - "Product catalogue and feature keys": architecture/feature-keys.md
+      - "Packages, prices and promo codes": architecture/packages-pricing.md
       - "Chart of accounts": architecture/chart-of-accounts.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md
   - Developer guides:
