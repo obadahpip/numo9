@@ -95,3 +95,37 @@ Rules (`TaxRegistration.clean`, codes `orgsettings.registration.*`):
   (gap-44).
 - Not here yet: "a Quebec organisation needs a QST number" is a prompt on the registrations page
   (A-05-T12) and an exceptions-engine rule (K-09), not a save rule.
+
+## Lock dates (A-05-T04)
+
+Xero has two lock dates for the whole file (both empty in the teardown organisation). Numo9 has
+**one lock per module and level** — `LockDate(module, level, date, reason)`, one row per
+organisation, module and level (`orgsettings_lock_one_per_module_level`):
+
+| Module (`module`) | Covers |
+|---|---|
+| `gl` General ledger | Manual journals and every posting to the ledger |
+| `ar` Sales and accounts receivable | Invoices, credit notes, customer payments |
+| `ap` Purchases and accounts payable | Bills, supplier credits, supplier payments |
+| `bank` Bank | Bank transactions, transfers, reconciliation |
+| `payroll` Payroll | Pay runs and payroll journals |
+| `tax` Sales tax | GST/HST, QST and PST returns (set when a return is filed, G-03-T07) |
+
+| Level (`level`) | Stops |
+|---|---|
+| `advisers_only` "Everyone except advisers" | Everyone but the advisers — accountants of an assigned practice (A-03) |
+| `everyone` "Everyone" | Advisers too |
+
+So "AP locked, GL open" or "locked for the client at 30 June, for the accountant at 31 March" are
+both one row each. Rules (codes `orgsettings.lock.*`):
+
+- `date` empty = not locked at that level. Changes dated **on or before** the date are refused —
+  the lock service (A-05-T05) applies it in the organisation's time zone.
+- **Moving a lock back needs a reason** (`reason_required`): an earlier date, or removing it,
+  reopens closed periods. `set_lock(date, reason)` sets both for one change.
+- **Levels in order** (`levels_out_of_order`): the everyone date is never later than the
+  advisers-only date of the same module — an adviser is never locked out of more than the client.
+- Module and level of a row never change (`immutable`): set another lock instead.
+- **History via audit**: every change is an `orgsettings.lockdate.created` / `.updated` event with
+  old → new `date` and `reason` and its author or `System: <job>`; the record history drawer
+  (A-04-T10) reads it (`object_type = orgsettings.LockDate`, `object_id` = the lock's public id).

@@ -23,7 +23,7 @@ import re
 from typing import Any, ClassVar
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxLengthValidator, MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
@@ -595,6 +595,172 @@ class TaxRegistration(AuditedModel, OrgOwnedModel):
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         self.cra_approval_ref = (self.cra_approval_ref or "").strip()
+        errors: dict[str, Any] = {}
+        try:
+            self.clean_fields(exclude=["organisation", "created_by", "public_id"])
+        except ValidationError as error:
+            errors = error.update_error_dict(errors)
+        if not errors:
+            try:
+                self.clean()
+            except ValidationError as error:
+                errors = error.update_error_dict(errors)
+        if errors:
+            raise ValidationError(errors)
+        super().save(*args, **kwargs)
+
+
+# ---- lock dates (A-05-T04) -------------------------------------------------------------------
+
+
+class LockModule(models.TextChoices):
+    """The modules a lock date applies to: "AP locked, GL open" is possible (gap-44)."""
+
+    GL = "gl", _("General ledger")
+    AR = "ar", _("Sales and accounts receivable")
+    AP = "ap", _("Purchases and accounts payable")
+    BANK = "bank", _("Bank")
+    PAYROLL = "payroll", _("Payroll")
+    TAX = "tax", _("Sales tax")
+
+
+class LockLevel(models.TextChoices):
+    """Who the lock stops. Advisers are the accountant practice roles (A-03)."""
+
+    ADVISERS_ONLY = "advisers_only", _("Everyone except advisers")
+    EVERYONE = "everyone", _("Everyone")
+
+
+REASON_MAX = 500
+
+
+class LockDate(AuditedModel, OrgOwnedModel):
+    """A lock date of one module at one level (A-05-T04): changes dated on or before ``date`` are
+    refused for the people the level stops (the lock service, A-05-T05).
+
+    - ``advisers_only`` stops everyone except advisers (accountants of an assigned practice);
+      ``everyone`` stops advisers too. The ``everyone`` date is never later than the
+      ``advisers_only`` date of the same module (advisers are never locked out of more than
+      everyone else).
+    - ``date`` empty: the module is not locked at that level.
+    - ``reason`` — why the lock was set or moved: required when the lock moves **backwards**
+      (an earlier date, or removed), because that reopens closed periods. Use ``set_lock()``,
+      which takes the date and the reason of the change together.
+    - **History via audit**: every change is an ``orgsettings.lockdate.*`` event with the old and
+      new date and reason and its author (the record history drawer shows it, A-04-T10).
+
+    One row per organisation, module and level (database constraint).
+    """
+
+    module = models.CharField(_("module"), max_length=16, choices=LockModule.choices)
+    level = models.CharField(_("level"), max_length=16, choices=LockLevel.choices)
+    date = models.DateField(
+        _("lock date"),
+        null=True,
+        blank=True,
+        help_text=_("Changes dated on or before this date are refused."),
+    )
+    reason = models.TextField(
+        _("reason"), max_length=REASON_MAX, blank=True, validators=[MaxLengthValidator(REASON_MAX)]
+    )
+
+    class Meta:
+        ordering = ("module", "level")
+        verbose_name = _("lock date")
+        verbose_name_plural = _("lock dates")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "module", "level"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="orgsettings_lock_one_per_module_level",
+            ),
+            models.CheckConstraint(
+                condition=_in("module", LockModule), name="orgsettings_lock_module_valid"
+            ),
+            models.CheckConstraint(
+                condition=_in("level", LockLevel), name="orgsettings_lock_level_valid"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_module_display()} — {self.get_level_display()}"
+
+    def audit_label(self) -> str:
+        return str(self)
+
+    def set_lock(self, date: Any, reason: str = "") -> None:
+        """Set the date and the reason of this change (validated on save)."""
+        self.date = date
+        self.reason = reason
+
+    def _stored(self) -> LockDate | None:
+        if self._state.adding or self.pk is None:
+            return None
+        return LockDate._base_manager.filter(pk=self.pk).first()
+
+    def clean(self) -> None:
+        errors: dict[str, list[ValidationError]] = {}
+        self.reason = (self.reason or "").strip()
+        stored = self._stored()
+        if stored is not None and (stored.module, stored.level) != (self.module, self.level):
+            errors.setdefault("module", []).append(
+                ValidationError(
+                    _("A lock date's module and level don't change: set another lock instead."),
+                    code="orgsettings.lock.immutable",
+                )
+            )
+        previous = stored.date if stored is not None else None
+        moved_back = previous is not None and (self.date is None or self.date < previous)
+        if moved_back and not self.reason:
+            errors.setdefault("reason", []).append(
+                ValidationError(
+                    _(
+                        "Moving a lock date back reopens %(date)s and earlier: say why in the "
+                        "reason."
+                    ),
+                    code="orgsettings.lock.reason_required",
+                    params={"date": previous.isoformat() if previous else ""},
+                )
+            )
+        if self.date is not None and not errors:
+            self._check_levels(errors)
+        if errors:
+            raise ValidationError(errors)
+
+    def _check_levels(self, errors: dict[str, list[ValidationError]]) -> None:
+        """The everyone lock is never later than the advisers-only lock of the module."""
+        other_level = (
+            LockLevel.ADVISERS_ONLY if self.level == LockLevel.EVERYONE else LockLevel.EVERYONE
+        )
+        other = (
+            LockDate._base_manager.filter(
+                organisation_id=self.organisation_id,
+                module=self.module,
+                level=other_level,
+                deleted_at__isnull=True,
+                date__isnull=False,
+            )
+            .exclude(pk=self.pk)
+            .first()
+        )
+        if other is None or other.date is None or self.date is None:
+            return
+        everyone, advisers = (
+            (self.date, other.date) if self.level == LockLevel.EVERYONE else (other.date, self.date)
+        )
+        if everyone > advisers:
+            errors.setdefault("date", []).append(
+                ValidationError(
+                    _(
+                        "The lock for everyone (%(everyone)s) can't be later than the lock for "
+                        "everyone except advisers (%(advisers)s)."
+                    ),
+                    code="orgsettings.lock.levels_out_of_order",
+                    params={"everyone": everyone.isoformat(), "advisers": advisers.isoformat()},
+                )
+            )
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
         errors: dict[str, Any] = {}
         try:
             self.clean_fields(exclude=["organisation", "created_by", "public_id"])

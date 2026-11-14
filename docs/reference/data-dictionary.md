@@ -106,3 +106,19 @@ PST, Saskatchewan PST, Manitoba RST. Business record: `OrgOwnedModel` and `Audit
 
 Indexes: `(organisation, type)` (`orgsettings_reg_type_idx`).
 Audit actions: `orgsettings.taxregistration.created`, `.updated`, `.deleted`, `.restored`.
+
+### `orgsettings_lockdate` — Lock date {#orgsettings-lockdate}
+
+A lock date of one module at one level (A-05-T04). Business record: `OrgOwnedModel` and
+`AuditedModel` (its history is the audit log).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `module` | varchar(16) | no | `gl`, `ar`, `ap`, `bank`, `payroll`, `tax` (`orgsettings_lock_module_valid`); never changes |
+| `level` | varchar(16) | no | `advisers_only`, `everyone` (`orgsettings_lock_level_valid`); never changes |
+| `date` | date | yes | Changes dated on or before it are refused; empty = not locked; the `everyone` date ≤ the `advisers_only` date of the module |
+| `reason` | text | no | Why the lock was set or moved (≤ 500 characters); required when the date moves back or is removed |
+
+Unique: `(organisation, module, level)` among rows not deleted (`orgsettings_lock_one_per_module_level`).
+Audit actions: `orgsettings.lockdate.created`, `.updated`, `.deleted`, `.restored`.

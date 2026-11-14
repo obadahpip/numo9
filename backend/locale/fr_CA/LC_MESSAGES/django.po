@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 07:53-0500\n"
+"POT-Creation-Date: 2026-11-14 07:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1624,6 +1624,61 @@ msgstr ""
 
 #, python-format
 msgid "This program account belongs to BN %(bn)s, not to the organisation's Business Number %(registered)s."
+msgstr ""
+
+msgid "General ledger"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accountant delegate"
+msgid "Sales and accounts receivable"
+msgstr "Délégué comptable"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Purchases and accounts payable"
+msgstr "Comptable"
+
+#, fuzzy
+#| msgid "Sales"
+msgid "Sales tax"
+msgstr "Ventes"
+
+msgid "Everyone except advisers"
+msgstr ""
+
+msgid "Everyone"
+msgstr ""
+
+msgid "module"
+msgstr ""
+
+msgid "level"
+msgstr ""
+
+msgid "lock date"
+msgstr ""
+
+#, fuzzy
+#| msgid "The start date must be on or before the end date."
+msgid "Changes dated on or before this date are refused."
+msgstr "La date de début doit être égale ou antérieure à la date de fin."
+
+msgid "reason"
+msgstr ""
+
+msgid "lock dates"
+msgstr ""
+
+msgid "A lock date's module and level don't change: set another lock instead."
+msgstr ""
+
+#, python-format
+msgid "Moving a lock date back reopens %(date)s and earlier: say why in the reason."
+msgstr ""
+
+#, python-format
+msgid "The lock for everyone (%(everyone)s) can't be later than the lock for everyone except advisers (%(advisers)s)."
 msgstr ""
 
 msgid "Alberta"
