@@ -5,6 +5,7 @@
 | **Deliverable** | A-05 · Org settings, fiscal year, per-module lock dates, Phase 0 (component A — Platform Core) |
 | **Branch** | `feature/A-05-org-settings-locks` |
 | **Code** | `backend/numo9/orgsettings/` (models, validators, service) |
+| **Libraries** | `phonenumbers` (telephone numbers, A-05-T02) |
 | **Depends on** | A-01 (tenancy: `OrgOwnedModel`), A-03 (roles: advisers), A-04 (audit: `AuditedModel`) |
 | **Used by** | C-02 posting engine (lock dates), documents (numbering, default terms), G-01 tax codes (home province), U-05 trial (time zone), K-09 exceptions (missing BN, missing lock date) |
 | **Gaps** | gap-03 (settings deep links), gap-39 (Province / Postal code, one Tax Registrations page), gap-44 (per-module locks, attribution), gap-55 (numeric legal name) |
@@ -38,3 +39,22 @@ Rules:
 - **Every change is audited** (`AuditedModel`): `orgsettings.organisationsettings.created` /
   `.updated` with old → new values, attributed to the person or to `System: <job>` (gap-44).
 - `printed_name` — the legal name, else the display name; `address("mailing" | "physical")`.
+
+## Validation (A-05-T02)
+
+`save()` tidies the input (surrounding spaces, upper-case province, country and postal code, the
+locked currency) and then reports **every** problem at once as a `ValidationError` keyed by field,
+each with a stable code — the settings form shows them inline (A-05-T11).
+
+| Field | Rule | Code |
+|---|---|---|
+| `legal_name` | Must contain letters: "1001633222", "123-456" or "#1" are refused, "1001633222 Ontario Inc." is fine (gap-55) | `orgsettings.legal_name.numeric` |
+| `*_province` (Canada) | One of AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT (`validators.Province`) | `orgsettings.province.invalid` |
+| `*_postal_code` (Canada) | Canada Post format `A1A 1A1` (no D, F, I, O, Q, U; no W or Z first); typed in any case, with or without the space; stored as `M5X 1A9` | `orgsettings.postal_code.invalid` |
+| `*_postal_code` + `*_province` | [EXTRA] The first letter belongs to the province: A NL · B NS · C PE · E NB · G H J QC · K L M N P ON · R MB · S SK · T AB · V BC · X NT/NU · Y YT | `orgsettings.postal_code.province_mismatch` |
+| `*_country` | Two-letter ISO code; an address outside Canada keeps its own region and postal code (no Canadian rules) | `orgsettings.country.invalid` |
+| `phone` | Parsed by `phonenumbers` as Canadian unless it starts with `+`; must be a valid number; stored as E.164 (`+14165550123`) | `orgsettings.phone.invalid` |
+| `fye_day` | A day the month has | `orgsettings.fye_day_invalid` |
+| `*_terms_days` | 0–365 days, or a day 1–31 for the "of the month" terms | `orgsettings.terms_day_invalid` |
+
+The physical address is checked only when it is separate (`physical_same_as_mailing` false).

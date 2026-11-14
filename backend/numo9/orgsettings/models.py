@@ -19,6 +19,7 @@ and the job scheduler read the organisation, and the settings page is the one pl
 
 from __future__ import annotations
 
+import re
 from typing import Any, ClassVar
 
 from django.core.exceptions import ValidationError
@@ -29,6 +30,15 @@ from django.utils.translation import gettext_lazy as _
 from numo9.accounts.models import TimeFormat
 from numo9.audit.mixins import AuditedModel
 from numo9.tenancy.models import DEFAULT_TIME_ZONE, OrgOwnedModel, validate_time_zone
+
+from .validators import (
+    normalise_phone,
+    normalise_postal_code,
+    validate_legal_name,
+    validate_postal_code,
+    validate_postal_code_province,
+    validate_province,
+)
 
 #: Base currency of every Numo9 organisation (multi-currency adds foreign currencies, not a base).
 BASE_CURRENCY = "CAD"
@@ -102,6 +112,7 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         _("legal name"),
         max_length=200,
         blank=True,
+        validators=[validate_legal_name],
         help_text=_("As registered; printed on statements, invoices and tax forms."),
     )
     display_name = models.CharField(
@@ -285,22 +296,87 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
                         code="orgsettings.terms_day_invalid",
                     )
                 )
+        for kind in ADDRESS_KINDS:
+            if kind == "physical" and self.physical_same_as_mailing:
+                continue
+            self._clean_address(kind, errors)
+        if self.phone:
+            try:
+                self.phone = normalise_phone(self.phone)
+            except ValidationError as error:
+                errors.setdefault("phone", []).append(error)
         if errors:
             raise ValidationError(errors)
 
+    def _clean_address(self, kind: str, errors: dict[str, list[ValidationError]]) -> None:
+        """Canadian addresses: a known province, a ``A1A 1A1`` postal code in that province."""
+        country = getattr(self, f"{kind}_country")
+        if not re.fullmatch(r"[A-Z]{2}", country):
+            errors.setdefault(f"{kind}_country", []).append(
+                ValidationError(
+                    _("Use the two-letter country code, e.g. CA."),
+                    code="orgsettings.country.invalid",
+                )
+            )
+            return
+        if country != CANADA:
+            return
+        province = getattr(self, f"{kind}_province")
+        postal_code = getattr(self, f"{kind}_postal_code")
+        checks = (
+            (f"{kind}_province", validate_province, (province,)),
+            (f"{kind}_postal_code", validate_postal_code, (postal_code,)),
+        )
+        failed = False
+        for field, check, args in checks:
+            try:
+                check(*args)
+            except ValidationError as error:
+                errors.setdefault(field, []).append(error)
+                failed = True
+        if not failed:
+            try:
+                validate_postal_code_province(postal_code, province)
+            except ValidationError as error:
+                errors.setdefault(f"{kind}_postal_code", []).append(error)
+
     def normalise(self) -> None:
         """Tidy user input before validation (surrounding spaces, the locked currency)."""
-        for name in ("legal_name", "display_name", "industry", "email", "website"):
+        for name in ("legal_name", "display_name", "industry", "email", "website", "phone"):
             setattr(self, name, (getattr(self, name) or "").strip())
+        for kind in ADDRESS_KINDS:
+            for part in ADDRESS_PARTS:
+                name = f"{kind}_{part}"
+                setattr(self, name, (getattr(self, name) or "").strip())
+            country = getattr(self, f"{kind}_country").upper() or CANADA
+            setattr(self, f"{kind}_country", country)
+            if country == CANADA:
+                province = getattr(self, f"{kind}_province").upper()
+                setattr(self, f"{kind}_province", province)
+                postal = normalise_postal_code(getattr(self, f"{kind}_postal_code"))
+                setattr(self, f"{kind}_postal_code", postal)
         self.base_currency = BASE_CURRENCY
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         self.normalise()
-        self.clean_fields(exclude=self._clean_exclude(kwargs.get("update_fields")))
-        self.clean()
+        self.validate(update_fields=kwargs.get("update_fields"))
         with transaction.atomic():
             super().save(*args, **kwargs)
             self._mirror_to_organisation()
+
+    def validate(self, update_fields: Any = None) -> None:
+        """Field and cross-field rules; every problem is reported at once (one form, one pass)."""
+        errors: dict[str, Any] = {}
+        try:
+            self.clean_fields(exclude=self._clean_exclude(update_fields))
+        except ValidationError as error:
+            errors = error.update_error_dict(errors)
+        try:
+            self.clean()
+        except ValidationError as error:
+            errors = error.update_error_dict(errors)
+        if errors:
+            raise ValidationError(errors)
 
     def _clean_exclude(self, update_fields: Any) -> list[str]:
         # Relations and bookkeeping are set by the platform, not validated as user input.

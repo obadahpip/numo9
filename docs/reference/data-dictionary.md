@@ -68,17 +68,17 @@ The one settings row of an organisation (A-05-T01). Business record: `OrgOwnedMo
 | Column | Type | Null | Rules / meaning |
 |---|---|---|---|
 | `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; `organisation_id` is **unique** (`orgsettings_one_per_org`) |
-| `legal_name` | varchar(200) | no | As registered; empty until known; printed on statements and tax forms |
+| `legal_name` | varchar(200) | no | As registered; empty until known; must contain letters (numeric-only refused, gap-55); printed on statements and tax forms |
 | `display_name` | varchar(200) | no | Required; mirrored to `tenancy_organisation.name` |
 | `industry` | varchar(100) | no | Free text (empty when none) |
 | `structure` | varchar(32) | no | `sole_proprietorship`, `partnership`, `corporation` (default), `non_profit`, `charity`, `cooperative`, `trust`, `other` (`orgsettings_structure_valid`) |
 | `mailing_attention`, `mailing_line1`, `mailing_line2`, `mailing_city` | varchar | no | Mailing address (empty when none) |
-| `mailing_province` | varchar(50) | no | Two-letter province or territory code for a Canadian address |
-| `mailing_postal_code` | varchar(16) | no | Postal code |
+| `mailing_province` | varchar(50) | no | Canada: a province or territory code (`AB` … `YT`); elsewhere free text |
+| `mailing_postal_code` | varchar(16) | no | Canada: `A1A 1A1`, first letter in the province; elsewhere free text |
 | `mailing_country` | varchar(2) | no | ISO 3166-1 code; `CA` by default |
 | `physical_same_as_mailing` | boolean | no | True by default: the physical address follows the mailing one |
 | `physical_*` | varchar | no | Physical address, same parts as the mailing address |
-| `phone` | varchar(32) | no | Telephone |
+| `phone` | varchar(32) | no | Valid telephone number stored as E.164 (`+14165550123`) |
 | `email` | varchar(254) | no | Email address |
 | `website` | varchar(200) | no | Website URL |
 | `fye_month`, `fye_day` | smallint | no | Fiscal year end; 12/31 by default; month 1–12, day 1–31 (`orgsettings_fye_month_valid`, `orgsettings_fye_day_valid`) and a day the month has (model) |

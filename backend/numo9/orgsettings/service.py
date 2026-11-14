@@ -13,10 +13,7 @@ from numo9.tenancy.context import TenantContextMissing, current_org
 from numo9.tenancy.models import Organisation
 
 from .models import OrganisationSettings
-
-
-def _has_letters(value: str) -> bool:
-    return any(character.isalpha() for character in value)
+from .validators import has_letters
 
 
 def get_settings(organisation: Organisation | None = None) -> OrganisationSettings:
@@ -31,7 +28,7 @@ def get_settings(organisation: Organisation | None = None) -> OrganisationSettin
         organisation=org,
         display_name=org.name,
         # A name with no letters (an imported "1001633222") is no legal name (gap-55).
-        legal_name=org.name if _has_letters(org.name) else "",
+        legal_name=org.name if has_letters(org.name) else "",
         time_zone=org.time_zone,
     )
     try:

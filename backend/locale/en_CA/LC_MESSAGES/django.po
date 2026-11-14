@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 07:47-0500\n"
+"POT-Creation-Date: 2026-11-14 07:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1476,6 +1476,65 @@ msgid "That month has no day %(day)d."
 msgstr ""
 
 msgid "Choose a day of the month from 1 to 31."
+msgstr ""
+
+msgid "Use the two-letter country code, e.g. CA."
+msgstr ""
+
+msgid "Alberta"
+msgstr ""
+
+msgid "British Columbia"
+msgstr ""
+
+msgid "Manitoba"
+msgstr ""
+
+msgid "New Brunswick"
+msgstr ""
+
+msgid "Newfoundland and Labrador"
+msgstr ""
+
+msgid "Nova Scotia"
+msgstr ""
+
+msgid "Northwest Territories"
+msgstr ""
+
+msgid "Nunavut"
+msgstr ""
+
+msgid "Ontario"
+msgstr ""
+
+msgid "Prince Edward Island"
+msgstr ""
+
+msgid "Quebec"
+msgstr ""
+
+msgid "Saskatchewan"
+msgstr ""
+
+msgid "Yukon"
+msgstr ""
+
+#, python-format
+msgid "A legal name needs letters: %(value)s looks like a number."
+msgstr ""
+
+msgid "Enter a Canadian postal code like A1A 1A1."
+msgstr ""
+
+#, python-format
+msgid "Postal codes starting with %(letter)s are in %(expected)s, not in %(province)s: check the postal code or the province."
+msgstr ""
+
+msgid "Choose a province or territory."
+msgstr ""
+
+msgid "Enter a valid telephone number, e.g. 416 555 0123 or +44 20 7946 0958."
 msgstr ""
 
 #, python-format
