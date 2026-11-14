@@ -99,3 +99,6 @@ junit.xml
 
 # Compiled gettext catalogues: build output of backend/tools/compile_messages.py (A-10-T14)
 backend/locale/**/*.mo
+
+# Microsoft Office lock files (an open .xlsx/.docx creates ~$name next to it)
+~$*

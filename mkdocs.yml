@@ -74,10 +74,12 @@ nav:
       - "Roles and permissions": architecture/permissions.md
       - "Audit log and history": architecture/audit.md
       - "Product catalogue and feature keys": architecture/feature-keys.md
+      - "Chart of accounts": architecture/chart-of-accounts.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:
       - "Permission catalogue (generated)": reference/permission-catalogue.md
+      - "Data dictionary": reference/data-dictionary.md
   - Design:
       - "Brand tokens": design/brand-tokens.md
       - "Phase 0 wireframes": design/wireframes.md

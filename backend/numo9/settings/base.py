@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "numo9.audit",
     # Products and feature keys sold in packages (U-01).
     "numo9.catalogue",
+    # General ledger: chart of accounts, GIFI list (C-01); posting engine (C-02).
+    "numo9.ledger",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

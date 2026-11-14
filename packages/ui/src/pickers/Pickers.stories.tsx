@@ -6,7 +6,7 @@ import { AccountPicker } from "./AccountPicker";
 import { ContactPicker } from "./ContactPicker";
 import { CurrencyInput } from "./CurrencyInput";
 import { DatePicker } from "./DatePicker";
-import { dateLabels, sampleAccounts, sampleContacts, typeLabels } from "./fixtures";
+import { chartAccounts, dateLabels, sampleAccounts, sampleContacts, typeLabels } from "./fixtures";
 import { isValidPostalCode } from "./postalCode";
 import { PostalCodeInput } from "./PostalCodeInput";
 import { ProvincePicker } from "./ProvincePicker";
@@ -122,3 +122,37 @@ function AllPickers({ locale }: { locale: "en-CA" | "fr-CA" }) {
 
 export const English: Story = { render: () => <AllPickers locale="en-CA" /> };
 export const French: Story = { render: () => <AllPickers locale="fr-CA" /> };
+
+/**
+ * Account picker by context (C-01-T10): the same chart offered on a sales line, a purchase line,
+ * a journal line and a payment's "paid from". Parents (4000 Sales, 6210 Vehicle expenses) are
+ * headings that can't be chosen; engine accounts (AR, AP, tax controls) appear only in journals.
+ */
+function AccountContexts() {
+  const [values, setValues] = useState<Record<string, string | null>>({});
+  const contexts = [
+    ["sales", "Sales line"],
+    ["purchase", "Purchase line"],
+    ["journal", "Journal line"],
+    ["bank", "Paid from"],
+  ] as const;
+  return (
+    <div className="grid max-w-md gap-5">
+      {contexts.map(([context, label]) => (
+        <Row key={context} label={label} htmlFor={`account-${context}`}>
+          <AccountPicker
+            id={`account-${context}`}
+            accounts={chartAccounts}
+            context={context}
+            value={values[context] ?? null}
+            onChange={(id) => setValues((current) => ({ ...current, [context]: id }))}
+            typeLabels={typeLabels}
+            emptyMessage="No accounts match."
+          />
+        </Row>
+      ))}
+    </div>
+  );
+}
+
+export const AccountPickerContexts: Story = { render: () => <AccountContexts /> };

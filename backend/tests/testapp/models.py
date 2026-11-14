@@ -42,3 +42,11 @@ class AuditedInvoice(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"Invoice {self.number}"
+
+
+class AccountDefault(OrgOwnedModel):
+    """Refers to an account by foreign key as items, bank accounts and journal lines will
+    (C-01-T07): renumbering the account must leave the reference unchanged."""
+
+    label = models.CharField(max_length=50)
+    account = models.ForeignKey("ledger.Account", on_delete=models.PROTECT, related_name="+")
