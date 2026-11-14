@@ -61,6 +61,14 @@ describe("Content Security Policy (S-03-T02)", () => {
     );
   });
 
+  it("allows the files bucket for uploads (connect-src) and previews (img-src)", () => {
+    const csp = buildCsp({ nonce: "n", storageSrc: ["https://files.numo9.ca"] });
+    expect(csp).toContain(
+      "img-src 'self' data: blob: https://*.stripe.com https://files.numo9.ca;",
+    );
+    expect(csp).toContain("connect-src 'self' https://api.stripe.com https://files.numo9.ca");
+  });
+
   it("switches to report-only only when asked", () => {
     expect(cspMode(undefined)).toBe("enforce");
     expect(cspMode("Report-Only")).toBe("report-only");

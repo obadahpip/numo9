@@ -161,7 +161,7 @@ def test_changes_are_audited_allocations_are_not(active: Organisation) -> None:
     ]
 
 
-# ---- acceptance: concurrent allocation is unique -------------------------------------------------
+# ---- acceptance: concurrent allocation is unique ------------------------------------------------
 
 THREADS = 8
 PER_THREAD = 25

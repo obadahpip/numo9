@@ -39,7 +39,8 @@ def test_page_lists_every_permission_in_both_languages_with_roles() -> None:
     assert row.endswith("| critical | organisation | Practice admin, Owner, Admin |")
     assert "## Users and roles { #users }" in page
     assert "| organisation | Owner | `owner` |" in page
-    assert page.count("\n## ") == 5  # 4 modules + system roles
+    # one section per module that has permissions (documents joined with A-06) + system roles
+    assert page.count("\n## ") == len({p.module for p in catalogue}) + 1
 
 
 def test_stale_page_fails_the_check(tmp_path: Path) -> None:

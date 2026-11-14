@@ -58,6 +58,10 @@ ACTION_LABELS: dict[str, Promise] = {
     "access_request.created": _("Access requested"),
     "access_request.closed": _("Access request closed"),
     "ledger.account.renumbered": _("Account renumbered"),
+    "files.document.quarantined": _("File quarantined: a virus was found"),
+    "files.document.duplicate_received": _("Same file received again"),
+    "files.document.downloaded": _("File opened"),
+    "files.inbound.processed": _("Email received"),
 }
 
 TYPE_LABELS: dict[str, Promise] = {

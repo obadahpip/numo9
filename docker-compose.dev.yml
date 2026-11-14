@@ -10,6 +10,14 @@ x-dev-env: &dev-env
   DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,backend
   DATABASE_URL: postgres://numo9:numo9@postgres:5432/numo9
   REDIS_URL: redis://redis:6379/0
+  # Documents (A-06): MinIO buckets (create with `python manage.py files_buckets`) and ClamAV.
+  NUMO9_FILES_S3_ENDPOINT_URL: http://minio:9000
+  NUMO9_FILES_S3_REGION: us-east-1
+  NUMO9_FILES_S3_ACCESS_KEY: numo9
+  NUMO9_FILES_S3_SECRET_KEY: numo9-dev-secret
+  NUMO9_CLAMD_HOST: clamav
+  NUMO9_INBOUND_DOMAIN: in.localhost
+  NUMO9_INBOUND_WEBHOOK_SECRET: numo9-dev-inbound-secret
 
 services:
   postgres:

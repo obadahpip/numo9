@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 13:01-0500\n"
+"POT-Creation-Date: 2026-11-14 15:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -323,6 +323,18 @@ msgstr "Demande d’accès fermée"
 
 msgid "Account renumbered"
 msgstr ""
+
+msgid "File quarantined: a virus was found"
+msgstr "Fichier mis en quarantaine : un virus a été détecté"
+
+msgid "Same file received again"
+msgstr "Même fichier reçu de nouveau"
+
+msgid "File opened"
+msgstr "Fichier ouvert"
+
+msgid "Email received"
+msgstr "Courriel reçu"
 
 #, python-format
 msgid "%(start)s to %(end)s · times in %(zone)s"
@@ -1052,6 +1064,63 @@ msgstr ""
 msgid "The choice %(value)s is listed twice."
 msgstr ""
 
+msgid "The name per language, e.g. {\"en-ca\": \"Net 30\"}."
+msgstr ""
+
+#, fuzzy
+#| msgid "Due date"
+msgid "due date"
+msgstr "Date d’échéance"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "days or day"
+msgstr "bons de commande"
+
+msgid "early-payment discount (%)"
+msgstr ""
+
+msgid "discount if paid within (days)"
+msgstr ""
+
+msgid "late interest (% a year)"
+msgstr ""
+
+msgid "payment term"
+msgstr ""
+
+msgid "payment terms"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enter the English text."
+msgid "Enter the English name."
+msgstr "Entrez le texte anglais."
+
+#, python-format
+msgid "Another payment term is already called %(name)s."
+msgstr ""
+
+msgid "Choose a day of the month from 1 to 31."
+msgstr ""
+
+#, python-format
+msgid "A payment term is at most %(max)d days."
+msgstr ""
+
+msgid "A discount is from 0 to 99.99 %."
+msgstr ""
+
+msgid "Say within how many days the discount applies."
+msgstr ""
+
+#, python-format
+msgid "The discount window must end before the payment is due (%(days)d days)."
+msgstr ""
+
+msgid "Late interest is from 0 to 100 % a year."
+msgstr ""
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1110,6 +1179,255 @@ msgstr "Total (CAD)"
 #, python-format
 msgid "Page %(page)s of %(pages)s"
 msgstr "Page %(page)s de %(pages)s"
+
+msgid "Wait until the file has been checked for viruses."
+msgstr ""
+
+msgid "This action reads PDF files and images only."
+msgstr ""
+
+#, fuzzy
+#| msgid "Created"
+msgid "Create a bill"
+msgstr "Créé"
+
+msgid "Bills arrive with Purchases in Phase 1."
+msgstr ""
+
+msgid "Create an expense claim"
+msgstr ""
+
+msgid "Expense claims arrive with Purchases in Phase 1."
+msgstr ""
+
+msgid "Create a fixed asset"
+msgstr ""
+
+msgid "The fixed asset register arrives in Phase 2."
+msgstr ""
+
+msgid "Uploading"
+msgstr ""
+
+msgid "Checking for viruses"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
+msgid "Quarantined (virus found)"
+msgstr ""
+
+msgid "Uploaded"
+msgstr ""
+
+msgid "Emailed to the inbox"
+msgstr ""
+
+msgid "Inbox"
+msgstr ""
+
+msgid "Preview being made"
+msgstr ""
+
+msgid "Preview ready"
+msgstr ""
+
+msgid "No preview for this type"
+msgstr ""
+
+msgid "Password-protected PDF: no preview"
+msgstr ""
+
+msgid "Preview failed"
+msgstr ""
+
+msgid "storage key"
+msgstr ""
+
+msgid "file name"
+msgstr ""
+
+#, fuzzy
+#| msgid "Record type"
+msgid "file type"
+msgstr "Type de fiche"
+
+msgid "size (bytes)"
+msgstr ""
+
+msgid "SHA-256"
+msgstr ""
+
+msgid "source"
+msgstr ""
+
+msgid "sender"
+msgstr ""
+
+msgid "known sender"
+msgstr ""
+
+msgid "False when an emailed document came from an address the organisation doesn't know (accepted and flagged)."
+msgstr ""
+
+msgid "inbound email"
+msgstr ""
+
+msgid "period"
+msgstr ""
+
+msgid "Month the document belongs to, YYYY-MM."
+msgstr ""
+
+#, fuzzy
+#| msgid "tax behaviour"
+msgid "tax year"
+msgstr "traitement des taxes"
+
+msgid "tags"
+msgstr ""
+
+msgid "folder"
+msgstr ""
+
+#, fuzzy
+#| msgid "result"
+msgid "scan result"
+msgstr "résultat"
+
+#, fuzzy
+#| msgid "started at"
+msgid "scanned at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "Reviewer"
+msgid "preview"
+msgstr "Réviseur"
+
+#, fuzzy
+#| msgid "Reviewer"
+msgid "preview key"
+msgstr "Réviseur"
+
+msgid "thumbnail key"
+msgstr ""
+
+msgid "password-protected"
+msgstr ""
+
+#, fuzzy
+#| msgid "Documents"
+msgid "document"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "documents"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "Enter dates as YYYY-MM-DD, e.g. 2026-10-26."
+msgid "Enter the period as YYYY-MM, e.g. 2026-10."
+msgstr "Entrez les dates au format AAAA-MM-JJ, p. ex. 2026-10-26."
+
+#, fuzzy, python-format
+#| msgid "Enter a number of months from 1 to %(max)s."
+msgid "Enter a tax year from %(min)d to %(max)d."
+msgstr "Entrez un nombre de mois de 1 à %(max)s."
+
+#, python-format
+msgid "A document has up to %(max)d tags."
+msgstr ""
+
+#, python-format
+msgid "Tags use letters, digits, spaces and . & / - (up to 40 characters): %(tags)s."
+msgstr ""
+
+msgid "Files are limited to 25 MB."
+msgstr ""
+
+#, fuzzy
+#| msgid "audit events"
+msgid "attachment"
+msgstr "événements du journal d’audit"
+
+#, fuzzy
+#| msgid "audit events"
+msgid "attachments"
+msgstr "événements du journal d’audit"
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "Choose a document of this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+msgid "Message-ID"
+msgstr ""
+
+msgid "subject"
+msgstr ""
+
+msgid "recipient"
+msgstr ""
+
+msgid "raw message key"
+msgstr ""
+
+msgid "refused attachments"
+msgstr ""
+
+msgid "Attachments that were not stored: name and reason code."
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "received at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "started at"
+msgid "processed at"
+msgstr "commencée le"
+
+msgid "inbound emails"
+msgstr ""
+
+msgid "token"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "retired at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "inbound address"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "inbound addresses"
+msgstr "Adresse IP"
+
+msgid "See the documents inbox, attached files and their previews"
+msgstr ""
+
+msgid "Upload documents and see the inbox's email address"
+msgstr ""
+
+msgid "Tag, archive and attach documents, and change the inbox's email address"
+msgstr ""
+
+#, python-format
+msgid "A file was quarantined: %(name)s"
+msgstr ""
+
+#, python-format
+msgid "%(name)s, added to %(organisation)s, contains a virus (%(signature)s). It was moved to quarantine and can't be opened or downloaded. If you expected this file, ask the sender for a clean copy."
+msgstr ""
 
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
 msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l’un de vos cabinets."
@@ -1367,6 +1685,63 @@ msgstr "Ce prix est déjà en vigueur et ne peut pas être supprimé. Prévoyez 
 #, python-format
 msgid "The promo code %(code)s is taken. Choose another code."
 msgstr "Le code promotionnel %(code)s est déjà pris. Choisissez un autre code."
+
+#, python-format
+msgid "%(name)s can't be added: Numo9 accepts PDF, PNG, JPEG, HEIC, TIFF, CSV, XLSX, DOCX and bank files (OFX, QFX, QBO)."
+msgstr "Impossible d’ajouter %(name)s : Numo9 accepte les fichiers PDF, PNG, JPEG, HEIC, TIFF, CSV, XLSX, DOCX et les fichiers bancaires (OFX, QFX, QBO)."
+
+#, python-format
+msgid "%(name)s isn't what its name says (it contains %(detected)s). Only real PDF, image, spreadsheet, Word and bank files are accepted."
+msgstr "%(name)s n’est pas ce que son nom indique (il contient %(detected)s). Seuls de vrais fichiers PDF, images, feuilles de calcul, Word et bancaires sont acceptés."
+
+#, python-format
+msgid "%(name)s is %(size)s; files are limited to 25 MB. Split or compress it and try again."
+msgstr "%(name)s fait %(size)s; les fichiers sont limités à 25 Mo. Divisez-le ou compressez-le, puis réessayez."
+
+#, python-format
+msgid "%(name)s is empty."
+msgstr "%(name)s est vide."
+
+#, python-format
+msgid "The upload of %(name)s didn't arrive. Upload the file again."
+msgstr "Le téléversement de %(name)s n’est pas arrivé. Téléversez le fichier de nouveau."
+
+#, python-format
+msgid "%(name)s is already uploaded."
+msgstr "%(name)s est déjà téléversé."
+
+#, python-format
+msgid "%(name)s isn't ready: it's being checked for viruses, or it was quarantined."
+msgstr "%(name)s n’est pas prêt : il est en cours d’analyse antivirus, ou il a été mis en quarantaine."
+
+msgid "File storage isn't answering right now. Try again in a minute."
+msgstr "Le stockage des fichiers ne répond pas pour le moment. Réessayez dans une minute."
+
+#, python-format
+msgid "Documents can't be attached to %(record_type)s: choose an organisation record."
+msgstr "Impossible de joindre des documents à %(record_type)s : choisissez un dossier de l’organisation."
+
+#, python-format
+msgid "%(name)s was quarantined (virus found) and can't be attached or opened."
+msgstr "%(name)s a été mis en quarantaine (virus détecté) et ne peut être ni joint ni ouvert."
+
+#, python-format
+msgid "%(name)s isn't a valid filter value: %(value)s."
+msgstr "%(value)s n’est pas une valeur valide pour le filtre %(name)s."
+
+msgid "This page link has expired. Reload the list."
+msgstr "Ce lien de page a expiré. Rechargez la liste."
+
+#, python-format
+msgid "Ask for 1 to %(max)s documents at a time."
+msgstr "Demandez de 1 à %(max)s documents à la fois."
+
+msgid "Choose what to do with the selected documents."
+msgstr "Choisissez quoi faire avec les documents sélectionnés."
+
+#, python-format
+msgid "Select up to %(max)s documents at a time."
+msgstr "Sélectionnez au plus %(max)s documents à la fois."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
@@ -1931,9 +2306,6 @@ msgstr "Modifier les paramètres de l’organisation"
 
 #, python-format
 msgid "That month has no day %(day)d."
-msgstr ""
-
-msgid "Choose a day of the month from 1 to 31."
 msgstr ""
 
 #, fuzzy
