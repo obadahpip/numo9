@@ -38,6 +38,20 @@ accessible names are "Numo9 home" and "Account menu: …" (WCAG 2.5.3 label in n
 decorative generated content (`data-mark` / `data-initials` with `content: attr(…)`), so the
 accessible name is the only name; the rendering is unchanged.
 
+## Contacts review (B-01-T18)
+
+Review of the B-01 contact pieces built so far (the contact list and form screens, B-01-T14/T15,
+join the page suite when they land):
+
+| Piece | Check | Result |
+|---|---|---|
+| Live duplicate panel (`frontend/src/contacts/DuplicatePanel.tsx`) | axe (jsdom, `frontend/src/contacts/DuplicatePanel.test.tsx` via `packages/ui/src/test/axe.ts`) | 0 violations |
+| | Region labelled by its heading; result count announced once through a polite `role="status"` (changes only when the count changes, never on every keystroke) | Pass |
+| | Label in name (WCAG 2.5.3): visible "Open" / "Merge…" / "Ignore" start the accessible names "Open Maple Supply Ltd." …; each row's links/buttons are distinguishable | Pass |
+| | Colour never the only cue: reasons are written out ("Business Number matches · Name 79% similar"), Archived is a text badge | Pass |
+| Wording (backend catalogues, frontend messages) | Glossary lint (`backend/tools/check_glossary.py`): Province / Postal code, never State / ZIP; no VAT | 0 banned terms (two help texts reworded: "State, county or region…" → "Region or county…", "foreign VAT or EIN" → "foreign registration number") |
+| Messages | `lint:i18n` (no hard-coded text), FormatJS extract + en-CA/fr-CA catalogues complete, Django `makemessages` en_CA/fr_CA complete | Pass (fr-CA keeps English placeholders until Phase 6) |
+
 ## Commands
 
 ```bash

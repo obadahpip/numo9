@@ -1,0 +1,188 @@
+{
+  "description": "B-01-T19 — one Canadian customer per province/territory with its billing address and the tax hint the contact defaults to (general rates in force on 14 November 2026; QC → GST+QST).",
+  "as_of": "2026-11-14",
+  "contacts": [
+    {
+      "display_name": "Prairie Grain Co-op",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Calgary",
+        "province": "AB",
+        "postal_code": "T2P 1J9",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST"
+    },
+    {
+      "display_name": "Pacific Coast Foods Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Vancouver",
+        "province": "BC",
+        "postal_code": "V6B 1A1",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST+PST"
+    },
+    {
+      "display_name": "Red River Supplies Inc.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Winnipeg",
+        "province": "MB",
+        "postal_code": "R3C 0V8",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST+RST"
+    },
+    {
+      "display_name": "Fundy Marine Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Saint John",
+        "province": "NB",
+        "postal_code": "E2L 4L1",
+        "country": "CA"
+      },
+      "expected_tax_hint": "HST15"
+    },
+    {
+      "display_name": "Avalon Fisheries Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "St. John's",
+        "province": "NL",
+        "postal_code": "A1C 5M2",
+        "country": "CA"
+      },
+      "expected_tax_hint": "HST15"
+    },
+    {
+      "display_name": "Bluenose Hardware Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Halifax",
+        "province": "NS",
+        "postal_code": "B3J 1S9",
+        "country": "CA"
+      },
+      "expected_tax_hint": "HST14"
+    },
+    {
+      "display_name": "Aurora Outfitters Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Yellowknife",
+        "province": "NT",
+        "postal_code": "X1A 2L9",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST"
+    },
+    {
+      "display_name": "Iqaluit Northern Store",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Iqaluit",
+        "province": "NU",
+        "postal_code": "X0A 0H0",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST"
+    },
+    {
+      "display_name": "Maple Supply Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Toronto",
+        "province": "ON",
+        "postal_code": "M5V 2T6",
+        "country": "CA"
+      },
+      "expected_tax_hint": "HST13"
+    },
+    {
+      "display_name": "Island Potato Growers Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Charlottetown",
+        "province": "PE",
+        "postal_code": "C1A 4P3",
+        "country": "CA"
+      },
+      "expected_tax_hint": "HST15"
+    },
+    {
+      "display_name": "Érable Distribution inc.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Montréal",
+        "province": "QC",
+        "postal_code": "H2Y 1C6",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST+QST"
+    },
+    {
+      "display_name": "Prairie Sky Equipment Ltd.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Regina",
+        "province": "SK",
+        "postal_code": "S4P 3Y2",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST+PST"
+    },
+    {
+      "display_name": "Klondike Supply Co.",
+      "roles": [
+        "customer"
+      ],
+      "billing": {
+        "line1": "100 Main Street",
+        "city": "Whitehorse",
+        "province": "YT",
+        "postal_code": "Y1A 2C6",
+        "country": "CA"
+      },
+      "expected_tax_hint": "GST"
+    }
+  ]
+}

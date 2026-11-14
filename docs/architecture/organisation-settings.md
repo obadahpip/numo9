@@ -142,6 +142,7 @@ zeros to `padding` digits; a number longer than the padding just grows.
 | `credit_note` | `CN-0001` | D-04 credit notes |
 | `quote` | `QU-0001` | D-02 quotes |
 | `purchase_order` | `PO-0001` | E-01 purchase orders |
+| `contact` | `C-0001` | B-01 contact numbers (allocated when a contact is saved without one) |
 
 Plain numbers (`101`) are `prefix=""`, `padding=1`. Prefixes use letters, digits and `- / _ . #`
 (≤ 10 characters); padding 1–10; `next_number` ≥ 1 (also database checks). Manual journals keep

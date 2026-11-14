@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1500" viewBox="0 0 1440 1500" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — contact form with duplicate panel">
+<title>Numo9 wireframe — contact form with duplicate panel</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<rect x="60" y="12" width="230" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="72" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.  ▾</text>
+<rect x="298" y="16" width="92" height="24" rx="12" fill="#2B3038" stroke="#2B3038" stroke-width="1"/>
+<text x="344" y="32" font-size="11" fill="#D0D5DD" font-weight="500" text-anchor="middle">Practice: OA</text>
+<text x="410" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="468" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Contacts</text>
+<rect x="468" y="52" width="64" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="558" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="664" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Documents</text>
+<text x="762" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Settings</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="1440" height="40" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="24" y="81" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Maple Leaf Supply Ltd.  /  Contacts  /  New contact</text>
+<text x="264" y="136" font-size="24" fill="#111111" font-weight="700" text-anchor="start">New contact</text>
+<rect x="24" y="112" width="208" height="400" rx="6" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="138" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">ON THIS PAGE</text>
+<rect x="32" y="150" width="192" height="28" rx="4" fill="#FFF8D6" stroke="#FFD100" stroke-width="1"/>
+<text x="44" y="169" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Details</text>
+<text x="44" y="205" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">People</text>
+<text x="44" y="241" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Addresses</text>
+<text x="44" y="277" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Financial</text>
+<text x="44" y="313" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Sales defaults</text>
+<text x="44" y="349" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Purchase defaults</text>
+<text x="44" y="385" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Tax &amp; compliance</text>
+<text x="44" y="421" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Portal</text>
+<text x="44" y="457" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Custom fields</text>
+<circle cx="14" cy="130" r="10" fill="#B42318"/>
+<text x="14" y="134" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<text x="264" y="176" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Roles *</text>
+<rect x="264" y="186" width="70" height="24" rx="12" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="299.0" y="202" font-size="12" fill="#FFD100" font-weight="600" text-anchor="middle">Customer</text>
+<rect x="342" y="186" width="70" height="24" rx="12" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="377.0" y="202" font-size="12" fill="#FFD100" font-weight="600" text-anchor="middle">Supplier</text>
+<rect x="420" y="186" width="70" height="24" rx="12" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="455.0" y="202" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">Employee</text>
+<rect x="498" y="186" width="84" height="24" rx="12" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="540.0" y="202" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">Contractor</text>
+<rect x="590" y="186" width="133" height="24" rx="12" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="656.5" y="202" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">Government agency</text>
+<text x="739" y="203" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">At least one role.</text>
+<circle cx="254" cy="198" r="10" fill="#B42318"/>
+<text x="254" y="202" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<text x="264" y="244" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Details</text>
+<text x="264" y="268" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Display name *</text>
+<rect x="264" y="276" width="420" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="298" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Maple Suply</text>
+<text x="704" y="268" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Contact number</text>
+<rect x="704" y="276" width="260" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="714" y="298" font-size="13" fill="#111111" font-weight="400" text-anchor="start">C-0042</text>
+<text x="264" y="338" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Legal name</text>
+<rect x="264" y="346" width="420" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="368" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">As registered — printed on statements</text>
+<text x="704" y="338" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Language</text>
+<rect x="704" y="346" width="260" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="714" y="368" font-size="13" fill="#111111" font-weight="400" text-anchor="start">English (Canada)</text>
+<text x="950" y="368" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="264" y="408" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Business Number (BN)</text>
+<rect x="264" y="416" width="300" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="438" font-size="13" fill="#111111" font-weight="400" text-anchor="start">123456782</text>
+<text x="584" y="408" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Tax ID (printed on PDFs)</text>
+<rect x="584" y="416" width="380" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="254" cy="286" r="10" fill="#B42318"/>
+<text x="254" y="290" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<rect x="1000" y="268" width="416" height="236" rx="8" fill="#FFFBEB" stroke="#B54708" stroke-width="1"/>
+<text x="1016" y="294" font-size="14" fill="#7A2E0E" font-weight="700" text-anchor="start">⚠  Possible duplicates (2)</text>
+<text x="1016" y="314" font-size="12" fill="#7A2E0E" font-weight="400" text-anchor="start">Checked as you type — you can still save.</text>
+<line x1="1016" y1="326" x2="1400" y2="326" stroke="#F7D9A8" stroke-width="1"/>
+<text x="1016" y="348" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Maple Supply Ltd.  · C-0002 · ON</text>
+<text x="1016" y="366" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">BN matches · name 92 % similar</text>
+<text x="1016" y="388" font-size="13" fill="#1D4ED8" font-weight="600" text-anchor="start">Open   ·   Merge…   ·   Ignore</text>
+<line x1="1016" y1="400" x2="1400" y2="400" stroke="#F7D9A8" stroke-width="1"/>
+<text x="1016" y="422" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Maple Supplies (Québec) inc.  · C-0019 · QC</text>
+<text x="1016" y="440" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Name 71 % similar · different province</text>
+<text x="1016" y="462" font-size="13" fill="#1D4ED8" font-weight="600" text-anchor="start">Open   ·   Merge…   ·   Ignore</text>
+<text x="1016" y="492" font-size="11" fill="#7A2E0E" font-weight="400" text-anchor="start">role=status · announced once, not on every keystroke</text>
+<circle cx="1426" cy="286" r="10" fill="#B42318"/>
+<text x="1426" y="290" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<text x="264" y="494" font-size="16" fill="#111111" font-weight="700" text-anchor="start">People</text>
+<rect x="264" y="506" width="700" height="96" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="280" y="534" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Anne Tremblay  ★ primary</text>
+<text x="520" y="534" font-size="13" fill="#344054" font-weight="400" text-anchor="start">anne@maplesupply.ca</text>
+<text x="740" y="534" font-size="13" fill="#344054" font-weight="400" text-anchor="start">416 555 0123</text>
+<text x="890" y="534" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">☑ in emails</text>
+<text x="280" y="570" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Raj Patel</text>
+<text x="520" y="570" font-size="13" fill="#344054" font-weight="400" text-anchor="start">raj@maplesupply.ca</text>
+<text x="740" y="570" font-size="13" fill="#344054" font-weight="400" text-anchor="start"></text>
+<text x="890" y="570" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">☑ in emails</text>
+<text x="264" y="624" font-size="13" fill="#1D4ED8" font-weight="600" text-anchor="start">+ Add person (no limit)</text>
+<circle cx="254" cy="516" r="10" fill="#B42318"/>
+<text x="254" y="520" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">5</text>
+<text x="264" y="670" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Addresses</text>
+<text x="264" y="694" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Billing address</text>
+<text x="264" y="712" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Street address or PO box</text>
+<rect x="264" y="720" width="340" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="742" font-size="13" fill="#111111" font-weight="400" text-anchor="start">200 King St W</text>
+<text x="264" y="782" font-size="12" fill="#344054" font-weight="600" text-anchor="start">City</text>
+<rect x="264" y="790" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="812" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Toronto</text>
+<text x="444" y="782" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Province</text>
+<rect x="444" y="790" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="454" y="812" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Ontario</text>
+<text x="590" y="812" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="264" y="852" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Postal code</text>
+<rect x="264" y="860" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="882" font-size="13" fill="#111111" font-weight="400" text-anchor="start">M5V 2T6</text>
+<text x="444" y="852" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Country</text>
+<rect x="444" y="860" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="454" y="882" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Canada</text>
+<text x="590" y="882" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="624" y="694" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Shipping address   ☑ Same as billing</text>
+<text x="624" y="712" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Street address or PO box</text>
+<rect x="624" y="720" width="340" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="634" y="742" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">Outside Canada: Region instead</text>
+<text x="624" y="782" font-size="12" fill="#344054" font-weight="600" text-anchor="start">City</text>
+<rect x="624" y="790" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="804" y="782" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Region</text>
+<rect x="804" y="790" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="814" y="812" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">e.g. NY</text>
+<text x="624" y="852" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Postal code</text>
+<rect x="624" y="860" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="634" y="882" font-size="13" fill="#111111" font-weight="400" text-anchor="start">10118</text>
+<text x="804" y="852" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Country</text>
+<rect x="804" y="860" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="814" y="882" font-size="13" fill="#111111" font-weight="400" text-anchor="start">United States</text>
+<text x="950" y="882" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="264" y="938" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Tax hint from province: Ontario → HST 13 % (resolved by the tax engine).</text>
+<circle cx="254" cy="690" r="10" fill="#B42318"/>
+<text x="254" y="694" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">6</text>
+<text x="264" y="984" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Financial</text>
+<text x="264" y="1008" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Currency</text>
+<rect x="264" y="1016" width="200" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="1038" font-size="13" fill="#111111" font-weight="400" text-anchor="start">CAD — Canadian dollar</text>
+<text x="450" y="1038" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="484" y="1008" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Credit limit</text>
+<rect x="484" y="1016" width="200" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="494" y="1038" font-size="13" fill="#111111" font-weight="400" text-anchor="start">10,000.00</text>
+<text x="704" y="1016" font-size="12" fill="#344054" font-weight="600" text-anchor="start">When the limit is reached</text>
+<rect x="704" y="1024" width="120" height="34" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="764" y="1046" font-size="13" fill="#FFD100" font-weight="700" text-anchor="middle">Warn</text>
+<rect x="824" y="1024" width="140" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="894" y="1046" font-size="13" fill="#5B6472" font-weight="500" text-anchor="middle">Block (approval)</text>
+<text x="704" y="1078" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Warn shows a message; Block needs someone with the limit permission.</text>
+<text x="264" y="1078" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Statements</text>
+<rect x="264" y="1086" width="200" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="1108" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Email monthly</text>
+<text x="450" y="1108" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<circle cx="254" cy="1004" r="10" fill="#B42318"/>
+<text x="254" y="1008" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">7</text>
+<text x="264" y="1150" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Sales defaults · Purchase defaults</text>
+<text x="264" y="1174" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Sales account</text>
+<rect x="264" y="1182" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="274" y="1204" font-size="13" fill="#111111" font-weight="400" text-anchor="start">4000 · Sales</text>
+<text x="470" y="1204" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="504" y="1174" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Payment terms</text>
+<rect x="504" y="1182" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="514" y="1204" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Net 30</text>
+<text x="710" y="1204" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="744" y="1174" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Amounts are</text>
+<rect x="744" y="1182" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="754" y="1204" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Tax exclusive</text>
+<text x="950" y="1204" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">▾</text>
+<text x="264" y="1262" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Tax &amp; compliance · Portal · Custom fields</text>
+<text x="264" y="1290" font-size="13" fill="#111111" font-weight="400" text-anchor="start">☐ Issue T4A slips (contractor payments)</text>
+<text x="264" y="1314" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Exemption certificate: Upload… · number · expiry</text>
+<text x="624" y="1290" font-size="13" fill="#111111" font-weight="400" text-anchor="start">☐ Client portal access</text>
+<text x="624" y="1310" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Industry (custom: select)</text>
+<rect x="624" y="1318" width="340" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="634" y="1340" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Construction</text>
+<circle cx="254" cy="1258" r="10" fill="#B42318"/>
+<text x="254" y="1262" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">8</text>
+<rect x="0" y="1420" width="1440" height="80" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="264" y="1466" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">You have unsaved changes</text>
+<rect x="1150" y="1444" width="100" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1200.0" y="1464.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Cancel</text>
+<rect x="1264" y="1444" width="152" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1340.0" y="1464.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Save contact  ⌘S</text>
+<circle cx="14" cy="1460" r="10" fill="#B42318"/>
+<text x="14" y="1464" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">9</text>
+</svg>

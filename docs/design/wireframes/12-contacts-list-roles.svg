@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — contacts list, role tabs">
+<title>Numo9 wireframe — contacts list, role tabs</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<rect x="60" y="12" width="230" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="72" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.  ▾</text>
+<rect x="298" y="16" width="92" height="24" rx="12" fill="#2B3038" stroke="#2B3038" stroke-width="1"/>
+<text x="344" y="32" font-size="11" fill="#D0D5DD" font-weight="500" text-anchor="middle">Practice: OA</text>
+<text x="410" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="468" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Contacts</text>
+<rect x="468" y="52" width="64" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="558" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="664" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Documents</text>
+<text x="762" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Settings</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="1440" height="40" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="24" y="81" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Maple Leaf Supply Ltd.  /  Contacts  /  Customers</text>
+<text x="24" y="136" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Customers</text>
+<text x="24" y="158" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">People and businesses you sell to. A contact can be a customer and a supplier.</text>
+<rect x="1264" y="112" width="152" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1340.0" y="132.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">New customer  N C</text>
+<rect x="1154" y="112" width="100" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1204.0" y="132.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Import</text>
+<rect x="1044" y="112" width="100" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1094.0" y="132.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Export</text>
+<text x="24" y="200" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">All contacts</text>
+<rect x="128.39999999999998" y="186" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="143.39999999999998" y="200" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">128</text>
+<text x="186.39999999999998" y="200" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Customers</text>
+<rect x="266.2" y="186" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="281.2" y="200" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">84</text>
+<rect x="186.39999999999998" y="212" width="109.8" height="3" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="324.2" y="200" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Suppliers</text>
+<rect x="404.0" y="186" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="419.0" y="200" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">51</text>
+<text x="462.0" y="200" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Contractors</text>
+<rect x="558.2" y="186" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="573.2" y="200" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">6</text>
+<text x="616.2" y="200" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Agencies</text>
+<rect x="687.8000000000001" y="186" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="702.8000000000001" y="200" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">4</text>
+<text x="745.8000000000001" y="200" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Archived</text>
+<rect x="817.4000000000001" y="186" width="30" height="20" rx="10" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="832.4000000000001" y="200" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">9</text>
+<line x1="24" y1="215" x2="1416" y2="215" stroke="#EBEDF0" stroke-width="1"/>
+<circle cx="879.4000000000001" cy="198" r="10" fill="#B42318"/>
+<text x="879.4000000000001" y="202" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<rect x="24" y="232" width="220" height="36" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="36" y="255" font-size="13" fill="#111111" font-weight="500" text-anchor="start">View: Overdue customers  ▾</text>
+<circle cx="254" cy="250" r="10" fill="#B42318"/>
+<text x="254" y="254" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="276" y="232" width="380" height="36" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="288" y="255" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">Search name, email, BN, tax ID, number…   /</text>
+<rect x="672" y="238" width="98" height="24" rx="12" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="721.0" y="254" font-size="12" fill="#FFD100" font-weight="600" text-anchor="middle">Province: QC</text>
+<rect x="780" y="238" width="105" height="24" rx="12" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="832.5" y="254" font-size="12" fill="#5B6472" font-weight="600" text-anchor="middle">Currency: any</text>
+<rect x="1236" y="234" width="90" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1281.0" y="254.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Columns</text>
+<rect x="1336" y="234" width="80" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1376.0" y="254.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Save view</text>
+<circle cx="1426" cy="250" r="10" fill="#B42318"/>
+<text x="1426" y="254" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<rect x="24" y="284" width="1392" height="360" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="24" y="284" width="1392" height="40" rx="6" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="68" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Number</text>
+<text x="160" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Name</text>
+<text x="470" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Roles</text>
+<text x="640" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Email</text>
+<text x="880" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Province</text>
+<text x="980" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Currency</text>
+<text x="1080" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Credit limit</text>
+<text x="1220" y="309" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Balance owing</text>
+<rect x="38" y="297" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<rect x="38" y="337" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="68" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">C-0001</text>
+<text x="160" y="349" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Érable Distribution inc.</text>
+<text x="470" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Customer · Supplier</text>
+<text x="640" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">compta@erable.ca</text>
+<text x="880" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">QC</text>
+<text x="980" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">CAD</text>
+<text x="1080" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">25,000.00 · block</text>
+<text x="1220" y="349" font-size="13" fill="#344054" font-weight="400" text-anchor="start">4,120.50</text>
+<line x1="24" y1="364" x2="1416" y2="364" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="377" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="68" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">C-0002</text>
+<text x="160" y="389" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Maple Supply Ltd.</text>
+<text x="470" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Customer</text>
+<text x="640" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">ap@maplesupply.ca</text>
+<text x="880" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">ON</text>
+<text x="980" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">CAD</text>
+<text x="1080" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">10,000.00 · warn</text>
+<text x="1220" y="389" font-size="13" fill="#344054" font-weight="400" text-anchor="start">980.00</text>
+<line x1="24" y1="404" x2="1416" y2="404" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="417" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="68" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">C-0003</text>
+<text x="160" y="429" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Pacific Coast Foods</text>
+<text x="470" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Customer</text>
+<text x="640" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">billing@pcfoods.ca</text>
+<text x="880" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">BC</text>
+<text x="980" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">CAD</text>
+<text x="1080" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">—</text>
+<text x="1220" y="429" font-size="13" fill="#344054" font-weight="400" text-anchor="start">0.00</text>
+<line x1="24" y1="444" x2="1416" y2="444" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="38" y="457" width="14" height="14" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="68" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">C-0007</text>
+<text x="160" y="469" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Northern Lights Studio</text>
+<text x="470" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Customer</text>
+<text x="640" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">hello@nlstudio.ca</text>
+<text x="880" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">AB</text>
+<text x="980" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">USD</text>
+<text x="1080" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">5,000.00 · warn</text>
+<text x="1220" y="469" font-size="13" fill="#344054" font-weight="400" text-anchor="start">1,200.00</text>
+<line x1="24" y1="484" x2="1416" y2="484" stroke="#EBEDF0" stroke-width="1"/>
+<text x="68" y="509" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Row actions: Open · Edit · Archive · Merge with…</text>
+<circle cx="14" cy="304" r="10" fill="#B42318"/>
+<text x="14" y="308" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<rect x="24" y="660" width="1392" height="44" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="44" y="688" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">2 selected</text>
+<text x="150" y="688" font-size="13" fill="#FFD100" font-weight="600" text-anchor="start">Archive   ·   Merge (2)   ·   Export   ·   Add role</text>
+<circle cx="14" cy="682" r="10" fill="#B42318"/>
+<text x="14" y="686" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">5</text>
+<rect x="24" y="724" width="680" height="150" rx="8" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="364" y="760" font-size="15" fill="#111111" font-weight="700" text-anchor="middle">Empty state (no customers yet)</text>
+<text x="364" y="786" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Customers are contacts with the Customer role.</text>
+<rect x="214" y="810" width="150" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="289.0" y="830.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">New customer</text>
+<rect x="374" y="810" width="150" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="449.0" y="830.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Import contacts</text>
+<rect x="736" y="724" width="680" height="150" rx="8" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="1076" y="760" font-size="15" fill="#111111" font-weight="700" text-anchor="middle">Archived tab</text>
+<text x="1076" y="786" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Archived contacts keep their history; pick one to restore it.</text>
+<rect x="1001" y="810" width="150" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1076.0" y="830.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Restore</text>
+<circle cx="14" cy="734" r="10" fill="#B42318"/>
+<text x="14" y="738" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">6</text>
+</svg>

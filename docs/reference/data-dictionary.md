@@ -131,10 +131,103 @@ The next number of one document type (A-05-T08). Business record: `OrgOwnedModel
 | Column | Type | Null | Rules / meaning |
 |---|---|---|---|
 | `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
-| `doc_type` | varchar(32) | no | `invoice`, `credit_note`, `quote`, `purchase_order` (`orgsettings_numbering_doc_type_valid`) |
-| `prefix` | varchar(10) | no | Letters, digits, `- / _ . #`; defaults `INV-`, `CN-`, `QU-`, `PO-` |
+| `doc_type` | varchar(32) | no | `invoice`, `credit_note`, `quote`, `purchase_order`, `contact` (B-01) (`orgsettings_numbering_doc_type_valid`) |
+| `prefix` | varchar(10) | no | Letters, digits, `- / _ . #`; defaults `INV-`, `CN-`, `QU-`, `PO-`, `C-` |
 | `next_number` | bigint | no | ≥ 1 (`orgsettings_numbering_next_positive`); moved on by `allocate_number()` under `SELECT … FOR UPDATE` |
 | `padding` | smallint | no | Minimum digits, 1–10, default 4 (`orgsettings_numbering_padding_valid`) |
 
 Unique: `(organisation, doc_type)` among rows not deleted (`orgsettings_numbering_one_per_doc_type`).
 Audit actions: `orgsettings.numberingsequence.created`, `.updated`.
+
+## Contacts (`contacts`)
+
+### `contacts_contact` — Contact {#contacts-contact}
+
+A customer, supplier, employee, contractor or government agency of an organisation (B-01-T02).
+Business record: `OrgOwnedModel` and `AuditedModel`; row-level security (`org_isolation`).
+Design: [Contacts](../architecture/contacts.md).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at` | — | — | As every `OrgOwnedModel` |
+| `number` | varchar(20) | no | Contact number; **unique per organisation without case** (`contacts_contact_number_unique_per_org`); not empty (`contacts_contact_number_required`); from the `contact` numbering sequence when not typed |
+| `display_name` | varchar(200) | no | Name shown everywhere; not empty (`contacts_contact_name_required`) |
+| `legal_name` | varchar(200) | no | As registered (empty when none); never digits only |
+| `roles` | varchar(32)[] | no | At least one of `customer`, `supplier`, `employee`, `contractor`, `government_agency`, each once (`contacts_contact_roles_valid`, PostgreSQL) |
+| `bn` | varchar(9) | no | CRA Business Number (9 digits, check digit) or empty |
+| `tax_id` | varchar(40) | no | Other tax number printed on documents, or empty |
+| `currency` | varchar(3) | no | ISO 4217, default `CAD` (`contacts_contact_currency_format`) |
+| `credit_limit` | numeric(18,2) | yes | Empty = no limit; ≥ 0 (`contacts_contact_credit_limit_positive`) |
+| `credit_mode` | varchar(8) | no | `warn` (default) or `block` |
+| `t4a_flag` | boolean | no | Payments reported on T4A slips |
+| `portal_enabled` | boolean | no | Client portal access |
+| `statement_pref` | varchar(8) | no | `none`, `email` (default), `post`, `portal` |
+| `language` | varchar(5) | no | `en-ca` (default) or `fr-ca` |
+| `status` | varchar(10) | no | `active` or `archived` |
+| `archived_at` | timestamptz | yes | Set when archived (not in the audit diff: `status` is) |
+| `name_key` | varchar(200) | no | Display name without case, accents, punctuation and company forms; set on save; trigram GIN index `contacts_contact_name_trgm_idx` (duplicate detection, B-01-T10) |
+| `custom_fields` | jsonb | no | Values of the organisation's custom fields by key (B-01-T09); canonical forms, checked against `contacts_customfielddefinition` |
+| `deleted_at` | timestamptz | yes | Set only on a contact merged into another (B-01-T12) |
+
+Indexes: `(organisation, status, display_name)`, `(organisation, bn)`, `name_key` (GIN, `gin_trgm_ops`), the unique index above.
+Audit actions: `contacts.contact.created`, `.updated`.
+
+### `contacts_contactperson` — Contact person {#contacts-contactperson}
+
+A person at a contact (B-01-T03); unlimited per contact. Business record: `OrgOwnedModel` and
+`AuditedModel`; row-level security (`org_isolation`).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at` | — | — | As every `OrgOwnedModel` |
+| `contact_id` | bigint → `contacts_contact` | no | The contact; same organisation; `PROTECT` |
+| `first_name`, `last_name` | varchar(100) | no | Name parts (empty when not known) |
+| `email` | varchar(254) | no | Lower case; name or email required (`contacts_person_name_or_email`) |
+| `phone` | varchar(32) | no | E.164 or empty |
+| `job_title` | varchar(100) | no | Optional |
+| `is_primary` | boolean | no | One primary per contact among people not removed (`contacts_person_one_primary`) |
+| `include_in_emails` | boolean | no | Copied on document emails; default true |
+| `deleted_at` | timestamptz | yes | Person removed (soft delete) |
+
+Indexes: `(organisation, contact)`, `(organisation, email)`, the unique index above.
+Audit actions: `contacts.contactperson.created`, `.updated`, `.deleted`, `.restored`.
+
+### `contacts_address` — Address {#contacts-address}
+
+A contact's billing or shipping address (B-01-T04). Business record: `OrgOwnedModel` and
+`AuditedModel`; row-level security (`org_isolation`).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at` | — | — | As every `OrgOwnedModel` |
+| `contact_id` | bigint → `contacts_contact` | no | The contact; same organisation; `PROTECT` |
+| `kind` | varchar(10) | no | `billing` or `shipping`; one of each per contact among rows not deleted (`contacts_address_one_per_kind`) |
+| `attention`, `line1`, `line2`, `city` | varchar | no | Address lines (empty when not given) |
+| `province` | varchar(2) | no | Canadian province/territory code, or empty; only with `country = 'CA'` (`contacts_address_province_valid`) |
+| `region` | varchar(100) | no | Region outside Canada, or empty |
+| `postal_code` | varchar(16) | no | `A1A 1A1` for Canada (first letter matches the province); free text elsewhere |
+| `country` | varchar(2) | no | ISO 3166-1 alpha-2, default `CA` (`contacts_address_country_format`) |
+| `deleted_at` | timestamptz | yes | Address removed (soft delete) |
+
+Indexes: `(organisation, contact)`, the unique index above.
+Audit actions: `contacts.address.created`, `.updated`, `.deleted`, `.restored`.
+
+### `contacts_customfielddefinition` — Custom field {#contacts-customfielddefinition}
+
+A custom field of an organisation (B-01-T09, gap-43). Business record: `OrgOwnedModel` and
+`AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at` | — | — | As every `OrgOwnedModel` |
+| `record_type` | varchar(16) | no | `contact` (`contacts_custom_field_record_type_valid`) |
+| `key` | varchar(40) | no | `^[a-z][a-z0-9_]{0,39}$` (`contacts_custom_field_key_format`); unique per organisation and record type (`contacts_custom_field_key_unique`); immutable |
+| `label_i18n` | jsonb | no | Label per language; English required |
+| `field_type` | varchar(8) | no | `text`, `number`, `date`, `select` (`contacts_custom_field_type_valid`); locked once used |
+| `options` | jsonb | no | Choices of a `select` field (`[{"value", "labels"}]`, 1–100); `[]` otherwise |
+| `required` | boolean | no | Required on new records |
+| `position` | smallint | no | Order on the form |
+| `deleted_at` | timestamptz | yes | Field removed (values kept); at most 30 not removed per record type |
+
+Audit actions: `contacts.customfielddefinition.created`, `.updated`, `.deleted`, `.restored`.
+

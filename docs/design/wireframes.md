@@ -27,6 +27,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 8 | Package editor (console) | U-02-T09 | Product cards, limits, founding switch, live pricing-card preview, empty/error states |
 | 9 | Price timeline + schedule dialog (console) | U-02-T10 | Versions per interval, today marker, "N subscriptions affected" dialog, overlap error |
 | 10 | Promo codes (console) | U-02-T11 | Usage bar, create dialog, expire action, empty/error states |
+| 11 | Contacts list with role tabs | B-01-T14 | Six role tabs with counts, title per tab, saved views, search, column chooser, bulk bar, archive |
+| 12 | Contact form + live duplicate panel | B-01-T15, T16 | Section anchors, role chips, people, Canadian/foreign address, currency, credit warn/block, defaults, duplicate panel |
+| 13 | Merge contacts dialog | B-01-T17 | Field chooser per row, "what moves" preview, alias, one-step merge, currency refusal |
 
 ## 1. Application shell
 
@@ -167,3 +170,49 @@ Two versions can't overlap; the API's error is shown in the dialog.
 | 3 | Status and Expire | Active / Used up / Expired; Expire ends an active code now (redemptions already made are kept) |
 | 4 | Create dialog | Code (case-insensitive, unique), percent or fixed amount (CAD), duration (once, number of months, forever), maximum uses, expiry date, package restriction (empty = every package) |
 | 5 | States | Empty list, field error (code taken), load failure, refusal for anyone without `platform.catalogue.manage` |
+
+## 11. Contacts list with role tabs (B-01-T01)
+
+B-01 adds three frames: the contacts list with every role tab, the contact form with the live
+duplicate panel and the merge dialog. They extend frame 4 (A-10-T02), which showed only All /
+Customers / Suppliers. Sample data is Canadian (Ontario and Quebec contacts, CAD and one USD
+contact); contact numbers use the `C-0001` pattern.
+
+![Contacts list with role tabs](wireframes/12-contacts-list-roles.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Role tabs | All contacts · Customers · Suppliers · Contractors · Agencies · Archived, each with its count. The page title, the browser tab title, the breadcrumb, the intro line and the primary button follow the tab ("Customers", "New customer") — gap-19. Roles are set on the contact, never inferred from transactions, so a new customer appears under Customers at once. Employees are reached from People/HR, not a tab here |
+| 2 | Saved views | Personal and shared views (filters, columns, sort) per tab |
+| 3 | Search, filter chips, column chooser | Search name, email, BN, tax ID, contact number (`/` focuses; accents ignored: "erable" finds "Érable"); chips Province, Currency, Credit mode; Columns and Save view |
+| 4 | DataGrid | Number, Name, Roles, Email, Province, Currency, Credit limit (with warn/block), Balance owing; `Enter` opens; row actions Open, Edit, Archive, Merge with… |
+| 5 | Bulk bar | Archive, Merge (exactly two selected), Export, Add role |
+| 6 | States | Empty tab explains the role and offers New / Import; Archived tab: archived contacts keep their history and can be restored (archive = soft delete, never a hard delete) |
+
+## 12. Contact form and live duplicate panel (B-01-T01)
+
+![Contact form with duplicate panel](wireframes/13-contact-form.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | On this page | One page with section anchors: Details, People, Addresses, Financial, Sales defaults, Purchase defaults, Tax & compliance, Portal, Custom fields; the current section is highlighted while scrolling |
+| 2 | Role chips | Customer, Supplier, Employee, Contractor, Government agency; at least one is required ("Choose at least one role.") |
+| 3 | Details | Display name (required), contact number (next from the sequence, editable, unique), legal name, language (EN/FR for documents), Business Number (9 digits, check digit), Tax ID |
+| 4 | Possible duplicates panel | Appears within 300 ms after typing stops (debounced) on display name, email, BN or tax ID: name similarity ≥ 60 % (accents and case ignored) or an exact email / BN / tax ID match; each row says why it matched and offers Open, Merge…, Ignore. A warning, never a block: same name in another province is shown, saving is still allowed. Announced once to screen readers (`role="status"`) |
+| 5 | People | Unlimited people; one primary (★); "include in emails" per person |
+| 6 | Addresses | Billing and shipping (shipping "Same as billing" by default). Canada: Province dropdown (13) and Postal code `A1A 1A1` checked against the province; other countries: Region and Postal code as free text. The province's tax hint is shown (QC → GST + QST, ON → HST 13 %) and resolved to a tax code by G-02 |
+| 7 | Financial | Currency (ISO 4217, CAD by default), credit limit with Warn / Block segmented control and its explanation, statement preference |
+| 8 | Defaults and compliance | Sales/purchase account, payment terms (master list), amounts are; T4A flag; exemption certificate (file, number, expiry); portal access; custom fields defined in Settings (text, number, date, select; up to 30) |
+| 9 | Sticky save bar | "You have unsaved changes", Cancel, Save contact (`⌘S`); field errors under each field |
+
+## 13. Merge contacts dialog (B-01-T01)
+
+![Merge contacts dialog](wireframes/14-contact-merge.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Keep / merge in | The contact to keep is chosen first (the older one by default); the columns can be swapped |
+| 2 | Field chooser | One row per field with a radio per side; roles can be kept as the union of both |
+| 3 | What moves | Counts of every record that points at the merged contact (invoices, bills, credit notes, journal lines, people, attachments) from the merge registry; the merged contact number stays as an alias; its history shows on the kept contact |
+| 4 | Refusal | Contacts in different currencies can't be merged (message names both currencies); other refusals the same way, never a disabled button without reason |
+| 5 | Merge | Runs in one transaction: if any step fails nothing changes; the merge is in the audit log |

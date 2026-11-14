@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "numo9.ledger",
     # Organisation settings, tax registrations, lock dates, numbering (A-05).
     "numo9.orgsettings",
+    # Contacts: contact model, people, addresses, duplicate detection (B-01).
+    "numo9.contacts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

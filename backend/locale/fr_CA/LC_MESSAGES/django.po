@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 10:01-0500\n"
+"POT-Creation-Date: 2026-11-14 13:01-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -683,6 +683,393 @@ msgstr ""
 msgid "Clients answer their accountant's requests"
 msgstr ""
 
+#, fuzzy
+#| msgid "Limits must be a list of named values."
+msgid "Custom fields must be a set of field names and values."
+msgstr "Les limites doivent être une liste de valeurs nommées."
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "There is no custom field %(key)s in this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, python-format
+msgid "%(field)s has been removed from the custom fields."
+msgstr ""
+
+#, python-format
+msgid "%(field)s is required."
+msgstr ""
+
+msgid "text"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "a number"
+msgstr "Numéro"
+
+msgid "a date (YYYY-MM-DD)"
+msgstr ""
+
+msgid "one of its choices"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Use at most %(max)s characters."
+msgid "%(field)s is limited to %(max)d characters."
+msgstr "Utilisez au plus %(max)s caractères."
+
+#, python-format
+msgid "%(field)s needs %(expected)s: %(value)s doesn't fit."
+msgstr ""
+
+msgid "Customer"
+msgstr ""
+
+msgid "Supplier"
+msgstr ""
+
+msgid "Employee"
+msgstr "Employé"
+
+#, fuzzy
+#| msgid "Contacts"
+msgid "Contractor"
+msgstr "Contacts"
+
+msgid "Government agency"
+msgstr ""
+
+msgid "Warn"
+msgstr ""
+
+msgid "Block (needs approval)"
+msgstr ""
+
+msgid "Don't send statements"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Print and mail"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "contact number"
+msgstr "Numéro"
+
+msgid "Unique in the organisation; the next number is used when left empty."
+msgstr ""
+
+msgid "display name"
+msgstr ""
+
+msgid "legal name"
+msgstr ""
+
+msgid "As registered; printed on statements and tax slips."
+msgstr ""
+
+msgid "roles"
+msgstr ""
+
+msgid "At least one: customer, supplier, employee, contractor, government agency."
+msgstr ""
+
+msgid "Business Number (BN)"
+msgstr ""
+
+msgid "tax ID"
+msgstr ""
+
+msgid "Another tax number printed on documents, e.g. a foreign registration number."
+msgstr ""
+
+msgid "currency"
+msgstr "devise"
+
+msgid "credit limit"
+msgstr ""
+
+#, fuzzy
+#| msgid "Empty = no limit."
+msgid "Empty means no limit."
+msgstr "Vide = aucune limite."
+
+msgid "when the credit limit is reached"
+msgstr ""
+
+msgid "issue T4A slips"
+msgstr ""
+
+msgid "Payments to this contact are reported on T4A slips."
+msgstr ""
+
+msgid "client portal access"
+msgstr ""
+
+#, fuzzy
+#| msgid "audit events"
+msgid "statements"
+msgstr "événements du journal d’audit"
+
+#, fuzzy
+#| msgid "started at"
+msgid "archived at"
+msgstr "commencée le"
+
+msgid "name key"
+msgstr ""
+
+msgid "The display name without case, accents and company forms (duplicates)."
+msgstr ""
+
+msgid "custom fields"
+msgstr ""
+
+msgid "Values of the organisation's custom fields, by field key (B-01-T09)."
+msgstr ""
+
+#, fuzzy
+#| msgid "Contacts"
+msgid "contact"
+msgstr "Contacts"
+
+#, fuzzy
+#| msgid "Contacts"
+msgid "contacts"
+msgstr "Contacts"
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "Contact number %(number)s is already used in this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+msgid "No free contact number: check the contact numbering settings."
+msgstr ""
+
+msgid "first name"
+msgstr ""
+
+msgid "last name"
+msgstr ""
+
+msgid "telephone"
+msgstr ""
+
+#, fuzzy
+#| msgid "job type"
+msgid "job title"
+msgstr "type de tâche"
+
+#, fuzzy
+#| msgid "impersonator"
+msgid "primary person"
+msgstr "personne connectée à sa place"
+
+msgid "include in emails"
+msgstr ""
+
+msgid "Copied on emails of invoices, statements and other documents."
+msgstr ""
+
+#, fuzzy
+#| msgid "Contacts"
+msgid "contact person"
+msgstr "Contacts"
+
+msgid "contact people"
+msgstr ""
+
+msgid "Enter the person's name or email address."
+msgstr ""
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "Choose a contact of this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Billing address"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Shipping address"
+msgstr "Adresse IP"
+
+msgid "type"
+msgstr ""
+
+#, fuzzy
+#| msgid "action"
+msgid "attention"
+msgstr "action"
+
+msgid "street address or PO box"
+msgstr ""
+
+msgid "address line 2"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "province or territory"
+msgstr ""
+
+msgid "Two-letter code (ON, QC…) for a Canadian address."
+msgstr ""
+
+msgid "region"
+msgstr ""
+
+msgid "Region or county of an address outside Canada."
+msgstr ""
+
+#, fuzzy
+#| msgid "error code"
+msgid "postal code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "country"
+msgstr "Comptabilité"
+
+msgid "ISO 3166-1 two-letter code; CA for Canada."
+msgstr ""
+
+#, fuzzy
+#| msgid "IP address"
+msgid "address"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "addresses"
+msgstr "Adresse IP"
+
+msgid "Use the two-letter country code, e.g. CA."
+msgstr ""
+
+#, python-format
+msgid "Provinces are for Canadian addresses: use Region for %(country)s."
+msgstr ""
+
+#, python-format
+msgid "This contact already has a %(kind)s."
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Number"
+msgstr "Numéro"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Choice list"
+msgstr ""
+
+msgid "Contacts"
+msgstr "Contacts"
+
+#, fuzzy
+#| msgid "Use 2–40 lower-case letters, digits and _, starting with a letter."
+msgid "Lower-case letters, digits and _; starts with a letter; never changes."
+msgstr "Utilisez de 2 à 40 lettres minuscules, chiffres et _, en commençant par une lettre."
+
+msgid "label"
+msgstr ""
+
+msgid "The label per language, e.g. {\"en-ca\": \"Industry\"}."
+msgstr ""
+
+msgid "choices"
+msgstr ""
+
+msgid "For a choice list: [{\"value\": \"construction\", \"labels\": {\"en-ca\": …}}]."
+msgstr ""
+
+msgid "required"
+msgstr ""
+
+#, fuzzy
+#| msgid "Action"
+msgid "position"
+msgstr "Action"
+
+msgid "custom field"
+msgstr ""
+
+#, fuzzy
+#| msgid "Use 2–40 lower-case letters, digits and _, starting with a letter."
+msgid "Use lower-case letters, digits and _, starting with a letter (e.g. industry)."
+msgstr "Utilisez de 2 à 40 lettres minuscules, chiffres et _, en commençant par une lettre."
+
+#, fuzzy
+#| msgid "Enter the English text."
+msgid "Enter the English label."
+msgstr "Entrez le texte anglais."
+
+msgid "Labels are limited to 100 characters."
+msgstr ""
+
+#, python-format
+msgid "Another custom field already uses the key %(key)s."
+msgstr ""
+
+#, python-format
+msgid "An organisation can have up to %(max)d custom fields on %(records)s."
+msgstr ""
+
+msgid "A field's key never changes."
+msgstr ""
+
+msgid "Records already have values for this field: its type can't change."
+msgstr ""
+
+msgid "Add at least one choice."
+msgstr ""
+
+#, python-format
+msgid "A choice list has up to %(max)d choices."
+msgstr ""
+
+msgid "Each choice needs a value and an English label."
+msgstr ""
+
+#, python-format
+msgid "The choice %(value)s is listed twice."
+msgstr ""
+
+msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
+msgstr ""
+
+msgid "A Business Number has 9 digits, e.g. 123456782."
+msgstr ""
+
+#, python-format
+msgid "%(bn)s is not a valid Business Number: check the digits (the last one is a check digit)."
+msgstr ""
+
+msgid "Choose at least one role: customer, supplier, employee, contractor or government agency."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Unknown limit: %(names)s."
+msgid "Unknown role: %(roles)s."
+msgstr "Limite inconnue : %(names)s."
+
 msgid "Documents"
 msgstr "Documents"
 
@@ -701,12 +1088,6 @@ msgstr "Document type"
 
 msgid "Bill to"
 msgstr "Facturer à"
-
-msgid "Number"
-msgstr "Numéro"
-
-msgid "Date"
-msgstr "Date"
 
 msgid "Due date"
 msgstr "Date d’échéance"
@@ -1253,9 +1634,6 @@ msgstr ""
 msgid "Foreign exchange gain or loss"
 msgstr ""
 
-msgid "Archived"
-msgstr ""
-
 msgid "Current assets"
 msgstr ""
 
@@ -1327,9 +1705,6 @@ msgstr ""
 msgid "The name per language, e.g. {\"en-ca\": \"Chequing account\"}."
 msgstr ""
 
-msgid "type"
-msgstr ""
-
 #, fuzzy
 #| msgid "job type"
 msgid "sub-type"
@@ -1355,11 +1730,6 @@ msgstr ""
 
 msgid "default tax code"
 msgstr ""
-
-#, fuzzy
-#| msgid "started at"
-msgid "archived at"
-msgstr "commencée le"
 
 msgid "template row"
 msgstr ""
@@ -1507,13 +1877,7 @@ msgstr ""
 msgid "of the current month"
 msgstr ""
 
-msgid "legal name"
-msgstr ""
-
 msgid "As registered; printed on statements, invoices and tax forms."
-msgstr ""
-
-msgid "display name"
 msgstr ""
 
 msgid "The name people see in Numo9."
@@ -1525,43 +1889,7 @@ msgstr ""
 msgid "business structure"
 msgstr ""
 
-#, fuzzy
-#| msgid "action"
-msgid "attention"
-msgstr "action"
-
-msgid "street address or PO box"
-msgstr ""
-
-msgid "address line 2"
-msgstr ""
-
-msgid "city"
-msgstr ""
-
-msgid "province or territory"
-msgstr ""
-
-msgid "Two-letter code (ON, QC…) for a Canadian address."
-msgstr ""
-
-#, fuzzy
-#| msgid "error code"
-msgid "postal code"
-msgstr "code d’erreur"
-
-#, fuzzy
-#| msgid "Accounting"
-msgid "country"
-msgstr "Comptabilité"
-
-msgid "ISO 3166-1 two-letter code; CA for Canada."
-msgstr ""
-
 msgid "physical address same as mailing address"
-msgstr ""
-
-msgid "telephone"
 msgstr ""
 
 msgid "website"
@@ -1606,12 +1934,6 @@ msgid "That month has no day %(day)d."
 msgstr ""
 
 msgid "Choose a day of the month from 1 to 31."
-msgstr ""
-
-msgid "Use the two-letter country code, e.g. CA."
-msgstr ""
-
-msgid "Business Number (BN)"
 msgstr ""
 
 #, fuzzy
@@ -1759,6 +2081,11 @@ msgstr ""
 msgid "Purchase order"
 msgstr "Bon de commande"
 
+#, fuzzy
+#| msgid "Contacts"
+msgid "Contact"
+msgstr "Contacts"
+
 msgid "document type"
 msgstr ""
 
@@ -1839,13 +2166,6 @@ msgid "Choose a province or territory."
 msgstr ""
 
 msgid "Enter a valid telephone number, e.g. 416 555 0123 or +44 20 7946 0958."
-msgstr ""
-
-msgid "A Business Number has 9 digits, e.g. 123456782."
-msgstr ""
-
-#, python-format
-msgid "%(bn)s is not a valid Business Number: check the digits (the last one is a check digit)."
 msgstr ""
 
 msgid "Enter the number."
@@ -1980,9 +2300,6 @@ msgstr "montant (cents)"
 
 msgid "Whole cents in CAD, before GST/HST."
 msgstr "Cents entiers en CAD, avant TPS/TVH."
-
-msgid "currency"
-msgstr "devise"
 
 msgid "tax behaviour"
 msgstr "traitement des taxes"
@@ -2167,9 +2484,6 @@ msgstr "RH"
 msgid "Reports"
 msgstr "Rapports"
 
-msgid "Contacts"
-msgstr "Contacts"
-
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -2201,9 +2515,6 @@ msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
 msgstr ""
 
 msgid "role"
-msgstr ""
-
-msgid "roles"
 msgstr ""
 
 msgid "permission"
@@ -2396,9 +2707,6 @@ msgstr "Paies et rémunération des employés."
 
 msgid "Employees, leave and HR records."
 msgstr "Employés, congés et dossiers RH."
-
-msgid "Employee"
-msgstr "Employé"
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
