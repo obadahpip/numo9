@@ -8,7 +8,8 @@ import { OrgSwitcher } from "@/components/OrgSwitcher";
 import { defineMessages, useFormatMessage } from "@/i18n";
 import { JobTray } from "@/jobs/JobTray";
 import { primaryNav } from "@/routing/navigation";
-import { findOrgModule, orgModuleUrl } from "@/routing/routes";
+import { findOrgModule, isSettingsSection, orgModuleUrl, SETTINGS_LABEL } from "@/routing/routes";
+import { ModuleSettingsLink } from "@/settings/ModuleSettingsLink";
 
 const messages = defineMessages({
   skipToContent: {
@@ -84,7 +85,9 @@ interface AppShellProps {
  * Numo9 application shell (A-10-T05): the `@numo9/ui` shell with i18n labels, the organisation's
  * primary navigation, breadcrumbs, the org switcher (A-01-T14) and the job tray (A-08-T07). The
  * notification centre (A-07), command palette (A-09), practice navigation (V-01) and the
- * signed-in user (A-02) plug into the shell's slots as those deliverables land.
+ * signed-in user (A-02) plug into the shell's slots as those deliverables land. A module with its
+ * own settings section shows its gear at the end of the breadcrumb bar (A-05-T10, gap-03);
+ * settings pages read Organisation / Settings / <section>.
  */
 export function AppShell({ org, modulePath, section, children }: Readonly<AppShellProps>) {
   const fm = useFormatMessage();
@@ -93,7 +96,13 @@ export function AppShell({ org, modulePath, section, children }: Readonly<AppShe
 
   const breadcrumbs: ShellCrumb[] = [];
   if (org) breadcrumbs.push({ label: org, href: homeHref });
-  breadcrumbs.push({ label: section ?? fm(entry?.label ?? messages.home) });
+  if (org && entry && isSettingsSection(entry.path)) {
+    // Organisation / Settings / Lock dates (wireframe 04-settings).
+    breadcrumbs.push({ label: fm(SETTINGS_LABEL), href: orgModuleUrl(org, "settings/general") });
+    breadcrumbs.push({ label: fm(entry.sectionLabel ?? entry.label) });
+  } else {
+    breadcrumbs.push({ label: section ?? fm(entry?.label ?? messages.home) });
+  }
 
   return (
     <Shell
@@ -114,6 +123,11 @@ export function AppShell({ org, modulePath, section, children }: Readonly<AppShe
         ) : undefined
       }
       jobTray={org ? <JobTray org={org} /> : undefined}
+      status={
+        org && entry?.settings ? (
+          <ModuleSettingsLink org={org} module={entry} linkComponent={NextLink} />
+        ) : undefined
+      }
       notifications={{ label: fm(messages.notifications) }}
       user={{
         label: fm(messages.userMenu),

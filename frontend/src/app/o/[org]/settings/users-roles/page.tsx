@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { AppShell } from "@/components/AppShell";
+import { SettingsLayout } from "@/settings/SettingsLayout";
 import { ORG_SLUG } from "@/routing/routes";
 import { UsersRolesScreen } from "@/settings/users-roles/UsersRolesScreen";
 
@@ -24,7 +25,9 @@ export default async function UsersRolesPage({
   const initial = tab === "roles" || tab === "limits" ? tab : "users";
   return (
     <AppShell org={org} modulePath="settings/users-roles">
-      <UsersRolesScreen org={org} tab={initial} saved={saved} deleted={deleted} />
+      <SettingsLayout org={org} section="settings/users-roles">
+        <UsersRolesScreen org={org} tab={initial} saved={saved} deleted={deleted} />
+      </SettingsLayout>
     </AppShell>
   );
 }

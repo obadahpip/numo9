@@ -84,6 +84,70 @@ const labels = defineMessages({
   },
 });
 
+const sectionLabels = defineMessages({
+  settings: {
+    id: "settings.nav.settings",
+    defaultMessage: "Settings",
+    description: "Settings navigation heading and breadcrumb (organisation settings)",
+  },
+  general: {
+    id: "settings.nav.general",
+    defaultMessage: "General",
+    description: "Settings section",
+  },
+  registrations: {
+    id: "settings.nav.registrations",
+    defaultMessage: "Tax registrations",
+    description: "Settings section: BN, GST/HST, QST registrations",
+  },
+  lockDates: {
+    id: "settings.nav.lockDates",
+    defaultMessage: "Lock dates",
+    description: "Settings section",
+  },
+  usersRoles: {
+    id: "settings.nav.usersRoles",
+    defaultMessage: "Users and roles",
+    description: "Settings section",
+  },
+  emailDomain: {
+    id: "settings.nav.emailDomain",
+    defaultMessage: "Email domain",
+    description: "Settings section",
+  },
+  subscription: {
+    id: "settings.nav.subscription",
+    defaultMessage: "Subscription",
+    description: "Settings section",
+  },
+  numbering: {
+    id: "settings.nav.numbering",
+    defaultMessage: "Numbering",
+    description: "Settings section: document number patterns",
+  },
+  customFields: {
+    id: "settings.nav.customFields",
+    defaultMessage: "Custom fields",
+    description: "Settings section",
+  },
+  auditLog: {
+    id: "settings.nav.auditLog",
+    defaultMessage: "Audit log",
+    description: "Settings section",
+  },
+  packageFeatures: {
+    id: "settings.nav.packageFeatures",
+    defaultMessage: "Package and features",
+    description: "Settings section: what each package includes (feature matrix)",
+  },
+});
+
+/** Heading of the settings navigation and middle breadcrumb of every settings page. */
+export const SETTINGS_LABEL = sectionLabels.settings;
+
+/** Path prefix of the organisation settings sections. */
+export const SETTINGS_PREFIX = "settings/";
+
 export interface OrgModule {
   /** Path below `/o/:org/`, lowercase, no leading or trailing slash. */
   path: string;
@@ -99,6 +163,16 @@ export interface OrgModule {
    * `numo9/route-feature` requires it on every entry (U-01-T08).
    */
   feature: FeatureDeclaration;
+  /**
+   * Settings sections (`settings/…`) only: the section's name in the settings navigation and the
+   * breadcrumb ("Lock dates"), where `label` is the full name ("Settings: Lock dates").
+   */
+  sectionLabel?: MessageDescriptor;
+  /**
+   * Modules only: the settings section that configures this module — the module's gear links
+   * there (A-05-T10, gap-03: never one generic settings page for every module).
+   */
+  settings?: string;
 }
 
 export const ORG_MODULES: readonly OrgModule[] = [
@@ -123,6 +197,7 @@ export const ORG_MODULES: readonly OrgModule[] = [
     path: "contacts",
     feature: "accounting.contacts.read",
     label: labels.contacts,
+    settings: "settings/custom-fields",
     aliases: [
       "contact",
       "customers",
@@ -136,6 +211,7 @@ export const ORG_MODULES: readonly OrgModule[] = [
     path: "accounting/chart-of-accounts",
     feature: "accounting.chart_of_accounts.read",
     label: labels.chartOfAccounts,
+    settings: "settings/general",
     aliases: [
       "accounting",
       "accounts",
@@ -149,6 +225,7 @@ export const ORG_MODULES: readonly OrgModule[] = [
     path: "accounting/journals",
     feature: "accounting.journals.read",
     label: labels.journals,
+    settings: "settings/lock-dates",
     aliases: ["journals", "journal", "manual-journals", "journal/search.aspx"],
   },
   {
@@ -161,6 +238,7 @@ export const ORG_MODULES: readonly OrgModule[] = [
     path: "settings/general",
     feature: CORE,
     label: labels.settingsGeneral,
+    sectionLabel: sectionLabels.general,
     aliases: [
       "settings",
       "setup",
@@ -176,36 +254,48 @@ export const ORG_MODULES: readonly OrgModule[] = [
     path: "settings/registrations",
     feature: CORE,
     label: labels.settingsRegistrations,
+    sectionLabel: sectionLabels.registrations,
     aliases: ["settings/tax", "tax-settings", "registrations"],
   },
   {
     path: "settings/lock-dates",
     feature: CORE,
     label: labels.settingsLockDates,
+    sectionLabel: sectionLabels.lockDates,
     aliases: ["lock-dates", "settings/lockdates"],
   },
   {
     path: "settings/users-roles",
     feature: CORE,
     label: labels.settingsUsersRoles,
+    sectionLabel: sectionLabels.usersRoles,
     aliases: ["users", "team", "settings/users", "settings/roles"],
   },
   {
     path: "settings/email-domain",
     feature: CORE,
     label: labels.settingsEmailDomain,
+    sectionLabel: sectionLabels.emailDomain,
     aliases: ["settings/email"],
   },
   {
     path: "settings/subscription",
     feature: CORE,
     label: labels.settingsSubscription,
+    sectionLabel: sectionLabels.subscription,
     aliases: ["subscription", "billing", "settings/billing"],
   },
-  { path: "settings/numbering", label: labels.settingsNumbering, aliases: [], feature: CORE },
+  {
+    path: "settings/numbering",
+    feature: CORE,
+    label: labels.settingsNumbering,
+    sectionLabel: sectionLabels.numbering,
+    aliases: [],
+  },
   {
     path: "settings/custom-fields",
     label: labels.settingsCustomFields,
+    sectionLabel: sectionLabels.customFields,
     aliases: [],
     feature: CORE,
   },
@@ -213,15 +303,27 @@ export const ORG_MODULES: readonly OrgModule[] = [
     path: "settings/audit-log",
     feature: CORE,
     label: labels.settingsAuditLog,
+    sectionLabel: sectionLabels.auditLog,
     aliases: ["audit-log", "audit", "history"],
   },
   {
     path: "settings/package-features",
     feature: CORE,
     label: labels.settingsPackageFeatures,
+    sectionLabel: sectionLabels.packageFeatures,
     aliases: ["package", "packages", "plans", "features", "feature-matrix", "settings/package"],
   },
 ];
+
+/** Is the module path a settings section (`settings/general`…)? */
+export function isSettingsSection(path: string): boolean {
+  return path.startsWith(SETTINGS_PREFIX);
+}
+
+/** The settings sections in navigation order (the registry's order, wireframe 04-settings). */
+export function settingsSections(): OrgModule[] {
+  return ORG_MODULES.filter((module) => isSettingsSection(module.path));
+}
 
 /** Module whose path is `path` (exact, lowercase), if any. */
 export function findOrgModule(path: string): OrgModule | undefined {

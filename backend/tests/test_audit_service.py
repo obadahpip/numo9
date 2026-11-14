@@ -97,6 +97,21 @@ def test_several_saves_each_diff_from_the_previous(org: Organisation) -> None:
     ]
 
 
+def test_save_after_refresh_diffs_from_the_reloaded_values(org: Organisation) -> None:
+    inv = invoice(org)
+    with org_context(org):
+        AuditedInvoice.objects.filter(pk=inv.pk).update(amount=Decimal("120.00"))  # elsewhere
+        inv.refresh_from_db()
+        inv.amount = Decimal("130.00")
+        inv.save()
+        AuditedInvoice.objects.filter(pk=inv.pk).update(number="INV-7", notes="n")
+        inv.refresh_from_db(fields=["number"])  # partial: only number is reloaded
+        inv.number = "INV-8"
+        inv.save()
+    updates = [e.changes for e in events(org, action="testapp.auditedinvoice.updated")]
+    assert updates == [{"amount": ["120.00", "130.00"]}, {"number": ["INV-7", "INV-8"]}]
+
+
 def test_update_fields_compares_only_the_saved_fields(org: Organisation) -> None:
     inv = invoice(org)
     with org_context(org):

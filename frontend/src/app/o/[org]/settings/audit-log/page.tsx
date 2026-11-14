@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AuditLogScreen } from "@/audit/AuditLogScreen";
 import type { AuditFilters } from "@/audit/api";
 import { AppShell } from "@/components/AppShell";
+import { SettingsLayout } from "@/settings/SettingsLayout";
 import { ORG_SLUG } from "@/routing/routes";
 
 interface Params {
@@ -49,7 +50,9 @@ export default async function AuditLogPage({
   if (!ORG_SLUG.test(org)) notFound();
   return (
     <AppShell org={org} modulePath="settings/audit-log">
-      <AuditLogScreen org={org} initial={filtersFrom(search)} />
+      <SettingsLayout org={org} section="settings/audit-log">
+        <AuditLogScreen org={org} initial={filtersFrom(search)} />
+      </SettingsLayout>
     </AppShell>
   );
 }

@@ -7,7 +7,8 @@
 
 How it works:
 
-- when a row is loaded (``from_db``) its audited fields are kept as the **pre** snapshot;
+- when a row is loaded (``from_db``) or reloaded (``refresh_from_db``) its audited fields are kept
+  as the **pre** snapshot;
 - ``save()`` runs the save and the audit write in **one transaction** — the change and its event
   commit or roll back together — and compares the **post** snapshot with the pre one:
   a new row → ``<app>.<model>.created`` with every non-empty field as ``[null, value]``;
@@ -155,6 +156,19 @@ class AuditedModel(models.Model):
         instance = super().from_db(db, field_names, values, **kwargs)
         instance._audit_before = raw_state(instance)
         return instance
+
+    def refresh_from_db(
+        self, using: str | None = None, fields: Any = None, from_queryset: Any = None
+    ) -> None:
+        """Reloaded values become the pre snapshot, so the next save diffs from the database."""
+        super().refresh_from_db(using=using, fields=fields, from_queryset=from_queryset)
+        state = raw_state(self)
+        before: dict[str, Any] | None = getattr(self, "_audit_before", None)
+        if fields is None or before is None:
+            self._audit_before = state
+            return
+        names = {self._meta.get_field(name).name for name in fields} | {"__deleted__"}
+        self._audit_before = {**before, **{k: v for k, v in state.items() if k in names}}
 
     def audit_label(self) -> str:
         return str(self)

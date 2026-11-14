@@ -55,3 +55,86 @@ every organisation; allow-listed in `tenancy.checks.PLATFORM_MODELS`), seeded by
 | `list_version` | varchar(40) | no | CRA list the row comes from: `RC4088(E) Rev. 23` |
 | `published_on` | date | no | Publication date of that list: 2023-08-23 |
 | `retired_in` | varchar(40) | no | Empty, or the list version that dropped the code (kept for history) |
+
+## Organisation settings (`orgsettings`)
+
+Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
+
+### `orgsettings_organisationsettings` — Organisation settings {#orgsettings-organisationsettings}
+
+The one settings row of an organisation (A-05-T01). Business record: `OrgOwnedModel` and
+`AuditedModel`. Read with `numo9.orgsettings.service.get_settings()` (creates it on first use).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; `organisation_id` is **unique** (`orgsettings_one_per_org`) |
+| `legal_name` | varchar(200) | no | As registered; empty until known; must contain letters (numeric-only refused, gap-55); printed on statements and tax forms |
+| `display_name` | varchar(200) | no | Required; mirrored to `tenancy_organisation.name` |
+| `industry` | varchar(100) | no | Free text (empty when none) |
+| `structure` | varchar(32) | no | `sole_proprietorship`, `partnership`, `corporation` (default), `non_profit`, `charity`, `cooperative`, `trust`, `other` (`orgsettings_structure_valid`) |
+| `mailing_attention`, `mailing_line1`, `mailing_line2`, `mailing_city` | varchar | no | Mailing address (empty when none) |
+| `mailing_province` | varchar(50) | no | Canada: a province or territory code (`AB` … `YT`); elsewhere free text |
+| `mailing_postal_code` | varchar(16) | no | Canada: `A1A 1A1`, first letter in the province; elsewhere free text |
+| `mailing_country` | varchar(2) | no | ISO 3166-1 code; `CA` by default |
+| `physical_same_as_mailing` | boolean | no | True by default: the physical address follows the mailing one |
+| `physical_*` | varchar | no | Physical address, same parts as the mailing address |
+| `phone` | varchar(32) | no | Valid telephone number stored as E.164 (`+14165550123`) |
+| `email` | varchar(254) | no | Email address |
+| `website` | varchar(200) | no | Website URL |
+| `fye_month`, `fye_day` | smallint | no | Fiscal year end; 12/31 by default; month 1–12, day 1–31 (`orgsettings_fye_month_valid`, `orgsettings_fye_day_valid`) and a day the month has (model) |
+| `base_currency` | varchar(3) | no | Always `CAD` (`orgsettings_base_currency_cad`); not editable |
+| `time_zone` | varchar(64) | no | IANA time zone; mirrored to `tenancy_organisation.time_zone` |
+| `time_format` | varchar(3) | no | `12h` (default) or `24h` for the organisation's documents and emails |
+| `sales_terms_type`, `purchase_terms_type` | varchar(32) | no | `days_after_document` (default), `days_after_month_end`, `day_of_following_month`, `day_of_current_month` |
+| `sales_terms_days`, `purchase_terms_days` | smallint | no | Days (0–365, default 30), or the day of the month (1–31) for the `day_of_*` types |
+
+Audit actions: `orgsettings.organisationsettings.created`, `.updated`.
+
+### `orgsettings_taxregistration` — Tax registration {#orgsettings-taxregistration}
+
+One statutory registration of an organisation and its period (A-05-T03): BN, RT, RP, RC, QST, BC
+PST, Saskatchewan PST, Manitoba RST. Business record: `OrgOwnedModel` and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `type` | varchar(16) | no | `bn`, `rt`, `rp`, `rc`, `qst`, `pst_bc`, `pst_sk`, `rst_mb` (`orgsettings_registration_type_valid`) |
+| `number` | varchar(20) | no | Canonical form per type (`123456782`, `123456782RT0001`, `1234567890TQ0001`, `PST-1234-5678`, digits); BN check digit verified; program accounts carry the organisation's BN |
+| `effective_from`, `effective_to` | date | yes | Period; open when empty; end ≥ start (`orgsettings_registration_period_valid`); no overlap for the BN or for the same number |
+| `status` | varchar(16) | no | `pending`, `active` (default), `closed` (`orgsettings_registration_status_valid`) |
+| `cra_approval_ref` | varchar(100) | no | Reference of the CRA / Revenu Québec approval (empty when none) |
+
+Indexes: `(organisation, type)` (`orgsettings_reg_type_idx`).
+Audit actions: `orgsettings.taxregistration.created`, `.updated`, `.deleted`, `.restored`.
+
+### `orgsettings_lockdate` — Lock date {#orgsettings-lockdate}
+
+A lock date of one module at one level (A-05-T04). Business record: `OrgOwnedModel` and
+`AuditedModel` (its history is the audit log).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `module` | varchar(16) | no | `gl`, `ar`, `ap`, `bank`, `payroll`, `tax` (`orgsettings_lock_module_valid`); never changes |
+| `level` | varchar(16) | no | `advisers_only`, `everyone` (`orgsettings_lock_level_valid`); never changes |
+| `date` | date | yes | Changes dated on or before it are refused; empty = not locked; the `everyone` date ≤ the `advisers_only` date of the module |
+| `reason` | text | no | Why the lock was set or moved (≤ 500 characters); required when the date moves back or is removed |
+
+Unique: `(organisation, module, level)` among rows not deleted (`orgsettings_lock_one_per_module_level`).
+Audit actions: `orgsettings.lockdate.created`, `.updated`, `.deleted`, `.restored`.
+
+### `orgsettings_numberingsequence` — Numbering sequence {#orgsettings-numberingsequence}
+
+The next number of one document type (A-05-T08). Business record: `OrgOwnedModel` and
+`AuditedModel` (people's changes; allocations update `next_number` without an event).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `doc_type` | varchar(32) | no | `invoice`, `credit_note`, `quote`, `purchase_order` (`orgsettings_numbering_doc_type_valid`) |
+| `prefix` | varchar(10) | no | Letters, digits, `- / _ . #`; defaults `INV-`, `CN-`, `QU-`, `PO-` |
+| `next_number` | bigint | no | ≥ 1 (`orgsettings_numbering_next_positive`); moved on by `allocate_number()` under `SELECT … FOR UPDATE` |
+| `padding` | smallint | no | Minimum digits, 1–10, default 4 (`orgsettings_numbering_padding_valid`) |
+
+Unique: `(organisation, doc_type)` among rows not deleted (`orgsettings_numbering_one_per_doc_type`).
+Audit actions: `orgsettings.numberingsequence.created`, `.updated`.
