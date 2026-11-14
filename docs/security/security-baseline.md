@@ -40,8 +40,8 @@ session (response `{"csrfToken": "…"}`, never cached), then sends the token in
 default-src 'self';
 script-src 'self' 'nonce-…' https://js.stripe.com https://*.js.stripe.com;
 style-src 'self' 'nonce-…'; style-src-attr 'unsafe-inline';
-img-src 'self' data: blob: https://*.stripe.com; font-src 'self' data:;
-connect-src 'self' https://api.stripe.com [NUMO9_CSP_CONNECT_SRC];
+img-src 'self' data: blob: https://*.stripe.com [NUMO9_CSP_STORAGE_SRC]; font-src 'self' data:;
+connect-src 'self' https://api.stripe.com [NUMO9_CSP_CONNECT_SRC] [NUMO9_CSP_STORAGE_SRC];
 frame-src https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com;
 worker-src 'self' blob:; manifest-src 'self'; object-src 'none';
 base-uri 'self'; form-action 'self'; frame-ancestors 'none';
@@ -58,6 +58,8 @@ report-uri /api/csp-report
 - **Rollout**: `NUMO9_CSP_MODE=report-only` sends `Content-Security-Policy-Report-Only` — use it
   for the first week on a new environment, then remove it (default `enforce`).
 - `NUMO9_CSP_CONNECT_SRC`: extra `https://` origins the browser calls (e.g. the API origin).
+- `NUMO9_CSP_STORAGE_SRC`: the files bucket's `https://` origin (A-06): uploads are posted straight
+  to it (connect-src) and document previews load from its signed URLs (img-src).
 
 Tests: `frontend/src/security/csp.test.ts` (Vitest) and `frontend/e2e/csp.spec.ts`
 (Playwright): every Phase 0 page has a nonce policy, all its scripts carry that nonce and the

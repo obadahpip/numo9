@@ -67,6 +67,16 @@ ignore_missing_imports = true
 module = ["weasyprint", "weasyprint.*"]
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+# Object storage, file type detection, previews and the test S3 server ship no type information
+# (A-06): django-storages, boto3/botocore, python-magic, pillow-heif, pypdfium2, moto, requests.
+module = [
+  "storages", "storages.*", "boto3", "boto3.*", "botocore", "botocore.*", "magic",
+  "pillow_heif", "pillow_heif.*", "pypdfium2", "pypdfium2.*", "moto", "moto.*",
+  "requests", "requests.*",
+]
+ignore_missing_imports = true
+
 [tool.django-stubs]
 django_settings_module = "numo9.settings.test"
 

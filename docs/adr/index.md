@@ -23,3 +23,4 @@ consequences. ADRs follow [MADR](https://adr.github.io/madr/) and live in `docs/
 |---|---|---|
 | [ADR-0001](0001-hosting-and-data-residency.md) | Host Numo9 on AWS Canada (Central) with Canada (West) for backups (S-02-T01) | superseded by ADR-0002 |
 | [ADR-0002](0002-hetzner-helsinki-hosting.md) | Host Numo9 on Hetzner Cloud in Helsinki (supersedes ADR-0001) | accepted (2026-11-08) |
+| [ADR-0003](0003-posting-engine-and-book-dimension.md) | Journal posting engine with a book dimension: append-only lines, gap-free numbers, hash-partitioned by organisation (C-02-T01, plan "ADR-006") | accepted (2026-11-14, on merge) |

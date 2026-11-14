@@ -120,7 +120,7 @@ def api(user: User) -> APIClient:
     return client
 
 
-# ---- acceptance: System: <job> -------------------------------------------------------------------
+# ---- acceptance: System: <job> ------------------------------------------------------------------
 
 
 def test_every_change_by_the_job_is_attributed_to_the_job(

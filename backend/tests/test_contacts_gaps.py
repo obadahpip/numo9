@@ -8,9 +8,9 @@ Each test observes a row of the Phase 0 gap table (xero_teardown §3.1, §3.2):
   are B-01-T14's Playwright check);
 - gap-20 — Xero has no contact currency, no withholding/T4A flag, no duplicate warning and only
   "block" for the credit limit. Numo9 contacts carry a currency (ISO 4217), a T4A flag, a credit
-  limit with warn or block, and duplicates are found while typing (name, email, BN, tax ID). The
-  payment-terms master (B-01-T05), the exemption certificate (B-01-T08) and the credit override
-  approval (B-01-T13) join this gap's tests with their tasks;
+  limit with warn or block, duplicates are found while typing (name, email, BN, tax ID) and every
+  organisation has a payment-terms master (B-01-T05). The exemption certificate (B-01-T08) and the
+  credit override approval (B-01-T13) join this gap's tests with their tasks;
 - fixture — one customer per province and territory (``fixtures/contacts_ca/contacts.json``): each
   defaults to its province's sales tax, and the Quebec contact to GST + QST (deliverable
   acceptance).
@@ -120,6 +120,14 @@ def test_archived_contacts_leave_the_role_lists(org: Organisation) -> None:
 def test_contacts_have_a_currency(org: Organisation) -> None:
     assert contact(org, "Canadian").currency == "CAD"
     assert contact(org, "Northern Lights Studio", currency="usd").currency == "USD"
+
+
+@pytest.mark.gap("gap-20")
+def test_organisations_have_a_payment_terms_master(org: Organisation) -> None:
+    from numo9.contacts.models import PaymentTerm
+
+    codes = set(PaymentTerm.objects.values_list("code", flat=True))
+    assert {"due_on_receipt", "net_15", "net_30", "net_60", "2_10_net_30", "eom"} <= codes
 
 
 @pytest.mark.gap("gap-20")

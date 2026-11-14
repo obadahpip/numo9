@@ -85,8 +85,13 @@ def test_read_only_and_reviewer_change_nothing() -> None:
 
 
 def test_functional_roles_start_small() -> None:
-    for key in ("sales", "purchasing", "payroll", "hr", "employee"):
-        assert grants("organisation", key) == {"organisation.profile.view"}, key
+    # Documents are read-only for the functional roles (A-06); their own modules arrive later.
+    for key in ("sales", "purchasing", "payroll", "hr"):
+        assert grants("organisation", key) == {
+            "organisation.profile.view",
+            "documents.file.view",
+        }, key
+    assert grants("organisation", "employee") == {"organisation.profile.view"}
 
 
 def test_platform_roles() -> None:
@@ -159,4 +164,4 @@ def test_sync_is_idempotent_and_restores_a_deleted_role() -> None:
     out = StringIO()
     call_command("sync_system_roles", stdout=out)
     assert "1 created" in out.getvalue()
-    assert grants("organisation", "hr") == {"organisation.profile.view"}
+    assert grants("organisation", "hr") == {"organisation.profile.view", "documents.file.view"}

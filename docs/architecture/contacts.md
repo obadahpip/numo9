@@ -231,6 +231,35 @@ API contract (served by B-01-T11):
 `{"results": [{"contact": {"id", "number", "display_name", "province", "roles", "archived"},
 "reasons": ["bn", "name"], "similarity": 0.79}]}`.
 
+## Payment terms master (B-01-T05)
+
+`PaymentTerm` — the organisation's list of payment terms (gap-20: Xero has no terms master, terms
+are typed per contact). Contacts (B-01-T06), invoices and bills pick a term from the list.
+Business record (`OrgOwnedModel`, audited).
+
+| Field | Rule |
+|---|---|
+| `name_i18n` | Name per language; English required (`contacts.payment_term.name_required`), unique in the organisation (`contacts.payment_term.name_taken`) |
+| `terms_type`, `days` | The organisation-settings term types (A-05): *n* days after the document date, *n* days after the end of the document month, the *n*th of the following month, the *n*th of the current month. 0–365 days (`contacts.payment_term.days`), or a day 1–31 for the "of the month" types (`contacts.payment_term.day`) |
+| `discount_pct`, `discount_days` | Early-payment discount (applied by E-07): 0–99.99 % (`.discount_range`); with a discount, a window ≥ 1 day (`.discount_days_required`) that ends before a days-after-document term is due (`.discount_window`); without one, the window is cleared |
+| `late_interest_pct` | Annual late interest 0–100 % (`.interest_range`); FN-04 adds how it is charged |
+| `code` | Stable key of a seeded term (`net_30`), unique per organisation; empty for terms people add |
+| `status`, `position` | Active or archived (terms are archived, never deleted); order in pickers |
+
+The database repeats the ranges (`contacts_payment_term_*` checks).
+
+**Defaults** — every new organisation gets them (a `post_save` receiver on `Organisation`;
+migration `contacts.0005` seeds organisations created before it); `seed_payment_terms(org)` adds
+only the missing codes, so it is safe to run again. The seed is one platform bulk insert without
+audit events (part of creating the organisation); later changes are audited.
+
+| Code | Name | Rule |
+|---|---|---|
+| `due_on_receipt` | Due on receipt | 0 days after the document date |
+| `net_15` / `net_30` / `net_60` | Net 15 / Net 30 / Net 60 | 15 / 30 / 60 days after |
+| `2_10_net_30` | 2/10 net 30 | 30 days after; 2 % discount within 10 days |
+| `eom` | End of month (EOM) | 0 days after the end of the document month |
+
 ## Gap tests (B-01-T19)
 
 `tests/test_contacts_gaps.py`, marked `@pytest.mark.gap(...)` (CI job `gap-tests`):
@@ -238,7 +267,7 @@ API contract (served by B-01-T11):
 | Gap | Observed |
 |---|---|
 | gap-19 | A new contact is in its role's list before any transaction; roles are set on the contact and a contact can have several (customer + supplier); no role is refused; archived contacts leave the role lists. The titled list tabs are B-01-T14's Playwright check |
-| gap-20 | Contact currency (CAD default, USD…); T4A withholding flag; credit limit warn or block; duplicates found while typing by name, BN and tax ID; Quebec contact → GST + QST. The payment-terms master (B-01-T05), exemption certificate (B-01-T08) and credit override approval (B-01-T13) add their tests to this gap with their tasks |
+| gap-20 | Contact currency (CAD default, USD…); payment-terms master (B-01-T05); T4A withholding flag; credit limit warn or block; duplicates found while typing by name, BN and tax ID; Quebec contact → GST + QST. The exemption certificate (B-01-T08) and credit override approval (B-01-T13) add their tests to this gap with their tasks |
 
 Fixture `tests/fixtures/contacts_ca/contacts.json`: one customer per province and territory with
 its billing address and the tax hint it defaults to (as of 14 November 2026) — the Quebec
@@ -251,6 +280,7 @@ customer, Érable Distribution inc., defaults to GST + QST (deliverable acceptan
 | T02 | `tests/test_contacts_model.py` |
 | T03 | `tests/test_contacts_people.py` |
 | T04 | `tests/test_contacts_address.py` |
+| T05 | `tests/test_contacts_payment_terms.py` |
 | T07 | `tests/test_contacts_tax_hint.py` |
 | T09 | `tests/test_contacts_custom_fields.py` |
 | T10 | `tests/test_contacts_duplicates.py` |

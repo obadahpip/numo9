@@ -25,6 +25,11 @@ export interface CspOptions {
   dev?: boolean;
   /** Extra origins the app calls, e.g. the API origin `https://api.numo9.ca`. */
   connectSrc?: readonly string[];
+  /**
+   * Origins of the files bucket (A-06): uploads are POSTed straight to it and previews load
+   * from its signed URLs, so it is allowed for connect-src and img-src.
+   */
+  storageSrc?: readonly string[];
 }
 
 /** 128 random bits, base64 — a new value for every response. */
@@ -36,7 +41,12 @@ export function generateNonce(): string {
   return btoa(binary);
 }
 
-export function cspDirectives({ nonce, dev = false, connectSrc = [] }: CspOptions) {
+export function cspDirectives({
+  nonce,
+  dev = false,
+  connectSrc = [],
+  storageSrc = [],
+}: CspOptions) {
   const n = `'nonce-${nonce}'`;
   return {
     "default-src": ["'self'"],
@@ -44,9 +54,15 @@ export function cspDirectives({ nonce, dev = false, connectSrc = [] }: CspOption
     "style-src": ["'self'", n],
     // React renders `style` attributes (virtualised grids, positioning); no inline <style>.
     "style-src-attr": ["'unsafe-inline'"],
-    "img-src": ["'self'", "data:", "blob:", ...STRIPE_SOURCES.img],
+    "img-src": ["'self'", "data:", "blob:", ...STRIPE_SOURCES.img, ...storageSrc],
     "font-src": ["'self'", "data:"],
-    "connect-src": ["'self'", ...STRIPE_SOURCES.connect, ...connectSrc, ...(dev ? ["ws:"] : [])],
+    "connect-src": [
+      "'self'",
+      ...STRIPE_SOURCES.connect,
+      ...connectSrc,
+      ...storageSrc,
+      ...(dev ? ["ws:"] : []),
+    ],
     "frame-src": [...STRIPE_SOURCES.frame],
     "worker-src": ["'self'", "blob:"],
     "manifest-src": ["'self'"],
@@ -76,7 +92,10 @@ export function cspHeaderName(mode: CspMode): string {
   return mode === "report-only" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy";
 }
 
-/** Origins from `NUMO9_CSP_CONNECT_SRC` (comma-separated); only `https://` origins are kept. */
+/**
+ * Origins from `NUMO9_CSP_CONNECT_SRC` / `NUMO9_CSP_STORAGE_SRC` (comma-separated); only
+ * `https://` origins are kept.
+ */
 export function connectSources(value: string | undefined): string[] {
   return (value ?? "")
     .split(",")

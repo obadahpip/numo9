@@ -495,3 +495,76 @@ PROMO_CODE_TAKEN = define(
     "packages.promo_code_taken",
     _("The promo code %(code)s is taken. Choose another code."),
 )
+
+
+# ---- documents (A-06) --------------------------------------------------------------------------
+FILES_TYPE_NOT_ALLOWED = define(
+    "files.type_not_allowed",
+    _(
+        "%(name)s can't be added: Numo9 accepts PDF, PNG, JPEG, HEIC, TIFF, CSV, XLSX, DOCX and "
+        "bank files (OFX, QFX, QBO)."
+    ),
+    status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+)
+FILES_TYPE_MISMATCH = define(
+    "files.type_mismatch",
+    _(
+        "%(name)s isn't what its name says (it contains %(detected)s). Only real PDF, image, "
+        "spreadsheet, Word and bank files are accepted."
+    ),
+    status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+)
+FILES_TOO_LARGE = define(
+    "files.too_large",
+    _("%(name)s is %(size)s; files are limited to 25 MB. Split or compress it and try again."),
+    status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+)
+FILES_EMPTY = define("files.empty", _("%(name)s is empty."))
+FILES_UPLOAD_MISSING = define(
+    "files.upload_missing",
+    _("The upload of %(name)s didn't arrive. Upload the file again."),
+)
+FILES_NOT_PENDING = define(
+    "files.not_pending",
+    _("%(name)s is already uploaded."),
+    status.HTTP_409_CONFLICT,
+)
+FILES_NOT_READY = define(
+    "files.not_ready",
+    _("%(name)s isn't ready: it's being checked for viruses, or it was quarantined."),
+    status.HTTP_409_CONFLICT,
+)
+FILES_STORAGE_UNAVAILABLE = define(
+    "files.storage_unavailable",
+    _("File storage isn't answering right now. Try again in a minute."),
+    status.HTTP_503_SERVICE_UNAVAILABLE,
+)
+FILES_RECORD_TYPE = define(
+    "files.record_type",
+    _("Documents can't be attached to %(record_type)s: choose an organisation record."),
+)
+FILES_QUARANTINED = define(
+    "files.quarantined",
+    _("%(name)s was quarantined (virus found) and can't be attached or opened."),
+    status.HTTP_409_CONFLICT,
+)
+FILES_BAD_FILTER = define(
+    "files.bad_filter",
+    _("%(name)s isn't a valid filter value: %(value)s."),
+)
+FILES_BAD_CURSOR = define(
+    "files.bad_cursor",
+    _("This page link has expired. Reload the list."),
+)
+FILES_BAD_LIMIT = define(
+    "files.bad_limit",
+    _("Ask for 1 to %(max)s documents at a time."),
+)
+FILES_BULK_ACTION = define(
+    "files.bulk_action",
+    _("Choose what to do with the selected documents."),
+)
+FILES_BULK_TOO_MANY = define(
+    "files.bulk_too_many",
+    _("Select up to %(max)s documents at a time."),
+)
