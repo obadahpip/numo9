@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { PackageFeaturesScreen } from "@/catalogue/PackageFeaturesScreen";
 import { AppShell } from "@/components/AppShell";
+import { SettingsLayout } from "@/settings/SettingsLayout";
 import { ORG_SLUG } from "@/routing/routes";
 
 interface Params {
@@ -17,7 +18,9 @@ export default async function PackageFeaturesPage({ params }: { params: Promise<
   if (!ORG_SLUG.test(org)) notFound();
   return (
     <AppShell org={org} modulePath="settings/package-features">
-      <PackageFeaturesScreen org={org} />
+      <SettingsLayout org={org} section="settings/package-features">
+        <PackageFeaturesScreen org={org} />
+      </SettingsLayout>
     </AppShell>
   );
 }

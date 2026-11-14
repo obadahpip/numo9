@@ -464,6 +464,23 @@
     "settingsUsersRoles": "Settings: Users and roles"
   },
   "settings": {
+    "moduleGear": {
+      "label": "{module} settings"
+    },
+    "nav": {
+      "auditLog": "Audit log",
+      "customFields": "Custom fields",
+      "emailDomain": "Email domain",
+      "general": "General",
+      "label": "Settings sections",
+      "lockDates": "Lock dates",
+      "numbering": "Numbering",
+      "packageFeatures": "Package and features",
+      "registrations": "Tax registrations",
+      "settings": "Settings",
+      "subscription": "Subscription",
+      "usersRoles": "Users and roles"
+    },
     "usersRoles": {
       "cancel": "Cancel",
       "close": "Close",

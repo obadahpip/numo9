@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
-import { findOrgModule, ORG_SLUG } from "@/routing/routes";
+import { findOrgModule, isSettingsSection, ORG_SLUG } from "@/routing/routes";
+import { SettingsLayout } from "@/settings/SettingsLayout";
 
 const messages = defineMessages({
   placeholder: {
@@ -22,7 +23,8 @@ interface Params {
 /**
  * Canonical organisation module URL `/o/:org/<module>` (S-01-T14). Renders a placeholder for every
  * module in the route registry; unknown modules and invalid slugs get the custom 404. Each module's
- * deliverable replaces its placeholder with the real screen.
+ * deliverable replaces its placeholder with the real screen. Settings sections sit in the settings
+ * frame (navigation on the left, A-05-T10).
  */
 export default async function OrganisationModulePage({ params }: { params: Promise<Params> }) {
   const { org, module } = await params;
@@ -30,10 +32,21 @@ export default async function OrganisationModulePage({ params }: { params: Promi
   if (!ORG_SLUG.test(org) || entry === undefined) notFound();
   const fm = await getFormatMessage();
 
-  return (
-    <AppShell org={org} modulePath={entry.path}>
+  const body = (
+    <>
       <h1 className="text-2xl font-semibold">{fm(entry.label)}</h1>
       <p className="mt-2 text-sm text-fg-muted">{fm(messages.placeholder)}</p>
+    </>
+  );
+  return (
+    <AppShell org={org} modulePath={entry.path}>
+      {isSettingsSection(entry.path) ? (
+        <SettingsLayout org={org} section={entry.path}>
+          {body}
+        </SettingsLayout>
+      ) : (
+        body
+      )}
     </AppShell>
   );
 }

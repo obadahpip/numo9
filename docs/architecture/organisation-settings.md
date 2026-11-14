@@ -4,7 +4,7 @@
 |---|---|
 | **Deliverable** | A-05 · Org settings, fiscal year, per-module lock dates, Phase 0 (component A — Platform Core) |
 | **Branch** | `feature/A-05-org-settings-locks` |
-| **Code** | `backend/numo9/orgsettings/` (models, validators, service, numbering) |
+| **Code** | `backend/numo9/orgsettings/` (models, validators, service, numbering); `frontend/src/settings/` (settings navigation and frame, module gear) |
 | **Libraries** | `phonenumbers` (telephone numbers, A-05-T02) |
 | **Depends on** | A-01 (tenancy: `OrgOwnedModel`), A-03 (roles: advisers), A-04 (audit: `AuditedModel`) |
 | **Used by** | C-02 posting engine (lock dates), documents (numbering, default terms), G-01 tax codes (home province), U-05 trial (time zone), K-09 exceptions (missing BN, missing lock date) |
@@ -173,3 +173,48 @@ sequenceDiagram
   `orgsettings.numberingsequence.updated` event; allocations are not (the document's own creation
   is). Lowering `next_number` is allowed (a typo can be fixed); documents keep their own unique
   number constraint (D-03).
+
+## Settings shell and module gears (A-05-T10, gap-03)
+
+Xero sends every module's "Settings" link to one generic hub page. In Numo9 every settings
+section has its own URL and every module's gear opens the section that configures it.
+
+**Sections** — `/o/:org/settings/<section>`, in the route registry's order
+(`frontend/src/routing/routes.ts`, wireframe 04-settings): General · Tax registrations · Lock dates
+· Users and roles · Email domain · Subscription · Numbering · Custom fields · Audit log · Package
+and features. Each registry entry of a section has a `sectionLabel` (the short name in the
+navigation and the breadcrumb, "Lock dates"); `settingsSections()` lists them.
+
+**Frame** — `SettingsLayout` wraps every settings page (the placeholders of `[...module]` and the
+real screens: users and roles, audit log, package and features): `SettingsNav` on the left from
+768 px — every section as a deep link, the current one `aria-current="page"` — and above the
+content as a wrapping list on phones (no sideways scroll at 360 px). The breadcrumb reads
+*Organisation / Settings / Lock dates*, with *Settings* linking to General. A new settings screen
+replaces its placeholder and keeps the frame:
+
+```tsx
+<AppShell org={org} modulePath="settings/lock-dates">
+  <SettingsLayout org={org} section="settings/lock-dates">
+    <LockDatesScreen org={org} />
+  </SettingsLayout>
+</AppShell>
+```
+
+**Module gears** — a module's registry entry names its section in `settings`; the shell shows a
+gear link ("Contacts settings") at the end of the breadcrumb bar that opens it:
+
+| Module | Gear opens |
+|---|---|
+| Contacts | Custom fields |
+| Accounting → Chart of accounts | General (fiscal year end, base currency) |
+| Accounting → Journals | Lock dates |
+
+Home and Documents have no settings section yet, so no gear (A-06 adds the documents section).
+Later modules add theirs the same way (Sales → numbering and invoice settings, Tax →
+registrations, Payroll → payroll settings).
+
+**Tests** — `frontend/e2e/gap-03.spec.ts` (Playwright): every section renders on its own URL with
+the full navigation and itself marked; clicking through the navigation lands on each section; the
+360 px page has no serious axe finding and no sideways scroll; each gear links to and opens its own
+section and no two modules share one generic page. Unit: `SettingsNav.test.tsx`,
+`AppShell.test.tsx`.
