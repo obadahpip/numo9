@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 112   Remaining: 2675
+TOTAL ATOMIC TASKS: 2787   Completed: 126   Remaining: 2661
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -164,20 +164,20 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-03-T15 — Audit hooks for role/limit changes   [stored by A-04-T03; diff visible in the audit log API, A-04-T07]
 
 [U-01]
-❌ U-01-T01 — Design catalogue data model ERD (Product, FeatureKey, ProductFeature), naming convention for keys; record in docs/architecture/feature-keys.md
-❌ U-01-T02 — Product model (code, name_i18n_key, kind {main, free_set, companion}, status {active, planned, retired}, sort) + migration
-❌ U-01-T03 — FeatureKey model (key unique, description_i18n_key, product FK, is_read_only) + migration
-❌ U-01-T04 — Data migration seeding 7 products and the Phase 0–1 feature keys (accounting.*, tax.*, practice.*, portal.*)
-❌ U-01-T05 — @requires_feature("key") DRF decorator + RequiresFeature permission class (resolution delegated to U-03 interface stub)
-❌ U-01-T06 — Next.js useFeature(key) hook + <Gated feature=…> wrapper component (renders child or gated state from U-03)
-❌ U-01-T07 — CI check manage.py check_feature_keys: walks the URL router; fails if a business endpoint lacks a key or uses an unknown key
-❌ U-01-T08 — Frontend lint rule (eslint custom) — gated routes must declare feature in route metadata
-❌ U-01-T09 — API GET /api/v1/catalogue/products and /feature-matrix (key → product → packages)
-❌ U-01-T10 — Feature-matrix export (CSV/XLSX via openpyxl) for platform owner
-❌ U-01-T11 — Platform-owner Products screen (list, status chips, detail drawer showing keys)
-❌ U-01-T13 — i18n keys (en-CA, fr-CA placeholders) for all product and feature descriptions
-❌ U-01-T14 — Audit hooks on product/key changes (A-04)
-❌ U-01-T15 — Docs: feature-key guide for developers (how to declare, how to test gating)
+✅ U-01-T01 — Design catalogue data model ERD (Product, FeatureKey, ProductFeature), naming convention for keys; record in docs/architecture/feature-keys.md
+✅ U-01-T02 — Product model (code, name_i18n_key, kind {main, free_set, companion}, status {active, planned, retired}, sort) + migration
+✅ U-01-T03 — FeatureKey model (key unique, description_i18n_key, product FK, is_read_only) + migration
+✅ U-01-T04 — Data migration seeding 7 products and the Phase 0–1 feature keys (accounting.*, tax.*, practice.*, portal.*)
+✅ U-01-T05 — @requires_feature("key") DRF decorator + RequiresFeature permission class (resolution delegated to U-03 interface stub)
+✅ U-01-T06 — Next.js useFeature(key) hook + <Gated feature=…> wrapper component (renders child or gated state from U-03)
+✅ U-01-T07 — CI check manage.py check_feature_keys: walks the URL router; fails if a business endpoint lacks a key or uses an unknown key
+✅ U-01-T08 — Frontend lint rule (eslint custom) — gated routes must declare feature in route metadata
+✅ U-01-T09 — API GET /api/v1/catalogue/products and /feature-matrix (key → product → packages)
+✅ U-01-T10 — Feature-matrix export (CSV/XLSX via openpyxl) for platform owner
+✅ U-01-T11 — Platform-owner Products screen (list, status chips, detail drawer showing keys)
+✅ U-01-T13 — i18n keys (en-CA, fr-CA placeholders) for all product and feature descriptions
+✅ U-01-T14 — Audit hooks on product/key changes (A-04)
+✅ U-01-T15 — Docs: feature-key guide for developers (how to declare, how to test gating)
 
 [C-01]
 ❌ C-01-T01 — Accountant review of template (Canadian small-business CoA, 4-digit, types, GIFI) — spreadsheet coa_template_ca_v1.xlsx
@@ -375,7 +375,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ❌ U-02-T14 — Tests: future-dated price leaves current subscriptions unchanged (fixture with subscription renewing before effective date)
 
 [U-01]
-❌ U-01-T12 — In-app "Package & features" page (searchable matrix, grouped, ticks per package, highlights current package)
+❌ U-01-T12 — In-app "Package & features" page (searchable matrix, grouped, ticks per package, highlights current package)   [page, API (GET /api/v1/o/<org>/package-features) and Playwright + axe built and passing on U-02-shaped fixture packages; ✅ once U-02 supplies real packages and U-03/U-04 the organisation's current package]
 
 [V-02]
 ❌ V-02-T01 — Wireframes: group tree, tag picker, group staff panel

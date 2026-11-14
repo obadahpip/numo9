@@ -23,6 +23,12 @@ const config = [
     plugins: { numo9 },
     rules: { "numo9/no-work-screen-banners": ["error", { allow: BANNER_ALLOWED_FILES }] },
   },
+  // Every route in the route registry declares its feature key or CORE (U-01-T08).
+  {
+    files: ["src/routing/routes.ts"],
+    plugins: { numo9 },
+    rules: { "numo9/route-feature": ["error", { registries: ["ORG_MODULES"] }] },
+  },
   // Must stay last: turns off rules that conflict with Prettier formatting.
   ...compat.extends("prettier"),
 ];

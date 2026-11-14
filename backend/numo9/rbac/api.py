@@ -39,6 +39,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
+from numo9.catalogue.drf import CORE
 from numo9.i18n import errors
 from numo9.i18n.errors import error_detail
 from numo9.tenancy.context import current_org
@@ -115,6 +116,8 @@ class MyPermissionsSerializer(serializers.Serializer[Any]):
 class MyPermissionsView(APIView):
     """What the signed-in user may do here, so screens show only what works (A-03-T11)."""
 
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission("organisation.profile.view")  # every role here has it
     @extend_schema(
         operation_id="my_permissions",
@@ -130,6 +133,8 @@ class MyPermissionsView(APIView):
 
 
 class RoleListView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(ROLES_VIEW.key)
     @extend_schema(
         operation_id="roles_list",
@@ -189,6 +194,8 @@ class RoleListView(APIView):
 
 
 class RoleDetailView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(ROLES_VIEW.key)
     @extend_schema(operation_id="roles_retrieve", summary="One role", responses=RoleSerializer)
     def get(self, request: Request, org: Any, role_id: Any) -> Response:
@@ -241,6 +248,8 @@ def _main_roles() -> dict[str, Role]:
 
 
 class MemberListView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(MEMBERS_VIEW)
     @extend_schema(
         operation_id="members_list",
@@ -254,6 +263,8 @@ class MemberListView(APIView):
 
 
 class MemberRolesView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(ROLES_ASSIGN.key)
     @extend_schema(
         operation_id="members_roles_assign",
@@ -281,6 +292,8 @@ class MemberRolesView(APIView):
 
 
 class MemberRoleDetailView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(ROLES_ASSIGN.key)
     @extend_schema(
         operation_id="members_roles_unassign",
@@ -297,6 +310,8 @@ class MemberRoleDetailView(APIView):
 
 
 class PendingInvitationsView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(MEMBERS_VIEW)
     @extend_schema(
         operation_id="members_invitations_list",
@@ -322,6 +337,7 @@ class PendingInvitationsView(APIView):
 
 
 class ApprovalLimitListView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = ApprovalLimitSerializer  # tenant sweep: rows of ApprovalLimit
 
     @requires_permission(LIMITS_VIEW.key)
@@ -400,6 +416,8 @@ class LimitCheckSerializer(serializers.Serializer[Any]):
 class ApprovalLimitCheckView(APIView):
     """Would this person be allowed to approve this amount? (A-03-T13 "Verify an amount")."""
 
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(LIMITS_VIEW.key)
     @extend_schema(
         operation_id="approval_limits_check",
@@ -438,6 +456,7 @@ class ApprovalLimitCheckView(APIView):
 
 
 class ApprovalLimitDetailView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = ApprovalLimitSerializer
 
     @requires_permission(LIMITS_VIEW.key)
@@ -531,6 +550,7 @@ def _request_data(row: AccessRequest, already_open: bool = False) -> dict[str, A
 
 
 class AccessRequestListView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = AccessRequestModelSerializer  # tenant sweep: rows of AccessRequest
 
     @requires_permission(ROLES_ASSIGN.key)
@@ -572,6 +592,7 @@ class AccessRequestListView(APIView):
 
 
 class AccessRequestDetailView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = AccessRequestModelSerializer
 
     @requires_permission(ROLES_ASSIGN.key)

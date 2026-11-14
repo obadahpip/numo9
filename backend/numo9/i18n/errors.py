@@ -383,3 +383,17 @@ AUDIT_EXPORT_TOO_LARGE = define(
     ),
     status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
 )
+
+# ---- product catalogue and entitlements (U-01, U-03) -------------------------------------------
+FEATURE_NOT_IN_PACKAGE = define(
+    "entitlement.feature_not_in_package",
+    _(
+        "This isn't in your organisation's package: it's part of %(product)s. See the packages "
+        "that include it, or ask the organisation owner to change the package."
+    ),
+    status.HTTP_402_PAYMENT_REQUIRED,
+)
+CATALOGUE_EXPORT_FORMAT = define(
+    "catalogue.export_format",
+    _("Choose an export format: CSV or XLSX."),
+)

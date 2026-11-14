@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 05:42-0500\n"
+"POT-Creation-Date: 2026-11-12 15:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -332,6 +332,354 @@ msgstr "%(count)s événements · exporté le %(when)s"
 msgid "No events match these filters."
 msgstr "Aucun événement ne correspond à ces filtres."
 
+msgid "Product"
+msgstr ""
+
+#, fuzzy
+#| msgid "error code"
+msgid "Product code"
+msgstr "code d’erreur"
+
+msgid "Feature key"
+msgstr ""
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Area"
+msgstr ""
+
+msgid "Read-only"
+msgstr ""
+
+msgid "Feature matrix"
+msgstr ""
+
+msgid "Main product"
+msgstr ""
+
+msgid "Free product set"
+msgstr ""
+
+msgid "Companion app"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Planned"
+msgstr ""
+
+msgid "Retired"
+msgstr ""
+
+msgid "A retired product can't be deleted: it stays for the history of the organisations that had it."
+msgstr ""
+
+msgid "code"
+msgstr ""
+
+msgid "Stable identifier, e.g. 'accounting'. Never changes once created."
+msgstr ""
+
+msgid "name (translation key)"
+msgstr ""
+
+msgid "Translation key of the product's name, e.g. 'catalogue.product.accounting'."
+msgstr ""
+
+msgid "kind"
+msgstr ""
+
+msgid "status"
+msgstr "statut"
+
+msgid "sort order"
+msgstr ""
+
+msgid "created at"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "product"
+msgstr ""
+
+msgid "products"
+msgstr ""
+
+msgid "A product's code never changes: feature keys and packages use it."
+msgstr ""
+
+msgid "Use lower-case letters, digits and _ (companion apps: app.<name>)."
+msgstr ""
+
+msgid "key"
+msgstr ""
+
+msgid "<product>.<area>.<action>, e.g. 'accounting.sales_invoices.write'."
+msgstr ""
+
+msgid "description (translation key)"
+msgstr ""
+
+msgid "Translation key of the plain-language description: 'catalogue.feature.<key>'."
+msgstr ""
+
+#, fuzzy
+#| msgid "Read-only staff"
+msgid "read-only"
+msgstr "Personnel en lecture seule"
+
+msgid "Read keys (*.read) stay granted for history after a downgrade (U-03)."
+msgstr ""
+
+msgid "feature key"
+msgstr ""
+
+msgid "feature keys"
+msgstr ""
+
+msgid "A feature key never changes: endpoints and screens declare it."
+msgstr ""
+
+msgid "Use <product>.<area>.<action> with action read, write or approve."
+msgstr ""
+
+msgid "A feature key starts with the code of the product that owns it."
+msgstr ""
+
+msgid "See products, feature keys and the feature matrix, and export it"
+msgstr ""
+
+msgid "Accounting"
+msgstr "Comptabilité"
+
+msgid "Tax"
+msgstr "Taxes"
+
+msgid "Payroll"
+msgstr "Paie"
+
+msgid "Inventory"
+msgstr "Stocks"
+
+msgid "Finance"
+msgstr ""
+
+msgid "Practice"
+msgstr "Cabinet"
+
+msgid "Client portal"
+msgstr ""
+
+msgid "Numo9 Commerce"
+msgstr ""
+
+msgid "Numo9 Bank"
+msgstr ""
+
+msgid "Numo9 Receipts"
+msgstr ""
+
+msgid "See customers and suppliers, their activity and statements"
+msgstr ""
+
+msgid "Add, edit, import and archive customers and suppliers"
+msgstr ""
+
+msgid "See the chart of accounts and its GIFI codes"
+msgstr ""
+
+msgid "Add, edit and archive accounts in the chart of accounts"
+msgstr ""
+
+msgid "See manual journals and every posted entry"
+msgstr ""
+
+#, fuzzy
+#| msgid "manual journals"
+msgid "Create and post manual journals"
+msgstr "écritures de journal manuelles"
+
+msgid "Approve manual journals before they're posted"
+msgstr ""
+
+msgid "See the documents inbox and attached files"
+msgstr ""
+
+msgid "Upload documents, email them to the inbox and turn them into bills or receipts"
+msgstr ""
+
+msgid "See quotes"
+msgstr ""
+
+msgid "Create and send quotes and turn them into invoices"
+msgstr ""
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "See invoices and their revisions"
+msgstr "Soumissions, factures et clients."
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "Create, edit and send invoices"
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+msgid "Approve invoices before they're sent"
+msgstr ""
+
+msgid "See credit notes"
+msgstr ""
+
+msgid "Create credit notes and apply them to invoices"
+msgstr ""
+
+#, fuzzy
+#| msgid "See the organisation's users"
+msgid "See the reminders sent to customers"
+msgstr "Voir les utilisateurs de l’organisation"
+
+msgid "Send invoice reminders before and after the due date"
+msgstr ""
+
+msgid "See payments received from customers"
+msgstr ""
+
+msgid "Record customer payments and allocate them to invoices"
+msgstr ""
+
+msgid "See purchase orders and what was received"
+msgstr ""
+
+msgid "Create and send purchase orders and record what was received"
+msgstr ""
+
+msgid "Approve purchase orders before they're sent"
+msgstr ""
+
+msgid "See supplier bills"
+msgstr ""
+
+msgid "Enter and edit supplier bills and pay them"
+msgstr ""
+
+msgid "Approve supplier bills for payment"
+msgstr ""
+
+msgid "See expense claims and receipts"
+msgstr ""
+
+msgid "Submit expense claims with receipts"
+msgstr ""
+
+msgid "Approve expense claims for reimbursement"
+msgstr ""
+
+msgid "See bank, credit card and cash accounts and their transactions"
+msgstr ""
+
+msgid "Import bank statements, reconcile and record bank transactions"
+msgstr ""
+
+msgid "See projects and their profitability"
+msgstr ""
+
+msgid "Create projects and track time and costs against them"
+msgstr ""
+
+msgid "See amounts in foreign currencies and exchange gains and losses"
+msgstr ""
+
+msgid "Invoice, bill and bank in foreign currencies"
+msgstr ""
+
+msgid "See the opening balances brought over from another system"
+msgstr ""
+
+msgid "Enter opening balances when moving from another system"
+msgstr ""
+
+msgid "See period-close checklists and year-end status"
+msgstr ""
+
+msgid "Close periods and the fiscal year"
+msgstr ""
+
+msgid "Find and recode transactions in bulk, with undo"
+msgstr ""
+
+msgid "Run financial reports: balance sheet, income statement, trial balance"
+msgstr ""
+
+msgid "See data-quality findings and fix suggestions"
+msgstr ""
+
+msgid "See GST/HST, QST and PST tax codes and rates"
+msgstr ""
+
+msgid "Add and edit tax codes and rates"
+msgstr ""
+
+msgid "See GST/HST and QST returns and filing periods"
+msgstr ""
+
+msgid "Prepare GST/HST and QST returns"
+msgstr ""
+
+msgid "Review and mark returns as filed"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reports"
+msgid "Run tax reports"
+msgstr "Rapports"
+
+#, fuzzy
+#| msgid "See the organisation's users"
+msgid "See the practice's organisation directory"
+msgstr "Voir les utilisateurs de l’organisation"
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "See groups and tags of organisations"
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "Create groups and tags and organise client organisations"
+msgstr "Créer des organisations clientes"
+
+msgid "Change many organisations at once, with a preview"
+msgstr ""
+
+#, fuzzy
+#| msgid "%(name)s asks for access in %(organisation)s"
+msgid "See deadlines and workload across client organisations"
+msgstr "%(name)s demande un accès dans %(organisation)s"
+
+msgid "See practice staff and who is assigned where"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invite users to the organisation"
+msgid "Invite staff and assign them to organisations"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+msgid "Clients see the documents their accountant shares"
+msgstr ""
+
+msgid "Clients upload documents for their accountant"
+msgstr ""
+
+msgid "Clients see their accountant's requests"
+msgstr ""
+
+msgid "Clients answer their accountant's requests"
+msgstr ""
+
 msgid "Documents"
 msgstr "Documents"
 
@@ -359,9 +707,6 @@ msgstr "Date"
 
 msgid "Due date"
 msgstr "Date d’échéance"
-
-msgid "Description"
-msgstr "Description"
 
 msgid "Quantity"
 msgstr "Quantité"
@@ -564,6 +909,15 @@ msgstr "Choisissez un format d’exportation : CSV, XLSX ou PDF."
 msgid "This export has more than %(limit)s events. Narrow the dates or filters, or choose CSV, which has no limit."
 msgstr "Cette exportation compte plus de %(limit)s événements. Resserrez les dates ou les filtres, ou choisissez CSV, qui n’a pas de limite."
 
+#, python-format
+msgid "This isn't in your organisation's package: it's part of %(product)s. See the packages that include it, or ask the organisation owner to change the package."
+msgstr "Cette fonction n'est pas incluse dans le forfait de votre organisation : elle fait partie de %(product)s. Consultez les forfaits qui l'incluent ou demandez au propriétaire de l'organisation de changer de forfait."
+
+#, fuzzy
+#| msgid "Choose an export format: CSV, XLSX or PDF."
+msgid "Choose an export format: CSV or XLSX."
+msgstr "Choisissez un format d’exportation : CSV, XLSX ou PDF."
+
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
 
@@ -587,9 +941,6 @@ msgstr "type de tâche"
 
 msgid "queue"
 msgstr "file d’attente"
-
-msgid "status"
-msgstr "statut"
 
 msgid "steps done"
 msgstr "étapes faites"
@@ -703,20 +1054,8 @@ msgstr "Achats"
 msgid "Banking"
 msgstr "Banque"
 
-msgid "Accounting"
-msgstr "Comptabilité"
-
-msgid "Tax"
-msgstr "Taxes"
-
-msgid "Payroll"
-msgstr "Paie"
-
 msgid "HR"
 msgstr "RH"
-
-msgid "Inventory"
-msgstr "Stocks"
 
 msgid "Reports"
 msgstr "Rapports"
@@ -729,9 +1068,6 @@ msgstr "Paramètres"
 
 msgid "Users and roles"
 msgstr "Utilisateurs et rôles"
-
-msgid "Practice"
-msgstr "Cabinet"
 
 msgid "Platform"
 msgstr "Plateforme"
@@ -754,9 +1090,6 @@ msgstr "Organisation"
 msgid "scope"
 msgstr ""
 
-msgid "key"
-msgstr ""
-
 msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
 msgstr ""
 
@@ -764,12 +1097,6 @@ msgid "description"
 msgstr ""
 
 msgid "system role"
-msgstr ""
-
-msgid "created at"
-msgstr ""
-
-msgid "updated at"
 msgstr ""
 
 msgid "role"
@@ -1011,13 +1338,7 @@ msgstr ""
 msgid "Trial"
 msgstr ""
 
-msgid "Active"
-msgstr ""
-
 msgid "Grace period"
-msgstr ""
-
-msgid "Read-only"
 msgstr ""
 
 msgid "Cancelled"

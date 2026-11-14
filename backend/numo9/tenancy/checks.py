@@ -37,6 +37,9 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "rbac.Role",
         "rbac.RolePermission",
         "rbac.RoleAssignment",
+        # Product catalogue (U-01): products and feature keys are the same for every tenant.
+        "catalogue.Product",
+        "catalogue.FeatureKey",
     }
 )
 
