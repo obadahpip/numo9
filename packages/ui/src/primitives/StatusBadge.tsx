@@ -37,6 +37,9 @@ export const STATUS_TONES = {
   retrying: "warning",
   succeeded: "success",
   dead: "danger",
+  // Product catalogue (U-01-T11); `active` is the subscription one above
+  planned: "neutral",
+  retired: "neutral",
   // Generic
   archived: "neutral",
   failed: "danger",

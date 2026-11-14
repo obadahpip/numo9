@@ -43,6 +43,9 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "rbac.Role",
                 "rbac.RolePermission",
                 "rbac.RoleAssignment",
+                # Product catalogue (U-01-T02/T03): reviewed — the same for every tenant.
+                "catalogue.Product",
+                "catalogue.FeatureKey",
             }
         )
         == PLATFORM_MODELS

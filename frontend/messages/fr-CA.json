@@ -261,6 +261,59 @@
       "verifiedTitle": "Your email is verified"
     }
   },
+  "catalogue": {
+    "gated": {
+      "body": "It's part of the {product} product. Everything you already have stays here and keeps working.",
+      "bodyPackages": "It's part of the {product} product, included in {packages}. Everything you already have stays here and keeps working.",
+      "bodyUnknown": "Everything you already have stays here and keeps working.",
+      "seePackages": "See what's in each package",
+      "title": "{product} isn't in this organisation's package",
+      "titleUnknown": "This isn't in this organisation's package"
+    },
+    "matrix": {
+      "feature": "Feature",
+      "free": "Free for every practice and organisation",
+      "included": "Included in {package}",
+      "intro": "What each package includes, product by product. Everything in a product is included together — approvals, reminders and history are never sold separately.",
+      "loadFailed": "The feature matrix couldn't be loaded",
+      "loadFailedBody": "Verify your connection, then try again.",
+      "loading": "Loading the feature matrix…",
+      "noPackages": "Packages and prices aren't published yet. Every feature below belongs to the product named in its section.",
+      "notFound": "This organisation isn't available",
+      "notIncluded": "Not in {package}",
+      "readKept": "Kept after a downgrade",
+      "results": "{count, plural, =0 {No features match “{query}”.} one {# feature matches “{query}”.} other {# features match “{query}”.}}",
+      "retry": "Try again",
+      "search": "Search features",
+      "searchHint": "For example: reminder, approve, payroll",
+      "title": "Package and features",
+      "youAreHere": "You are here"
+    },
+    "products": {
+      "close": "Close",
+      "code": "Code",
+      "companions": "Companion apps",
+      "companionsIntro": "Apps Numo9 will build. They can't be put in a package until they're active.",
+      "description": "What it allows",
+      "drawerDescription": "{count, plural, =0 {No feature keys yet.} one {# feature key} other {# feature keys}}",
+      "exportCsv": "Export feature matrix (CSV)",
+      "exportXlsx": "Export feature matrix (XLSX)",
+      "features": "Feature keys",
+      "free": "Free",
+      "intro": "Everything Numo9 sells or gives, and the feature keys each product includes. Packages are made of whole products.",
+      "key": "Key",
+      "kind": "Kind",
+      "loadFailed": "The products couldn't be loaded. Refresh the page to try again.",
+      "loading": "Loading products…",
+      "noKeys": "Feature keys are added when this product is built.",
+      "product": "Product",
+      "readOnly": "Read",
+      "refusedTitle": "You can't open the product catalogue",
+      "showKeys": "Show the feature keys of {product}",
+      "status": "Status",
+      "title": "Products"
+    }
+  },
   "common": {
     "brand": "Numo9",
     "tagline": "Numbers build a brighter tomorrow"
@@ -312,6 +365,9 @@
       "tries": "{attempts} of {max}",
       "waitingMessages": "Messages waiting",
       "worker": "Worker"
+    },
+    "products": {
+      "crumb": "Platform console · Products"
     }
   },
   "form": {
@@ -402,6 +458,7 @@
     "settingsGeneral": "Settings: General",
     "settingsLockDates": "Settings: Lock dates",
     "settingsNumbering": "Settings: Numbering",
+    "settingsPackageFeatures": "Settings: Package and features",
     "settingsRegistrations": "Settings: Tax registrations",
     "settingsSubscription": "Settings: Subscription",
     "settingsUsersRoles": "Settings: Users and roles"

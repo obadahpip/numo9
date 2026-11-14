@@ -33,6 +33,9 @@ known-first-party = ["numo9"]
 
 [tool.mypy]
 python_version = "3.12"
+# The backend runs only in Linux containers: type-check for Linux on every machine (os.killpg,
+# signal.SIGKILL do not exist on Windows, where pre-commit also runs mypy).
+platform = "linux"
 strict = true
 plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
 exclude = ["^\\.venv/", "^staticfiles/"]

@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     # Background jobs: Celery queues and the worker check task (A-08).
     "numo9.jobs",
     "numo9.audit",
+    # Products and feature keys sold in packages (U-01).
+    "numo9.catalogue",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -100,7 +102,11 @@ AUTH_USER_MODEL = "accounts.User"
 # (A-03-T05; system check rbac.E001-E004). Organisation-scoped endpoints add
 # IsOrgMemberOrAssigned first (404 on foreign data).
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ["numo9.rbac.drf.RequiresPermission"],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "numo9.rbac.drf.RequiresPermission",
+        # Feature key of the organisation's package: 402 naming the product (U-01-T05, U-03).
+        "numo9.catalogue.drf.RequiresFeature",
+    ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     # Error bodies carry a stable `code` next to the localised message (A-10-T14).
     "EXCEPTION_HANDLER": "numo9.i18n.exceptions.exception_handler",
@@ -124,8 +130,16 @@ SPECTACULAR_SETTINGS = {
         "InvitationKindEnum": "numo9.tenancy.models.InvitationKind",
         "JobStatusEnum": "numo9.jobs.models.JobStatus",  # A-08-T06
         "JobPurgeStatusEnum": [("dead", "dead"), ("failed", "failed")],  # A-08-T08
+        "ProductKindEnum": "numo9.catalogue.models.ProductKind",  # U-01-T09
+        "ProductStatusEnum": "numo9.catalogue.models.ProductStatus",  # U-01-T09
     },
 }
+
+# Entitlement resolver behind RequiresFeature (U-01-T05): a stub allowing every feature key
+# until the U-03 engine replaces it.
+NUMO9_ENTITLEMENT_RESOLVER = "numo9.catalogue.entitlements.AllowAllResolver"
+# Packages in the feature matrix (U-01-T09): none until U-02 provides its source.
+NUMO9_PACKAGE_SOURCE = "numo9.catalogue.packages.NoPackages"
 
 # Third-party DRF views without a permission declaration (rbac.E004): dotted path -> why safe.
 RBAC_EXEMPT_VIEWS = {
@@ -147,6 +161,7 @@ TENANT_SWEEP_EXEMPT = [
     # invitations have none); every object is checked by numo9.tenancy.invitations (404/403).
     r"^api/v1/invitations",
     r"^api/v1/permissions/catalogue$",  # the permission catalogue: same for everyone (A-03-T09)
+    r"^api/v1/catalogue/",  # products and feature keys: same for everyone (U-01-T09)
     # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
     r"^api/v1/platform/",
 ]

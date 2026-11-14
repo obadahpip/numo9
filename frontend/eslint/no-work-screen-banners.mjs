@@ -17,6 +17,8 @@
  * 3. a `className` with a `banner`, `promo`, `upsell` or `marquee` class;
  * 4. a `data-banner` or `data-promo` attribute.
  */
+import { routeFeature } from "./route-feature.mjs";
+
 const COMPONENT =
   /(?:Banner$)|^(?:Promo|Promotion|Upsell|Marketing|Ad|Advert|Announcement)(?:[A-Z]|$)/;
 const CLASS_TOKEN = /(?:^|[\s:])(?:[\w-]*-)?(?:banner|promo|upsell|marquee)(?:-[\w-]*)?(?=\s|$)/i;
@@ -139,7 +141,11 @@ export const BANNER_ALLOWED_FILES = [
 
 const plugin = {
   meta: { name: "eslint-plugin-numo9" },
-  rules: { "no-work-screen-banners": noWorkScreenBanners },
+  rules: {
+    "no-work-screen-banners": noWorkScreenBanners,
+    // Routes declare their feature key (U-01-T08).
+    "route-feature": routeFeature,
+  },
 };
 
 export default plugin;

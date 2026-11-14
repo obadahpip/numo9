@@ -1,5 +1,6 @@
 import { Canvas, Meta } from "@storybook/blocks";
 
+import * as Gated from "../entitlements/Gated.stories";
 import * as States from "../states/States.stories";
 import { Do, DoDont, Dont } from "./DoDont";
 
@@ -63,5 +64,28 @@ period, or not found (404). It names the rule, who can change it and offers a on
   </Do>
   <Dont>
     <p>Redirecting to Home or a sales page without explanation (Xero's silent redirects).</p>
+  </Dont>
+</DoDont>
+
+## Gated (feature keys)
+
+<Canvas of={Gated.GatedFeature} />
+
+U-01-T06. `<Gated feature="payroll.pay_runs.write" locked={…}>` renders its content when the
+organisation's package includes the feature key and the gated ExplainPanel **in place** when it
+doesn't; `useFeature(key)` gives the same decision to a single control. Decisions come from the
+nearest `FeatureProvider` (the U-03 entitlement store); without one every feature is allowed.
+
+<Canvas of={Gated.Allowed} />
+
+<DoDont>
+  <Do>
+    <p>
+      Wrap the gated part only (the pay-run editor, the "Approve" button), name the product and the
+      packages that include it, and keep everything else on the screen working.
+    </p>
+  </Do>
+  <Dont>
+    <p>Hide a gated menu item or button, or render the children while the decision is loading.</p>
   </Dont>
 </DoDont>

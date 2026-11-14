@@ -5,6 +5,7 @@
  *
  * URL scheme (Phase 0 information architecture): `/o/:org/<module>`, e.g. `/o/acme/home`.
  */
+import { CORE, type FeatureDeclaration } from "@/catalogue/features";
 import { defineMessages, type MessageDescriptor } from "@/i18n";
 
 /** Organisation slug: lowercase letters, digits and inner hyphens, 1–63 characters. */
@@ -76,6 +77,11 @@ const labels = defineMessages({
     defaultMessage: "Settings: Audit log",
     description: "Settings section",
   },
+  settingsPackageFeatures: {
+    id: "routes.settingsPackageFeatures",
+    defaultMessage: "Settings: Package and features",
+    description: "Settings section: what each package includes (feature matrix)",
+  },
 });
 
 export interface OrgModule {
@@ -87,11 +93,18 @@ export interface OrgModule {
    * forms, common words and the Xero URLs Profitex staff have bookmarked (teardown §0–§6).
    */
   aliases: readonly string[];
+  /**
+   * Feature key the module needs (`accounting.journals.read`), or `CORE` when every organisation
+   * has it — the entitlement engine (U-03) gates the route from this; eslint
+   * `numo9/route-feature` requires it on every entry (U-01-T08).
+   */
+  feature: FeatureDeclaration;
 }
 
 export const ORG_MODULES: readonly OrgModule[] = [
   {
     path: "home",
+    feature: CORE,
     label: labels.home,
     aliases: [
       "homepage",
@@ -108,6 +121,7 @@ export const ORG_MODULES: readonly OrgModule[] = [
   },
   {
     path: "contacts",
+    feature: "accounting.contacts.read",
     label: labels.contacts,
     aliases: [
       "contact",
@@ -120,6 +134,7 @@ export const ORG_MODULES: readonly OrgModule[] = [
   },
   {
     path: "accounting/chart-of-accounts",
+    feature: "accounting.chart_of_accounts.read",
     label: labels.chartOfAccounts,
     aliases: [
       "accounting",
@@ -132,16 +147,19 @@ export const ORG_MODULES: readonly OrgModule[] = [
   },
   {
     path: "accounting/journals",
+    feature: "accounting.journals.read",
     label: labels.journals,
     aliases: ["journals", "journal", "manual-journals", "journal/search.aspx"],
   },
   {
     path: "documents",
+    feature: "accounting.documents.read",
     label: labels.documents,
     aliases: ["document", "files", "inbox"],
   },
   {
     path: "settings/general",
+    feature: CORE,
     label: labels.settingsGeneral,
     aliases: [
       "settings",
@@ -156,35 +174,52 @@ export const ORG_MODULES: readonly OrgModule[] = [
   },
   {
     path: "settings/registrations",
+    feature: CORE,
     label: labels.settingsRegistrations,
     aliases: ["settings/tax", "tax-settings", "registrations"],
   },
   {
     path: "settings/lock-dates",
+    feature: CORE,
     label: labels.settingsLockDates,
     aliases: ["lock-dates", "settings/lockdates"],
   },
   {
     path: "settings/users-roles",
+    feature: CORE,
     label: labels.settingsUsersRoles,
     aliases: ["users", "team", "settings/users", "settings/roles"],
   },
   {
     path: "settings/email-domain",
+    feature: CORE,
     label: labels.settingsEmailDomain,
     aliases: ["settings/email"],
   },
   {
     path: "settings/subscription",
+    feature: CORE,
     label: labels.settingsSubscription,
     aliases: ["subscription", "billing", "settings/billing"],
   },
-  { path: "settings/numbering", label: labels.settingsNumbering, aliases: [] },
-  { path: "settings/custom-fields", label: labels.settingsCustomFields, aliases: [] },
+  { path: "settings/numbering", label: labels.settingsNumbering, aliases: [], feature: CORE },
+  {
+    path: "settings/custom-fields",
+    label: labels.settingsCustomFields,
+    aliases: [],
+    feature: CORE,
+  },
   {
     path: "settings/audit-log",
+    feature: CORE,
     label: labels.settingsAuditLog,
     aliases: ["audit-log", "audit", "history"],
+  },
+  {
+    path: "settings/package-features",
+    feature: CORE,
+    label: labels.settingsPackageFeatures,
+    aliases: ["package", "packages", "plans", "features", "feature-matrix", "settings/package"],
   },
 ];
 

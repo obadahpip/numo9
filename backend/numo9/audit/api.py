@@ -34,6 +34,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
+from numo9.catalogue.drf import CORE
 from numo9.i18n import errors
 from numo9.i18n.errors import api_error
 from numo9.rbac.drf import requires_permission
@@ -110,6 +111,7 @@ def list_body(
 
 
 class AuditEventListView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     queryset = AuditEvent.platform_events.none()  # tenant sweep: rows of AuditEvent
 
     @requires_permission(AUDIT_VIEW.key)
@@ -126,6 +128,7 @@ class AuditEventListView(APIView):
 
 
 class AuditEventDetailView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     queryset = AuditEvent.platform_events.none()
 
     @requires_permission(AUDIT_VIEW.key)
@@ -142,6 +145,7 @@ class AuditEventDetailView(APIView):
 
 
 class AuditRecordHistoryView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     queryset = AuditEvent.platform_events.none()
 
     @requires_permission(AUDIT_VIEW.key)
@@ -178,6 +182,8 @@ class AuditRecordHistoryView(APIView):
 
 class AuditRecordAsOfView(APIView):
     """A record's state at a moment, rebuilt from its history (A-04-T11)."""
+
+    required_feature = CORE  # part of every organisation, never gated (U-01)
 
     queryset = AuditEvent.platform_events.none()
 
@@ -227,6 +233,8 @@ class AuditRecordAsOfView(APIView):
 
 
 class AuditFiltersView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
+
     @requires_permission(AUDIT_VIEW.key)
     @extend_schema(
         operation_id="audit_filters",
@@ -272,6 +280,8 @@ class PlatformAuditListView(APIView):
 
 class AuditExportView(APIView):
     """CSV / XLSX / PDF of the rows the viewer shows for the same filters (A-04-T08)."""
+
+    required_feature = CORE  # part of every organisation, never gated (U-01)
 
     @requires_permission(AUDIT_EXPORT.key)
     @extend_schema(

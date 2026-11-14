@@ -46,6 +46,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
+from numo9.catalogue.drf import CORE
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org, org_context
 from numo9.tenancy.models import Organisation
@@ -102,6 +103,7 @@ def _my_job(request: Request, public_id: Any) -> JobRun:
 
 
 class JobListView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = JobSerializer  # tenant sweep: rows of JobRun
 
     @requires_permission(EVERYONE_HERE)
@@ -123,6 +125,7 @@ class JobListView(APIView):
 
 
 class JobDetailView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = JobSerializer
 
     @requires_permission(EVERYONE_HERE)
@@ -136,6 +139,7 @@ class JobDetailView(APIView):
 
 
 class JobRetryView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     serializer_class = JobSerializer
 
     @requires_permission(EVERYONE_HERE)
@@ -202,6 +206,7 @@ def job_events(organisation: Organisation, user: User, last_event_id: str | None
 
 
 class JobEventsView(APIView):
+    required_feature = CORE  # part of every organisation, never gated (U-01)
     renderer_classes = [EventStreamRenderer, JSONRenderer]
 
     @requires_permission(EVERYONE_HERE)

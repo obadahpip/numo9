@@ -105,6 +105,19 @@ jobs:
             exit 1
           fi
 
+      - name: Migrate (the feature-key check reads the catalogue rows, U-01-T07)
+        run: python manage.py migrate --noinput
+
+      - name: Feature keys — every business endpoint declares a known key (U-01-T07)
+        run: python manage.py check_feature_keys
+
+      - name: Feature keys — canary, an undeclared business endpoint must fail (U-01-T07)
+        run: |
+          if python manage.py check_feature_keys --quiet --urlconf tests.testapp.feature_urls_ci_canary; then
+            echo "::error::check_feature_keys passed a URLconf with an undeclared endpoint — the gate is broken"
+            exit 1
+          fi
+
       - name: Security settings — check --deploy, 0 warnings (staging, prod; S-03-T01, T04 keys)
         run: |
           for module in staging prod; do
