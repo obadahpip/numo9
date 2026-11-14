@@ -4,7 +4,7 @@
 |---|---|
 | **Deliverable** | A-05 · Org settings, fiscal year, per-module lock dates, Phase 0 (component A — Platform Core) |
 | **Branch** | `feature/A-05-org-settings-locks` |
-| **Code** | `backend/numo9/orgsettings/` (models, validators, service) |
+| **Code** | `backend/numo9/orgsettings/` (models, validators, service, numbering) |
 | **Libraries** | `phonenumbers` (telephone numbers, A-05-T02) |
 | **Depends on** | A-01 (tenancy: `OrgOwnedModel`), A-03 (roles: advisers), A-04 (audit: `AuditedModel`) |
 | **Used by** | C-02 posting engine (lock dates), documents (numbering, default terms), G-01 tax codes (home province), U-05 trial (time zone), K-09 exceptions (missing BN, missing lock date) |
@@ -129,3 +129,47 @@ both one row each. Rules (codes `orgsettings.lock.*`):
 - **History via audit**: every change is an `orgsettings.lockdate.created` / `.updated` event with
   old → new `date` and `reason` and its author or `System: <job>`; the record history drawer
   (A-04-T10) reads it (`object_type = orgsettings.LockDate`, `object_id` = the lock's public id).
+
+## Numbering (A-05-T08)
+
+`NumberingSequence(doc_type, prefix, next_number, padding)` — one per organisation and document
+type (`orgsettings_numbering_one_per_doc_type`). A number is `prefix` + `next_number` padded with
+zeros to `padding` digits; a number longer than the padding just grows.
+
+| `doc_type` | Default pattern | Used by |
+|---|---|---|
+| `invoice` | `INV-0001` | D-03a invoices (allocated at approval) |
+| `credit_note` | `CN-0001` | D-04 credit notes |
+| `quote` | `QU-0001` | D-02 quotes |
+| `purchase_order` | `PO-0001` | E-01 purchase orders |
+
+Plain numbers (`101`) are `prefix=""`, `padding=1`. Prefixes use letters, digits and `- / _ . #`
+(≤ 10 characters); padding 1–10; `next_number` ≥ 1 (also database checks). Manual journals keep
+their own gap-free sequence (C-02) and cheques one per bank account (E-06).
+
+**Allocation** — `numo9.orgsettings.numbering.allocate_number(doc_type)`:
+
+```mermaid
+sequenceDiagram
+    participant A as Approval (transaction A)
+    participant B as Approval (transaction B)
+    participant S as numbering sequence row
+    A->>S: SELECT … FOR UPDATE (locks the row)
+    B->>S: SELECT … FOR UPDATE (waits)
+    A->>S: next_number := next_number + 1 → INV-0042
+    A-->>S: COMMIT (lock released)
+    S-->>B: row with next_number 43
+    B->>S: next_number := 44 → INV-0043
+```
+
+- **Unique**: the row lock serialises allocations of one document type (tested with 8 threads ×
+  25 documents on PostgreSQL: 200 distinct, contiguous numbers).
+- **Gap-free**: the increment is part of the caller's transaction — a document that fails to save
+  rolls its number back and the next document gets it. Allocate as late as possible (at
+  approval) so the lock is held briefly.
+- The row is created on first use with the default pattern (`get_sequence()`); two first uses at
+  once are settled by the unique constraint (a savepoint keeps the caller's transaction usable).
+- **Audit**: a person changing the prefix, padding or next number is an
+  `orgsettings.numberingsequence.updated` event; allocations are not (the document's own creation
+  is). Lowering `next_number` is allowed (a typo can be fixed); documents keep their own unique
+  number constraint (D-03).

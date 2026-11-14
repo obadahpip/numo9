@@ -774,3 +774,119 @@ class LockDate(AuditedModel, OrgOwnedModel):
         if errors:
             raise ValidationError(errors)
         super().save(*args, **kwargs)
+
+
+# ---- numbering (A-05-T08) --------------------------------------------------------------------
+
+
+class DocType(models.TextChoices):
+    """Documents numbered by the organisation's sequences (D-02 quotes, D-03 invoices, D-04
+    credit notes, E-01 purchase orders). Journals have their own gap-free sequence (C-02) and
+    cheques one per bank account (E-06)."""
+
+    INVOICE = "invoice", _("Invoice")
+    CREDIT_NOTE = "credit_note", _("Credit note")
+    QUOTE = "quote", _("Quote")
+    PURCHASE_ORDER = "purchase_order", _("Purchase order")
+
+
+#: The pattern each sequence starts with: ``INV-0001``, ``CN-0001``, ``QU-0001``, ``PO-0001``.
+DEFAULT_PREFIXES: dict[str, str] = {
+    DocType.INVOICE: "INV-",
+    DocType.CREDIT_NOTE: "CN-",
+    DocType.QUOTE: "QU-",
+    DocType.PURCHASE_ORDER: "PO-",
+}
+DEFAULT_PADDING = 4
+MAX_PADDING = 10
+PREFIX_MAX = 10
+#: Letters, digits and the separators people use in document numbers (INV-, 2026/, #).
+PREFIX = re.compile(r"^[A-Za-z0-9#/_.\-]*$")
+
+
+class NumberingSequence(AuditedModel, OrgOwnedModel):
+    """The next number of one document type (A-05-T08): ``prefix`` + ``next_number`` padded with
+    zeros to ``padding`` digits — ``INV-0042``; a number longer than the padding just grows
+    (``INV-10000``). ``prefix=""`` and ``padding=1`` give plain numbers (``101``).
+
+    Numbers are handed out by ``numo9.orgsettings.numbering.allocate_number()`` under a row lock
+    (``SELECT … FOR UPDATE``) inside the caller's transaction, so concurrent documents never get
+    the same number and a rolled-back document gives its number back (no gap). Allocation is not an
+    audit event (the document's own creation is); a person changing the prefix, padding or next
+    number is.
+    """
+
+    doc_type = models.CharField(_("document type"), max_length=32, choices=DocType.choices)
+    prefix = models.CharField(_("prefix"), max_length=PREFIX_MAX, blank=True)
+    next_number = models.PositiveBigIntegerField(
+        _("next number"), default=1, validators=[MinValueValidator(1)]
+    )
+    padding = models.PositiveSmallIntegerField(
+        _("digits"),
+        default=DEFAULT_PADDING,
+        validators=[MinValueValidator(1), MaxValueValidator(MAX_PADDING)],
+        help_text=_("Minimum digits of the number, padded with zeros (4: 0001)."),
+    )
+
+    class Meta:
+        ordering = ("doc_type",)
+        verbose_name = _("numbering sequence")
+        verbose_name_plural = _("numbering sequences")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "doc_type"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="orgsettings_numbering_one_per_doc_type",
+            ),
+            models.CheckConstraint(
+                condition=_in("doc_type", DocType), name="orgsettings_numbering_doc_type_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(next_number__gte=1), name="orgsettings_numbering_next_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(padding__gte=1, padding__lte=MAX_PADDING),
+                name="orgsettings_numbering_padding_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_doc_type_display()} {self.preview}"
+
+    def audit_label(self) -> str:
+        return str(self.get_doc_type_display())
+
+    def format(self, number: int) -> str:
+        return f"{self.prefix}{number:0{self.padding}d}"
+
+    @property
+    def preview(self) -> str:
+        """The number the next document will get."""
+        return self.format(self.next_number)
+
+    def clean(self) -> None:
+        self.prefix = (self.prefix or "").strip()
+        if not PREFIX.match(self.prefix):
+            raise ValidationError(
+                {
+                    "prefix": ValidationError(
+                        _("A prefix uses letters, digits and - / _ . # only (e.g. INV-)."),
+                        code="orgsettings.numbering.prefix_invalid",
+                    )
+                }
+            )
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.prefix = (self.prefix or "").strip()
+        errors: dict[str, Any] = {}
+        try:
+            self.clean_fields(exclude=["organisation", "created_by", "public_id"])
+        except ValidationError as error:
+            errors = error.update_error_dict(errors)
+        try:
+            self.clean()
+        except ValidationError as error:
+            errors = error.update_error_dict(errors)
+        if errors:
+            raise ValidationError(errors)
+        super().save(*args, **kwargs)

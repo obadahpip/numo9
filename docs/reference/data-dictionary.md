@@ -122,3 +122,19 @@ A lock date of one module at one level (A-05-T04). Business record: `OrgOwnedMod
 
 Unique: `(organisation, module, level)` among rows not deleted (`orgsettings_lock_one_per_module_level`).
 Audit actions: `orgsettings.lockdate.created`, `.updated`, `.deleted`, `.restored`.
+
+### `orgsettings_numberingsequence` — Numbering sequence {#orgsettings-numberingsequence}
+
+The next number of one document type (A-05-T08). Business record: `OrgOwnedModel` and
+`AuditedModel` (people's changes; allocations update `next_number` without an event).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `doc_type` | varchar(32) | no | `invoice`, `credit_note`, `quote`, `purchase_order` (`orgsettings_numbering_doc_type_valid`) |
+| `prefix` | varchar(10) | no | Letters, digits, `- / _ . #`; defaults `INV-`, `CN-`, `QU-`, `PO-` |
+| `next_number` | bigint | no | ≥ 1 (`orgsettings_numbering_next_positive`); moved on by `allocate_number()` under `SELECT … FOR UPDATE` |
+| `padding` | smallint | no | Minimum digits, 1–10, default 4 (`orgsettings_numbering_padding_valid`) |
+
+Unique: `(organisation, doc_type)` among rows not deleted (`orgsettings_numbering_one_per_doc_type`).
+Audit actions: `orgsettings.numberingsequence.created`, `.updated`.

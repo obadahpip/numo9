@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 07:54-0500\n"
+"POT-Creation-Date: 2026-11-14 07:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1681,6 +1681,44 @@ msgstr ""
 msgid "The lock for everyone (%(everyone)s) can't be later than the lock for everyone except advisers (%(advisers)s)."
 msgstr ""
 
+msgid "Invoice"
+msgstr ""
+
+msgid "Credit note"
+msgstr ""
+
+msgid "Quote"
+msgstr ""
+
+msgid "Purchase order"
+msgstr "Bon de commande"
+
+msgid "document type"
+msgstr ""
+
+msgid "prefix"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "next number"
+msgstr "Numéro"
+
+msgid "digits"
+msgstr ""
+
+msgid "Minimum digits of the number, padded with zeros (4: 0001)."
+msgstr ""
+
+msgid "numbering sequence"
+msgstr ""
+
+msgid "numbering sequences"
+msgstr ""
+
+msgid "A prefix uses letters, digits and - / _ . # only (e.g. INV-)."
+msgstr ""
+
 msgid "Alberta"
 msgstr ""
 
@@ -1917,14 +1955,8 @@ msgstr "Écriture de journal manuelle"
 msgid "Bill"
 msgstr "Facture fournisseur"
 
-msgid "Purchase order"
-msgstr "Bon de commande"
-
 msgid "Pay run"
 msgstr "Paie"
-
-msgid "document type"
-msgstr ""
 
 msgid "maximum amount (CAD)"
 msgstr ""
