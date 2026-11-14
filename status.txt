@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 137   Remaining: 2650
+TOTAL ATOMIC TASKS: 2787   Completed: 138   Remaining: 2649
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -193,7 +193,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [A-05]
 ✅ A-05-T01 — OrganisationSettings model (legal_name, display_name, industry, structure, addresses, phone, email, website, FYE month/day, base_currency CAD locked, time_zone, time_format, default terms)
-❌ A-05-T02 — Validators: legal name not numeric-only; Postal code A1A 1A1 + province first-letter consistency [EXTRA]; phone (phonenumbers CA)
+✅ A-05-T02 — Validators: legal name not numeric-only; Postal code A1A 1A1 + province first-letter consistency [EXTRA]; phone (phonenumbers CA)
 ❌ A-05-T03 — TaxRegistration model (type BN/RT/RP/RC/QST/PST-BC/PST-SK/RST-MB, number, effective_from/to, status, CRA approval ref) + BN Luhn check [EXTRA]
 ❌ A-05-T04 — LockDate model (module GL/AR/AP/BANK/PAYROLL/TAX, level advisers_only/everyone, date, reason) + history via audit
 ❌ A-05-T08 — Numbering sequences model per doc type (prefix, next number, padding) with row-lock allocation
