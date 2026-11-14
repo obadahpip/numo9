@@ -75,6 +75,7 @@ nav:
       - "Audit log and history": architecture/audit.md
       - "Product catalogue and feature keys": architecture/feature-keys.md
       - "Chart of accounts": architecture/chart-of-accounts.md
+      - "Organisation settings and lock dates": architecture/organisation-settings.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

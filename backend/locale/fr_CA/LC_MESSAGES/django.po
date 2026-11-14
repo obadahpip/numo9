@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 07:03-0500\n"
+"POT-Creation-Date: 2026-11-14 07:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1401,6 +1401,147 @@ msgstr ""
 msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
 msgstr ""
 
+msgid "Sole proprietorship"
+msgstr ""
+
+msgid "Partnership"
+msgstr ""
+
+#, fuzzy
+#| msgid "Bulk operation"
+msgid "Corporation"
+msgstr "Opération groupée"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "Non-profit organisation"
+msgstr "organisation"
+
+msgid "Registered charity"
+msgstr ""
+
+msgid "Co-operative"
+msgstr ""
+
+msgid "Trust"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "days after the document date"
+msgstr ""
+
+msgid "days after the end of the document month"
+msgstr ""
+
+msgid "of the following month"
+msgstr ""
+
+msgid "of the current month"
+msgstr ""
+
+msgid "legal name"
+msgstr ""
+
+msgid "As registered; printed on statements, invoices and tax forms."
+msgstr ""
+
+msgid "display name"
+msgstr ""
+
+msgid "The name people see in Numo9."
+msgstr ""
+
+msgid "industry"
+msgstr ""
+
+msgid "business structure"
+msgstr ""
+
+#, fuzzy
+#| msgid "action"
+msgid "attention"
+msgstr "action"
+
+msgid "street address or PO box"
+msgstr ""
+
+msgid "address line 2"
+msgstr ""
+
+msgid "city"
+msgstr ""
+
+msgid "province or territory"
+msgstr ""
+
+msgid "Two-letter code (ON, QC…) for a Canadian address."
+msgstr ""
+
+#, fuzzy
+#| msgid "error code"
+msgid "postal code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "country"
+msgstr "Comptabilité"
+
+msgid "ISO 3166-1 two-letter code; CA for Canada."
+msgstr ""
+
+msgid "physical address same as mailing address"
+msgstr ""
+
+msgid "telephone"
+msgstr ""
+
+msgid "website"
+msgstr ""
+
+msgid "fiscal year end month"
+msgstr ""
+
+msgid "fiscal year end day"
+msgstr ""
+
+msgid "base currency"
+msgstr ""
+
+msgid "time zone"
+msgstr ""
+
+msgid "Times on the organisation's documents and emails; each person sees their own preference in the app."
+msgstr ""
+
+msgid "sales: default due date"
+msgstr ""
+
+msgid "sales: days or day"
+msgstr ""
+
+msgid "purchases: default due date"
+msgstr ""
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchases: days or day"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "Change organisation settings"
+msgid "organisation settings"
+msgstr "Modifier les paramètres de l’organisation"
+
+#, python-format
+msgid "That month has no day %(day)d."
+msgstr ""
+
+msgid "Choose a day of the month from 1 to 31."
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr "%(name)s demande un accès dans %(organisation)s"
@@ -1753,9 +1894,6 @@ msgid "practice member"
 msgstr ""
 
 msgid "practice members"
-msgstr ""
-
-msgid "time zone"
 msgstr ""
 
 msgid "organisations"

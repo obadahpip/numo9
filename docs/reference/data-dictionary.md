@@ -55,3 +55,37 @@ every organisation; allow-listed in `tenancy.checks.PLATFORM_MODELS`), seeded by
 | `list_version` | varchar(40) | no | CRA list the row comes from: `RC4088(E) Rev. 23` |
 | `published_on` | date | no | Publication date of that list: 2023-08-23 |
 | `retired_in` | varchar(40) | no | Empty, or the list version that dropped the code (kept for history) |
+
+## Organisation settings (`orgsettings`)
+
+Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
+
+### `orgsettings_organisationsettings` — Organisation settings {#orgsettings-organisationsettings}
+
+The one settings row of an organisation (A-05-T01). Business record: `OrgOwnedModel` and
+`AuditedModel`. Read with `numo9.orgsettings.service.get_settings()` (creates it on first use).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; `organisation_id` is **unique** (`orgsettings_one_per_org`) |
+| `legal_name` | varchar(200) | no | As registered; empty until known; printed on statements and tax forms |
+| `display_name` | varchar(200) | no | Required; mirrored to `tenancy_organisation.name` |
+| `industry` | varchar(100) | no | Free text (empty when none) |
+| `structure` | varchar(32) | no | `sole_proprietorship`, `partnership`, `corporation` (default), `non_profit`, `charity`, `cooperative`, `trust`, `other` (`orgsettings_structure_valid`) |
+| `mailing_attention`, `mailing_line1`, `mailing_line2`, `mailing_city` | varchar | no | Mailing address (empty when none) |
+| `mailing_province` | varchar(50) | no | Two-letter province or territory code for a Canadian address |
+| `mailing_postal_code` | varchar(16) | no | Postal code |
+| `mailing_country` | varchar(2) | no | ISO 3166-1 code; `CA` by default |
+| `physical_same_as_mailing` | boolean | no | True by default: the physical address follows the mailing one |
+| `physical_*` | varchar | no | Physical address, same parts as the mailing address |
+| `phone` | varchar(32) | no | Telephone |
+| `email` | varchar(254) | no | Email address |
+| `website` | varchar(200) | no | Website URL |
+| `fye_month`, `fye_day` | smallint | no | Fiscal year end; 12/31 by default; month 1–12, day 1–31 (`orgsettings_fye_month_valid`, `orgsettings_fye_day_valid`) and a day the month has (model) |
+| `base_currency` | varchar(3) | no | Always `CAD` (`orgsettings_base_currency_cad`); not editable |
+| `time_zone` | varchar(64) | no | IANA time zone; mirrored to `tenancy_organisation.time_zone` |
+| `time_format` | varchar(3) | no | `12h` (default) or `24h` for the organisation's documents and emails |
+| `sales_terms_type`, `purchase_terms_type` | varchar(32) | no | `days_after_document` (default), `days_after_month_end`, `day_of_following_month`, `day_of_current_month` |
+| `sales_terms_days`, `purchase_terms_days` | smallint | no | Days (0–365, default 30), or the day of the month (1–31) for the `day_of_*` types |
+
+Audit actions: `orgsettings.organisationsettings.created`, `.updated`.

@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "numo9.catalogue",
     # General ledger: chart of accounts, GIFI list (C-01); posting engine (C-02).
     "numo9.ledger",
+    # Organisation settings, tax registrations, lock dates, numbering (A-05).
+    "numo9.orgsettings",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
