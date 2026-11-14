@@ -57,6 +57,7 @@ ACTION_LABELS: dict[str, Promise] = {
     "limit.deleted": _("Approval limit removed"),
     "access_request.created": _("Access requested"),
     "access_request.closed": _("Access request closed"),
+    "ledger.account.renumbered": _("Account renumbered"),
 }
 
 TYPE_LABELS: dict[str, Promise] = {

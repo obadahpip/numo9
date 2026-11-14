@@ -28,6 +28,8 @@ export interface ComboboxOption {
   /** Extra search text, e.g. an account code. */
   keywords?: string;
   disabled?: boolean;
+  /** Indent level under the group (e.g. a sub-account under its parent); 0 = none. */
+  indent?: number;
 }
 
 export interface ComboboxProps {
@@ -284,6 +286,11 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
                     data-highlighted={index === highlight || undefined}
                     onMouseEnter={() => setHighlight(index)}
                     onClick={() => choose(option)}
+                    style={
+                      option.indent
+                        ? { paddingInlineStart: `${0.75 + option.indent * 1.25}rem` }
+                        : undefined
+                    }
                     className={cn(
                       "flex min-h-touch-target cursor-pointer flex-col justify-center px-3 text-sm",
                       index === highlight && "bg-surface-muted",

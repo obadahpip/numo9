@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 126   Remaining: 2661
+TOTAL ATOMIC TASKS: 2787   Completed: 136   Remaining: 2651
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -180,16 +180,16 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-01-T15 — Docs: feature-key guide for developers (how to declare, how to test gating)
 
 [C-01]
-❌ C-01-T01 — Accountant review of template (Canadian small-business CoA, 4-digit, types, GIFI) — spreadsheet coa_template_ca_v1.xlsx
-❌ C-01-T02 — AccountType / sub-type enums + Account model (code, name_i18n, type, subtype, parent, system_role, is_bank, gifi_code, require_contact, require_tracking, require_attachment, default_tax_key, status)
-❌ C-01-T03 — Tree constraints (depth ≤ 4, same type family, post-to-leaf rule)
-❌ C-01-T04 — GIFI master table seeded from CRA GIFI list (version-dated)
-❌ C-01-T05 — Template loader service (per home province) creating accounts with GIFI and tax-default keys
-❌ C-01-T06 — System-role guard (cannot archive/delete; type immutable; one account per unique role)
-❌ C-01-T07 — Renumber service (code change, conflict check, audit, cache bust)
-❌ C-01-T10 — Account picker component (shared, filtered by allowed types/context, grouped, searchable by code/name)
-❌ C-01-T14 — Fixtures + gap tests gap-18/29/30/44/45/46 (Inventory typed Inventory; separate tax controls; GIFI 100 %)
-❌ C-01-T15 — Docs: CoA design + data dictionary entries
+✅ C-01-T01 — Accountant review of template (Canadian small-business CoA, 4-digit, types, GIFI) — spreadsheet coa_template_ca_v1.xlsx   [approved by the project lead on 2026-11-14; review file docs/accounting/coa_template_ca_v1.xlsx]
+✅ C-01-T02 — AccountType / sub-type enums + Account model (code, name_i18n, type, subtype, parent, system_role, is_bank, gifi_code, require_contact, require_tracking, require_attachment, default_tax_key, status)
+✅ C-01-T03 — Tree constraints (depth ≤ 4, same type family, post-to-leaf rule)
+✅ C-01-T04 — GIFI master table seeded from CRA GIFI list (version-dated)
+✅ C-01-T05 — Template loader service (per home province) creating accounts with GIFI and tax-default keys
+✅ C-01-T06 — System-role guard (cannot archive/delete; type immutable; one account per unique role)
+✅ C-01-T07 — Renumber service (code change, conflict check, audit, cache bust)
+✅ C-01-T10 — Account picker component (shared, filtered by allowed types/context, grouped, searchable by code/name)
+✅ C-01-T14 — Fixtures + gap tests gap-18/29/30/44/45/46 (Inventory typed Inventory; separate tax controls; GIFI 100 %)
+✅ C-01-T15 — Docs: CoA design + data dictionary entries
 
 [A-05]
 ❌ A-05-T01 — OrganisationSettings model (legal_name, display_name, industry, structure, addresses, phone, email, website, FYE month/day, base_currency CAD locked, time_zone, time_format, default terms)

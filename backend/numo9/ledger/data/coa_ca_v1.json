@@ -1,0 +1,916 @@
+{
+ "template": "ca_v1",
+ "title": "Canadian small business — chart of accounts",
+ "version": "1.0",
+ "gifi_list": "RC4088(E) Rev. 23",
+ "status": "draft — awaiting accountant sign-off (C-01-T01)",
+ "accounts": [
+  {
+   "code": "1000",
+   "name": "Petty cash",
+   "subtype": "bank",
+   "gifi": "1001",
+   "tax": "none",
+   "note": "Cash on hand; a bank-type account so it counts as cash and gets a negative-balance warning (K-09)."
+  },
+  {
+   "code": "1010",
+   "name": "Chequing account",
+   "subtype": "bank",
+   "gifi": "1002",
+   "tax": "none"
+  },
+  {
+   "code": "1020",
+   "name": "Savings account",
+   "subtype": "bank",
+   "gifi": "1002",
+   "tax": "none"
+  },
+  {
+   "code": "1100",
+   "name": "Accounts receivable",
+   "subtype": "current_asset",
+   "gifi": "1062",
+   "tax": "none",
+   "system_role": "ar",
+   "require_contact": true
+  },
+  {
+   "code": "1110",
+   "name": "Allowance for doubtful accounts",
+   "subtype": "current_asset",
+   "gifi": "1063",
+   "tax": "none",
+   "note": "Contra account: normal credit balance."
+  },
+  {
+   "code": "1150",
+   "name": "Employee advances",
+   "subtype": "current_asset",
+   "gifi": "1071",
+   "tax": "none",
+   "require_contact": true
+  },
+  {
+   "code": "1200",
+   "name": "Inventory",
+   "subtype": "inventory",
+   "gifi": "1121",
+   "tax": "purchase",
+   "system_role": "inventory",
+   "note": "Typed Inventory (not Current asset) so tracked items work at once (gap-18)."
+  },
+  {
+   "code": "1300",
+   "name": "Prepaid expenses",
+   "subtype": "prepayment",
+   "gifi": "1484",
+   "tax": "none"
+  },
+  {
+   "code": "1310",
+   "name": "Security deposits",
+   "subtype": "current_asset",
+   "gifi": "1486",
+   "tax": "none"
+  },
+  {
+   "code": "1400",
+   "name": "GST/HST receivable (ITCs)",
+   "subtype": "current_asset",
+   "gifi": "1066",
+   "tax": "none",
+   "system_role": "itc_receivable",
+   "note": "Input tax credits claimed on purchases; separate from GST/HST payable (gap-29)."
+  },
+  {
+   "code": "1410",
+   "name": "QST receivable (ITRs)",
+   "subtype": "current_asset",
+   "gifi": "1066",
+   "tax": "none",
+   "system_role": "qst_itr",
+   "provinces": [
+    "QC"
+   ],
+   "note": "Quebec input tax refunds."
+  },
+  {
+   "code": "1450",
+   "name": "Income taxes recoverable",
+   "subtype": "current_asset",
+   "gifi": "1483",
+   "tax": "none"
+  },
+  {
+   "code": "1500",
+   "name": "Due from shareholder",
+   "subtype": "current_asset",
+   "gifi": "1301",
+   "tax": "none",
+   "require_contact": true
+  },
+  {
+   "code": "1600",
+   "name": "Land",
+   "subtype": "fixed_asset",
+   "gifi": "1600",
+   "tax": "purchase"
+  },
+  {
+   "code": "1610",
+   "name": "Buildings",
+   "subtype": "fixed_asset",
+   "gifi": "1680",
+   "tax": "purchase"
+  },
+  {
+   "code": "1611",
+   "name": "Accumulated amortization – buildings",
+   "subtype": "accumulated_amortisation",
+   "gifi": "1681",
+   "tax": "none"
+  },
+  {
+   "code": "1620",
+   "name": "Furniture and fixtures",
+   "subtype": "fixed_asset",
+   "gifi": "1787",
+   "tax": "purchase"
+  },
+  {
+   "code": "1621",
+   "name": "Accumulated amortization – furniture and fixtures",
+   "subtype": "accumulated_amortisation",
+   "gifi": "1788",
+   "tax": "none"
+  },
+  {
+   "code": "1630",
+   "name": "Computer equipment",
+   "subtype": "fixed_asset",
+   "gifi": "1774",
+   "tax": "purchase"
+  },
+  {
+   "code": "1631",
+   "name": "Accumulated amortization – computer equipment",
+   "subtype": "accumulated_amortisation",
+   "gifi": "1775",
+   "tax": "none"
+  },
+  {
+   "code": "1640",
+   "name": "Vehicles",
+   "subtype": "fixed_asset",
+   "gifi": "1742",
+   "tax": "purchase"
+  },
+  {
+   "code": "1641",
+   "name": "Accumulated amortization – vehicles",
+   "subtype": "accumulated_amortisation",
+   "gifi": "1743",
+   "tax": "none"
+  },
+  {
+   "code": "1650",
+   "name": "Machinery and equipment",
+   "subtype": "fixed_asset",
+   "gifi": "1740",
+   "tax": "purchase"
+  },
+  {
+   "code": "1651",
+   "name": "Accumulated amortization – machinery and equipment",
+   "subtype": "accumulated_amortisation",
+   "gifi": "1741",
+   "tax": "none"
+  },
+  {
+   "code": "1660",
+   "name": "Leasehold improvements",
+   "subtype": "fixed_asset",
+   "gifi": "1918",
+   "tax": "purchase"
+  },
+  {
+   "code": "1661",
+   "name": "Accumulated amortization – leasehold improvements",
+   "subtype": "accumulated_amortisation",
+   "gifi": "1919",
+   "tax": "none"
+  },
+  {
+   "code": "1700",
+   "name": "Goodwill",
+   "subtype": "intangible",
+   "gifi": "2012",
+   "tax": "purchase",
+   "note": "Intangible (non-current), not Fixed asset (gap-29)."
+  },
+  {
+   "code": "1710",
+   "name": "Incorporation costs",
+   "subtype": "intangible",
+   "gifi": "2018",
+   "tax": "purchase"
+  },
+  {
+   "code": "1720",
+   "name": "Licences",
+   "subtype": "intangible",
+   "gifi": "2016",
+   "tax": "purchase"
+  },
+  {
+   "code": "1721",
+   "name": "Accumulated amortization – licences",
+   "subtype": "accumulated_amortisation",
+   "gifi": "2017",
+   "tax": "none"
+  },
+  {
+   "code": "1730",
+   "name": "Software",
+   "subtype": "intangible",
+   "gifi": "2010",
+   "tax": "purchase"
+  },
+  {
+   "code": "1731",
+   "name": "Accumulated amortization – software",
+   "subtype": "accumulated_amortisation",
+   "gifi": "2011",
+   "tax": "none"
+  },
+  {
+   "code": "1740",
+   "name": "Trademarks and patents",
+   "subtype": "intangible",
+   "gifi": "2020",
+   "tax": "purchase"
+  },
+  {
+   "code": "1741",
+   "name": "Accumulated amortization – trademarks and patents",
+   "subtype": "accumulated_amortisation",
+   "gifi": "2021",
+   "tax": "none"
+  },
+  {
+   "code": "1750",
+   "name": "Research and development",
+   "subtype": "intangible",
+   "gifi": "2026",
+   "tax": "purchase"
+  },
+  {
+   "code": "1751",
+   "name": "Accumulated amortization – research and development",
+   "subtype": "accumulated_amortisation",
+   "gifi": "2027",
+   "tax": "none"
+  },
+  {
+   "code": "1800",
+   "name": "Long-term investments",
+   "subtype": "non_current_asset",
+   "gifi": "2300",
+   "tax": "none"
+  },
+  {
+   "code": "1850",
+   "name": "Other long-term assets",
+   "subtype": "non_current_asset",
+   "gifi": "2420",
+   "tax": "none"
+  },
+  {
+   "code": "2000",
+   "name": "Accounts payable",
+   "subtype": "current_liability",
+   "gifi": "2621",
+   "tax": "none",
+   "system_role": "ap",
+   "require_contact": true
+  },
+  {
+   "code": "2010",
+   "name": "Accrued liabilities",
+   "subtype": "current_liability",
+   "gifi": "2620",
+   "tax": "none"
+  },
+  {
+   "code": "2050",
+   "name": "Unpaid expense claims",
+   "subtype": "current_liability",
+   "gifi": "2620",
+   "tax": "none",
+   "system_role": "unpaid_expense_claims"
+  },
+  {
+   "code": "2100",
+   "name": "GST/HST payable",
+   "subtype": "sales_tax_control",
+   "gifi": "2680",
+   "tax": "none",
+   "system_role": "gst_hst_payable",
+   "note": "GST/HST collected on sales; ITCs are in 1400 (gap-29)."
+  },
+  {
+   "code": "2110",
+   "name": "PST payable",
+   "subtype": "sales_tax_control",
+   "gifi": "2680",
+   "tax": "none",
+   "system_role": "pst_payable",
+   "provinces": [
+    "BC",
+    "MB",
+    "SK"
+   ],
+   "note": "BC PST, Manitoba RST, Saskatchewan PST."
+  },
+  {
+   "code": "2120",
+   "name": "QST payable",
+   "subtype": "sales_tax_control",
+   "gifi": "2680",
+   "tax": "none",
+   "system_role": "qst_payable",
+   "provinces": [
+    "QC"
+   ]
+  },
+  {
+   "code": "2150",
+   "name": "Income taxes payable",
+   "subtype": "current_liability",
+   "gifi": "2680",
+   "tax": "none"
+  },
+  {
+   "code": "2200",
+   "name": "Wages payable",
+   "subtype": "payroll_liability",
+   "gifi": "2624",
+   "tax": "none",
+   "system_role": "wages_payable"
+  },
+  {
+   "code": "2210",
+   "name": "CPP payable",
+   "subtype": "payroll_liability",
+   "gifi": "2627",
+   "tax": "none",
+   "system_role": "cpp_payable",
+   "note": "Employee and employer CPP/CPP2 contributions."
+  },
+  {
+   "code": "2215",
+   "name": "QPP payable",
+   "subtype": "payroll_liability",
+   "gifi": "2627",
+   "tax": "none",
+   "system_role": "qpp_payable",
+   "provinces": [
+    "QC"
+   ]
+  },
+  {
+   "code": "2220",
+   "name": "EI payable",
+   "subtype": "payroll_liability",
+   "gifi": "2627",
+   "tax": "none",
+   "system_role": "ei_payable"
+  },
+  {
+   "code": "2225",
+   "name": "QPIP payable",
+   "subtype": "payroll_liability",
+   "gifi": "2627",
+   "tax": "none",
+   "system_role": "qpip_payable",
+   "provinces": [
+    "QC"
+   ]
+  },
+  {
+   "code": "2230",
+   "name": "Income tax withheld",
+   "subtype": "payroll_liability",
+   "gifi": "2628",
+   "tax": "none",
+   "system_role": "income_tax_withheld",
+   "note": "Federal (and Quebec) income tax deducted at source."
+  },
+  {
+   "code": "2240",
+   "name": "Vacation pay payable",
+   "subtype": "payroll_liability",
+   "gifi": "2620",
+   "tax": "none",
+   "system_role": "vacation_payable"
+  },
+  {
+   "code": "2250",
+   "name": "Workers' compensation payable",
+   "subtype": "payroll_liability",
+   "gifi": "2620",
+   "tax": "none",
+   "system_role": "workers_comp_payable",
+   "note": "WSIB / WorkSafeBC / CNESST / WCB premiums."
+  },
+  {
+   "code": "2260",
+   "name": "Employer health tax payable",
+   "subtype": "payroll_liability",
+   "gifi": "2680",
+   "tax": "none",
+   "system_role": "eht_payable",
+   "provinces": [
+    "BC",
+    "MB",
+    "NL",
+    "ON",
+    "QC"
+   ],
+   "note": "ON EHT, BC EHT, MB HE levy, NL HAPSET, QC HSF."
+  },
+  {
+   "code": "2300",
+   "name": "Customer deposits",
+   "subtype": "current_liability",
+   "gifi": "2961",
+   "tax": "none",
+   "require_contact": true
+  },
+  {
+   "code": "2310",
+   "name": "Deferred revenue",
+   "subtype": "current_liability",
+   "gifi": "2770",
+   "tax": "none"
+  },
+  {
+   "code": "2400",
+   "name": "Credit card payable",
+   "subtype": "current_liability",
+   "gifi": "2707",
+   "tax": "none",
+   "is_bank": true,
+   "note": "Credit cards are bank accounts (F-01) typed as a current liability."
+  },
+  {
+   "code": "2450",
+   "name": "Line of credit",
+   "subtype": "current_liability",
+   "gifi": "2701",
+   "tax": "none",
+   "is_bank": true
+  },
+  {
+   "code": "2600",
+   "name": "Due to shareholder",
+   "subtype": "current_liability",
+   "gifi": "2781",
+   "tax": "none",
+   "require_contact": true
+  },
+  {
+   "code": "2700",
+   "name": "Bank loan",
+   "subtype": "non_current_liability",
+   "gifi": "3143",
+   "tax": "none"
+  },
+  {
+   "code": "2710",
+   "name": "Mortgage payable",
+   "subtype": "non_current_liability",
+   "gifi": "3141",
+   "tax": "none"
+  },
+  {
+   "code": "2720",
+   "name": "Other long-term liabilities",
+   "subtype": "non_current_liability",
+   "gifi": "3320",
+   "tax": "none"
+  },
+  {
+   "code": "2900",
+   "name": "Conversion balances suspense",
+   "subtype": "current_liability",
+   "gifi": "2960",
+   "tax": "none",
+   "system_role": "suspense_conversion",
+   "note": "Holds differences while opening balances are entered; must be 0 after conversion."
+  },
+  {
+   "code": "3000",
+   "name": "Common shares",
+   "subtype": "share_capital",
+   "gifi": "3500",
+   "tax": "none"
+  },
+  {
+   "code": "3010",
+   "name": "Preferred shares",
+   "subtype": "share_capital",
+   "gifi": "3520",
+   "tax": "none"
+  },
+  {
+   "code": "3100",
+   "name": "Contributed surplus",
+   "subtype": "other_equity",
+   "gifi": "3541",
+   "tax": "none"
+  },
+  {
+   "code": "3200",
+   "name": "Retained earnings",
+   "subtype": "retained_earnings",
+   "gifi": "3600",
+   "tax": "none",
+   "system_role": "retained_earnings"
+  },
+  {
+   "code": "3210",
+   "name": "Current year earnings",
+   "subtype": "current_year_earnings",
+   "gifi": "3600",
+   "tax": "none",
+   "system_role": "current_year_earnings",
+   "note": "Computed by reports; never posted to directly."
+  },
+  {
+   "code": "3300",
+   "name": "Dividends declared",
+   "subtype": "dividends",
+   "gifi": "3700",
+   "tax": "none"
+  },
+  {
+   "code": "4000",
+   "name": "Sales",
+   "subtype": "revenue",
+   "gifi": "8000",
+   "tax": "sales"
+  },
+  {
+   "code": "4010",
+   "name": "Service revenue",
+   "subtype": "revenue",
+   "gifi": "8000",
+   "tax": "sales"
+  },
+  {
+   "code": "4500",
+   "name": "Interest income",
+   "subtype": "other_income",
+   "gifi": "8094",
+   "tax": "exempt_sales"
+  },
+  {
+   "code": "4510",
+   "name": "Gain or loss on disposal of assets",
+   "subtype": "other_income",
+   "gifi": "8210",
+   "tax": "none"
+  },
+  {
+   "code": "4520",
+   "name": "Foreign exchange gain or loss",
+   "subtype": "other_income",
+   "gifi": "8231",
+   "tax": "none",
+   "system_role": "fx_gain_loss"
+  },
+  {
+   "code": "4530",
+   "name": "Other income",
+   "subtype": "other_income",
+   "gifi": "8230",
+   "tax": "sales"
+  },
+  {
+   "code": "4540",
+   "name": "Government grants and subsidies",
+   "subtype": "other_income",
+   "gifi": "8242",
+   "tax": "none"
+  },
+  {
+   "code": "5000",
+   "name": "Cost of goods sold",
+   "subtype": "cost_of_sales",
+   "gifi": "8320",
+   "tax": "purchase",
+   "note": "Purchases for resale when inventory is not tracked; relief of tracked inventory posts here without tax."
+  },
+  {
+   "code": "5010",
+   "name": "Subcontractors",
+   "subtype": "cost_of_sales",
+   "gifi": "8360",
+   "tax": "purchase"
+  },
+  {
+   "code": "5020",
+   "name": "Freight-in and duty",
+   "subtype": "cost_of_sales",
+   "gifi": "8457",
+   "tax": "purchase"
+  },
+  {
+   "code": "5030",
+   "name": "Direct wages",
+   "subtype": "cost_of_sales",
+   "gifi": "8340",
+   "tax": "none"
+  },
+  {
+   "code": "5040",
+   "name": "Inventory adjustments",
+   "subtype": "cost_of_sales",
+   "gifi": "8458",
+   "tax": "none"
+  },
+  {
+   "code": "6000",
+   "name": "Advertising and promotion",
+   "subtype": "operating_expense",
+   "gifi": "8521",
+   "tax": "purchase"
+  },
+  {
+   "code": "6010",
+   "name": "Meals and entertainment",
+   "subtype": "operating_expense",
+   "gifi": "8523",
+   "tax": "purchase_itc50",
+   "note": "Purchase tax with 50 % ITC/ITR restriction (G-01-T05)."
+  },
+  {
+   "code": "6020",
+   "name": "Bad debts",
+   "subtype": "operating_expense",
+   "gifi": "8590",
+   "tax": "none"
+  },
+  {
+   "code": "6030",
+   "name": "Bank charges",
+   "subtype": "operating_expense",
+   "gifi": "8715",
+   "tax": "exempt_purchase"
+  },
+  {
+   "code": "6040",
+   "name": "Payment processing fees",
+   "subtype": "operating_expense",
+   "gifi": "8716",
+   "tax": "exempt_purchase",
+   "note": "Card and payment processor fees (P-01-T08 maps Stripe fees here)."
+  },
+  {
+   "code": "6050",
+   "name": "Interest expense",
+   "subtype": "operating_expense",
+   "gifi": "8710",
+   "tax": "exempt_purchase"
+  },
+  {
+   "code": "6060",
+   "name": "Insurance",
+   "subtype": "operating_expense",
+   "gifi": "8690",
+   "tax": "exempt_purchase"
+  },
+  {
+   "code": "6070",
+   "name": "Memberships and subscriptions",
+   "subtype": "operating_expense",
+   "gifi": "8761",
+   "tax": "purchase"
+  },
+  {
+   "code": "6080",
+   "name": "Office supplies",
+   "subtype": "operating_expense",
+   "gifi": "8811",
+   "tax": "purchase"
+  },
+  {
+   "code": "6090",
+   "name": "Postage and courier",
+   "subtype": "operating_expense",
+   "gifi": "9275",
+   "tax": "purchase"
+  },
+  {
+   "code": "6100",
+   "name": "Computer and software",
+   "subtype": "operating_expense",
+   "gifi": "9150",
+   "tax": "purchase"
+  },
+  {
+   "code": "6110",
+   "name": "Telephone and internet",
+   "subtype": "operating_expense",
+   "gifi": "9225",
+   "tax": "purchase"
+  },
+  {
+   "code": "6120",
+   "name": "Utilities",
+   "subtype": "operating_expense",
+   "gifi": "9220",
+   "tax": "purchase"
+  },
+  {
+   "code": "6130",
+   "name": "Rent",
+   "subtype": "operating_expense",
+   "gifi": "8911",
+   "tax": "purchase"
+  },
+  {
+   "code": "6140",
+   "name": "Equipment rental",
+   "subtype": "operating_expense",
+   "gifi": "8914",
+   "tax": "purchase"
+  },
+  {
+   "code": "6150",
+   "name": "Repairs and maintenance",
+   "subtype": "operating_expense",
+   "gifi": "8960",
+   "tax": "purchase"
+  },
+  {
+   "code": "6160",
+   "name": "Legal fees",
+   "subtype": "operating_expense",
+   "gifi": "8861",
+   "tax": "purchase"
+  },
+  {
+   "code": "6170",
+   "name": "Accounting and bookkeeping fees",
+   "subtype": "operating_expense",
+   "gifi": "8862",
+   "tax": "purchase"
+  },
+  {
+   "code": "6180",
+   "name": "Consulting fees",
+   "subtype": "operating_expense",
+   "gifi": "8863",
+   "tax": "purchase"
+  },
+  {
+   "code": "6190",
+   "name": "Training and education",
+   "subtype": "operating_expense",
+   "gifi": "8876",
+   "tax": "purchase"
+  },
+  {
+   "code": "6200",
+   "name": "Travel",
+   "subtype": "operating_expense",
+   "gifi": "9200",
+   "tax": "purchase"
+  },
+  {
+   "code": "6210",
+   "name": "Vehicle expenses",
+   "subtype": "operating_expense",
+   "gifi": "9281",
+   "tax": "purchase"
+  },
+  {
+   "code": "6300",
+   "name": "Salaries and wages",
+   "subtype": "operating_expense",
+   "gifi": "9060",
+   "tax": "none"
+  },
+  {
+   "code": "6310",
+   "name": "Employer CPP/QPP contributions",
+   "subtype": "operating_expense",
+   "gifi": "8622",
+   "tax": "none"
+  },
+  {
+   "code": "6320",
+   "name": "Employer EI/QPIP premiums",
+   "subtype": "operating_expense",
+   "gifi": "8622",
+   "tax": "none"
+  },
+  {
+   "code": "6330",
+   "name": "Workers' compensation premiums",
+   "subtype": "operating_expense",
+   "gifi": "8622",
+   "tax": "none"
+  },
+  {
+   "code": "6340",
+   "name": "Employer health tax",
+   "subtype": "operating_expense",
+   "gifi": "8762",
+   "tax": "none",
+   "provinces": [
+    "BC",
+    "MB",
+    "NL",
+    "ON",
+    "QC"
+   ]
+  },
+  {
+   "code": "6350",
+   "name": "Employee benefits",
+   "subtype": "operating_expense",
+   "gifi": "8620",
+   "tax": "none"
+  },
+  {
+   "code": "6360",
+   "name": "Vacation pay expense",
+   "subtype": "operating_expense",
+   "gifi": "9060",
+   "tax": "none"
+  },
+  {
+   "code": "6400",
+   "name": "Property taxes",
+   "subtype": "operating_expense",
+   "gifi": "9180",
+   "tax": "none"
+  },
+  {
+   "code": "6410",
+   "name": "Donations",
+   "subtype": "operating_expense",
+   "gifi": "8522",
+   "tax": "none"
+  },
+  {
+   "code": "6420",
+   "name": "Business licences and government fees",
+   "subtype": "operating_expense",
+   "gifi": "8764",
+   "tax": "none"
+  },
+  {
+   "code": "6500",
+   "name": "Amortization of tangible assets",
+   "subtype": "amortisation",
+   "gifi": "8670",
+   "tax": "none"
+  },
+  {
+   "code": "6510",
+   "name": "Amortization of intangible assets",
+   "subtype": "amortisation",
+   "gifi": "8570",
+   "tax": "none"
+  },
+  {
+   "code": "6900",
+   "name": "Rounding",
+   "subtype": "other_expense",
+   "gifi": "9270",
+   "tax": "none",
+   "system_role": "rounding",
+   "note": "Cent differences from tax-inclusive documents."
+  },
+  {
+   "code": "7000",
+   "name": "Income taxes – current",
+   "subtype": "income_tax",
+   "gifi": "9990",
+   "tax": "none"
+  },
+  {
+   "code": "7010",
+   "name": "Income taxes – deferred",
+   "subtype": "income_tax",
+   "gifi": "9995",
+   "tax": "none"
+  }
+ ]
+}

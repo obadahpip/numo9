@@ -1,0 +1,83 @@
+{
+  "$comment": "Which accounts a picker offers per context (C-01-T10). Mirrored by backend/numo9/ledger/contexts.py; tests/test_ledger_contexts.py fails if they differ.",
+  "engineRoles": [
+    "ar",
+    "ap",
+    "gst_hst_payable",
+    "itc_receivable",
+    "pst_payable",
+    "qst_payable",
+    "qst_itr",
+    "retained_earnings",
+    "current_year_earnings",
+    "rounding",
+    "suspense_conversion",
+    "unpaid_expense_claims",
+    "wages_payable",
+    "cpp_payable",
+    "qpp_payable",
+    "ei_payable",
+    "qpip_payable",
+    "income_tax_withheld",
+    "vacation_payable",
+    "workers_comp_payable",
+    "eht_payable",
+    "fx_gain_loss"
+  ],
+  "contexts": {
+    "sales": {
+      "subtypes": ["revenue", "other_income", "current_liability"],
+      "excludeEngineRoles": true,
+      "bank": "exclude"
+    },
+    "purchase": {
+      "subtypes": [
+        "cost_of_sales",
+        "operating_expense",
+        "other_expense",
+        "current_asset",
+        "inventory",
+        "prepayment",
+        "fixed_asset",
+        "non_current_asset",
+        "intangible"
+      ],
+      "excludeEngineRoles": true,
+      "bank": "exclude"
+    },
+    "journal": {
+      "subtypes": [
+        "current_asset",
+        "bank",
+        "inventory",
+        "prepayment",
+        "fixed_asset",
+        "accumulated_amortisation",
+        "non_current_asset",
+        "intangible",
+        "current_liability",
+        "sales_tax_control",
+        "payroll_liability",
+        "non_current_liability",
+        "share_capital",
+        "retained_earnings",
+        "dividends",
+        "other_equity",
+        "revenue",
+        "other_income",
+        "cost_of_sales",
+        "operating_expense",
+        "amortisation",
+        "income_tax",
+        "other_expense"
+      ],
+      "excludeEngineRoles": false,
+      "bank": "any"
+    },
+    "bank": {
+      "subtypes": ["bank", "current_liability", "non_current_liability"],
+      "excludeEngineRoles": true,
+      "bank": "only"
+    }
+  }
+}

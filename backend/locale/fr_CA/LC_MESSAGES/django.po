@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 15:10-0500\n"
+"POT-Creation-Date: 2026-11-14 07:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -320,6 +320,9 @@ msgstr "Accès demandé"
 
 msgid "Access request closed"
 msgstr "Demande d’accès fermée"
+
+msgid "Account renumbered"
+msgstr ""
 
 #, python-format
 msgid "%(start)s to %(end)s · times in %(zone)s"
@@ -1002,6 +1005,402 @@ msgstr "exécutions de tâches"
 msgid "Background job"
 msgstr "Tâche en arrière-plan"
 
+msgid "Unknown system role."
+msgstr ""
+
+#, python-format
+msgid "The %(role)s account must have the sub-type %(subtypes)s."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is already the %(role)s account: there is one per organisation."
+msgstr ""
+
+#, python-format
+msgid "This is the %(role)s account: its system role can't be changed or removed."
+msgstr ""
+
+#, python-format
+msgid "This is the %(role)s account: its type and sub-type can't change."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is the %(role)s account: system accounts can't be archived."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is the %(role)s account: system accounts can't be deleted."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has transactions: archive it instead of deleting it."
+msgstr ""
+
+msgid "Asset"
+msgstr ""
+
+msgid "Liability"
+msgstr ""
+
+msgid "Equity"
+msgstr ""
+
+msgid "Revenue"
+msgstr ""
+
+msgid "Expense"
+msgstr ""
+
+msgid "Current asset"
+msgstr ""
+
+#, fuzzy
+#| msgid "Banking"
+msgid "Bank"
+msgstr "Banque"
+
+msgid "Prepayment"
+msgstr ""
+
+msgid "Fixed asset"
+msgstr ""
+
+msgid "Accumulated amortization"
+msgstr ""
+
+msgid "Non-current asset"
+msgstr ""
+
+msgid "Intangible asset"
+msgstr ""
+
+msgid "Current liability"
+msgstr ""
+
+msgid "Sales tax control"
+msgstr ""
+
+#, fuzzy
+#| msgid "Payroll specialist"
+msgid "Payroll liability"
+msgstr "Spécialiste de la paie"
+
+msgid "Non-current liability"
+msgstr ""
+
+msgid "Share capital"
+msgstr ""
+
+msgid "Retained earnings"
+msgstr ""
+
+msgid "Current year earnings"
+msgstr ""
+
+msgid "Dividends"
+msgstr ""
+
+msgid "Other equity"
+msgstr ""
+
+msgid "Other income"
+msgstr ""
+
+msgid "Cost of sales"
+msgstr ""
+
+msgid "Operating expense"
+msgstr ""
+
+#, fuzzy
+#| msgid "organisation"
+msgid "Amortization"
+msgstr "organisation"
+
+msgid "Income tax"
+msgstr ""
+
+msgid "Other expense"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accountant delegate"
+msgid "Accounts receivable"
+msgstr "Délégué comptable"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Accounts payable"
+msgstr "Comptable"
+
+msgid "GST/HST payable"
+msgstr ""
+
+msgid "GST/HST receivable (ITCs)"
+msgstr ""
+
+msgid "PST payable"
+msgstr ""
+
+msgid "QST payable"
+msgstr ""
+
+msgid "QST receivable (ITRs)"
+msgstr ""
+
+msgid "Rounding"
+msgstr ""
+
+msgid "Conversion balances suspense"
+msgstr ""
+
+msgid "Unpaid expense claims"
+msgstr ""
+
+msgid "Wages payable"
+msgstr ""
+
+msgid "CPP payable"
+msgstr ""
+
+msgid "QPP payable"
+msgstr ""
+
+msgid "EI payable"
+msgstr ""
+
+msgid "QPIP payable"
+msgstr ""
+
+msgid "Income tax withheld"
+msgstr ""
+
+msgid "Vacation pay payable"
+msgstr ""
+
+msgid "Workers' compensation payable"
+msgstr ""
+
+msgid "Employer health tax payable"
+msgstr ""
+
+msgid "Foreign exchange gain or loss"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Current assets"
+msgstr ""
+
+msgid "Tangible capital assets"
+msgstr ""
+
+msgid "Intangible capital assets"
+msgstr ""
+
+msgid "Long-term assets"
+msgstr ""
+
+msgid "Current liabilities"
+msgstr ""
+
+msgid "Long-term liabilities"
+msgstr ""
+
+msgid "Shareholder equity"
+msgstr ""
+
+msgid "Partners' capital"
+msgstr ""
+
+msgid "Other comprehensive income"
+msgstr ""
+
+msgid "Operating expenses"
+msgstr ""
+
+msgid "Farming revenue"
+msgstr ""
+
+msgid "Farming expenses"
+msgstr ""
+
+msgid "Extraordinary items and income taxes"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+#, fuzzy
+#| msgid "Action"
+msgid "section"
+msgstr "Action"
+
+msgid "total line"
+msgstr ""
+
+msgid "Totals and computed lines (e.g. 1599 Total current assets): never mapped."
+msgstr ""
+
+msgid "list version"
+msgstr ""
+
+msgid "published on"
+msgstr ""
+
+msgid "retired in list version"
+msgstr ""
+
+msgid "GIFI code"
+msgstr ""
+
+msgid "GIFI codes"
+msgstr ""
+
+msgid "The name per language, e.g. {\"en-ca\": \"Chequing account\"}."
+msgstr ""
+
+msgid "type"
+msgstr ""
+
+#, fuzzy
+#| msgid "job type"
+msgid "sub-type"
+msgstr "type de tâche"
+
+msgid "parent account"
+msgstr ""
+
+msgid "system role"
+msgstr ""
+
+msgid "bank account"
+msgstr ""
+
+msgid "require a contact"
+msgstr ""
+
+msgid "require a tracking category"
+msgstr ""
+
+msgid "require an attachment"
+msgstr ""
+
+msgid "default tax code"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "archived at"
+msgstr "commencée le"
+
+msgid "template row"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "account"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "accounts"
+msgstr "Comptabilité"
+
+msgid "An account code is 1 to 10 letters, digits, dots or dashes, starting with a letter or a digit (e.g. 6100)."
+msgstr ""
+
+msgid "Give the account a name."
+msgstr ""
+
+#, python-format
+msgid "An account name is at most %(max)d characters."
+msgstr ""
+
+msgid "Choose a sub-type."
+msgstr ""
+
+#, python-format
+msgid "The sub-type %(subtype)s belongs to %(type)s accounts."
+msgstr ""
+
+msgid "Only Bank accounts and liabilities (credit card, line of credit, loan) can be bank accounts."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is not a GIFI code on the CRA list."
+msgstr ""
+
+#, python-format
+msgid "%(code)s %(description)s is a total line: choose the GIFI code of the item."
+msgstr ""
+
+#, python-format
+msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
+msgstr ""
+
+#, python-format
+msgid "Code %(code)s is already used by %(account)s. Choose another code."
+msgstr ""
+
+msgid "Choose the home province or territory (e.g. ON)."
+msgstr ""
+
+#, fuzzy
+#| msgid "This organisation already has an owner. Ask the owner to invite you, or to add users."
+msgid "This organisation already has accounts: a template loads into an empty chart."
+msgstr "Cette organisation a déjà un propriétaire. Demandez au propriétaire de vous inviter ou d’ajouter des utilisateurs."
+
+msgid "The template has no account for this system role."
+msgstr ""
+
+msgid "No free code for the account: renumber an account and try again."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has sub-accounts: its type can't change."
+msgstr ""
+
+msgid "A system account takes postings, so it can't have sub-accounts."
+msgstr ""
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "The parent account doesn't exist in this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+msgid "An account can't be placed under itself or one of its own sub-accounts."
+msgstr ""
+
+#, python-format
+msgid "A sub-account has the same type as its parent (%(type)s)."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is a system account: it takes postings and can't have sub-accounts."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is archived: it can't get new sub-accounts."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has transactions, so it can't become a parent account: postings go only to accounts without sub-accounts."
+msgstr ""
+
+#, python-format
+msgid "Sub-accounts go at most %(max)d levels deep."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is archived: choose an active account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr "%(name)s demande un accès dans %(organisation)s"
@@ -1091,12 +1490,6 @@ msgid "scope"
 msgstr ""
 
 msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
-msgstr ""
-
-msgid "description"
-msgstr ""
-
-msgid "system role"
 msgstr ""
 
 msgid "role"
@@ -1414,9 +1807,6 @@ msgid "Revoked"
 msgstr ""
 
 msgid "Expired"
-msgstr ""
-
-msgid "type"
 msgstr ""
 
 msgid "invited by"
