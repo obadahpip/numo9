@@ -378,6 +378,26 @@
       "crumb": "Platform console · Promo codes"
     }
   },
+  "contacts": {
+    "duplicates": {
+      "announce": "{count, plural, one {# possible duplicate found} other {# possible duplicates found}}",
+      "archived": "Archived",
+      "contactMeta": "· {number} · {province}",
+      "ignore": "Ignore",
+      "ignoreLabel": "Ignore {name}",
+      "intro": "Checked as you type. You can still save this contact.",
+      "merge": "Merge…",
+      "mergeLabel": "Merge with {name}",
+      "noProvince": "No province",
+      "open": "Open {name}",
+      "openShort": "Open",
+      "reasonBn": "Business Number matches",
+      "reasonEmail": "Email address matches",
+      "reasonName": "Name {percent}% similar",
+      "reasonTaxId": "Tax ID matches",
+      "title": "Possible duplicates ({count})"
+    }
+  },
   "form": {
     "close": "Close",
     "discard": "Discard changes",

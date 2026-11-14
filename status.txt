@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 156   Remaining: 2631   Progress: 5.60%
+TOTAL ATOMIC TASKS: 2787   Completed: 165   Remaining: 2622   Progress: 5.92%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -216,17 +216,17 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-02-T13 — Audit + i18n keys for packages/prices/promos
 
 [B-01]
-❌ B-01-T01 — Wireframes: contact form (sections), list with role tabs, duplicate panel, merge dialog
-❌ B-01-T02 — Contact model (OrgOwnedModel: number, display_name, legal_name, roles ArrayField, bn, tax_id, currency, credit_limit, credit_mode, t4a_flag, portal_enabled, statement_pref, language, status) + migration
-❌ B-01-T03 — ContactPerson (unlimited, primary flag, email, phone, include_in_emails)
-❌ B-01-T04 — Address (type billing/shipping, line1/2, city, province enum, postal_code, country) + postal-code/province validators
+✅ B-01-T01 — Wireframes: contact form (sections), list with role tabs, duplicate panel, merge dialog   [frames 12–14 in docs/design/wireframes.md (§11–13); walkthrough sign-off by the project lead]
+✅ B-01-T02 — Contact model (OrgOwnedModel: number, display_name, legal_name, roles ArrayField, bn, tax_id, currency, credit_limit, credit_mode, t4a_flag, portal_enabled, statement_pref, language, status) + migration
+✅ B-01-T03 — ContactPerson (unlimited, primary flag, email, phone, include_in_emails)
+✅ B-01-T04 — Address (type billing/shipping, line1/2, city, province enum, postal_code, country) + postal-code/province validators
 ❌ B-01-T05 — PaymentTerm master per org (type, days, discount_pct, discount_days, late_interest_pct) + seeded defaults (Net 15/30/60, Due on receipt, 2/10 net 30, EOM)
-❌ B-01-T07 — Province tax hint resolver (QC → GST+QST, ON → HST13, BC → GST+PST …) exposed for G-02
-❌ B-01-T09 — Custom field definitions + values (JSONB validated by definition schema)
-❌ B-01-T10 — Duplicate detection service (trigram name similarity ≥0.6, exact email/BN/tax ID)
-❌ B-01-T16 — Live duplicate panel while typing (debounced)
-❌ B-01-T18 — i18n keys, Canadian terms (Province, Postal code), a11y review
-❌ B-01-T19 — Gap tests gap-19/20 + QC → GST+QST fixture
+✅ B-01-T07 — Province tax hint resolver (QC → GST+QST, ON → HST13, BC → GST+PST …) exposed for G-02
+✅ B-01-T09 — Custom field definitions + values (JSONB validated by definition schema)
+✅ B-01-T10 — Duplicate detection service (trigram name similarity ≥0.6, exact email/BN/tax ID)
+❌ B-01-T16 — Live duplicate panel while typing (debounced)   [panel + debounced check built (frontend/src/contacts), Vitest: shows in < 300 ms, axe clean; ✅ once the B-01-T15 contact form mounts it on the B-01-T11 /duplicates API and the Playwright check runs]
+✅ B-01-T18 — i18n keys, Canadian terms (Province, Postal code), a11y review   [i18n lint, FormatJS + makemessages catalogues, glossary lint and axe on the duplicate panel pass; review in docs/design/accessibility.md; list/form screens join the page a11y suite with B-01-T14/T15]
+✅ B-01-T19 — Gap tests gap-19/20 + QC → GST+QST fixture   [gap-19 and gap-20 tests + QC → GST+QST fixture pass (tests/test_contacts_gaps.py); terms master, exemption certificate and credit override join gap-20 with B-01-T05/T08/T13]
 
 [C-02]
 ❌ C-02-T01 — ADR-006 posting engine & book dimension (append-only, sequence, partitioning)
