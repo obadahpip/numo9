@@ -13,6 +13,8 @@ import {
   type AppLocale,
   type DataGridColumn,
   type DataGridLabels,
+  EMPTY_VIEW,
+  type GridViewState,
 } from "@numo9/ui";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type DragEvent } from "react";
@@ -35,6 +37,16 @@ import { uploadFile, type UploadState } from "./upload";
 export const PAGE_LIMIT = 1000;
 /** While files are uploading or being scanned the list is refreshed this often. */
 export const REFRESH_MS = 3000;
+
+/** Columns hidden on a phone (< 768 px), so the file name and its status fit; the column chooser
+ * brings them back. */
+export const PHONE_HIDDEN_COLUMNS = ["from", "source", "period", "taxYear", "tags", "added"];
+
+function narrowScreen(): boolean {
+  return (
+    typeof window !== "undefined" && window.matchMedia?.("(max-width: 767px)").matches === true
+  );
+}
 
 const STATUS_KEY = {
   uploading: "queued",
@@ -108,6 +120,10 @@ export function DocumentsInbox({ org }: DocumentsInboxProps) {
   const [dragging, setDragging] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [tagging, setTagging] = useState<string[] | null>(null);
+  const [view, setView] = useState<GridViewState>(EMPTY_VIEW);
+  useEffect(() => {
+    if (narrowScreen()) setView((current) => ({ ...current, hiddenColumns: PHONE_HIDDEN_COLUMNS }));
+  }, []);
 
   const load = useCallback(
     async (quiet = false) => {
@@ -261,7 +277,7 @@ export function DocumentsInbox({ org }: DocumentsInboxProps) {
         id: "status",
         header: t(m.colStatus),
         accessor: (row) => row.status,
-        width: 190,
+        width: 170,
         searchable: false,
         cell: (row) => (
           <StatusBadge status={STATUS_KEY[row.status]} label={statusLabel(t, row.status)} />
@@ -390,6 +406,8 @@ export function DocumentsInbox({ org }: DocumentsInboxProps) {
             getRowId={(row) => row.id}
             getRowLabel={(row) => row.name}
             labels={labels}
+            view={view}
+            onViewChange={setView}
             selectable
             selectedIds={selected}
             onSelectionChange={setSelected}

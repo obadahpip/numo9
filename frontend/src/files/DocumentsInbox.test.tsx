@@ -157,6 +157,28 @@ describe("DocumentsInbox (A-06-T12)", () => {
     );
   });
 
+  it("shows only the file and its status on a phone; the others stay in the column chooser", async () => {
+    mockApi([doc(), EMAILED]);
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn().mockImplementation((query: string) => ({
+        matches: query.includes("max-width"),
+        media: query,
+      })),
+    );
+    renderWithIntl(<DocumentsInbox org="acme" />);
+    const grid = await screen.findByRole("grid", { name: "Documents" });
+    await within(grid).findByText("receipt.pdf");
+    await waitFor(() =>
+      expect(
+        within(grid)
+          .getAllByRole("columnheader")
+          .map((h) => h.textContent),
+      ).toEqual(["", "File", "Status"]),
+    );
+    vi.unstubAllGlobals();
+  });
+
   it("has no axe violations", async () => {
     mockApi([doc(), EMAILED]);
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
