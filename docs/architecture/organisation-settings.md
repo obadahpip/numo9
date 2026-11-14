@@ -218,3 +218,22 @@ the full navigation and itself marked; clicking through the navigation lands on 
 360 px page has no serious axe finding and no sideways scroll; each gear links to and opens its own
 section and no two modules share one generic page. Unit: `SettingsNav.test.tsx`,
 `AppShell.test.tsx`.
+
+## Attribution: no silent system change (A-05-T14, gap-44)
+
+Every settings record — `OrganisationSettings`, `TaxRegistration`, `LockDate`,
+`NumberingSequence` — is an `AuditedModel`, so the actor of each change comes from the audit
+context (A-04-T04): the signed-in person in a request, or **`System: <job label>`** inside a
+background job, with the job's id, task and the person who started it in `meta.job`.
+
+`backend/tests/test_orgsettings_attribution.py` (marker `gap-44`, run by the CI gap-tests job)
+replays Xero's "Edited by System Generated on 5 Jan 2026 at 16:33PM — GST Type – removed": a job
+labelled *Close GST/HST registration* closes the RT account, sets the Tax lock and edits the
+settings. It proves that
+
+- each of the three changes is one audit event attributed to `System: Close GST/HST registration`
+  (never a bare "System" or "System Generated"), with the job and its starter;
+- the audit log API (`?user=system`) and the registration's record history show that label;
+- the CSV export prints it with a real 12-hour (`p.m.`) or 24-hour time per the viewer's
+  preference — never `16:33PM`;
+- the same change made by a person names the person.
