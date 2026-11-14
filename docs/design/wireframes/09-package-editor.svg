@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — platform console, package editor">
+<title>Numo9 wireframe — platform console, package editor</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Platform console</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="240" height="844" rx="0" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="20" y="80" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">CONSOLE</text>
+<text x="20" y="102" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Metrics</text>
+<text x="20" y="136" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Practices</text>
+<text x="20" y="170" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Organisations</text>
+<text x="20" y="204" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Products</text>
+<rect x="8" y="218" width="224" height="30" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<rect x="8" y="218" width="3" height="30" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="20" y="238" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Packages &amp; prices</text>
+<text x="20" y="272" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Promo codes</text>
+<text x="20" y="306" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Founding offer</text>
+<text x="20" y="340" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Demo manager</text>
+<text x="20" y="374" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Feature flags</text>
+<text x="20" y="408" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Impersonation log</text>
+<text x="20" y="442" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Jobs</text>
+<rect x="240" y="56" width="1200" height="28" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="264" y="75" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Platform console  /  Packages &amp; prices  /  Growth</text>
+<text x="264" y="118" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Growth</text>
+<rect x="372" y="100" width="47" height="22" rx="11" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="395.5" y="115" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">Draft</text>
+<text x="264" y="140" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Packages are made of whole products. Practice and Client portal are free and part of every package.</text>
+<rect x="1036" y="98" width="104" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1088.0" y="119" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">History</text>
+<rect x="1150" y="98" width="120" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1210.0" y="119" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Save draft</text>
+<rect x="1280" y="98" width="136" height="32" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1348.0" y="119" font-size="13" fill="#FFD100" font-weight="600" text-anchor="middle">Activate package</text>
+<circle cx="1424" cy="92" r="10" fill="#B42318"/>
+<text x="1424" y="96" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<rect x="264" y="160" width="760" height="150" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="284" y="186" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Package details</text>
+<text x="284" y="208" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Code (never changes)</text>
+<rect x="284" y="214" width="160" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="294" y="234" font-size="13" fill="#111111" font-weight="400" text-anchor="start">growth</text>
+<text x="464" y="208" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Name (English)</text>
+<rect x="464" y="214" width="260" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="474" y="234" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Growth</text>
+<text x="744" y="208" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Name (French)</text>
+<rect x="744" y="214" width="260" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="754" y="234" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Croissance</text>
+<text x="284" y="262" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Description (English · French tab)</text>
+<rect x="284" y="268" width="720" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="294" y="288" font-size="13" fill="#111111" font-weight="400" text-anchor="start">For growing teams that file their own GST/HST.</text>
+<rect x="264" y="322" width="760" height="236" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="284" y="350" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Products</text>
+<circle cx="380" cy="344" r="10" fill="#B42318"/>
+<text x="380" y="348" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="284" y="366" width="232" height="80" rx="8" fill="#FFFBE6" stroke="#111111" stroke-width="1"/>
+<text x="298" y="394" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Accounting</text>
+<text x="298" y="416" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">43 feature keys</text>
+<rect x="464" y="380" width="38" height="20" rx="10" fill="#111111" stroke="#111111" stroke-width="1"/>
+<circle cx="492" cy="390" r="7" fill="#FFD100"/>
+<rect x="532" y="366" width="232" height="80" rx="8" fill="#FFFBE6" stroke="#111111" stroke-width="1"/>
+<text x="546" y="394" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Tax</text>
+<text x="546" y="416" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">6 feature keys</text>
+<rect x="712" y="380" width="38" height="20" rx="10" fill="#111111" stroke="#111111" stroke-width="1"/>
+<circle cx="740" cy="390" r="7" fill="#FFD100"/>
+<rect x="780" y="366" width="232" height="80" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="794" y="394" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Payroll</text>
+<text x="794" y="416" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Feature keys arrive in Phase 3</text>
+<rect x="960" y="380" width="38" height="20" rx="10" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="970" cy="390" r="7" fill="#FFFFFF"/>
+<rect x="284" y="458" width="232" height="80" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="298" y="486" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Inventory</text>
+<text x="298" y="508" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Feature keys arrive in Phase 2</text>
+<rect x="464" y="472" width="38" height="20" rx="10" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="474" cy="482" r="7" fill="#FFFFFF"/>
+<rect x="532" y="458" width="232" height="80" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="546" y="486" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Finance</text>
+<text x="546" y="508" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">v2.1</text>
+<rect x="712" y="472" width="38" height="20" rx="10" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="722" cy="482" r="7" fill="#FFFFFF"/>
+<rect x="780" y="458" width="232" height="80" rx="8" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="794" y="486" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">Numo9 Commerce</text>
+<text x="794" y="508" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Planned — can't be added yet</text>
+<rect x="960" y="472" width="38" height="20" rx="10" fill="#D0D5DD" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="970" cy="482" r="7" fill="#FFFFFF"/>
+<text x="284" y="548" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Included free: Practice · Client portal</text>
+<rect x="264" y="570" width="760" height="120" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="284" y="598" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Limits</text>
+<circle cx="346" cy="592" r="10" fill="#B42318"/>
+<text x="346" y="596" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<text x="284" y="620" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Organisation users</text>
+<rect x="284" y="626" width="200" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="294" y="646" font-size="13" fill="#111111" font-weight="400" text-anchor="start">10</text>
+<rect x="504" y="632" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="528" y="645" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Unlimited</text>
+<text x="284" y="680" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Practice users (accountants) are never counted.</text>
+<rect x="264" y="702" width="760" height="72" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="284" y="726" width="38" height="20" rx="10" fill="#111111" stroke="#111111" stroke-width="1"/>
+<circle cx="312" cy="736" r="7" fill="#FFD100"/>
+<text x="334" y="741" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Founding offer: the first 1,000 organisations on this package get every product</text>
+<circle cx="1010" cy="716" r="10" fill="#B42318"/>
+<text x="1010" y="720" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<text x="1048" y="182" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">PREVIEW — PUBLIC PRICING CARD</text>
+<circle cx="1260" cy="176" r="10" fill="#B42318"/>
+<text x="1260" y="180" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">5</text>
+<rect x="1048" y="194" width="368" height="380" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<rect x="1048" y="194" width="368" height="8" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1072" y="236" font-size="20" fill="#111111" font-weight="700" text-anchor="start">Growth</text>
+<rect x="1300" y="220" width="110" height="22" rx="11" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1355.0" y="235" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">Founding offer</text>
+<text x="1072" y="260" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">For growing teams that file their own GST/HST.</text>
+<rect x="1072" y="276" width="160" height="28" rx="14" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1074" y="278" width="78" height="24" rx="12" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1113" y="294" font-size="11" fill="#FFFFFF" font-weight="600" text-anchor="middle">Monthly</text>
+<text x="1192" y="294" font-size="11" fill="#111111" font-weight="600" text-anchor="middle">Annual</text>
+<text x="1072" y="344" font-size="30" fill="#111111" font-weight="700" text-anchor="start">$49.00</text>
+<text x="1190" y="344" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">/ month, plus GST/HST</text>
+<text x="1072" y="384" font-size="13" fill="#111111" font-weight="400" text-anchor="start">✓ Accounting</text>
+<text x="1072" y="410" font-size="13" fill="#111111" font-weight="400" text-anchor="start">✓ Tax</text>
+<text x="1072" y="436" font-size="13" fill="#111111" font-weight="400" text-anchor="start">✓ Practice and Client portal (free)</text>
+<text x="1072" y="462" font-size="13" fill="#111111" font-weight="400" text-anchor="start">✓ Up to 10 organisation users</text>
+<rect x="1072" y="510" width="320" height="40" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1232" y="535" font-size="13" fill="#FFD100" font-weight="700" text-anchor="middle">Start free trial</text>
+<text x="1048" y="604" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">STATES</text>
+<circle cx="1112" cy="598" r="10" fill="#B42318"/>
+<text x="1112" y="602" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">6</text>
+<rect x="1048" y="614" width="368" height="92" rx="8" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1064" y="640" font-size="12" fill="#111111" font-weight="700" text-anchor="start">Empty (no packages yet)</text>
+<text x="1064" y="662" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Packages are what organisations subscribe to.</text>
+<rect x="1064" y="670" width="150" height="32" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1139.0" y="691" font-size="13" fill="#FFD100" font-weight="600" text-anchor="middle">Create a package</text>
+<rect x="1048" y="716" width="368" height="92" rx="8" fill="#FEF3F2" stroke="#B42318" stroke-width="1"/>
+<text x="1064" y="742" font-size="12" fill="#B42318" font-weight="700" text-anchor="start">Error (activation refused)</text>
+<text x="1064" y="764" font-size="12" fill="#111111" font-weight="400" text-anchor="start">Add at least one product before activating</text>
+<text x="1064" y="782" font-size="12" fill="#111111" font-weight="400" text-anchor="start">this package.</text>
+<text x="1048" y="826" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Field errors appear under each field (API field form).</text>
+<text x="264" y="800" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Retired package: banner “Retired — hidden from sign-up; 14 organisations keep their subscription.”</text>
+<text x="264" y="818" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Delete is offered for drafts only and refused while anyone subscribes (archive = retire).</text>
+</svg>

@@ -50,3 +50,13 @@ class AccountDefault(OrgOwnedModel):
 
     label = models.CharField(max_length=50)
     account = models.ForeignKey("ledger.Account", on_delete=models.PROTECT, related_name="+")
+
+
+class SubscriptionStandIn(OrgOwnedModel):
+    """Stand-in for U-03's Subscription (U-02-T05, T10): an organisation on a package and
+    interval, with a status and the grandfathered flag — what the package guards ask about."""
+
+    package = models.ForeignKey("packages.Package", on_delete=models.PROTECT, related_name="+")
+    interval = models.CharField(max_length=8, default="month")
+    status = models.CharField(max_length=16, default="active")
+    grandfathered = models.BooleanField(default=False)

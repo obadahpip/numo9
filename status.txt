@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 143   Remaining: 2644
+TOTAL ATOMIC TASKS: 2787   Completed: 156   Remaining: 2631   Progress: 5.60%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -201,19 +201,19 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-05-T14 — Audit/attribution test: system-initiated change shows System: <job>
 
 [U-02]
-❌ U-02-T01 — Wireframes: package editor, price timeline, promo list (Figma)
-❌ U-02-T02 — Package model (code, name_i18n, description, status {draft, active, retired}, is_founding_eligible, limits JSON) + PackageProduct M2M
-❌ U-02-T03 — PackagePrice model (package, interval {month, year}, amount_cents, currency='CAD', effective_from/to) + exclusion constraint (btree_gist) preventing overlaps
-❌ U-02-T04 — price_for(package, interval, on_date) service
-❌ U-02-T05 — Package activation/retirement service with guards (no delete when subscribed; retire hides from sign-up)
-❌ U-02-T06 — PromoCode model + redeem() with SELECT … FOR UPDATE on redemption counter
-❌ U-02-T07 — Admin APIs CRUD packages/prices/promos (/api/v1/platform/packages…), platform-owner permission only
-❌ U-02-T08 — Public API GET /api/v1/public/pricing (active packages, current prices, founding badge data) consumed later by Q-01
-❌ U-02-T09 — Package editor UI (product cards, limits, preview of pricing card)
-❌ U-02-T10 — Price timeline UI + future-dated price dialog showing affected subscriptions count
-❌ U-02-T11 — Promo code UI (create, usage bar, expire)
-❌ U-02-T12 — Stripe Product/Price sync job (create Stripe Price per PackagePrice, never mutate existing) — stub until U-04
-❌ U-02-T13 — Audit + i18n keys for packages/prices/promos
+✅ U-02-T01 — Wireframes: package editor, price timeline, promo list (Figma)
+✅ U-02-T02 — Package model (code, name_i18n, description, status {draft, active, retired}, is_founding_eligible, limits JSON) + PackageProduct M2M
+✅ U-02-T03 — PackagePrice model (package, interval {month, year}, amount_cents, currency='CAD', effective_from/to) + exclusion constraint (btree_gist) preventing overlaps
+✅ U-02-T04 — price_for(package, interval, on_date) service
+✅ U-02-T05 — Package activation/retirement service with guards (no delete when subscribed; retire hides from sign-up)
+✅ U-02-T06 — PromoCode model + redeem() with SELECT … FOR UPDATE on redemption counter
+✅ U-02-T07 — Admin APIs CRUD packages/prices/promos (/api/v1/platform/packages…), platform-owner permission only
+✅ U-02-T08 — Public API GET /api/v1/public/pricing (active packages, current prices, founding badge data) consumed later by Q-01
+✅ U-02-T09 — Package editor UI (product cards, limits, preview of pricing card)
+✅ U-02-T10 — Price timeline UI + future-dated price dialog showing affected subscriptions count
+✅ U-02-T11 — Promo code UI (create, usage bar, expire)
+✅ U-02-T12 — Stripe Product/Price sync job (create Stripe Price per PackagePrice, never mutate existing) — stub until U-04
+✅ U-02-T13 — Audit + i18n keys for packages/prices/promos
 
 [B-01]
 ❌ B-01-T01 — Wireframes: contact form (sections), list with role tabs, duplicate panel, merge dialog

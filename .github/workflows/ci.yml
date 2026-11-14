@@ -50,10 +50,16 @@ jobs:
           --health-interval 5s
           --health-timeout 3s
           --health-retries 10
+      # Stripe API mock for the package price sync (U-02-T12, tests/test_packages_stripe_sync.py).
+      stripe-mock:
+        image: stripe/stripe-mock:v0.194.0
+        ports:
+          - 12111:12111
     env:
       DJANGO_SETTINGS_MODULE: numo9.settings.test
       DATABASE_URL: postgres://numo9:numo9@localhost:5432/numo9
       NUMO9_TEST_REDIS_URL: redis://localhost:6379/0
+      NUMO9_TEST_STRIPE_MOCK_URL: http://localhost:12111
     steps:
       - uses: actions/checkout@v7
         with:

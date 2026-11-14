@@ -30,3 +30,5 @@ django-celery-beat==2.9.0
 phonenumbers==9.0.43
 # Spreadsheet exports (A-04-T08 audit log; B-03 contact import/export)
 openpyxl==3.1.5
+# Stripe Product/Price sync of package prices (U-02-T12); subscription billing (U-04)
+stripe==17.0.0

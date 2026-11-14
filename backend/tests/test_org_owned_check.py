@@ -46,6 +46,11 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 # Product catalogue (U-01-T02/T03): reviewed — the same for every tenant.
                 "catalogue.Product",
                 "catalogue.FeatureKey",
+                # Packages (U-02-T02, T03, T06): reviewed — packages, prices, promo codes.
+                "packages.Package",
+                "packages.PackageProduct",
+                "packages.PackagePrice",
+                "packages.PromoCode",
                 # CRA GIFI list (C-01-T04): reviewed — published codes, the same for every tenant.
                 "ledger.GifiCode",
             }

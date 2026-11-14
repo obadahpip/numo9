@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     "numo9.audit",
     # Products and feature keys sold in packages (U-01).
     "numo9.catalogue",
+    # Packages of products, effective-dated prices and promo codes (U-02).
+    "numo9.packages",
     # General ledger: chart of accounts, GIFI list (C-01); posting engine (C-02).
     "numo9.ledger",
     # Organisation settings, tax registrations, lock dates, numbering (A-05).
@@ -136,14 +138,30 @@ SPECTACULAR_SETTINGS = {
         "JobPurgeStatusEnum": [("dead", "dead"), ("failed", "failed")],  # A-08-T08
         "ProductKindEnum": "numo9.catalogue.models.ProductKind",  # U-01-T09
         "ProductStatusEnum": "numo9.catalogue.models.ProductStatus",  # U-01-T09
+        "PackageStatusEnum": "numo9.packages.models.PackageStatus",  # U-02-T07
+        "BillingIntervalEnum": "numo9.packages.models.BillingInterval",  # U-02-T07
+        "PromoKindEnum": "numo9.packages.models.PromoKind",  # U-02-T07
+        "PromoDurationEnum": "numo9.packages.models.PromoDuration",  # U-02-T07
+        "PromoStatusEnum": "numo9.packages.models.PromoStatus",  # U-02-T07
+        "PriceStateEnum": "numo9.packages.serializers.PRICE_STATES",  # U-02-T07
     },
 }
 
 # Entitlement resolver behind RequiresFeature (U-01-T05): a stub allowing every feature key
 # until the U-03 engine replaces it.
 NUMO9_ENTITLEMENT_RESOLVER = "numo9.catalogue.entitlements.AllowAllResolver"
-# Packages in the feature matrix (U-01-T09): none until U-02 provides its source.
-NUMO9_PACKAGE_SOURCE = "numo9.catalogue.packages.NoPackages"
+# Packages in the feature matrix (U-01-T09): the packages offered (U-02-T05).
+NUMO9_PACKAGE_SOURCE = "numo9.packages.source.OfferedPackages"
+# Stripe (U-02-T12 price sync; U-04 billing): the platform account's secret key from the
+# secrets file (never in the repo); empty = Stripe sync off (the stub until U-04). STRIPE_API_BASE
+# points the client elsewhere (stripe-mock in tests); empty = Stripe's own API.
+STRIPE_SECRET_KEY = env_str("STRIPE_SECRET_KEY", "")
+STRIPE_API_BASE = env_str("STRIPE_API_BASE", "")
+# Gateway used by the sync job: a dotted path to a class (tests), or empty = the Stripe API when a
+# key is set, otherwise off.
+NUMO9_STRIPE_GATEWAY = ""
+# Subscriptions as packages see them (U-02-T05, T10): nobody subscribes until U-03/U-04.
+NUMO9_SUBSCRIPTION_SOURCE = "numo9.packages.subscriptions.NoSubscriptions"
 
 # Third-party DRF views without a permission declaration (rbac.E004): dotted path -> why safe.
 RBAC_EXEMPT_VIEWS = {
@@ -166,6 +184,7 @@ TENANT_SWEEP_EXEMPT = [
     r"^api/v1/invitations",
     r"^api/v1/permissions/catalogue$",  # the permission catalogue: same for everyone (A-03-T09)
     r"^api/v1/catalogue/",  # products and feature keys: same for everyone (U-01-T09)
+    r"^api/v1/public/",  # public pricing: same for everyone, no sign-in (U-02-T08)
     # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
     r"^api/v1/platform/",
 ]

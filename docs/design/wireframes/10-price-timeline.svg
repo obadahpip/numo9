@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — platform console, price timeline and future-dated price dialog">
+<title>Numo9 wireframe — platform console, price timeline and future-dated price dialog</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Platform console</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="240" height="844" rx="0" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="20" y="80" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">CONSOLE</text>
+<text x="20" y="102" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Metrics</text>
+<text x="20" y="136" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Practices</text>
+<text x="20" y="170" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Organisations</text>
+<text x="20" y="204" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Products</text>
+<rect x="8" y="218" width="224" height="30" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<rect x="8" y="218" width="3" height="30" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="20" y="238" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Packages &amp; prices</text>
+<text x="20" y="272" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Promo codes</text>
+<text x="20" y="306" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Founding offer</text>
+<text x="20" y="340" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Demo manager</text>
+<text x="20" y="374" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Feature flags</text>
+<text x="20" y="408" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Impersonation log</text>
+<text x="20" y="442" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Jobs</text>
+<rect x="240" y="56" width="1200" height="28" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="264" y="75" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Platform console  /  Packages &amp; prices  /  Growth  /  Prices</text>
+<text x="264" y="118" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Prices — Growth</text>
+<text x="264" y="140" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">CAD, before GST/HST. A new price applies to each subscription at its first renewal on or after the date.</text>
+<rect x="1236" y="98" width="180" height="32" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1326.0" y="119" font-size="13" fill="#FFD100" font-weight="600" text-anchor="middle">Schedule a price change</text>
+<rect x="264" y="176" width="1152" height="150" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="284" y="206" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Monthly</text>
+<circle cx="370" cy="200" r="10" fill="#B42318"/>
+<text x="370" y="204" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<line x1="284" y1="268" x2="1384" y2="268" stroke="#5B6472" stroke-width="2"/>
+<rect x="284" y="236" width="374" height="30" rx="4" fill="#EBEDF0" stroke="#D0D5DD" stroke-width="1"/>
+<text x="296" y="256" font-size="13" fill="#111111" font-weight="700" text-anchor="start">$39.00</text>
+<text x="286" y="288" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">1 Jan 2026</text>
+<rect x="664" y="236" width="314" height="30" rx="4" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="676" y="256" font-size="13" fill="#111111" font-weight="700" text-anchor="start">$49.00</text>
+<text x="666" y="288" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">1 Nov 2026</text>
+<rect x="984" y="236" width="394" height="30" rx="4" fill="#EBEDF0" stroke="#D0D5DD" stroke-width="1"/>
+<text x="996" y="256" font-size="13" fill="#111111" font-weight="700" text-anchor="start">$55.00</text>
+<text x="986" y="288" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">1 Mar 2027</text>
+<text x="1374" y="288" font-size="11" fill="#5B6472" font-weight="400" text-anchor="end">No end date</text>
+<line x1="754" y1="224" x2="754" y2="276" stroke="#B42318" stroke-width="2"/>
+<text x="754" y="220" font-size="11" fill="#B42318" font-weight="700" text-anchor="middle">Today 14 Nov 2026</text>
+<circle cx="824" cy="216" r="10" fill="#B42318"/>
+<text x="824" y="220" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<text x="996" y="308" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Scheduled · 0 subscriptions renewed at it yet · Delete</text>
+<rect x="264" y="346" width="1152" height="150" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="284" y="376" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Annual</text>
+<line x1="284" y1="438" x2="1384" y2="438" stroke="#5B6472" stroke-width="2"/>
+<rect x="284" y="406" width="1094" height="30" rx="4" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="296" y="426" font-size="13" fill="#111111" font-weight="700" text-anchor="start">$468.00</text>
+<text x="286" y="458" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">1 Jan 2026</text>
+<text x="1374" y="458" font-size="11" fill="#5B6472" font-weight="400" text-anchor="end">No end date</text>
+<line x1="754" y1="394" x2="754" y2="446" stroke="#B42318" stroke-width="2"/>
+<text x="754" y="390" font-size="11" fill="#B42318" font-weight="700" text-anchor="middle">Today 14 Nov 2026</text>
+<text x="264" y="530" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Versions never overlap (one price per day per interval); a price that has started can't be edited — schedule a new one.</text>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#111111" fill-opacity="0.35" stroke="#111111" stroke-width="1"/>
+<rect x="470" y="300" width="520" height="400" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="494" y="340" font-size="18" fill="#111111" font-weight="700" text-anchor="start">Schedule a price change</text>
+<circle cx="966" cy="322" r="10" fill="#B42318"/>
+<text x="966" y="326" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<text x="494" y="380" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Billing interval</text>
+<rect x="494" y="388" width="220" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="504" y="409" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Monthly ▾</text>
+<text x="734" y="380" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">New price (CAD)</text>
+<rect x="734" y="386" width="232" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="744" y="406" font-size="13" fill="#111111" font-weight="400" text-anchor="start">$55.00</text>
+<text x="494" y="446" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Starts on</text>
+<rect x="494" y="452" width="220" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="504" y="472" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Mar 2027</text>
+<text x="734" y="452" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">First day the new price applies.</text>
+<rect x="494" y="510" width="472" height="76" rx="8" fill="#FFFBE6" stroke="#FFD100" stroke-width="1"/>
+<text x="510" y="538" font-size="14" fill="#111111" font-weight="700" text-anchor="start">128 subscriptions affected at their next renewal</text>
+<circle cx="946" cy="530" r="10" fill="#B42318"/>
+<text x="946" y="534" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<text x="510" y="560" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Renewals before 1 Mar 2027 keep $49.00.</text>
+<text x="510" y="576" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Grandfathered subscriptions never change.</text>
+<text x="494" y="612" font-size="12" fill="#B42318" font-weight="400" text-anchor="start">Error: “A price already starts on 1 Mar 2027 for Monthly. Choose another date.”</text>
+<rect x="724" y="646" width="110" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="779.0" y="667" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Cancel</text>
+<rect x="844" y="646" width="122" height="32" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="905.0" y="667" font-size="13" fill="#FFD100" font-weight="600" text-anchor="middle">Schedule price</text>
+</svg>

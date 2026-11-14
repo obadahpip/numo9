@@ -24,6 +24,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 5 | Chart of accounts | C-01 | Tree grid, type badges, GIFI column, health-check panel |
 | 6 | Journal (basic) | C-02 / A-10-T11 | Header fields, LineGrid, totals, unbalanced message, post shortcut |
 | 7 | Platform console | U-06 | Console nav, KPI tiles incl. founding counter, organisations grid |
+| 8 | Package editor (console) | U-02-T09 | Product cards, limits, founding switch, live pricing-card preview, empty/error states |
+| 9 | Price timeline + schedule dialog (console) | U-02-T10 | Versions per interval, today marker, "N subscriptions affected" dialog, overlap error |
+| 10 | Promo codes (console) | U-02-T11 | Usage bar, create dialog, expire action, empty/error states |
 
 ## 1. Application shell
 
@@ -118,3 +121,49 @@ Form uses Province picker and Postal code input; "On this page" anchors on wide 
 
 Console navigation: Metrics, Practices, Organisations, Products, Packages & prices, Promo codes,
 Founding offer, Demo manager, Feature flags, Impersonation log, Jobs.
+
+## 8. Package editor (U-02-T01)
+
+U-02 adds three console frames: the package editor, the price timeline with its schedule dialog and
+the promo-code list. Sample data: a "Growth" package (names are client data, entered by the
+Platform Owner — never code).
+
+![Package editor](wireframes/09-package-editor.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Header actions | Status chip (Draft / Active / Retired); History (record history drawer, audit A-04); Save draft; Activate package (draft → active) or Retire package (active → retired). Activating with no product is refused with a message, never a disabled button without reason |
+| 2 | Product cards | One card per sellable product (main and active companion apps) with a switch; planned companion apps are greyed and can't be switched on; Practice and Client portal are free and part of every package (not toggled) |
+| 3 | Limits | Organisation users (number or Unlimited); practice users are never counted |
+| 4 | Founding offer | Switch: the package is eligible for the founding-1,000 offer (U-08) |
+| 5 | Live preview | The public pricing card exactly as the website (Q-01) will show it, from the unsaved form: name, description, monthly/annual toggle, current price, products, user limit, founding badge |
+| 6 | States | Empty list (first package), refused activation, field errors under each field (the API's field form) |
+
+Retired package: a notice says it is hidden from sign-up and how many organisations keep their
+subscription. Delete is offered for drafts only and is refused while anyone subscribes (retire instead).
+
+## 9. Price timeline and schedule dialog (U-02-T01)
+
+![Price timeline](wireframes/10-price-timeline.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Timeline per interval | Monthly and Annual rows; each price version is a bar from its start date to the next version's start (no end = open); the version in force today is highlighted |
+| 2 | Today marker | Red line with today's date; versions after it are "Scheduled" and can be deleted until they start |
+| 3 | Schedule a price change | Interval, new price (CAD, before GST/HST), start date (today or later) |
+| 4 | Impact | "N subscriptions affected at their next renewal" — the count comes from the API for the chosen package, interval and date; renewals before the date keep the old price; grandfathered subscriptions never change |
+
+A started price is never edited (Stripe prices are immutable): a change is always a new version.
+Two versions can't overlap; the API's error is shown in the dialog.
+
+## 10. Promo codes (U-02-T01)
+
+![Promo codes](wireframes/11-promo-codes.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | New promo code | Opens the create dialog |
+| 2 | Usage bar | Redemptions ÷ maximum ("7 of 10"); no maximum → "3 · no limit" |
+| 3 | Status and Expire | Active / Used up / Expired; Expire ends an active code now (redemptions already made are kept) |
+| 4 | Create dialog | Code (case-insensitive, unique), percent or fixed amount (CAD), duration (once, number of months, forever), maximum uses, expiry date, package restriction (empty = every package) |
+| 5 | States | Empty list, field error (code taken), load failure, refusal for anyone without `platform.catalogue.manage` |
