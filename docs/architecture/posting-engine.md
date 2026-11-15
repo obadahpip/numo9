@@ -112,6 +112,7 @@ the active organisation:
 | T06 | `tests/test_ledger_validation.py` (incl. Hypothesis) |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
+| T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |
 
 `tests/ledger_helpers.post_for_test(spec, reversal_of=None, audit=True)` posts the way the engine
 will (validate → lines while draft → number → Posted, one transaction) until `post_journal`

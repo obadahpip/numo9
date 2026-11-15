@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 221   Remaining: 2566   Progress: 7.93%
+TOTAL ATOMIC TASKS: 2787   Completed: 222   Remaining: 2565   Progress: 7.97%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -299,7 +299,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ C-02-T06 — Validation service (≥2 lines, balance per book, leaf/active accounts, Decimal precision)
 ✅ C-02-T11 — Trial balance query per book (accounting = both+accounting; tax = both+tax)
 ✅ C-02-T13 — Property test: random valid journal specs → TB both books = 0; random invalid → rejected
-❌ C-02-T17 — Performance: 100k-line fixture TB < 1 s
+✅ C-02-T17 — Performance: 100k-line fixture TB < 1 s
 
 [A-07]
 ❌ A-07-T01 — Notification model (recipient, org, category, title key, body params, link, read_at) + API list/mark-read
