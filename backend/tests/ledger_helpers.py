@@ -29,12 +29,18 @@ def account(
 
 
 def post_for_test(
-    spec: Any, *, organisation: Organisation | None = None, reversal_of: Any = None
+    spec: Any,
+    *,
+    organisation: Organisation | None = None,
+    reversal_of: Any = None,
+    audit: bool = True,
 ) -> Any:
     """Validate and post a journal the way the engine will (C-02-T08): lines written while the
     entry is a draft, then number, status Posted and posting time in the same transaction.
 
     Test fixture only — production code posts with ``numo9.ledger.services.post_journal``.
+    ``audit=False`` skips the entry's audit event (bulk insert) for high-volume property and
+    performance tests.
     """
     from django.db import transaction
     from django.utils import timezone
@@ -56,7 +62,10 @@ def post_for_test(
             book_scope=checked.book_scope,
             reversal_of=reversal_of,
         )
-        entry.save()
+        if audit:
+            entry.save()
+        else:
+            JournalEntry.objects.bulk_create([entry])
         JournalLine.objects.bulk_create(
             [
                 JournalLine(
@@ -72,10 +81,11 @@ def post_for_test(
             ]
         )
         number = allocate_journal_number(org)
+        posted_at = timezone.now()
         JournalEntry.objects.filter(pk=entry.pk).update(
-            status=JournalStatus.POSTED, number=number, posted_at=timezone.now()
+            status=JournalStatus.POSTED, number=number, posted_at=posted_at
         )
         if reversal_of is not None:
             JournalEntry.objects.filter(pk=reversal_of.pk).update(status=JournalStatus.REVERSED)
-    entry.refresh_from_db()
+    entry.status, entry.number, entry.posted_at = JournalStatus.POSTED, number, posted_at
     return entry

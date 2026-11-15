@@ -101,3 +101,18 @@ the active organisation:
   equal their credits are left out unless `include_zero`;
 - `total_debit`, `total_credit`, `total_balance` and `balanced`: every entry balances in each book
   it touches (C-02-T06), so each book's trial balance sums to zero.
+
+## Tests
+
+| Task | Tests |
+|---|---|
+| T02 | `tests/test_ledger_journal_models.py` |
+| T04 | `tests/test_ledger_append_only.py` |
+| T05 | `tests/test_ledger_sequence.py` (incl. threads on real connections) |
+| T06 | `tests/test_ledger_validation.py` (incl. Hypothesis) |
+| T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
+| T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
+
+`tests/ledger_helpers.post_for_test(spec, reversal_of=None, audit=True)` posts the way the engine
+will (validate → lines while draft → number → Posted, one transaction) until `post_journal`
+(C-02-T08) exists; it is a test fixture, never production code.
