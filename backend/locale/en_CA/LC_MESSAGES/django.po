@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 04:10-0500\n"
+"POT-Creation-Date: 2026-11-15 07:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1788,6 +1788,33 @@ msgstr ""
 msgid "Select up to %(max)s documents at a time."
 msgstr ""
 
+msgid "You belong to more than one practice. Choose the practice whose directory to open."
+msgstr ""
+
+#, python-format
+msgid "%(value)s isn't a valid value for the %(name)s filter."
+msgstr ""
+
+#, python-format
+msgid "The directory can't be sorted by %(value)s. Choose one of its columns."
+msgstr ""
+
+#, python-format
+msgid "The directory has no column called %(value)s."
+msgstr ""
+
+#, python-format
+msgid "Ask for page 1 or later, with 1 to %(max)s organisations a page."
+msgstr ""
+
+#, python-format
+msgid "You already have a view called %(name)s. Choose another name."
+msgstr ""
+
+#, python-format
+msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
+msgstr ""
+
 msgid "Waiting to start"
 msgstr ""
 
@@ -3215,4 +3242,85 @@ msgid "Assign staff to client organisations"
 msgstr ""
 
 msgid "Invite a client organisation's owner"
+msgstr ""
+
+msgid "Paid"
+msgstr ""
+
+msgid "Comfortable"
+msgstr ""
+
+msgid "Compact"
+msgstr ""
+
+msgid "Quarterly"
+msgstr ""
+
+msgid "Business Number"
+msgstr ""
+
+msgid "owner"
+msgstr ""
+
+msgid "owner email"
+msgstr ""
+
+msgid "trial ends"
+msgstr ""
+
+msgid "GST/HST cycle"
+msgstr ""
+
+msgid "payroll"
+msgstr ""
+
+msgid "overdue items"
+msgstr ""
+
+msgid "unfiled returns"
+msgstr ""
+
+msgid "search vector"
+msgstr ""
+
+msgid "refreshed at"
+msgstr ""
+
+msgid "organisation directory row"
+msgstr ""
+
+msgid "organisation directory rows"
+msgstr ""
+
+msgid "search and filters"
+msgstr ""
+
+msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
+msgstr ""
+
+msgid "columns"
+msgstr ""
+
+msgid "Shown columns, in order."
+msgstr ""
+
+msgid "sort"
+msgstr ""
+
+msgid "[\"-overdue\", \"name\"]"
+msgstr ""
+
+msgid "density"
+msgstr ""
+
+msgid "opens by default"
+msgstr ""
+
+msgid "saved directory view"
+msgstr ""
+
+msgid "saved directory views"
+msgstr ""
+
+msgid "See the practice's client organisations in the directory"
 msgstr ""

@@ -124,7 +124,12 @@ SYSTEM_ROLES: tuple[SystemRole, ...] = (
         _("Accountant"),
         _("Keeps the books of the clients they are assigned to."),
         _any(
-            _keys("practice.profile.view", "practice.staff.view", "practice.clients.create"),
+            _keys(
+                "practice.profile.view",
+                "practice.staff.view",
+                "practice.clients.create",
+                "practice.directory.view",
+            ),
             _books,
         ),
     ),
@@ -134,7 +139,7 @@ SYSTEM_ROLES: tuple[SystemRole, ...] = (
         _("Reviewer"),
         _("Reviews and approves work in assigned clients; changes nothing else."),
         _any(
-            _keys("practice.profile.view", "practice.staff.view"),
+            _keys("practice.profile.view", "practice.staff.view", "practice.directory.view"),
             lambda p: _org(p) and (p.read_only or p.action in {"approve", "review"}),
         ),
     ),
@@ -144,7 +149,7 @@ SYSTEM_ROLES: tuple[SystemRole, ...] = (
         _("Payroll specialist"),
         _("Runs payroll and HR for assigned clients."),
         _any(
-            _keys("practice.profile.view"),
+            _keys("practice.profile.view", "practice.directory.view"),
             _profile,
             _org_modules({"payroll", "hr"}, read_only={"reports", "documents", "contacts"}),
         ),

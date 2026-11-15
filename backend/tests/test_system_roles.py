@@ -73,6 +73,7 @@ def test_accountants_keep_books_but_do_not_manage_users() -> None:
         "practice.profile.view",
         "practice.staff.view",
         "practice.clients.create",
+        "practice.directory.view",  # the organisation directory (V-01)
     }
 
 

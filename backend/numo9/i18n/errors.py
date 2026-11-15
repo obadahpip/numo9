@@ -576,3 +576,33 @@ FILES_BULK_TOO_MANY = define(
     "files.bulk_too_many",
     _("Select up to %(max)s documents at a time."),
 )
+
+# ---- accountant workspace: organisation directory, saved views (V-01) -------------------------
+WORKSPACE_PRACTICE_REQUIRED = define(
+    "workspace.practice_required",
+    _("You belong to more than one practice. Choose the practice whose directory to open."),
+)
+WORKSPACE_BAD_FILTER = define(
+    "workspace.bad_filter",
+    _("%(value)s isn't a valid value for the %(name)s filter."),
+)
+WORKSPACE_BAD_SORT = define(
+    "workspace.bad_sort",
+    _("The directory can't be sorted by %(value)s. Choose one of its columns."),
+)
+WORKSPACE_BAD_COLUMN = define(
+    "workspace.bad_column",
+    _("The directory has no column called %(value)s."),
+)
+WORKSPACE_BAD_PAGE = define(
+    "workspace.bad_page",
+    _("Ask for page 1 or later, with 1 to %(max)s organisations a page."),
+)
+WORKSPACE_VIEW_NAME_TAKEN = define(
+    "workspace.view_name_taken",
+    _("You already have a view called %(name)s. Choose another name."),
+)
+WORKSPACE_VIEW_LIMIT = define(
+    "workspace.view_limit",
+    _("You have %(max)s saved views, the most allowed. Delete one you no longer use first."),
+)

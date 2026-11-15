@@ -33,6 +33,8 @@ export interface GridViewState {
   filters: Record<string, string>;
   hiddenColumns: string[];
   density: Density;
+  /** Column ids in display order (V-01 column chooser reorder); absent = the columns' order. */
+  columnOrder?: string[];
 }
 
 export const EMPTY_VIEW: GridViewState = {
@@ -62,6 +64,10 @@ export interface DataGridLabels {
   /** Bulk bar count, e.g. (12) → "12 selected". */
   selectedCount: (count: number) => string;
   clearSelection: string;
+  /** Column chooser reorder hint, e.g. "Drag to reorder, or Alt+↑/↓" (V-01). */
+  reorderHint?: string;
+  /** Column chooser: announced after a move, e.g. ("BN", 2, 9) → "BN moved to position 2 of 9". */
+  columnMoved?: (column: string, position: number, total: number) => string;
   /** Live region after filtering, e.g. (143, 2000) → "143 of 2,000 organisations". */
   resultCount: (shown: number, total: number) => string;
   loading: string;

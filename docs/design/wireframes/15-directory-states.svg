@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — organisation directory states (V-01)">
+<title>Numo9 wireframe — organisation directory states (V-01)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="260" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Directory</text>
+<rect x="260" y="52" width="72" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="358" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Dashboard</text>
+<text x="462" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Groups &amp; tags</text>
+<text x="592" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Go to organisation…   Ctrl+K</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="0" y="56" width="240" height="844" rx="0" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="20" y="80" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">SAVED VIEWS</text>
+<rect x="8" y="82" width="224" height="30" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<rect x="8" y="82" width="3" height="30" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="20" y="102" font-size="13" fill="#111111" font-weight="600" text-anchor="start">All organisations</text>
+<text x="264" y="100" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Organisations</text>
+<rect x="264" y="140" width="560" height="350" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="280" y="166" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">A · First run — no organisations yet</text>
+<rect x="852" y="140" width="560" height="350" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="868" y="166" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">B · No results for the search or filters</text>
+<rect x="264" y="520" width="560" height="350" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="280" y="546" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">C · Loading (skeleton rows)</text>
+<rect x="852" y="520" width="560" height="350" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="868" y="546" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">D · Could not load (retry)</text>
+<rect x="494" y="200" width="100" height="72" rx="12" fill="#FFFBE6" stroke="#FFD100" stroke-width="1"/>
+<text x="544" y="244" font-size="28" fill="#111111" font-weight="700" text-anchor="middle">▦</text>
+<text x="544" y="306" font-size="16" fill="#111111" font-weight="700" text-anchor="middle">Your practice has no organisations yet</text>
+<text x="544" y="330" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Create a client's organisation, or open the demo to look around.</text>
+<rect x="384" y="354" width="170" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="469.0" y="374.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Create organisation</text>
+<rect x="564" y="354" width="140" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="634.0" y="374.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Open demo</text>
+<text x="544" y="420" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">Both actions are keyboard reachable; focus starts on “Create organisation”.</text>
+<circle cx="804" cy="160" r="10" fill="#B42318"/>
+<text x="804" y="164" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<rect x="868" y="184" width="300" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="878" y="205" font-size="13" fill="#111111" font-weight="400" text-anchor="start">quebec bakery</text>
+<rect x="1178" y="184" width="130" height="32" rx="16" fill="#FFFBE6" stroke="#111111" stroke-width="1"/>
+<text x="1243.0" y="205" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Province: NB ×</text>
+<text x="1132" y="290" font-size="16" fill="#111111" font-weight="700" text-anchor="middle">No organisations match</text>
+<text x="1132" y="314" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Nothing matches “quebec bakery” with Province: NB.</text>
+<rect x="1042" y="340" width="180" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1132.0" y="360.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Clear search and filters</text>
+<text x="1132" y="402" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">Archived organisations are hidden — “Show archived” in Filters.</text>
+<circle cx="1392" cy="160" r="10" fill="#B42318"/>
+<text x="1392" y="164" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="280" y="564" width="528" height="32" rx="0" fill="#F2F4F7" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="292" y="610" width="150" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="396" y="610" width="85" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="500" y="610" width="50" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="604" y="610" width="65" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="708" y="610" width="50" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="292" y="650" width="143" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="396" y="650" width="78" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="500" y="650" width="43" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="604" y="650" width="58" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="708" y="650" width="43" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="292" y="690" width="136" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="396" y="690" width="71" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="500" y="690" width="36" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="604" y="690" width="51" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="708" y="690" width="66" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="292" y="730" width="129" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="396" y="730" width="64" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="500" y="730" width="59" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="604" y="730" width="74" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="708" y="730" width="59" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="292" y="770" width="122" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="396" y="770" width="87" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="500" y="770" width="52" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="604" y="770" width="67" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="708" y="770" width="52" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="292" y="810" width="145" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="396" y="810" width="80" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="500" y="810" width="45" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="604" y="810" width="60" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="708" y="810" width="45" height="12" rx="6" fill="#EBEDF0" stroke="#EBEDF0" stroke-width="1"/>
+<text x="544" y="858" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">Skeleton keeps the 40 px row grid; screen readers hear “Loading organisations”.</text>
+<circle cx="804" cy="540" r="10" fill="#B42318"/>
+<text x="804" y="544" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<rect x="1082" y="580" width="100" height="72" rx="12" fill="#FEF3F2" stroke="#B42318" stroke-width="1"/>
+<text x="1132" y="626" font-size="30" fill="#B42318" font-weight="800" text-anchor="middle">!</text>
+<text x="1132" y="686" font-size="16" fill="#111111" font-weight="700" text-anchor="middle">The directory didn't load</text>
+<text x="1132" y="710" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Check your connection, then try again. Nothing was changed.</text>
+<rect x="1002" y="734" width="120" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1062.0" y="754.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Try again</text>
+<rect x="1132" y="734" width="140" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1202.0" y="754.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Report problem</text>
+<text x="1132" y="800" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">Error reference shown for support; the search and filters are kept.</text>
+<circle cx="1392" cy="540" r="10" fill="#B42318"/>
+<text x="1392" y="544" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+</svg>

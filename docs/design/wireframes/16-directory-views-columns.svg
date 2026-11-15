@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — directory saved views, filters with counts and column chooser (V-01)">
+<title>Numo9 wireframe — directory saved views, filters with counts and column chooser (V-01)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="260" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Directory</text>
+<rect x="260" y="52" width="72" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="358" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Dashboard</text>
+<text x="462" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Groups &amp; tags</text>
+<text x="592" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Go to organisation…   Ctrl+K</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="0" y="56" width="240" height="844" rx="0" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="20" y="80" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">SAVED VIEWS</text>
+<text x="20" y="102" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">All organisations</text>
+<rect x="8" y="116" width="224" height="30" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<rect x="8" y="116" width="3" height="30" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="20" y="136" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Ontario retail</text>
+<text x="20" y="170" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Trials ending this month</text>
+<text x="20" y="204" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Payroll clients</text>
+<text x="20" y="234" font-size="13" fill="#111111" font-weight="600" text-anchor="start">+ Save current view</text>
+<circle cx="228" cy="80" r="10" fill="#B42318"/>
+<text x="228" y="84" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<rect x="150" y="118" width="160" height="120" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="166" y="142" font-size="13" fill="#111111" font-weight="500" text-anchor="start">Update with changes</text>
+<text x="166" y="170" font-size="13" fill="#111111" font-weight="500" text-anchor="start">Rename…</text>
+<text x="166" y="198" font-size="13" fill="#111111" font-weight="500" text-anchor="start">Set as default</text>
+<text x="166" y="226" font-size="13" fill="#B42318" font-weight="500" text-anchor="start">Delete…</text>
+<text x="330" y="100" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Organisations</text>
+<text x="330" y="124" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">143 of 2,000 organisations · view “Ontario retail” (changed)</text>
+<rect x="1180" y="80" width="110" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1235.0" y="100.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Save view</text>
+<rect x="1300" y="80" width="120" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1360.0" y="100.0" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">New organisation</text>
+<rect x="330" y="148" width="380" height="36" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="340" y="170" font-size="13" fill="#6B7280" font-weight="400" text-anchor="start">Search name, BN, owner, tag…   /</text>
+<rect x="720" y="150" width="120" height="32" rx="16" fill="#FFFBE6" stroke="#111111" stroke-width="1"/>
+<text x="780.0" y="171" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Province: ON ×</text>
+<rect x="848" y="150" width="110" height="32" rx="16" fill="#FFFBE6" stroke="#111111" stroke-width="1"/>
+<text x="903.0" y="171" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Status: Paid ×</text>
+<rect x="966" y="150" width="90" height="32" rx="16" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1011.0" y="171" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">+ Filters</text>
+<rect x="1240" y="150" width="90" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1285.0" y="170.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Columns</text>
+<rect x="1338" y="150" width="82" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1379.0" y="170.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Compact</text>
+<rect x="330" y="196" width="330" height="574" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="346" y="222" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Filters</text>
+<circle cx="646" cy="210" r="10" fill="#B42318"/>
+<text x="646" y="214" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<text x="346" y="244" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Package</text>
+<rect x="346" y="255" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="268" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Essentials</text>
+<text x="640" y="268" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">61</text>
+<rect x="346" y="275" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="288" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Growth</text>
+<text x="640" y="288" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">58</text>
+<rect x="346" y="295" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="308" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Complete</text>
+<text x="640" y="308" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">24</text>
+<text x="346" y="332" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Status</text>
+<rect x="346" y="343" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="356" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Trial</text>
+<text x="640" y="356" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">31</text>
+<rect x="346" y="363" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="376" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Paid</text>
+<text x="640" y="376" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">112</text>
+<rect x="346" y="383" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="396" font-size="13" fill="#9AA1AC" font-weight="400" text-anchor="start">Demo</text>
+<text x="640" y="396" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">0</text>
+<rect x="346" y="403" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="416" font-size="13" fill="#9AA1AC" font-weight="400" text-anchor="start">Read-only</text>
+<text x="640" y="416" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">0</text>
+<text x="346" y="440" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Province</text>
+<rect x="346" y="451" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="464" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Ontario</text>
+<text x="640" y="464" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">143</text>
+<rect x="346" y="471" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="484" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Quebec</text>
+<text x="640" y="484" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">512</text>
+<rect x="346" y="491" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="504" font-size="13" fill="#111111" font-weight="400" text-anchor="start">British Columbia</text>
+<text x="640" y="504" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">208</text>
+<text x="346" y="528" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Fiscal year end</text>
+<rect x="346" y="539" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="552" font-size="13" fill="#111111" font-weight="400" text-anchor="start">December</text>
+<text x="640" y="552" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">97</text>
+<rect x="346" y="559" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="572" font-size="13" fill="#111111" font-weight="400" text-anchor="start">March</text>
+<text x="640" y="572" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">22</text>
+<rect x="346" y="579" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="592" font-size="13" fill="#111111" font-weight="400" text-anchor="start">June</text>
+<text x="640" y="592" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">24</text>
+<text x="346" y="616" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">GST/HST cycle</text>
+<rect x="346" y="627" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="640" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Monthly</text>
+<text x="640" y="640" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">12</text>
+<rect x="346" y="647" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="660" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Quarterly</text>
+<text x="640" y="660" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">88</text>
+<rect x="346" y="667" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="680" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Annual</text>
+<text x="640" y="680" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">43</text>
+<text x="346" y="704" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Payroll</text>
+<rect x="346" y="715" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="728" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Yes</text>
+<text x="640" y="728" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">54</text>
+<rect x="346" y="735" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="372" y="748" font-size="13" fill="#111111" font-weight="400" text-anchor="start">No</text>
+<text x="640" y="748" font-size="13" fill="#5B6472" font-weight="500" text-anchor="end">89</text>
+<text x="346" y="760" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Counts = organisations you would see if you added that option.</text>
+<rect x="676" y="196" width="744" height="560" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="677" y="197" width="742" height="40" rx="0" fill="#F2F4F7" stroke="#F2F4F7" stroke-width="1"/>
+<text x="692" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">Organisation ▲</text>
+<text x="892" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">BN</text>
+<text x="1002" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">Province</text>
+<text x="1072" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">Package</text>
+<text x="1162" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">Status</text>
+<text x="1252" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">FYE</text>
+<text x="1312" y="222" font-size="12" fill="#111111" font-weight="700" text-anchor="start">Overdue</text>
+<rect x="677" y="237" width="742" height="40" rx="0" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<text x="692" y="262" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.</text>
+<text x="892" y="262" font-size="13" fill="#111111" font-weight="400" text-anchor="start">123 456 782</text>
+<text x="1002" y="262" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ON</text>
+<text x="1072" y="262" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Growth</text>
+<text x="1162" y="262" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Paid</text>
+<text x="1252" y="262" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Dec 31</text>
+<text x="1312" y="262" font-size="13" fill="#111111" font-weight="400" text-anchor="start">3</text>
+<line x1="677" y1="277" x2="1419" y2="277" stroke="#EBEDF0" stroke-width="1"/>
+<text x="692" y="302" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Érable Bakery Inc.</text>
+<text x="892" y="302" font-size="13" fill="#111111" font-weight="400" text-anchor="start">874 512 993</text>
+<text x="1002" y="302" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ON</text>
+<text x="1072" y="302" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Essentials</text>
+<text x="1162" y="302" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Paid</text>
+<text x="1252" y="302" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Mar 31</text>
+<text x="1312" y="302" font-size="13" fill="#111111" font-weight="400" text-anchor="start">0</text>
+<line x1="677" y1="317" x2="1419" y2="317" stroke="#EBEDF0" stroke-width="1"/>
+<text x="692" y="342" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Toronto Tile Co.</text>
+<text x="892" y="342" font-size="13" fill="#111111" font-weight="400" text-anchor="start">301 778 214</text>
+<text x="1002" y="342" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ON</text>
+<text x="1072" y="342" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Complete</text>
+<text x="1162" y="342" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Paid</text>
+<text x="1252" y="342" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Dec 31</text>
+<text x="1312" y="342" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1</text>
+<line x1="677" y1="357" x2="1419" y2="357" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1180" y="190" width="240" height="330" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="1196" y="216" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Columns — drag to reorder</text>
+<circle cx="1406" cy="204" r="10" fill="#B42318"/>
+<text x="1406" y="208" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<text x="1196" y="252" font-size="14" fill="#9AA1AC" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="240" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="253" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Organisation (always shown)</text>
+<text x="1196" y="282" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="270" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="283" font-size="13" fill="#111111" font-weight="400" text-anchor="start">BN</text>
+<text x="1196" y="312" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="300" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="313" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Province</text>
+<text x="1196" y="342" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="330" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="343" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Package</text>
+<rect x="1188" y="326" width="224" height="26" rx="4" fill="none" stroke="#FFD100" stroke-width="2"/>
+<text x="1196" y="372" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="360" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="373" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Status</text>
+<text x="1196" y="402" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="390" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="403" font-size="13" fill="#111111" font-weight="400" text-anchor="start">FYE</text>
+<text x="1196" y="432" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="420" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="433" font-size="13" fill="#111111" font-weight="400" text-anchor="start">GST/HST cycle</text>
+<text x="1196" y="462" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="450" width="16" height="16" rx="3" fill="#FFFFFF" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="463" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Owner</text>
+<text x="1196" y="492" font-size="14" fill="#5B6472" font-weight="700" text-anchor="start">⠿</text>
+<rect x="1214" y="480" width="16" height="16" rx="3" fill="#111111" stroke="#5B6472" stroke-width="1"/>
+<text x="1240" y="493" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Overdue</text>
+<text x="1196" y="512" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Alt+↑/↓ moves the focused column.</text>
+<text x="330" y="806" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">1 Saved views rail: personal views, saved on the server (follow the user to any device); default view opens first.</text>
+<text x="330" y="826" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">2 Filters panel: facet counts over the visible set; selecting an option narrows to exactly that count.</text>
+<text x="330" y="846" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">3 Column chooser (shared @numo9/ui component): show/hide + drag or Alt+↑/↓ to reorder; stored in the view.</text>
+</svg>

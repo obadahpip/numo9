@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "numo9.contacts",
     # File storage, documents inbox, attachments, inbound email (A-06).
     "numo9.files",
+    # Accountant workspace: organisation directory, saved views (V-01).
+    "numo9.workspace",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -153,6 +155,7 @@ SPECTACULAR_SETTINGS = {
         "PromoStatusEnum": "numo9.packages.models.PromoStatus",  # U-02-T07
         "PriceStateEnum": "numo9.packages.serializers.PRICE_STATES",  # U-02-T07
         "BulkActionEnum": "numo9.files.listing.BULK_ACTION_CHOICES",  # A-06-T10
+        "DirectoryStatusEnum": "numo9.workspace.models.DirectoryStatus",  # V-01-T05
         # Feature keys' action (U-01): named once a second "action" choice set exists (A-06-T10).
         "FeatureActionEnum": [("read", "read"), ("write", "write"), ("approve", "approve")],
     },
@@ -208,6 +211,10 @@ TENANT_SWEEP_EXEMPT = [
     r"^api/v1/inbound/email$",
     # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
     r"^api/v1/platform/",
+    # Organisation directory and saved views of a practice (V-01): no organisation in the URL; rows
+    # are limited to the organisations the user may access in that practice (numo9.workspace.
+    # search.directory_scope), proven by tests/test_workspace_isolation.py.
+    r"^api/v1/practice/",
 ]
 
 # Overridden per environment.
@@ -405,6 +412,12 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.contacts.exemption_reminders": {
         "task": "numo9.contacts.exemption_reminders",
         "schedule": crontab(minute=23, hour=11),  # 11:23 UTC = 06:23 / 07:23 Toronto
+    },
+    # Organisation directory (V-01-T03): full rebuild of the summary rows; signals keep them current
+    # during the day, this repairs any drift (a missed signal, a provider's late data).
+    "numo9.workspace.rebuild_directory": {
+        "task": "numo9.workspace.rebuild_directory",
+        "schedule": crontab(minute=41, hour=8),  # 08:41 UTC = 03:41 / 04:41 Toronto
     },
 }
 

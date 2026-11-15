@@ -30,6 +30,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 11 | Contacts list with role tabs | B-01-T14 | Six role tabs with counts, title per tab, saved views, search, column chooser, bulk bar, archive |
 | 12 | Contact form + live duplicate panel | B-01-T15, T16 | Section anchors, role chips, people, Canadian/foreign address, currency, credit warn/block, defaults, duplicate panel |
 | 13 | Merge contacts dialog | B-01-T17 | Field chooser per row, "what moves" preview, alias, one-step merge, currency refusal |
+| 14 | Organisation directory states | V-01-T14 | First-run empty state (Create organisation / Open demo), no results, loading skeleton, error with retry |
+| 15 | Directory saved views, filters, column chooser | V-01-T11, T12 | Saved views rail and item menu, filters panel with counts, column chooser with reorder |
+| 16 | Go to organisation (`Ctrl/⌘+K`) and keyboard map | V-01-T13 | Dialog search (name, BN with spaces), keys for the directory |
 
 ## 1. Application shell
 
@@ -216,3 +219,35 @@ contact); contact numbers use the `C-0001` pattern.
 | 3 | What moves | Counts of every record that points at the merged contact (invoices, bills, credit notes, journal lines, people, attachments) from the merge registry; the merged contact number stays as an alias; its history shows on the kept contact |
 | 4 | Refusal | Contacts in different currencies can't be merged (message names both currencies); other refusals the same way, never a disabled button without reason |
 | 5 | Merge | Runs in one transaction: if any step fails nothing changes; the merge is in the audit log |
+
+## 14. Organisation directory states (V-01-T01)
+
+UX brief: [Organisation directory — UX research brief](directory-ux-brief.md).
+
+![Organisation directory states](wireframes/15-directory-states.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | First run | The practice has no organisations: "Create organisation" (primary, focused first) and "Open demo" |
+| 2 | No results | Says what was searched and filtered; "Clear search and filters"; archived organisations are hidden unless "Show archived" is on |
+| 3 | Loading | Skeleton rows at the grid's row height; "Loading organisations" in the live region |
+| 4 | Error | "The directory didn't load", Try again (keeps the search and filters), Report problem |
+
+## 15. Directory saved views, filters with counts, column chooser (V-01-T01)
+
+![Directory saved views, filters and column chooser](wireframes/16-directory-views-columns.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Saved views rail | The user's own views, stored on the server (they follow the user after logout/login and on another device); one can be the default; item menu: Update with changes, Rename, Set as default, Delete. A view with unsaved changes reads "(changed)" |
+| 2 | Filters panel | Package, Status, Province, Fiscal year end, GST/HST cycle, Payroll, Overdue items, Unfiled returns, Show archived. Each option shows the number of organisations the list would show with that option added (every other filter applied); zero options stay, dimmed |
+| 3 | Column chooser | Shared `@numo9/ui` component: show/hide and reorder (drag handle or `Alt+↑/↓`); the Organisation column always stays; order and visibility are saved in the view |
+
+## 16. Go to organisation and keyboard map (V-01-T01)
+
+![Go to organisation and keyboard map](wireframes/17-org-goto.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Go to organisation | `Ctrl/⌘+K` anywhere in the app; the same search as the directory (accent-insensitive name, BN with or without spaces, owner, tag); matches highlighted; `Enter` opens, `Ctrl/⌘+Enter` opens in a new tab, `Esc` closes and returns focus |
+| 2 | Keyboard map | `/` search, `↓` into the rows, `↑/↓ PgUp/PgDn Home/End` move, `Enter` open, `Ctrl/⌘+Enter` new tab, `F` filters panel, `Ctrl/⌘+K` go to organisation |

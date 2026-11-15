@@ -402,6 +402,153 @@
       "title": "Possible duplicates ({count})"
     }
   },
+  "directory": {
+    "breadcrumb": "Directory",
+    "cancel": "Cancel",
+    "close": "Close",
+    "col": {
+      "actions": "Actions",
+      "bn": "BN",
+      "fye": "FYE",
+      "gstCycle": "GST/HST cycle",
+      "industry": "Industry",
+      "legalName": "Legal name",
+      "name": "Organisation",
+      "overdue": "Overdue",
+      "owner": "Owner",
+      "package": "Package",
+      "payroll": "Payroll",
+      "province": "Province",
+      "status": "Status",
+      "tags": "Tags",
+      "unfiled": "Unfiled"
+    },
+    "create": {
+      "body": "Starts the client’s trial, assigned to your practice. You can invite the owner afterwards.",
+      "button": "Create organisation",
+      "failed": "The organisation couldn't be created. Try again.",
+      "name": "Organisation name",
+      "nameRequired": "Enter the organisation's name.",
+      "title": "New organisation"
+    },
+    "empty": {
+      "body": "Create a client's organisation, or open the demo to look around.",
+      "bodyNoDemo": "Create a client's organisation to get started.",
+      "create": "Create organisation",
+      "demo": "Open demo",
+      "title": "Your practice has no organisations yet"
+    },
+    "error": {
+      "body": "Verify your connection, then try again. Nothing was changed.",
+      "retry": "Try again",
+      "title": "The directory didn't load"
+    },
+    "facet": {
+      "fye": "Fiscal year end",
+      "gstCycle": "GST/HST cycle",
+      "none": "None in this list",
+      "overdue": "Overdue items",
+      "package": "Package",
+      "payroll": "Payroll",
+      "province": "Province",
+      "status": "Status",
+      "tag": "Tags",
+      "unfiled": "Unfiled returns"
+    },
+    "filters": {
+      "button": "Filters",
+      "buttonCount": "Filters ({count, number})",
+      "close": "Close filters",
+      "count": ", {count, plural, one {# organisation} other {# organisations}}",
+      "hint": "Numbers show how many organisations you would see with that option added.",
+      "remove": "Remove filter {chip}",
+      "showArchived": "Show archived organisations",
+      "title": "Filters"
+    },
+    "goto": {
+      "button": "Go to organisation…",
+      "failed": "Search failed. Try again.",
+      "hint": "↑/↓ move · Enter opens · Ctrl/⌘+Enter opens in a new tab · Esc closes",
+      "keys": "Ctrl+K",
+      "openDirectory": "Open the directory",
+      "results": "{count, plural, =0 {No organisations match} one {# result} other {# results}}",
+      "search": "Organisation name, BN, owner or tag",
+      "title": "Go to organisation",
+      "typing": "Type part of a name or BN."
+    },
+    "grid": {
+      "all": "All",
+      "chip": "{column}: {value}",
+      "clear": "Clear search and filters",
+      "clearSelection": "Clear selection",
+      "columns": "Columns",
+      "comfortable": "Comfortable",
+      "compact": "Compact",
+      "density": "Row height",
+      "moved": "{column} moved to position {position, number} of {total, number}",
+      "name": "Organisations",
+      "reorder": "Drag to reorder, or press Alt+↑ / Alt+↓.",
+      "results": "{shown, number} of {total, plural, one {# organisation} other {# organisations}}",
+      "search": "Search organisations",
+      "selectAll": "Select all organisations shown",
+      "selectRow": "Select {row}",
+      "selected": "{count, number} selected"
+    },
+    "loading": "Loading organisations",
+    "newOrganisation": "New organisation",
+    "no": "No",
+    "noResults": {
+      "body": "Try another spelling or fewer filters. Archived organisations show only with “Show archived organisations”.",
+      "title": "No organisations match"
+    },
+    "row": {
+      "actions": "Actions for {name}",
+      "open": "Open",
+      "openNewTab": "Open in new tab",
+      "openNewTabFor": "Open in new tab: {name}"
+    },
+    "searchPlaceholder": "Search name, BN, owner, tag… (/)",
+    "status": {
+      "archived": "Archived",
+      "demo": "Demo",
+      "paid": "Paid",
+      "readOnly": "Read-only",
+      "trial": "Trial",
+      "trialDays": "Trial {days, number} d"
+    },
+    "summary": "{total, plural, one {# organisation} other {# organisations}} assigned to {practice}",
+    "summaryFiltered": "{count, number} of {total, plural, one {# organisation} other {# organisations}}",
+    "title": "Organisations",
+    "viewChanged": "View “{name}” (changed)",
+    "viewOpen": "View “{name}”",
+    "views": {
+      "all": "All organisations",
+      "default": "(default)",
+      "delete": "Delete…",
+      "deleteBody": "The view is removed for you. Organisations are not changed.",
+      "deleteButton": "Delete view",
+      "deleteTitle": "Delete view “{name}”?",
+      "deleted": "View “{name}” deleted",
+      "failed": "The view couldn't be saved. Try again.",
+      "loadFailed": "Your saved views couldn't be loaded.",
+      "menu": "Options for view {name}",
+      "nameLabel": "View name",
+      "nameRequired": "Enter a name for the view.",
+      "rename": "Rename…",
+      "renameButton": "Rename",
+      "renameTitle": "Rename view",
+      "save": "Save current view",
+      "saveBody": "Saves the search, filters, columns and sort. Only you see your views.",
+      "saveButton": "Save view",
+      "saveChanges": "Save view",
+      "saveTitle": "Save view",
+      "saved": "View “{name}” saved",
+      "setDefault": "Set as default",
+      "title": "Saved views",
+      "update": "Update with changes"
+    },
+    "yes": "Yes"
+  },
   "entitlements": {
     "banner": {
       "askOwner": "Ask the organisation's owner to reactivate it.",
