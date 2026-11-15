@@ -9,8 +9,9 @@ Each test observes a row of the Phase 0 gap table (xero_teardown §3.1, §3.2):
 - gap-20 — Xero has no contact currency, no withholding/T4A flag, no duplicate warning and only
   "block" for the credit limit. Numo9 contacts carry a currency (ISO 4217), a T4A flag, a credit
   limit with warn or block, duplicates are found while typing (name, email, BN, tax ID) and every
-  organisation has a payment-terms master (B-01-T05). The exemption certificate (B-01-T08) and the
-  credit override approval (B-01-T13) join this gap's tests with their tasks;
+  organisation has a payment-terms master (B-01-T05); a contact keeps its exemption certificate
+  (number, file, expiry — flagged once expired, B-01-T08). The credit override approval (B-01-T13)
+  joins this gap's tests with its task;
 - fixture — one customer per province and territory (``fixtures/contacts_ca/contacts.json``): each
   defaults to its province's sales tax, and the Quebec contact to GST + QST (deliverable
   acceptance).
@@ -150,6 +151,24 @@ def test_duplicates_are_found_while_typing(org: Organisation) -> None:
     assert [m.reasons for m in find_duplicates(name="Maple Suply")] == [[Reason.NAME]]
     assert find_duplicates(bn="123456782")[0].reasons == [Reason.BN]
     assert find_duplicates(tax_id="US123456789")[0].reasons == [Reason.TAX_ID]
+
+
+@pytest.mark.gap("gap-20")
+def test_contact_keeps_its_exemption_certificate_and_flags_expiry(org: Organisation) -> None:
+    from numo9.contacts.models import ExemptionCertificate, ExemptionState
+    from numo9.files.models import Document
+
+    reseller = contact(org, "Prairie Resale Ltd.")
+    scan = Document(organisation=org, name="pst-exemption.pdf", file_key="org/x/pst-exemption.pdf")
+    scan.save()
+    certificate = ExemptionCertificate(
+        contact=reseller, number="PST-778899", document=scan, expires_on=date(2026, 11, 13)
+    )
+    certificate.save()
+    assert [c.number for c in reseller.exemption_certificates.all()] == ["PST-778899"]
+    assert certificate.document == scan
+    assert certificate.state(date(2026, 11, 13)) == ExemptionState.EXPIRING
+    assert certificate.state(AS_OF) == ExemptionState.EXPIRED  # flagged the day after
 
 
 # ---- fixture: every province defaults to its own sales tax, QC → GST+QST ---------------------

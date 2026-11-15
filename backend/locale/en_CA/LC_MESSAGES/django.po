@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 15:18-0500\n"
+"POT-Creation-Date: 2026-11-15 03:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1040,6 +1040,65 @@ msgstr ""
 msgid "Late interest is from 0 to 100 % a year."
 msgstr ""
 
+msgid "Valid"
+msgstr ""
+
+msgid "Expires soon"
+msgstr ""
+
+msgid "Expired"
+msgstr ""
+
+msgid "certificate number"
+msgstr ""
+
+msgid "certificate file"
+msgstr ""
+
+msgid "issued on"
+msgstr ""
+
+msgid "expires on"
+msgstr ""
+
+msgid "Leave empty when the certificate has no expiry date."
+msgstr ""
+
+msgid "notes"
+msgstr ""
+
+msgid "reminder sent"
+msgstr ""
+
+msgid "reminder sent for expiry date"
+msgstr ""
+
+msgid "exemption certificate"
+msgstr ""
+
+msgid "exemption certificates"
+msgstr ""
+
+msgid "Enter the certificate number."
+msgstr ""
+
+#, python-format
+msgid "This contact already has certificate %(number)s."
+msgstr ""
+
+msgid "The expiry date can't be before the issue date."
+msgstr ""
+
+msgid "Choose a document of this organisation."
+msgstr ""
+
+msgid "This document was deleted: upload the certificate again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is quarantined (virus found): upload a clean copy."
+msgstr ""
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1249,9 +1308,6 @@ msgid "attachment"
 msgstr ""
 
 msgid "attachments"
-msgstr ""
-
-msgid "Choose a document of this organisation."
 msgstr ""
 
 msgid "Message-ID"
@@ -2545,9 +2601,6 @@ msgid "Forever"
 msgstr ""
 
 msgid "Used up"
-msgstr ""
-
-msgid "Expired"
 msgstr ""
 
 msgid "Stored upper-case; organisations may type it in any case."

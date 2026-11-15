@@ -169,6 +169,9 @@ STRIPE_API_BASE = env_str("STRIPE_API_BASE", "")
 NUMO9_STRIPE_GATEWAY = ""
 # Subscriptions as packages see them (U-02-T05, T10): nobody subscribes until U-03/U-04.
 NUMO9_SUBSCRIPTION_SOURCE = "numo9.packages.subscriptions.NoSubscriptions"
+# Exemption certificate expiry reminders (B-01-T08): called once per reminder; a log line until
+# notifications (A-07) take over.
+NUMO9_EXEMPTION_REMINDER_HOOK = "numo9.contacts.exemptions.log_reminder"
 
 # Third-party DRF views without a permission declaration (rbac.E004): dotted path -> why safe.
 RBAC_EXEMPT_VIEWS = {
@@ -389,6 +392,11 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.jobs.purge_job_runs": {
         "task": "numo9.jobs.purge_job_runs",
         "schedule": crontab(minute=17, hour=7),  # 07:17 UTC = 02:17 / 03:17 Toronto
+    },
+    # Exemption certificate expiry reminders (B-01-T08): 30 days before and once expired.
+    "numo9.contacts.exemption_reminders": {
+        "task": "numo9.contacts.exemption_reminders",
+        "schedule": crontab(minute=23, hour=11),  # 11:23 UTC = 06:23 / 07:23 Toronto
     },
 }
 

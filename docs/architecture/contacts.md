@@ -4,8 +4,8 @@
 |---|---|
 | **Deliverable** | B-01 · Contact model, Phase 0 (component B — Contacts) |
 | **Branch** | `feature/B-01-contact-model` |
-| **Code** | `backend/numo9/contacts/` (models, validators, fields, tax, custom_fields, duplicates); `frontend/src/contacts/` (API client, live duplicate panel) |
-| **Depends on** | A-01 (tenancy: `OrgOwnedModel`, row-level security), A-04 (audit: `AuditedModel`), A-05 (numbering, address validators) |
+| **Code** | `backend/numo9/contacts/` (models, validators, fields, tax, custom_fields, duplicates, exemptions, tasks); `frontend/src/contacts/` (API client, live duplicate panel) |
+| **Depends on** | A-01 (tenancy: `OrgOwnedModel`, row-level security), A-04 (audit: `AuditedModel`), A-05 (numbering, address validators), A-06 (certificate files), A-08 (reminder job) |
 | **Used by** | D sales and E purchases (customer/supplier, defaults, credit check), G-02 tax engine (province tax hint), B-02 statements, B-03 import/export, M payroll (employee role), R-01 currencies |
 | **Gaps** | gap-19 (explicit roles, titled lists), gap-20 (currency, terms master, withholding flag, exemption certificate, duplicate warning, credit warn/block), gap-39 (Province / Postal code), gap-43 (custom fields) |
 | **Wireframes** | [Phase 0 wireframes §11–13](../design/wireframes.md#11-contacts-list-with-role-tabs-b-01-t01) |
@@ -260,6 +260,41 @@ audit events (part of creating the organisation); later changes are audited.
 | `2_10_net_30` | 2/10 net 30 | 30 days after; 2 % discount within 10 days |
 | `eom` | End of month (EOM) | 0 days after the end of the document month |
 
+## Exemption certificates (B-01-T08)
+
+`ExemptionCertificate` — a sales-tax exemption certificate a contact gave the organisation (gap-20:
+Xero keeps none on the contact; a PST or QST exemption is a tax rate and the paper lives elsewhere).
+Business record (`OrgOwnedModel`, audited); a contact may hold several (one per number).
+
+| Field | Rule |
+|---|---|
+| `contact` | The contact of this organisation that holds it (`contacts.exemption.contact`) |
+| `number` | Required (`contacts.exemption.number_required`); spaces collapsed; unique on the contact, case-insensitive, among certificates not removed (`contacts.exemption.number_taken`, constraint `contacts_exemption_number_unique`) |
+| `document` | The scanned certificate — a document of the organisation's file store (A-06): never another organisation's (`contacts.exemption.document`), a deleted one (`.document_deleted`) or a quarantined one (`.document_quarantined`). A document with a certificate can't be hard-deleted (`PROTECT`) |
+| `issued_on`, `expires_on` | Optional; empty `expires_on` = no expiry date. The expiry is never before the issue date (`contacts.exemption.expiry_before_issue`, check `contacts_exemption_dates_valid`) |
+| `notes` | Free text, 500 characters |
+| `reminded_state`, `reminded_for` | Bookkeeping of the reminder job (not editable, not audited) |
+
+**State** — `certificate.state(on)` is `valid`, `expiring` (expiry date within 30 days,
+`EXEMPTION_REMINDER_DAYS`) or `expired`: a certificate is valid through its expiry date and
+**flagged expired from the next day**, in the organisation's time zone (`organisation_today(org)`),
+not the server's. `is_expired()` and `days_left()` (negative once expired) read the same date. The
+tax engine (G-02) stops applying an expired certificate; the contact form (B-01-T15) shows the flag.
+
+**Expiry reminder hook** — the daily platform job `numo9.contacts.exemption_reminders`
+(`contacts/tasks.py`, beat 11:23 UTC) calls `numo9.contacts.exemptions.send_reminders()`:
+
+- every certificate not removed (nor its contact) whose expiry date is 30 days away or past gets a
+  reminder: `expiring` 30 days before, then `expired` once it has expired — each **once** per
+  expiry date (running the job again the same day sends nothing). A certificate entered already
+  expired gets only the `expired` reminder;
+- the hook is `settings.NUMO9_EXEMPTION_REMINDER_HOOK` — `hook(certificate, state, days_left)`,
+  called inside the certificate's organisation context. Until notifications ship (A-07) the
+  default (`exemptions.log_reminder`) writes the structured log line `contacts.exemption.reminder`
+  with ids only (no names);
+- renewing a certificate (a new expiry date, or none) clears the bookkeeping, so the reminders
+  start again for the new date.
+
 ## Gap tests (B-01-T19)
 
 `tests/test_contacts_gaps.py`, marked `@pytest.mark.gap(...)` (CI job `gap-tests`):
@@ -267,7 +302,7 @@ audit events (part of creating the organisation); later changes are audited.
 | Gap | Observed |
 |---|---|
 | gap-19 | A new contact is in its role's list before any transaction; roles are set on the contact and a contact can have several (customer + supplier); no role is refused; archived contacts leave the role lists. The titled list tabs are B-01-T14's Playwright check |
-| gap-20 | Contact currency (CAD default, USD…); payment-terms master (B-01-T05); T4A withholding flag; credit limit warn or block; duplicates found while typing by name, BN and tax ID; Quebec contact → GST + QST. The exemption certificate (B-01-T08) and credit override approval (B-01-T13) add their tests to this gap with their tasks |
+| gap-20 | Contact currency (CAD default, USD…); payment-terms master (B-01-T05); T4A withholding flag; credit limit warn or block; duplicates found while typing by name, BN and tax ID; Quebec contact → GST + QST; exemption certificate on the contact (number, file, expiry), flagged the day after it expires (B-01-T08). The credit override approval (B-01-T13) adds its test with its task |
 
 Fixture `tests/fixtures/contacts_ca/contacts.json`: one customer per province and territory with
 its billing address and the tax hint it defaults to (as of 14 November 2026) — the Quebec
@@ -282,6 +317,7 @@ customer, Érable Distribution inc., defaults to GST + QST (deliverable acceptan
 | T04 | `tests/test_contacts_address.py` |
 | T05 | `tests/test_contacts_payment_terms.py` |
 | T07 | `tests/test_contacts_tax_hint.py` |
+| T08 | `tests/test_contacts_exemptions.py` |
 | T09 | `tests/test_contacts_custom_fields.py` |
 | T10 | `tests/test_contacts_duplicates.py` |
 | T16 | `frontend/src/contacts/DuplicatePanel.test.tsx` |
