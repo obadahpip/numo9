@@ -49,12 +49,41 @@ describe("AppShell regions (A-10-T05)", () => {
     );
   });
 
+  it("keeps a locked module in the navigation with a lock glyph and its explanation (U-03-T11)", async () => {
+    const locked = { label: "Payroll isn't in this organisation's package" };
+    renderShell({
+      nav: [
+        ...sampleShell.nav,
+        { id: "payroll", label: "Payroll", href: "/o/maple-leaf/payroll", locked },
+      ],
+    });
+    const main = screen.getByRole("navigation", { name: "Main" });
+    // jsdom's accessible-name algorithm adds a space before the visually hidden part.
+    const link = within(main).getByRole("link", {
+      name: /^Payroll ?: Payroll isn't in this organisation's package$/,
+    });
+    expect(link).toHaveAttribute("href", "/o/maple-leaf/payroll"); // never removed or redirected
+    expect(link).toHaveAttribute("data-locked", "true");
+    expect(link.querySelector('[data-icon="lock"]')).not.toBeNull();
+    expect(within(main).getByRole("link", { name: "Home" })).not.toHaveAttribute("data-locked");
+    await userEvent.hover(link);
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(locked.label);
+  });
+
+  it("renders the banner slot under the top navigation", () => {
+    renderShell({ banner: <p role="status">Read-only</p> });
+    const slot = document.querySelector('[data-shell="banner"]');
+    expect(slot).not.toBeNull();
+    expect(slot).toHaveTextContent("Read-only");
+  });
+
   it("omits empty slots", () => {
     renderShell({ practiceNav: undefined, breadcrumbs: [] });
     expect(screen.queryByRole("navigation", { name: "Practice" })).toBeNull();
     expect(screen.queryByRole("navigation", { name: "Breadcrumbs" })).toBeNull();
     expect(document.querySelector('[data-shell="org-switcher"]')).toBeNull();
     expect(document.querySelector('[data-shell="job-tray"]')).toBeNull();
+    expect(document.querySelector('[data-shell="banner"]')).toBeNull();
   });
 
   it("uses the supplied link component for every link", () => {

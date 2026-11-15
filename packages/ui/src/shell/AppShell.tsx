@@ -12,7 +12,9 @@ import {
   type ReactNode,
 } from "react";
 
-import { BellIcon, ChevronIcon, CloseIcon, MenuIcon, UserIcon } from "./icons";
+import { Tooltip } from "../primitives/Tooltip";
+
+import { BellIcon, ChevronIcon, CloseIcon, LockIcon, MenuIcon, UserIcon } from "./icons";
 
 /**
  * Application shell (A-10-T05): top navigation, org switcher slot, practice navigation, breadcrumbs,
@@ -29,6 +31,12 @@ export interface ShellNavItem {
   href: string;
   /** Marks the item for the current page (`aria-current="page"`). */
   current?: boolean;
+  /**
+   * The module isn't in the organisation's package (U-03-T11): the item stays in the navigation
+   * with a lock glyph, the explanation as a tooltip (and as text for screen readers and in the
+   * drawer). The link still opens the module, which shows its locked panel — never hidden.
+   */
+  locked?: { label: string };
 }
 
 export interface ShellNavGroup {
@@ -84,6 +92,8 @@ export interface AppShellProps {
   user: { label: string; name?: string; initials?: string; items: ShellUserMenuItem[] };
   /** Right-hand end of the breadcrumb bar (e.g. the trial countdown chip). */
   status?: ReactNode;
+  /** Slot under the top navigation, full width (e.g. the read-only organisation banner, U-03). */
+  banner?: ReactNode;
   /** Link component (Next.js `Link`); defaults to `<a>`. */
   linkComponent?: ShellLinkComponent;
   children: ReactNode;
@@ -107,6 +117,7 @@ export function AppShell({
   notifications,
   user,
   status,
+  banner,
   linkComponent: Link = DefaultLink,
   children,
 }: AppShellProps) {
@@ -181,22 +192,34 @@ export function AppShell({
 
           <nav aria-label={labels.primaryNav} className="hidden min-w-0 lg:ms-4 lg:block">
             <ul className="flex items-center gap-1">
-              {nav.map((item) => (
-                <li key={item.id}>
+              {nav.map((item) => {
+                const link = (
                   <Link
                     href={item.href}
                     aria-current={item.current ? "page" : undefined}
+                    data-locked={item.locked ? "true" : undefined}
                     className={
-                      "relative flex h-top-nav items-center px-3 text-sm font-medium whitespace-nowrap " +
+                      "relative flex h-top-nav items-center gap-1 px-3 text-sm font-medium whitespace-nowrap " +
                       (item.current
                         ? "font-bold text-fg-inverse-accent after:absolute after:inset-x-3 after:bottom-0 after:h-1 after:bg-surface-accent"
                         : "text-fg-inverse-muted hover:text-fg-inverse")
                     }
                   >
                     {item.label}
+                    {item.locked ? (
+                      <>
+                        <span className="sr-only">: {item.locked.label}</span>
+                        <LockIcon />
+                      </>
+                    ) : null}
                   </Link>
-                </li>
-              ))}
+                );
+                return (
+                  <li key={item.id}>
+                    {item.locked ? <Tooltip content={item.locked.label}>{link}</Tooltip> : link}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
@@ -257,6 +280,8 @@ export function AppShell({
       ) : (
         <div id={drawerId} hidden />
       )}
+
+      {banner ? <div data-shell="banner">{banner}</div> : null}
 
       <div data-shell="sub-bar" className="border-b border-border bg-surface">
         <div className="flex min-h-10 flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 md:px-6">
@@ -319,15 +344,23 @@ function DrawerList({
             <Link
               href={item.href}
               aria-current={item.current ? "page" : undefined}
+              data-locked={item.locked ? "true" : undefined}
               onClick={onNavigate}
               className={
-                "flex min-h-touch-target items-center rounded-md px-4 text-base " +
+                "flex min-h-touch-target items-center gap-2 rounded-md px-4 text-base " +
                 (item.current
                   ? "border-s-4 border-border-accent bg-surface-accent-subtle font-semibold"
                   : "text-fg hover:bg-surface-muted")
               }
             >
-              {item.label}
+              <span className="flex flex-col py-1">
+                <span>{item.label}</span>
+                {/* Touch users don't hover: the explanation is written out in the drawer. */}
+                {item.locked ? (
+                  <span className="text-xs font-normal text-fg-muted">{item.locked.label}</span>
+                ) : null}
+              </span>
+              {item.locked ? <LockIcon /> : null}
             </Link>
           </li>
         ))}
