@@ -96,8 +96,10 @@ test("recent organisations, Open directory and the current-organisation cookie",
   await recent.getByRole("option", { name: /Northern Lights/ }).click();
   await expect(page).toHaveURL(`/o/${NORTH}/contacts`);
 
-  const cookies = await context.cookies();
-  expect(cookies.find((cookie) => cookie.name === "numo9_org")?.value).toBe(NORTH);
+  // The cookie is written by an effect after the client-side navigation: wait for it.
+  await expect
+    .poll(async () => (await context.cookies()).find((c) => c.name === "numo9_org")?.value)
+    .toBe(NORTH);
   // The redirect map now sends legacy URLs without an organisation to the one last opened.
   await page.goto("/dashboard");
   await expect(page).toHaveURL((url) => url.pathname === `/o/${NORTH}/home`);

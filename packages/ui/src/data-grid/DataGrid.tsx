@@ -508,6 +508,9 @@ export function DataGrid<T>({
 
       <div
         ref={scroller}
+        // While loading there is nothing focusable inside; a grid wider than a phone still
+        // scrolls sideways, so the scroller itself takes focus then (axe scrollable-region-focusable).
+        tabIndex={status === "loading" ? 0 : undefined}
         className="relative overflow-auto"
         // No scroll anchoring: the virtualiser positions rows itself (anchoring fights it).
         style={{ height, overflowAnchor: "none" }}

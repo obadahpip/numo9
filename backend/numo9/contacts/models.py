@@ -30,6 +30,7 @@ People (``ContactPerson``, B-01-T03) and addresses (``Address``, B-01-T04) belon
 from __future__ import annotations
 
 import re
+from decimal import Decimal
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from django.core.exceptions import ValidationError
@@ -41,6 +42,7 @@ from django.utils.translation import gettext_lazy as _
 
 from numo9.accounts.models import Locale
 from numo9.audit.mixins import AuditedModel
+from numo9.orgsettings.models import DAY_OF_MONTH_TERMS, TermsType
 from numo9.orgsettings.validators import (
     Province,
     normalise_phone,
@@ -943,3 +945,239 @@ class CustomFieldDefinition(AuditedModel, OrgOwnedModel):
             if errors:
                 raise ValidationError(errors)
         super().save(*args, **kwargs)
+
+
+# ---- payment terms master (B-01-T05) -----------------------------------------------------------
+
+#: Longest term and the percent limits.
+TERM_DAYS_MAX = 365
+
+
+class PaymentTerm(AuditedModel, OrgOwnedModel):
+    """A payment term of the organisation's master list (B-01-T05, gap-20): picked on contacts,
+    invoices and bills instead of typing terms on every contact (Xero teardown §3.2).
+
+    - ``terms_type`` + ``days`` — how the due date is worked out, the same four types as the
+      organisation's default terms (A-05): *n* days after the document date (Net 30; Due on receipt
+      is 0), *n* days after the end of the document month (EOM is 0), the *n*th of the following
+      month, the *n*th of the current month;
+    - ``discount_pct`` / ``discount_days`` — early-payment discount (2/10 net 30: 2 % if paid within
+      10 days), applied by E-07; the discount window is shorter than the term;
+    - ``late_interest_pct`` — annual interest on overdue amounts (FN-04 adds how it is charged);
+    - ``code`` — the seed's stable key (``net_30``) for terms created with the organisation; empty
+      for terms people add. Names are per language (``name_i18n``) like account names.
+
+    Every new organisation gets the defaults (``DEFAULT_TERMS``): Due on receipt, Net 15, Net 30,
+    Net 60, 2/10 net 30 and EOM. Terms are archived, never deleted (documents refer to them).
+    """
+
+    code = models.CharField(_("code"), max_length=32, blank=True)
+    name_i18n = models.JSONField(
+        _("name"), default=dict, help_text=_('The name per language, e.g. {"en-ca": "Net 30"}.')
+    )
+    terms_type = models.CharField(
+        _("due date"),
+        max_length=32,
+        choices=TermsType.choices,
+        default=TermsType.DAYS_AFTER_DOCUMENT,
+    )
+    days = models.PositiveSmallIntegerField(_("days or day"), default=30)
+    discount_pct = models.DecimalField(
+        _("early-payment discount (%)"), max_digits=5, decimal_places=2, default=Decimal("0")
+    )
+    discount_days = models.PositiveSmallIntegerField(_("discount if paid within (days)"), default=0)
+    late_interest_pct = models.DecimalField(
+        _("late interest (% a year)"), max_digits=6, decimal_places=3, default=Decimal("0")
+    )
+    status = models.CharField(
+        _("status"), max_length=10, choices=ContactStatus.choices, default=ContactStatus.ACTIVE
+    )
+    position = models.PositiveSmallIntegerField(_("position"), default=0)
+
+    class Meta:
+        ordering = ("position", "id")
+        verbose_name = _("payment term")
+        verbose_name_plural = _("payment terms")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "code"),
+                condition=~models.Q(code=""),
+                name="contacts_payment_term_code_unique",
+            ),
+            models.CheckConstraint(
+                condition=_in("terms_type", TermsType), name="contacts_payment_term_type_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(days__lte=TERM_DAYS_MAX),
+                name="contacts_payment_term_days_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(discount_pct__gte=0, discount_pct__lt=100),
+                name="contacts_payment_term_discount_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(late_interest_pct__gte=0, late_interest_pct__lte=100),
+                name="contacts_payment_term_interest_valid",
+            ),
+            models.CheckConstraint(
+                condition=_in("status", ContactStatus), name="contacts_payment_term_status_valid"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+    def audit_label(self) -> str:
+        return self.name
+
+    @property
+    def name(self) -> str:
+        return self.name_in(translation.get_language() or SOURCE_LANGUAGE)
+
+    def name_in(self, language: str) -> str:
+        names = self.name_i18n or {}
+        return str(names.get(language.lower()) or names.get(SOURCE_LANGUAGE) or self.code)
+
+    @property
+    def has_discount(self) -> bool:
+        return self.discount_pct > 0
+
+    def clean(self) -> None:
+        errors: dict[str, list[ValidationError]] = {}
+
+        def add(field: str, message: Any, code: str, **params: Any) -> None:
+            errors.setdefault(field, []).append(ValidationError(message, code=code, params=params))
+
+        names = {k: " ".join(str(v).split()) for k, v in (self.name_i18n or {}).items() if v}
+        self.name_i18n = {str(k).lower(): v for k, v in names.items() if v}
+        name = self.name_i18n.get(SOURCE_LANGUAGE, "")
+        if not name:
+            add("name_i18n", _("Enter the English name."), "contacts.payment_term.name_required")
+        elif self._name_taken(name):
+            add(
+                "name_i18n",
+                _("Another payment term is already called %(name)s."),
+                "contacts.payment_term.name_taken",
+                name=name,
+            )
+        if self.terms_type in DAY_OF_MONTH_TERMS and not 1 <= self.days <= 31:
+            add("days", _("Choose a day of the month from 1 to 31."), "contacts.payment_term.day")
+        elif self.days > TERM_DAYS_MAX:
+            add(
+                "days",
+                _("A payment term is at most %(max)d days."),
+                "contacts.payment_term.days",
+                max=TERM_DAYS_MAX,
+            )
+        if self.discount_pct < 0 or self.discount_pct >= 100:
+            add(
+                "discount_pct",
+                _("A discount is from 0 to 99.99 %."),
+                "contacts.payment_term.discount_range",
+            )
+        elif self.discount_pct > 0:
+            if self.discount_days < 1:
+                add(
+                    "discount_days",
+                    _("Say within how many days the discount applies."),
+                    "contacts.payment_term.discount_days_required",
+                )
+            elif (
+                self.terms_type == TermsType.DAYS_AFTER_DOCUMENT and self.discount_days >= self.days
+            ):
+                add(
+                    "discount_days",
+                    _("The discount window must end before the payment is due (%(days)d days)."),
+                    "contacts.payment_term.discount_window",
+                    days=self.days,
+                )
+        elif self.discount_days:
+            self.discount_days = 0  # no discount, no window
+        if self.late_interest_pct < 0 or self.late_interest_pct > 100:
+            add(
+                "late_interest_pct",
+                _("Late interest is from 0 to 100 % a year."),
+                "contacts.payment_term.interest_range",
+            )
+        if errors:
+            raise ValidationError(errors)
+
+    def _name_taken(self, name: str) -> bool:
+        others = PaymentTerm._base_manager.filter(
+            organisation_id=self.organisation_id, deleted_at__isnull=True
+        ).exclude(pk=self.pk)
+        return any(o.name_in(SOURCE_LANGUAGE).lower() == name.lower() for o in others)
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        update_fields = kwargs.get("update_fields")
+        if update_fields is None or set(update_fields) - {
+            "status",
+            "updated_at",
+            "deleted_at",
+            "position",
+        }:
+            errors: dict[str, Any] = {}
+            try:
+                self.clean_fields(exclude=["organisation", "created_by", "public_id", "name_i18n"])
+            except ValidationError as error:
+                errors = error.update_error_dict(errors)
+            try:
+                self.clean()
+            except ValidationError as error:
+                errors = error.update_error_dict(errors)
+            if errors:
+                raise ValidationError(errors)
+        super().save(*args, **kwargs)
+
+    def archive(self) -> None:
+        if self.status != ContactStatus.ARCHIVED:
+            self.status = ContactStatus.ARCHIVED
+            self.save(update_fields=["status", "updated_at"])
+
+    def unarchive(self) -> None:
+        if self.status != ContactStatus.ACTIVE:
+            self.status = ContactStatus.ACTIVE
+            self.save(update_fields=["status", "updated_at"])
+
+
+#: The terms every new organisation starts with: (code, English name, type, days, discount %,
+#: discount days). French names arrive with Phase 6.
+DEFAULT_TERMS: tuple[tuple[str, str, str, int, str, int], ...] = (
+    ("due_on_receipt", "Due on receipt", TermsType.DAYS_AFTER_DOCUMENT, 0, "0", 0),
+    ("net_15", "Net 15", TermsType.DAYS_AFTER_DOCUMENT, 15, "0", 0),
+    ("net_30", "Net 30", TermsType.DAYS_AFTER_DOCUMENT, 30, "0", 0),
+    ("net_60", "Net 60", TermsType.DAYS_AFTER_DOCUMENT, 60, "0", 0),
+    ("2_10_net_30", "2/10 net 30", TermsType.DAYS_AFTER_DOCUMENT, 30, "2", 10),
+    ("eom", "End of month (EOM)", TermsType.DAYS_AFTER_MONTH_END, 0, "0", 0),
+)
+
+
+def seed_payment_terms(organisation: Any, model: Any = None) -> int:
+    """Create the default terms an organisation lacks (by ``code``); returns how many were made.
+
+    Defaults are written as one bulk insert by the platform (no audit event per row, like the
+    numbering allocations): they are part of creating the organisation, not someone's change.
+    ``model`` lets a data migration pass its historical model.
+    """
+    model = model or PaymentTerm
+    existing = set(
+        model._base_manager.filter(organisation_id=organisation.pk).values_list("code", flat=True)
+    )
+    rows = [
+        model(
+            organisation_id=organisation.pk,
+            code=code,
+            name_i18n={SOURCE_LANGUAGE: name},
+            terms_type=terms_type,
+            days=days,
+            discount_pct=Decimal(discount),
+            discount_days=discount_days,
+            position=position,
+        )
+        for position, (code, name, terms_type, days, discount, discount_days) in enumerate(
+            DEFAULT_TERMS
+        )
+        if code not in existing
+    ]
+    model._base_manager.bulk_create(rows, ignore_conflicts=True)
+    return len(rows)

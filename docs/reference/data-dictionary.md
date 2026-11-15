@@ -231,3 +231,107 @@ A custom field of an organisation (B-01-T09, gap-43). Business record: `OrgOwned
 
 Audit actions: `contacts.customfielddefinition.created`, `.updated`, `.deleted`, `.restored`.
 
+### `contacts_paymentterm` — Payment term {#contacts-paymentterm}
+
+A payment term of the organisation's master list (B-01-T05). Business record: `OrgOwnedModel` and
+`AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `code` | varchar(32) | no | Seed key (`net_30`…) or empty; unique per organisation when set (`contacts_payment_term_code_unique`) |
+| `name_i18n` | jsonb | no | Name per language; English required and unique in the organisation |
+| `terms_type` | varchar(32) | no | `days_after_document`, `days_after_month_end`, `day_of_following_month`, `day_of_current_month` (`contacts_payment_term_type_valid`) |
+| `days` | smallint | no | 0–365, or a day 1–31 for the day-of-month types (`contacts_payment_term_days_valid`) |
+| `discount_pct` | numeric(5,2) | no | Early-payment discount, 0 ≤ x < 100 (`contacts_payment_term_discount_valid`) |
+| `discount_days` | smallint | no | Discount window in days (0 without a discount) |
+| `late_interest_pct` | numeric(6,3) | no | Annual late interest, 0–100 (`contacts_payment_term_interest_valid`) |
+| `status` | varchar(10) | no | `active` or `archived` |
+| `position` | smallint | no | Order in pickers |
+
+Seeded rows: `due_on_receipt`, `net_15`, `net_30`, `net_60`, `2_10_net_30`, `eom` (no audit event).
+Audit actions: `contacts.paymentterm.created`, `.updated`.
+
+
+## Documents and files (`files`) {#files}
+
+Tables of the documents store (A-06, [architecture](../architecture/files.md)).
+
+### `files_document` — Document {#files-document}
+
+One stored file of the organisation: uploaded, or an attachment of an email received at the
+inbox address. Business record: `OrgOwnedModel` and `AuditedModel`; row-level security.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` (`created_by` = the uploader) |
+| `file_key` | varchar(512) | no | Object key in the files bucket, always under `org/<organisation public id>/` (`files_document_key_required`) |
+| `name` | varchar(255) | no | File name as shown |
+| `mime` | varchar(127) | no | Type detected by libmagic at finalize |
+| `size` | bigint | no | Bytes, 0–25 MB (`files_document_size_limit`) |
+| `sha256` | varchar(64) | no | Content hash; duplicates are detected on (organisation, sha256) (`files_document_sha_idx`) |
+| `status` | varchar | no | `uploading`, `scanning`, `clean`, `infected` (`files_document_status_valid`) |
+| `source` | varchar | no | `upload` or `email` (`files_document_source_valid`) |
+| `sender` | varchar(254) | no | Email sender (empty for uploads) |
+| `sender_known` | boolean | no | The sender is a member or a contact person of the organisation |
+| `inbound_message_id` | bigint | yes | → `files_inboundmessage` (email documents) |
+| `period` | varchar(7) | no | `YYYY-MM` or empty (`files_document_period_format`) |
+| `tax_year` | smallint | yes | 1990–2100 (`files_document_tax_year_range`) |
+| `tags` | text[] | no | Up to 20 tags of ≤ 40 characters, each once (case-insensitive) |
+| `folder` | varchar | no | `inbox` or `archived` (`files_document_folder_valid`); list index `files_document_inbox_idx` |
+| `scan_result` | varchar(200) | no | `OK` or the virus signature |
+| `scanned_at` | timestamptz | yes | When the scan finished |
+| `preview_status` | varchar | no | `pending`, `ready`, `unsupported`, `password`, `failed` |
+| `preview_key`, `thumbnail_key` | varchar(512) | no | Keys of the JPEG preview and thumbnail (`…/derived/`) |
+| `password_protected` | boolean | no | A password-protected PDF (no preview) |
+
+Audit actions: `files.document.created`, `.updated`, `.deleted`, `.duplicate_received`,
+`.quarantined`, `.downloaded`.
+
+### `files_attachment` — Attachment {#files-attachment}
+
+A document linked to a record of the organisation. Business record: `OrgOwnedModel` and
+`AuditedModel`; row-level security.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; detach = soft delete |
+| `document_id` | bigint | no | → `files_document` |
+| `content_type_id` | integer | no | The record's model (`record_type`, e.g. `contacts.Contact`) |
+| `object_public_id` | uuid | no | The record's public id; one live link per (document, record) (`files_attachment_once_per_record`); index `files_attachment_record_idx` |
+
+Audit actions: `files.attachment.created`, `.deleted`.
+
+### `files_inboundmessage` — Inbound email {#files-inboundmessage}
+
+One email received at the organisation's inbox address. `OrgOwnedModel`; row-level security.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `message_id` | varchar(998) | no | `Message-ID` header; once per organisation (`files_inbound_message_once`) |
+| `sender` | varchar(254) | no | `From` address |
+| `subject` | varchar(300) | no | Subject |
+| `recipient` | varchar(254) | no | The inbox address it was sent to |
+| `raw_key` | varchar(512) | no | Key of the raw RFC 822 message in the files bucket |
+| `attachment_count` | smallint | no | Documents made from it |
+| `rejected` | jsonb | no | Attachments refused: `[{name, code}]` |
+| `received_at` | timestamptz | no | When the webhook received it |
+| `processed_at` | timestamptz | yes | When its attachments were stored |
+
+Audit action: `files.inbound.processed`.
+
+### `files_inboundaddress` — Inbound address {#files-inboundaddress}
+
+The organisation's inbox address token (`docs+<token>@<domain>`). `OrgOwnedModel` and
+`AuditedModel`; **no** row-level security (mail is routed by token before an organisation is
+known).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `token` | varchar(32) | no | 12 characters without look-alikes, unique across Numo9, never reused (`files_inbound_token_format`) |
+| `status` | varchar(8) | no | `active` or `retired`; one active per organisation (`files_inbound_one_active_per_org`, `files_inbound_status_valid`) |
+| `retired_at` | timestamptz | yes | Rotation time; mail is still accepted for 7 days after it |
+
+Audit actions: `files.inboundaddress.created`, `.updated`.

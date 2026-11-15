@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "numo9.orgsettings",
     # Contacts: contact model, people, addresses, duplicate detection (B-01).
     "numo9.contacts",
+    # File storage, documents inbox, attachments, inbound email (A-06).
+    "numo9.files",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -146,6 +148,9 @@ SPECTACULAR_SETTINGS = {
         "PromoDurationEnum": "numo9.packages.models.PromoDuration",  # U-02-T07
         "PromoStatusEnum": "numo9.packages.models.PromoStatus",  # U-02-T07
         "PriceStateEnum": "numo9.packages.serializers.PRICE_STATES",  # U-02-T07
+        "BulkActionEnum": "numo9.files.listing.BULK_ACTION_CHOICES",  # A-06-T10
+        # Feature keys' action (U-01): named once a second "action" choice set exists (A-06-T10).
+        "FeatureActionEnum": [("read", "read"), ("write", "write"), ("approve", "approve")],
     },
 }
 
@@ -187,6 +192,9 @@ TENANT_SWEEP_EXEMPT = [
     r"^api/v1/permissions/catalogue$",  # the permission catalogue: same for everyone (A-03-T09)
     r"^api/v1/catalogue/",  # products and feature keys: same for everyone (U-01-T09)
     r"^api/v1/public/",  # public pricing: same for everyone, no sign-in (U-02-T08)
+    # Inbound email webhook (A-06-T07): HMAC-signed by the provider; routed by the docs+<token>@
+    # address to one organisation, whose context the processing then runs in.
+    r"^api/v1/inbound/email$",
     # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
     r"^api/v1/platform/",
 ]
@@ -383,6 +391,26 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute=17, hour=7),  # 07:17 UTC = 02:17 / 03:17 Toronto
     },
 }
+
+# ---- File storage and documents inbox (A-06, docs/architecture/files.md) ------------------------
+# S3-compatible object storage: Hetzner Object Storage in staging/prod (ADR-0002, buckets from
+# S-02-T03), MinIO in the dev stack. Empty endpoint = AWS's default endpoint for the region.
+NUMO9_FILES_S3_ENDPOINT_URL = env_str("NUMO9_FILES_S3_ENDPOINT_URL", "")
+NUMO9_FILES_S3_REGION = env_str("NUMO9_FILES_S3_REGION", "hel1")
+NUMO9_FILES_S3_ACCESS_KEY = env_str("NUMO9_FILES_S3_ACCESS_KEY", "")
+NUMO9_FILES_S3_SECRET_KEY = env_str("NUMO9_FILES_S3_SECRET_KEY", "")
+NUMO9_FILES_BUCKET = env_str("NUMO9_FILES_BUCKET", "numo9-files")
+NUMO9_FILES_QUARANTINE_BUCKET = env_str("NUMO9_FILES_QUARANTINE_BUCKET", "numo9-quarantine")
+# Signed download URLs and presigned upload forms live 5 minutes (A-06 business rule).
+NUMO9_FILES_SIGNED_URL_SECONDS = env_int("NUMO9_FILES_SIGNED_URL_SECONDS", 300)
+# ClamAV daemon (A-06-T04): the clamav service of the stack, INSTREAM over TCP.
+NUMO9_CLAMD_HOST = env_str("NUMO9_CLAMD_HOST", "clamav")
+NUMO9_CLAMD_PORT = env_int("NUMO9_CLAMD_PORT", 3310)
+NUMO9_CLAMD_TIMEOUT = env_int("NUMO9_CLAMD_TIMEOUT", 60)
+# Inbound email (A-06-T06/T07): docs+<token>@<NUMO9_INBOUND_DOMAIN>; the provider signs each
+# webhook with NUMO9_INBOUND_WEBHOOK_SECRET (HMAC-SHA256). Empty secret = inbound refused.
+NUMO9_INBOUND_DOMAIN = env_str("NUMO9_INBOUND_DOMAIN", "in.numo9.ca")
+NUMO9_INBOUND_WEBHOOK_SECRET = env_str("NUMO9_INBOUND_WEBHOOK_SECRET", "")
 
 # Audit log (A-04-T04): proxies in front of the app whose X-Forwarded-For is trusted for the
 # client IP (Caddy in staging/prod: 1). 0 = use REMOTE_ADDR.

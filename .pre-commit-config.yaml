@@ -70,6 +70,7 @@ repos:
           - psycopg[binary]==3.3.8 # A-08 tests import psycopg
           - stripe==17.0.0 # U-02-T12 Stripe price sync (typed client)
           - phonenumbers==9.0.43 # A-05 imported by numo9.orgsettings (mypy plugin loads it)
+          - pillow==13.0.0 # A-06-T05 previews (typed)
 
       - id: eslint
         name: eslint (frontend)

@@ -25,6 +25,7 @@ export function middleware(request: NextRequest): NextResponse {
     nonce,
     dev: process.env.NODE_ENV === "development",
     connectSrc: connectSources(process.env.NUMO9_CSP_CONNECT_SRC),
+    storageSrc: connectSources(process.env.NUMO9_CSP_STORAGE_SRC),
   });
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);

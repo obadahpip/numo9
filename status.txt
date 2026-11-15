@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 165   Remaining: 2622   Progress: 5.92%
+TOTAL ATOMIC TASKS: 2787   Completed: 181   Remaining: 2606   Progress: 6.49%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -220,33 +220,33 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ B-01-T02 — Contact model (OrgOwnedModel: number, display_name, legal_name, roles ArrayField, bn, tax_id, currency, credit_limit, credit_mode, t4a_flag, portal_enabled, statement_pref, language, status) + migration
 ✅ B-01-T03 — ContactPerson (unlimited, primary flag, email, phone, include_in_emails)
 ✅ B-01-T04 — Address (type billing/shipping, line1/2, city, province enum, postal_code, country) + postal-code/province validators
-❌ B-01-T05 — PaymentTerm master per org (type, days, discount_pct, discount_days, late_interest_pct) + seeded defaults (Net 15/30/60, Due on receipt, 2/10 net 30, EOM)
+✅ B-01-T05 — PaymentTerm master per org (type, days, discount_pct, discount_days, late_interest_pct) + seeded defaults (Net 15/30/60, Due on receipt, 2/10 net 30, EOM)
 ✅ B-01-T07 — Province tax hint resolver (QC → GST+QST, ON → HST13, BC → GST+PST …) exposed for G-02
 ✅ B-01-T09 — Custom field definitions + values (JSONB validated by definition schema)
 ✅ B-01-T10 — Duplicate detection service (trigram name similarity ≥0.6, exact email/BN/tax ID)
 ❌ B-01-T16 — Live duplicate panel while typing (debounced)   [panel + debounced check built (frontend/src/contacts), Vitest: shows in < 300 ms, axe clean; ✅ once the B-01-T15 contact form mounts it on the B-01-T11 /duplicates API and the Playwright check runs]
 ✅ B-01-T18 — i18n keys, Canadian terms (Province, Postal code), a11y review   [i18n lint, FormatJS + makemessages catalogues, glossary lint and axe on the duplicate panel pass; review in docs/design/accessibility.md; list/form screens join the page a11y suite with B-01-T14/T15]
-✅ B-01-T19 — Gap tests gap-19/20 + QC → GST+QST fixture   [gap-19 and gap-20 tests + QC → GST+QST fixture pass (tests/test_contacts_gaps.py); terms master, exemption certificate and credit override join gap-20 with B-01-T05/T08/T13]
+✅ B-01-T19 — Gap tests gap-19/20 + QC → GST+QST fixture   [gap-19 and gap-20 tests + QC → GST+QST fixture pass (tests/test_contacts_gaps.py); exemption certificate and credit override join gap-20 with B-01-T08/T13]
 
 [C-02]
-❌ C-02-T01 — ADR-006 posting engine & book dimension (append-only, sequence, partitioning)
+✅ C-02-T01 — ADR-006 posting engine & book dimension (append-only, sequence, partitioning)   [docs/adr/0003-posting-engine-and-book-dimension.md; accepted when the PR is merged; journal lines hash-partitioned by organisation (replaces the journal-line part of S-06-T02)]
 
 [A-06]
-❌ A-06-T01 — Document model (org, file key, name, mime, size, sha256, status uploading/scanning/clean/infected, source upload/email, sender, tags period/tax_year, inbox/archived) + Attachment generic link
-❌ A-06-T02 — Storage backend (django-storages S3, MinIO dev), org-prefixed keys, signed URL service (5 min)
-❌ A-06-T03 — Upload API: direct-to-S3 presigned POST + finalize; 25 MB limit; libmagic MIME validation
-❌ A-06-T04 — Virus-scan Celery task via clamd; infected → quarantine bucket + notification
-❌ A-06-T05 — Thumbnail/preview generation (PDF first page, images incl. HEIC)
-❌ A-06-T06 — Per-org inbound address generation (docs+<token>@in.<domain>), rotate address
-❌ A-06-T07 — Inbound webhook (provider) → parse MIME → one Document per attachment; signature verification; idempotent by Message-ID
-❌ A-06-T08 — Duplicate detection by sha256 within org (link, don't store twice)
-❌ A-06-T09 — Attach/detach to any OrgOwnedModel record; list attachments API
-❌ A-06-T10 — Tagging API (period YYYY-MM, tax year, custom tags), archive/unarchive, bulk
-❌ A-06-T11 — "Create from file" action registry (modules register actions: bill, expense, asset — Phase 1/2) with disabled-explained state until available
-❌ A-06-T12 — Inbox UI: DropZone, virtualised list, filters, previewer, bulk tag, copy address
-❌ A-06-T13 — Attachments panel component for detail pages
-❌ A-06-T14 — Isolation & security tests (cross-org file id → 404, signed URL for other org refused)
-❌ A-06-T15 — Audit hooks + i18n keys
+✅ A-06-T01 — Document model (org, file key, name, mime, size, sha256, status uploading/scanning/clean/infected, source upload/email, sender, tags period/tax_year, inbox/archived) + Attachment generic link   [done first: every A-06 task depends on it]
+✅ A-06-T02 — Storage backend (django-storages S3, MinIO dev), org-prefixed keys, signed URL service (5 min)   [S3 against a local S3 API (moto); URL expiry = SigV4 X-Amz-Expires=300, enforced by S3/MinIO (moto doesn't enforce it, so no real-expiry round trip here)]
+✅ A-06-T03 — Upload API: direct-to-S3 presigned POST + finalize; 25 MB limit; libmagic MIME validation
+✅ A-06-T04 — Virus-scan Celery task via clamd; infected → quarantine bucket + notification   [against a fake clamd speaking INSTREAM (EICAR → FOUND); a test against a real ClamAV runs when NUMO9_TEST_CLAMD_HOST is set]
+✅ A-06-T05 — Thumbnail/preview generation (PDF first page, images incl. HEIC)
+✅ A-06-T06 — Per-org inbound address generation (docs+<token>@in.<domain>), rotate address
+✅ A-06-T07 — Inbound webhook (provider) → parse MIME → one Document per attachment; signature verification; idempotent by Message-ID   [provider-neutral contract (raw RFC 822 + HMAC-SHA256); the adapter for the chosen provider (SP-03, A-07) comes later; lands in about 1 s in tests]
+✅ A-06-T08 — Duplicate detection by sha256 within org (link, don't store twice)
+✅ A-06-T09 — Attach/detach to any OrgOwnedModel record; list attachments API
+✅ A-06-T10 — Tagging API (period YYYY-MM, tax year, custom tags), archive/unarchive, bulk
+✅ A-06-T11 — "Create from file" action registry (modules register actions: bill, expense, asset — Phase 1/2) with disabled-explained state until available
+✅ A-06-T12 — Inbox UI: DropZone, virtualised list, filters, previewer, bulk tag, copy address   [/o/:org/documents; Playwright: 1,000 files, first paint < 1 s; the visual baseline for /o/acme/documents must be regenerated (visual-baselines workflow)]
+❌ A-06-T13 — Attachments panel component for detail pages   [component built (frontend/src/files/AttachmentsPanel.tsx: list, download, remove, attach = upload + link, drop, read-only), Vitest + axe; ✅ once the B-01 contact detail page mounts it (recordType contacts.Contact) and the Playwright check runs]
+✅ A-06-T14 — Isolation & security tests (cross-org file id → 404, signed URL for other org refused)   [backend/tests/test_files_isolation.py, marker tenant_isolation: sweep + 404s + signed URL/key refusal + bulk/attachments + RLS]
+✅ A-06-T15 — Audit hooks + i18n keys   [backend/tests/test_files_audit.py; adds files.document.downloaded and files.inbound.processed events and labels; makemessages en_CA/fr_CA + frontend catalogues (fr-CA holds English placeholders until Phase 6)]
 
 [B-01]
 ❌ B-01-T08 — Exemption certificate (file via A-06, number, expiry) + expiry reminder hook

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from collections.abc import Iterator
 from typing import Any
 from unittest import mock
@@ -50,3 +51,60 @@ def sent(sent_on_commit: list[dict[str, Any]]) -> Iterator[list[dict[str, Any]]]
 
     with mock.patch.object(transaction, "on_commit", now):
         yield sent_on_commit
+
+
+# ---- object storage (A-06): an S3 API (moto server) for the file tests ------------------------
+
+
+@pytest.fixture(scope="session")
+def _s3_server() -> Iterator[str]:
+    from moto.server import ThreadedMotoServer
+
+    server = ThreadedMotoServer(ip_address="127.0.0.1", port=0, verbose=False)
+    server.start()
+    host, port = server.get_host_and_port()
+    yield f"http://{host}:{port}"
+    server.stop()
+
+
+@pytest.fixture
+def s3(_s3_server: str, settings: Any) -> Iterator[str]:
+    """Empty ``files`` and ``quarantine`` buckets on a local S3 API, wired into the settings."""
+    import boto3
+
+    from numo9.files.storage import reset_storages
+
+    settings.NUMO9_FILES_S3_ENDPOINT_URL = _s3_server
+    settings.NUMO9_FILES_S3_REGION = "us-east-1"
+    settings.NUMO9_FILES_S3_ACCESS_KEY = "test-access"
+    settings.NUMO9_FILES_S3_SECRET_KEY = "test-secret"  # noqa: S105 (local fake S3)
+    settings.NUMO9_FILES_BUCKET = "numo9-files"
+    settings.NUMO9_FILES_QUARANTINE_BUCKET = "numo9-quarantine"
+    reset_storages()
+    s3 = boto3.client(
+        "s3",
+        endpoint_url=_s3_server,
+        aws_access_key_id="test-access",
+        aws_secret_access_key="test-secret",  # noqa: S106 (local fake S3)
+        region_name="us-east-1",
+    )
+    for bucket in ("numo9-files", "numo9-quarantine"):
+        with contextlib.suppress(s3.exceptions.BucketAlreadyOwnedByYou):
+            s3.create_bucket(Bucket=bucket)
+        for item in s3.list_objects_v2(Bucket=bucket).get("Contents", []):
+            s3.delete_object(Bucket=bucket, Key=item["Key"])
+    yield _s3_server
+    reset_storages()
+
+
+@pytest.fixture
+def clamd(settings: Any) -> Iterator[Any]:
+    """A local fake clamd (INSTREAM): EICAR → FOUND, anything else → OK."""
+    from tests.files_helpers import FakeClamd
+
+    fake = FakeClamd()
+    settings.NUMO9_CLAMD_HOST = "127.0.0.1"
+    settings.NUMO9_CLAMD_PORT = fake.port
+    settings.NUMO9_CLAMD_TIMEOUT = 5
+    yield fake
+    fake.close()

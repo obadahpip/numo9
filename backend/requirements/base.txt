@@ -32,3 +32,12 @@ phonenumbers==9.0.43
 openpyxl==3.1.5
 # Stripe Product/Price sync of package prices (U-02-T12); subscription billing (U-04)
 stripe==17.0.0
+# Documents (A-06): S3-compatible object storage (Hetzner Object Storage, MinIO in dev)
+django-storages[s3]==1.14.6
+boto3==1.44.3
+# File type from the content, not the name (A-06-T03); needs libmagic1 in the image
+python-magic==0.4.27
+# Previews and thumbnails (A-06-T05): images incl. HEIC, and the first page of PDFs
+pillow==13.0.0
+pillow-heif==1.8.1
+pypdfium2==5.15.2

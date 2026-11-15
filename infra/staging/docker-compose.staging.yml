@@ -68,6 +68,8 @@ services:
       NUMO9_CSP_MODE: ${NUMO9_CSP_MODE:-enforce}
       # Extra https origins the browser calls (e.g. the API), comma-separated.
       NUMO9_CSP_CONNECT_SRC: ${NUMO9_CSP_CONNECT_SRC:-}
+      # A-06: the files bucket origin (uploads and previews), e.g. https://files.numo9.ca.
+      NUMO9_CSP_STORAGE_SRC: ${NUMO9_CSP_STORAGE_SRC:-}
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:

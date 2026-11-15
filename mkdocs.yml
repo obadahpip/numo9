@@ -65,6 +65,7 @@ nav:
       - adr/index.md
       - "ADR-0001 — Hosting and data residency": adr/0001-hosting-and-data-residency.md
       - "ADR-0002 — Hetzner Helsinki hosting": adr/0002-hetzner-helsinki-hosting.md
+      - "ADR-0003 — Posting engine and book dimension": adr/0003-posting-engine-and-book-dimension.md
       - ADR template: adr/template.md
   - Architecture:
       - "Tenancy model": architecture/tenancy.md
@@ -78,6 +79,7 @@ nav:
       - "Chart of accounts": architecture/chart-of-accounts.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md
       - "Contacts": architecture/contacts.md
+      - "Documents and files": architecture/files.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

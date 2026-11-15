@@ -68,7 +68,7 @@ def write_raw(pk: int, column: str, value: str) -> None:
         )
 
 
-# ---- Storage -------------------------------------------------------------------------------------
+# ---- Storage ------------------------------------------------------------------------------------
 
 
 @pytest.mark.django_db
@@ -188,7 +188,7 @@ def test_key_ring_validation(keys: str, active: str, message: str) -> None:
         crypto.parse_key_ring(keys, active)
 
 
-# ---- Rotation command ----------------------------------------------------------------------------
+# ---- Rotation command ---------------------------------------------------------------------------
 
 
 def run(*args: str) -> str:

@@ -398,6 +398,131 @@
       "title": "Possible duplicates ({count})"
     }
   },
+  "files": {
+    "address": {
+      "copied": "Address copied",
+      "copy": "Copy address",
+      "help": "Each attachment becomes a document. Mail from unknown senders is kept and flagged.",
+      "title": "Email documents to"
+    },
+    "attach": {
+      "add": "Attach files",
+      "count": "({count, number})",
+      "done": "{name} attached",
+      "download": "Download {name}",
+      "empty": "No files attached yet. Attach receipts, contracts or statements, or drop them here.",
+      "emptyReadOnly": "No files attached.",
+      "failed": "The file couldn't be attached. Try again.",
+      "loadFailed": "The attachments couldn't be loaded.",
+      "remove": "Remove {name}",
+      "removeShort": "Remove",
+      "removed": "{name} removed from this record",
+      "title": "Attachments"
+    },
+    "bulk": {
+      "apply": "Apply",
+      "archive": "Archive",
+      "cancel": "Cancel",
+      "done": "{count, plural, one {# document updated} other {# documents updated}}",
+      "tag": "Tag…",
+      "tagTitle": "{count, plural, one {Tag # document} other {Tag # documents}}",
+      "unarchive": "Move to inbox"
+    },
+    "col": {
+      "added": "Added",
+      "from": "From",
+      "name": "File",
+      "period": "Period",
+      "source": "Source",
+      "status": "Status",
+      "tags": "Tags",
+      "taxYear": "Tax year"
+    },
+    "create": {
+      "failed": "The actions couldn't be loaded. Try again.",
+      "loading": "Loading what this file can become…",
+      "none": "Nothing can be created from files yet.",
+      "title": "Create from this file"
+    },
+    "field": {
+      "period": "Period (YYYY-MM)",
+      "tags": "Add tags (comma-separated)",
+      "taxYear": "Tax year"
+    },
+    "grid": {
+      "all": "All",
+      "chip": "{column}: {value}",
+      "clear": "Clear",
+      "clearSelection": "Clear selection",
+      "columns": "Columns",
+      "comfortable": "Comfortable",
+      "compact": "Compact",
+      "density": "Row height",
+      "loading": "Loading documents…",
+      "name": "Documents",
+      "results": "{shown} of {total} documents",
+      "search": "Search file names, senders and tags",
+      "selectAll": "Select all",
+      "selectRow": "Select {row}",
+      "selected": "{count} selected"
+    },
+    "inbox": {
+      "anyTag": "Any tag",
+      "dropHere": "Drop files to upload them",
+      "dropHint": "PDF, images (incl. HEIC), CSV, XLSX, DOCX and bank files, up to 25 MB each.",
+      "emptyArchived": "Archived documents appear here. Archive a document once it's dealt with.",
+      "emptyBody": "Add documents in three ways: drag files anywhere on this page, choose Upload files, or email them to the inbox address.",
+      "emptyTitle": "No documents yet",
+      "folders": "Folders",
+      "intro": "Receipts, bills and statements waiting to be dealt with. Every file is checked for viruses before it opens.",
+      "loadFailed": "The documents couldn't be loaded.",
+      "noResults": "No documents match these filters.",
+      "retry": "Try again",
+      "tabArchived": "Archived",
+      "tabInbox": "Inbox",
+      "tagFilter": "Tag",
+      "title": "Documents",
+      "unknownSender": "Unknown sender",
+      "upload": "Upload files"
+    },
+    "preview": {
+      "added": "Added",
+      "alt": "First page of {name}",
+      "close": "Close preview",
+      "download": "Download",
+      "from": "From",
+      "infected": "A virus was found in this file ({signature}). It was quarantined and can't be opened.",
+      "none": "No preview for this type of file. Download it to open it.",
+      "password": "This PDF is password-protected: download it to open it.",
+      "pending": "The preview is being made…",
+      "save": "Save",
+      "saveFailed": "Not saved: check the period and tax year.",
+      "saved": "Saved",
+      "scanning": "This file is being checked for viruses. It opens once it's ready.",
+      "size": "Size",
+      "title": "Preview"
+    },
+    "source": {
+      "email": "Email",
+      "upload": "Upload"
+    },
+    "status": {
+      "clean": "Ready",
+      "infected": "Quarantined",
+      "scanning": "Checking for viruses",
+      "uploading": "Uploading"
+    },
+    "uploads": {
+      "checking": "Checking the file…",
+      "done": "Added — checking for viruses",
+      "duplicate": "Already in your documents",
+      "failed": "Not uploaded",
+      "progress": "Uploading {percent}%",
+      "title": "Uploads",
+      "tooLarge": "{name} is {size}; files are limited to 25 MB.",
+      "type": "{name} can't be added: this type of file isn't accepted."
+    }
+  },
   "form": {
     "close": "Close",
     "discard": "Discard changes",
