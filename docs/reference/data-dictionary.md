@@ -335,3 +335,54 @@ known).
 | `retired_at` | timestamptz | yes | Rotation time; mail is still accepted for 7 days after it |
 
 Audit actions: `files.inboundaddress.created`, `.updated`.
+
+## Accountant workspace (`workspace`) {#workspace}
+
+Design: [Organisation directory](../architecture/directory.md).
+
+### `workspace_orgdirectorysummary` — Organisation directory row {#workspace-orgdirectorysummary}
+
+One organisation as one practice's directory shows it (V-01-T02): a **derived** read model rebuilt
+from the source records by `numo9.workspace.summary` (signals after commit, nightly job); never
+edited by hand. Platform model (allow-listed, read only through `workspace.search.directory_scope`);
+no row-level security, no audit (derived data).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id` | bigint | no | Primary key |
+| `practice_id` | bigint | no | → `tenancy_practice` (deleted with it) |
+| `organisation_id` | bigint | no | → `tenancy_organisation` (deleted with it); one row per (practice, organisation) (`workspace_summary_one_per_assignment`); a row exists only while the assignment is active |
+| `name` | varchar(200) | no | Display name (settings), else the organisation's name |
+| `legal_name` | varchar(200) | no | Settings legal name, may be empty |
+| `bn` | varchar(9) | no | Registered Business Number (nine digits), may be empty; trigram index `workspace_summary_bn_trgm_idx` |
+| `owner_name`, `owner_email` | varchar | no | Earliest owner membership, may be empty |
+| `industry` | varchar(100) | no | Settings industry |
+| `province` | varchar(2) | no | Physical province, else mailing; may be empty |
+| `package` | varchar(64) | no | Package code (entitlement engine), may be empty |
+| `status` | varchar(16) | no | `trial`, `paid`, `demo`, `read_only`, `archived` (`workspace_summary_status_valid`) |
+| `trial_ends_at` | timestamptz | yes | Trialing subscription's period end |
+| `fye_month`, `fye_day` | smallint | no | Fiscal year end (month 1–12, `workspace_summary_fye_month_valid`) |
+| `gst_cycle` | varchar(16) | no | `monthly`, `quarterly`, `annual` or empty (provider of a later phase) |
+| `payroll_enabled` | boolean | no | Payroll entitled |
+| `overdue_count`, `unfiled_count` | integer | no | Providers of later phases; 0 until then |
+| `tags` | jsonb | no | The practice's tags (V-02), list of names |
+| `search_vector` | tsvector | yes | `simple` + `unaccent` over name, legal name, BN, owner, tags, industry, province names; GIN index `workspace_summary_search_idx` |
+| `refreshed_at` | timestamptz | no | Last rebuild |
+
+### `workspace_savedview` — Saved directory view {#workspace-savedview}
+
+A user's own named directory state in one practice (V-01-T08). Platform model; visible to its user
+only.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id` | bigint, uuid | no | Primary key; id used by the API |
+| `user_id` | bigint | no | → `accounts_user` (deleted with it) |
+| `practice_id` | bigint | no | → `tenancy_practice` (deleted with it) |
+| `name` | varchar(80) | no | Unique per user and practice, case ignored (`workspace_view_name_unique_per_user`) |
+| `filters` | jsonb | no | `{"q": …, "<filter>": [values], "archived": "include"}` — validated against the directory's filters |
+| `columns` | jsonb | no | Shown column keys, in order |
+| `sort` | jsonb | no | Sort keys, `-` for descending |
+| `density` | varchar(16) | no | `comfortable` or `compact` |
+| `is_default` | boolean | no | At most one per user and practice (`workspace_view_one_default_per_user`) |
+| `created_at`, `updated_at` | timestamptz | no | Set automatically |

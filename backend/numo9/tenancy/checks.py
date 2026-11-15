@@ -48,6 +48,14 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "packages.PromoCode",
         # CRA GIFI codes (C-01-T04): the published list, the same for every organisation.
         "ledger.GifiCode",
+        # Organisation directory (V-01-T02): a derived, cross-organisation read model of directory
+        # facts per practice × organisation (name, BN, province, package, status…), rebuilt from
+        # the source records; read only through numo9.workspace.search, which limits it to the
+        # organisations the user may access in that practice (tests/test_workspace_isolation.py).
+        "workspace.OrgDirectorySummary",
+        # Saved directory views (V-01-T08): one user's named filter/column/sort state in a practice;
+        # names filter values, holds no organisation records.
+        "workspace.SavedView",
     }
 )
 

@@ -8,11 +8,18 @@ import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
 import { ReadOnlyNotice } from "@/entitlements/ReadOnlyNotice";
+import { GoToOrganisationSlot } from "@/directory/GoToOrganisationSlot";
 import { decide, EntitlementsProvider, useEntitlements } from "@/entitlements/store";
 import { defineMessages, useFormatMessage } from "@/i18n";
 import { JobTray } from "@/jobs/JobTray";
 import { primaryNav } from "@/routing/navigation";
-import { findOrgModule, isSettingsSection, orgModuleUrl, SETTINGS_LABEL } from "@/routing/routes";
+import {
+  findOrgModule,
+  isSettingsSection,
+  orgModuleUrl,
+  practiceDirectoryUrl,
+  SETTINGS_LABEL,
+} from "@/routing/routes";
 import { ModuleSettingsLink } from "@/settings/ModuleSettingsLink";
 
 const messages = defineMessages({
@@ -82,6 +89,8 @@ interface AppShellProps {
   modulePath?: string;
   /** Breadcrumb of a page outside the organisation registry (platform console, A-08-T08). */
   section?: string;
+  /** Practice public id of a practice page (`/p/:practice/…`, the directory V-01). */
+  practice?: string;
   children: ReactNode;
 }
 
@@ -107,11 +116,15 @@ export function AppShell(props: Readonly<AppShellProps>) {
   );
 }
 
-function ShellFrame({ org, modulePath, section, children }: Readonly<AppShellProps>) {
+function ShellFrame({ org, modulePath, section, practice, children }: Readonly<AppShellProps>) {
   const fm = useFormatMessage();
   const entitlements = useEntitlements();
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
-  const homeHref = org ? orgModuleUrl(org, "home") : "/";
+  const homeHref = org
+    ? orgModuleUrl(org, "home")
+    : practice
+      ? practiceDirectoryUrl(practice)
+      : "/";
 
   const breadcrumbs: ShellCrumb[] = [];
   if (org) breadcrumbs.push({ label: org, href: homeHref });
@@ -143,6 +156,7 @@ function ShellFrame({ org, modulePath, section, children }: Readonly<AppShellPro
         ) : undefined
       }
       jobTray={org ? <JobTray org={org} /> : undefined}
+      search={org || practice ? <GoToOrganisationSlot practice={practice} org={org} /> : undefined}
       status={
         org && entry?.settings ? (
           <ModuleSettingsLink org={org} module={entry} linkComponent={NextLink} />

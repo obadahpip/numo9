@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 04:10-0500\n"
+"POT-Creation-Date: 2026-11-15 07:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -365,7 +365,7 @@ msgid "Area"
 msgstr ""
 
 msgid "Read-only"
-msgstr ""
+msgstr "Lecture seule"
 
 msgid "Feature matrix"
 msgstr ""
@@ -769,7 +769,7 @@ msgid "Print and mail"
 msgstr ""
 
 msgid "Archived"
-msgstr ""
+msgstr "Archivée"
 
 #, fuzzy
 #| msgid "Number"
@@ -1251,7 +1251,7 @@ msgid "Page %(page)s of %(pages)s"
 msgstr "Page %(page)s de %(pages)s"
 
 msgid "Trial"
-msgstr ""
+msgstr "Essai"
 
 msgid "Payment overdue (grace period)"
 msgstr ""
@@ -1260,7 +1260,7 @@ msgid "Cancelled"
 msgstr ""
 
 msgid "Demo"
-msgstr ""
+msgstr "Démo"
 
 msgid "The trial ended"
 msgstr ""
@@ -1932,6 +1932,35 @@ msgstr "Choisissez quoi faire avec les documents sélectionnés."
 #, python-format
 msgid "Select up to %(max)s documents at a time."
 msgstr "Sélectionnez au plus %(max)s documents à la fois."
+
+msgid "You belong to more than one practice. Choose the practice whose directory to open."
+msgstr "Vous êtes membre de plus d’un cabinet. Choisissez le cabinet dont vous voulez ouvrir le répertoire."
+
+#, fuzzy, python-format
+#| msgid "%(name)s isn't a valid filter value: %(value)s."
+msgid "%(value)s isn't a valid value for the %(name)s filter."
+msgstr "%(value)s n’est pas une valeur valide pour le filtre %(name)s."
+
+#, python-format
+msgid "The directory can't be sorted by %(value)s. Choose one of its columns."
+msgstr "Le répertoire ne peut pas être trié par %(value)s. Choisissez une de ses colonnes."
+
+#, python-format
+msgid "The directory has no column called %(value)s."
+msgstr "Le répertoire n’a aucune colonne nommée %(value)s."
+
+#, python-format
+msgid "Ask for page 1 or later, with 1 to %(max)s organisations a page."
+msgstr "Demandez la page 1 ou une page suivante, avec 1 à %(max)s organisations par page."
+
+#, fuzzy, python-format
+#| msgid "There's already a role called %(name)s here. Choose another name."
+msgid "You already have a view called %(name)s. Choose another name."
+msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
+
+#, python-format
+msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
+msgstr "Vous avez %(max)s vues enregistrées, le maximum permis. Supprimez d’abord une vue que vous n’utilisez plus."
 
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
@@ -3425,3 +3454,84 @@ msgstr "Affecter du personnel aux organisations clientes"
 
 msgid "Invite a client organisation's owner"
 msgstr "Inviter le propriétaire d’une organisation cliente"
+
+msgid "Paid"
+msgstr "Payée"
+
+msgid "Comfortable"
+msgstr "Confortable"
+
+msgid "Compact"
+msgstr "Compacte"
+
+msgid "Quarterly"
+msgstr "Trimestriel"
+
+msgid "Business Number"
+msgstr "Numéro d’entreprise"
+
+msgid "owner"
+msgstr "propriétaire"
+
+msgid "owner email"
+msgstr "courriel du propriétaire"
+
+msgid "trial ends"
+msgstr "fin de l’essai"
+
+msgid "GST/HST cycle"
+msgstr "Périodicité TPS/TVH"
+
+msgid "payroll"
+msgstr "paie"
+
+msgid "overdue items"
+msgstr "éléments en retard"
+
+msgid "unfiled returns"
+msgstr "déclarations non produites"
+
+msgid "search vector"
+msgstr "vecteur de recherche"
+
+msgid "refreshed at"
+msgstr "actualisé le"
+
+msgid "organisation directory row"
+msgstr "ligne du répertoire des organisations"
+
+msgid "organisation directory rows"
+msgstr "lignes du répertoire des organisations"
+
+msgid "search and filters"
+msgstr "recherche et filtres"
+
+msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
+msgstr ""
+
+msgid "columns"
+msgstr "colonnes"
+
+msgid "Shown columns, in order."
+msgstr "Colonnes affichées, dans l’ordre."
+
+msgid "sort"
+msgstr "tri"
+
+msgid "[\"-overdue\", \"name\"]"
+msgstr ""
+
+msgid "density"
+msgstr "densité"
+
+msgid "opens by default"
+msgstr "s’ouvre par défaut"
+
+msgid "saved directory view"
+msgstr "vue de répertoire enregistrée"
+
+msgid "saved directory views"
+msgstr "vues de répertoire enregistrées"
+
+msgid "See the practice's client organisations in the directory"
+msgstr "Voir les organisations clientes du cabinet dans le répertoire"

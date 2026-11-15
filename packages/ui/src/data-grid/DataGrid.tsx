@@ -29,7 +29,7 @@ import { Input } from "../primitives/Input";
 import { Select } from "../primitives/Select";
 import { SearchIcon } from "../shell/icons";
 import { Skeleton, skeletonWidth } from "../states/Skeleton";
-import { ColumnChooser } from "./ColumnChooser";
+import { ColumnChooser, orderColumns } from "./ColumnChooser";
 import {
   EMPTY_VIEW,
   ROW_HEIGHT,
@@ -59,6 +59,21 @@ export interface DataGridProps<T> {
   bulkActions?: (selected: T[]) => ReactNode;
   /** Open a row: Enter on a focused row, or a click on it. */
   onRowOpen?: (row: T) => void;
+  /** Open a row in a new tab: Ctrl/⌘+Enter on a focused row, or Ctrl/⌘+click (V-01-T13). */
+  onRowOpenNewTab?: (row: T) => void;
+  /**
+   * Server-side mode (V-01): `data` is already searched, filtered and sorted by the server; the
+   * grid only renders it and reports view changes (sort, search) through `onViewChange`.
+   */
+  manual?: boolean;
+  /** Manual mode: rows matching on the server (live region, `aria-rowcount`). */
+  totalCount?: number;
+  /** Manual mode: rows before search and filters (live region "143 of 2,000"). */
+  unfilteredCount?: number;
+  /** Placeholder of the search box, e.g. "Search name, BN, owner, tag…". */
+  searchPlaceholder?: string;
+  /** Manual mode: filters applied outside the grid's own chips (a filters panel) count too. */
+  isFiltered?: boolean;
   status?: DataGridStatus;
   /** No data at all (first-run CTA) — `EmptyState` (A-10-T12). */
   emptyState?: ReactNode;
@@ -113,6 +128,12 @@ export function DataGrid<T>({
   onSelectionChange,
   bulkActions,
   onRowOpen,
+  onRowOpenNewTab,
+  manual = false,
+  totalCount,
+  unfilteredCount,
+  searchPlaceholder,
+  isFiltered = false,
   status = "ready",
   emptyState,
   noResultsState,
@@ -141,7 +162,11 @@ export function DataGrid<T>({
     [selectedIds, onSelectionChange],
   );
 
-  const visibleColumns = columns.filter((column) => !view.hiddenColumns.includes(column.id));
+  const orderedColumns = useMemo(
+    () => orderColumns(columns, view.columnOrder),
+    [columns, view.columnOrder],
+  );
+  const visibleColumns = orderedColumns.filter((column) => !view.hiddenColumns.includes(column.id));
 
   const tableColumns = useMemo<ColumnDef<T>[]>(
     () =>
@@ -179,7 +204,9 @@ export function DataGrid<T>({
     // No pagination or row expansion: never reset them (each reset is a state update).
     autoResetPageIndex: false,
     autoResetExpanded: false,
-    state: { sorting, globalFilter: view.search, columnFilters },
+    state: manual ? { sorting } : { sorting, globalFilter: view.search, columnFilters },
+    manualSorting: manual,
+    manualFiltering: manual,
     onSortingChange: (updater) => {
       const next = typeof updater === "function" ? updater(view.sorting as SortingState) : updater;
       setView({ ...view, sorting: next.map(({ id, desc }) => ({ id, desc })) });
@@ -272,6 +299,9 @@ export function DataGrid<T>({
       event.preventDefault();
       anchorIndex.current = index;
       toggleRow(row.id);
+    } else if (event.key === "Enter" && (event.ctrlKey || event.metaKey) && onRowOpenNewTab) {
+      event.preventDefault();
+      onRowOpenNewTab(row.original);
     } else if (event.key === "Enter" && onRowOpen) {
       event.preventDefault();
       onRowOpen(row.original);
@@ -298,7 +328,8 @@ export function DataGrid<T>({
   const selectedInView = filteredIds.filter((id) => selection.has(id)).length;
   const allState: boolean | "indeterminate" =
     selectedInView === 0 ? false : selectedInView === filteredIds.length ? true : "indeterminate";
-  const filtered = view.search.trim() !== "" || Object.values(view.filters).some(Boolean);
+  const filtered =
+    isFiltered || view.search.trim() !== "" || Object.values(view.filters).some(Boolean);
 
   const colCount = visibleColumns.length + (selectable ? 1 : 0);
   const virtualRows = virtualizer.getVirtualItems();
@@ -317,19 +348,16 @@ export function DataGrid<T>({
       </tr>
     ));
   } else if (status === "error" || (data.length === 0 ? true : rows.length === 0)) {
+    // Manual mode: the server already filtered, so "no data" with a search or filter on is
+    // "no results" (the practice has organisations, none match).
+    const nothingAtAll = data.length === 0 && !(manual && filtered);
     const content =
-      status === "error"
-        ? errorState
-        : data.length === 0
-          ? emptyState
-          : (noResultsState ?? emptyState);
+      status === "error" ? errorState : nothingAtAll ? emptyState : (noResultsState ?? emptyState);
     body = (
       <tr>
         <td colSpan={colCount} className="p-0">
           <div
-            data-grid-state={
-              status === "error" ? "error" : data.length === 0 ? "empty" : "no-results"
-            }
+            data-grid-state={status === "error" ? "error" : nothingAtAll ? "empty" : "no-results"}
           >
             {content}
           </div>
@@ -359,6 +387,10 @@ export function DataGrid<T>({
               onClick={(event) => {
                 if ((event.target as HTMLElement).closest("button, a, input, [role=checkbox]"))
                   return;
+                if ((event.ctrlKey || event.metaKey) && onRowOpenNewTab) {
+                  onRowOpenNewTab(row.original);
+                  return;
+                }
                 onRowOpen?.(row.original);
               }}
               style={{ height: rowHeight }}
@@ -428,7 +460,16 @@ export function DataGrid<T>({
           <Input
             type="search"
             value={view.search}
+            placeholder={searchPlaceholder}
+            data-grid-search=""
             onChange={(event) => setView({ ...view, search: event.target.value })}
+            onKeyDown={(event) => {
+              // ↓ from the search box moves into the rows (V-01-T13)
+              if (event.key === "ArrowDown" && rows.length > 0 && status === "ready") {
+                event.preventDefault();
+                focusRow(activeIndex);
+              }
+            }}
             className="ps-9"
           />
         </label>
@@ -469,6 +510,12 @@ export function DataGrid<T>({
             }))}
             hidden={view.hiddenColumns}
             onChange={(hiddenColumns) => setView({ ...view, hiddenColumns })}
+            order={view.columnOrder}
+            onOrderChange={
+              labels.reorderHint ? (columnOrder) => setView({ ...view, columnOrder }) : undefined
+            }
+            reorderHint={labels.reorderHint}
+            movedLabel={labels.columnMoved}
           />
           <DensityToggle
             density={view.density}
@@ -502,7 +549,9 @@ export function DataGrid<T>({
         {status === "loading"
           ? labels.loading
           : filtered
-            ? labels.resultCount(rows.length, data.length)
+            ? manual
+              ? labels.resultCount(totalCount ?? rows.length, unfilteredCount ?? rows.length)
+              : labels.resultCount(rows.length, data.length)
             : ""}
       </p>
 
@@ -519,7 +568,11 @@ export function DataGrid<T>({
         <table
           role="grid"
           aria-label={labels.grid}
-          aria-rowcount={status === "ready" ? rows.length + 1 : undefined}
+          aria-rowcount={
+            status === "ready"
+              ? (manual ? (totalCount ?? rows.length) : rows.length) + 1
+              : undefined
+          }
           aria-multiselectable={selectable || undefined}
           aria-busy={status === "loading" || undefined}
           className="w-full table-fixed border-separate border-spacing-0"

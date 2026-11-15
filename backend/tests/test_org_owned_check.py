@@ -53,6 +53,11 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "packages.PromoCode",
                 # CRA GIFI list (C-01-T04): reviewed — published codes, the same for every tenant.
                 "ledger.GifiCode",
+                # Organisation directory (V-01-T02): reviewed — derived read model of directory
+                # facts, read only through workspace.search's access scope.
+                "workspace.OrgDirectorySummary",
+                # Saved directory views (V-01-T08): reviewed — a user's filter state, no records.
+                "workspace.SavedView",
             }
         )
         == PLATFORM_MODELS

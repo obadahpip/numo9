@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 196   Remaining: 2591   Progress: 7.03%
+TOTAL ATOMIC TASKS: 2787   Completed: 211   Remaining: 2576   Progress: 7.57%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -268,21 +268,21 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-03-T15 — Gap-closure tests tagged gap-06/14/41 (approval never gated within Accounting; no redirect; explicit prompt)   [gap-06/14/41: backend/tests/test_entitlements_gaps.py (@pytest.mark.gap: Accounting approval keys all come with Accounting; audit and approval-limit endpoints CORE; 402 in place, no Location; explicit 402 and bootstrap names) + Playwright e2e/gap-06-14-41.spec.ts (@gap-06 / @gap-14 / @gap-41)]
 
 [V-01]
-❌ V-01-T01 — UX research brief + wireframes (directory, empty state, saved views rail, column chooser)
-❌ V-01-T02 — OrgDirectorySummary model (org, practice, search_vector, province, package, status, fye, gst_cycle, payroll_enabled, overdue_count, unfiled_count, tags cache)
-❌ V-01-T03 — Summary refresh service + signals (org, subscription, tags changes) + nightly full rebuild job
-❌ V-01-T04 — Search/filter query builder (tsvector + trigram + facets), scoped to assigned orgs
-❌ V-01-T05 — API GET /api/v1/practice/orgs (q, filters, sort, page, columns) + facet counts
-❌ V-01-T06 — Performance fixture: 2,000 orgs generator command seed_practice --orgs 2000
-❌ V-01-T07 — k6 search benchmark p95 < 300 ms
-❌ V-01-T08 — SavedView model (user, practice, name, filters JSON, columns, sort, is_default) + API
-❌ V-01-T09 — Directory table UI (virtualised, sticky header, chips, row actions)
-❌ V-01-T10 — Search box with debounce (150 ms), highlighting matches
-❌ V-01-T11 — Filters panel + facet counts
-❌ V-01-T12 — Column chooser (shared design-system component) + saved views rail
-❌ V-01-T13 — Keyboard navigation and Ctrl/⌘+K org switcher
-❌ V-01-T14 — Empty, loading (skeleton), error (retry) states
-❌ V-01-T15 — i18n + accessibility (table semantics, aria-sort)
+✅ V-01-T01 — UX research brief + wireframes (directory, empty state, saved views rail, column chooser)   [UX brief docs/design/directory-ux-brief.md + frames 15–17 (wireframes.md §14–16) next to frame 03; walkthrough sign-off by the project lead]
+✅ V-01-T02 — OrgDirectorySummary model (org, practice, search_vector, province, package, status, fye, gst_cycle, payroll_enabled, overdue_count, unfiled_count, tags cache)
+✅ V-01-T03 — Summary refresh service + signals (org, subscription, tags changes) + nightly full rebuild job
+✅ V-01-T04 — Search/filter query builder (tsvector + trigram + facets), scoped to assigned orgs
+✅ V-01-T05 — API GET /api/v1/practice/orgs (q, filters, sort, page, columns) + facet counts
+✅ V-01-T06 — Performance fixture: 2,000 orgs generator command seed_practice --orgs 2000
+✅ V-01-T07 — k6 search benchmark p95 < 300 ms   [tools/perf/k6/directory-search.js (make perf-directory): 2,000-org seeded DB, 30 VUs, 0.5–2 s think time — directory p95 164 ms (1 VU back-to-back: p95 92 ms), 0 failures; facets/counts from one slim read; in-process guard in tests/test_workspace_seed.py; rerun on the staging server once it exists (ADR-0002)]
+✅ V-01-T08 — SavedView model (user, practice, name, filters JSON, columns, sort, is_default) + API
+✅ V-01-T09 — Directory table UI (virtualised, sticky header, chips, row actions)
+✅ V-01-T10 — Search box with debounce (150 ms), highlighting matches
+✅ V-01-T11 — Filters panel + facet counts
+✅ V-01-T12 — Column chooser (shared design-system component) + saved views rail
+✅ V-01-T13 — Keyboard navigation and Ctrl/⌘+K org switcher
+✅ V-01-T14 — Empty, loading (skeleton), error (retry) states   [Vitest states + Playwright @visual baselines e2e/__screenshots__/directory.spec.ts/directory-{ready,empty,no-results,loading,error}.png (generated with Chrome 153 locally; regenerate in CI with the visual-baselines workflow if the pinned Chromium renders text differently)]
+✅ V-01-T15 — i18n + accessibility (table semantics, aria-sort)
 
 [B-03]
 ❌ B-03-T01 — Wireframes 4-step wizard

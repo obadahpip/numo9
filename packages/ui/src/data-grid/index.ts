@@ -1,5 +1,11 @@
 /** Data grid (A-10-T10): the one list grid, with saved views. */
-export { ColumnChooser, type ChooserColumn } from "./ColumnChooser";
+export {
+  ColumnChooser,
+  orderColumns,
+  type ChooserColumn,
+  type ColumnChooserProps,
+} from "./ColumnChooser";
+export { HighlightedText, highlightRanges } from "./HighlightedText";
 export { DataGrid, type DataGridProps, type DataGridStatus } from "./DataGrid";
 export {
   EMPTY_VIEW,
