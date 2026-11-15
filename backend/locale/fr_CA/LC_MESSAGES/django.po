@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:45-0500\n"
+"POT-Creation-Date: 2026-11-15 17:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2668,6 +2668,142 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Awaiting approval"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+msgid "Reversed"
+msgstr ""
+
+msgid "Both books"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "Accounting book"
+msgstr "Comptabilité"
+
+msgid "Tax book"
+msgstr ""
+
+msgid "Manual journal"
+msgstr "Écriture de journal manuelle"
+
+msgid "Sales"
+msgstr "Ventes"
+
+msgid "Purchases"
+msgstr "Achats"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "Payment"
+msgstr "arguments"
+
+msgid "Opening balance"
+msgstr ""
+
+#, fuzzy
+#| msgid "Documents"
+msgid "Adjustment"
+msgstr "Documents"
+
+msgid "Reversal"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "Due date"
+msgid "date"
+msgstr "Date d’échéance"
+
+#, fuzzy
+#| msgid "job type"
+msgid "journal type"
+msgstr "type de tâche"
+
+msgid "source document type"
+msgstr ""
+
+#, fuzzy
+#| msgid "Documents"
+msgid "source document"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "duration"
+msgid "narration"
+msgstr "durée"
+
+msgid "books"
+msgstr ""
+
+#, fuzzy
+#| msgid "Forever"
+msgid "reverses"
+msgstr "Pour toujours"
+
+msgid "posted by"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "posted at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "journal entry"
+msgstr "Comptabilité"
+
+msgid "journal entries"
+msgstr ""
+
+#, fuzzy
+#| msgid "Manual journal"
+msgid "Draft journal"
+msgstr "Écriture de journal manuelle"
+
+msgid "line ID"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "debit"
+msgstr ""
+
+msgid "credit"
+msgstr ""
+
+msgid "book"
+msgstr ""
+
+#, fuzzy
+#| msgid "Banking"
+msgid "tracking"
+msgstr "Banque"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax code"
+msgstr "code d’erreur"
+
+msgid "journal line"
+msgstr ""
+
+msgid "journal lines"
+msgstr ""
+
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
@@ -3080,9 +3216,6 @@ msgstr ""
 msgid "Choose the type of registration."
 msgstr "Fermer l’organisation"
 
-msgid "Draft"
-msgstr "Brouillon"
-
 msgid "Enter the text for each language."
 msgstr "Entrez le texte pour chaque langue."
 
@@ -3343,12 +3476,6 @@ msgstr "paies"
 msgid "Home"
 msgstr "Accueil"
 
-msgid "Sales"
-msgstr "Ventes"
-
-msgid "Purchases"
-msgstr "Achats"
-
 msgid "Banking"
 msgstr "Banque"
 
@@ -3431,9 +3558,6 @@ msgstr "Un rôle de plateforme s’attribue sans organisation ni cabinet."
 
 msgid "This custom role belongs to another organisation or practice."
 msgstr "Ce rôle personnalisé appartient à une autre organisation ou à un autre cabinet."
-
-msgid "Manual journal"
-msgstr "Écriture de journal manuelle"
 
 msgid "Bill"
 msgstr "Facture fournisseur"

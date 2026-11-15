@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:45-0500\n"
+"POT-Creation-Date: 2026-11-15 17:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2461,6 +2461,114 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
+msgid "Draft"
+msgstr ""
+
+msgid "Awaiting approval"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+msgid "Reversed"
+msgstr ""
+
+msgid "Both books"
+msgstr ""
+
+msgid "Accounting book"
+msgstr ""
+
+msgid "Tax book"
+msgstr ""
+
+msgid "Manual journal"
+msgstr ""
+
+msgid "Sales"
+msgstr ""
+
+msgid "Purchases"
+msgstr ""
+
+msgid "Payment"
+msgstr ""
+
+msgid "Opening balance"
+msgstr ""
+
+msgid "Adjustment"
+msgstr ""
+
+msgid "Reversal"
+msgstr ""
+
+msgid "journal number"
+msgstr ""
+
+msgid "date"
+msgstr ""
+
+msgid "journal type"
+msgstr ""
+
+msgid "source document type"
+msgstr ""
+
+msgid "source document"
+msgstr ""
+
+msgid "narration"
+msgstr ""
+
+msgid "books"
+msgstr ""
+
+msgid "reverses"
+msgstr ""
+
+msgid "posted by"
+msgstr ""
+
+msgid "posted at"
+msgstr ""
+
+msgid "journal entry"
+msgstr ""
+
+msgid "journal entries"
+msgstr ""
+
+msgid "Draft journal"
+msgstr ""
+
+msgid "line ID"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "debit"
+msgstr ""
+
+msgid "credit"
+msgstr ""
+
+msgid "book"
+msgstr ""
+
+msgid "tracking"
+msgstr ""
+
+msgid "tax code"
+msgstr ""
+
+msgid "journal line"
+msgstr ""
+
+msgid "journal lines"
+msgstr ""
+
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
@@ -2835,9 +2943,6 @@ msgstr ""
 msgid "Choose the type of registration."
 msgstr ""
 
-msgid "Draft"
-msgstr ""
-
 msgid "Enter the text for each language."
 msgstr ""
 
@@ -3090,12 +3195,6 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-msgid "Sales"
-msgstr ""
-
-msgid "Purchases"
-msgstr ""
-
 msgid "Banking"
 msgstr ""
 
@@ -3177,9 +3276,6 @@ msgid "A platform role is given without an organisation or practice."
 msgstr ""
 
 msgid "This custom role belongs to another organisation or practice."
-msgstr ""
-
-msgid "Manual journal"
 msgstr ""
 
 msgid "Bill"

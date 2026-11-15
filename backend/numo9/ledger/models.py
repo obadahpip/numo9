@@ -31,6 +31,7 @@ log (``AuditedModel``):
 from __future__ import annotations
 
 import re
+from decimal import Decimal
 from typing import Any, ClassVar
 
 from django.core.exceptions import ValidationError
@@ -566,3 +567,253 @@ class Account(AuditedModel, OrgOwnedModel):
 
         refuse_delete(self)
         super().soft_delete()
+
+
+# ---- journals (C-02, ADR-0003) -------------------------------------------------------------
+
+
+class JournalStatus(models.TextChoices):
+    """Draft → Awaiting approval → Posted → Reversed (explicit transitions, C-02-T09)."""
+
+    DRAFT = "draft", _("Draft")
+    AWAITING_APPROVAL = "awaiting_approval", _("Awaiting approval")
+    POSTED = "posted", _("Posted")
+    REVERSED = "reversed", _("Reversed")
+
+
+#: Entries whose rows can't change any more (append-only, C-02-T04).
+LOCKED_STATUSES: frozenset[str] = frozenset({JournalStatus.POSTED, JournalStatus.REVERSED})
+
+
+class Book(models.TextChoices):
+    """Which book a journal line belongs to (ADR-0003 §1).
+
+    The accounting book is the lines with ``both`` or ``accounting``; the tax book the lines with
+    ``both`` or ``tax``. An ordinary transaction is all ``both``; a book-tax difference (CCA vs.
+    book amortization) is an extra balanced pair in one book only.
+    """
+
+    BOTH = "both", _("Both books")
+    ACCOUNTING = "accounting", _("Accounting book")
+    TAX = "tax", _("Tax book")
+
+
+class JournalType(models.TextChoices):
+    """What posted the entry; modules add their own types (kept open at the database)."""
+
+    MANUAL = "manual", _("Manual journal")
+    SALES = "sales", _("Sales")
+    PURCHASE = "purchase", _("Purchases")
+    PAYMENT = "payment", _("Payment")
+    PAYROLL = "payroll", _("Payroll")
+    OPENING = "opening", _("Opening balance")
+    ADJUSTMENT = "adjustment", _("Adjustment")
+    REVERSAL = "reversal", _("Reversal")
+
+
+#: numeric(18, 2): 16 digits before the decimal point, two after.
+MONEY_DIGITS = 18
+MONEY_PLACES = 2
+
+
+class JournalEntry(AuditedModel, OrgOwnedModel):
+    """One double-entry journal (C-02-T02): header of the lines that post together.
+
+    - ``number`` — the organisation's journal number, given when the entry is posted (gap-free
+      ``JournalSequence``, C-02-T05); empty for drafts; unique per organisation;
+    - ``date`` — the accounting date of every line;
+    - ``type`` — manual, sales, purchase, payment… (``JournalType``; modules may add types);
+    - ``status`` — draft, awaiting approval, posted, reversed; posted and reversed entries can't
+      change (C-02-T04) except Posted → Reversed;
+    - ``source_type`` / ``source_id`` — the document that posted it (``sales.Invoice`` + public id);
+    - ``narration`` — what the entry is for;
+    - ``book_scope`` — the books its lines touch (``both`` when lines touch both books);
+    - ``reversal_of`` — the entry this one reverses (a reversal has its own number);
+    - ``posted_by`` / ``posted_at`` — set when posted (with ``created_by`` from ``OrgOwnedModel``).
+    """
+
+    number = models.PositiveBigIntegerField(_("journal number"), null=True, blank=True)
+    date = models.DateField(_("date"))
+    type = models.CharField(
+        _("journal type"), max_length=32, choices=JournalType.choices, default=JournalType.MANUAL
+    )
+    status = models.CharField(
+        _("status"), max_length=20, choices=JournalStatus.choices, default=JournalStatus.DRAFT
+    )
+    source_type = models.CharField(_("source document type"), max_length=60, blank=True)
+    source_id = models.CharField(_("source document"), max_length=64, blank=True)
+    narration = models.TextField(_("narration"), blank=True)
+    book_scope = models.CharField(
+        _("books"), max_length=16, choices=Book.choices, default=Book.BOTH
+    )
+    reversal_of = models.OneToOneField(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="reversed_by",
+        verbose_name=_("reverses"),
+    )
+    posted_by = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("posted by"),
+    )
+    posted_at = models.DateTimeField(_("posted at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-date", "-number", "-pk")
+        verbose_name = _("journal entry")
+        verbose_name_plural = _("journal entries")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "number"),
+                condition=models.Q(number__isnull=False),
+                name="ledger_journal_number_unique_per_org",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=JournalStatus.values),
+                name="ledger_journal_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(book_scope__in=Book.values),
+                name="ledger_journal_book_scope_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(type=""), name="ledger_journal_type_required"
+            ),
+            # Posted and reversed entries have their number and posting time; drafts have neither.
+            models.CheckConstraint(
+                condition=(
+                    models.Q(
+                        status__in=sorted(LOCKED_STATUSES),
+                        number__isnull=False,
+                        posted_at__isnull=False,
+                    )
+                    | models.Q(
+                        status__in=[JournalStatus.DRAFT, JournalStatus.AWAITING_APPROVAL],
+                        number__isnull=True,
+                    )
+                ),
+                name="ledger_journal_number_when_posted",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(reversal_of=models.F("pk")),
+                name="ledger_journal_not_own_reversal",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "date"), name="ledger_journal_date_idx"),
+            models.Index(
+                fields=("organisation", "source_type", "source_id"),
+                name="ledger_journal_source_idx",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{_('Journal')} {self.number}" if self.number else str(_("Draft journal"))
+
+    @property
+    def is_locked(self) -> bool:
+        return self.status in LOCKED_STATUSES
+
+
+class JournalLine(OrgOwnedModel):
+    """One debit or credit of an entry (C-02-T02).
+
+    ``debit`` and ``credit`` are separate non-negative ``numeric(18, 2)`` columns and exactly one
+    is greater than zero (database checks). ``book`` puts the line in both books or one of them.
+    ``organisation`` repeats the entry's (the partition key of C-02-T03 and the RLS key); the
+    primary key is ``(organisation, id)`` so the table can be hash-partitioned by organisation
+    (ADR-0003 §5), ``id`` coming from the sequence ``ledger_journalline_id_seq``. Lines are written
+    only by ``numo9.ledger.services`` (C-02-T08, T14) and are not audited one by one: the entry's
+    posting event lists them.
+    """
+
+    pk = models.CompositePrimaryKey("organisation", "id")
+    id = models.BigIntegerField(
+        _("line ID"),
+        editable=False,
+        db_default=models.Func(models.Value("ledger_journalline_id_seq"), function="nextval"),
+    )
+    entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        related_name="lines",
+        verbose_name=_("journal entry"),
+    )
+    line_no = models.PositiveSmallIntegerField(_("line"))
+    account = models.ForeignKey(
+        Account, on_delete=models.PROTECT, related_name="journal_lines", verbose_name=_("account")
+    )
+    debit = models.DecimalField(
+        _("debit"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES, default=Decimal("0")
+    )
+    credit = models.DecimalField(
+        _("credit"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES, default=Decimal("0")
+    )
+    book = models.CharField(_("book"), max_length=16, choices=Book.choices, default=Book.BOTH)
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="journal_lines",
+        verbose_name=_("contact"),
+    )
+    tracking = models.JSONField(_("tracking"), default=dict, blank=True)
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    tax_code = models.CharField(_("tax code"), max_length=60, blank=True)
+
+    # Lines have no public id of their own (the entry's is used), no creator (the entry's) and are
+    # never soft-deleted (posted lines are append-only; draft lines are replaced).
+    public_id = None  # type: ignore[assignment]
+    created_by = None
+    deleted_at = None
+
+    class Meta:
+        ordering = ("entry_id", "line_no")
+        verbose_name = _("journal line")
+        verbose_name_plural = _("journal lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(debit__gte=0), name="ledger_line_debit_not_negative"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(credit__gte=0), name="ledger_line_credit_not_negative"
+            ),
+            models.CheckConstraint(
+                condition=(models.Q(debit__gt=0, credit=0) | models.Q(debit=0, credit__gt=0)),
+                name="ledger_line_one_side",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(book__in=Book.values), name="ledger_line_book_valid"
+            ),
+            models.UniqueConstraint(
+                fields=("organisation", "entry", "line_no"), name="ledger_line_no_unique"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            # Trial balance per book (C-02-T11): one partition, one index range per account.
+            models.Index(
+                fields=("organisation", "account", "book"), name="ledger_line_account_book_idx"
+            ),
+            models.Index(fields=("organisation", "entry"), name="ledger_line_entry_idx"),
+        ]
+
+    def __str__(self) -> str:
+        side = f"Dr {self.debit}" if self.debit else f"Cr {self.credit}"
+        return f"{self.entry_id}/{self.line_no} {side}"
+
+    @property
+    def amount(self) -> Decimal:
+        """Signed amount: debit positive, credit negative."""
+        return self.debit - self.credit
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.entry_id is not None and not self.organisation_id:
+            self.organisation_id = self.entry.organisation_id
+        super().save(*args, **kwargs)
