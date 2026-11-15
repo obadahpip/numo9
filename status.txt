@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 193   Remaining: 2594   Progress: 6.93%
+TOTAL ATOMIC TASKS: 2787   Completed: 194   Remaining: 2593   Progress: 6.96%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -263,7 +263,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-03-T09 — GET /api/v1/orgs/{id}/entitlements for frontend bootstrap   [GET /api/v1/o/<org>/entitlements (the plan's /orgs/{id}/entitlements): mode, reason, since, package(+name), status, founding, products, read_products, features, version, product_names, packages_by_product, time_zone, viewer.can_change_package; can_access (404 otherwise), CORE; cached p95 < 20 ms measured over 100 requests (tests/test_entitlements_api.py)]
 ✅ U-03-T10 — Frontend entitlement store (React Query) + <Gated> locked panel design   [frontend/src/entitlements/store.tsx EntitlementsProvider (@tanstack/react-query 5.107.1) feeding FeatureProvider; locked panel (catalogue/Gated.tsx) names the product and packages, CTA per role (owner: See packages + Change the package; others: See packages + Ask the owner); decisionFromError for 402s; Vitest store.test.tsx, Gated.test.tsx; Storybook Entitlements/Gated locked panel owner/staff]
 ✅ U-03-T11 — Nav items with lock glyph + tooltip; no route redirects for gated routes (route renders locked panel)   [ShellNavItem.locked (@numo9/ui): lock glyph + tooltip (+ screen-reader text, written out in the drawer); primaryNav locks items whose module feature is gated; the app shell wraps non-CORE modules in <Gated>: a gated URL shows the locked panel, URL unchanged; Playwright e2e/entitlements-gating.spec.ts (@gap-14) + Vitest]
-❌ U-03-T12 — Read-only org header banner with reason/date and owner CTA
+✅ U-03-T12 — Read-only org header banner with reason/date and owner CTA   [frontend/src/entitlements/ReadOnlyNotice.tsx in the shell's banner slot: reason (payment_failed / trial_ended / cancelled / platform) and date in the organisation's time zone, owner CTA Reactivate the subscription, others told to ask the owner; nothing in full mode (gap-12 holds); Playwright e2e/read-only-banner.spec.ts + Vitest]
 ❌ U-03-T13 — Entitlement-leak test suite: for each feature key × status, assert allowed/denied
 ❌ U-03-T15 — Gap-closure tests tagged gap-06/14/41 (approval never gated within Accounting; no redirect; explicit prompt)
 
