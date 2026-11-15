@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 188   Remaining: 2599   Progress: 6.75%
+TOTAL ATOMIC TASKS: 2787   Completed: 189   Remaining: 2598   Progress: 6.78%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -258,7 +258,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-03-T04 — resolve_entitlements(org) service → {products, features, mode: full/read_only/none, reason}   [backend/numo9/entitlements/engine.py resolve_entitlements(org, now) -> products, read_products, features, mode full/read_only/none, reason, since, package, valid_until; trial/demo packages (NUMO9_TRIAL_PACKAGE / NUMO9_DEMO_PACKAGE, else every active product), founding = every active product, overrides, free sets, planned never; grace end from the clock; tests/test_entitlements_engine.py table-driven over every status]
 ✅ U-03-T05 — Read-retention rule: products ever entitled stored in OrgProductHistory; read keys granted for them   [OrgProductHistory (entitlements.0003): products entitled in full mode recorded; read keys kept for history products — after a downgrade payroll read = true, write = false (tests/test_entitlements_engine.py)]
 ✅ U-03-T06 — Redis cache with version counter + invalidation signals on subscription/package/override save   [backend/numo9/entitlements/cache.py: key ent:{org}:{org version}.{global version} in the default cache (Redis in staging/prod); post_save/post_delete on Subscription, EntitlementOverride, Organisation bump the organisation, Package/PackageProduct/Product/FeatureKey the global version (at once + on commit); timeout stops at valid_until; tests/test_entitlements_cache.py (change -> next call, no TTL wait; Redis case with NUMO9_TEST_REDIS_URL)]
-❌ U-03-T07 — Wire RequiresFeature permission to engine; 402 payload {code:"feature_not_in_package", feature, product, packages:[…]}
+✅ U-03-T07 — Wire RequiresFeature permission to engine; 402 payload {code:"feature_not_in_package", feature, product, packages:[…]}   [RequiresFeature on the engine (NUMO9_ENTITLEMENT_RESOLVER = entitlements.engine.Engine): 402 entitlement.feature_not_in_package {feature, product, product_name, packages:[{code, name}]}; 404 -> 403 -> 402; tests/test_entitlements_api.py, test_requires_feature.py]
 ❌ U-03-T08 — Read-only mode middleware: unsafe methods → 402 {code:"organisation_read_only", reason, since} except billing/export endpoints
 ❌ U-03-T09 — GET /api/v1/orgs/{id}/entitlements for frontend bootstrap
 ❌ U-03-T10 — Frontend entitlement store (React Query) + <Gated> locked panel design

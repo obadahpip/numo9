@@ -1,10 +1,16 @@
 """Feature-key declarations for API views (U-01-T05).
 
 Every gated API method says which feature key it needs; ``RequiresFeature`` asks the entitlement
-resolver (``entitlements.py`` — U-03 engine, a stub that allows everything until then) and
-answers **402** ``entitlement.feature_not_in_package`` naming the product when the
-organisation's package doesn't include it. ``manage.py check_feature_keys`` (U-01-T07) fails
-CI when a business endpoint declares nothing or a key that is not in the catalogue.
+resolver (``settings.NUMO9_ENTITLEMENT_RESOLVER`` — the U-03 engine, ``numo9.entitlements``) and
+answers **402** ``entitlement.feature_not_in_package`` when the organisation's package doesn't
+include it, naming the feature, the product and the packages offered that include it:
+
+    {"code": "entitlement.feature_not_in_package", "detail": "…part of Payroll…",
+     "feature": "payroll.pay_runs.write", "product": "payroll", "product_name": "Payroll",
+     "packages": [{"code": "complete", "name": "Complete"}]}
+
+``manage.py check_feature_keys`` (U-01-T07) fails CI when a business endpoint declares nothing or
+a key that is not in the catalogue.
 
     class InvoiceList(APIView):
         @requires_permission("sales.invoice.view")
@@ -19,8 +25,9 @@ A declaration is a catalogue key (``<product>.<area>.<action>``) or ``CORE`` —
 tenancy, users and roles, approval limits, audit, jobs and settings belong to every organisation
 and are never gated (U-03 rule; docs/dev/feature-keys.md).
 
-``RequiresFeature`` is in ``DEFAULT_PERMISSION_CLASSES`` after ``RequiresPermission``: a foreign
-organisation answers 404 and a missing permission 403 before any 402. ``HEAD`` and ``OPTIONS``
+``RequiresFeature`` is in ``DEFAULT_PERMISSION_CLASSES`` after ``RequiresPermission`` and the
+read-only guard (``numo9.entitlements.drf``): a foreign organisation answers 404 and a missing
+permission 403 before any 402. ``HEAD`` and ``OPTIONS``
 follow ``GET``. An undeclared method is not refused at runtime — the CI check refuses it.
 """
 
@@ -97,6 +104,20 @@ class RequiresFeature(BasePermission):
             return True
         product = product_of(key)
         error = api_error(errors.FEATURE_NOT_IN_PACKAGE, product=product_name(product))
-        # U-03-T07 adds the packages that include the product.
-        error.extra = {"feature": key, "product": product}
+        error.extra = {
+            "feature": key,
+            "product": product,
+            "product_name": product_name(product),
+            "packages": packages_with(product),
+        }
         raise error
+
+
+def packages_with(product: str) -> list[dict[str, str]]:
+    """The packages offered that include ``product`` (code and name, display order): the 402
+    body and the locked panel name them (U-03-T07)."""
+    from .packages import get_source
+
+    return [
+        {"code": p.code, "name": p.name} for p in get_source().packages() if product in p.products
+    ]

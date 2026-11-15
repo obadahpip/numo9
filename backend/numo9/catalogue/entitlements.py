@@ -1,4 +1,8 @@
-"""Entitlement resolution interface (U-01-T05) — the stub the U-03 engine replaces.
+"""Entitlement resolution interface (U-01-T05), implemented by the U-03 engine.
+
+Settings point ``NUMO9_ENTITLEMENT_RESOLVER`` at ``numo9.entitlements.engine.Engine`` (U-03-T07);
+``AllowAllResolver`` stays for tests and tools that need every key allowed.
+
 
 ``RequiresFeature`` asks the resolver named by ``settings.NUMO9_ENTITLEMENT_RESOLVER`` whether
 the active organisation's package includes a feature key. Until U-03 ships its engine
