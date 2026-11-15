@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import { renderWithIntl } from "@/test/intl";
 
-import { FeatureProvider, Gated, useFeatureAllowed } from "./Gated";
+import { decisionFromError, FeatureProvider, Gated, useFeatureAllowed } from "./Gated";
 
 function Probe({ feature }: { feature: string }) {
   return <p>{useFeatureAllowed(feature) ? "allowed" : "not allowed"}</p>;
@@ -45,5 +45,26 @@ describe("Gated (U-01-T06)", () => {
       "/o/acme/settings/package",
     );
     expect(screen.getByText("not allowed")).toBeInTheDocument();
+  });
+
+  it("builds the same panel from a 402 body (U-03-T07: forms show the locked panel)", () => {
+    expect(
+      decisionFromError({
+        code: "entitlement.feature_not_in_package",
+        detail: "…",
+        feature: "payroll.pay_runs.write",
+        product: "payroll",
+        product_name: "Payroll",
+        packages: [{ code: "complete", name: "Complete" }],
+      }),
+    ).toEqual({
+      feature: "payroll.pay_runs.write",
+      state: "gated",
+      product: "payroll",
+      productName: "Payroll",
+      packages: ["Complete"],
+    });
+    expect(decisionFromError({ code: "permission_denied" })).toBeNull();
+    expect(decisionFromError(null)).toBeNull();
   });
 });
