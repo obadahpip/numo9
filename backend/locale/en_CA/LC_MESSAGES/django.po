@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 07:20-0500\n"
+"POT-Creation-Date: 2026-11-15 17:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1813,6 +1813,52 @@ msgstr ""
 
 #, python-format
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
+msgstr ""
+
+#, python-format
+msgid "The file is larger than %(max)d MB. Split it into smaller files."
+msgstr ""
+
+msgid "The file is empty."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is an old Excel (.xls) file. Open it in Excel and save it as .xlsx or .csv, then try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't a CSV or Excel file. Save it as .csv or .xlsx and try again."
+msgstr ""
+
+msgid "The file's characters can't be read. Save it as CSV UTF-8 and try again."
+msgstr ""
+
+#, python-format
+msgid "The CSV file is malformed near line %(line)d: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "%(name)s expands to more data than an import can take. Split it and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s can't be opened: it may be damaged or password-protected."
+msgstr ""
+
+#, python-format
+msgid "The sheet %(sheet)s has more than %(max)d rows. Split it into smaller files."
+msgstr ""
+
+#, python-format
+msgid "The sheet %(sheet)s has more than %(max)d columns."
+msgstr ""
+
+#, python-format
+msgid "Column %(letter)s"
+msgstr ""
+
+#, python-format
+msgid "Columns %(first)s and %(second)s in %(sheet)s are both named “%(header)s”. Give each column its own name."
 msgstr ""
 
 msgid "Waiting to start"
