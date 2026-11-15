@@ -5,10 +5,11 @@ and Portal are free). Every **gated** endpoint and screen declares the **feature
 the entitlement engine (U-03) decides whether the active organisation's package includes it.
 Design and data model: [Product catalogue and feature keys](../architecture/feature-keys.md).
 
-!!! note "Until U-03 ships"
-    The entitlement resolver is a stub that allows every key, and the web app's entitlement source
-    allows every feature. Declaring keys now costs nothing at runtime and makes every endpoint and
-    screen ready for gating the day the engine is switched on.
+!!! note "The engine is on (U-03)"
+    The entitlement engine ([Entitlement engine](../architecture/entitlements.md)) answers for the
+    API (`RequiresFeature`, 402) and the web app (the entitlement store the app shell mounts). An
+    organisation without a subscription is a trial with every active product, so local
+    development and existing tests see every key allowed.
 
 ## 1. Choose the key
 
@@ -113,8 +114,15 @@ const invoices = useFeature("accounting.sales_invoices.write"); // { state, prod
 ```
 
 A gated feature renders the locked panel **in place** — never hidden, never a redirect (gap-14).
-Decisions come from the nearest `FeatureProvider` (the U-03 entitlement store); without one, every
-feature is allowed.
+Decisions come from the nearest `FeatureProvider` — the U-03 entitlement store, which the app
+shell mounts for every organisation page; without one, every feature is allowed. A route whose
+registry `feature` isn't `CORE` is gated by the shell itself (locked panel at its own URL, lock
+glyph on its navigation item). A form that gets a 402 shows the same panel:
+`<GatedPanel decision={decisionFromError(body)!} />`.
+
+Writes in a **read-only** organisation answer 402 `entitlement.organisation_read_only`; mark a
+method that must keep working (billing, an export started with POST) with
+`@allowed_when_read_only` (`numo9.entitlements.drf`).
 
 ## 4. Test the gating
 
@@ -155,7 +163,7 @@ Examples in the repository: `backend/tests/test_requires_feature.py`,
 |---|---|
 | Products and keys (models, seed, texts) | `backend/numo9/catalogue/` |
 | Decorator, permission class, `CORE` | `backend/numo9/catalogue/drf.py` |
-| Resolver and package interfaces (stubs until U-02 / U-03) | `backend/numo9/catalogue/entitlements.py`, `packages.py` |
+| Resolver and package interfaces | `backend/numo9/catalogue/entitlements.py`, `packages.py`; the engine: `backend/numo9/entitlements/` |
 | APIs | `GET /api/v1/catalogue/products`, `/api/v1/catalogue/feature-matrix`, `/api/v1/o/<org>/package-features`, `/api/v1/platform/catalogue/products`, `/api/v1/platform/catalogue/feature-matrix/export/<csv\|xlsx>` |
 | Commands | `check_feature_keys`, `featurematrix_export` |
 | Screens | Platform console → Products (`/console/products`), Settings → Package and features (`/o/:org/settings/package-features`) |

@@ -40,8 +40,10 @@ deleted; the previous one is then open again.
 Delete: only a draft nobody subscribes to (409 otherwise — retire instead). Subscriptions arrive
 with U-03/U-04: packages ask the **subscription source** (`subscriptions.py`,
 `NUMO9_SUBSCRIPTION_SOURCE`) for the subscriber count, the subscriptions a price change affects
-(not grandfathered, same package and interval) and an organisation's package. Until U-03 the
-source is `NoSubscriptions`.
+(not grandfathered, same package and interval) and an organisation's package. The source is the
+U-03 `numo9.entitlements.source.Subscriptions` ([Entitlement engine](entitlements.md)); until
+U-04-T02 adds the interval and the grandfathered flag, a price change counts every subscription on
+the package that hasn't ended.
 
 The catalogue's feature matrix and the in-app "Package and features" page read the offered
 packages through `NUMO9_PACKAGE_SOURCE = numo9.packages.source.OfferedPackages` (U-01 interface).

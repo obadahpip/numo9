@@ -77,6 +77,7 @@ nav:
       - "Audit log and history": architecture/audit.md
       - "Product catalogue and feature keys": architecture/feature-keys.md
       - "Packages, prices and promo codes": architecture/packages-pricing.md
+      - "Entitlement engine": architecture/entitlements.md
       - "Chart of accounts": architecture/chart-of-accounts.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md
       - "Contacts": architecture/contacts.md
