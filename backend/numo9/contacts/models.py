@@ -30,6 +30,8 @@ People (``ContactPerson``, B-01-T03) and addresses (``Address``, B-01-T04) belon
 from __future__ import annotations
 
 import re
+import zoneinfo
+from datetime import date
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, ClassVar
 
@@ -52,7 +54,7 @@ from numo9.orgsettings.validators import (
     validate_postal_code_province,
     validate_province,
 )
-from numo9.tenancy.models import OrgOwnedModel
+from numo9.tenancy.models import DEFAULT_TIME_ZONE, OrgOwnedModel
 
 from .duplicates import name_key
 from .fields import PortableArrayField
@@ -1181,3 +1183,227 @@ def seed_payment_terms(organisation: Any, model: Any = None) -> int:
     ]
     model._base_manager.bulk_create(rows, ignore_conflicts=True)
     return len(rows)
+
+
+# ---- exemption certificates (B-01-T08) ---------------------------------------------------------
+
+#: A reminder goes out this many days before a certificate expires (and again once it has).
+EXEMPTION_REMINDER_DAYS = 30
+EXEMPTION_NUMBER_MAX = 60
+
+
+class ExemptionState(models.TextChoices):
+    VALID = "valid", _("Valid")
+    EXPIRING = "expiring", _("Expires soon")
+    EXPIRED = "expired", _("Expired")
+
+
+def organisation_today(organisation: Any, now: Any = None) -> date:
+    """Today's date where the organisation is (its time zone), not the server's."""
+    zone = zoneinfo.ZoneInfo(getattr(organisation, "time_zone", "") or DEFAULT_TIME_ZONE)
+    moment = now or timezone.now()
+    day: date = moment.astimezone(zone).date()
+    return day
+
+
+class ExemptionCertificate(AuditedModel, OrgOwnedModel):
+    """A sales-tax exemption certificate a contact gave the organisation (B-01-T08, gap-20).
+
+    Xero keeps no exemption certificate on a contact (teardown §3.2): a customer exempt from PST
+    or QST (a reseller, a First Nations band, a farmer…) is handled with a tax rate and the paper
+    lives elsewhere. Numo9 records it on the contact:
+
+    - ``number`` — the certificate or exemption number as printed (required; one certificate per
+      number on a contact);
+    - ``document`` — the scanned certificate, a document of the organisation's file store (A-06):
+      never a quarantined file;
+    - ``issued_on`` / ``expires_on`` — empty ``expires_on`` = no expiry date on the certificate;
+      an expiry date is never before the issue date;
+    - ``state(on)`` — ``valid``, ``expiring`` (within ``EXEMPTION_REMINDER_DAYS`` of the expiry
+      date) or ``expired`` (the day after ``expires_on``, in the organisation's time zone). An
+      expired certificate is flagged everywhere it is shown; the tax engine (G-02) stops applying
+      it from that day;
+    - ``reminded_state`` / ``reminded_for`` — which reminder the daily job (``exemptions.py``)
+      already sent for which expiry date, so each reminder goes out once; renewing the certificate
+      (a new expiry date) starts again.
+
+    Removing a certificate is a soft delete (the audit log keeps it).
+    """
+
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.PROTECT,
+        related_name="exemption_certificates",
+        verbose_name=_("contact"),
+    )
+    number = models.CharField(_("certificate number"), max_length=EXEMPTION_NUMBER_MAX, blank=True)
+    document = models.ForeignKey(
+        "files.Document",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("certificate file"),
+    )
+    issued_on = models.DateField(_("issued on"), null=True, blank=True)
+    expires_on = models.DateField(
+        _("expires on"),
+        null=True,
+        blank=True,
+        help_text=_("Leave empty when the certificate has no expiry date."),
+    )
+    notes = models.CharField(_("notes"), max_length=500, blank=True)
+    reminded_state = models.CharField(_("reminder sent"), max_length=10, blank=True, editable=False)
+    reminded_for = models.DateField(
+        _("reminder sent for expiry date"), null=True, blank=True, editable=False
+    )
+
+    class Meta:
+        ordering = ("-expires_on", "-id")
+        verbose_name = _("exemption certificate")
+        verbose_name_plural = _("exemption certificates")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                Lower("number"),
+                "contact",
+                condition=models.Q(deleted_at__isnull=True),
+                name="contacts_exemption_number_unique",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(number=""), name="contacts_exemption_number_required"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(issued_on__isnull=True)
+                | models.Q(expires_on__isnull=True)
+                | models.Q(expires_on__gte=models.F("issued_on")),
+                name="contacts_exemption_dates_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(reminded_state="")
+                | models.Q(reminded_state__in=ExemptionState.values),
+                name="contacts_exemption_reminded_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "contact"), name="contacts_exemption_contact_idx"),
+            models.Index(fields=("expires_on",), name="contacts_exemption_expiry_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.number
+
+    def audit_label(self) -> str:
+        name = self.contact.display_name if self.contact_id else ""
+        return f"{self.number} · {name}" if name else self.number
+
+    def state(self, on: date | None = None) -> str:
+        """``valid``, ``expiring`` or ``expired`` on ``on`` (default: today in the organisation)."""
+        if self.expires_on is None:
+            return ExemptionState.VALID
+        today = on or organisation_today(self.organisation)
+        if today > self.expires_on:
+            return ExemptionState.EXPIRED
+        if (self.expires_on - today).days <= EXEMPTION_REMINDER_DAYS:
+            return ExemptionState.EXPIRING
+        return ExemptionState.VALID
+
+    def is_expired(self, on: date | None = None) -> bool:
+        return self.state(on) == ExemptionState.EXPIRED
+
+    def days_left(self, on: date | None = None) -> int | None:
+        """Days until the expiry date (negative once expired); None without an expiry date."""
+        if self.expires_on is None:
+            return None
+        return (self.expires_on - (on or organisation_today(self.organisation))).days
+
+    def clean(self) -> None:
+        errors: dict[str, list[ValidationError]] = {}
+
+        def add(field: str, message: Any, code: str, **params: Any) -> None:
+            errors.setdefault(field, []).append(ValidationError(message, code=code, params=params))
+
+        if not self.number:
+            add("number", _("Enter the certificate number."), "contacts.exemption.number_required")
+        elif self._number_taken():
+            add(
+                "number",
+                _("This contact already has certificate %(number)s."),
+                "contacts.exemption.number_taken",
+                number=self.number,
+            )
+        if self.issued_on and self.expires_on and self.expires_on < self.issued_on:
+            add(
+                "expires_on",
+                _("The expiry date can't be before the issue date."),
+                "contacts.exemption.expiry_before_issue",
+            )
+        if self.contact_id and self.contact.organisation_id != self.organisation_id:
+            add(
+                "contact", _("Choose a contact of this organisation."), "contacts.exemption.contact"
+            )
+        if self.document_id is not None:
+            from numo9.files.models import DocumentStatus
+
+            document = self.document
+            if document is None or document.organisation_id != self.organisation_id:
+                add(
+                    "document",
+                    _("Choose a document of this organisation."),
+                    "contacts.exemption.document",
+                )
+            elif document.deleted_at is not None:
+                add(
+                    "document",
+                    _("This document was deleted: upload the certificate again."),
+                    "contacts.exemption.document_deleted",
+                )
+            elif document.status == DocumentStatus.INFECTED:
+                add(
+                    "document",
+                    _("%(name)s is quarantined (virus found): upload a clean copy."),
+                    "contacts.exemption.document_quarantined",
+                    name=document.name,
+                )
+        if errors:
+            raise ValidationError(errors)
+
+    def _number_taken(self) -> bool:
+        return (
+            ExemptionCertificate._base_manager.filter(
+                contact_id=self.contact_id, number__iexact=self.number, deleted_at__isnull=True
+            )
+            .exclude(pk=self.pk)
+            .exists()
+        )
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.contact_id and not self.organisation_id:
+            self.organisation_id = self.contact.organisation_id
+        self.number = " ".join((self.number or "").split())
+        self.notes = " ".join((self.notes or "").split())
+        update_fields = kwargs.get("update_fields")
+        if update_fields is None or set(update_fields) - {
+            "deleted_at",
+            "updated_at",
+            "reminded_state",
+            "reminded_for",
+        }:
+            errors: dict[str, Any] = {}
+            try:
+                self.clean_fields(
+                    exclude=["organisation", "contact", "document", "created_by", "public_id"]
+                )
+            except ValidationError as error:
+                errors = error.update_error_dict(errors)
+            try:
+                self.clean()
+            except ValidationError as error:
+                errors = error.update_error_dict(errors)
+            if errors:
+                raise ValidationError(errors)
+        if self.reminded_for is not None and self.reminded_for != self.expires_on:
+            # Renewed (new expiry date) or expiry removed: the next reminder is due afresh.
+            self.reminded_state, self.reminded_for = "", None
+            if update_fields is not None:
+                kwargs["update_fields"] = [*update_fields, "reminded_state", "reminded_for"]
+        super().save(*args, **kwargs)

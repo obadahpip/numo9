@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 181   Remaining: 2606   Progress: 6.49%
+TOTAL ATOMIC TASKS: 2787   Completed: 182   Remaining: 2605   Progress: 6.53%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -249,7 +249,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-06-T15 — Audit hooks + i18n keys   [backend/tests/test_files_audit.py; adds files.document.downloaded and files.inbound.processed events and labels; makemessages en_CA/fr_CA + frontend catalogues (fr-CA holds English placeholders until Phase 6)]
 
 [B-01]
-❌ B-01-T08 — Exemption certificate (file via A-06, number, expiry) + expiry reminder hook
+✅ B-01-T08 — Exemption certificate (file via A-06, number, expiry) + expiry reminder hook   [backend/tests/test_contacts_exemptions.py + gap-20 test in test_contacts_gaps.py: ExemptionCertificate (number, A-06 document, issued/expires), state valid/expiring/expired in the organisation's time zone; daily job numo9.contacts.exemption_reminders calls NUMO9_EXEMPTION_REMINDER_HOOK 30 days before and once expired (log line until A-07)]
 
 [U-03]
 ❌ U-03-T01 — ADR-005 entitlement resolution & caching (written, short)

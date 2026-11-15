@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 15:18-0500\n"
+"POT-Creation-Date: 2026-11-15 03:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1121,6 +1121,76 @@ msgstr ""
 msgid "Late interest is from 0 to 100 % a year."
 msgstr ""
 
+msgid "Valid"
+msgstr ""
+
+msgid "Expires soon"
+msgstr ""
+
+msgid "Expired"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "certificate number"
+msgstr "Numéro"
+
+msgid "certificate file"
+msgstr ""
+
+msgid "issued on"
+msgstr ""
+
+msgid "expires on"
+msgstr ""
+
+msgid "Leave empty when the certificate has no expiry date."
+msgstr ""
+
+#, fuzzy
+#| msgid "note"
+msgid "notes"
+msgstr "note"
+
+msgid "reminder sent"
+msgstr ""
+
+msgid "reminder sent for expiry date"
+msgstr ""
+
+msgid "exemption certificate"
+msgstr ""
+
+msgid "exemption certificates"
+msgstr ""
+
+#, fuzzy
+#| msgid "Enter the English text."
+msgid "Enter the certificate number."
+msgstr "Entrez le texte anglais."
+
+#, python-format
+msgid "This contact already has certificate %(number)s."
+msgstr ""
+
+#, fuzzy
+#| msgid "The start date must be on or before the end date."
+msgid "The expiry date can't be before the issue date."
+msgstr "La date de début doit être égale ou antérieure à la date de fin."
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "Choose a document of this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+msgid "This document was deleted: upload the certificate again."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "%(name)s was quarantined (virus found) and can't be attached or opened."
+msgid "%(name)s is quarantined (virus found): upload a clean copy."
+msgstr "%(name)s a été mis en quarantaine (virus détecté) et ne peut être ni joint ni ouvert."
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1357,11 +1427,6 @@ msgstr "événements du journal d’audit"
 #| msgid "audit events"
 msgid "attachments"
 msgstr "événements du journal d’audit"
-
-#, fuzzy
-#| msgid "Choose a role used in this organisation."
-msgid "Choose a document of this organisation."
-msgstr "Choisissez un rôle utilisé dans cette organisation."
 
 msgid "Message-ID"
 msgstr ""
@@ -2723,9 +2788,6 @@ msgstr "Pour toujours"
 
 msgid "Used up"
 msgstr "Épuisé"
-
-msgid "Expired"
-msgstr ""
 
 msgid "Stored upper-case; organisations may type it in any case."
 msgstr "Enregistré en majuscules; les organisations peuvent le saisir en majuscules ou en minuscules."
