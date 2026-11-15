@@ -5,7 +5,7 @@
 | **Deliverable** | C-02 · Journal posting engine, Phase 0 (component C — General ledger) |
 | **Branch** | `feature/C-02-posting-engine` |
 | **Decision** | [ADR-0003 — Posting engine and book dimension](../adr/0003-posting-engine-and-book-dimension.md) |
-| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`, `JournalSequence`; `sequence`, `validation`; migration `0004_journal_append_only`) |
+| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`, `JournalSequence`; `sequence`, `validation`, `trial_balance`; migration `0004_journal_append_only`) |
 | **Depends on** | A-01 (tenancy, RLS), A-04 (audit), A-05 (lock dates), C-01 (chart of accounts) |
 | **Used by** | Every module that posts: D sales, E purchases, F banking, M payroll, I fixed assets, C-04 manual journals, C-05 conversion balances |
 
@@ -85,3 +85,19 @@ or id), debit, credit, book, contact, tracking, description, tax_code)`. The res
 lines with exact amounts (`ValidatedLine`), the totals per book and the entry's `book_scope`
 (`both` when it touches both books, else the one it touches). Lock dates and the period hook
 (C-02-T07) and numbering/insertion/audit (C-02-T08) come on top.
+
+## Trial balance per book (C-02-T11)
+
+`numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
+the active organisation:
+
+- `book` is required: `accounting` (lines `both` + `accounting`) or `tax` (lines `both` + `tax`);
+- posted and reversed entries only (a reversal and its original net to zero); drafts and entries
+  awaiting approval never count; `as_of` limits to entries dated on or before it;
+- one grouped query on the organisation's lines (`(organisation, account, book)` index) joined to
+  the entries for status and date; account code and name from a second small query;
+- rows (`TrialBalanceRow`: account, code, name, type, `debit`, `credit`, `balance` = debit − credit,
+  `debit_balance`/`credit_balance` for the report columns) in code order; accounts whose debits
+  equal their credits are left out unless `include_zero`;
+- `total_debit`, `total_credit`, `total_balance` and `balanced`: every entry balances in each book
+  it touches (C-02-T06), so each book's trial balance sums to zero.
