@@ -5,7 +5,7 @@
 | **Deliverable** | C-02 · Journal posting engine, Phase 0 (component C — General ledger) |
 | **Branch** | `feature/C-02-posting-engine` |
 | **Decision** | [ADR-0003 — Posting engine and book dimension](../adr/0003-posting-engine-and-book-dimension.md) |
-| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`, `JournalSequence`; `sequence`; migration `0004_journal_append_only`) |
+| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`, `JournalSequence`; `sequence`, `validation`; migration `0004_journal_append_only`) |
 | **Depends on** | A-01 (tenancy, RLS), A-04 (audit), A-05 (lock dates), C-01 (chart of accounts) |
 | **Used by** | Every module that posts: D sales, E purchases, F banking, M payroll, I fixed assets, C-04 manual journals, C-05 conversion balances |
 
@@ -61,3 +61,27 @@ drafts need `UPDATE`/`DELETE`.
 The entry stores the integer (`JournalEntry.number`); a number is given only when an entry is
 posted (drafts have none) and a reversal gets its own. No PostgreSQL `SEQUENCE` (not
 transactional) and no session state (PgBouncer transaction pooling).
+
+## Validation (C-02-T06)
+
+`numo9.ledger.validation.validate_journal(JournalSpec) → ValidatedJournal` runs every posting rule
+for the active organisation and raises `JournalInvalid` (a `LedgerError`) listing **all**
+problems, each with a code and a message naming the line and the exact reason:
+
+| Code | Rule |
+|---|---|
+| `ledger.journal.too_few_lines` | At least two lines |
+| `ledger.journal.amount_type` | Amounts are `Decimal`, `int` or a decimal string — a `float` is refused, never converted; `NaN`/text refused |
+| `ledger.journal.amount_precision` | At most two decimals: the engine never rounds a caller's split, callers allocate the pennies |
+| `ledger.journal.amount_negative`, `amount_too_large` | Non-negative; within `numeric(18,2)` |
+| `ledger.journal.line_one_side` | A debit or a credit, not both and not neither |
+| `ledger.journal.book_invalid` | Book `both`, `accounting` or `tax` |
+| `ledger.journal.account_missing` | One of the organisation's accounts |
+| `ledger.account.archived`, `ledger.account.not_leaf` | Active, leaf accounts (C-01 `assert_postable`) |
+| `ledger.journal.unbalanced` | Σ debits = Σ credits in **each book the entry touches** — accounting book = lines `both` + `accounting`, tax book = `both` + `tax`: "Debits 1,000.00 ≠ credits 999.99 in the tax book (difference 0.01)." (French amounts `1 000,00`). Not reported while an amount or a book is itself invalid |
+
+`JournalSpec(date, lines, type, narration, source_type, source_id)`; `LineSpec(account (Account
+or id), debit, credit, book, contact, tracking, description, tax_code)`. The result carries the
+lines with exact amounts (`ValidatedLine`), the totals per book and the entry's `book_scope`
+(`both` when it touches both books, else the one it touches). Lock dates and the period hook
+(C-02-T07) and numbering/insertion/audit (C-02-T08) come on top.

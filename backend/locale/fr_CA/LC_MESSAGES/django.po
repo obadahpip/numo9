@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:54-0500\n"
+"POT-Creation-Date: 2026-11-15 17:58-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2885,6 +2885,61 @@ msgstr ""
 
 #, python-format
 msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "accounting book"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax book"
+msgstr "code d’erreur"
+
+#, python-format
+msgid "Line %(line)d: the %(side)s must be an exact amount (Decimal), not %(value)r."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: “%(value)s” isn't an amount."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(value)s has more than two decimals. Amounts are in cents: allocate the pennies across lines."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the %(side)s can't be negative (%(value)s)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(value)s is larger than the largest amount the ledger holds."
+msgstr ""
+
+#, python-format
+msgid "A journal needs at least two lines (a debit and a credit); it has %(count)d."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d needs a debit or a credit, not both and not neither."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: “%(book)s” isn't a book (both, accounting or tax)."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "Line %(line)d: the account isn't one of this organisation's accounts."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, python-format
+msgid "Line %(line)d: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
 msgstr ""
 
 msgid "Sole proprietorship"
