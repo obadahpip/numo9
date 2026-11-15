@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 211   Remaining: 2576   Progress: 7.57%
+TOTAL ATOMIC TASKS: 2787   Completed: 212   Remaining: 2575   Progress: 7.61%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -285,7 +285,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ V-01-T15 — i18n + accessibility (table semantics, aria-sort)
 
 [B-03]
-❌ B-03-T01 — Wireframes 4-step wizard
+✅ B-03-T01 — Wireframes 4-step wizard   [frames 18–21 in docs/design/wireframes.md (§17–20); walkthrough sign-off by the project lead (approval = merging the PR)]
 ❌ B-03-T02 — File parser (csv with charset detection via charset-normalizer, openpyxl read-only values)
 ❌ B-03-T03 — ImportMapping model (org, entity, column→field, saved name) + auto-suggest (fuzzy header match EN/FR)
 

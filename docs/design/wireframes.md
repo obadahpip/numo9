@@ -33,6 +33,10 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 14 | Organisation directory states | V-01-T14 | First-run empty state (Create organisation / Open demo), no results, loading skeleton, error with retry |
 | 15 | Directory saved views, filters, column chooser | V-01-T11, T12 | Saved views rail and item menu, filters panel with counts, column chooser with reorder |
 | 16 | Go to organisation (`Ctrl/⌘+K`) and keyboard map | V-01-T13 | Dialog search (name, BN with spaces), keys for the directory |
+| 17 | Import contacts — 1 Upload | B-03-T12, T13 | Drop zone (CSV/XLSX, 25 MB, encodings), contacts vs people, saved mapping, template download, matching rules in plain language |
+| 18 | Import contacts — 2 Map columns | B-03-T03, T12 | Auto-suggested field per column with sample values and match confidence (EN/FR headers), match keys (External ID → number → opt-in BN, never name), save mapping |
+| 19 | Import contacts — 3 Review (dry run) | B-03-T07, T12 | Counts (new / updated / unchanged / errors), filter tabs, per-row action and changed fields, duplicates within the file, errors CSV |
+| 20 | Import contacts — 4 Import | B-03-T08, T12 | Background job with progress, job tray, result with links, re-import = 0 changes, failure and retry |
 
 ## 1. Application shell
 
@@ -251,3 +255,64 @@ UX brief: [Organisation directory — UX research brief](directory-ux-brief.md).
 |---|---|---|
 | 1 | Go to organisation | `Ctrl/⌘+K` anywhere in the app; the same search as the directory (accent-insensitive name, BN with or without spaces, owner, tag); matches highlighted; `Enter` opens, `Ctrl/⌘+Enter` opens in a new tab, `Esc` closes and returns focus |
 | 2 | Keyboard map | `/` search, `↓` into the rows, `↑/↓ PgUp/PgDn Home/End` move, `Enter` open, `Ctrl/⌘+Enter` new tab, `F` filters panel, `Ctrl/⌘+K` go to organisation |
+
+## 17. Import contacts — step 1, Upload (B-03-T01)
+
+B-03 adds a four-step wizard (Upload → Map columns → Review → Import) reached from the contacts list
+(Import in the bulk bar and in the empty state, frame 11) and, with the same frames and other field
+names, from the chart of accounts (C-01-T13). Every step shows the step bar; Back keeps what was
+chosen; nothing is saved before the last step. Sample file: a Quebec client list exported from an
+old system with French headers, saved in Windows-1252.
+
+![Import contacts, step 1: upload](wireframes/18-import-upload.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Step bar | Four steps, the current one in black, finished ones with a check; steps can't be skipped. The live region announces "Step 1 of 4, Upload" |
+| 2 | Drop zone | Drag and drop or Choose file (keyboard: `Enter`/`Space`); `.csv` and `.xlsx`, up to 25 MB (A-06 limit); the encoding is detected (UTF-8, UTF-8 with BOM, Windows-1252) — never asked |
+| 3 | File contents | Contacts (one row per contact) or People at contacts (one row per person, linked by contact number or External ID, no limit per contact — B-03-T09) |
+| 4 | Saved mapping | "Detect from the file's headers" by default; a saved mapping of the organisation is chosen automatically when the headers are the same; the list shows how often each was used |
+| 5 | Template and rules | Download the CSV or Excel template (headers = the mapping fields, B-03-T13); the matching rules in plain words: External ID, then contact number, never the name; blank cells leave fields unchanged; `__CLEAR__` empties a field; formulas import their values |
+| 6 | Errors | Wrong type, empty file, too large, no header row: the message says what to do ("Save it as .csv or .xlsx and try again"); Next stays enabled and explains on click rather than being disabled without a reason |
+
+## 18. Import contacts — step 2, Map columns (B-03-T01)
+
+![Import contacts, step 2: map columns](wireframes/19-import-map.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Step bar | As frame 17; the subtitle summarises the file: name, rows, columns, detected encoding, header row |
+| 2 | Columns | One row per column of the file, in file order, with the first three non-empty sample values |
+| 3 | Numo9 field | A select per column, pre-filled by auto-suggest (B-03-T03): English and French field names and synonyms, accents and case ignored ("Courriel" → Email, "NE" → Business Number, "Code postal" → Billing postal code); "Don't import" when nothing fits |
+| 4 | Match confidence | Exact / Exact (FR) for a known header, Similar for a fuzzy match (to check), You chose after a manual change, No match. Similar matches are listed first in the screen-reader summary |
+| 5 | Match keys and required fields | Rows match existing contacts by External ID, then contact number; Business Number only when switched on, and only when the first two are empty; never by name, so a renamed contact is updated (gap-21). Display name must be mapped |
+| 6 | Save this mapping | Name the mapping; stored per organisation and entity (`ImportMapping`); the next file with the same headers maps itself |
+| 7 | Validation | A field can be mapped from one column only; the message names both columns and the field |
+
+## 19. Import contacts — step 3, Review the dry run (B-03-T01)
+
+![Import contacts, step 3: review the dry run](wireframes/20-import-review.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Step bar | "A dry run: nothing has been saved yet" |
+| 2 | Counts | New, Updated, Unchanged, Errors — each count opens its tab; New + Updated is the number the Import button shows |
+| 3 | Within the file | Duplicates inside the file (same External ID or contact number on two rows): every copy is an error naming the other rows |
+| 4 | Tabs, search, errors CSV | Filter by action; search by row number, name or number; Download errors gives a CSV with the row number, the column and the reason |
+| 5 | Rows | Row number, action chip, contact (name and number), how it matched, and each changed field as "before → after"; formatted values (postal code spacing) are shown as such; `__CLEAR__` shows as "cleared" |
+| 6 | Errors | One plain-language reason per row (province/postal code mismatch, unknown currency, invalid email, BN check digit, duplicate in file) — B-03-T04 validators |
+| 7 | Blank cells | States that blank cells changed nothing (non-destructive updates, gap-21) |
+| 8 | Import | "Import N rows" (new + updated); rows with errors are skipped, never half-imported |
+
+## 20. Import contacts — step 4, Import (B-03-T01)
+
+![Import contacts, step 4: import progress and result](wireframes/21-import-result.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Step bar | Final step; leaving the page doesn't stop the import |
+| 2 | Progress | Background job (A-08) with rows done / total and time left; percentage in a polite live region; each row is its own transaction |
+| 3 | Job tray | The same job in the job tray; the bell notifies when it finishes (A-07) |
+| 4 | Result | Created / updated / unchanged / skipped counts; every change is in the audit log with the file name and row number |
+| 5 | Next actions | Open the created or updated contacts (filtered list), download the errors CSV, import another file. Re-importing the same file shows 0 new and 0 updated (gap-21) |
+| 6 | Failure | If the job stops, the message says which rows were saved; Try again re-runs the dry run so saved rows show as unchanged |

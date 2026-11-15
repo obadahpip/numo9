@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — import contacts, step 4 import progress and result">
+<title>Numo9 wireframe — import contacts, step 4 import progress and result</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<rect x="60" y="12" width="230" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="72" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.  ▾</text>
+<rect x="298" y="16" width="92" height="24" rx="12" fill="#2B3038" stroke="#2B3038" stroke-width="1"/>
+<text x="344" y="32" font-size="11" fill="#D0D5DD" font-weight="500" text-anchor="middle">Practice: OA</text>
+<text x="410" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="468" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Contacts</text>
+<text x="558" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="664" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Documents</text>
+<text x="762" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Settings</text>
+<rect x="468" y="52" width="64" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="1440" height="40" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="24" y="81" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Maple Leaf Supply Ltd.  /  Contacts  /  Import contacts</text>
+<text x="24" y="136" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Import contacts</text>
+<text x="24" y="160" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">The import runs in the background: you can leave this page; it continues in the job tray.</text>
+<circle cx="38" cy="196" r="14" fill="#12B76A" stroke="#D0D5DD" stroke-width="1"/>
+<text x="38" y="201" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">✓</text>
+<text x="60" y="201" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Upload</text>
+<line x1="164" y1="196" x2="254" y2="196" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="288" cy="196" r="14" fill="#12B76A" stroke="#D0D5DD" stroke-width="1"/>
+<text x="288" y="201" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">✓</text>
+<text x="310" y="201" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Map columns</text>
+<line x1="414" y1="196" x2="504" y2="196" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="538" cy="196" r="14" fill="#12B76A" stroke="#D0D5DD" stroke-width="1"/>
+<text x="538" y="201" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">✓</text>
+<text x="560" y="201" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Review</text>
+<line x1="664" y1="196" x2="754" y2="196" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="788" cy="196" r="14" fill="#111111" stroke="#D0D5DD" stroke-width="1"/>
+<text x="788" y="201" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<text x="810" y="201" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Import</text>
+<circle cx="1010" cy="196" r="10" fill="#B42318"/>
+<text x="1010" y="200" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<text x="1040" y="201" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Step 4 of 4 · Import</text>
+<line x1="24" y1="226" x2="1416" y2="226" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="24" y="248" width="880" height="150" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="44" y="280" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Importing clients-mars-2026.csv</text>
+<rect x="44" y="300" width="840" height="12" rx="6" fill="#F2F4F7" stroke="#F2F4F7" stroke-width="1"/>
+<rect x="44" y="300" width="504" height="12" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="44" y="340" font-size="13" fill="#344054" font-weight="400" text-anchor="start">36 of 59 rows · about 10 seconds left</text>
+<text x="44" y="366" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Each row is saved on its own: a failing row never undoes the others.</text>
+<text x="884" y="340" font-size="12" fill="#5B6472" text-anchor="end" aria-live="polite">60 %</text>
+<circle cx="14" cy="262" r="10" fill="#B42318"/>
+<text x="14" y="266" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="936" y="248" width="480" height="150" rx="8" fill="#F5F7FA" stroke="#D0D5DD" stroke-width="1"/>
+<text x="956" y="278" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Job tray</text>
+<text x="956" y="304" font-size="13" fill="#344054" font-weight="400" text-anchor="start">⧗ Import contacts — 60 %</text>
+<text x="956" y="328" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Notified when done (bell and job tray).</text>
+<circle cx="926" cy="262" r="10" fill="#B42318"/>
+<text x="926" y="266" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<rect x="24" y="424" width="1392" height="250" rx="10" fill="#FFFFFF" stroke="#12B76A" stroke-width="1"/>
+<text x="48" y="462" font-size="20" fill="#027A48" font-weight="700" text-anchor="start">✓ Import finished</text>
+<text x="48" y="490" font-size="14" fill="#111111" font-weight="500" text-anchor="start">38 contacts created · 21 updated · 447 unchanged · 6 rows skipped with errors</text>
+<text x="48" y="516" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Every change is in the audit log with the file name and row number (Settings › Audit log).</text>
+<rect x="48" y="540" width="170" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="133.0" y="560" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">View new contacts</text>
+<rect x="228" y="540" width="190" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="323.0" y="560" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">View updated contacts</text>
+<rect x="428" y="540" width="190" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="523.0" y="560" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Download errors (CSV)</text>
+<rect x="628" y="540" width="200" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="728.0" y="560" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Import another file</text>
+<text x="48" y="610" font-size="12" fill="#344054" font-weight="500" text-anchor="start">Re-importing the same file changes nothing: the next dry run shows 0 new and 0 updated.</text>
+<text x="48" y="634" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Mapping “Export from old system (Mar 2026)” saved for next time.</text>
+<circle cx="14" cy="438" r="10" fill="#B42318"/>
+<text x="14" y="442" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<circle cx="14" cy="556" r="10" fill="#B42318"/>
+<text x="14" y="560" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">5</text>
+<rect x="24" y="698" width="1392" height="56" rx="8" fill="#FEF3F2" stroke="#B42318" stroke-width="1"/>
+<text x="40" y="722" font-size="12" fill="#B42318" font-weight="500" text-anchor="start">If the job fails: “The import stopped at row 36. Rows 1–35 were saved. Try again to continue from row 36.”</text>
+<text x="40" y="742" font-size="12" fill="#B42318" font-weight="400" text-anchor="start">Try again re-runs the dry run first, so rows already imported show as unchanged.</text>
+<circle cx="14" cy="712" r="10" fill="#B42318"/>
+<text x="14" y="716" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">6</text>
+<rect x="0" y="836" width="1440" height="64" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1290" y="852" width="126" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1353.0" y="872" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Done</text>
+</svg>
