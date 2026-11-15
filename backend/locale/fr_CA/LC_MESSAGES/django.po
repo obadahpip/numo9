@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:32-0500\n"
+"POT-Creation-Date: 2026-11-15 17:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -736,6 +736,144 @@ msgstr "Utilisez au plus %(max)s caractères."
 msgid "%(field)s needs %(expected)s: %(value)s doesn't fit."
 msgstr ""
 
+msgid "Contacts"
+msgstr "Contacts"
+
+msgid "External ID"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "Contact number"
+msgstr "Numéro"
+
+msgid "Display name"
+msgstr ""
+
+msgid "Legal name"
+msgstr ""
+
+msgid "Roles"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Business Number (BN)"
+msgstr ""
+
+msgid "Tax ID"
+msgstr ""
+
+#, fuzzy
+#| msgid "currency"
+msgid "Currency"
+msgstr "devise"
+
+msgid "Credit limit"
+msgstr ""
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "Credit limit action"
+msgstr "Créer des organisations clientes"
+
+msgid "Statement preference"
+msgstr ""
+
+msgid "T4A slips"
+msgstr ""
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Billing address"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Billing address line 2"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "Billing city"
+msgstr "fréquence de facturation"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Billing province"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "error code"
+msgid "Billing postal code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "Billing country"
+msgstr "fréquence de facturation"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Shipping address"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Shipping address line 2"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Shipping city"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Shipping province"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "error code"
+msgid "Shipping postal code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "IP address"
+msgid "Shipping country"
+msgstr "Adresse IP"
+
+#, fuzzy
+#| msgid "Contacts"
+msgid "People at contacts"
+msgstr "Contacts"
+
+msgid "Contact (External ID or number)"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+#, fuzzy
+#| msgid "job type"
+msgid "Job title"
+msgstr "type de tâche"
+
+#, fuzzy
+#| msgid "impersonator"
+msgid "Primary person"
+msgstr "personne connectée à sa place"
+
+msgid "Include in emails"
+msgstr ""
+
 msgid "Customer"
 msgstr ""
 
@@ -760,9 +898,6 @@ msgid "Block (needs approval)"
 msgstr ""
 
 msgid "Don't send statements"
-msgstr ""
-
-msgid "Email"
 msgstr ""
 
 msgid "Print and mail"
@@ -792,9 +927,6 @@ msgid "roles"
 msgstr ""
 
 msgid "At least one: customer, supplier, employee, contractor, government agency."
-msgstr ""
-
-msgid "Business Number (BN)"
 msgstr ""
 
 msgid "tax ID"
@@ -907,16 +1039,6 @@ msgstr ""
 msgid "Choose a contact of this organisation."
 msgstr "Choisissez un rôle utilisé dans cette organisation."
 
-#, fuzzy
-#| msgid "IP address"
-msgid "Billing address"
-msgstr "Adresse IP"
-
-#, fuzzy
-#| msgid "IP address"
-msgid "Shipping address"
-msgstr "Adresse IP"
-
 msgid "type"
 msgstr ""
 
@@ -991,9 +1113,6 @@ msgstr "Date"
 
 msgid "Choice list"
 msgstr ""
-
-msgid "Contacts"
-msgstr "Contacts"
 
 #, fuzzy
 #| msgid "Use 2–40 lower-case letters, digits and _, starting with a letter."
@@ -1961,6 +2080,63 @@ msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
 #, python-format
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr "Vous avez %(max)s vues enregistrées, le maximum permis. Supprimez d’abord une vue que vous n’utilisez plus."
+
+#, python-format
+msgid "%(items)s and %(last)s"
+msgstr ""
+
+#, python-format
+msgid "Nothing can be imported as %(entity)s."
+msgstr ""
+
+msgid "A mapping pairs each column header with a field."
+msgstr ""
+
+#, python-format
+msgid "Column %(column)s is mapped to %(field)s, which isn't a field here."
+msgstr ""
+
+#, python-format
+msgid "%(columns)s map to the same field, %(field)s — choose one."
+msgstr ""
+
+#, python-format
+msgid "Map a column to %(fields)s: it is required."
+msgstr ""
+
+msgid "columns"
+msgstr "colonnes"
+
+msgid "Column header → field, \"\" for a column that is not imported."
+msgstr ""
+
+msgid "headers fingerprint"
+msgstr ""
+
+msgid "times used"
+msgstr ""
+
+msgid "last used"
+msgstr ""
+
+msgid "saved import mapping"
+msgstr ""
+
+msgid "saved import mappings"
+msgstr ""
+
+msgid "Give the mapping a name."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Use at most %(max)s characters."
+msgid "A mapping name is at most %(max)d characters."
+msgstr "Utilisez au plus %(max)s caractères."
+
+#, fuzzy, python-format
+#| msgid "There's already a role called %(name)s here. Choose another name."
+msgid "There is already a mapping named %(name)s. Choose another name or update that one."
+msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
 
 #, python-format
 msgid "The file is larger than %(max)d MB. Split it into smaller files."
@@ -3556,9 +3732,6 @@ msgstr "recherche et filtres"
 
 msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
 msgstr ""
-
-msgid "columns"
-msgstr "colonnes"
 
 msgid "Shown columns, in order."
 msgstr "Colonnes affichées, dans l’ordre."
