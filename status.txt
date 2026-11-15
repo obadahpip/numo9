@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 214   Remaining: 2573   Progress: 7.68%
+TOTAL ATOMIC TASKS: 2787   Completed: 215   Remaining: 2572   Progress: 7.71%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -290,7 +290,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ B-03-T03 — ImportMapping model (org, entity, column→field, saved name) + auto-suggest (fuzzy header match EN/FR)
 
 [C-01]
-❌ C-01-T13 — CoA import/export (CSV/XLSX, mapping, dry-run via B-03 framework)
+✅ C-01-T13 — CoA import/export (CSV/XLSX, mapping, dry-run via B-03 framework)   [backend: numo9.ledger.importing (export CSV/XLSX, import with mapping, dry run, apply) on the B-03 framework, round trip = 0 changes (tests/test_ledger_import_export.py); the endpoints come with C-01-T09 and the screens with B-03-T12 on the C-01-T11 chart page]
 
 [C-02]
 ❌ C-02-T02 — JournalEntry + JournalLine models + numeric(18,2) + check constraints (debit≥0, credit≥0, not both)

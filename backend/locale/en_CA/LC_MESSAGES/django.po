@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:37-0500\n"
+"POT-Creation-Date: 2026-11-15 17:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2003,6 +2003,15 @@ msgstr ""
 msgid "Columns %(first)s and %(second)s in %(sheet)s are both named “%(header)s”. Give each column its own name."
 msgstr ""
 
+msgid "Row"
+msgstr ""
+
+msgid "Column"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
 msgid "Waiting to start"
 msgstr ""
 
@@ -2116,6 +2125,65 @@ msgstr ""
 
 #, python-format
 msgid "%(account)s has transactions: archive it instead of deleting it."
+msgstr ""
+
+msgid "Chart of accounts"
+msgstr ""
+
+#, python-format
+msgid "The parent codes in the file form a loop (rows %(rows)s)."
+msgstr ""
+
+#, python-format
+msgid "Chart of accounts import: %(file)s"
+msgstr ""
+
+#, python-format
+msgid "Code %(code)s appears more than once in the file (rows %(rows)s)."
+msgstr ""
+
+msgid "Every row needs an account code."
+msgstr ""
+
+#, python-format
+msgid "%(field)s can't be cleared."
+msgstr ""
+
+#, python-format
+msgid "A new account needs a %(field)s."
+msgstr ""
+
+#, python-format
+msgid "“%(value)s” isn't an account sub-type."
+msgstr ""
+
+#, python-format
+msgid "%(field)s is Yes or No: it can't be cleared."
+msgstr ""
+
+#, python-format
+msgid "%(field)s is Yes or No, not “%(value)s”."
+msgstr ""
+
+#, python-format
+msgid "“%(value)s” isn't a valid %(field)s."
+msgstr ""
+
+#, python-format
+msgid "The type follows the sub-type (%(type)s): change the sub-type instead."
+msgstr ""
+
+msgid "System roles are set by Numo9 and can't be changed by an import."
+msgstr ""
+
+msgid "Archive or restore accounts in the chart of accounts, not by an import."
+msgstr ""
+
+msgid "An account can't be placed under itself or one of its own sub-accounts."
+msgstr ""
+
+#, python-format
+msgid "No account has the code %(code)s (parent code)."
 msgstr ""
 
 msgid "Asset"
@@ -2417,9 +2485,6 @@ msgid "A system account takes postings, so it can't have sub-accounts."
 msgstr ""
 
 msgid "The parent account doesn't exist in this organisation."
-msgstr ""
-
-msgid "An account can't be placed under itself or one of its own sub-accounts."
 msgstr ""
 
 #, python-format

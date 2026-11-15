@@ -62,6 +62,7 @@ that mean exactly that field, `required` and `match_key` flags.
 | Entity | Registered by | Fields |
 |---|---|---|
 | `contacts.contact` | `numo9.contacts.importing` | External ID and contact number (match keys), display name (required), legal name, roles, email, phone, BN, tax ID, currency, credit limit and action, language, statement preference, T4A, billing and shipping address (line 1–2, city, province, postal code, country) |
+| `ledger.account` | `numo9.ledger.importing` (C-01-T13) | Code (required, match key), name, French name, type, sub-type, parent code, system role, bank, GIFI, require contact/tracking/attachment, default tax code, description, status — see [Chart of accounts](chart-of-accounts.md#import-and-export-c-01-t13) |
 | `contacts.person` | `numo9.contacts.importing` | Contact (External ID or number, required, match key), first and last name, email, phone, job title, primary, include in emails — the long format: one row per person, no limit per contact |
 
 ## Column mapping and auto-suggest (B-03-T03)
@@ -87,3 +88,13 @@ same headers in any order, case or accents (fingerprint `header_key`), most rece
 `resolve(entity, headers, saved=None)` gives the columns for a new file — the saved mapping's
 (**saved**), new headers suggested among the fields it leaves free — or plain auto-suggest.
 `record_use` counts an applied import (no audit line). Mapping changes are audited.
+
+## Import report (shared)
+
+`numo9.imports.report`: an importer returns an `ImportReport` — one `RowResult` per data row with
+its `action` (`create`, `update` with `changes = {field: [before, after]}`, `unchanged`, `error`
+with `RowError(field, code, message)` reasons), `counts`, `changed`, and `errors_csv(labels)` (UTF-8
+with BOM: Row, Column, Reason). `CLEAR_TOKEN = "__CLEAR__"` is the cell value that empties a field;
+a blank cell never does. A dry run is the same work as applying inside a transaction that is rolled
+back. B-03-T07 persists reports as `ImportRun` / `ImportRunRow`; the chart-of-accounts importer
+(C-01-T13) is the first user.
