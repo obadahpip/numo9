@@ -393,6 +393,14 @@ FEATURE_NOT_IN_PACKAGE = define(
     ),
     status.HTTP_402_PAYMENT_REQUIRED,
 )
+ORGANISATION_READ_ONLY = define(
+    "entitlement.organisation_read_only",
+    _(
+        "This organisation is read-only: you can see and export everything, but not change it. "
+        "The organisation owner can reactivate the subscription."
+    ),
+    status.HTTP_402_PAYMENT_REQUIRED,
+)
 CATALOGUE_EXPORT_FORMAT = define(
     "catalogue.export_format",
     _("Choose an export format: CSV or XLSX."),
