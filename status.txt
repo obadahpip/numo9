@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 195   Remaining: 2592   Progress: 7.00%
+TOTAL ATOMIC TASKS: 2787   Completed: 196   Remaining: 2591   Progress: 7.03%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -265,7 +265,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-03-T11 — Nav items with lock glyph + tooltip; no route redirects for gated routes (route renders locked panel)   [ShellNavItem.locked (@numo9/ui): lock glyph + tooltip (+ screen-reader text, written out in the drawer); primaryNav locks items whose module feature is gated; the app shell wraps non-CORE modules in <Gated>: a gated URL shows the locked panel, URL unchanged; Playwright e2e/entitlements-gating.spec.ts (@gap-14) + Vitest]
 ✅ U-03-T12 — Read-only org header banner with reason/date and owner CTA   [frontend/src/entitlements/ReadOnlyNotice.tsx in the shell's banner slot: reason (payment_failed / trial_ended / cancelled / platform) and date in the organisation's time zone, owner CTA Reactivate the subscription, others told to ask the owner; nothing in full mode (gap-12 holds); Playwright e2e/read-only-banner.spec.ts + Vitest]
 ✅ U-03-T13 — Entitlement-leak test suite: for each feature key × status, assert allowed/denied   [backend/tests/test_entitlements_leaks.py: every feature key x 7 states (trialing, active, past_due in/after grace, read_only, cancelled, demo) on a downgraded organisation, expected answer from the rules; engine and API (GET/POST through ReadOnlyGuard + RequiresFeature) — all green; nothing outside an organisation]
-❌ U-03-T15 — Gap-closure tests tagged gap-06/14/41 (approval never gated within Accounting; no redirect; explicit prompt)
+✅ U-03-T15 — Gap-closure tests tagged gap-06/14/41 (approval never gated within Accounting; no redirect; explicit prompt)   [gap-06/14/41: backend/tests/test_entitlements_gaps.py (@pytest.mark.gap: Accounting approval keys all come with Accounting; audit and approval-limit endpoints CORE; 402 in place, no Location; explicit 402 and bootstrap names) + Playwright e2e/gap-06-14-41.spec.ts (@gap-06 / @gap-14 / @gap-41)]
 
 [V-01]
 ❌ V-01-T01 — UX research brief + wireframes (directory, empty state, saved views rail, column chooser)
