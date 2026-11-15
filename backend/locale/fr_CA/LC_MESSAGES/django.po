@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:50-0500\n"
+"POT-Creation-Date: 2026-11-15 17:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2714,6 +2714,10 @@ msgid "Adjustment"
 msgstr "Documents"
 
 msgid "Reversal"
+msgstr ""
+
+#, python-format
+msgid "Journal %(number)s is posted: it can't be changed or deleted. Reverse it instead."
 msgstr ""
 
 #, fuzzy

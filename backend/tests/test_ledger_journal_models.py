@@ -199,8 +199,9 @@ def test_reversal_link(org: Organisation) -> None:
     assert original.reversed_by == reversal
     # One reversal per entry (one-to-one) and never itself.
     refused(lambda: posted(org, 3, reversal_of=original))
+    draft = entry(org)
     assert "ledger_journal_not_own_reversal" in refused(
-        lambda: JournalEntry.objects.filter(pk=reversal.pk).update(reversal_of=reversal.pk)
+        lambda: JournalEntry.objects.filter(pk=draft.pk).update(reversal_of=draft.pk)
     )
 
 
@@ -245,6 +246,9 @@ def test_posted_lines_make_an_account_have_postings(org: Organisation, cash: Acc
     draft = entry(org)
     line(draft, cash, 1, debit=D("1"))
     assert has_postings(cash) is False  # draft lines are not transactions
-    done = posted(org, 1)
+    done = entry(org)
     line(done, cash, 1, debit=D("1"))
+    JournalEntry.objects.filter(pk=done.pk).update(
+        status=JournalStatus.POSTED, number=1, posted_at=timezone.now()
+    )
     assert has_postings(cash) is True

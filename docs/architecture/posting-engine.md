@@ -5,7 +5,7 @@
 | **Deliverable** | C-02 · Journal posting engine, Phase 0 (component C — General ledger) |
 | **Branch** | `feature/C-02-posting-engine` |
 | **Decision** | [ADR-0003 — Posting engine and book dimension](../adr/0003-posting-engine-and-book-dimension.md) |
-| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`) |
+| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`; migration `0004_journal_append_only`) |
 | **Depends on** | A-01 (tenancy, RLS), A-04 (audit), A-05 (lock dates), C-01 (chart of accounts) |
 | **Used by** | Every module that posts: D sales, E purchases, F banking, M payroll, I fixed assets, C-04 manual journals, C-05 conversion balances |
 
@@ -32,3 +32,16 @@ in each book, numbered without gaps, impossible to change once posted.
 Accounts with lines on posted (or reversed) entries "have transactions" for the chart rules: the
 ledger registers that probe (`numo9.ledger.postings`), so such an account can't become a parent
 or be deleted. Draft lines don't count.
+
+## Append-only (C-02-T04)
+
+Posted and reversed journals can't change — corrections are reversals (C-02-T10). Two layers:
+
+| Layer | Rule |
+|---|---|
+| Database (migration `ledger.0004_journal_append_only`) | Trigger `ledger_journalentry_append_only` (`BEFORE UPDATE OR DELETE`): a posted/reversed entry can't be deleted; the only update allowed is Posted → Reversed changing nothing but `status` (and `updated_at`). Trigger `ledger_journalline_append_only` (`BEFORE INSERT OR UPDATE OR DELETE`): no line added to, changed in, moved into/out of or deleted from a posted/reversed entry. Both raise `insufficient_privilege` (SQLSTATE 42501), so raw SQL, bulk `update()`/`delete()` and superusers are refused too; on the partitioned table (C-02-T03) the row triggers apply to every partition |
+| Django guard | `JournalEntry.save()`/`delete()`/`soft_delete()` and `JournalLine.save()`/`delete()` raise `JournalLocked` (`ledger.journal.locked`: "Journal 7 is posted: it can't be changed or deleted. Reverse it instead.") before reaching the database; even an unchanged save of a posted entry is refused (it would rewrite `updated_at`) |
+
+Drafts and entries awaiting approval stay fully editable. The engine inserts lines while the entry
+is a draft and then posts it (C-02-T08). Privileges aren't revoked (unlike `audit_event`) because
+drafts need `UPDATE`/`DELETE`.

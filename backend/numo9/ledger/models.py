@@ -616,6 +616,23 @@ MONEY_DIGITS = 18
 MONEY_PLACES = 2
 
 
+class JournalLocked(LedgerError):
+    """A posted or reversed journal can't change (C-02-T04); the database refuses it too."""
+
+
+def _locked_error(entry: JournalEntry | None, number: int | None = None) -> JournalLocked:
+    number = number if number is not None else (entry.number if entry is not None else None)
+    return JournalLocked(
+        _("Journal %(number)s is posted: it can't be changed or deleted. Reverse it instead."),
+        code="ledger.journal.locked",
+        params={"number": number if number is not None else "—"},
+    )
+
+
+#: Columns of an entry that may change on Posted → Reversed.
+_REVERSAL_CHANGES = frozenset({"status", "updated_at"})
+
+
 class JournalEntry(AuditedModel, OrgOwnedModel):
     """One double-entry journal (C-02-T02): header of the lines that post together.
 
@@ -720,6 +737,44 @@ class JournalEntry(AuditedModel, OrgOwnedModel):
     def is_locked(self) -> bool:
         return self.status in LOCKED_STATUSES
 
+    # ---- append-only guard (C-02-T04) ----------------------------------------------------
+
+    def _stored(self) -> dict[str, Any] | None:
+        if self.pk is None:
+            return None
+        names = [field.attname for field in self._meta.concrete_fields]
+        row: dict[str, Any] | None = (
+            type(self)._base_manager.filter(pk=self.pk).values(*names).first()
+        )
+        return row
+
+    def check_change_allowed(self) -> None:
+        """Refuse any change to a posted/reversed entry except Posted → Reversed (status only)."""
+        stored = self._stored()
+        if stored is None or stored["status"] not in LOCKED_STATUSES:
+            return
+        changed = {name for name, value in stored.items() if getattr(self, name) != value} - {
+            "updated_at"
+        }
+        if (
+            stored["status"] == JournalStatus.POSTED
+            and self.status == JournalStatus.REVERSED
+            and changed <= _REVERSAL_CHANGES
+        ):
+            return
+        # Even an unchanged save would rewrite the row (updated_at): refused like the database.
+        raise _locked_error(self, stored["number"])
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.check_change_allowed()
+        super().save(*args, **kwargs)
+
+    def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:
+        stored = self._stored()
+        if stored is not None and stored["status"] in LOCKED_STATUSES:
+            raise _locked_error(self, stored["number"])
+        return super().delete(*args, **kwargs)
+
 
 class JournalLine(OrgOwnedModel):
     """One debit or credit of an entry (C-02-T02).
@@ -813,7 +868,37 @@ class JournalLine(OrgOwnedModel):
         """Signed amount: debit positive, credit negative."""
         return self.debit - self.credit
 
+    def _entries_touched(self) -> set[int]:
+        """The entry the line is in, and the one it was in before (a draft line may move)."""
+        touched = {self.entry_id} if self.entry_id is not None else set()
+        if not self._state.adding:
+            previous = (
+                type(self)
+                ._base_manager.filter(organisation_id=self.organisation_id, id=self.id)
+                .values_list("entry_id", flat=True)
+                .first()
+            )
+            if previous is not None:
+                touched.add(previous)
+        return touched
+
+    def _refuse_if_locked(self) -> None:
+        locked = (
+            JournalEntry._base_manager.filter(
+                pk__in=self._entries_touched(), status__in=LOCKED_STATUSES
+            )
+            .values_list("number", flat=True)
+            .first()
+        )
+        if locked is not None:
+            raise _locked_error(None, locked)
+
     def save(self, *args: Any, **kwargs: Any) -> None:
         if self.entry_id is not None and not self.organisation_id:
             self.organisation_id = self.entry.organisation_id
+        self._refuse_if_locked()
         super().save(*args, **kwargs)
+
+    def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:
+        self._refuse_if_locked()
+        return super().delete(*args, **kwargs)

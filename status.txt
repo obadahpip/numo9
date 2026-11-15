@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 216   Remaining: 2571   Progress: 7.75%
+TOTAL ATOMIC TASKS: 2787   Completed: 217   Remaining: 2570   Progress: 7.79%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -294,7 +294,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [C-02]
 ✅ C-02-T02 — JournalEntry + JournalLine models + numeric(18,2) + check constraints (debit≥0, credit≥0, not both)
-❌ C-02-T04 — Append-only trigger on posted entries/lines + Django guard
+✅ C-02-T04 — Append-only trigger on posted entries/lines + Django guard
 ❌ C-02-T05 — JournalSequence gap-free allocator
 ❌ C-02-T06 — Validation service (≥2 lines, balance per book, leaf/active accounts, Decimal precision)
 ❌ C-02-T11 — Trial balance query per book (accounting = both+accounting; tax = both+tax)
