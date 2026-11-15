@@ -73,6 +73,7 @@ nav:
       - "Localisation": architecture/i18n.md
       - "Authentication and sign-up": architecture/authentication.md
       - "Background jobs": architecture/jobs.md
+      - "Notifications and email": architecture/notifications.md
       - "Roles and permissions": architecture/permissions.md
       - "Audit log and history": architecture/audit.md
       - "Product catalogue and feature keys": architecture/feature-keys.md

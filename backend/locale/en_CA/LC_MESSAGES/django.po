@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 03:29-0500\n"
+"POT-Creation-Date: 2026-11-16 03:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2696,6 +2696,80 @@ msgstr ""
 msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
 msgstr ""
 
+msgid "Account and system"
+msgstr ""
+
+msgid "Security"
+msgstr ""
+
+msgid "Background jobs"
+msgstr ""
+
+msgid "Approvals"
+msgstr ""
+
+msgid "Reminders"
+msgstr ""
+
+msgid "Billing and subscription"
+msgstr ""
+
+msgid "category"
+msgstr ""
+
+msgid "message"
+msgstr ""
+
+msgid "message details"
+msgstr ""
+
+msgid "link"
+msgstr ""
+
+msgid "read at"
+msgstr ""
+
+msgid "notification"
+msgstr ""
+
+msgid "notifications"
+msgstr ""
+
+msgid "A message key looks like notifications.job.finished."
+msgstr ""
+
+msgid "A notification links to a page of the app (a path such as /o/…)."
+msgstr ""
+
+msgid "Message details are a set of named values."
+msgstr ""
+
+msgid "Notification"
+msgstr ""
+
+#, python-format
+msgid "%(job)s finished"
+msgstr ""
+
+#, python-format
+msgid "%(summary)s"
+msgstr ""
+
+#, python-format
+msgid "%(job)s didn't finish"
+msgstr ""
+
+#, python-format
+msgid "%(error)s Open the job tray to try again."
+msgstr ""
+
+#, python-format
+msgid "%(file)s was blocked"
+msgstr ""
+
+msgid "The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."
+msgstr ""
+
 msgid "Sole proprietorship"
 msgstr ""
 
@@ -3490,9 +3564,6 @@ msgid "Employees, leave and HR records."
 msgstr ""
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
-msgstr ""
-
-msgid "Security"
 msgstr ""
 
 msgid "Tenancy"

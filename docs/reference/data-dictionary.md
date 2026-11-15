@@ -413,6 +413,26 @@ known).
 
 Audit actions: `files.inboundaddress.created`, `.updated`.
 
+## Notifications (`notifications`) {#notifications}
+
+The notification centre (A-07); see [Notifications and email](../architecture/notifications.md).
+
+### `notifications_notification` — Notification {#notifications-notification}
+
+One in-app message to one person in one organisation (A-07-T01). `OrgOwnedModel`; not audited.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; a soft-deleted notification never shows |
+| `recipient_id` | bigint → `accounts_user` | no | The person it is for; `CASCADE` (personal messages go with the person) |
+| `category` | varchar(20) | no | `system`, `security`, `jobs`, `documents`, `approvals`, `reminders`, `billing` (`notifications_category_valid`) |
+| `title_key` | varchar(120) | no | Message catalogue key, e.g. `notifications.job.finished`; not empty (`notifications_title_key_required`) |
+| `body_params` | jsonb | no | Named parameters of the message |
+| `link` | varchar(500) | no | Empty or a path inside the app starting with `/` (`notifications_link_in_app`) |
+| `read_at` | timestamptz | yes | When it was read; empty = unread |
+
+Indexes: `(organisation, recipient, read_at)` (unread count), `(organisation, recipient, -created_at)` (newest first).
+
 ## Accountant workspace (`workspace`) {#workspace}
 
 Design: [Organisation directory](../architecture/directory.md).
