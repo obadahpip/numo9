@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "numo9.catalogue",
     # Packages of products, effective-dated prices and promo codes (U-02).
     "numo9.packages",
+    # Subscriptions, entitlement overrides, the entitlement engine and its cache (U-03).
+    "numo9.entitlements",
     # General ledger: chart of accounts, GIFI list (C-01); posting engine (C-02).
     "numo9.ledger",
     # Organisation settings, tax registrations, lock dates, numbering (A-05).
@@ -114,6 +116,8 @@ AUTH_USER_MODEL = "accounts.User"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "numo9.rbac.drf.RequiresPermission",
+        # Read-only organisation: unsafe methods 402 except billing/exports (U-03-T08).
+        "numo9.entitlements.drf.ReadOnlyGuard",
         # Feature key of the organisation's package: 402 naming the product (U-01-T05, U-03).
         "numo9.catalogue.drf.RequiresFeature",
     ],
@@ -156,7 +160,7 @@ SPECTACULAR_SETTINGS = {
 
 # Entitlement resolver behind RequiresFeature (U-01-T05): a stub allowing every feature key
 # until the U-03 engine replaces it.
-NUMO9_ENTITLEMENT_RESOLVER = "numo9.catalogue.entitlements.AllowAllResolver"
+NUMO9_ENTITLEMENT_RESOLVER = "numo9.entitlements.engine.Engine"
 # Packages in the feature matrix (U-01-T09): the packages offered (U-02-T05).
 NUMO9_PACKAGE_SOURCE = "numo9.packages.source.OfferedPackages"
 # Stripe (U-02-T12 price sync; U-04 billing): the platform account's secret key from the
@@ -167,8 +171,12 @@ STRIPE_API_BASE = env_str("STRIPE_API_BASE", "")
 # Gateway used by the sync job: a dotted path to a class (tests), or empty = the Stripe API when a
 # key is set, otherwise off.
 NUMO9_STRIPE_GATEWAY = ""
-# Subscriptions as packages see them (U-02-T05, T10): nobody subscribes until U-03/U-04.
-NUMO9_SUBSCRIPTION_SOURCE = "numo9.packages.subscriptions.NoSubscriptions"
+# Subscriptions as packages see them (U-02-T05, T10): the U-03 subscriptions.
+NUMO9_SUBSCRIPTION_SOURCE = "numo9.entitlements.source.Subscriptions"
+# Entitlement engine (U-03): package code of trials and demo organisations without a package of
+# their own (empty or unknown = every active product).
+NUMO9_TRIAL_PACKAGE = env_str("NUMO9_TRIAL_PACKAGE", "")
+NUMO9_DEMO_PACKAGE = env_str("NUMO9_DEMO_PACKAGE", "")
 # Exemption certificate expiry reminders (B-01-T08): called once per reminder; a log line until
 # notifications (A-07) take over.
 NUMO9_EXEMPTION_REMINDER_HOOK = "numo9.contacts.exemptions.log_reminder"

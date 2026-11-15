@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 183   Remaining: 2604   Progress: 6.57%
+TOTAL ATOMIC TASKS: 2787   Completed: 185   Remaining: 2602   Progress: 6.64%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -253,8 +253,8 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [U-03]
 ✅ U-03-T01 — ADR-005 entitlement resolution & caching (written, short)   [docs/adr/0004-entitlement-resolution-and-caching.md (plan 'ADR-005'; repository numbering is sequential): one engine, versioned cache keys, read retention, read-only guard after access checks; mkdocs nav + ADR index]
-❌ U-03-T02 — Subscription skeleton model (org, package, status, current_period_end, grace_until, founding flag, override JSON) — billing fields added in U-04
-❌ U-03-T03 — EntitlementOverride model (org, product, granted_by, expires_at, reason)
+✅ U-03-T02 — Subscription skeleton model (org, package, status, current_period_end, grace_until, founding flag, override JSON) — billing fields added in U-04   [backend/numo9/entitlements/models.py (Subscription; entitlements.0001): partial unique index entitlements_one_current_subscription (one not cancelled per organisation), statuses trialing/active/past_due/read_only/cancelled/demo, grace_until required when past_due, founding, override JSON (products, limits), status_changed_at/status_reason, mirrors Organisation.status, audited; NUMO9_SUBSCRIPTION_SOURCE = entitlements.source.Subscriptions; tests/test_entitlements_models.py]
+✅ U-03-T03 — EntitlementOverride model (org, product, granted_by, expires_at, reason)   [EntitlementOverride (entitlements.0002): org, product, granted_by, expires_at, reason (required); expired or removed override ignored (active_overrides); audited in the organisation's log; tests/test_entitlements_models.py]
 ❌ U-03-T04 — resolve_entitlements(org) service → {products, features, mode: full/read_only/none, reason}
 ❌ U-03-T05 — Read-retention rule: products ever entitled stored in OrgProductHistory; read keys granted for them
 ❌ U-03-T06 — Redis cache with version counter + invalidation signals on subscription/package/override save
