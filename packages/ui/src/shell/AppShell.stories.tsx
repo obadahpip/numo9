@@ -70,6 +70,37 @@ type Story = StoryObj<typeof AppShell>;
 
 export const Organisation: Story = {};
 
+/** U-03-T11/T12: a gated module keeps its place with a lock glyph; the read-only notice slot. */
+export const LockedModuleAndReadOnly: Story = {
+  name: "Locked module + read-only notice",
+  args: {
+    nav: [
+      ...sampleShell.nav,
+      {
+        id: "payroll",
+        label: "Payroll",
+        href: "/o/maple-leaf/payroll",
+        locked: { label: "Payroll isn't in this organisation's package" },
+      },
+    ],
+    banner: (
+      <section
+        aria-label="Organisation status"
+        className="border-b border-border bg-surface-warning-subtle px-4 py-3 text-sm text-fg md:px-6"
+      >
+        <strong>
+          This organisation has been read-only since 20 Nov 2026: the payment failed and the grace
+          period ended.
+        </strong>{" "}
+        You can still see and export everything.{" "}
+        <a href="#subscription" className="font-semibold underline">
+          Reactivate the subscription
+        </a>
+      </section>
+    ),
+  },
+};
+
 export const OrganisationWithoutPractice: Story = {
   args: { practiceNav: undefined, status: undefined },
 };

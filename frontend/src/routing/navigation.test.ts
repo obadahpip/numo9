@@ -36,4 +36,36 @@ describe("primary navigation (A-10-T05)", () => {
     expect(navEntryFor("settingsx")).toBeUndefined();
     expect(primaryNav(testFormatMessage(), "acme").some((l) => l.current)).toBe(false);
   });
+
+  it("locks the items whose module is gated, with the product in the tooltip (U-03-T11)", () => {
+    const links = primaryNav(testFormatMessage(), "acme", "home", (feature) =>
+      feature.startsWith("accounting.chart_of_accounts")
+        ? { feature, state: "gated", product: "accounting", productName: "Accounting" }
+        : { feature, state: "allowed" },
+    );
+    expect(links.find((l) => l.id === "accounting")?.locked).toEqual({
+      label: "Accounting isn't in this organisation's package",
+    });
+    // Still in the navigation, same URL (never hidden, never redirected).
+    expect(links.find((l) => l.id === "accounting")?.href).toBe(
+      "/o/acme/accounting/chart-of-accounts",
+    );
+    expect(links.filter((l) => l.locked)).toHaveLength(1);
+    // CORE modules are never asked.
+    const asked: string[] = [];
+    primaryNav(testFormatMessage(), "acme", "home", (feature) => {
+      asked.push(feature);
+      return { feature, state: "gated" };
+    });
+    expect(asked).not.toContain("@core");
+    expect(
+      primaryNav(testFormatMessage(), "acme", "home", (feature) => ({ feature, state: "gated" }))
+        .filter((l) => l.locked)
+        .map((l) => [l.id, l.locked?.label]),
+    ).toEqual([
+      ["contacts", "Not in this organisation's package"],
+      ["accounting", "Not in this organisation's package"],
+      ["documents", "Not in this organisation's package"],
+    ]);
+  });
 });

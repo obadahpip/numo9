@@ -263,9 +263,13 @@
   },
   "catalogue": {
     "gated": {
+      "askOwner": "Ask the owner",
+      "askOwnerText": "Only the organisation's owner can change the package. Ask them to add {product}.",
+      "askOwnerTextUnknown": "Only the organisation's owner can change the package.",
       "body": "It's part of the {product} product. Everything you already have stays here and keeps working.",
       "bodyPackages": "It's part of the {product} product, included in {packages}. Everything you already have stays here and keeps working.",
       "bodyUnknown": "Everything you already have stays here and keeps working.",
+      "changePackage": "Change the package",
       "seePackages": "See what's in each package",
       "title": "{product} isn't in this organisation's package",
       "titleUnknown": "This isn't in this organisation's package"
@@ -396,6 +400,19 @@
       "reasonName": "Name {percent}% similar",
       "reasonTaxId": "Tax ID matches",
       "title": "Possible duplicates ({count})"
+    }
+  },
+  "entitlements": {
+    "banner": {
+      "askOwner": "Ask the organisation's owner to reactivate it.",
+      "cancelled": "This organisation has been read-only since {date}: the subscription was cancelled.",
+      "label": "Organisation status",
+      "other": "This organisation has been read-only since {date}.",
+      "paymentFailed": "This organisation has been read-only since {date}: the payment failed and the grace period ended.",
+      "platform": "This organisation has been read-only since {date}: Numo9 set it read-only.",
+      "reactivate": "Reactivate the subscription",
+      "readable": "You can still see and export everything.",
+      "trialEnded": "This organisation has been read-only since {date}: the free trial ended."
     }
   },
   "files": {
@@ -943,6 +960,8 @@
       "contacts": "Contacts",
       "documents": "Documents",
       "home": "Home",
+      "locked": "{product} isn't in this organisation's package",
+      "lockedUnknown": "Not in this organisation's package",
       "main": "Main",
       "settings": "Settings"
     },

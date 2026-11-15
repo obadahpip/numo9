@@ -121,7 +121,7 @@ changed are kept).
 | Piece | What |
 |---|---|
 | `@requires_feature` / `required_feature` / `CORE` | declaration on API views (`numo9.catalogue.drf`); `RequiresFeature` (default permission class) answers **402** `entitlement.feature_not_in_package` with `feature` and `product` when the resolver refuses — the plan's `feature_not_in_package`, as a dotted key like every other error code |
-| Entitlement resolver | `settings.NUMO9_ENTITLEMENT_RESOLVER` — `AllowAllResolver` stub until U-03 |
+| Entitlement resolver | `settings.NUMO9_ENTITLEMENT_RESOLVER` — the U-03 engine `numo9.entitlements.engine.Engine` ([Entitlement engine](entitlements.md)); the 402 also names `product_name` and the `packages` that include the product (U-03-T07). `AllowAllResolver` stays for tools and tests |
 | Package source | `settings.NUMO9_PACKAGE_SOURCE` — `NoPackages` stub until U-02 (packages) / U-03–U-04 (current package) |
 | `manage.py check_feature_keys` | CI gate: business endpoints (`/api/v1/o/…`, `/api/v1/p/…`) declare a known key or `CORE` (`feature.E001`–`E003`) |
 | `GET /api/v1/catalogue/products`, `/feature-matrix` | every signed-in user; public-safe fields; matrix lists every key once (key → product → packages) |

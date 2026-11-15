@@ -2,6 +2,8 @@ import { screen } from "@testing-library/react";
 import { vi } from "vitest";
 
 import OrganisationModulePage from "./page";
+import { appQueryClient } from "@/entitlements/store";
+import { entitlementsBody, entitlementsFetch } from "@/test/entitlements";
 import { renderWithIntl } from "@/test/intl";
 
 vi.mock("@/i18n/server", async () => {
@@ -16,6 +18,12 @@ const notFound = vi.hoisted(() =>
 );
 vi.mock("next/navigation", () => ({ notFound, useRouter: () => ({ push: vi.fn() }) }));
 
+beforeEach(() => vi.stubGlobal("fetch", entitlementsFetch()));
+afterEach(() => {
+  vi.unstubAllGlobals();
+  appQueryClient().clear();
+});
+
 const renderPage = async (org: string, module: string[]) =>
   renderWithIntl(await OrganisationModulePage({ params: Promise.resolve({ org, module }) }));
 
@@ -23,7 +31,24 @@ describe("organisation module placeholder", () => {
   it("renders the module named by the URL inside the shell", async () => {
     await renderPage("acme", ["accounting", "chart-of-accounts"]);
 
-    expect(screen.getByRole("heading", { level: 1, name: "Chart of accounts" })).toBeVisible();
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Chart of accounts" }),
+    ).toBeVisible();
+    expect(screen.getByRole("navigation", { name: "Main" })).toBeInTheDocument();
+  });
+
+  it("renders the locked panel at the module's own URL when it isn't in the package (U-03-T11)", async () => {
+    vi.stubGlobal("fetch", entitlementsFetch(entitlementsBody({ features: [] })));
+    await renderPage("acme", ["accounting", "chart-of-accounts"]);
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "Accounting isn't in this organisation's package",
+      }),
+    ).toBeVisible();
+    expect(screen.queryByRole("heading", { name: "Chart of accounts" })).toBeNull();
+    // No redirect: the page rendered in place (nothing navigated away).
     expect(screen.getByRole("navigation", { name: "Main" })).toBeInTheDocument();
   });
 

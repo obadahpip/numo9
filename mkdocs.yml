@@ -66,6 +66,7 @@ nav:
       - "ADR-0001 — Hosting and data residency": adr/0001-hosting-and-data-residency.md
       - "ADR-0002 — Hetzner Helsinki hosting": adr/0002-hetzner-helsinki-hosting.md
       - "ADR-0003 — Posting engine and book dimension": adr/0003-posting-engine-and-book-dimension.md
+      - "ADR-0004 — Entitlement resolution and caching": adr/0004-entitlement-resolution-and-caching.md
       - ADR template: adr/template.md
   - Architecture:
       - "Tenancy model": architecture/tenancy.md
@@ -76,6 +77,7 @@ nav:
       - "Audit log and history": architecture/audit.md
       - "Product catalogue and feature keys": architecture/feature-keys.md
       - "Packages, prices and promo codes": architecture/packages-pricing.md
+      - "Entitlement engine": architecture/entitlements.md
       - "Chart of accounts": architecture/chart-of-accounts.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md
       - "Contacts": architecture/contacts.md

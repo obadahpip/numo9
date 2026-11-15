@@ -4,7 +4,11 @@ import { AppShell as Shell, type ShellCrumb, type ShellLinkComponent } from "@nu
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { CORE } from "@/catalogue/features";
+import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
+import { ReadOnlyNotice } from "@/entitlements/ReadOnlyNotice";
+import { decide, EntitlementsProvider, useEntitlements } from "@/entitlements/store";
 import { defineMessages, useFormatMessage } from "@/i18n";
 import { JobTray } from "@/jobs/JobTray";
 import { primaryNav } from "@/routing/navigation";
@@ -88,9 +92,24 @@ interface AppShellProps {
  * signed-in user (A-02) plug into the shell's slots as those deliverables land. A module with its
  * own settings section shows its gear at the end of the breadcrumb bar (A-05-T10, gap-03);
  * settings pages read Organisation / Settings / <section>.
+ *
+ * Entitlements (U-03-T10…T12): inside an organisation the shell mounts the entitlement store, so
+ * every `<Gated>` below decides from the organisation's package; navigation items of gated
+ * modules show a lock glyph; a gated module renders its locked panel at its own URL (never a
+ * redirect, gap-14); a read-only organisation gets the read-only notice under the top navigation.
  */
-export function AppShell({ org, modulePath, section, children }: Readonly<AppShellProps>) {
+export function AppShell(props: Readonly<AppShellProps>) {
+  if (!props.org) return <ShellFrame {...props} />;
+  return (
+    <EntitlementsProvider org={props.org}>
+      <ShellFrame {...props} />
+    </EntitlementsProvider>
+  );
+}
+
+function ShellFrame({ org, modulePath, section, children }: Readonly<AppShellProps>) {
   const fm = useFormatMessage();
+  const entitlements = useEntitlements();
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
   const homeHref = org ? orgModuleUrl(org, "home") : "/";
 
@@ -115,7 +134,8 @@ export function AppShell({ org, modulePath, section, children }: Readonly<AppShe
         mobileNav: fm(messages.mobileNav),
       }}
       brand={{ label: fm(messages.brandHome), href: homeHref }}
-      nav={org ? primaryNav(fm, org, modulePath) : []}
+      nav={org ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key)) : []}
+      banner={org ? <ReadOnlyNotice /> : undefined}
       breadcrumbs={breadcrumbs}
       orgSwitcher={
         org ? (
@@ -143,7 +163,14 @@ export function AppShell({ org, modulePath, section, children }: Readonly<AppShe
       }}
       linkComponent={NextLink}
     >
-      {children}
+      {org && entry && entry.feature !== CORE ? (
+        // The module's own feature key: its locked panel in place, the URL unchanged (gap-14).
+        <Gated feature={entry.feature} headingLevel={1}>
+          {children}
+        </Gated>
+      ) : (
+        children
+      )}
     </Shell>
   );
 }

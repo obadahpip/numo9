@@ -5,9 +5,13 @@ import { ExplainPanel } from "../states/ExplainPanel";
 import { FeatureProvider, Gated, type EntitlementSource, type FeatureDecision } from "./Gated";
 
 /**
- * Feature gating (U-01-T06): `<Gated feature=…>` renders its content when the organisation's
- * package includes the feature key, else the locked panel in place — never hidden, never a
- * redirect. Decisions come from the entitlement source (U-03 store; allow-all until then).
+ * Feature gating (U-01-T06, U-03-T10): `<Gated feature=…>` renders its content when the
+ * organisation's package includes the feature key, else the locked panel in place — never hidden,
+ * never a redirect. Decisions come from the entitlement source (the U-03 store in the app).
+ *
+ * Locked panel design (U-03-T10): icon, one sentence naming the product and the packages that
+ * include it, and buttons per role — the owner: "See packages" + "Change the package"; staff and
+ * accountants (they can't buy): "See packages" + "Ask the owner".
  */
 const meta: Meta = { title: "Entitlements/Gated" };
 export default meta;
@@ -24,21 +28,29 @@ const payroll: EntitlementSource = (feature) =>
       }
     : { feature, state: "allowed" };
 
-function Locked(decision: FeatureDecision) {
-  return (
-    <ExplainPanel
-      kind="gated"
-      title={`${decision.productName} isn't in your package`}
-      body={`Pay runs are part of the ${decision.productName} product, included in ${decision.packages?.join(" and ")}.`}
-      actions={[
-        <Button key="packages" variant="primary">
-          See packages
-        </Button>,
-        <Button key="ask">Ask the owner</Button>,
-      ]}
-    />
-  );
+function lockedFor(role: "owner" | "staff") {
+  return function Locked(decision: FeatureDecision) {
+    return (
+      <ExplainPanel
+        kind="gated"
+        title={`${decision.productName} isn't in this organisation's package`}
+        body={`It's part of the ${decision.productName} product, included in ${decision.packages?.join(", ")}. Everything you already have stays here and keeps working.`}
+        actions={[
+          <Button key="packages" variant="primary">
+            See what's in each package
+          </Button>,
+          role === "owner" ? (
+            <Button key="change">Change the package</Button>
+          ) : (
+            <Button key="ask">Ask the owner</Button>
+          ),
+        ]}
+      />
+    );
+  };
 }
+
+const Locked = lockedFor("staff");
 
 function PayRuns() {
   return (
@@ -65,6 +77,28 @@ export const GatedFeature: Story = {
   render: () => (
     <FeatureProvider source={payroll}>
       <Gated feature="payroll.pay_runs.write" locked={Locked}>
+        <PayRuns />
+      </Gated>
+    </FeatureProvider>
+  ),
+};
+
+export const LockedPanelOwner: Story = {
+  name: "Locked panel — owner",
+  render: () => (
+    <FeatureProvider source={payroll}>
+      <Gated feature="payroll.pay_runs.write" locked={lockedFor("owner")}>
+        <PayRuns />
+      </Gated>
+    </FeatureProvider>
+  ),
+};
+
+export const LockedPanelStaff: Story = {
+  name: "Locked panel — staff and accountants",
+  render: () => (
+    <FeatureProvider source={payroll}>
+      <Gated feature="payroll.pay_runs.write" locked={lockedFor("staff")}>
         <PayRuns />
       </Gated>
     </FeatureProvider>

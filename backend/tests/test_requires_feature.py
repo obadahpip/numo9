@@ -1,6 +1,7 @@
-"""@requires_feature + RequiresFeature (U-01-T05): a decorated view exposes `required_feature`;
-the permission asks the entitlement resolver (stub until U-03) and answers 402 naming the
-product when the key isn't in the package."""
+"""@requires_feature + RequiresFeature (U-01-T05, U-03-T07): a decorated view exposes
+`required_feature`; the permission asks the entitlement resolver (the U-03 engine; the allow-all
+stub stays for tools and tests) and answers 402 naming the product and the packages that include
+it when the key isn't in the package. The engine's end-to-end 402s: test_entitlements_api.py."""
 
 from __future__ import annotations
 
@@ -87,20 +88,25 @@ def test_declared_feature(view: type, method: str, expected: str | None) -> None
     assert declared_feature(view, method) == expected
 
 
-def test_default_resolver_is_the_allow_all_stub() -> None:
-    assert django_settings.NUMO9_ENTITLEMENT_RESOLVER.endswith("AllowAllResolver")
-    assert isinstance(get_resolver(), AllowAllResolver)
+def test_default_resolver_is_the_entitlement_engine() -> None:
+    from numo9.entitlements.engine import Engine
+
+    assert django_settings.NUMO9_ENTITLEMENT_RESOLVER == "numo9.entitlements.engine.Engine"
+    assert isinstance(get_resolver(), Engine)
     assert (
         "numo9.catalogue.drf.RequiresFeature"
         in (django_settings.REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"])
     )
 
 
-def test_stub_allows_every_declared_key() -> None:
+def test_stub_allows_every_declared_key(settings: Any) -> None:
+    settings.NUMO9_ENTITLEMENT_RESOLVER = "numo9.catalogue.entitlements.AllowAllResolver"
+    assert isinstance(get_resolver(), AllowAllResolver)
     assert Invoices.as_view()(factory.get("/")).status_code == 200
     assert Invoices.as_view()(factory.post("/")).status_code == 200
 
 
+@pytest.mark.django_db
 def test_not_in_package_answers_402_naming_the_product(settings: Any) -> None:
     settings.NUMO9_ENTITLEMENT_RESOLVER = "tests.test_requires_feature.DenyAll"
     DenyAll.calls.clear()
@@ -109,6 +115,8 @@ def test_not_in_package_answers_402_naming_the_product(settings: Any) -> None:
     assert response.data["code"] == "entitlement.feature_not_in_package"
     assert response.data["feature"] == "accounting.sales_invoices.write"
     assert response.data["product"] == "accounting"
+    assert response.data["product_name"] == "Accounting"
+    assert response.data["packages"] == []  # no package offered in this test
     assert "part of Accounting" in str(response.data["detail"])
     assert DenyAll.calls == [(None, "accounting.sales_invoices.write")]
 

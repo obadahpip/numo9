@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 
 import { AppShell } from "./AppShell";
+import { appQueryClient } from "@/entitlements/store";
+import { ACCOUNTING_FEATURES, entitlementsBody, entitlementsFetch } from "@/test/entitlements";
 import { renderWithIntl } from "@/test/intl";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
@@ -18,6 +20,46 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  appQueryClient().clear();
+});
+
+describe("AppShell entitlements (U-03-T10…T12)", () => {
+  it("locks gated modules in the navigation and keeps their links", async () => {
+    const features = ACCOUNTING_FEATURES.filter((f) => !f.startsWith("accounting.contacts"));
+    vi.stubGlobal("fetch", entitlementsFetch(entitlementsBody({ features })));
+    renderWithIntl(
+      <AppShell org="acme" modulePath="home">
+        <h1>Home</h1>
+      </AppShell>,
+    );
+    const nav = screen.getByRole("navigation", { name: "Main" });
+    const contacts = await within(nav).findByRole("link", {
+      name: /^Contacts ?: Accounting isn't in this organisation's package$/,
+    });
+    expect(contacts).toHaveAttribute("href", "/o/acme/contacts");
+    expect(within(nav).getByRole("link", { name: "Documents" })).not.toHaveAttribute("data-locked");
+  });
+
+  it("shows the read-only notice under the top navigation", async () => {
+    vi.stubGlobal(
+      "fetch",
+      entitlementsFetch(
+        entitlementsBody({
+          mode: "read_only",
+          reason: "trial_ended",
+          since: "2026-11-20T15:00:00+00:00",
+        }),
+      ),
+    );
+    renderWithIntl(
+      <AppShell org="acme" modulePath="home">
+        <h1>Home</h1>
+      </AppShell>,
+    );
+    const notice = await screen.findByRole("region", { name: "Organisation status" });
+    expect(notice).toHaveTextContent("read-only since 20 Nov 2026: the free trial ended.");
+    expect(notice.closest('[data-shell="banner"]')).not.toBeNull();
+  });
 });
 
 describe("Numo9 AppShell (A-10-T05)", () => {

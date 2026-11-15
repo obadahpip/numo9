@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 03:32-0500\n"
+"POT-Creation-Date: 2026-11-15 04:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1157,6 +1157,113 @@ msgstr ""
 msgid "Page %(page)s of %(pages)s"
 msgstr ""
 
+msgid "Trial"
+msgstr ""
+
+msgid "Payment overdue (grace period)"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Demo"
+msgstr ""
+
+msgid "The trial ended"
+msgstr ""
+
+msgid "The payment failed"
+msgstr ""
+
+msgid "The subscription was cancelled"
+msgstr ""
+
+msgid "Set by Numo9"
+msgstr ""
+
+msgid "package"
+msgstr ""
+
+msgid "current period ends"
+msgstr ""
+
+msgid "grace period ends"
+msgstr ""
+
+msgid "A past-due subscription keeps full access until then."
+msgstr ""
+
+msgid "founding organisation"
+msgstr ""
+
+msgid "Founding-1,000 offer (U-08): every product, whatever the package."
+msgstr ""
+
+msgid "platform adjustments"
+msgstr ""
+
+msgid "{\"products\": [\"payroll\"], \"limits\": {\"max_org_users\": 20}}"
+msgstr ""
+
+msgid "status changed at"
+msgstr ""
+
+msgid "reason"
+msgstr ""
+
+msgid "subscription"
+msgstr ""
+
+msgid "subscriptions"
+msgstr ""
+
+msgid "A past-due subscription needs the date its grace period ends."
+msgstr ""
+
+#, python-format
+msgid "%(package)s is a draft: activate it before subscribing to it."
+msgstr ""
+
+msgid "Use the keys products and limits only."
+msgstr ""
+
+msgid "products is a list of product codes."
+msgstr ""
+
+#, python-format
+msgid "Unknown product: %(codes)s."
+msgstr ""
+
+msgid "This organisation already has a subscription: change it instead."
+msgstr ""
+
+msgid "granted by"
+msgstr ""
+
+msgid "expires at"
+msgstr ""
+
+msgid "entitlement override"
+msgstr ""
+
+msgid "entitlement overrides"
+msgstr ""
+
+msgid "Say why the product is granted: the reason is in the audit log."
+msgstr ""
+
+msgid "Choose an end date in the future."
+msgstr ""
+
+msgid "first entitled"
+msgstr ""
+
+msgid "last entitled"
+msgstr ""
+
+msgid "product history"
+msgstr ""
+
 msgid "Wait until the file has been checked for viruses."
 msgstr ""
 
@@ -1550,6 +1657,9 @@ msgstr ""
 
 #, python-format
 msgid "This isn't in your organisation's package: it's part of %(product)s. See the packages that include it, or ask the organisation owner to change the package."
+msgstr ""
+
+msgid "This organisation is read-only: you can see and export everything, but not change it. The organisation owner can reactivate the subscription."
 msgstr ""
 
 msgid "Choose an export format: CSV or XLSX."
@@ -2309,9 +2419,6 @@ msgstr ""
 msgid "Changes dated on or before this date are refused."
 msgstr ""
 
-msgid "reason"
-msgstr ""
-
 msgid "lock dates"
 msgstr ""
 
@@ -2502,9 +2609,6 @@ msgstr ""
 msgid "Set by the Stripe sync job (U-02-T12)."
 msgstr ""
 
-msgid "package"
-msgstr ""
-
 msgid "packages"
 msgstr ""
 
@@ -2628,9 +2732,6 @@ msgid "Empty = no limit."
 msgstr ""
 
 msgid "uses"
-msgstr ""
-
-msgid "expires at"
 msgstr ""
 
 msgid "The packages the code applies to; none = every package."
@@ -2975,16 +3076,7 @@ msgstr ""
 msgid "%(value)s is not a valid time zone."
 msgstr ""
 
-msgid "Demo"
-msgstr ""
-
-msgid "Trial"
-msgstr ""
-
 msgid "Grace period"
-msgstr ""
-
-msgid "Cancelled"
 msgstr ""
 
 msgid "Full service"

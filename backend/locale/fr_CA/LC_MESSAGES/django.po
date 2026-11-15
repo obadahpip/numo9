@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 03:32-0500\n"
+"POT-Creation-Date: 2026-11-15 04:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1250,6 +1250,128 @@ msgstr "Total (CAD)"
 msgid "Page %(page)s of %(pages)s"
 msgstr "Page %(page)s de %(pages)s"
 
+msgid "Trial"
+msgstr ""
+
+msgid "Payment overdue (grace period)"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Demo"
+msgstr ""
+
+msgid "The trial ended"
+msgstr ""
+
+msgid "The payment failed"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invitation cancelled"
+msgid "The subscription was cancelled"
+msgstr "Invitation annulée"
+
+msgid "Set by Numo9"
+msgstr ""
+
+msgid "package"
+msgstr "forfait"
+
+msgid "current period ends"
+msgstr ""
+
+msgid "grace period ends"
+msgstr ""
+
+msgid "A past-due subscription keeps full access until then."
+msgstr ""
+
+#, fuzzy
+#| msgid "organisation"
+msgid "founding organisation"
+msgstr "organisation"
+
+msgid "Founding-1,000 offer (U-08): every product, whatever the package."
+msgstr ""
+
+msgid "platform adjustments"
+msgstr ""
+
+msgid "{\"products\": [\"payroll\"], \"limits\": {\"max_org_users\": 20}}"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "status changed at"
+msgstr "commencée le"
+
+msgid "reason"
+msgstr ""
+
+#, fuzzy
+#| msgid "Description"
+msgid "subscription"
+msgstr "Description"
+
+#, fuzzy
+#| msgid "Description"
+msgid "subscriptions"
+msgstr "Description"
+
+msgid "A past-due subscription needs the date its grace period ends."
+msgstr ""
+
+#, python-format
+msgid "%(package)s is a draft: activate it before subscribing to it."
+msgstr ""
+
+msgid "Use the keys products and limits only."
+msgstr ""
+
+msgid "products is a list of product codes."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Unknown limit: %(names)s."
+msgid "Unknown product: %(codes)s."
+msgstr "Limite inconnue : %(names)s."
+
+#, fuzzy
+#| msgid "This organisation already has an owner. Ask the owner to invite you, or to add users."
+msgid "This organisation already has a subscription: change it instead."
+msgstr "Cette organisation a déjà un propriétaire. Demandez au propriétaire de vous inviter ou d’ajouter des utilisateurs."
+
+msgid "granted by"
+msgstr ""
+
+msgid "expires at"
+msgstr ""
+
+msgid "entitlement override"
+msgstr ""
+
+msgid "entitlement overrides"
+msgstr ""
+
+msgid "Say why the product is granted: the reason is in the audit log."
+msgstr ""
+
+#, fuzzy
+#| msgid "The start date must be on or before the end date."
+msgid "Choose an end date in the future."
+msgstr "La date de début doit être égale ou antérieure à la date de fin."
+
+msgid "first entitled"
+msgstr ""
+
+msgid "last entitled"
+msgstr ""
+
+msgid "product history"
+msgstr ""
+
 msgid "Wait until the file has been checked for viruses."
 msgstr ""
 
@@ -1679,6 +1801,9 @@ msgstr "Cette exportation compte plus de %(limit)s événements. Resserrez les d
 #, python-format
 msgid "This isn't in your organisation's package: it's part of %(product)s. See the packages that include it, or ask the organisation owner to change the package."
 msgstr "Cette fonction n'est pas incluse dans le forfait de votre organisation : elle fait partie de %(product)s. Consultez les forfaits qui l'incluent ou demandez au propriétaire de l'organisation de changer de forfait."
+
+msgid "This organisation is read-only: you can see and export everything, but not change it. The organisation owner can reactivate the subscription."
+msgstr "Cette organisation est en lecture seule : vous pouvez tout consulter et tout exporter, mais rien modifier. Le propriétaire de l'organisation peut réactiver l'abonnement."
 
 #, fuzzy
 #| msgid "Choose an export format: CSV, XLSX or PDF."
@@ -2489,9 +2614,6 @@ msgstr ""
 msgid "Changes dated on or before this date are refused."
 msgstr "La date de début doit être égale ou antérieure à la date de fin."
 
-msgid "reason"
-msgstr ""
-
 msgid "lock dates"
 msgstr ""
 
@@ -2688,9 +2810,6 @@ msgstr "produit Stripe"
 msgid "Set by the Stripe sync job (U-02-T12)."
 msgstr "Défini par la tâche de synchronisation Stripe (U-02-T12)."
 
-msgid "package"
-msgstr "forfait"
-
 msgid "packages"
 msgstr "forfaits"
 
@@ -2815,9 +2934,6 @@ msgstr "Vide = aucune limite."
 
 msgid "uses"
 msgstr "utilisations"
-
-msgid "expires at"
-msgstr ""
 
 msgid "The packages the code applies to; none = every package."
 msgstr "Les forfaits auxquels le code s’applique; aucun = tous les forfaits."
@@ -3169,16 +3285,7 @@ msgstr ""
 msgid "%(value)s is not a valid time zone."
 msgstr "%(value)s n’est pas un fuseau horaire valide."
 
-msgid "Demo"
-msgstr ""
-
-msgid "Trial"
-msgstr ""
-
 msgid "Grace period"
-msgstr ""
-
-msgid "Cancelled"
 msgstr ""
 
 msgid "Full service"
