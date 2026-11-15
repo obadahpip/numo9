@@ -101,6 +101,18 @@ Partition-ready: primary key `(organisation_id, id)` (C-02-T03 hash-partitions b
 
 Indexes `(organisation, account, book)` (trial balance) and `(organisation, entry)`.
 
+### `ledger_journalsequence` — Journal number sequence {#ledger-journalsequence}
+
+The organisation's gap-free journal numbering (C-02-T05). `OrgOwnedModel`; not audited (one
+update per posting); written only by `numo9.ledger.sequence.allocate_journal_number`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; one row per organisation (`ledger_journalseq_one_per_org`) |
+| `next_number` | bigint | no | The number the next posting takes; ≥ 1 (`ledger_journalseq_next_positive`) |
+| `prefix` | varchar(10) | no | Display prefix, `JE-` by default |
+| `padding` | smallint | no | Display digits, 6 by default, ≤ 12 (`ledger_journalseq_padding_max`) |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

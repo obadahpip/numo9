@@ -902,3 +902,38 @@ class JournalLine(OrgOwnedModel):
     def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:
         self._refuse_if_locked()
         return super().delete(*args, **kwargs)
+
+
+class JournalSequence(OrgOwnedModel):
+    """The organisation's journal numbers (C-02-T05, ADR-0003 §4): one row per organisation.
+
+    ``next_number`` is taken with ``UPDATE … SET next_number = next_number + 1 … RETURNING`` inside
+    the posting transaction (``numo9.ledger.sequence.allocate_journal_number``): the row lock
+    serialises one organisation's postings for the few milliseconds until commit, other
+    organisations never wait, and a rollback gives the number back — no gaps. ``prefix`` and
+    ``padding`` only format the number for people (``JE-000042``); the entry stores the integer.
+    Not audited (one update per posting); not sensitive.
+    """
+
+    next_number = models.PositiveBigIntegerField(_("next number"), default=1)
+    prefix = models.CharField(_("prefix"), max_length=10, blank=True, default="JE-")
+    padding = models.PositiveSmallIntegerField(_("digits"), default=6)
+
+    class Meta:
+        verbose_name = _("journal number sequence")
+        verbose_name_plural = _("journal number sequences")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(fields=("organisation",), name="ledger_journalseq_one_per_org"),
+            models.CheckConstraint(
+                condition=models.Q(next_number__gte=1), name="ledger_journalseq_next_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(padding__lte=12), name="ledger_journalseq_padding_max"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.prefix}{str(self.next_number).zfill(self.padding)}"
+
+    def format(self, number: int) -> str:
+        return f"{self.prefix}{str(number).zfill(self.padding)}"

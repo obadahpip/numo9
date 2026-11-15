@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:53-0500\n"
+"POT-Creation-Date: 2026-11-15 17:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2808,6 +2808,27 @@ msgstr ""
 msgid "journal lines"
 msgstr ""
 
+#, fuzzy
+#| msgid "Number"
+msgid "next number"
+msgstr "Numéro"
+
+msgid "prefix"
+msgstr ""
+
+msgid "digits"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal number sequence"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal number sequences"
+msgstr "Numéro"
+
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
@@ -3110,17 +3131,6 @@ msgid "Contact"
 msgstr "Contacts"
 
 msgid "document type"
-msgstr ""
-
-msgid "prefix"
-msgstr ""
-
-#, fuzzy
-#| msgid "Number"
-msgid "next number"
-msgstr "Numéro"
-
-msgid "digits"
 msgstr ""
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."

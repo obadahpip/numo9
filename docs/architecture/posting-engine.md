@@ -5,7 +5,7 @@
 | **Deliverable** | C-02 · Journal posting engine, Phase 0 (component C — General ledger) |
 | **Branch** | `feature/C-02-posting-engine` |
 | **Decision** | [ADR-0003 — Posting engine and book dimension](../adr/0003-posting-engine-and-book-dimension.md) |
-| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`; migration `0004_journal_append_only`) |
+| **Code** | `backend/numo9/ledger/` (models: `JournalEntry`, `JournalLine`, `JournalSequence`; `sequence`; migration `0004_journal_append_only`) |
 | **Depends on** | A-01 (tenancy, RLS), A-04 (audit), A-05 (lock dates), C-01 (chart of accounts) |
 | **Used by** | Every module that posts: D sales, E purchases, F banking, M payroll, I fixed assets, C-04 manual journals, C-05 conversion balances |
 
@@ -45,3 +45,19 @@ Posted and reversed journals can't change — corrections are reversals (C-02-T1
 Drafts and entries awaiting approval stay fully editable. The engine inserts lines while the entry
 is a draft and then posts it (C-02-T08). Privileges aren't revoked (unlike `audit_event`) because
 drafts need `UPDATE`/`DELETE`.
+
+## Gap-free journal numbers (C-02-T05)
+
+`JournalSequence` — one row per organisation (`ledger_journalseq_one_per_org`): `next_number`
+(≥ 1), `prefix` (`JE-`) and `padding` (6) for display. `numo9.ledger.sequence`:
+
+- `allocate_journal_number(organisation)` — inside the posting transaction only (outside it raises
+  `SequenceOutsideTransaction`): `UPDATE ledger_journalsequence SET next_number = next_number + 1
+  WHERE organisation_id = %s RETURNING next_number - 1`. The row lock serialises the organisation's
+  postings until commit; a rollback gives the number back. The first posting creates the row
+  (`INSERT … ON CONFLICT DO NOTHING`) and takes 1. Other organisations never wait;
+- `format_journal_number(organisation, number)` — `JE-000042`; `""` for a draft.
+
+The entry stores the integer (`JournalEntry.number`); a number is given only when an entry is
+posted (drafts have none) and a reversal gets its own. No PostgreSQL `SEQUENCE` (not
+transactional) and no session state (PgBouncer transaction pooling).
