@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 190   Remaining: 2597   Progress: 6.82%
+TOTAL ATOMIC TASKS: 2787   Completed: 191   Remaining: 2596   Progress: 6.85%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -260,7 +260,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-03-T06 — Redis cache with version counter + invalidation signals on subscription/package/override save   [backend/numo9/entitlements/cache.py: key ent:{org}:{org version}.{global version} in the default cache (Redis in staging/prod); post_save/post_delete on Subscription, EntitlementOverride, Organisation bump the organisation, Package/PackageProduct/Product/FeatureKey the global version (at once + on commit); timeout stops at valid_until; tests/test_entitlements_cache.py (change -> next call, no TTL wait; Redis case with NUMO9_TEST_REDIS_URL)]
 ✅ U-03-T07 — Wire RequiresFeature permission to engine; 402 payload {code:"feature_not_in_package", feature, product, packages:[…]}   [RequiresFeature on the engine (NUMO9_ENTITLEMENT_RESOLVER = entitlements.engine.Engine): 402 entitlement.feature_not_in_package {feature, product, product_name, packages:[{code, name}]}; 404 -> 403 -> 402; tests/test_entitlements_api.py, test_requires_feature.py]
 ✅ U-03-T08 — Read-only mode middleware: unsafe methods → 402 {code:"organisation_read_only", reason, since} except billing/export endpoints   [backend/numo9/entitlements/drf.py ReadOnlyGuard (DRF permission after RequiresPermission, the plan's read-only middleware): unsafe methods in read_only mode -> 402 entitlement.organisation_read_only {reason, since}; @allowed_when_read_only / allowed_when_read_only = True for billing and exports; outsiders get 404; tests/test_entitlements_api.py (POST refused, export and billing allowed)]
-❌ U-03-T09 — GET /api/v1/orgs/{id}/entitlements for frontend bootstrap
+✅ U-03-T09 — GET /api/v1/orgs/{id}/entitlements for frontend bootstrap   [GET /api/v1/o/<org>/entitlements (the plan's /orgs/{id}/entitlements): mode, reason, since, package(+name), status, founding, products, read_products, features, version, product_names, packages_by_product, time_zone, viewer.can_change_package; can_access (404 otherwise), CORE; cached p95 < 20 ms measured over 100 requests (tests/test_entitlements_api.py)]
 ❌ U-03-T10 — Frontend entitlement store (React Query) + <Gated> locked panel design
 ❌ U-03-T11 — Nav items with lock glyph + tooltip; no route redirects for gated routes (route renders locked panel)
 ❌ U-03-T12 — Read-only org header banner with reason/date and owner CTA
