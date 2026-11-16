@@ -167,6 +167,20 @@ draft.") for anything else. Every move reloads the entry under a row lock.
 
 Original and reversal net to zero in every account of both books.
 
+## Concurrency (C-02-T12)
+
+`numo9.ledger.storm.post_storm(organisation, n=1000, workers=20, fail_every=0)` posts `n`
+journals through `post_journal` from `workers` threads, each on its own database connection,
+released together by a barrier; every `fail_every`-th attempt fails **after** its lines and its
+number were written and is rolled back — exactly where a gap could appear. The `StormReport`
+checks the posted numbers are exactly `1..n`, every entry balances, both books' trial balances are
+zero and no line of a failed posting is left.
+
+`tests/test_ledger_post_storm.py` (CI): 1,000 postings, 20 workers, every 7th attempt rolled back,
+while a second organisation posts 200 from 4 workers — numbers 1..1000 and 1..200, all balanced
+(about 25 s). `manage.py post_storm --org <public id> --n 1000 --workers 20 [--fail-every 7]` runs
+it against a staging copy (scratch organisation only: it posts real journals).
+
 ## Trial balance per book (C-02-T11)
 
 `numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
@@ -195,6 +209,7 @@ the active organisation:
 | T08 | `tests/test_ledger_post_journal.py` |
 | T09 | `tests/test_ledger_journal_states.py` (every pair of states) |
 | T10 | `tests/test_ledger_reverse.py` (incl. two threads reversing at once) |
+| T12 | `tests/test_ledger_post_storm.py` |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
 | T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |
