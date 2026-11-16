@@ -3,13 +3,13 @@
 pytest==9.2.0
 pytest-django==4.14.0
 pytest-cov==7.1.0
-hypothesis==6.170.10
+hypothesis==6.170.15
 django-migration-linter==6.0.0
 pre-commit==4.7.0
 ruff==0.17.4
 mypy==2.4.1
 django-stubs[compatible-mypy]==6.1.2
-djangorestframework-stubs==3.18.1
+djangorestframework-stubs==3.18.2
 pypdf==6.21.4
 # Local S3 API for the document tests (A-06): moto in server mode
 moto[s3,server]==5.2.5
