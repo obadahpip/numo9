@@ -188,6 +188,11 @@ NUMO9_PACKAGE_SOURCE = "numo9.packages.source.OfferedPackages"
 # points the client elsewhere (stripe-mock in tests); empty = Stripe's own API.
 STRIPE_SECRET_KEY = env_str("STRIPE_SECRET_KEY", "")
 STRIPE_API_BASE = env_str("STRIPE_API_BASE", "")
+# Billing (U-04-T01): the publishable key the billing page hands to Stripe.js, and the signing
+# secret of the webhook endpoint (/webhooks/stripe/) — both from the secrets file; empty = billing
+# off (the checkout endpoint answers 503, the webhook refuses every event).
+STRIPE_PUBLISHABLE_KEY = env_str("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_WEBHOOK_SECRET = env_str("STRIPE_WEBHOOK_SECRET", "")
 # Gateway used by the sync job: a dotted path to a class (tests), or empty = the Stripe API when a
 # key is set, otherwise off.
 NUMO9_STRIPE_GATEWAY = ""

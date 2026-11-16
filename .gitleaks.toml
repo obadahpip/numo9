@@ -28,6 +28,20 @@ secretGroup = 1
 entropy = 3.0
 keywords = ["postgres://", "postgresql://"]
 
+[[rules]]
+id = "numo9-stripe-secret-key"
+description = "Stripe secret or restricted API key (U-04-T01): test and live, in any file"
+regex = '''\b((?:sk|rk)_(?:test|live)_[A-Za-z0-9]{20,})\b'''
+secretGroup = 1
+keywords = ["sk_test_", "sk_live_", "rk_test_", "rk_live_"]
+
+[[rules]]
+id = "numo9-stripe-webhook-secret"
+description = "Stripe webhook signing secret (U-04-T01)"
+regex = '''\b(whsec_[A-Za-z0-9]{24,})\b'''
+secretGroup = 1
+keywords = ["whsec_"]
+
 [allowlist]
 description = "Encrypted SOPS values and documented development placeholders"
 regexes = [

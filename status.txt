@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 255   Remaining: 2532   Progress: 9.15%
+TOTAL ATOMIC TASKS: 2787   Completed: 256   Remaining: 2531   Progress: 9.19%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -353,7 +353,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ C-02-T16 — Journal viewer UI (read-only detail, book badges, reversal link)
 
 [U-04]
-❌ U-04-T01 — Stripe account config doc + env vars in secrets manager (test/live keys, webhook secret)
+✅ U-04-T01 — Stripe account config doc + env vars in secrets manager (test/live keys, webhook secret)
 ❌ U-04-T02 — Extend Subscription with stripe_customer_id, stripe_subscription_id, interval, cancel_at_period_end, payment_method_type
 ❌ U-04-T03 — StripeEvent model (event_id unique, type, payload, processed_at, error)
 ❌ U-04-T04 — Customer creation service (one per org, metadata org_id)
