@@ -14,6 +14,7 @@ from rest_framework.test import APIClient
 from numo9.accounts.models import User
 from numo9.audit.models import AuditEvent
 from numo9.rbac.models import Role, RoleAssignment, RoleScope
+from tests.auth_helpers import enrol_two_factor
 
 pytestmark = pytest.mark.django_db
 
@@ -25,6 +26,7 @@ def owner() -> User:
     user = User.objects.create_user("pat@numo9.ca", name="Pat Owner")
     role = Role.objects.get(is_system=True, scope=RoleScope.PLATFORM, key="platform_owner")
     RoleAssignment.objects.create(role=role, user=user)
+    enrol_two_factor(user)  # platform owners need 2FA (A-02-T06)
     return user
 
 

@@ -32,3 +32,14 @@ def login(client: Client, email: str = "dana@maple.ca", password: str = PASSWORD
 
 def codes(response: Any) -> list[str]:
     return [e["code"] for e in response.json().get("errors", [])]
+
+
+def enrol_two_factor(user: User) -> User:
+    """Give ``user`` a TOTP authenticator — platform owners must have one to use the API
+    (A-02-T06 policy)."""
+    from allauth.mfa.models import Authenticator
+
+    Authenticator.objects.get_or_create(
+        user=user, type=Authenticator.Type.TOTP, defaults={"data": {"secret": "test"}}
+    )
+    return user

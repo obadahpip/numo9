@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:01-0500\n"
+"POT-Creation-Date: 2026-11-16 06:06-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2191,6 +2191,9 @@ msgstr "Le fournisseur de courriel n’a pas répondu. Réessayez dans quelques 
 msgid "Confirm your password to see this value. For your security, the confirmation lasts 5 minutes."
 msgstr "Confirmez votre mot de passe pour voir cette valeur. Pour votre sécurité, la confirmation dure 5 minutes."
 
+msgid "Turn on two-factor authentication to continue: your role requires it. Set it up in Security settings — it takes a minute."
+msgstr "Activez l’authentification à deux facteurs pour continuer : votre rôle l’exige. Configurez-la dans les paramètres de sécurité — cela prend une minute."
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -4251,6 +4254,9 @@ msgstr ""
 msgid "set-up pending"
 msgstr ""
 
+msgid "practice admins must use two-factor authentication"
+msgstr "les administrateurs du cabinet doivent utiliser l’authentification à deux facteurs"
+
 msgid "practices"
 msgstr ""
 
@@ -4379,6 +4385,9 @@ msgstr "Affecter du personnel aux organisations clientes"
 
 msgid "Invite a client organisation's owner"
 msgstr "Inviter le propriétaire d’une organisation cliente"
+
+msgid "change the practice's security settings"
+msgstr "modifier les paramètres de sécurité du cabinet"
 
 msgid "Paid"
 msgstr "Payée"

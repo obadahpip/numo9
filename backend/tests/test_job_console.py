@@ -24,6 +24,7 @@ from numo9.jobs.queues import QUEUE_NAMES
 from numo9.jobs.runtime import JOB_RUN_ID, platform_job, start_job
 from numo9.rbac.models import Role, RoleAssignment, RoleScope
 from numo9.tenancy.models import Organisation, OrganisationMember
+from tests.auth_helpers import enrol_two_factor
 from tests.job_helpers import deliver
 
 pytestmark = pytest.mark.django_db
@@ -44,6 +45,7 @@ def _platform(role_key: str) -> Client:
     user = _user(f"{role_key}@numo9.ca")
     role = Role.objects.get(is_system=True, scope=RoleScope.PLATFORM, key=role_key)
     RoleAssignment.objects.create(role=role, user=user)
+    enrol_two_factor(user)  # platform owners need 2FA (A-02-T06)
     client = Client()
     client.force_login(user)
     return client

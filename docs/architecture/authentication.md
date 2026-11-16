@@ -155,6 +155,27 @@ answer is `401` with the `reauthenticate` flow.
 
 Tests: `backend/tests/test_auth_totp.py`.
 
+### Who must use 2FA (A-02-T06)
+
+`numo9.accounts.twofactor_policy`:
+
+| Who | When |
+|---|---|
+| Platform owner (system role `platform_owner`) | always |
+| Practice admin | when their practice turns on **Practice admins must use two-factor authentication** (`Practice.require_2fa_for_admins`) |
+
+**Enforcement** — `TwoFactorEnforcementMiddleware`: such a user without a TOTP authenticator gets
+`403 auth.two_factor_required` (`reason`: `platform_owner` / `practice_admin`) on every API call
+except what enrolling needs (`/_allauth/…/auth/session`, `auth/reauthenticate`, `auth/sessions`,
+`auth/2fa/*`, `account/authenticators*`, `config`; `/api/v1/auth/csrf`, `/api/v1/me/*`). There is
+no way to skip it; enrolling lifts it at the next request.
+
+**Practice flag** — `GET /api/v1/practice/security?practice=<id>` (members) and `PATCH`
+`{"require_2fa_for_admins": true}` (practice permission `practice.settings.manage`, else 403;
+audited `tenancy.practice.security_changed`).
+
+Tests: `backend/tests/test_auth_2fa_policy.py`.
+
 ## Invitations (A-02-T08, A-02-T09)
 
 `tenancy.Invitation` (`backend/numo9/tenancy/models.py`) — an emailed, single-use invitation to
