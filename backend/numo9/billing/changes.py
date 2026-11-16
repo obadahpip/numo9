@@ -235,6 +235,63 @@ def apply_due_changes(now: dt.datetime | None = None, gateway: BillingGateway | 
     return applied
 
 
+def renewal_price(subscription: Subscription) -> PackagePrice | None:
+    """The price version the subscription renews at: the one in force on its renewal day."""
+    if subscription.package is None or subscription.current_period_end is None:
+        return None
+    try:
+        return price_for(
+            subscription.package,
+            subscription.interval,
+            timezone.localdate(subscription.current_period_end),
+        )
+    except PriceNotFound:
+        return None
+
+
+def apply_renewal_prices(
+    now: dt.datetime | None = None, gateway: BillingGateway | None = None
+) -> int:
+    """Move subscriptions renewing within the hour to the price in force on their renewal day.
+
+    A future-dated price (U-02-T04) never touches a subscription before its first renewal on or
+    after the price's start: a renewal before that day keeps the old Stripe price (U-02-T14).
+    A pending downgrade takes precedence (``apply_due_changes``).
+    """
+    now = now or timezone.now()
+    rows = Subscription._base_manager.filter(
+        status__in=(SubscriptionStatus.ACTIVE, SubscriptionStatus.PAST_DUE),
+        deleted_at__isnull=True,
+        current_period_end__gt=now,
+        current_period_end__lte=now + APPLY_BEFORE,
+        cancel_at_period_end=False,
+    ).exclude(stripe_subscription_id="")
+    moved = 0
+    for subscription in rows.select_related("package", "organisation"):
+        if ScheduledChange._base_manager.filter(
+            subscription=subscription, applied_at__isnull=True, cancelled_at__isnull=True
+        ).exists():
+            continue
+        price = renewal_price(subscription)
+        if price is None or not price.stripe_price_id:
+            continue
+        gateway = gateway or get_gateway()
+        remote = gateway.retrieve_subscription(subscription.stripe_subscription_id)
+        items = ((remote.get("items") or {}).get("data")) or []
+        if not items or (items[0].get("price") or {}).get("id") == price.stripe_price_id:
+            continue
+        gateway.change_price(
+            subscription=subscription.stripe_subscription_id,
+            item=str(items[0]["id"]),
+            price=price.stripe_price_id,
+            proration_behavior="none",
+            proration_date=None,
+            idempotency_key=f"numo9-renewal-{subscription.public_id}-{price.public_id}",
+        )
+        moved += 1
+    return moved
+
+
 @platform_job(name="numo9.billing.apply_changes", queue=DEFAULT)
 def apply_changes_job() -> dict[str, int]:
-    return {"applied": apply_due_changes()}
+    return {"applied": apply_due_changes(), "renewal_prices": apply_renewal_prices()}
