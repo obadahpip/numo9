@@ -74,3 +74,24 @@ its organisation is known; `organisation` is filled when resolved):
 NOTHING` — a re-delivered or replayed event stores nothing and returns the stored row (whatever
 the replay's payload says), so it is never processed twice. A payload without an `evt_` id, a
 type or a created time is refused (`MalformedEvent`).
+
+## Stripe gateway and customers (U-04-T04)
+
+`numo9.billing.gateway.get_gateway()` — every Stripe call billing makes goes through one
+interface (`BillingGateway`): `settings.NUMO9_BILLING_GATEWAY` (a class path: the tests' fake),
+else the Stripe client when `STRIPE_SECRET_KEY` is set (`STRIPE_API_BASE` → stripe-mock in CI),
+else `BillingUnavailable` (503 `billing.unavailable`). Calls that create something carry an
+idempotency key built from Numo9 ids.
+
+`numo9.billing.customers.ensure_customer(organisation) → "cus_…"` — **one customer per
+organisation** (never per user or practice: accountants are never billed):
+
+- the id is stored on the organisation's current subscription (`stripe_customer_id`); a second
+  call returns it and creates nothing;
+- otherwise the customer is created with the organisation's name, its owner's email and metadata
+  `numo9_org` = the organisation's public id (webhooks find the organisation by it), with the
+  idempotency key `numo9-customer-<org public id>` — a retried request gets the same customer;
+- it runs under a row lock on the subscription (two first calls at once create one customer);
+- an organisation without a subscription is refused (409 `billing.no_subscription`).
+
+`organisation_of_customer("cus_…")` finds the organisation from a customer id.

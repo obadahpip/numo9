@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:36-0500\n"
+"POT-Creation-Date: 2026-11-16 13:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -435,6 +435,36 @@ msgstr "%(count)s événements · exporté le %(when)s"
 
 msgid "No events match these filters."
 msgstr "Aucun événement ne correspond à ces filtres."
+
+msgid "Stripe event"
+msgstr "Événement Stripe"
+
+msgid "event type"
+msgstr "type d’événement"
+
+msgid "payload"
+msgstr "contenu"
+
+msgid "created at Stripe"
+msgstr "créé chez Stripe"
+
+msgid "live mode"
+msgstr "mode réel"
+
+msgid "received at"
+msgstr "reçu le"
+
+msgid "processed at"
+msgstr "traité le"
+
+msgid "attempts"
+msgstr "essais"
+
+msgid "last error"
+msgstr "dernière erreur"
+
+msgid "Stripe events"
+msgstr "Événements Stripe"
 
 msgid "Product"
 msgstr ""
@@ -1527,6 +1557,12 @@ msgstr "Invitation annulée"
 msgid "Set by Numo9"
 msgstr ""
 
+msgid "Card"
+msgstr "Carte"
+
+msgid "Pre-authorised debit (PAD)"
+msgstr "Débit préautorisé (DPA)"
+
 msgid "package"
 msgstr "forfait"
 
@@ -1557,6 +1593,27 @@ msgstr ""
 #| msgid "started at"
 msgid "status changed at"
 msgstr "commencée le"
+
+msgid "Stripe customer"
+msgstr "Client Stripe"
+
+msgid "One Stripe customer per organisation (cus_…)."
+msgstr "Un client Stripe par organisation (cus_…)."
+
+msgid "Stripe subscription"
+msgstr "Abonnement Stripe"
+
+msgid "billing interval"
+msgstr "fréquence de facturation"
+
+msgid "cancels at the end of the period"
+msgstr "prend fin à la fin de la période"
+
+msgid "Cancelled by the owner: access continues until the period ends."
+msgstr "Annulé par le propriétaire : l’accès se poursuit jusqu’à la fin de la période."
+
+msgid "payment method"
+msgstr "mode de paiement"
 
 #, fuzzy
 #| msgid "Description"
@@ -1807,16 +1864,6 @@ msgstr ""
 
 msgid "Attachments that were not stored: name and reason code."
 msgstr ""
-
-#, fuzzy
-#| msgid "started at"
-msgid "received at"
-msgstr "commencée le"
-
-#, fuzzy
-#| msgid "started at"
-msgid "processed at"
-msgstr "commencée le"
 
 msgid "inbound emails"
 msgstr ""
@@ -2255,6 +2302,12 @@ msgstr "Cette demande de dérogation a expiré le %(date)s. Faites-en une nouvel
 msgid "approve credit limit overrides"
 msgstr "approuver les dérogations à la limite de crédit"
 
+msgid "Billing isn't available right now. Try again later, or contact Numo9 support."
+msgstr "La facturation n’est pas disponible pour le moment. Réessayez plus tard ou communiquez avec le soutien Numo9."
+
+msgid "This organisation has no subscription yet. Start a trial first."
+msgstr "Cette organisation n’a pas encore d’abonnement. Commencez d’abord un essai."
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -2424,9 +2477,6 @@ msgstr "détail de l’erreur"
 
 msgid "idempotency key"
 msgstr "clé d’idempotence"
-
-msgid "attempts"
-msgstr "essais"
 
 msgid "maximum retries"
 msgstr "nombre maximal de nouveaux essais"
@@ -3906,9 +3956,6 @@ msgstr "Annuel"
 
 msgid "Before tax"
 msgstr "Avant taxes"
-
-msgid "billing interval"
-msgstr "fréquence de facturation"
 
 msgid "amount (cents)"
 msgstr "montant (cents)"

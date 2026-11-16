@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:36-0500\n"
+"POT-Creation-Date: 2026-11-16 13:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -430,6 +430,36 @@ msgid "%(count)s events · exported %(when)s"
 msgstr ""
 
 msgid "No events match these filters."
+msgstr ""
+
+msgid "Stripe event"
+msgstr ""
+
+msgid "event type"
+msgstr ""
+
+msgid "payload"
+msgstr ""
+
+msgid "created at Stripe"
+msgstr ""
+
+msgid "live mode"
+msgstr ""
+
+msgid "received at"
+msgstr ""
+
+msgid "processed at"
+msgstr ""
+
+msgid "attempts"
+msgstr ""
+
+msgid "last error"
+msgstr ""
+
+msgid "Stripe events"
 msgstr ""
 
 msgid "Product"
@@ -1404,6 +1434,12 @@ msgstr ""
 msgid "Set by Numo9"
 msgstr ""
 
+msgid "Card"
+msgstr ""
+
+msgid "Pre-authorised debit (PAD)"
+msgstr ""
+
 msgid "package"
 msgstr ""
 
@@ -1429,6 +1465,27 @@ msgid "{\"products\": [\"payroll\"], \"limits\": {\"max_org_users\": 20}}"
 msgstr ""
 
 msgid "status changed at"
+msgstr ""
+
+msgid "Stripe customer"
+msgstr ""
+
+msgid "One Stripe customer per organisation (cus_…)."
+msgstr ""
+
+msgid "Stripe subscription"
+msgstr ""
+
+msgid "billing interval"
+msgstr ""
+
+msgid "cancels at the end of the period"
+msgstr ""
+
+msgid "Cancelled by the owner: access continues until the period ends."
+msgstr ""
+
+msgid "payment method"
 msgstr ""
 
 msgid "subscription"
@@ -1647,12 +1704,6 @@ msgid "refused attachments"
 msgstr ""
 
 msgid "Attachments that were not stored: name and reason code."
-msgstr ""
-
-msgid "received at"
-msgstr ""
-
-msgid "processed at"
 msgstr ""
 
 msgid "inbound emails"
@@ -2082,6 +2133,12 @@ msgstr ""
 msgid "approve credit limit overrides"
 msgstr ""
 
+msgid "Billing isn't available right now. Try again later, or contact Numo9 support."
+msgstr ""
+
+msgid "This organisation has no subscription yet. Start a trial first."
+msgstr ""
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -2244,9 +2301,6 @@ msgid "error detail"
 msgstr ""
 
 msgid "idempotency key"
-msgstr ""
-
-msgid "attempts"
 msgstr ""
 
 msgid "maximum retries"
@@ -3644,9 +3698,6 @@ msgid "Annual"
 msgstr ""
 
 msgid "Before tax"
-msgstr ""
-
-msgid "billing interval"
 msgstr ""
 
 msgid "amount (cents)"

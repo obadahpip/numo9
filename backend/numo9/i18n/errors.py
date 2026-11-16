@@ -699,3 +699,15 @@ CREDIT_OVERRIDE_EXPIRED = define(
     status.HTTP_409_CONFLICT,
 )
 CREDIT_OVERRIDE_ACTION = _("approve credit limit overrides")
+
+# ---- billing (U-04) ---------------------------------------------------------------------------
+BILLING_UNAVAILABLE = define(
+    "billing.unavailable",
+    _("Billing isn't available right now. Try again later, or contact Numo9 support."),
+    status.HTTP_503_SERVICE_UNAVAILABLE,
+)
+BILLING_NO_SUBSCRIPTION = define(
+    "billing.no_subscription",
+    _("This organisation has no subscription yet. Start a trial first."),
+    status.HTTP_409_CONFLICT,
+)

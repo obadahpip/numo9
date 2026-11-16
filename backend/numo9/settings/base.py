@@ -195,6 +195,9 @@ STRIPE_API_BASE = env_str("STRIPE_API_BASE", "")
 # off (the checkout endpoint answers 503, the webhook refuses every event).
 STRIPE_PUBLISHABLE_KEY = env_str("STRIPE_PUBLISHABLE_KEY", "")
 STRIPE_WEBHOOK_SECRET = env_str("STRIPE_WEBHOOK_SECRET", "")
+# Billing gateway (U-04): a dotted path to a class (tests), or empty = the Stripe API when a key is
+# set, otherwise billing off.
+NUMO9_BILLING_GATEWAY = ""
 # Gateway used by the sync job: a dotted path to a class (tests), or empty = the Stripe API when a
 # key is set, otherwise off.
 NUMO9_STRIPE_GATEWAY = ""
