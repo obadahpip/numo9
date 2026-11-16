@@ -14,6 +14,8 @@ class NotificationsConfig(AppConfig):
         # Tenant sweep (A-01-T09): a notification needs a recipient.
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
+        from . import bounces  # noqa: F401  (connects the anymail tracking signal, A-07-T08)
+
         SWEEP_FACTORIES["notifications.Notification"] = _sweep_notification
         SWEEP_FACTORIES["notifications.SendingDomain"] = _sweep_domain
 

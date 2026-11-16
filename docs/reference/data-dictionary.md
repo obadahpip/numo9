@@ -511,6 +511,12 @@ One DNS record a sending domain needs, with the last check (A-07-T05, T06). `Org
 | `status` | varchar(16) | no | `unchecked`, `ok`, `missing`, `wrong` |
 | `found`, `checked_at` | text / timestamptz | — | What the last check found, when |
 
+### `notifications_emailsuppression` — Email suppression {#notifications-emailsuppression}
+
+An address not emailed after a bounce or complaint (A-07-T08). Platform model: `email` (unique, lower case), `reason` (`bounced` / `complained`), `until` (event + 30 days), `detail` (provider's reason), `created_at`, `updated_at`.
+
+Delivery flags added by A-07-T08: `contacts_contactperson.email_status` / `email_status_at` and `accounts_user.email_status` / `email_status_at` — `bounced`, `complained` or empty.
+
 ## Accountant workspace (`workspace`) {#workspace}
 
 Design: [Organisation directory](../architecture/directory.md).

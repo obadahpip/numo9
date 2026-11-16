@@ -443,3 +443,27 @@ class SendingDomainRecord(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.kind} {self.host}"
+
+
+class EmailSuppression(models.Model):
+    """An address not emailed until ``until`` after a bounce or complaint (A-07-T08).
+
+    One row per address across the platform (a hard bounce is a fact about the address, whoever
+    sends): ``queue_email`` logs messages to it as ``failed`` without sending. A bounce suppresses
+    for 30 days; a complaint (marked as spam) too — the person can be emailed again afterwards or
+    once someone corrects the address.
+    """
+
+    email = models.EmailField(_("email address"), unique=True)
+    reason = models.CharField(_("reason"), max_length=16)  # bounced | complained
+    until = models.DateTimeField(_("until"))
+    detail = models.CharField(_("detail"), max_length=500, blank=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("email suppression")
+        verbose_name_plural = _("email suppressions")
+
+    def __str__(self) -> str:
+        return f"{self.email} ({self.reason} until {self.until:%Y-%m-%d})"

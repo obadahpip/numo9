@@ -101,6 +101,14 @@ def queue_email(
         headers=dict(headers or {}),
         metadata=dict(metadata or {}),
     )
+    from .bounces import suppressed_until
+
+    until = suppressed_until(to)
+    if until is not None:  # bounced or complained recently (A-07-T08): logged, not sent
+        message.status = EmailStatus.FAILED
+        message.error = f"Suppressed until {until:%Y-%m-%d}: the address bounced or complained."
+        message.save()
+        return message
     message.save()
     message_id = message.pk
     transaction.on_commit(lambda: send_email.apply_async(args=[message_id], queue=HIGH))

@@ -60,6 +60,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "workspace.SavedView",
                 # Practice email branding (A-07-T04): reviewed — name, logo address, colour.
                 "notifications.PracticeBranding",
+                # Email suppression list (A-07-T08): reviewed — an address and a reason.
+                "notifications.EmailSuppression",
             }
         )
         == PLATFORM_MODELS

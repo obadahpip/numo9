@@ -24,4 +24,7 @@ urlpatterns = [
     # Sign-up, email verification, login, logout, password reset (A-02): django-allauth headless,
     # browser client only (/_allauth/browser/v1/…). OpenAPI: /_allauth/openapi.html in dev.
     path("_allauth/", include("numo9.accounts.urls")),
+    # Email provider delivery webhooks (A-07-T08): django-anymail's tracking views,
+    # /webhooks/email/<provider>/tracking/, HTTP basic auth with ANYMAIL_WEBHOOK_SECRET.
+    path("webhooks/email/", include("anymail.urls")),
 ]

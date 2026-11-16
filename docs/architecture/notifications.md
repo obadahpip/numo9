@@ -231,6 +231,24 @@ unless `dmarc=pass` aligned with the domain (`header.from`). Run it on staging a
 verified; `tests/test_notifications_dmarc.py::test_live_dmarc_probe` runs it in CI when
 `NUMO9_TEST_DMARC_ORG`, `_TO`, `_IMAP_HOST`, `_IMAP_USER`, `_IMAP_PASSWORD` are set.
 
+## Bounces and complaints (A-07-T08)
+
+The provider posts delivery events to **django-anymail's tracking webhook**
+`/webhooks/email/<provider>/tracking/` (HTTP basic auth with `ANYMAIL_WEBHOOK_SECRET`; a wrong or
+missing secret is refused). `numo9.notifications.bounces` handles anymail's `tracking` signal:
+
+| Event | Message | Address |
+|---|---|---|
+| `bounced`, `rejected` | `bounced` + `event_at` + the provider's reason | flagged `bounced` |
+| `complained` (marked as spam) | `complained` | flagged `complained` |
+| anything else (delivered, opened…) | ignored — transactional email only, no open tracking | — |
+
+The message is found by its `numo9_message` metadata, else the provider's message id. **Flagged**
+= `ContactPerson.email_status` (+ `email_status_at`) of the people with that address in the
+message's organisation — another organisation's contacts are untouched — and `User.email_status`.
+**Suppressed for 30 days** (`EmailSuppression`, one row per address): `queue_email` logs messages
+to it as `failed` ("Suppressed until …") without sending.
+
 ## Tests
 
 | Task | Tests |
@@ -242,3 +260,4 @@ verified; `tests/test_notifications_dmarc.py::test_live_dmarc_probe` runs it in 
 | T05 | `tests/test_notifications_domains.py` (provider mocked: `tests/notification_helpers.FakeProvider`) |
 | T06 | `tests/test_notifications_dnscheck.py` (fake DNS zone + the dnspython path) |
 | T07 | `tests/test_notifications_dmarc.py` (parser, harness with a fake IMAP mailbox; live run opt-in) |
+| T08 | `tests/test_notifications_bounces.py` (Postmark payloads through anymail's webhook) |

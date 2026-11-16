@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:18-0500\n"
+"POT-Creation-Date: 2026-11-16 05:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,7 +79,17 @@ msgid "public ID"
 msgstr "identifiant public"
 
 msgid "email address"
-msgstr ""
+msgstr "adresse courriel"
+
+#, fuzzy
+#| msgid "Email received"
+msgid "email delivery"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "email delivery problem at"
+msgstr "événement de livraison le"
 
 msgid "name"
 msgstr ""
@@ -1427,7 +1437,7 @@ msgid "status changed at"
 msgstr "commencée le"
 
 msgid "reason"
-msgstr ""
+msgstr "raison"
 
 #, fuzzy
 #| msgid "Description"
@@ -3245,6 +3255,24 @@ msgstr "enregistrement du domaine d’envoi"
 
 msgid "sending domain records"
 msgstr "enregistrements du domaine d’envoi"
+
+msgid "until"
+msgstr "jusqu’au"
+
+#, fuzzy
+#| msgid "details"
+msgid "detail"
+msgstr "détails"
+
+#, fuzzy
+#| msgid "email message"
+msgid "email suppression"
+msgstr "courriel"
+
+#, fuzzy
+#| msgid "email messages"
+msgid "email suppressions"
+msgstr "courriels"
 
 #, fuzzy
 #| msgid "organisation"
