@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     "numo9.notifications",
     # Accountant workspace: organisation directory, saved views (V-01).
     "numo9.workspace",
+    # Subscription billing with Stripe: events, platform invoices, dunning (U-04).
+    "numo9.billing",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

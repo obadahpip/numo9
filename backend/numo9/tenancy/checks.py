@@ -64,6 +64,9 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Email suppression list (A-07-T08): an address the provider reported as bouncing or
         # complaining, not emailed for 30 days; an address, no organisation data.
         "notifications.EmailSuppression",
+        # Stripe webhook events (U-04-T03): the event log as Stripe sent it, kept once per event
+        # id; an event arrives before its organisation is known (filled once resolved).
+        "billing.StripeEvent",
     }
 )
 

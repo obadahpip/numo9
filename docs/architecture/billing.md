@@ -55,3 +55,22 @@ database default, so rows written by older code stay valid):
 | `interval` | `month` · `year`, default `month` | Billing interval (`entitlements_subscription_interval_valid`) |
 | `cancel_at_period_end` | boolean, `false` | The owner cancelled: access continues until `current_period_end` |
 | `payment_method_type` | `card` · `acss_debit` · `""` | How the organisation pays; the card or the PAD mandate stays at Stripe (`entitlements_subscription_method_valid`) |
+
+## Stripe events (U-04-T03)
+
+`billing.StripeEvent` — every webhook event, stored once (platform data: an event arrives before
+its organisation is known; `organisation` is filled when resolved):
+
+| Field | Meaning |
+|---|---|
+| `event_id` | Stripe's `evt_…`, **unique** — idempotency key |
+| `type` | `invoice.paid`, `customer.subscription.updated`… |
+| `payload` | The event exactly as received |
+| `stripe_created` | Stripe's `created` time (ordering of out-of-order events, U-04-T15) |
+| `livemode` | Live or test event |
+| `processed_at`, `attempts`, `error` | Processing outcome (U-04-T06) |
+
+`numo9.billing.events.record_event(event) → (row, created)`: `INSERT … ON CONFLICT (event_id) DO
+NOTHING` — a re-delivered or replayed event stores nothing and returns the stored row (whatever
+the replay's payload says), so it is never processed twice. A payload without an `evt_` id, a
+type or a created time is refused (`MalformedEvent`).
