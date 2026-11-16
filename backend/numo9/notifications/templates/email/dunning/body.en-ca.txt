@@ -1,0 +1,11 @@
+{% autoescape off %}{% if day >= 7 %}Your subscription payment is overdue{% else %}We couldn't charge your payment method{% endif %}
+
+The payment of {{ amount }} for {{ organisation }} failed on {{ failed_on }}.
+
+{% if day >= 7 %}The organisation is read-only until the payment goes through: everyone can still see and export, nobody can change anything.{% else %}Update the payment method by {{ grace_until }} to keep working without a break. After that the organisation becomes read-only — nothing is deleted.{% endif %}
+
+Update payment method: {{ link }}
+
+--
+As an owner of {{ organisation }}, you get this email.
+{% endautoescape %}

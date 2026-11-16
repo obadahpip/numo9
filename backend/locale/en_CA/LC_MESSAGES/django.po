@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:25-0500\n"
+"POT-Creation-Date: 2026-11-16 05:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2984,6 +2984,36 @@ msgid "%(file)s was blocked"
 msgstr ""
 
 msgid "The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."
+msgstr ""
+
+#, python-format
+msgid "New sign-in on %(device)s"
+msgstr ""
+
+#, python-format
+msgid "Your account was signed in on %(when)s from %(device)s (%(ip)s). Not you? Change your password and sign out the other sessions."
+msgstr ""
+
+#, python-format
+msgid "Payment for %(organisation)s didn't go through"
+msgstr ""
+
+#, python-format
+msgid "Update the payment method by %(grace_until)s to keep working without a break."
+msgstr ""
+
+#, python-format
+msgid "%(organisation)s is read-only"
+msgstr ""
+
+msgid "The subscription payment is overdue. Everyone can still see and export; update the payment method to make changes again."
+msgstr ""
+
+#, python-format
+msgid "Your trial ends on %(ends_on)s"
+msgstr ""
+
+msgid "Choose a package to keep working without a break. Everything you entered stays."
 msgstr ""
 
 msgid "Sole proprietorship"

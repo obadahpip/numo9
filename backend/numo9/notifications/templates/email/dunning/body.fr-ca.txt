@@ -1,0 +1,11 @@
+{% autoescape off %}{% if day >= 7 %}Le paiement de votre abonnement est en retard{% else %}Nous n’avons pas pu débiter votre moyen de paiement{% endif %}
+
+Le paiement de {{ amount }} pour {{ organisation }} a échoué le {{ failed_on }}.
+
+{% if day >= 7 %}L’organisation est en lecture seule jusqu’à ce que le paiement passe : tout le monde peut consulter et exporter, personne ne peut rien modifier.{% else %}Mettez à jour le moyen de paiement d’ici le {{ grace_until }} pour continuer sans interruption. Ensuite, l’organisation passera en lecture seule — rien n’est supprimé.{% endif %}
+
+Mettre à jour le moyen de paiement: {{ link }}
+
+--
+En tant que propriétaire de {{ organisation }}, vous recevez ce courriel.
+{% endautoescape %}

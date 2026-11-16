@@ -1,0 +1,1 @@
+{% autoescape off %}{{ inviter }} vous invite à {{ target }} sur Numo9{% endautoescape %}

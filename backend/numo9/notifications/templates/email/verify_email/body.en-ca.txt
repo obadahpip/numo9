@@ -1,0 +1,11 @@
+{% autoescape off %}Verify your email address
+
+Hi {{ name }}, open the link below within 3 days to verify {{ email }} and finish creating your Numo9 account.
+
+If you didn't sign up for Numo9, ignore this email: nothing happens without the link.
+
+Verify my email: {{ link }}
+
+--
+You get this email because someone signed up for Numo9 with {{ email }}.
+{% endautoescape %}

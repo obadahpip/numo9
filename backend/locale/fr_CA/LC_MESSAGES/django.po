@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:25-0500\n"
+"POT-Creation-Date: 2026-11-16 05:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3301,6 +3301,37 @@ msgstr ""
 
 msgid "The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."
 msgstr ""
+
+#, python-format
+msgid "New sign-in on %(device)s"
+msgstr "Nouvelle connexion sur %(device)s"
+
+#, python-format
+msgid "Your account was signed in on %(when)s from %(device)s (%(ip)s). Not you? Change your password and sign out the other sessions."
+msgstr "Votre compte a été connecté le %(when)s depuis %(device)s (%(ip)s). Ce n’était pas vous? Changez votre mot de passe et déconnectez les autres sessions."
+
+#, python-format
+msgid "Payment for %(organisation)s didn't go through"
+msgstr "Le paiement de %(organisation)s n’a pas abouti"
+
+#, python-format
+msgid "Update the payment method by %(grace_until)s to keep working without a break."
+msgstr "Mettez à jour le moyen de paiement d’ici le %(grace_until)s pour continuer sans interruption."
+
+#, fuzzy, python-format
+#| msgid "Change organisation settings"
+msgid "%(organisation)s is read-only"
+msgstr "Modifier les paramètres de l’organisation"
+
+msgid "The subscription payment is overdue. Everyone can still see and export; update the payment method to make changes again."
+msgstr "Le paiement de l’abonnement est en retard. Tout le monde peut encore consulter et exporter; mettez à jour le moyen de paiement pour pouvoir modifier à nouveau."
+
+#, python-format
+msgid "Your trial ends on %(ends_on)s"
+msgstr "Votre essai se termine le %(ends_on)s"
+
+msgid "Choose a package to keep working without a break. Everything you entered stays."
+msgstr "Choisissez un forfait pour continuer sans interruption. Tout ce que vous avez saisi est conservé."
 
 msgid "Sole proprietorship"
 msgstr ""

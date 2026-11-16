@@ -97,3 +97,17 @@ def all_events() -> list[NotificationEvent]:
 register_event("jobs.finished", C.JOBS, title_key="notifications.job.finished")
 register_event("jobs.failed", C.JOBS, title_key="notifications.job.failed")
 register_event("documents.quarantined", C.DOCUMENTS, title_key="notifications.document.quarantined")
+# System messages (A-07-T11): sign-in alerts and payment problems can't be turned off.
+register_event(
+    "security.new_device", C.SECURITY, title_key="notifications.security.new_device", mandatory=True
+)
+register_event(
+    "billing.payment_failed",
+    C.BILLING,
+    title_key="notifications.billing.payment_failed",
+    mandatory=True,
+)
+register_event(
+    "billing.read_only", C.BILLING, title_key="notifications.billing.read_only", mandatory=True
+)
+register_event("trial.ending", C.BILLING, title_key="notifications.trial.ending")

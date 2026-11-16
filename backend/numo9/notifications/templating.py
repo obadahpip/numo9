@@ -163,9 +163,9 @@ def render_email(
     wanted = normalise_language(language)
     brand = brand or brand_for(organisation)
     values: dict[str, Any] = {
+        "organisation": organisation.name if organisation is not None else "",
         **(context or {}),
         "brand": brand,
-        "organisation": organisation.name if organisation is not None else "",
     }
     with translation.override(wanted):
         subject_template, subject_lang = _variant(name, "subject", wanted)

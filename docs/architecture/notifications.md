@@ -282,6 +282,25 @@ Settings → Email domain (`/o/:org/settings/email-domain`, `frontend/src/email-
   a polite live region announces "Verified: your emails now go from …", and the checker stops;
 - **Remove domain** asks for confirmation first.
 
+## System message catalogue (A-07-T11)
+
+`numo9.notifications.catalogue.SYSTEM_MESSAGES` — the platform's own emails, each a template
+folder in English and French (`templates/email/<name>/`):
+
+| Name | Sent when | Context |
+|---|---|---|
+| `verify_email` | sign-up, change of email (A-02) | name, email, link |
+| `invitation` | invitation created or resent (A-02-T09) | inviter, target, role, email, expires, link |
+| `trial_reminder` | 7, 3, 1 days before the trial ends, and when it ended (U-05) | organisation, days_left, ends_on, link |
+| `dunning` | payment failed: day 0, 3, 5, 7 (U-04-T09) | organisation, amount, failed_on, grace_until, day, link |
+| `new_device` | sign-in from a new device (A-02-T07) | email, device, ip, when, link |
+
+`render_system(name, context, language=…, organisation=…)` refuses an incomplete context
+(`MissingContext` names the missing values — never an email with a blank). The in-app side is
+registered too: `security.new_device`, `billing.payment_failed`, `billing.read_only`
+(mandatory — cannot be turned off) and `trial.ending`. Every message renders in both languages
+against snapshots (`tests/snapshots/email/<name>.<language>.*`).
+
 ## Tests
 
 | Task | Tests |
@@ -296,3 +315,4 @@ Settings → Email domain (`/o/:org/settings/email-domain`, `frontend/src/email-
 | T08 | `tests/test_notifications_bounces.py` (Postmark payloads through anymail's webhook) |
 | T09 | `frontend/e2e/notification-centre.spec.ts` (bell, drawer, live region, preferences, axe) |
 | T10 | `frontend/e2e/email-domain.spec.ts` (set-up, live checker flips to verified, copy, remove, axe) |
+| T11 | `tests/test_notifications_catalogue.py` (every system message × EN/FR snapshots) |

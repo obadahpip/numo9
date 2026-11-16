@@ -1,0 +1,11 @@
+{% autoescape off %}Vous êtes invité à {{ target }}
+
+{{ inviter }} vous invite à rejoindre {{ target }} en tant que {{ role }}.
+
+L’invitation fonctionne une seule fois et expire le {{ expires }}. Ouvrez-la avec {{ email }}.
+
+Accepter l’invitation: {{ link }}
+
+--
+Vous recevez ce courriel parce que {{ inviter }} a invité {{ email }}. Vous ne l’attendiez pas? Ignorez-le.
+{% endautoescape %}
