@@ -131,3 +131,14 @@ changed are kept).
 | Web app | `useFeature` / `<Gated>` (`@numo9/ui`, `@/catalogue/Gated`), route metadata `feature` (eslint `numo9/route-feature`), Products screen `/console/products`, Package and features `/o/:org/settings/package-features` |
 
 Developer guide: [Feature keys](../dev/feature-keys.md).
+
+## "Package & features" with real packages and the current package (U-01-T12)
+
+Settings → Package and features (`/o/:org/settings/package-features`) runs on the production
+sources: the packages for sale come from U-02 (`numo9.packages.source.OfferedPackages`) and the
+organisation's current package from its subscription (U-03 `entitlements.source.Subscriptions`),
+which billing keeps up to date from Stripe's events (U-04). A trial organisation has no column
+highlighted; after checkout its package is highlighted, and an upgrade moves the highlight. Each
+package ticks exactly the keys of its products (and the free sets); searching "reminder" keeps the
+invoice-reminder rows. Tests: `backend/tests/test_catalogue_package_features_live.py` (real
+sources, billing events) and `frontend/e2e/package-features.spec.ts` (search, highlight, axe).
