@@ -60,6 +60,56 @@ Tests: `backend/tests/test_auth_signup.py`.
 
 Tests: `backend/tests/test_auth_login.py`.
 
+## Session registry and new-device email (A-02-T07)
+
+Every signed-in browser is a session in django-allauth's **usersessions** registry (IP, user
+agent, created, last seen — activity tracked, `USERSESSIONS_TRACK_ACTIVITY`):
+
+| Call | Answer |
+|---|---|
+| `GET /_allauth/browser/v1/auth/sessions` | 200: each session `id`, `device` ("Chrome on Windows", Numo9's addition, in the reader's language), `ip`, `user_agent`, `created_at`, `last_seen_at`, `is_current` · 401 not signed in |
+| `DELETE /_allauth/browser/v1/auth/sessions` `{"sessions": [id, …]}` | ends those sessions server-side → the list that remains; one id = **revoke one**, every non-current id = **sign out other sessions**; another person's id is refused (400) |
+
+An ended session is deleted, so that browser's **next request is 401** (allauth and Numo9 APIs).
+
+**New-device email** — at each sign-in the browser and system family are compared with the
+person's `KnownDevice` rows (SHA-256 of user id + families; no user agent or IP kept). A new one
+is remembered and, unless it's the first sign-in ever, the `new_device` system email (A-07-T11)
+goes out in the person's language with the device, IP, time and a link to Security settings.
+Security emails can't be turned off.
+
+Tests: `backend/tests/test_auth_sessions.py`.
+
+### Security settings page (A-02-T13)
+
+`/account/security` (`frontend/src/security-settings/`), for the signed-in person:
+
+- **Two-factor authentication** — On/Off; *Turn on* → QR code + key + 6-digit code → on, and the
+  10 recovery codes are shown **once** in a dialog that only "I've saved them" closes; *Turn off*.
+- **Recovery codes** — "7 of 10 codes unused"; *Make new recovery codes* shows the new ones once
+  (old ones stop working).
+- **Where you're signed in** — device, IP, last active, "This device"; *Sign out* per other
+  session and *Sign out other sessions* (A-02-T07 API); the result is announced.
+- Changes allauth protects ask for the password first (**Confirm it's you** dialog → `POST
+  /auth/reauthenticate`), then the change runs again.
+
+Tests: `frontend/e2e/security-settings.spec.ts`.
+
+## Languages of auth emails and screens (A-02-T15)
+
+- **Screens** — every `auth.*` and `security.*` key has its French (fr-CA) text in
+  `frontend/messages/fr-CA.json` (no English placeholder); the CI missing-key gate covers them and
+  `frontend/e2e/auth-i18n.spec.ts` checks sign-in, sign-up, reset and Security in French.
+- **Emails** — allauth's emails use Numo9's own templates (`numo9/accounts/templates/account/
+  email/`: verification, password reset, unknown account, password changed, account already
+  exists) whose text is in Numo9's catalogue with Canadian French (*courriel*, not *e-mail*). They
+  go in the language **of the account they are about** — `AccountAdapter.send_mail` reads the
+  user's locale from the database (the address's account when the context has no user), falling
+  back to the request's language — so a French-speaking user's reset email is French even when
+  requested from an English browser. Invitations and the new-device alert follow the same rule.
+
+Tests: `backend/tests/test_auth_i18n.py`, `frontend/e2e/auth-i18n.spec.ts`.
+
 ## Password reset (A-02-T04)
 
 | Call | Answer |

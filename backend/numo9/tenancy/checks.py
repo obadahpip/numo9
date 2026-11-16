@@ -23,6 +23,8 @@ from django.db import models
 PLATFORM_MODELS: frozenset[str] = frozenset(
     {
         "accounts.User",
+        # A person's known sign-in devices (A-02-T07): a hash per browser/system, no business data.
+        "accounts.KnownDevice",
         "tenancy.Practice",
         "tenancy.PracticeMember",
         "tenancy.Organisation",

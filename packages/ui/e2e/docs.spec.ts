@@ -49,6 +49,13 @@ for (const doc of DOCS) {
     if (!/Introduction|Microcopy/.test(doc.title)) {
       await expect(page.locator(".docs-story").first()).toBeVisible();
     }
+    // Let every embedded story and the web fonts finish loading before axe measures the page:
+    // a story still laying out can briefly overflow its frame (scrollable-region-focusable).
+    for (const story of await page.locator(".docs-story").all()) await expect(story).toBeVisible();
+    await page.waitForLoadState("networkidle");
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+    });
     const findings = blocking(
       await runAxe(page, { disableRules: ["region", "landmark-one-main", "page-has-heading-one"] }),
     );

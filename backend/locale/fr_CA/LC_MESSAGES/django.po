@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:43-0500\n"
+"POT-Creation-Date: 2026-11-16 05:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,49 +19,56 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 msgid "This account is locked for 15 minutes after 10 failed sign-in attempts. Try again later, or reset your password to unlock it now."
-msgstr ""
+msgstr "Ce compte est verrouillé pendant 15 minutes après 10 tentatives de connexion échouées. Réessayez plus tard, ou réinitialisez votre mot de passe pour le déverrouiller maintenant."
 
 msgid "Several sign-in attempts failed for this account. Complete the security check, then sign in again."
-msgstr ""
+msgstr "Plusieurs tentatives de connexion ont échoué pour ce compte. Effectuez la vérification de sécurité, puis reconnectez-vous."
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Permissions"
-msgstr ""
+msgstr "Autorisations"
 
 msgid "Important dates"
-msgstr ""
+msgstr "Dates importantes"
 
 msgid "Accounts"
-msgstr ""
+msgstr "Comptes"
+
+#, python-format
+msgid "%(browser)s on %(system)s"
+msgstr "%(browser)s sur %(system)s"
+
+msgid "Unknown device"
+msgstr "Appareil inconnu"
 
 msgid "I'm an accountant"
-msgstr ""
+msgstr "Je suis comptable"
 
 msgid "I run a business"
-msgstr ""
+msgstr "J’exploite une entreprise"
 
 msgid "Who are you?"
-msgstr ""
+msgstr "Qui êtes-vous?"
 
 msgid "Your name"
-msgstr ""
+msgstr "Votre nom"
 
 msgid "Practice name"
-msgstr ""
+msgstr "Nom du cabinet"
 
 msgid "Business name"
-msgstr ""
+msgstr "Nom de l’entreprise"
 
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
 msgid "Enter your practice's name, e.g. 'Maple Leaf Accounting'."
-msgstr ""
+msgstr "Entrez le nom de votre cabinet, p. ex. « Comptabilité Feuille d’érable »."
 
 msgid "Enter your business name, e.g. 'Refined Interiors Inc.'."
-msgstr ""
+msgstr "Entrez le nom de votre entreprise, p. ex. « Refined Interiors Inc. »."
 
 msgid "English (Canada)"
 msgstr "Anglais (Canada)"
@@ -70,10 +77,10 @@ msgid "French (Canada)"
 msgstr "Français (Canada)"
 
 msgid "12-hour (1:30 p.m.)"
-msgstr ""
+msgstr "12 heures (1 h 30 p.m.)"
 
 msgid "24-hour (13:30)"
-msgstr ""
+msgstr "24 heures (13 h 30)"
 
 msgid "public ID"
 msgstr "identifiant public"
@@ -81,45 +88,120 @@ msgstr "identifiant public"
 msgid "email address"
 msgstr "adresse courriel"
 
-#, fuzzy
-#| msgid "Email received"
 msgid "email delivery"
-msgstr "Courriel reçu"
+msgstr "livraison des courriels"
 
-#, fuzzy
-#| msgid "delivery event at"
 msgid "email delivery problem at"
-msgstr "événement de livraison le"
+msgstr "problème de livraison le"
 
 msgid "name"
-msgstr ""
+msgstr "nom"
 
 msgid "language"
 msgstr "langue"
 
 msgid "time format"
-msgstr ""
+msgstr "format de l’heure"
 
 msgid "active"
-msgstr ""
+msgstr "actif"
 
 msgid "staff status"
-msgstr ""
+msgstr "statut d’employé"
 
 msgid "date joined"
-msgstr ""
+msgstr "date d’inscription"
 
 msgid "user"
-msgstr ""
+msgstr "utilisateur"
 
 msgid "users"
+msgstr "utilisateurs"
+
+msgid "fingerprint"
+msgstr "empreinte"
+
+msgid "device"
+msgstr "appareil"
+
+msgid "first seen"
+msgstr "vu pour la première fois"
+
+msgid "last seen"
+msgstr "vu pour la dernière fois"
+
+msgid "known device"
+msgstr "appareil connu"
+
+msgid "known devices"
+msgstr "appareils connus"
+
+#, python-format
+msgid "Someone tried to sign up for Numo9 with %(email)s, but an account with this address already exists. Sign in, or reset your password if you forgot it:"
+msgstr "Quelqu’un a tenté de s’inscrire à Numo9 avec %(email)s, mais un compte existe déjà avec cette adresse. Connectez-vous, ou réinitialisez votre mot de passe si vous l’avez oublié :"
+
+msgid "Didn't try to sign up? Ignore this email."
+msgstr "Vous n’avez pas tenté de vous inscrire? Ignorez ce courriel."
+
+msgid "You already have a Numo9 account"
+msgstr "Vous avez déjà un compte Numo9"
+
+#, python-format
+msgid "— Numo9 · %(site_domain)s"
+msgstr "— Numo9 · %(site_domain)s"
+
+#, python-format
+msgid ""
+"Not you? Change your password now and sign out your other sessions in Numo9 under Security. This change came from:\n"
+"- IP address: %(ip)s\n"
+"- Browser: %(user_agent)s\n"
+"- Date: %(timestamp)s"
 msgstr ""
+"Ce n’était pas vous? Changez votre mot de passe maintenant et déconnectez vos autres sessions dans Numo9, sous Sécurité. Ce changement provient de :\n"
+"- Adresse IP : %(ip)s\n"
+"- Navigateur : %(user_agent)s\n"
+"- Date : %(timestamp)s"
+
+#, python-format
+msgid "Open this link within 3 days to verify %(email)s and finish setting up your Numo9 account:"
+msgstr "Ouvrez ce lien dans les 3 jours pour vérifier %(email)s et terminer la configuration de votre compte Numo9 :"
+
+msgid "Didn't sign up for Numo9? Ignore this email: nothing happens without the link."
+msgstr "Vous ne vous êtes pas inscrit à Numo9? Ignorez ce courriel : rien ne se passe sans le lien."
+
+msgid "Verify your email address"
+msgstr "Vérifiez votre adresse courriel"
+
+msgid "The password of your Numo9 account was changed."
+msgstr "Le mot de passe de votre compte Numo9 a été changé."
+
+msgid "Your password was changed"
+msgstr "Votre mot de passe a été changé"
+
+msgid "Someone asked to reset the password of your Numo9 account. Open this link within 1 hour to choose a new one — it works once:"
+msgstr "Quelqu’un a demandé de réinitialiser le mot de passe de votre compte Numo9. Ouvrez ce lien dans l’heure pour en choisir un nouveau — il fonctionne une seule fois :"
+
+msgid "Didn't ask? Ignore this email: your password stays the same."
+msgstr "Vous n’avez rien demandé? Ignorez ce courriel : votre mot de passe reste le même."
+
+msgid "Reset your password"
+msgstr "Réinitialisez votre mot de passe"
+
+#, python-format
+msgid "Someone asked to reset the password of a Numo9 account with %(email)s, but there is no Numo9 account with this address."
+msgstr "Quelqu’un a demandé de réinitialiser le mot de passe d’un compte Numo9 avec %(email)s, mais aucun compte Numo9 n’utilise cette adresse."
+
+msgid "If it was you, you may have signed up with another address — or create an account:"
+msgstr "Si c’était vous, vous vous êtes peut-être inscrit avec une autre adresse — ou créez un compte :"
+
+msgid "Didn't ask? Ignore this email."
+msgstr "Vous n’avez rien demandé? Ignorez ce courriel."
 
 msgid "This password has appeared in a data breach, so attackers try it first. Choose a different password."
-msgstr ""
+msgstr "Ce mot de passe est apparu dans une fuite de données : les attaquants l’essaient en premier. Choisissez un autre mot de passe."
 
 msgid "Your password can't be one that has appeared in a known data breach."
-msgstr ""
+msgstr "Votre mot de passe ne peut pas être un mot de passe apparu dans une fuite de données connue."
 
 msgid "Date and time"
 msgstr "Date et heure"
@@ -207,9 +289,6 @@ msgstr "modifications"
 
 msgid "details"
 msgstr "détails"
-
-msgid "device"
-msgstr "appareil"
 
 msgid "request ID"
 msgstr "ID de requête"
@@ -2102,15 +2181,12 @@ msgstr "%(domain)s n’est pas un nom de domaine. Entrez la partie après @ de v
 msgid "Emails can't be sent from %(domain)s: only the domain's owner can add its DNS records. Use your organisation's own domain."
 msgstr "Impossible d’envoyer des courriels depuis %(domain)s : seul le propriétaire du domaine peut y ajouter des enregistrements DNS. Utilisez le domaine de votre organisation."
 
-#, fuzzy, python-format
-#| msgid "Choose a role used in this organisation."
+#, python-format
 msgid "%(domain)s is already set up for this organisation."
-msgstr "Choisissez un rôle utilisé dans cette organisation."
+msgstr "%(domain)s est déjà configuré pour cette organisation."
 
-#, fuzzy
-#| msgid "File storage isn't answering right now. Try again in a minute."
 msgid "The email provider didn't answer. Try again in a few minutes."
-msgstr "Le stockage des fichiers ne répond pas pour le moment. Réessayez dans une minute."
+msgstr "Le fournisseur de courriel n’a pas répondu. Réessayez dans quelques minutes."
 
 #, python-format
 msgid "%(items)s and %(last)s"
@@ -3047,33 +3123,23 @@ msgstr "Les limites doivent être une liste de valeurs nommées."
 msgid "In the app"
 msgstr "Dans l’application"
 
-#, fuzzy
-#| msgid "impersonator"
 msgid "person"
-msgstr "personne connectée à sa place"
+msgstr "personne"
 
 msgid "in the app"
 msgstr "dans l’application"
 
-#, fuzzy
-#| msgid "owner email"
 msgid "by email"
-msgstr "courriel du propriétaire"
+msgstr "par courriel"
 
-#, fuzzy
-#| msgid "organisation"
 msgid "notification preference"
-msgstr "organisation"
+msgstr "préférence de notification"
 
-#, fuzzy
-#| msgid "organisation"
 msgid "notification preferences"
-msgstr "organisation"
+msgstr "préférences de notification"
 
-#, fuzzy
-#| msgid "Waiting to start"
 msgid "Waiting to send"
-msgstr "En attente de démarrage"
+msgstr "En attente d’envoi"
 
 msgid "Sending"
 msgstr "Envoi en cours"
@@ -3090,10 +3156,8 @@ msgstr "Rejeté"
 msgid "Marked as spam"
 msgstr "Signalé comme pourriel"
 
-#, fuzzy
-#| msgid "details"
 msgid "message type"
-msgstr "détails"
+msgstr "type de message"
 
 msgid "to"
 msgstr "à"
@@ -3119,10 +3183,8 @@ msgstr "fournisseur"
 msgid "provider message id"
 msgstr "identifiant du message chez le fournisseur"
 
-#, fuzzy
-#| msgid "next try at"
 msgid "last try at"
-msgstr "prochain essai le"
+msgstr "dernier essai le"
 
 msgid "sent at"
 msgstr "envoyé le"
@@ -3142,10 +3204,8 @@ msgstr "Entrez la couleur sous la forme # suivi de six chiffres hexadécimaux, p
 msgid "The logo must be an https:// address so email apps can show it."
 msgstr "Le logo doit être une adresse https:// pour que les applications de courriel puissent l’afficher."
 
-#, fuzzy
-#| msgid "owner email"
 msgid "name in emails"
-msgstr "courriel du propriétaire"
+msgstr "nom dans les courriels"
 
 msgid "logo"
 msgstr "logo"
@@ -3153,20 +3213,14 @@ msgstr "logo"
 msgid "accent colour"
 msgstr "couleur d’accent"
 
-#, fuzzy
-#| msgid "Change organisation settings"
 msgid "organisation email branding"
-msgstr "Modifier les paramètres de l’organisation"
+msgstr "image de marque des courriels de l’organisation"
 
-#, fuzzy
-#| msgid "Practice admin"
 msgid "practice email branding"
-msgstr "Administrateur du cabinet"
+msgstr "image de marque des courriels du cabinet"
 
-#, fuzzy
-#| msgid "Waiting to start"
 msgid "Waiting for DNS records"
-msgstr "En attente de démarrage"
+msgstr "En attente des enregistrements DNS"
 
 msgid "Some records are missing"
 msgstr "Des enregistrements manquent"
@@ -3207,10 +3261,8 @@ msgstr "domaine"
 msgid "sender name before @"
 msgstr "nom de l’expéditeur avant @"
 
-#, fuzzy
-#| msgid "provider message id"
 msgid "provider domain id"
-msgstr "identifiant du message chez le fournisseur"
+msgstr "identifiant du domaine chez le fournisseur"
 
 msgid "DKIM selector"
 msgstr "sélecteur DKIM"
@@ -3218,15 +3270,11 @@ msgstr "sélecteur DKIM"
 msgid "DKIM private key"
 msgstr "clé privée DKIM"
 
-#, fuzzy
-#| msgid "started at"
 msgid "verified at"
-msgstr "commencée le"
+msgstr "vérifié le"
 
-#, fuzzy
-#| msgid "started at"
 msgid "last checked at"
-msgstr "commencée le"
+msgstr "dernière vérification le"
 
 msgid "sending domain"
 msgstr "domaine d’envoi"
@@ -3240,15 +3288,11 @@ msgstr "hôte"
 msgid "value"
 msgstr "valeur"
 
-#, fuzzy
-#| msgid "founding offer"
 msgid "found in DNS"
-msgstr "offre fondatrice"
+msgstr "trouvé dans le DNS"
 
-#, fuzzy
-#| msgid "started at"
 msgid "checked at"
-msgstr "commencée le"
+msgstr "vérifié le"
 
 msgid "sending domain record"
 msgstr "enregistrement du domaine d’envoi"
@@ -3259,20 +3303,14 @@ msgstr "enregistrements du domaine d’envoi"
 msgid "until"
 msgstr "jusqu’au"
 
-#, fuzzy
-#| msgid "details"
 msgid "detail"
-msgstr "détails"
+msgstr "détail"
 
-#, fuzzy
-#| msgid "email message"
 msgid "email suppression"
-msgstr "courriel"
+msgstr "suppression de courriels"
 
-#, fuzzy
-#| msgid "email messages"
 msgid "email suppressions"
-msgstr "courriels"
+msgstr "suppressions de courriels"
 
 #, fuzzy
 #| msgid "organisation"
@@ -3318,10 +3356,9 @@ msgstr "Le paiement de %(organisation)s n’a pas abouti"
 msgid "Update the payment method by %(grace_until)s to keep working without a break."
 msgstr "Mettez à jour le moyen de paiement d’ici le %(grace_until)s pour continuer sans interruption."
 
-#, fuzzy, python-format
-#| msgid "Change organisation settings"
+#, python-format
 msgid "%(organisation)s is read-only"
-msgstr "Modifier les paramètres de l’organisation"
+msgstr "%(organisation)s est en lecture seule"
 
 msgid "The subscription payment is overdue. Everyone can still see and export; update the payment method to make changes again."
 msgstr "Le paiement de l’abonnement est en retard. Tout le monde peut encore consulter et exporter; mettez à jour le moyen de paiement pour pouvoir modifier à nouveau."
@@ -4174,7 +4211,7 @@ msgstr ""
 
 #, python-format
 msgid "%(inviter)s invited you to %(target)s on Numo9"
-msgstr ""
+msgstr "%(inviter)s vous invite à %(target)s sur Numo9"
 
 #, python-format
 msgid ""
@@ -4185,6 +4222,12 @@ msgid ""
 "\n"
 "The link works once and expires on %(date)s. If you weren't expecting this invitation, you can ignore this email."
 msgstr ""
+"%(inviter)s vous invite à rejoindre %(target)s sur Numo9.\n"
+"\n"
+"Acceptez l’invitation :\n"
+"%(link)s\n"
+"\n"
+"Le lien fonctionne une seule fois et expire le %(date)s. Si vous n’attendiez pas cette invitation, vous pouvez ignorer ce courriel."
 
 #, python-format
 msgid "%(value)s is not a valid time zone."

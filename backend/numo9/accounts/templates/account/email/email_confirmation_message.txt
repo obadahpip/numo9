@@ -1,0 +1,6 @@
+{% extends "account/email/base_message.txt" %}{% load i18n %}
+{% block content %}{% autoescape off %}{% blocktranslate %}Open this link within 3 days to verify {{ email }} and finish setting up your Numo9 account:{% endblocktranslate %}
+
+{{ activate_url }}
+
+{% translate "Didn't sign up for Numo9? Ignore this email: nothing happens without the link." %}{% endautoescape %}{% endblock content %}

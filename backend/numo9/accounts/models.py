@@ -129,3 +129,31 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self) -> str:
         return self.name
+
+
+class KnownDevice(models.Model):
+    """A browser + operating system a person has signed in from (A-02-T07, new-device email).
+
+    ``fingerprint`` = SHA-256 of the user id and the browser and system families — no raw user
+    agent or IP kept here (the session list has those while the session lives).
+    """
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="known_devices", verbose_name=_("user")
+    )
+    fingerprint = models.CharField(_("fingerprint"), max_length=64)
+    name = models.CharField(_("device"), max_length=120, blank=True)
+    first_seen_at = models.DateTimeField(_("first seen"), auto_now_add=True)
+    last_seen_at = models.DateTimeField(_("last seen"), default=timezone.now)
+
+    class Meta:
+        verbose_name = _("known device")
+        verbose_name_plural = _("known devices")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("user", "fingerprint"), name="accounts_knowndevice_unique_user_fingerprint"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user_id} · {self.name}"

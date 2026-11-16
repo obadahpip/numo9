@@ -23,5 +23,10 @@ urlpatterns = [
         views.ManageTOTPView.as_api_view(client=Client.BROWSER),
         name="numo9-mfa-totp",
     ),
+    path(
+        f"{BROWSER}auth/sessions",
+        views.SessionsView.as_api_view(client=Client.BROWSER),
+        name="numo9-auth-sessions",
+    ),
     path("", include("allauth.headless.urls")),
 ]
