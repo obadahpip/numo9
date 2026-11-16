@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:48-0500\n"
+"POT-Creation-Date: 2026-11-16 14:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4681,6 +4681,13 @@ msgstr "Un groupe ne peut pas être déplacé dans lui-même ni dans l’un de s
 msgid "%(organisation)s isn't a client of this practice."
 msgstr "%(organisation)s n’est pas un client de ce cabinet."
 
+#, python-format
+msgid "%(person)s isn't a member of this practice."
+msgstr "%(person)s n’est pas membre de ce cabinet."
+
+msgid "Choose a role for this group."
+msgstr "Choisissez un rôle pour ce groupe."
+
 msgid "Comfortable"
 msgstr "Confortable"
 
@@ -4818,6 +4825,15 @@ msgstr "étiquette d’organisation"
 
 msgid "organisation tags"
 msgstr "étiquettes d’organisation"
+
+msgid "staff member"
+msgstr "membre du personnel"
+
+msgid "group staff assignment"
+msgstr "affectation au groupe"
+
+msgid "group staff assignments"
+msgstr "affectations aux groupes"
 
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"

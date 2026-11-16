@@ -190,3 +190,17 @@ sees these tags, even on the same client.
 `untag_organisation`, `tags_of(practice, organisation)`; refusals `TagError`:
 `workspace.tag.name_taken`, `name_required`, `name_long`, `colour`, `not_served` (only the
 practice's clients). When a practice stops serving an organisation its tags on it are removed.
+
+## Group staff (V-02-T04)
+
+`workspace.GroupStaffAssignment` — a practice member assigned to a group with a role
+(`GroupStaffRole`: accountant, reviewer, payroll specialist, read-only — practice admins see every
+client already). **One row per group and member** (`workspace_group_staff_unique`): assigning again
+changes the role. The member must belong to the group's practice
+(`workspace.group.staff_other_practice`). Deleting a group removes its staff rows; a member who
+still has group assignments can't be deleted (practice records are never cascade-deleted).
+`numo9.workspace.groups.assign_staff(group, member, role)` / `unassign_staff(group, member)`.
+
+The assignment grants access to every organisation of the group and of its sub-groups, including
+organisations added later — the access resolver (V-02-T05) reads it; revocation applies on the
+member's next request (V-02-T06).

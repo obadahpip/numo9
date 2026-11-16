@@ -365,3 +365,56 @@ class OrgTag(models.Model):
 
     def __str__(self) -> str:
         return f"{self.organisation} #{self.tag}"
+
+
+# ---- group staff (V-02-T04) --------------------------------------------------------------------
+
+
+class GroupStaffRole(models.TextChoices):
+    """The role a staff member works with in a group (practice admins see every client anyway)."""
+
+    ACCOUNTANT = "accountant", _("Accountant")
+    REVIEWER = "reviewer", _("Reviewer")
+    PAYROLL_SPECIALIST = "payroll_specialist", _("Payroll specialist")
+    READ_ONLY = "read_only", _("Read-only staff")
+
+
+class GroupStaffAssignment(models.Model):
+    """A practice member assigned to a group (V-02-T04): they work on every organisation in the
+    group and its sub-groups, including organisations added later (the access resolver, V-02-T05).
+
+    One row per group and member (unique); the member belongs to the group's practice. Removing the
+    row revokes what it granted (on the member's next request, V-02-T06); access through another
+    group or a direct assignment stays.
+    """
+
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    group = models.ForeignKey(
+        OrgGroup, on_delete=models.CASCADE, related_name="staff", verbose_name=_("group")
+    )
+    practice_member = models.ForeignKey(
+        "tenancy.PracticeMember",
+        on_delete=models.PROTECT,
+        related_name="group_assignments",
+        verbose_name=_("staff member"),
+    )
+    role = models.CharField(
+        _("role"), max_length=32, choices=GroupStaffRole.choices, default=GroupStaffRole.ACCOUNTANT
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("group staff assignment")
+        verbose_name_plural = _("group staff assignments")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("group", "practice_member"), name="workspace_group_staff_unique"
+            ),
+            models.CheckConstraint(
+                condition=_in("role", GroupStaffRole), name="workspace_group_staff_role_valid"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.practice_member} → {self.group} ({self.role})"

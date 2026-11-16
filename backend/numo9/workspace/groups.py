@@ -199,3 +199,35 @@ def connect() -> None:
         sender=PracticeAssignment,
         dispatch_uid="numo9.workspace.groups.deleted",
     )
+
+
+# ---- group staff (V-02-T04) --------------------------------------------------------------------
+
+
+def assign_staff(group: OrgGroup, member: Any, role: str = "accountant") -> Any:
+    """Assign a practice member to a group with a role, or change their role (one row each)."""
+    from .models import GroupStaffAssignment, GroupStaffRole
+
+    if member.practice_id != group.practice_id:
+        raise GroupError(
+            _("%(person)s isn't a member of this practice.") % {"person": str(member)},
+            code="workspace.group.staff_other_practice",
+        )
+    if role not in GroupStaffRole.values:
+        raise GroupError(_("Choose a role for this group."), code="workspace.group.staff_role")
+    row, created = GroupStaffAssignment.objects.get_or_create(
+        group=group, practice_member=member, defaults={"role": role}
+    )
+    if not created and row.role != role:
+        row.role = role
+        row.save(update_fields=["role", "updated_at"])
+    return row
+
+
+def unassign_staff(group: OrgGroup, member: Any) -> int:
+    from .models import GroupStaffAssignment
+
+    rows = GroupStaffAssignment.objects.filter(group=group, practice_member=member)
+    count = rows.count()
+    rows.delete()
+    return count

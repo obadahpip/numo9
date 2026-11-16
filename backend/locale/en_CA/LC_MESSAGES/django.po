@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:48-0500\n"
+"POT-Creation-Date: 2026-11-16 14:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4412,6 +4412,13 @@ msgstr ""
 msgid "%(organisation)s isn't a client of this practice."
 msgstr ""
 
+#, python-format
+msgid "%(person)s isn't a member of this practice."
+msgstr ""
+
+msgid "Choose a role for this group."
+msgstr ""
+
 msgid "Comfortable"
 msgstr ""
 
@@ -4548,6 +4555,15 @@ msgid "organisation tag"
 msgstr ""
 
 msgid "organisation tags"
+msgstr ""
+
+msgid "staff member"
+msgstr ""
+
+msgid "group staff assignment"
+msgstr ""
+
+msgid "group staff assignments"
 msgstr ""
 
 msgid "See the practice's client organisations in the directory"

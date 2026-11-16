@@ -74,6 +74,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Practice tags (V-02-T03): a practice's labels and which clients carry them.
         "workspace.Tag",
         "workspace.OrgTag",
+        # Group staff (V-02-T04): which practice member works on which group, with a role.
+        "workspace.GroupStaffAssignment",
     }
 )
 

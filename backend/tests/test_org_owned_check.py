@@ -72,6 +72,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 # Practice tags (V-02-T03): reviewed — labels and which clients carry them.
                 "workspace.Tag",
                 "workspace.OrgTag",
+                # Group staff (V-02-T04): reviewed — practice member, group, role.
+                "workspace.GroupStaffAssignment",
             }
         )
         == PLATFORM_MODELS
