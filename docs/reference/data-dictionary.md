@@ -469,6 +469,21 @@ One outgoing email to one address (A-07-T03). `OrgOwnedModel` with an **optional
 
 Indexes: `(organisation, -created_at)`, `(status, -created_at)`, `(provider_message_id)`, `(to_email, -created_at)`.
 
+### `notifications_organisationbranding` — Organisation email branding {#notifications-organisationbranding}
+
+An organisation's name, logo and colour in its emails (A-07-T04). `OrgOwnedModel`; one live row per organisation (`notifications_one_branding_per_organisation`).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `display_name` | varchar(120) | no | Name in emails; empty = the organisation's name |
+| `logo_url` | varchar(500) | no | `https://` image address or empty |
+| `colour` | varchar(7) | no | `#RRGGBB` or empty (Numo9's) |
+
+### `notifications_practicebranding` — Practice email branding {#notifications-practicebranding}
+
+The same fields for a practice (`practice_id` one-to-one, `CASCADE`; `updated_at`): used for its client organisations without their own branding. Platform model (no organisation data).
+
 ## Accountant workspace (`workspace`) {#workspace}
 
 Design: [Organisation directory](../architecture/directory.md).

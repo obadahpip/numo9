@@ -1,0 +1,2 @@
+{% extends "email/base.mjml" %}
+{% block content %}<mj-text>{{ thing }} in English only.</mj-text>{% endblock %}

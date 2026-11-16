@@ -259,3 +259,85 @@ class EmailMessage(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.to_email} · {self.subject[:40]} [{self.status}]"
+
+
+# ---- email branding (A-07-T04) ---------------------------------------------------------------
+
+HEX_COLOUR = re.compile(r"^#[0-9A-Fa-f]{6}$")
+
+
+def validate_colour(value: str) -> None:
+    if not HEX_COLOUR.match(value or ""):
+        raise ValidationError(
+            _("Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."),
+            code="notifications.colour_invalid",
+        )
+
+
+def validate_logo_url(value: str) -> None:
+    if value and not value.startswith("https://"):
+        raise ValidationError(
+            _("The logo must be an https:// address so email apps can show it."),
+            code="notifications.logo_not_https",
+        )
+
+
+class BrandingFields(models.Model):
+    """What a branded email shows: the sender's name, logo and accent colour."""
+
+    display_name = models.CharField(_("name in emails"), max_length=120, blank=True)
+    logo_url = models.URLField(
+        _("logo"), max_length=500, blank=True, validators=[validate_logo_url]
+    )
+    colour = models.CharField(
+        _("accent colour"), max_length=7, blank=True, validators=[validate_colour]
+    )
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def clean(self) -> None:
+        if self.colour:
+            validate_colour(self.colour)
+        validate_logo_url(self.logo_url)
+
+
+class OrganisationBranding(BrandingFields, OrgOwnedModel):
+    """An organisation's own email branding (wins over its practice's)."""
+
+    class Meta:
+        verbose_name = _("organisation email branding")
+        verbose_name_plural = _("organisation email branding")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation",),
+                condition=models.Q(deleted_at__isnull=True),
+                name="notifications_one_branding_per_organisation",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation_id} · {self.display_name or '—'}"
+
+
+class PracticeBranding(BrandingFields):
+    """A practice's email branding: used for its client organisations without their own."""
+
+    practice = models.OneToOneField(
+        "tenancy.Practice",
+        on_delete=models.CASCADE,
+        related_name="email_branding",
+        verbose_name=_("practice"),
+    )
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("practice email branding")
+        verbose_name_plural = _("practice email branding")
+
+    def __str__(self) -> str:
+        return f"{self.practice_id} · {self.display_name or '—'}"

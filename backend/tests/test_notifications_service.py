@@ -83,7 +83,7 @@ def test_defaults_then_preferences_are_respected(org: Organisation, dana: User) 
     assert mail.outbox[0].subject == "Alert about x"
     assert mail.outbox[0].to == ["dana@refined.ca"]
     assert "Something about x." in mail.outbox[0].body
-    assert mail.outbox[0].body.rstrip().endswith("/o/x/jobs")
+    assert "Open in Numo9: http://localhost:3000/o/x/jobs" in mail.outbox[0].body
 
     # Both off: nothing.
     with org_context(org):
@@ -165,7 +165,7 @@ def test_email_in_recipient_language_and_not_sent_on_rollback(org: Organisation)
         )
     assert len(mail.outbox) == 1
     assert mail.outbox[0].subject == "Importer n’a pas pu se terminer"
-    assert mail.outbox[0].body.startswith("Le fichier est vide.")
+    assert "Le fichier est vide." in mail.outbox[0].body
 
 
 def test_unknown_event_and_missing_organisation_refused(dana: User) -> None:

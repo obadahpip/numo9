@@ -1,0 +1,5 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">{{ title }}</mj-text>
+        {% if body %}<mj-text padding="0 24px 16px">{{ body|linebreaksbr }}</mj-text>{% endif %}
+        {% if link %}<mj-button href="{{ link }}" align="left" padding="8px 24px">Open in Numo9</mj-button>{% endif %}{% endblock %}
+{% block footer %}You get this email because of your notification settings{% if organisation %} for {{ organisation }}{% endif %} in Numo9. Change them under Notifications.{% endblock %}

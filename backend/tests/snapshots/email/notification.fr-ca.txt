@@ -1,0 +1,9 @@
+Import contacts finished
+
+512 rows imported.
+Open the report to see the 3 skipped rows.
+
+Ouvrir dans Numo9 : https://app.numo9.ca/o/7f3c2a10/contacts
+
+--
+Vous recevez ce courriel en raison de vos paramètres de notification dans Numo9. Modifiez-les sous Notifications.

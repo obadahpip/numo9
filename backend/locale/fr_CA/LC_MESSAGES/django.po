@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:06-0500\n"
+"POT-Creation-Date: 2026-11-16 05:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -416,7 +416,7 @@ msgid "created at"
 msgstr ""
 
 msgid "updated at"
-msgstr ""
+msgstr "mis à jour le"
 
 msgid "product"
 msgstr ""
@@ -3107,6 +3107,33 @@ msgstr "courriel"
 
 msgid "email messages"
 msgstr "courriels"
+
+msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."
+msgstr "Entrez la couleur sous la forme # suivi de six chiffres hexadécimaux, p. ex. #1F4E79."
+
+msgid "The logo must be an https:// address so email apps can show it."
+msgstr "Le logo doit être une adresse https:// pour que les applications de courriel puissent l’afficher."
+
+#, fuzzy
+#| msgid "owner email"
+msgid "name in emails"
+msgstr "courriel du propriétaire"
+
+msgid "logo"
+msgstr "logo"
+
+msgid "accent colour"
+msgstr "couleur d’accent"
+
+#, fuzzy
+#| msgid "Change organisation settings"
+msgid "organisation email branding"
+msgstr "Modifier les paramètres de l’organisation"
+
+#, fuzzy
+#| msgid "Practice admin"
+msgid "practice email branding"
+msgstr "Administrateur du cabinet"
 
 #, fuzzy
 #| msgid "organisation"

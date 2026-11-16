@@ -1,0 +1,9 @@
+{% autoescape off %}{{ title }}
+{% if body %}
+{{ body }}
+{% endif %}{% if link %}
+Open in Numo9: {{ link }}
+{% endif %}
+--
+You get this email because of your notification settings{% if organisation %} for {{ organisation }}{% endif %} in Numo9. Change them under Notifications.
+{% endautoescape %}

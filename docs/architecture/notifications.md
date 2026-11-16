@@ -123,6 +123,45 @@ delivery webhooks find it again (bounces and complaints, A-07-T08). Organisation
 through the scoped manager; account emails with no organisation (sign-up, password reset) only
 through `EmailMessage.platform_messages` (sending task, webhooks, platform console).
 
+## Email templates and branding (A-07-T04)
+
+`numo9.notifications.templating.render_email(name, context, language=…, organisation=…)` →
+`RenderedEmail(subject, text, html, language, fallback, brand)`.
+
+**Template = a folder** `templates/email/<name>/` with one file per part and language:
+
+| File | Part |
+|---|---|
+| `subject.<language>.txt` | Subject (folded to one line) |
+| `body.html.<language>.mjml` | HTML part — MJML extending `email/base.mjml`, with Django template tags |
+| `body.<language>.txt` | Plain-text part |
+
+Languages `en-ca` and `fr-ca`; the reader's language (`fr_CA`, `fr`… normalised) chooses the
+variant. A missing French file falls back to English for that part and the result says so
+(`fallback=True`, warning `email.template_fallback`) — an email is never lost to a missing
+translation.
+
+**MJML** — the base layout (`email/base.mjml`): brand logo (or the brand name in its colour), a
+white card with the brand colour as top rule, the content block, a footer block; responsive
+600 px. Django renders the template, then **mrml** (Rust MJML engine, `mrml` package) compiles it
+to email HTML — no Node.js at runtime. Values are HTML-escaped by Django.
+
+**Branding** — the sender's name, logo and accent colour, resolved:
+
+1. the organisation's own `OrganisationBranding` (data dictionary:
+   [`notifications_organisationbranding`](../reference/data-dictionary.md#notifications-organisationbranding));
+2. else the `PracticeBranding` of the practice serving it (active full-service assignment, oldest
+   first) — a practice brands all its clients' emails;
+3. else Numo9 (`#1F4E79`) with the organisation's name.
+
+Colour `#RRGGBB`; logo an `https://` address (email apps block other images). Button text is
+white or near-black, whichever contrasts more with the brand colour (WCAG relative luminance), so
+a yellow brand still gives a readable button.
+
+The `notification` template is what `notify()` emails: title, body, "Open in Numo9" button.
+Snapshots of both languages: `backend/tests/snapshots/email/` (`NUMO9_UPDATE_SNAPSHOTS=1` to
+rewrite after a reviewed template change).
+
 ## Tests
 
 | Task | Tests |
@@ -130,3 +169,4 @@ through `EmailMessage.platform_messages` (sending task, webhooks, platform conso
 | T01 | `tests/test_notifications_api.py` |
 | T02 | `tests/test_notifications_service.py` |
 | T03 | `tests/test_notifications_mail.py` |
+| T04 | `tests/test_notifications_templates.py` (snapshots in `tests/snapshots/email/`) |

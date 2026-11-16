@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:06-0500\n"
+"POT-Creation-Date: 2026-11-16 05:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2823,6 +2823,27 @@ msgid "email message"
 msgstr ""
 
 msgid "email messages"
+msgstr ""
+
+msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."
+msgstr ""
+
+msgid "The logo must be an https:// address so email apps can show it."
+msgstr ""
+
+msgid "name in emails"
+msgstr ""
+
+msgid "logo"
+msgstr ""
+
+msgid "accent colour"
+msgstr ""
+
+msgid "organisation email branding"
+msgstr ""
+
+msgid "practice email branding"
 msgstr ""
 
 msgid "Notification"

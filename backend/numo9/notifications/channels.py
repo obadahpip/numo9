@@ -4,9 +4,10 @@ A channel turns one notification for one person into a delivery. ``notify()`` as
 the person's preferences allow. Channels register under their name:
 
 - ``in_app`` — a ``Notification`` row (the bell, A-07-T01);
-- ``email`` — an email in the person's language: subject = the message title, text = the body
-  and a link to the page. Logged and sent by the worker after the surrounding transaction
-  commits (``mail.queue_email``, A-07-T03), so a rolled-back event never emails anyone.
+- ``email`` — a branded email in the person's language (``templating``, template
+  ``notification``): subject = the message title, text = the body and a button to the page.
+  Logged and sent by the worker after the surrounding transaction commits
+  (``mail.queue_email``, A-07-T03), so a rolled-back event never emails anyone.
 
 SMS and WhatsApp follow the same interface (A-07-T12).
 """
@@ -87,14 +88,26 @@ class InAppChannel:
 EmailSender = Callable[[Delivery, str, str], Any]
 
 
-def _queue(delivery: Delivery, subject: str, text: str) -> Any:
-    """Log the email and send it through the worker after commit (A-07-T03)."""
+def _queue(delivery: Delivery, title: str, body: str) -> Any:
+    """Render the branded notification email (A-07-T04) and queue it (A-07-T03)."""
     from .mail import queue_email
+    from .templating import render_email
 
+    email = render_email(
+        "notification",
+        {
+            "title": title,
+            "body": body,
+            "link": absolute_link(delivery.link) if delivery.link else "",
+        },
+        language=delivery.language,
+        organisation=delivery.organisation,
+    )
     return queue_email(
         delivery.recipient.email,
-        subject,
-        text,
+        email.subject,
+        email.text,
+        html=email.html,
         organisation=delivery.organisation,
         recipient=delivery.recipient,
         kind=delivery.event.title_key,
@@ -110,14 +123,7 @@ class EmailChannel:
         if not getattr(delivery.recipient, "email", ""):
             return None
         title, body = render(delivery.event.title_key, delivery.params, delivery.language)
-        text = body
-        if delivery.link:
-            text = (
-                f"{body}\n\n{absolute_link(delivery.link)}"
-                if body
-                else absolute_link(delivery.link)
-            )
-        return type(self).sender(delivery, title, text)
+        return type(self).sender(delivery, title, body)
 
 
 register_channel(InAppChannel())
