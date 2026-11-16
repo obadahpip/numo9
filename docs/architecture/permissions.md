@@ -18,7 +18,7 @@ it, and registered in `numo9.rbac.catalogue.catalogue` when the apps load
 | `module` | product area for grouping (`MODULES`, navigation order): home, sales, purchases, banking, accounting, tax, payroll, hr, inventory, reports, contacts, documents, settings, users, practice, platform |
 | `risk` | `low` · `medium` · `high` · `critical` — what misuse could do (risk badges, care when granting) |
 | `scope` | where it is checked: `organisation` (in one organisation — organisation roles, and the roles of a practice serving it), `practice` (in one practice), `platform` (Numo9 staff) |
-| `owner_only` | not given by broad roles such as Admin (e.g. `organisation.close`) |
+| `owner_only` | given by the Owner system role only — never by broad, read-only or reviewer rules (e.g. `organisation.close`, `organisation.billing.view`; U-04-T16) |
 
 The registry refuses a malformed key, an unknown module and a key declared twice. Actions
 `view` and `export` are read-only (what read-only roles get). Apps add their permissions as they

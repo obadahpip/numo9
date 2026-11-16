@@ -42,7 +42,11 @@ class SystemRole:
     rule: Rule
 
     def permission_keys(self, registry: PermissionRegistry = catalogue) -> frozenset[str]:
-        keys = {p.key for p in registry if self.rule(p)}
+        # Owner-only permissions (closing the organisation, billing) go to the owner role only,
+        # whatever a broad rule selects — read-only and reviewer rules included (U-04-T16).
+        keys = {
+            p.key for p in registry if self.rule(p) and (not p.owner_only or self.key == "owner")
+        }
         # Never more than the role's scope may grant (models.GRANTABLE_SCOPES).
         allowed = {
             Scope.PLATFORM: {Scope.PLATFORM},

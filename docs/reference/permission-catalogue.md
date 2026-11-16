@@ -42,8 +42,8 @@ Risk: low · medium · high · critical (what misuse could do). Scope: where it 
 |---|---|---|---|---|---|
 | `audit.log.export` | Export the audit log | Exporter le journal d’audit | medium | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate |
 | `audit.log.view` | See the audit log and the history of records | Voir le journal d’audit et l’historique des fiches | medium | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate |
-| `organisation.billing.manage` | Subscribe, change the package or payment method, cancel the subscription *(owner only)* | Subscribe, change the package or payment method, cancel the subscription | critical | organisation | Owner |
-| `organisation.billing.view` | See the subscription, payment method and Numo9 invoices *(owner only)* | See the subscription, payment method and Numo9 invoices | high | organisation | Accountant, Reviewer, Read-only staff, Owner, Accountant delegate |
+| `organisation.billing.manage` | Subscribe, change the package or payment method, cancel the subscription *(owner only)* | S’abonner, changer de forfait ou de mode de paiement, annuler l’abonnement | critical | organisation | Owner |
+| `organisation.billing.view` | See the subscription, payment method and Numo9 invoices *(owner only)* | Voir l’abonnement, le mode de paiement et les factures de Numo9 | high | organisation | Owner |
 | `organisation.close` | Close the organisation *(owner only)* | Fermer l’organisation | critical | organisation | Owner |
 | `organisation.profile.view` | View the organisation's details | Voir les renseignements de l’organisation | low | organisation | Practice admin, Accountant, Reviewer, Payroll specialist, Read-only staff, Owner, Admin, Accountant delegate, Sales, Purchasing, Payroll, HR, Employee |
 | `organisation.settings.manage` | Change organisation settings | Modifier les paramètres de l’organisation | high | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
@@ -97,16 +97,16 @@ Risk: low · medium · high · critical (what misuse could do). Scope: where it 
 |---|---|---|---|
 | organisation | Owner | `owner` | 22 |
 | organisation | Admin | `admin` | 19 |
-| organisation | Accountant delegate | `accountant_delegate` | 13 |
+| organisation | Accountant delegate | `accountant_delegate` | 12 |
 | organisation | Sales | `sales` | 2 |
 | organisation | Purchasing | `purchasing` | 2 |
 | organisation | Payroll | `payroll` | 2 |
 | organisation | HR | `hr` | 2 |
 | organisation | Employee | `employee` | 1 |
 | practice | Practice admin | `practice_admin` | 29 |
-| practice | Accountant | `accountant` | 17 |
-| practice | Reviewer | `reviewer` | 12 |
+| practice | Accountant | `accountant` | 16 |
+| practice | Reviewer | `reviewer` | 11 |
 | practice | Payroll specialist | `payroll_specialist` | 4 |
-| practice | Read-only staff | `read_only` | 12 |
+| practice | Read-only staff | `read_only` | 11 |
 | platform | Platform owner | `platform_owner` | 8 |
 | platform | Platform support | `platform_support` | 4 |

@@ -342,3 +342,21 @@ Moving to *active* or *cancelled* clears the grace end. `tests/test_billing_out_
 (Hypothesis): any subset of a subscription's life (checkout, created, paid, failed renewal and
 recovery, upgrade, cancel at period end, deleted), delivered in any order, ends in the same status,
 reason, grace end, package, interval and cancellation as chronological delivery.
+
+## Security (U-04-T16)
+
+`backend/tests/test_billing_security.py`:
+
+- **Owner only, every endpoint and method** — practice staff in every practice role (practice
+  admin, accountant, reviewer, payroll specialist, read-only) assigned to the client: 403;
+  the organisation's admin and every other member role: 403; a stranger: 404; signed out:
+  401/403. Accountants are never billed and never bill: there is no billing route outside
+  `/api/v1/o/<org>/billing…` (no practice or user billing).
+- The test found that read-only and reviewer rules selected `organisation.billing.view` (a
+  `.view` action): owner-only permissions now go to the **Owner role only**, whatever another
+  rule selects (`SystemRole.permission_keys`; `tests/test_system_roles.py`).
+- **Webhook replay** — an exact replay (same body and signature) is acknowledged as a duplicate
+  and runs nothing; a tampered body under a captured signature is refused (400) and stores
+  nothing; a replay with a new event id but an older `created` can't roll the state back
+  (U-04-T15); a session cookie changes nothing.
+- The RBAC matrix (A-03-T10) covers the billing endpoints like every other.
