@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/v1/", include("numo9.notifications.urls")),  # notification centre (A-07)
     path("api/v1/", include("numo9.orgsettings.urls")),  # organisation settings, locks (A-05)
     path("api/v1/", include("numo9.ledger.urls")),  # journals read API (C-02-T15)
+    path("api/v1/", include("numo9.billing.urls")),  # subscription billing (U-04)
     # Sign-up, email verification, login, logout, password reset (A-02): django-allauth headless,
     # browser client only (/_allauth/browser/v1/…). OpenAPI: /_allauth/openapi.html in dev.
     path("_allauth/", include("numo9.accounts.urls")),

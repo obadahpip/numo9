@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 259   Remaining: 2528   Progress: 9.29%
+TOTAL ATOMIC TASKS: 2787   Completed: 260   Remaining: 2527   Progress: 9.33%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -357,7 +357,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-04-T02 — Extend Subscription with stripe_customer_id, stripe_subscription_id, interval, cancel_at_period_end, payment_method_type
 ✅ U-04-T03 — StripeEvent model (event_id unique, type, payload, processed_at, error)
 ✅ U-04-T04 — Customer creation service (one per org, metadata org_id)
-❌ U-04-T05 — Checkout session endpoint POST /api/v1/orgs/{id}/billing/checkout (card + acss_debit) owner-only
+✅ U-04-T05 — Checkout session endpoint POST /api/v1/orgs/{id}/billing/checkout (card + acss_debit) owner-only
 ❌ U-04-T06 — Webhook endpoint with signature check, event persistence, Celery dispatch
 ❌ U-04-T07 — Handlers: checkout.session.completed, customer.subscription.created/updated/deleted → local state machine
 ❌ U-04-T08 — Handlers: invoice.paid, invoice.payment_failed, invoice.finalized → PlatformInvoice mirror + receipt email

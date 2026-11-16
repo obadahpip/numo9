@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:51-0500\n"
+"POT-Creation-Date: 2026-11-16 13:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -460,6 +460,12 @@ msgid "last error"
 msgstr ""
 
 msgid "Stripe events"
+msgstr ""
+
+msgid "See the subscription, payment method and Numo9 invoices"
+msgstr ""
+
+msgid "Subscribe, change the package or payment method, cancel the subscription"
 msgstr ""
 
 msgid "Product"
@@ -2137,6 +2143,17 @@ msgid "Billing isn't available right now. Try again later, or contact Numo9 supp
 msgstr ""
 
 msgid "This organisation has no subscription yet. Start a trial first."
+msgstr ""
+
+#, python-format
+msgid "There's no package %(package)s for sale. Choose one of the packages offered."
+msgstr ""
+
+#, python-format
+msgid "%(package)s can't be bought online yet. Try again in a few minutes."
+msgstr ""
+
+msgid "This organisation already pays for a package. Change the package instead."
 msgstr ""
 
 #, python-format

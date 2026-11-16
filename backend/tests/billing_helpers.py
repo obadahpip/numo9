@@ -75,3 +75,37 @@ class FakeGateway:
 
     def retrieve_subscription(self, subscription: str) -> dict[str, Any]:
         return type(self).subscriptions[subscription]
+
+
+def sold_package(
+    code: str, monthly: int = 4900, yearly: int = 49000, products: tuple[str, ...] = ("accounting",)
+) -> Any:
+    """An active package with monthly and annual prices already synced to Stripe."""
+    from datetime import date
+
+    from numo9.packages.models import PackagePrice
+    from tests.entitlement_helpers import package
+
+    created = package(code, list(products))
+    for interval, cents in (("month", monthly), ("year", yearly)):
+        PackagePrice.objects.create(
+            package=created,
+            interval=interval,
+            amount_cents=cents,
+            effective_from=date(2026, 1, 1),
+            stripe_price_id=f"price_{code}_{interval}",
+        )
+    return created
+
+
+def owned_org(name: str = "Maple Bakery Inc.", email: str = "olivia@maple.ca") -> tuple[Any, Any]:
+    """An organisation with an owner and a trial subscription: (organisation, owner)."""
+    from numo9.accounts.models import User
+    from numo9.tenancy.models import Organisation, OrganisationMember
+    from tests.entitlement_helpers import subscribe
+
+    org = Organisation.objects.create(name=name)
+    owner = User.objects.create_user(email, password="x" * 12, name="Olivia Tremblay")
+    OrganisationMember.objects.create(organisation=org, user=owner, role="owner")
+    subscribe(org, None, status="trialing")
+    return org, owner

@@ -95,3 +95,28 @@ organisation** (never per user or practice: accountants are never billed):
 - an organisation without a subscription is refused (409 `billing.no_subscription`).
 
 `organisation_of_customer("cus_…")` finds the organisation from a customer id.
+
+## Checkout (U-04-T05)
+
+`POST /api/v1/o/<org>/billing/checkout` `{package, interval, methods?}` → 201 `{url, session_id,
+package, interval, amount_cents}` — the owner is sent to Stripe Checkout:
+
+1. the package must be for sale (active) with a price for the interval in force today already
+   created at Stripe by the price sync — else 400 `billing.package_unknown` / 409
+   `billing.price_not_ready`;
+2. an organisation already paying through Stripe changes its package instead (409
+   `billing.already_subscribed`, U-04-T10);
+3. the organisation's Stripe customer (U-04-T04);
+4. a Checkout session in subscription mode: card and pre-authorised debit by default (`methods`
+   narrows: `card`, `acss_debit`; PAD with a business mandate, automatic verification), metadata
+   `numo9_org`, `numo9_package`, `numo9_interval` (on the session and the subscription), return
+   to the billing page `…/settings/subscription?checkout=success` / `?checkout=cancelled`.
+   Idempotency key: `numo9-checkout-<org>-<Idempotency-Key header or a new id>`.
+
+The subscription is recorded from Stripe's webhooks (U-04-T07), never from the redirect.
+
+**Owner only.** Permissions `organisation.billing.view` / `organisation.billing.manage` are
+`owner_only` (risk high / critical): the owner role has them; admins and practice admins (who get
+every other organisation permission), accountants and other staff don't — 403; another
+organisation is a 404. Billing is part of every organisation (`CORE`, never gated). Billing off →
+503 `billing.unavailable`.

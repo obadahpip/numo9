@@ -45,15 +45,17 @@ def test_names_are_stored_in_english_and_translated_by_key() -> None:
         assert str(system_role("organisation", "owner").name) == "Propriétaire"
 
 
+#: Owner-only permissions: closing the organisation (A-03) and billing (U-04-T05).
+OWNER_ONLY = {"organisation.close", "organisation.billing.view", "organisation.billing.manage"}
+
+
 def test_owner_and_admin() -> None:
     assert grants("organisation", "owner") == ORG_PERMS
-    assert grants("organisation", "admin") == ORG_PERMS - {"organisation.close"}
+    assert grants("organisation", "admin") == ORG_PERMS - OWNER_ONLY
 
 
 def test_practice_admin_runs_the_practice_and_its_clients() -> None:
-    assert grants("practice", "practice_admin") == PRACTICE_PERMS | (
-        ORG_PERMS - {"organisation.close"}
-    )
+    assert grants("practice", "practice_admin") == PRACTICE_PERMS | (ORG_PERMS - OWNER_ONLY)
 
 
 def test_accountants_keep_books_but_do_not_manage_users() -> None:

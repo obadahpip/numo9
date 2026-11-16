@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:51-0500\n"
+"POT-Creation-Date: 2026-11-16 13:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -465,6 +465,12 @@ msgstr "dernière erreur"
 
 msgid "Stripe events"
 msgstr "Événements Stripe"
+
+msgid "See the subscription, payment method and Numo9 invoices"
+msgstr "Voir l’abonnement, le mode de paiement et les factures de Numo9"
+
+msgid "Subscribe, change the package or payment method, cancel the subscription"
+msgstr "S’abonner, changer de forfait ou de mode de paiement, annuler l’abonnement"
 
 msgid "Product"
 msgstr ""
@@ -2307,6 +2313,17 @@ msgstr "La facturation n’est pas disponible pour le moment. Réessayez plus ta
 
 msgid "This organisation has no subscription yet. Start a trial first."
 msgstr "Cette organisation n’a pas encore d’abonnement. Commencez d’abord un essai."
+
+#, python-format
+msgid "There's no package %(package)s for sale. Choose one of the packages offered."
+msgstr "Il n’y a aucun forfait %(package)s en vente. Choisissez l’un des forfaits offerts."
+
+#, python-format
+msgid "%(package)s can't be bought online yet. Try again in a few minutes."
+msgstr "Le forfait %(package)s ne peut pas encore être acheté en ligne. Réessayez dans quelques minutes."
+
+msgid "This organisation already pays for a package. Change the package instead."
+msgstr "Cette organisation paie déjà un forfait. Changez plutôt de forfait."
 
 #, python-format
 msgid "%(items)s and %(last)s"

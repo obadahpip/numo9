@@ -711,3 +711,17 @@ BILLING_NO_SUBSCRIPTION = define(
     _("This organisation has no subscription yet. Start a trial first."),
     status.HTTP_409_CONFLICT,
 )
+BILLING_PACKAGE_UNKNOWN = define(
+    "billing.package_unknown",
+    _("There's no package %(package)s for sale. Choose one of the packages offered."),
+)
+BILLING_PRICE_NOT_READY = define(
+    "billing.price_not_ready",
+    _("%(package)s can't be bought online yet. Try again in a few minutes."),
+    status.HTTP_409_CONFLICT,
+)
+BILLING_ALREADY_SUBSCRIBED = define(
+    "billing.already_subscribed",
+    _("This organisation already pays for a package. Change the package instead."),
+    status.HTTP_409_CONFLICT,
+)
