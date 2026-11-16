@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 03:30-0500\n"
+"POT-Creation-Date: 2026-11-16 04:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -757,7 +757,7 @@ msgid "Roles"
 msgstr ""
 
 msgid "Email"
-msgstr ""
+msgstr "Courriel"
 
 msgid "Phone"
 msgstr ""
@@ -2081,6 +2081,9 @@ msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr "Vous avez %(max)s vues enregistrées, le maximum permis. Supprimez d’abord une vue que vous n’utilisez plus."
 
+msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
+msgstr "Les notifications de sécurité ne peuvent pas être désactivées : elles vous informent des connexions et des changements à votre compte."
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -3013,6 +3016,32 @@ msgstr ""
 msgid "Message details are a set of named values."
 msgstr "Les limites doivent être une liste de valeurs nommées."
 
+msgid "In the app"
+msgstr "Dans l’application"
+
+#, fuzzy
+#| msgid "impersonator"
+msgid "person"
+msgstr "personne connectée à sa place"
+
+msgid "in the app"
+msgstr "dans l’application"
+
+#, fuzzy
+#| msgid "owner email"
+msgid "by email"
+msgstr "courriel du propriétaire"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "notification preference"
+msgstr "organisation"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "notification preferences"
+msgstr "organisation"
+
 #, fuzzy
 #| msgid "organisation"
 msgid "Notification"
@@ -3020,7 +3049,7 @@ msgstr "organisation"
 
 #, python-format
 msgid "%(job)s finished"
-msgstr ""
+msgstr "%(job)s est terminé"
 
 #, python-format
 msgid "%(summary)s"
@@ -3028,11 +3057,11 @@ msgstr ""
 
 #, python-format
 msgid "%(job)s didn't finish"
-msgstr ""
+msgstr "%(job)s n’a pas pu se terminer"
 
 #, python-format
 msgid "%(error)s Open the job tray to try again."
-msgstr ""
+msgstr "%(error)s Ouvrez le panneau des tâches pour réessayer."
 
 #, python-format
 msgid "%(file)s was blocked"

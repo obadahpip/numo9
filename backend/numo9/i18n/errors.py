@@ -606,3 +606,13 @@ WORKSPACE_VIEW_LIMIT = define(
     "workspace.view_limit",
     _("You have %(max)s saved views, the most allowed. Delete one you no longer use first."),
 )
+
+# ---- notifications and email (A-07) ------------------------------------------------------------
+NOTIFICATIONS_CATEGORY_LOCKED = define(
+    "notifications.category_locked",
+    _(
+        "Security notifications can't be turned off: they tell you about sign-ins and changes to "
+        "your account."
+    ),
+    status.HTTP_409_CONFLICT,
+)

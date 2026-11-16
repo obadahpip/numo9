@@ -124,3 +124,46 @@ class Notification(OrgOwnedModel):
         if kwargs.get("update_fields") is None:
             self.clean()
         super().save(*args, **kwargs)
+
+
+class NotificationChannel(models.TextChoices):
+    """Where a notification is delivered (A-07-T02; SMS/WhatsApp interface: A-07-T12)."""
+
+    IN_APP = "in_app", _("In the app")
+    EMAIL = "email", _("Email")
+
+
+class NotificationPreference(OrgOwnedModel):
+    """One person's choice for one category in one organisation (A-07-T02).
+
+    No row = the category's default (``numo9.notifications.events.DEFAULTS``). Categories marked
+    *locked* there (security) ignore the row: those messages always arrive.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="notification_preferences",
+        verbose_name=_("person"),
+    )
+    category = models.CharField(_("category"), max_length=20, choices=NotificationCategory.choices)
+    in_app = models.BooleanField(_("in the app"), default=True)
+    email = models.BooleanField(_("by email"), default=True)
+
+    class Meta:
+        verbose_name = _("notification preference")
+        verbose_name_plural = _("notification preferences")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "user", "category"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="notifications_one_preference_per_category",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(category__in=NotificationCategory.values),
+                name="notifications_preference_category_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user_id} · {self.category}"

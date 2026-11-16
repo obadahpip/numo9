@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 03:30-0500\n"
+"POT-Creation-Date: 2026-11-16 04:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1902,6 +1902,9 @@ msgstr ""
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr ""
 
+msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
+msgstr ""
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -2742,6 +2745,24 @@ msgid "A notification links to a page of the app (a path such as /o/…)."
 msgstr ""
 
 msgid "Message details are a set of named values."
+msgstr ""
+
+msgid "In the app"
+msgstr ""
+
+msgid "person"
+msgstr ""
+
+msgid "in the app"
+msgstr ""
+
+msgid "by email"
+msgstr ""
+
+msgid "notification preference"
+msgstr ""
+
+msgid "notification preferences"
 msgstr ""
 
 msgid "Notification"

@@ -433,6 +433,18 @@ One in-app message to one person in one organisation (A-07-T01). `OrgOwnedModel`
 
 Indexes: `(organisation, recipient, read_at)` (unread count), `(organisation, recipient, -created_at)` (newest first).
 
+### `notifications_notificationpreference` — Notification preference {#notifications-notificationpreference}
+
+One person's choice for one category in one organisation (A-07-T02). `OrgOwnedModel`; no row = the category's default (Security is locked on).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `user_id` | bigint → `accounts_user` | no | The person; `CASCADE` |
+| `category` | varchar(20) | no | A notification category (`notifications_preference_category_valid`); one live row per person and category (`notifications_one_preference_per_category`) |
+| `in_app` | boolean | no | Shown in the bell |
+| `email` | boolean | no | Sent by email |
+
 ## Accountant workspace (`workspace`) {#workspace}
 
 Design: [Organisation directory](../architecture/directory.md).

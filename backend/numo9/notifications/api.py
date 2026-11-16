@@ -11,7 +11,10 @@ organisation (``CORE``, never gated).
 - ``notifications/unread-count`` — GET ``{"unread_count": n}`` (the bell's badge; cheap to poll);
 - ``notifications/<id>/read`` — POST mark one read (idempotent: the first read time is kept);
 - ``notifications/read-all`` — POST mark every unread one read (``{"category": …}`` limits it to a
-  category) → ``{"marked": n, "unread_count": remaining}``.
+  category) → ``{"marked": n, "unread_count": remaining}``;
+- ``notifications/preferences`` — GET my choice per category (in the app, by email; locked =
+  security, always on); PATCH ``{"category", "in_app", "email"}`` changes one category (a locked
+  one: ``409 notifications.category_locked``) (A-07-T02).
 """
 
 from __future__ import annotations
@@ -27,6 +30,8 @@ from rest_framework.views import APIView
 
 from numo9.accounts.models import User
 from numo9.catalogue.drf import CORE
+from numo9.i18n import errors
+from numo9.i18n.errors import api_error
 from numo9.rbac.drf import requires_permission
 
 from . import services
@@ -34,6 +39,9 @@ from .models import Notification, NotificationCategory
 from .serializers import (
     NotificationPageSerializer,
     NotificationSerializer,
+    PreferenceListSerializer,
+    PreferenceSerializer,
+    PreferenceUpdateSerializer,
     ReadAllRequestSerializer,
     ReadAllResultSerializer,
     UnreadCountSerializer,
@@ -155,3 +163,36 @@ class MarkAllReadView(APIView):
         user = _user(request)
         marked = services.mark_all_read(user, payload.validated_data.get("category"))
         return Response({"marked": marked, "unread_count": services.unread_count(user)})
+
+
+class PreferencesView(APIView):
+    required_feature = CORE
+    serializer_class = NotificationSerializer  # tenant sweep: personal rows, nothing listed here
+
+    @requires_permission(EVERYONE_HERE)
+    @extend_schema(
+        operation_id="notifications_preferences",
+        summary="My notification choices per category in the organisation",
+        responses=PreferenceListSerializer,
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        preferences = services.preferences_for(_user(request)).values()
+        return Response({"results": PreferenceSerializer(list(preferences), many=True).data})
+
+    @requires_permission(EVERYONE_HERE)
+    @extend_schema(
+        operation_id="notifications_preference_update",
+        summary="Change one category: in the app and/or by email",
+        request=PreferenceUpdateSerializer,
+        responses=PreferenceSerializer,
+    )
+    def patch(self, request: Request, org: Any) -> Response:
+        payload = PreferenceUpdateSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        data = dict(payload.validated_data)
+        category = data.pop("category")
+        try:
+            preference = services.set_preference(_user(request), category, **data)
+        except services.LockedCategory:
+            raise api_error(errors.NOTIFICATIONS_CATEGORY_LOCKED) from None
+        return Response(PreferenceSerializer(preference).data)
