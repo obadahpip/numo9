@@ -474,6 +474,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.billing.run_dunning",
         "schedule": crontab(minute="7,22,37,52"),
     },
+    # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
+    "numo9.billing.apply_changes": {
+        "task": "numo9.billing.apply_changes",
+        "schedule": crontab(minute="9,24,39,54"),
+    },
 }
 
 # ---- File storage and documents inbox (A-06, docs/architecture/files.md) ------------------------

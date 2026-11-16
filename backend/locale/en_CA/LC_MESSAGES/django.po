@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:04-0500\n"
+"POT-Creation-Date: 2026-11-16 14:06-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -562,6 +562,27 @@ msgid "dunning reminder"
 msgstr ""
 
 msgid "dunning reminders"
+msgstr ""
+
+msgid "package"
+msgstr ""
+
+msgid "billing interval"
+msgstr ""
+
+msgid "takes effect at"
+msgstr ""
+
+msgid "applied at"
+msgstr ""
+
+msgid "cancelled at"
+msgstr ""
+
+msgid "scheduled package change"
+msgstr ""
+
+msgid "scheduled package changes"
 msgstr ""
 
 msgid "See the subscription, payment method and Numo9 invoices"
@@ -1542,9 +1563,6 @@ msgstr ""
 msgid "Pre-authorised debit (PAD)"
 msgstr ""
 
-msgid "package"
-msgstr ""
-
 msgid "current period ends"
 msgstr ""
 
@@ -1570,9 +1588,6 @@ msgid "Stripe customer"
 msgstr ""
 
 msgid "One Stripe customer per organisation (cus_…)."
-msgstr ""
-
-msgid "billing interval"
 msgstr ""
 
 msgid "cancels at the end of the period"
@@ -2241,6 +2256,12 @@ msgid "%(package)s can't be bought online yet. Try again in a few minutes."
 msgstr ""
 
 msgid "This organisation already pays for a package. Change the package instead."
+msgstr ""
+
+msgid "This organisation doesn't pay for a package yet. Choose one first."
+msgstr ""
+
+msgid "That's already your package and billing interval."
 msgstr ""
 
 #, python-format

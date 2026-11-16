@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:04-0500\n"
+"POT-Creation-Date: 2026-11-16 14:06-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -567,6 +567,27 @@ msgstr "relance de paiement"
 
 msgid "dunning reminders"
 msgstr "relances de paiement"
+
+msgid "package"
+msgstr "forfait"
+
+msgid "billing interval"
+msgstr "fréquence de facturation"
+
+msgid "takes effect at"
+msgstr "prend effet le"
+
+msgid "applied at"
+msgstr "appliqué le"
+
+msgid "cancelled at"
+msgstr "annulé le"
+
+msgid "scheduled package change"
+msgstr "changement de forfait prévu"
+
+msgid "scheduled package changes"
+msgstr "changements de forfait prévus"
 
 msgid "See the subscription, payment method and Numo9 invoices"
 msgstr "Voir l’abonnement, le mode de paiement et les factures de Numo9"
@@ -1665,9 +1686,6 @@ msgstr "Carte"
 msgid "Pre-authorised debit (PAD)"
 msgstr "Débit préautorisé (DPA)"
 
-msgid "package"
-msgstr "forfait"
-
 msgid "current period ends"
 msgstr ""
 
@@ -1698,9 +1716,6 @@ msgstr "Client Stripe"
 
 msgid "One Stripe customer per organisation (cus_…)."
 msgstr "Un client Stripe par organisation (cus_…)."
-
-msgid "billing interval"
-msgstr "fréquence de facturation"
 
 msgid "cancels at the end of the period"
 msgstr "prend fin à la fin de la période"
@@ -2409,6 +2424,12 @@ msgstr "Le forfait %(package)s ne peut pas encore être acheté en ligne. Réess
 
 msgid "This organisation already pays for a package. Change the package instead."
 msgstr "Cette organisation paie déjà un forfait. Changez plutôt de forfait."
+
+msgid "This organisation doesn't pay for a package yet. Choose one first."
+msgstr "Cette organisation ne paie pas encore de forfait. Choisissez-en un d’abord."
+
+msgid "That's already your package and billing interval."
+msgstr "C’est déjà votre forfait et votre fréquence de facturation."
 
 #, python-format
 msgid "%(items)s and %(last)s"

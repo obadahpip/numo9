@@ -162,3 +162,38 @@ class DunningReminder(OrgOwnedModel):
                 condition=models.Q(day__in=(0, 3, 5, 7)), name="billing_dunning_day_valid"
             ),
         ]
+
+
+class ScheduledChange(OrgOwnedModel):
+    """A downgrade waiting for the end of the paid period (U-04-T10).
+
+    Upgrades apply at once (prorated); a downgrade keeps the current package until
+    ``effective_at`` (the period end), then moves the Stripe subscription to the new price without
+    proration so the renewal is billed at it. One pending change per subscription.
+    """
+
+    subscription = models.ForeignKey(
+        "entitlements.Subscription",
+        on_delete=models.PROTECT,
+        related_name="scheduled_changes",
+        verbose_name=_("subscription"),
+    )
+    package = models.ForeignKey(
+        "packages.Package", on_delete=models.PROTECT, related_name="+", verbose_name=_("package")
+    )
+    interval = models.CharField(_("billing interval"), max_length=8)
+    effective_at = models.DateTimeField(_("takes effect at"))
+    applied_at = models.DateTimeField(_("applied at"), null=True, blank=True)
+    cancelled_at = models.DateTimeField(_("cancelled at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-effective_at", "-id")
+        verbose_name = _("scheduled package change")
+        verbose_name_plural = _("scheduled package changes")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("subscription",),
+                condition=models.Q(applied_at__isnull=True, cancelled_at__isnull=True),
+                name="billing_one_pending_change",
+            ),
+        ]

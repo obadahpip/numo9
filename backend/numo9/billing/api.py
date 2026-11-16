@@ -23,6 +23,7 @@ from numo9.packages.models import BillingInterval
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
+from .changes import change, preview
 from .checkout import METHODS, start_checkout
 from .permissions import BILLING_MANAGE
 
@@ -76,3 +77,85 @@ class CheckoutView(APIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
+
+class ChangeQuerySerializer(serializers.Serializer[Any]):
+    package = serializers.CharField(max_length=40)
+    interval = serializers.ChoiceField(choices=BillingInterval.choices)
+
+
+class ChangeRequestSerializer(ChangeQuerySerializer):
+    proration_date = serializers.IntegerField(required=False, min_value=0)
+
+
+class ChangePreviewSerializer(serializers.Serializer[Any]):
+    kind = serializers.ChoiceField(choices=["upgrade", "downgrade"])
+    package = serializers.CharField()
+    interval = serializers.CharField()
+    amount_cents = serializers.IntegerField()
+    charged_today_cents = serializers.IntegerField()
+    currency = serializers.CharField()
+    effective_at = serializers.DateTimeField()
+    proration_date = serializers.IntegerField()
+
+
+def _preview_body(result: Any) -> dict[str, Any]:
+    return ChangePreviewSerializer(
+        {
+            "kind": result.kind,
+            "package": result.package,
+            "interval": result.interval,
+            "amount_cents": result.amount_cents,
+            "charged_today_cents": result.charged_today_cents,
+            "currency": result.currency,
+            "effective_at": result.effective_at,
+            "proration_date": result.proration_date,
+        }
+    ).data
+
+
+class ChangePreviewView(APIView):
+    required_feature = CORE
+    serializer_class = ChangePreviewSerializer
+
+    @requires_permission(BILLING_MANAGE.key)
+    @extend_schema(
+        operation_id="billing_change_preview",
+        summary="What changing the package would cost (proration preview)",
+        parameters=[ChangeQuerySerializer],
+        responses=ChangePreviewSerializer,
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        query = ChangeQuerySerializer(data=request.query_params)
+        query.is_valid(raise_exception=True)
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        result = preview(
+            organisation, query.validated_data["package"], query.validated_data["interval"]
+        )
+        return Response(_preview_body(result))
+
+
+class ChangeView(APIView):
+    required_feature = CORE
+    serializer_class = ChangeRequestSerializer
+
+    @requires_permission(BILLING_MANAGE.key)
+    @extend_schema(
+        operation_id="billing_change",
+        summary="Upgrade now (prorated) or downgrade at the end of the period",
+        request=ChangeRequestSerializer,
+        responses=ChangePreviewSerializer,
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        body = ChangeRequestSerializer(data=request.data)
+        body.is_valid(raise_exception=True)
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        result = change(
+            organisation,
+            body.validated_data["package"],
+            body.validated_data["interval"],
+            body.validated_data.get("proration_date"),
+        )
+        return Response(_preview_body(result))

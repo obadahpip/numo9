@@ -215,3 +215,24 @@ re-delivered failure event sends nothing twice. Read-only is exact at `grace_unt
 entitlement engine already answers read-only for a past-due subscription after its grace end
 (U-03), and the job records the status within 15 minutes. `invoice.paid` makes the subscription
 active and stops the dunning; a later failure starts a new cycle (new grace period).
+
+## Changing the package (U-04-T10)
+
+| Endpoint | |
+|---|---|
+| `GET /api/v1/o/<org>/billing/change/preview?package=&interval=` | `{kind, package, interval, amount_cents, charged_today_cents, currency, effective_at, proration_date}` |
+| `POST /api/v1/o/<org>/billing/change` `{package, interval, proration_date?}` | Same body: what was done |
+
+- **Upgrade** — a higher price per month (annual ÷ 12), or monthly → annual: applies **now**. The
+  amount charged today is Stripe's own figure: the preview invoice of the subscription item moved
+  to the new price at `proration_date` (`invoices.create_preview`, formerly `invoices.upcoming`;
+  unused time credited, new price pro rata). The change uses `proration_behavior=always_invoice`
+  and **the same `proration_date`** the owner saw, so the charge equals the preview. The local
+  package follows from the `customer.subscription.updated` webhook.
+- **Downgrade** — lower per month, or annual → monthly: applies at the **end of the paid period**,
+  nothing charged today. A `billing.ScheduledChange` is recorded (one pending per subscription; a
+  new choice replaces it; an upgrade cancels it). The platform job `numo9.billing.apply_changes`
+  (beat every 15 minutes) moves the Stripe subscription to the new price without proration in the
+  period's last hour, once — the renewal invoice is billed at it.
+- Refused: same package and interval (`billing.no_change`), not paying through Stripe yet
+  (`billing.not_paying` — use checkout), unknown package or unsynced price. Owner only.

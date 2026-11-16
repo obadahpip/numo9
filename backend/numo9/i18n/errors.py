@@ -725,3 +725,12 @@ BILLING_ALREADY_SUBSCRIBED = define(
     _("This organisation already pays for a package. Change the package instead."),
     status.HTTP_409_CONFLICT,
 )
+BILLING_NOT_PAYING = define(
+    "billing.not_paying",
+    _("This organisation doesn't pay for a package yet. Choose one first."),
+    status.HTTP_409_CONFLICT,
+)
+BILLING_NO_CHANGE = define(
+    "billing.no_change",
+    _("That's already your package and billing interval."),
+)

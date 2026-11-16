@@ -8,4 +8,10 @@ ORG = "o/<uuid:org>/"
 
 urlpatterns = [
     path(f"{ORG}billing/checkout", api.CheckoutView.as_view(), name="billing-checkout"),
+    path(f"{ORG}billing/change", api.ChangeView.as_view(), name="billing-change"),
+    path(
+        f"{ORG}billing/change/preview",
+        api.ChangePreviewView.as_view(),
+        name="billing-change-preview",
+    ),
 ]
