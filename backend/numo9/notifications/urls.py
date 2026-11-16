@@ -14,6 +14,11 @@ urlpatterns = [
         name="email-domain",
     ),
     path(
+        f"{ORG}email-domains/<uuid:public_id>/check",
+        domains_api.DomainCheckView.as_view(),
+        name="email-domain-check",
+    ),
+    path(
         f"{ORG}email-domains/<uuid:public_id>/refresh",
         domains_api.DomainRefreshView.as_view(),
         name="email-domain-refresh",

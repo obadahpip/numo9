@@ -24,7 +24,7 @@ from rest_framework.views import APIView
 from numo9.catalogue.drf import CORE
 from numo9.rbac.drf import requires_permission
 
-from . import domains
+from . import dnscheck, domains
 from .models import SendingDomain, SendingDomainRecord
 
 MANAGE = "organisation.settings.manage"
@@ -143,3 +143,18 @@ class DomainRefreshView(APIView):
     )
     def post(self, request: Request, org: Any, public_id: Any) -> Response:
         return Response(_out(domains.refresh_from_provider(_one(public_id))))
+
+
+class DomainCheckView(APIView):
+    required_feature = CORE
+    serializer_class = SendingDomainSerializer
+
+    @requires_permission(MANAGE)
+    @extend_schema(
+        operation_id="email_domains_check",
+        summary="Look up the domain's DNS records now and update their status",
+        request=None,
+        responses=SendingDomainSerializer,
+    )
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        return Response(_out(dnscheck.check_domain(_one(public_id))))

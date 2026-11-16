@@ -435,6 +435,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.workspace.rebuild_directory",
         "schedule": crontab(minute=41, hour=8),  # 08:41 UTC = 03:41 / 04:41 Toronto
     },
+    # Sending-domain DNS checks (A-07-T06): new domains until verified, verified ones daily.
+    "numo9.notifications.check_sending_domains": {
+        "task": "numo9.notifications.check_sending_domains",
+        "schedule": crontab(minute="4,19,34,49"),
+    },
 }
 
 # ---- File storage and documents inbox (A-06, docs/architecture/files.md) ------------------------

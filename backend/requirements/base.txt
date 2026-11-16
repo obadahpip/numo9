@@ -32,6 +32,8 @@ phonenumbers==9.0.43
 django-anymail==15.2
 # Email templates: MJML compiled to email HTML by mrml (Rust; no Node.js at runtime) (A-07-T04)
 mrml==0.2.4
+# DNS checks of sending domains: SPF, DKIM, DMARC, return path (A-07-T06)
+dnspython==2.9.2
 # Spreadsheet exports (A-04-T08 audit log; B-03 contact import/export)
 openpyxl==3.1.5
 charset-normalizer==3.5.2

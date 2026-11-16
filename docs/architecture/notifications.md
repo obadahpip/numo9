@@ -193,6 +193,27 @@ domain to *partial*.
 API under `/api/v1/o/<org>/` (`organisation.settings.manage`, `CORE`): `GET/POST email-domains`,
 `GET/DELETE email-domains/<id>`, `POST email-domains/<id>/refresh`.
 
+## DNS verification (A-07-T06)
+
+`numo9.notifications.dnscheck.check_domain(domain)` looks each record up with **dnspython**
+(5 s timeout, `NUMO9_DNS_TIMEOUT`) and stores per record `status`, `found` and `checked_at`:
+
+| Record | `ok` when | `wrong` when |
+|---|---|---|
+| SPF | one `v=spf1` TXT at the domain with `include:<NUMO9_EMAIL_SPF_INCLUDE>` | two SPF records (a permerror everywhere) or no Numo9 include |
+| DKIM | TXT at `<selector>._domainkey` with the same `p=` key (spaces, quote splits ignored); a CNAME DKIM record points at the provider | another key |
+| DMARC | `v=DMARC1` TXT at `_dmarc` with a `p=` policy (`none`, `quarantine`, `reject`) | no policy |
+| Return path | CNAME to the provider's bounce host (case and trailing dot ignored) | another target |
+
+No record (NXDOMAIN, no answer) = `missing`. A timeout or failing DNS server keeps the previous
+result — unknown is not wrong. Domain status: all `ok` → `verified` (`verified_at` kept from the
+first time), any `wrong` → `failed`, some `ok` → `partial`, else `pending`.
+
+**Job** — `numo9.notifications.check_sending_domains` (platform job, `io` queue, beat at :04,
+:19, :34, :49): unverified domains added in the last 14 days, and verified domains not checked
+for a day (a record removed later is noticed). **Check now** — `POST email-domains/<id>/check`
+(the settings page's live checker, A-07-T10).
+
 ## Tests
 
 | Task | Tests |
@@ -202,3 +223,4 @@ API under `/api/v1/o/<org>/` (`organisation.settings.manage`, `CORE`): `GET/POST
 | T03 | `tests/test_notifications_mail.py` |
 | T04 | `tests/test_notifications_templates.py` (snapshots in `tests/snapshots/email/`) |
 | T05 | `tests/test_notifications_domains.py` (provider mocked: `tests/notification_helpers.FakeProvider`) |
+| T06 | `tests/test_notifications_dnscheck.py` (fake DNS zone + the dnspython path) |
