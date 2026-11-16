@@ -204,3 +204,25 @@ still has group assignments can't be deleted (practice records are never cascade
 The assignment grants access to every organisation of the group and of its sub-groups, including
 organisations added later — the access resolver (V-02-T05) reads it; revocation applies on the
 member's next request (V-02-T06).
+
+## Access through groups (V-02-T05)
+
+The A-01 resolver (`numo9.tenancy.access`) now grants an organisation to a user who is a member,
+a practice admin of a practice actively serving it, its assigned staff — **or** assigned to a
+practice group that holds it: the group itself **or any of its descendants** ("Toronto office"
+covers "Toronto office → Retail clients"), as long as the group's practice still actively serves
+the organisation. Organisations filed later are reachable at once.
+
+The group part is an access source the workspace app registers
+(`tenancy.access.register_access_source`), so `accessible_organisations` and `can_access` — every
+organisation-scoped request and the organisation list — include it.
+`numo9.workspace.access.group_organisation_ids(user)` is one query (materialised paths: "path
+starts with an assigned group's path") **cached per user** (`access:groups:<user>:<generation>`).
+The generation is bumped — at once and again at commit — on any save or delete of a group,
+membership, group staff assignment, practice assignment or practice member, and after every group
+move (paths change with raw SQL): a revocation applies on the next request (V-02-T06 adds the
+integration tests per change).
+
+`backend/tests/test_workspace_group_access.py` — Hypothesis: random trees (depth ≤ 5), filings,
+group staff, direct staff, practice admins and assignments switched off; the resolver equals a
+brute-force model of the rule for every user and organisation.

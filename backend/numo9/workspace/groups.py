@@ -139,6 +139,9 @@ def move_group(group: OrgGroup, parent: OrgGroup | None) -> OrgGroup:
         OrgGroup.objects.move(group, OrgGroup.objects.get_root_nodes().first(), "sorted-sibling")
     else:
         OrgGroup.objects.move(group, parent, "sorted-child")
+    from .access import bump
+
+    bump()  # the subtree's paths changed with raw SQL (no signals): access may have changed
     group.refresh_from_db()
     return group
 
