@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Groups &amp; tags — group staff panel and delete-group dialog (V-02)">
+<title>Numo9 wireframe — Groups &amp; tags — group staff panel and delete-group dialog (V-02)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="260" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Directory</text>
+<text x="396" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Dashboard</text>
+<text x="532" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Groups &amp; tags</text>
+<rect x="532" y="52" width="104" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="684" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Go to organisation…   Ctrl+K</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<text x="24" y="92" font-size="20" fill="#111111" font-weight="700" text-anchor="start">Toronto office › Retail clients</text>
+<text x="24" y="114" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Staff assigned here can open every organisation in this group and its sub-groups — and any organisation added later.</text>
+<circle cx="924" cy="104" r="10" fill="#B42318"/>
+<text x="924" y="108" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<rect x="24" y="132" width="900" height="36" rx="0" fill="#F5F6F8" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="155" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Staff member</text>
+<text x="320" y="155" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Role in this group</text>
+<text x="560" y="155" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Access comes from</text>
+<text x="800" y="155" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start"></text>
+<rect x="24" y="168" width="900" height="44" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="195" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Priya Shah</text>
+<rect x="320" y="177" width="180" height="26" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="332" y="195" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Accountant  ▾</text>
+<text x="560" y="195" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">This group</text>
+<text x="900" y="195" font-size="13" fill="#B42318" font-weight="600" text-anchor="end">Remove</text>
+<rect x="24" y="212" width="900" height="44" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="239" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Sam Lee</text>
+<rect x="320" y="221" width="180" height="26" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="332" y="239" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Reviewer  ▾</text>
+<text x="560" y="239" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Toronto office (parent)</text>
+<rect x="24" y="256" width="900" height="44" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="283" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Dana Roy</text>
+<rect x="320" y="265" width="180" height="26" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="332" y="283" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Read-only  ▾</text>
+<text x="560" y="283" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">This group</text>
+<text x="900" y="283" font-size="13" fill="#B42318" font-weight="600" text-anchor="end">Remove</text>
+<circle cx="616" cy="210" r="10" fill="#B42318"/>
+<text x="616" y="214" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<rect x="24" y="312" width="160" height="34" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="104" y="334" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">+ Assign staff</text>
+<rect x="940" y="132" width="476" height="300" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<circle cx="1408" cy="130" r="10" fill="#B42318"/>
+<text x="1408" y="134" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<text x="956" y="160" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Delete “Retail clients”?</text>
+<text x="956" y="188" font-size="13" fill="#111111" font-weight="400" text-anchor="start">24 organisations leave this group (they stay in the practice).</text>
+<text x="956" y="210" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2 sub-groups move up to “Toronto office”.</text>
+<text x="956" y="232" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2 staff assignments are removed: Priya Shah and Dana Roy</text>
+<text x="956" y="252" font-size="13" fill="#111111" font-weight="400" text-anchor="start">lose access to 18 organisations they can't reach another way.</text>
+<text x="956" y="284" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Type the group name to confirm</text>
+<rect x="956" y="292" width="444" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="1150" y="360" width="110" height="36" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="1205" y="383" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Keep group</text>
+<rect x="1270" y="360" width="130" height="36" rx="6" fill="#B42318" stroke="#B42318" stroke-width="1"/>
+<text x="1335" y="383" font-size="13" fill="#FFFFFF" font-weight="700" text-anchor="middle">Delete group</text>
+<text x="24" y="470" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Removing someone takes effect on their next request; an organisation they can still reach through another group or a direct assignment stays open to them.</text>
+</svg>
