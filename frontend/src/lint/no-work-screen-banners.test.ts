@@ -58,7 +58,8 @@ describe("gap-12: no banners in work screens (A-10-T17)", () => {
     expect(await bannerProblems(code, EDITOR)).toEqual([]);
   });
 
-  it("finds no banner in the frontend source", async () => {
+  // Lints the whole frontend source, which takes about 5 s on a CI runner: past vitest's default.
+  it("finds no banner in the frontend source", { timeout: 30_000 }, async () => {
     const results = await eslint.lintFiles(["src/**/*.{ts,tsx}"]);
     const problems = results.flatMap((r) =>
       r.messages.filter((m) => m.ruleId === RULE).map((m) => `${r.filePath}: ${m.message}`),
