@@ -301,6 +301,15 @@ registered too: `security.new_device`, `billing.payment_failed`, `billing.read_o
 (mandatory — cannot be turned off) and `trial.ending`. Every message renders in both languages
 against snapshots (`tests/snapshots/email/<name>.<language>.*`).
 
+## SMS and WhatsApp interface (A-07-T12)
+
+`numo9.notifications.messaging`: channels `sms` and `whatsapp` for `notify()` with **no provider
+connected** — `NullTextProvider` (default; `NUMO9_SMS_PROVIDER`, `NUMO9_WHATSAPP_PROVIDER`) sends
+nothing and the delivery says `not_sent` / `no_provider`. A provider adapter implements
+`send(to_e164, text) -> message id` and registers with `register_text_provider`. Only events that
+list the channel use it; a recipient without a valid telephone number is `skipped` (`no_phone`);
+the text is title, body and link in at most 320 characters, the link never cut.
+
 ## Tests
 
 | Task | Tests |
@@ -316,3 +325,4 @@ against snapshots (`tests/snapshots/email/<name>.<language>.*`).
 | T09 | `frontend/e2e/notification-centre.spec.ts` (bell, drawer, live region, preferences, axe) |
 | T10 | `frontend/e2e/email-domain.spec.ts` (set-up, live checker flips to verified, copy, remove, axe) |
 | T11 | `tests/test_notifications_catalogue.py` (every system message × EN/FR snapshots) |
+| T12 | `tests/test_notifications_messaging.py` |

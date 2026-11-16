@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 232   Remaining: 2555   Progress: 8.32%
+TOTAL ATOMIC TASKS: 2787   Completed: 233   Remaining: 2554   Progress: 8.36%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -313,7 +313,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-07-T09 — Notification centre UI (bell, drawer, prefs page)
 ✅ A-07-T10 — Email-domain settings UI with copyable DNS cards and live checker
 ✅ A-07-T11 — System message catalogue (verification, invite, trial reminders, dunning, new device) seeded
-❌ A-07-T12 — SMS/WhatsApp channel interface (no provider)
+✅ A-07-T12 — SMS/WhatsApp channel interface (no provider)
 
 [A-02]
 ❌ A-02-T07 — Session registry (device, IP, UA, last_seen) + revoke one / revoke others; new-device email

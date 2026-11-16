@@ -43,7 +43,8 @@ class Delivery:
 
 
 class Channel(Protocol):
-    name: str
+    @property
+    def name(self) -> str: ...
 
     def deliver(self, delivery: Delivery) -> Any: ...
 
@@ -128,3 +129,6 @@ class EmailChannel:
 
 register_channel(InAppChannel())
 register_channel(EmailChannel())
+
+# SMS and WhatsApp (A-07-T12): registered by numo9.notifications.messaging (no provider yet).
+from . import messaging  # noqa: E402, F401
