@@ -292,7 +292,9 @@ def test_every_save_is_audited(org: Organisation) -> None:
     item.set_name("Office supplies and postage")
     item.save()
     actions = list(
-        AuditEvent.objects.filter(object_type="ledger.Account").values_list("action", flat=True)
+        AuditEvent.objects.filter(object_type="ledger.Account")
+        .order_by("id")
+        .values_list("action", flat=True)
     )
     assert actions == ["ledger.account.created", "ledger.account.updated"]
     updated = AuditEvent.objects.get(action="ledger.account.updated")

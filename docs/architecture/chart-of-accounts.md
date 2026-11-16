@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Deliverable** | C-01 · Chart of accounts, Phase 0 (component C — General Ledger) |
-| **Code** | `backend/numo9/ledger/` (models, tree, guards, renumber, cache, gifi, template, contexts), `packages/ui/src/pickers/AccountPicker.tsx` (shared picker) |
+| **Code** | `backend/numo9/ledger/` (models, tree, guards, renumber, cache, gifi, template, contexts, importing), `packages/ui/src/pickers/AccountPicker.tsx` (shared picker) |
 | **Data** | `backend/numo9/ledger/data/coa_ca_v1.json` (Canadian template), `backend/numo9/ledger/data/gifi_rc4088_rev23.csv` (CRA GIFI list), `packages/ui/src/pickers/account-contexts.json` (picker contexts) |
 | **Review file** | [`coa_template_ca_v1.xlsx`](../accounting/coa_template_ca_v1.xlsx) — the template for accountant sign-off (C-01-T01) |
 | **Depends on** | A-01 (tenancy: `OrgOwnedModel`), A-04 (audit: `AuditedModel`, batches), A-10 (design system pickers) |
@@ -188,6 +188,39 @@ differ):
 Engine accounts are the system roles the engine posts to by itself (AR, AP, tax controls, payroll
 liabilities, retained and current year earnings, rounding, suspense, FX).
 
+## Import and export (C-01-T13)
+
+`numo9.ledger.importing` puts the chart on the B-03 import framework
+([Spreadsheet imports](imports.md)) as the entity `ledger.account`.
+
+**Export** — `export_csv(org)` (UTF-8 with BOM) and `export_xlsx(org)` (one sheet, header row bold
+and frozen, cells as text so `0100` keeps its zero): every account in code order, archived ones
+included, with the columns Code, Name, Name (French), Type, Sub-type, Parent code, System role,
+Bank account, GIFI code, Require a contact, Require a tracking category, Require an attachment,
+Default tax code, Description, Status. Values are what people read ("Current asset", "Yes").
+The export is the import template: exporting and re-importing changes nothing.
+
+**Import** — `import_accounts(sheet, columns, apply=False, actor=None, filename="")`, or
+`run_import(data, filename, columns=None, …)` for parse + mapping (given, saved, or
+auto-suggested — French headers such as *Numéro de compte*, *Sous-type*, *Code IGRF* map
+themselves) + dry run/apply in one call. Returns an `ImportReport` (one row per data row: create,
+update with `[before, after]` per changed column, unchanged, or error with reasons; `errors_csv()`).
+
+| Rule | Behaviour |
+|---|---|
+| Matching | By **code**, case-insensitive; never by name — a renamed account is updated in place. An unknown code creates the account (Name and Sub-type then required). Renumbering stays a separate action (C-01-T07) |
+| Blank / `__CLEAR__` | A blank cell leaves the field unchanged; `__CLEAR__` empties Name (French), Parent code, GIFI code, Default tax code, Description; Name and Sub-type can't be cleared |
+| Values | Sub-type, Type, System role, Status: stored key or English/French label (accents, case ignored); booleans Yes/No/True/False/1/0/Oui/Non/X |
+| Checked, not changed | Type (follows the sub-type), System role (set by Numo9), Status (archiving has its own rules, C-01-T08): a different value is a row error; the exported value passes |
+| Parents | May be rows of the same file, in any order (rows are saved parents first); a loop in the file and a parent code that exists nowhere are row errors |
+| Duplicates | A code on two rows of the file: every copy is an error naming the rows |
+| Chart rules | Each row goes through `Account.clean()`/`save()`: code format, GIFI list and section, tree (depth, types, system parents), system-role guard, unique code; a refused row reports the rule's message and code, and never undoes the other rows (one savepoint per row) |
+| Dry run | `apply=False` (default) does the same work in a transaction that is rolled back: 0 accounts, 0 audit events, and exactly the outcome applying will have |
+| Audit | An applied import is one audit batch "Chart of accounts import: <file>" (`meta.file`, `meta.rows`), attributed to the importing user |
+
+The API endpoints (export download, upload/dry run/apply) come with the accounts API (C-01-T09),
+and the screens with the import wizard (B-03-T12) mounted on the chart page (C-01-T11).
+
 ## Errors
 
 Every refusal is a `LedgerError` (a `ValidationError`) with a stable `code`, e.g.
@@ -200,9 +233,8 @@ message is translated and names the account or role concerned.
 | Task | What |
 |---|---|
 | C-01-T08 | Archive service (balance must be 0, not system) — needs C-02 balances |
-| C-01-T09 | API `/api/v1/orgs/{id}/accounts` (CRUD, tree, renumber, archive, bulk), feature key, sweep |
+| C-01-T09 | API `/api/v1/orgs/{id}/accounts` (CRUD, tree, renumber, archive, bulk, import/export endpoints), feature key, sweep |
 | C-01-T11 / T12 | Chart tree table and account drawer (GIFI picker, flags, tax default, balance) |
-| C-01-T13 | Import/export via the B-03 framework |
 | Phase 6 | French account names (`name_i18n["fr-ca"]`) and GIFI descriptions |
 
 ## Tests
@@ -216,5 +248,6 @@ message is translated and names the account or role concerned.
 | T05 | `tests/test_ledger_template.py` |
 | T06 | `tests/test_ledger_guards.py` |
 | T07 | `tests/test_ledger_renumber.py` |
+| T13 | `tests/test_ledger_import_export.py` |
 | T10 | `packages/ui/src/pickers/AccountPicker.test.tsx`, story *Forms/Pickers › Account Picker Contexts*, `tests/test_ledger_contexts.py` |
 | T14 | `tests/test_ledger_gaps.py` (+ `tests/fixtures/coa_ca_v1/expected.json`) |

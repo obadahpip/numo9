@@ -12,7 +12,13 @@ class LedgerConfig(AppConfig):
     verbose_name = "General ledger"
 
     def ready(self) -> None:
+        from numo9.imports.fields import register_entity
+
         from . import cache  # noqa: F401  (chart cache busting on account changes)
+        from .importing import ACCOUNT
+
+        # The chart of accounts can be imported and exported (C-01-T13, B-03 framework).
+        register_entity(ACCOUNT)
 
         # The GIFI list exists after every migrate and flush (test databases are flushed between
         # transactional tests): missing codes are created, existing rows are kept.
