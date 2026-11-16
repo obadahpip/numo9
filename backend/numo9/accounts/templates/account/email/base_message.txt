@@ -1,0 +1,4 @@
+{% load i18n %}{% autoescape off %}{% block content %}{% endblock content %}
+
+{% blocktranslate with site_domain=current_site.domain %}— Numo9 · {{ site_domain }}{% endblocktranslate %}
+{% endautoescape %}

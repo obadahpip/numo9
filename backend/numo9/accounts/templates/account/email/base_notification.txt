@@ -1,0 +1,7 @@
+{% extends "account/email/base_message.txt" %}{% load i18n %}
+{% block content %}{% autoescape off %}{% block notification_message %}{% endblock notification_message %}
+
+{% blocktranslate %}Not you? Change your password now and sign out your other sessions in Numo9 under Security. This change came from:
+- IP address: {{ ip }}
+- Browser: {{ user_agent }}
+- Date: {{ timestamp }}{% endblocktranslate %}{% endautoescape %}{% endblock content %}

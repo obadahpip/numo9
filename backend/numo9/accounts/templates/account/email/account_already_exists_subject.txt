@@ -1,0 +1,1 @@
+{% load i18n %}{% autoescape off %}{% translate "You already have a Numo9 account" %}{% endautoescape %}
