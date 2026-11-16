@@ -10,6 +10,7 @@ class WorkspaceConfig(AppConfig):
     verbose_name = "Accountant workspace"
 
     def ready(self) -> None:
-        from . import signals
+        from . import groups, signals
 
         signals.connect()
+        groups.connect()  # membership clean-up when a practice stops serving (V-02-T02)

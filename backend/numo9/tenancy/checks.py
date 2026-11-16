@@ -67,6 +67,10 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Stripe webhook events (U-04-T03): the event log as Stripe sent it, kept once per event
         # id; an event arrives before its organisation is known (filled once resolved).
         "billing.StripeEvent",
+        # Practice groups of client organisations (V-02-T02): a practice's own tree and which
+        # served organisations it files where; names, no organisation business data.
+        "workspace.OrgGroup",
+        "workspace.OrgGroupMembership",
     }
 )
 

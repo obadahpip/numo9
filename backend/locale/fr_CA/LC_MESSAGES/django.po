@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:30-0500\n"
+"POT-Creation-Date: 2026-11-16 14:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4657,6 +4657,30 @@ msgstr "Inviter le propriétaire d’une organisation cliente"
 msgid "change the practice's security settings"
 msgstr "modifier les paramètres de sécurité du cabinet"
 
+msgid "Give the group a name."
+msgstr "Donnez un nom au groupe."
+
+msgid "Use 80 characters or fewer."
+msgstr "Utilisez 80 caractères au plus."
+
+#, python-format
+msgid "There's already a group called %(name)s here."
+msgstr "Il y a déjà un groupe nommé %(name)s à cet endroit."
+
+#, python-format
+msgid "Groups can be %(max)d levels deep at most."
+msgstr "Les groupes peuvent compter %(max)d niveaux au plus."
+
+msgid "That group belongs to another practice."
+msgstr "Ce groupe appartient à un autre cabinet."
+
+msgid "A group can't move inside itself or one of its sub-groups."
+msgstr "Un groupe ne peut pas être déplacé dans lui-même ni dans l’un de ses sous-groupes."
+
+#, python-format
+msgid "%(organisation)s isn't a client of this practice."
+msgstr "%(organisation)s n’est pas un client de ce cabinet."
+
 msgid "Comfortable"
 msgstr "Confortable"
 
@@ -4728,6 +4752,24 @@ msgstr "vue de répertoire enregistrée"
 
 msgid "saved directory views"
 msgstr "vues de répertoire enregistrées"
+
+msgid "organisation group"
+msgstr "groupe d’organisations"
+
+msgid "organisation groups"
+msgstr "groupes d’organisations"
+
+msgid "group"
+msgstr ""
+
+msgid "added at"
+msgstr "ajoutée le"
+
+msgid "organisation in a group"
+msgstr "organisation dans un groupe"
+
+msgid "organisations in groups"
+msgstr "organisations dans des groupes"
 
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"

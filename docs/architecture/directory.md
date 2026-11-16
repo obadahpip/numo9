@@ -150,3 +150,28 @@ saved view after logout/login, keyboard-only flow, axe; `@visual` snapshots of t
 | V-03 bulk actions | "Select all matching" sends the same query parameters (`api.parse_directory_params`) to the server |
 | V-04 dashboards | Widgets return directory filter parameters for drill-down |
 | G (GST/HST), D/E (invoices), K (filings) | `register_summary_provider` returning `gst_cycle`, `overdue_count`, `unfiled_count`, then `schedule_refresh(org)` on their own changes |
+
+## Groups (V-02-T02)
+
+`workspace.OrgGroup` — a practice's tree of groups of client organisations ("Toronto office →
+Retail clients"), stored as a **materialised path** (`django-treebeard` `MP_Node`: `path`,
+`depth`, `numchild`): a subtree or the ancestors are one indexed query, and a cycle can't be
+represented. `workspace.OrgGroupMembership` files an organisation in a group (unique per group;
+an organisation can be in several groups). Both are practice data (allow-listed in
+`numo9.tenancy.checks`), never an organisation's records.
+
+`numo9.workspace.groups` — `create_group(practice, name, parent=None)`, `rename_group`,
+`move_group(group, parent | None)` (with its sub-groups), `add_organisation` /
+`remove_organisation`, `groups_of(practice)` (tree order). Refusals are `GroupError` with a code:
+
+| Code | Rule |
+|---|---|
+| `workspace.group.too_deep` | Depth 1–5: a sixth level, or a move that would put the moved subtree's deepest group at level 6. The database checks it too (`workspace_group_max_depth`) |
+| `workspace.group.into_itself` | Not inside itself or one of its sub-groups |
+| `workspace.group.other_practice` | Parent from the same practice only |
+| `workspace.group.name_taken` | Unique among siblings, case and accents ignored (the same name under another parent is fine) |
+| `workspace.group.name_required` / `name_long` | 1–80 characters |
+| `workspace.group.not_served` | Only organisations the practice actively serves |
+
+When a practice stops serving an organisation (assignment switched off or deleted) its
+memberships in that practice's groups are removed; other practices' groups keep theirs.

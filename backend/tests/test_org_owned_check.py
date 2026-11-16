@@ -66,6 +66,9 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "notifications.EmailSuppression",
                 # Stripe webhook events (U-04-T03): reviewed — Stripe's event log, idempotency.
                 "billing.StripeEvent",
+                # Practice groups (V-02-T02): reviewed — a practice's tree and its filing.
+                "workspace.OrgGroup",
+                "workspace.OrgGroupMembership",
             }
         )
         == PLATFORM_MODELS

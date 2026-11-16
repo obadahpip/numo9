@@ -34,6 +34,7 @@ from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
+from treebeard.mp_tree import MP_Node
 
 from numo9.tenancy.models import Organisation, Practice
 
@@ -196,3 +197,79 @@ class SavedView(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} · {self.practice} · {self.name}"
+
+
+# ---- groups (V-02) ---------------------------------------------------------------------------
+
+#: Deepest level of the group tree: a top-level group is depth 1 (V-02 business rule).
+GROUP_MAX_DEPTH = 5
+
+
+class OrgGroup(MP_Node):  # type: ignore[misc]
+    """A practice's group of client organisations (V-02-T02): "Toronto office → Retail clients".
+
+    A tree per practice, stored as a **materialised path** (``django-treebeard`` ``MP_Node``:
+    ``path``, ``depth``, ``numchild``) — reading a subtree or the ancestors is one indexed query and
+    a cycle can't be represented. Depth 1 to ``GROUP_MAX_DEPTH`` (5), also a database check.
+    Siblings are kept in name order; a name is unique among its siblings (case ignored). An
+    organisation can be in several groups (``OrgGroupMembership``). Practice data, not an
+    organisation's records: allow-listed like the practice memberships.
+    """
+
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    practice = models.ForeignKey(
+        Practice, on_delete=models.CASCADE, related_name="+", verbose_name=_("practice")
+    )
+    name = models.CharField(_("name"), max_length=80)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    node_order_by: ClassVar[list[str]] = ["name"]
+
+    class Meta:
+        verbose_name = _("organisation group")
+        verbose_name_plural = _("organisation groups")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(depth__gte=1, depth__lte=GROUP_MAX_DEPTH),
+                name="workspace_group_max_depth",
+            ),
+            models.CheckConstraint(condition=~models.Q(name=""), name="workspace_group_name"),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("practice", "depth"), name="workspace_group_practice_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class OrgGroupMembership(models.Model):
+    """An organisation in a practice group (V-02-T02); in several groups at once if needed.
+
+    The organisation must be one the group's practice serves (``clean``); removing the practice's
+    assignment removes its memberships (V-02 edge case "org removed from practice").
+    """
+
+    group = models.ForeignKey(
+        OrgGroup, on_delete=models.CASCADE, related_name="memberships", verbose_name=_("group")
+    )
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.CASCADE,
+        related_name="group_memberships",
+        verbose_name=_("organisation"),
+    )
+    added_at = models.DateTimeField(_("added at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("organisation in a group")
+        verbose_name_plural = _("organisations in groups")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("group", "organisation"), name="workspace_group_membership_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation} ∈ {self.group}"

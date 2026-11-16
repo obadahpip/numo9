@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:30-0500\n"
+"POT-Creation-Date: 2026-11-16 14:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4388,6 +4388,30 @@ msgstr ""
 msgid "change the practice's security settings"
 msgstr ""
 
+msgid "Give the group a name."
+msgstr ""
+
+msgid "Use 80 characters or fewer."
+msgstr ""
+
+#, python-format
+msgid "There's already a group called %(name)s here."
+msgstr ""
+
+#, python-format
+msgid "Groups can be %(max)d levels deep at most."
+msgstr ""
+
+msgid "That group belongs to another practice."
+msgstr ""
+
+msgid "A group can't move inside itself or one of its sub-groups."
+msgstr ""
+
+#, python-format
+msgid "%(organisation)s isn't a client of this practice."
+msgstr ""
+
 msgid "Comfortable"
 msgstr ""
 
@@ -4458,6 +4482,24 @@ msgid "saved directory view"
 msgstr ""
 
 msgid "saved directory views"
+msgstr ""
+
+msgid "organisation group"
+msgstr ""
+
+msgid "organisation groups"
+msgstr ""
+
+msgid "group"
+msgstr ""
+
+msgid "added at"
+msgstr ""
+
+msgid "organisation in a group"
+msgstr ""
+
+msgid "organisations in groups"
 msgstr ""
 
 msgid "See the practice's client organisations in the directory"
