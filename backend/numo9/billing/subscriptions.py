@@ -89,6 +89,12 @@ def is_newer(subscription: Subscription, at: dt.datetime, target: str | None = N
     return PRECEDENCE.get(target, 0) >= PRECEDENCE.get(subscription.status, 0)
 
 
+def earlier_failure(subscription: Subscription, at: dt.datetime) -> None:
+    """A late past-due signal of the same episode: the grace runs from the first failure."""
+    if subscription.status == SubscriptionStatus.PAST_DUE and subscription.grace_until is not None:
+        subscription.grace_until = min(subscription.grace_until, at + GRACE)
+
+
 def stamp(subscription: Subscription, at: dt.datetime) -> None:
     last = subscription.stripe_event_created
     subscription.stripe_event_created = at if last is None or at > last else last
@@ -187,8 +193,35 @@ def on_subscription(event: StripeEvent) -> Subscription:
         organisation_id=metadata.get(METADATA_KEY, ""),
     )
     stripe_status = "canceled" if event.type.endswith(".deleted") else str(obj.get("status"))
-    if not is_newer(subscription, event.stripe_created, STATE_TABLE.get(stripe_status)):
-        return subscription  # an older event arriving late (out of order)
+    # The subscription's own fields (package, interval, period, cancellation) follow the newest
+    # subscription event; its status follows the newest billing event of any kind (U-04-T15).
+    if not _newer_subscription_event(subscription, event):
+        _apply_fields(subscription, obj, metadata)
+    if is_newer(subscription, event.stripe_created, STATE_TABLE.get(stripe_status)):
+        apply_status(subscription, stripe_status, event.stripe_created)
+        stamp(subscription, event.stripe_created)
+    elif STATE_TABLE.get(stripe_status) == SubscriptionStatus.PAST_DUE:
+        earlier_failure(subscription, event.stripe_created)
+    return _save(subscription, event)
+
+
+def _newer_subscription_event(subscription: Subscription, event: StripeEvent) -> bool:
+    """A later ``customer.subscription.*`` event of this organisation was already applied."""
+    return (
+        StripeEvent.objects.filter(
+            organisation_id=subscription.organisation_id,
+            type__startswith="customer.subscription.",
+            processed_at__isnull=False,
+            stripe_created__gt=event.stripe_created,
+        )
+        .exclude(pk=event.pk)
+        .exists()
+    )
+
+
+def _apply_fields(
+    subscription: Subscription, obj: dict[str, Any], metadata: dict[str, str]
+) -> None:
     item = _item(obj)
     price = item.get("price") or {}
     subscription.stripe_subscription_id = str(obj.get("id") or "")
@@ -206,9 +239,6 @@ def on_subscription(event: StripeEvent) -> Subscription:
     methods = (obj.get("payment_settings") or {}).get("payment_method_types") or []
     if len(methods) == 1 and methods[0] in PaymentMethodType.values:
         subscription.payment_method_type = methods[0]
-    apply_status(subscription, stripe_status, event.stripe_created)
-    stamp(subscription, event.stripe_created)
-    return _save(subscription, event)
 
 
 @register_handler("checkout.session.completed")

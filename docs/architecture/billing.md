@@ -338,6 +338,13 @@ event applied, and `numo9.billing.subscriptions.is_newer(subscription, created, 
   due > active > trialing;
 - the checkout event activates only when no newer subscription event decided the state.
 
+- the subscription's own fields (package, interval, period end, cancellation) follow the newest
+  `customer.subscription.*` event already applied, separately from the status clock (a late
+  `created` event still fills the package when only invoice events came before);
+- a paid invoice stamps "active" at its time (activating a trial, past-due or read-only
+  subscription); a failed one stamps "past due"; a late failure of the same episode moves the
+  grace end earlier (the grace runs from the first failure).
+
 Moving to *active* or *cancelled* clears the grace end. `tests/test_billing_out_of_order.py`
 (Hypothesis): any subset of a subscription's life (checkout, created, paid, failed renewal and
 recovery, upgrade, cancel at period end, deleted), delivered in any order, ends in the same status,
