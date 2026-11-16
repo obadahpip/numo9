@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 215   Remaining: 2572   Progress: 7.71%
+TOTAL ATOMIC TASKS: 2787   Completed: 222   Remaining: 2565   Progress: 7.97%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -293,13 +293,13 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ C-01-T13 — CoA import/export (CSV/XLSX, mapping, dry-run via B-03 framework)   [backend: numo9.ledger.importing (export CSV/XLSX, import with mapping, dry run, apply) on the B-03 framework, round trip = 0 changes (tests/test_ledger_import_export.py); the endpoints come with C-01-T09 and the screens with B-03-T12 on the C-01-T11 chart page]
 
 [C-02]
-❌ C-02-T02 — JournalEntry + JournalLine models + numeric(18,2) + check constraints (debit≥0, credit≥0, not both)
-❌ C-02-T04 — Append-only trigger on posted entries/lines + Django guard
-❌ C-02-T05 — JournalSequence gap-free allocator
-❌ C-02-T06 — Validation service (≥2 lines, balance per book, leaf/active accounts, Decimal precision)
-❌ C-02-T11 — Trial balance query per book (accounting = both+accounting; tax = both+tax)
-❌ C-02-T13 — Property test: random valid journal specs → TB both books = 0; random invalid → rejected
-❌ C-02-T17 — Performance: 100k-line fixture TB < 1 s
+✅ C-02-T02 — JournalEntry + JournalLine models + numeric(18,2) + check constraints (debit≥0, credit≥0, not both)
+✅ C-02-T04 — Append-only trigger on posted entries/lines + Django guard
+✅ C-02-T05 — JournalSequence gap-free allocator
+✅ C-02-T06 — Validation service (≥2 lines, balance per book, leaf/active accounts, Decimal precision)
+✅ C-02-T11 — Trial balance query per book (accounting = both+accounting; tax = both+tax)
+✅ C-02-T13 — Property test: random valid journal specs → TB both books = 0; random invalid → rejected
+✅ C-02-T17 — Performance: 100k-line fixture TB < 1 s
 
 [A-07]
 ❌ A-07-T01 — Notification model (recipient, org, category, title key, body params, link, read_at) + API list/mark-read

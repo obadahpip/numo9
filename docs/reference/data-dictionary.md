@@ -56,6 +56,63 @@ every organisation; allow-listed in `tenancy.checks.PLATFORM_MODELS`), seeded by
 | `published_on` | date | no | Publication date of that list: 2023-08-23 |
 | `retired_in` | varchar(40) | no | Empty, or the list version that dropped the code (kept for history) |
 
+### `ledger_journalentry` — Journal entry {#ledger-journalentry}
+
+The header of one double-entry journal (C-02-T02, [ADR-0003](../adr/0003-posting-engine-and-book-dimension.md)).
+Business record: `OrgOwnedModel` and `AuditedModel`; row-level security (`org_isolation`).
+Design: [Posting engine](../architecture/posting-engine.md).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `number` | bigint ≥ 0 | yes | Journal number, given when posted from the organisation's `JournalSequence`; unique per organisation (`ledger_journal_number_unique_per_org`) |
+| `date` | date | no | Accounting date of every line |
+| `type` | varchar(32) | no | `manual`, `sales`, `purchase`, `payment`, `payroll`, `opening`, `adjustment`, `reversal` (modules add types); not empty (`ledger_journal_type_required`) |
+| `status` | varchar(20) | no | `draft`, `awaiting_approval`, `posted`, `reversed` (`ledger_journal_status_valid`); posted/reversed have `number` and `posted_at`, the others no number (`ledger_journal_number_when_posted`) |
+| `source_type`, `source_id` | varchar(60), varchar(64) | no | The document that posted it (`sales.Invoice` + public id); empty for manual journals; index `(organisation, source_type, source_id)` |
+| `narration` | text | no | What the entry is for |
+| `book_scope` | varchar(16) | no | `both`, `accounting`, `tax` — the books its lines touch (`ledger_journal_book_scope_valid`) |
+| `reversal_of_id` | bigint → `ledger_journalentry` | yes | The entry this one reverses; one-to-one (an entry is reversed once); never itself (`ledger_journal_not_own_reversal`); `PROTECT` |
+| `posted_by_id` | bigint → `accounts_user` | yes | Who posted it |
+| `posted_at` | timestamptz | yes | When it was posted |
+
+Index `(organisation, date)`. Audit actions: `ledger.journalentry.created`, `.updated`.
+
+### `ledger_journalline` — Journal line {#ledger-journalline}
+
+One debit or credit of an entry (C-02-T02). `OrgOwnedModel` without public id, creator or soft
+delete; not audited line by line (the entry's posting event lists its lines); row-level security.
+Partition-ready: primary key `(organisation_id, id)` (C-02-T03 hash-partitions by organisation).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `organisation_id` | bigint → `tenancy_organisation` | no | The entry's organisation (set from the entry); partition and RLS key |
+| `id` | bigint | no | From `ledger_journalline_id_seq` (owned by the column) |
+| `entry_id` | bigint → `ledger_journalentry` | no | `PROTECT` |
+| `line_no` | smallint ≥ 0 | no | Order in the entry; unique per entry (`ledger_line_no_unique`) |
+| `account_id` | bigint → `ledger_account` | no | Leaf, active account of the organisation (checked by the engine); `PROTECT` |
+| `debit`, `credit` | numeric(18,2) | no | Non-negative (`ledger_line_debit_not_negative`, `ledger_line_credit_not_negative`); exactly one > 0 (`ledger_line_one_side`) |
+| `book` | varchar(16) | no | `both`, `accounting`, `tax` (`ledger_line_book_valid`) |
+| `contact_id` | bigint → `contacts_contact` | yes | Contact on the line (C-03-T02); `PROTECT` |
+| `tracking` | jsonb | no | Tracking categories (C-03) |
+| `description` | varchar(500) | no | Line description |
+| `tax_code` | varchar(60) | no | Tax code key (G-01) |
+| `created_at`, `updated_at` | timestamptz | no | Set automatically |
+
+Indexes `(organisation, account, book)` (trial balance) and `(organisation, entry)`.
+
+### `ledger_journalsequence` — Journal number sequence {#ledger-journalsequence}
+
+The organisation's gap-free journal numbering (C-02-T05). `OrgOwnedModel`; not audited (one
+update per posting); written only by `numo9.ledger.sequence.allocate_journal_number`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; one row per organisation (`ledger_journalseq_one_per_org`) |
+| `next_number` | bigint | no | The number the next posting takes; ≥ 1 (`ledger_journalseq_next_positive`) |
+| `prefix` | varchar(10) | no | Display prefix, `JE-` by default |
+| `padding` | smallint | no | Display digits, 6 by default, ≤ 12 (`ledger_journalseq_padding_max`) |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

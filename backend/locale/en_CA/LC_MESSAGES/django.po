@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:45-0500\n"
+"POT-Creation-Date: 2026-11-16 03:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2461,6 +2461,137 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
+msgid "Draft"
+msgstr ""
+
+msgid "Awaiting approval"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+msgid "Reversed"
+msgstr ""
+
+msgid "Both books"
+msgstr ""
+
+msgid "Accounting book"
+msgstr ""
+
+msgid "Tax book"
+msgstr ""
+
+msgid "Manual journal"
+msgstr ""
+
+msgid "Sales"
+msgstr ""
+
+msgid "Purchases"
+msgstr ""
+
+msgid "Payment"
+msgstr ""
+
+msgid "Opening balance"
+msgstr ""
+
+msgid "Adjustment"
+msgstr ""
+
+msgid "Reversal"
+msgstr ""
+
+#, python-format
+msgid "Journal %(number)s is posted: it can't be changed or deleted. Reverse it instead."
+msgstr ""
+
+msgid "journal number"
+msgstr ""
+
+msgid "date"
+msgstr ""
+
+msgid "journal type"
+msgstr ""
+
+msgid "source document type"
+msgstr ""
+
+msgid "source document"
+msgstr ""
+
+msgid "narration"
+msgstr ""
+
+msgid "books"
+msgstr ""
+
+msgid "reverses"
+msgstr ""
+
+msgid "posted by"
+msgstr ""
+
+msgid "posted at"
+msgstr ""
+
+msgid "journal entry"
+msgstr ""
+
+msgid "journal entries"
+msgstr ""
+
+#, python-format
+msgid "Journal %(number)s"
+msgstr ""
+
+msgid "Draft journal"
+msgstr ""
+
+msgid "line ID"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "debit"
+msgstr ""
+
+msgid "credit"
+msgstr ""
+
+msgid "book"
+msgstr ""
+
+msgid "tracking"
+msgstr ""
+
+msgid "tax code"
+msgstr ""
+
+msgid "journal line"
+msgstr ""
+
+msgid "journal lines"
+msgstr ""
+
+msgid "next number"
+msgstr ""
+
+msgid "prefix"
+msgstr ""
+
+msgid "digits"
+msgstr ""
+
+msgid "journal number sequence"
+msgstr ""
+
+msgid "journal number sequences"
+msgstr ""
+
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
@@ -2513,6 +2644,56 @@ msgstr ""
 
 #, python-format
 msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
+msgstr ""
+
+msgid "accounting book"
+msgstr ""
+
+msgid "tax book"
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the %(side)s must be an exact amount (Decimal), not %(value)r."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: “%(value)s” isn't an amount."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(value)s has more than two decimals. Amounts are in cents: allocate the pennies across lines."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the %(side)s can't be negative (%(value)s)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(value)s is larger than the largest amount the ledger holds."
+msgstr ""
+
+#, python-format
+msgid "A journal needs at least two lines (a debit and a credit); it has %(count)d."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d needs a debit or a credit, not both and not neither."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: “%(book)s” isn't a book (both, accounting or tax)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the account isn't one of this organisation's accounts."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
 msgstr ""
 
 msgid "Sole proprietorship"
@@ -2731,15 +2912,6 @@ msgstr ""
 msgid "document type"
 msgstr ""
 
-msgid "prefix"
-msgstr ""
-
-msgid "next number"
-msgstr ""
-
-msgid "digits"
-msgstr ""
-
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
 msgstr ""
 
@@ -2833,9 +3005,6 @@ msgid "Enter the number's 6 to 10 digits."
 msgstr ""
 
 msgid "Choose the type of registration."
-msgstr ""
-
-msgid "Draft"
 msgstr ""
 
 msgid "Enter the text for each language."
@@ -3090,12 +3259,6 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-msgid "Sales"
-msgstr ""
-
-msgid "Purchases"
-msgstr ""
-
 msgid "Banking"
 msgstr ""
 
@@ -3177,9 +3340,6 @@ msgid "A platform role is given without an organisation or practice."
 msgstr ""
 
 msgid "This custom role belongs to another organisation or practice."
-msgstr ""
-
-msgid "Manual journal"
 msgstr ""
 
 msgid "Bill"

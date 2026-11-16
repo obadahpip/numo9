@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-15 17:45-0500\n"
+"POT-Creation-Date: 2026-11-16 03:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2668,6 +2668,172 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Awaiting approval"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+msgid "Reversed"
+msgstr ""
+
+msgid "Both books"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "Accounting book"
+msgstr "Comptabilité"
+
+msgid "Tax book"
+msgstr ""
+
+msgid "Manual journal"
+msgstr "Écriture de journal manuelle"
+
+msgid "Sales"
+msgstr "Ventes"
+
+msgid "Purchases"
+msgstr "Achats"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "Payment"
+msgstr "arguments"
+
+msgid "Opening balance"
+msgstr ""
+
+#, fuzzy
+#| msgid "Documents"
+msgid "Adjustment"
+msgstr "Documents"
+
+msgid "Reversal"
+msgstr ""
+
+#, python-format
+msgid "Journal %(number)s is posted: it can't be changed or deleted. Reverse it instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "Due date"
+msgid "date"
+msgstr "Date d’échéance"
+
+#, fuzzy
+#| msgid "job type"
+msgid "journal type"
+msgstr "type de tâche"
+
+msgid "source document type"
+msgstr ""
+
+#, fuzzy
+#| msgid "Documents"
+msgid "source document"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "duration"
+msgid "narration"
+msgstr "durée"
+
+msgid "books"
+msgstr ""
+
+#, fuzzy
+#| msgid "Forever"
+msgid "reverses"
+msgstr "Pour toujours"
+
+msgid "posted by"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "posted at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "journal entry"
+msgstr "Comptabilité"
+
+msgid "journal entries"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Number"
+msgid "Journal %(number)s"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "Manual journal"
+msgid "Draft journal"
+msgstr "Écriture de journal manuelle"
+
+msgid "line ID"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "debit"
+msgstr ""
+
+msgid "credit"
+msgstr ""
+
+msgid "book"
+msgstr ""
+
+#, fuzzy
+#| msgid "Banking"
+msgid "tracking"
+msgstr "Banque"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax code"
+msgstr "code d’erreur"
+
+msgid "journal line"
+msgstr ""
+
+msgid "journal lines"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "next number"
+msgstr "Numéro"
+
+msgid "prefix"
+msgstr ""
+
+msgid "digits"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal number sequence"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal number sequences"
+msgstr "Numéro"
+
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
@@ -2724,6 +2890,61 @@ msgstr ""
 
 #, python-format
 msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "accounting book"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax book"
+msgstr "code d’erreur"
+
+#, python-format
+msgid "Line %(line)d: the %(side)s must be an exact amount (Decimal), not %(value)r."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: “%(value)s” isn't an amount."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(value)s has more than two decimals. Amounts are in cents: allocate the pennies across lines."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the %(side)s can't be negative (%(value)s)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(value)s is larger than the largest amount the ledger holds."
+msgstr ""
+
+#, python-format
+msgid "A journal needs at least two lines (a debit and a credit); it has %(count)d."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d needs a debit or a credit, not both and not neither."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: “%(book)s” isn't a book (both, accounting or tax)."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "Line %(line)d: the account isn't one of this organisation's accounts."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, python-format
+msgid "Line %(line)d: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
 msgstr ""
 
 msgid "Sole proprietorship"
@@ -2972,17 +3193,6 @@ msgstr "Contacts"
 msgid "document type"
 msgstr ""
 
-msgid "prefix"
-msgstr ""
-
-#, fuzzy
-#| msgid "Number"
-msgid "next number"
-msgstr "Numéro"
-
-msgid "digits"
-msgstr ""
-
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
 msgstr ""
 
@@ -3079,9 +3289,6 @@ msgstr ""
 #| msgid "Close the organisation"
 msgid "Choose the type of registration."
 msgstr "Fermer l’organisation"
-
-msgid "Draft"
-msgstr "Brouillon"
 
 msgid "Enter the text for each language."
 msgstr "Entrez le texte pour chaque langue."
@@ -3343,12 +3550,6 @@ msgstr "paies"
 msgid "Home"
 msgstr "Accueil"
 
-msgid "Sales"
-msgstr "Ventes"
-
-msgid "Purchases"
-msgstr "Achats"
-
 msgid "Banking"
 msgstr "Banque"
 
@@ -3431,9 +3632,6 @@ msgstr "Un rôle de plateforme s’attribue sans organisation ni cabinet."
 
 msgid "This custom role belongs to another organisation or practice."
 msgstr "Ce rôle personnalisé appartient à une autre organisation ou à un autre cabinet."
-
-msgid "Manual journal"
-msgstr "Écriture de journal manuelle"
 
 msgid "Bill"
 msgstr "Facture fournisseur"

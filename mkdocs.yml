@@ -79,6 +79,7 @@ nav:
       - "Packages, prices and promo codes": architecture/packages-pricing.md
       - "Entitlement engine": architecture/entitlements.md
       - "Chart of accounts": architecture/chart-of-accounts.md
+      - "Posting engine": architecture/posting-engine.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md
       - "Contacts": architecture/contacts.md
       - "Spreadsheet imports": architecture/imports.md
