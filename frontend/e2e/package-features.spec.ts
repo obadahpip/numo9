@@ -76,7 +76,9 @@ test("search filters the rows and the current package column is highlighted", as
   await expect(
     page.locator('tr[data-feature-key="accounting.invoice_reminders.write"]'),
   ).toContainText("Send invoice reminders before and after the due date");
-  await expect(page.getByRole("status")).toHaveText("2 features match “reminder”.");
+  await expect(page.getByRole("main").getByRole("status")).toHaveText(
+    "2 features match “reminder”.",
+  );
   await expect(page.getByRole("heading", { level: 2, name: "Tax" })).toHaveCount(0);
   await expectAccessible(page);
 
