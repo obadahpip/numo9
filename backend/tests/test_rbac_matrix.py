@@ -42,6 +42,7 @@ from numo9.tenancy.models import (
     PracticeMember,
 )
 from numo9.tenancy.sweep import Endpoint, build_path, iter_endpoints
+from tests.auth_helpers import enrol_two_factor
 
 ENDPOINTS: list[Declaration] = declarations()
 _ROUTES = {e.display or e.route: e for e in iter_endpoints()}
@@ -160,6 +161,7 @@ def sign_in(subject: Subject, world: World, permission: str) -> Client:
     elif subject.kind == "platform":
         role = Role.objects.get(is_system=True, scope=RoleScope.PLATFORM, key=subject.key)
         RoleAssignment.objects.create(role=role, user=user)
+        enrol_two_factor(user)  # platform owners can't use the API without 2FA (A-02-T06)
     client.force_login(user)
     return client
 

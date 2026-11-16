@@ -107,6 +107,10 @@ class Practice(models.Model):
     # Created on the accountant's behalf when they accept an owner's invitation without having a
     # practice (A-02-T09): the name is a placeholder until they finish practice onboarding.
     setup_pending = models.BooleanField(_("set-up pending"), default=False, db_default=False)
+    # 2FA policy (A-02-T06): practice admins must use two-factor authentication.
+    require_2fa_for_admins = models.BooleanField(
+        _("practice admins must use two-factor authentication"), default=False, db_default=False
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 

@@ -2,11 +2,15 @@
 
 from django.urls import path
 
-from . import api, invitations_api
+from . import api, invitations_api, security_api
 
 urlpatterns = [
     path("me/organisations", api.MyOrganisationsView.as_view(), name="me-organisations"),
     path("practices", api.PracticeCreateView.as_view(), name="practices"),
+    # 2FA policy of a practice (A-02-T06).
+    path(
+        "practice/security", security_api.PracticeSecurityView.as_view(), name="practice-security"
+    ),
     path("organisations", api.OrganisationCreateView.as_view(), name="organisations"),
     # Invitations (A-02-T09)
     path("invitations", invitations_api.InvitationCreateView.as_view(), name="invitations"),

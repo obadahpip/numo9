@@ -35,7 +35,7 @@ from numo9.tenancy.models import (
     PracticeAssignment,
     PracticeMember,
 )
-from tests.auth_helpers import login, make_user
+from tests.auth_helpers import enrol_two_factor, login, make_user
 from tests.testapp.models import AuditedInvoice
 
 pytestmark = pytest.mark.django_db
@@ -322,6 +322,7 @@ def _platform_staff(key: str) -> Client:
     user = User.objects.create_user(f"{key}@numo9.ca", password="x" * 12, name=key)
     role = Role.objects.get(is_system=True, scope=RoleScope.PLATFORM, key=key)
     RoleAssignment.objects.create(role=role, user=user)
+    enrol_two_factor(user)  # platform owners need 2FA (A-02-T06)
     client = Client()
     client.force_login(user)
     return client

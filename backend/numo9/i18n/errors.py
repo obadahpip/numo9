@@ -650,3 +650,16 @@ SECURITY_REAUTHENTICATION_REQUIRED = define(
     ),
     status.HTTP_401_UNAUTHORIZED,
 )
+PRACTICE_PERMISSION_DENIED = define(
+    "practice.permission_denied",
+    _("You don't have permission to %(action)s in this practice. Ask a practice admin."),
+    status.HTTP_403_FORBIDDEN,
+)
+AUTH_TWO_FACTOR_REQUIRED = define(
+    "auth.two_factor_required",
+    _(
+        "Turn on two-factor authentication to continue: your role requires it. Set it up in "
+        "Security settings — it takes a minute."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
