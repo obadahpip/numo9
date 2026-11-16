@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="contactperson",
             name="email_status",
             field=models.CharField(
-                blank=True, default="", max_length=16, verbose_name="email delivery"
+                blank=True, db_default="", default="", max_length=16, verbose_name="email delivery"
             ),
         ),
         migrations.AddField(
