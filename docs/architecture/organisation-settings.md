@@ -130,6 +130,24 @@ both one row each. Rules (codes `orgsettings.lock.*`):
   old → new `date` and `reason` and its author or `System: <job>`; the record history drawer
   (A-04-T10) reads it (`object_type = orgsettings.LockDate`, `object_id` = the lock's public id).
 
+## Lock service (A-05-T05)
+
+`numo9.orgsettings.locks`: `check_lock(organisation, module, date, user)` → `LockViolation(module,
+level, date)` or `None`; `assert_not_locked(...)` raises `LockedPeriod` — HTTP **409**,
+`{"detail": "The Sales and accounts receivable lock date is 2026-03-31 (everyone): changes dated
+on or before it are refused. Date it after 2026-03-31, or ask someone who manages lock dates.",
+"code": "lock.violation", "lock": {"module", "level", "date"}}`.
+
+| Rule | |
+|---|---|
+| On or before | a change dated on or before the lock date is refused; after it is allowed |
+| Organisation-local | a date-time is converted to the organisation's time zone first (22:30 on 31 March in Toronto is the 31st, even though it is 1 April in UTC) |
+| Levels | `everyone` stops everybody; `advisers_only` stops everybody except **advisers** — staff of a practice actively assigned to the organisation, with access to it, as practice admin, accountant, reviewer or payroll specialist (read-only staff are not advisers). A system change (no user) is stopped like everyone |
+| GL applies everywhere | a module's own lock **and** the GL lock apply; when both stop the change, the module's own lock is named |
+| No caching | every check reads the database — a lock set a moment ago applies at once |
+
+Tests: `backend/tests/test_orgsettings_lock_service.py` (incl. a property test: refused ⇔ date ≤ lock).
+
 ## Numbering (A-05-T08)
 
 `NumberingSequence(doc_type, prefix, next_number, padding)` — one per organisation and document

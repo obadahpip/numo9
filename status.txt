@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 238   Remaining: 2549   Progress: 8.54%
+TOTAL ATOMIC TASKS: 2787   Completed: 239   Remaining: 2548   Progress: 8.58%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -330,7 +330,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-02-T06 — 2FA enforcement policy flags (platform owner always; practice admin when practice enables)
 
 [A-05]
-❌ A-05-T05 — Lock service assert_not_locked(org, module, date, user) returning LockViolation(module, level, date)
+✅ A-05-T05 — Lock service assert_not_locked(org, module, date, user) returning LockViolation(module, level, date)
 ❌ A-05-T06 — Hook lock service into posting engine (C-02) and generic document save
 ❌ A-05-T07 — Lock impact preview endpoint (count of drafts/unposted dated before) [EXTRA]
 ❌ A-05-T09 — API endpoints for settings, registrations, locks, numbering
