@@ -207,6 +207,26 @@ organisation's journal is a 404; documented in the OpenAPI schema (`journals_lis
 `journals_get`). Tenant sweep factory `ledger.JournalEntry` posts a journal through the service.
 Read-only: nothing writes entries but the posting service.
 
+## Journal viewer (C-02-T16)
+
+`/o/<org>/accounting/journals/<id>` (`frontend/src/journals/JournalViewer.tsx`, data from
+`GET journals/<id>`) — read-only:
+
+- heading "Journal JE-000042" (draft: "Draft journal"), a status badge (Posted, Reversed…) and a
+  **book badge** for each book the entry touches (*Accounting book*, *Tax book*);
+- date, type, narration, source document, who posted it and when;
+- the lines: number, account (code and name), description, contact, tax code, a **book badge per
+  line** (*Both books* / *Accounting book* / *Tax book*), debit, credit; a **total row per book**
+  ("Total, tax book");
+- the **reversal links**: "Reversed by JE-000043." on the original, "This journal reverses
+  JE-000042." on the reversal — each opens the other;
+- the activity (posted, reversed: who, when);
+- no edit control: "Posted journals can't be changed. To correct one, reverse it and post a new
+  journal."; a journal of another organisation or that doesn't exist shows the not-found state.
+
+English and French; axe clean (`frontend/e2e/journal-viewer.spec.ts`). The journals list stays
+the module placeholder until manual journals (C-04).
+
 ## Trial balance per book (C-02-T11)
 
 `numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
@@ -238,6 +258,7 @@ the active organisation:
 | T12 | `tests/test_ledger_post_storm.py` |
 | T14 | `tests/test_ledger_write_contract.py` (fixture `tests/fixtures/ledger_writes/direct_write.py.txt`) |
 | T15 | `tests/test_ledger_journals_api.py` (+ `tests/test_tenant_sweep.py`) |
+| T16 | `frontend/e2e/journal-viewer.spec.ts` |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
 | T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |
