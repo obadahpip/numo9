@@ -314,6 +314,26 @@ extends this page with sales-tax settings).
 
 Tests: `frontend/e2e/settings-registrations.spec.ts`.
 
+## Lock dates page (A-05-T13, flow F6)
+
+Settings → Lock dates (`/o/:org/settings/lock-dates`): a matrix of the six modules × the two
+levels (*Everyone except advisers*, *Everyone*); each cell shows its date or "Not locked" (the
+button's accessible name starts with that text). Choosing a cell opens a dialog with:
+
+- the **date** (empty = remove the lock);
+- the **impact preview** (A-05-T07), refreshed as the date changes: "3 records not posted are
+  dated on or before 2026-06-30: after locking, they can't be posted unless the lock moves
+  back", with the count per source;
+- the **reason**, required (client and server) when the lock moves back or is removed.
+
+Saving updates the matrix and announces it; the server's rules (e.g. the *everyone* lock later
+than the *advisers* lock) show in the dialog. The organisation's **other owners and admins are
+notified** (event `settings.lock_changed`, category *Account and system*, link to the page) —
+flow F6's "notification to org admins"; the audit entry comes from the model (A-05-T04).
+
+Tests: `frontend/e2e/settings-lock-dates.spec.ts`, `backend/tests/test_orgsettings_api.py`
+(`test_lock_change_notifies_the_admins`).
+
 ## Attribution: no silent system change (A-05-T14, gap-44)
 
 Every settings record — `OrganisationSettings`, `TaxRegistration`, `LockDate`,

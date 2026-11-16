@@ -101,3 +101,11 @@ register_text(
     _("Your trial ends on %(ends_on)s"),
     _("Choose a package to keep working without a break. Everything you entered stays."),
 )
+
+# ---- settings (A-05-T13, flow F6) -------------------------------------------------------------
+
+register_text(
+    "notifications.settings.lock_changed",
+    _("%(module)s lock date changed"),
+    _("%(person)s set the %(level)s lock to %(date)s."),
+)

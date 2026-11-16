@@ -111,3 +111,5 @@ register_event(
     "billing.read_only", C.BILLING, title_key="notifications.billing.read_only", mandatory=True
 )
 register_event("trial.ending", C.BILLING, title_key="notifications.trial.ending")
+# Lock dates (A-05-T13, flow F6): the organisation's admins are told when a lock moves.
+register_event("settings.lock_changed", C.SYSTEM, title_key="notifications.settings.lock_changed")

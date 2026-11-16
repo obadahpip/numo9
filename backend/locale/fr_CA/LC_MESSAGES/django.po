@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:30-0500\n"
+"POT-Creation-Date: 2026-11-16 06:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3379,6 +3379,14 @@ msgstr "Votre essai se termine le %(ends_on)s"
 
 msgid "Choose a package to keep working without a break. Everything you entered stays."
 msgstr "Choisissez un forfait pour continuer sans interruption. Tout ce que vous avez saisi est conservé."
+
+#, python-format
+msgid "%(module)s lock date changed"
+msgstr "Date de verrouillage modifiée : %(module)s"
+
+#, python-format
+msgid "%(person)s set the %(level)s lock to %(date)s."
+msgstr "%(person)s a fixé le verrouillage « %(level)s » au %(date)s."
 
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"

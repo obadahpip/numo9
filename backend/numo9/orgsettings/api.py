@@ -301,6 +301,33 @@ def lock_matrix() -> list[dict[str, Any]]:
     return matrix
 
 
+def _tell_admins(lock: LockDate, actor: Any) -> None:
+    """Flow F6: the organisation's owners and admins are told a lock date changed."""
+    from numo9.notifications.services import notify
+    from numo9.tenancy.models import OrganisationMember
+
+    organisation = lock.organisation
+    admins = [
+        member.user
+        for member in OrganisationMember.objects.filter(
+            organisation=organisation, role__in=("owner", "admin")
+        ).select_related("user")
+        if member.user_id != getattr(actor, "pk", None)
+    ]
+    notify(
+        "settings.lock_changed",
+        admins,
+        organisation=organisation,
+        params={
+            "module": str(LockModule(lock.module).label),
+            "level": str(LockLevel(lock.level).label).lower(),
+            "date": lock.date.isoformat() if lock.date else "—",
+            "person": getattr(actor, "name", "") or getattr(actor, "email", ""),
+        },
+        link=f"/o/{organisation.public_id}/settings/lock-dates",
+    )
+
+
 class LockDatesView(APIView):
     required_feature = CORE
     serializer_class = LockChangeSerializer
@@ -330,8 +357,11 @@ class LockDatesView(APIView):
         ).first() or LockDate(
             organisation=current_org(), module=data["module"], level=data["level"]
         )
+        before = (row.date, row.reason)
         row.set_lock(data["date"], data["reason"])
         _save(row)
+        if before[0] != row.date:
+            _tell_admins(row, request.user)
         return Response(lock_matrix())
 
 

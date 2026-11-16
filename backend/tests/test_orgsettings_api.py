@@ -167,3 +167,24 @@ def test_numbering(org: Organisation) -> None:
     assert changed.json()["prefix"] == "RI-" and changed.json()["preview"].startswith("RI-")
     bad = patch(owner, url(org, "/numbering"), {"doc_type": "invoice", "next_number": 0})
     assert bad.status_code == 400
+
+
+def test_lock_change_notifies_the_admins(org: Organisation) -> None:
+    """Flow F6: saving a lock date tells the organisation's other owners and admins."""
+    from numo9.notifications.models import Notification
+
+    owner = _client(org, "owner")
+    admin_user = User.objects.create_user("second-admin@refined.ca", password="x" * 12, name="Ad")
+    OrganisationMember.objects.create(organisation=org, user=admin_user, role="admin")
+    answer = patch(
+        owner,
+        url(org, "/lock-dates"),
+        {"module": "gl", "level": "advisers_only", "date": "2026-06-30"},
+    )
+    assert answer.status_code == 200
+    with org_context(org):
+        [note] = Notification.objects.filter(recipient=admin_user)
+    assert note.title_key == "notifications.settings.lock_changed"
+    assert note.body_params["date"] == "2026-06-30" and note.link.endswith("/settings/lock-dates")
+    with org_context(org):
+        assert not Notification.objects.filter(recipient__email__startswith="owner-").exists()
