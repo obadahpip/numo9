@@ -42,3 +42,16 @@ restricted keys (`sk_`/`rk_` test and live) and webhook secrets (`whsec_`) on to
 run on every commit (pre-commit) and on the full history (security workflow). Developers use
 their own Stripe test account and `stripe listen --forward-to localhost:8000/webhooks/stripe/`
 (Stripe CLI), which prints a local `whsec_` for `.env`.
+
+## Subscription billing fields (U-04-T02)
+
+Migration `entitlements.0004_subscription_billing` adds to `Subscription` (every new column has a
+database default, so rows written by older code stay valid):
+
+| Field | Type | Rules / meaning |
+|---|---|---|
+| `stripe_customer_id` | varchar(64), `""` | The organisation's Stripe customer (`cus_…`), one per organisation (U-04-T04); indexed |
+| `stripe_subscription_id` | varchar(64), `""` | The Stripe subscription (`sub_…`); unique when set (`entitlements_stripe_subscription_unique`) |
+| `interval` | `month` · `year`, default `month` | Billing interval (`entitlements_subscription_interval_valid`) |
+| `cancel_at_period_end` | boolean, `false` | The owner cancelled: access continues until `current_period_end` |
+| `payment_method_type` | `card` · `acss_debit` · `""` | How the organisation pays; the card or the PAD mandate stays at Stripe (`entitlements_subscription_method_valid`) |
