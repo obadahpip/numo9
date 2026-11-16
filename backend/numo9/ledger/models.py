@@ -731,7 +731,9 @@ class JournalEntry(AuditedModel, OrgOwnedModel):
         ]
 
     def __str__(self) -> str:
-        return f"{_('Journal')} {self.number}" if self.number else str(_("Draft journal"))
+        if self.number:
+            return str(_("Journal %(number)s") % {"number": self.number})
+        return str(_("Draft journal"))
 
     @property
     def is_locked(self) -> bool:
