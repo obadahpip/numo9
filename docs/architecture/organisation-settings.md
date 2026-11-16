@@ -222,6 +222,27 @@ sequenceDiagram
   is). Lowering `next_number` is allowed (a typo can be fixed); documents keep their own unique
   number constraint (D-03).
 
+## Settings API (A-05-T09)
+
+Under `/api/v1/o/<org>/` — reading `organisation.profile.view` (every role), changing
+`organisation.settings.manage` (owners, admins); feature `CORE`. Models validate and audit every
+change; their errors come back as **400** with the field and the message (e.g. a numeric-only
+legal name, an invalid BN, a lock moved back without a reason, levels out of order). OpenAPI
+operation ids `settings_*` (`/api/schema/`).
+
+| Method and path | What |
+|---|---|
+| `GET / PATCH settings` | The organisation settings (A-05-T01); `base_currency` is CAD, read-only; `printed_name` read-only |
+| `GET / POST settings/registrations` | Tax registrations (A-05-T03); 201 on add |
+| `GET / PATCH / DELETE settings/registrations/<id>` | One registration; DELETE is a soft delete (204); another organisation's id is 404 |
+| `GET settings/lock-dates` | Every module × level: `[{module, module_label, advisers_only: {date, reason, updated_at}, everyone: {…}}]` |
+| `PATCH settings/lock-dates` | `{module, level, date | null, reason}` — set, move or remove one lock; answers the whole matrix |
+| `GET settings/lock-dates/impact?module=&date=` | Impact preview (A-05-T07) |
+| `GET settings/numbering` | Every document type's sequence: `doc_type`, `prefix`, `next_number`, `padding`, `preview` |
+| `PATCH settings/numbering` | `{doc_type, prefix?, next_number?, padding?}` |
+
+Tests: `backend/tests/test_orgsettings_api.py`.
+
 ## Settings shell and module gears (A-05-T10, gap-03)
 
 Xero sends every module's "Settings" link to one generic hub page. In Numo9 every settings
