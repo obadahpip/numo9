@@ -144,3 +144,31 @@ jobs backoff (8 retries). The path is exempt from the tenant sweep (`TENANT_SWEE
 
 Local development: `stripe listen --forward-to localhost:8000/webhooks/stripe/` (Stripe CLI)
 prints the `whsec_` to put in `.env`; `stripe trigger invoice.paid` sends a test event.
+
+## Subscription state from Stripe (U-04-T07)
+
+Handlers (`numo9/billing/subscriptions.py`) of `checkout.session.completed` and
+`customer.subscription.created` / `.updated` / `.deleted`. Stripe's subscription is the source of
+truth for billing; Numo9 keeps what its entitlements need.
+
+| Stripe status | Numo9 status | Notes |
+|---|---|---|
+| `active`, `trialing` | `active` | Grace and reason cleared (Stripe trials aren't used: the trial is Numo9's) |
+| `past_due` | `past_due` | `grace_until` = failure + 7 days (kept if already set), reason `payment_failed` — dunning, U-04-T09 |
+| `unpaid`, `paused` | `read_only` | Read and export only, reason `payment_failed` |
+| `canceled` (and every `.deleted` event) | `cancelled` | Reason `cancelled` |
+| `incomplete`, `incomplete_expired` | unchanged | First payment not settled — a PAD debit takes 3–5 business days; access continues |
+
+Each subscription event also records the Stripe ids, the **package** (from the price —
+`PackagePrice.stripe_price_id` — else the metadata `numo9_package`), the interval, the period end
+(`items[0].current_period_end`), `cancel_at_period_end` and the payment method when the
+subscription has one. `checkout.session.completed` (subscription mode) links the Stripe ids,
+the package and interval of the metadata, and activates a trialing (or ended) subscription — paid
+by card, or a PAD debit still processing.
+
+The local subscription is found by `stripe_subscription_id`, else by the customer, else by the
+organisation in the metadata (`numo9_org` / `client_reference_id`): the checkout event may arrive
+before or after the subscription events, and before the owner's browser returns. An event no
+organisation matches fails and is retried. Every change is a `Subscription.save()` — audited, the
+organisation's status follows, the entitlement cache is bumped — and the event records its
+organisation.

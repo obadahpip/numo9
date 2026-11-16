@@ -7,3 +7,7 @@ class BillingConfig(AppConfig):
     name = "numo9.billing"
     label = "billing"
     verbose_name = "Billing"
+
+    def ready(self) -> None:
+        # Event handlers register themselves with the processing registry (U-04-T07, T08).
+        from . import subscriptions  # noqa: F401

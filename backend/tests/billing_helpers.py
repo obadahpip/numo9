@@ -109,3 +109,45 @@ def owned_org(name: str = "Maple Bakery Inc.", email: str = "olivia@maple.ca") -
     OrganisationMember.objects.create(organisation=org, user=owner, role="owner")
     subscribe(org, None, status="trialing")
     return org, owner
+
+
+def stripe_subscription(
+    sub_id: str = "sub_1",
+    customer: str = "cus_test_0001",
+    status: str = "active",
+    price: str = "price_growth_month",
+    interval: str = "month",
+    period_end: int = 1_800_000_000,
+    cancel_at_period_end: bool = False,
+    metadata: dict[str, str] | None = None,
+    methods: list[str] | None = None,
+) -> dict[str, Any]:
+    return {
+        "id": sub_id,
+        "object": "subscription",
+        "customer": customer,
+        "status": status,
+        "cancel_at_period_end": cancel_at_period_end,
+        "metadata": metadata or {},
+        "payment_settings": {"payment_method_types": methods},
+        "items": {
+            "data": [
+                {
+                    "id": "si_1",
+                    "price": {"id": price, "recurring": {"interval": interval}},
+                    "current_period_end": period_end,
+                }
+            ]
+        },
+    }
+
+
+def deliver(event: dict[str, Any]) -> Any:
+    """Store and process an event the way the webhook and the task do; the processed row."""
+    from numo9.billing.events import record_event
+    from numo9.billing.processing import process_event
+
+    row, _ = record_event(event)
+    process_event(row.pk)
+    row.refresh_from_db()
+    return row
