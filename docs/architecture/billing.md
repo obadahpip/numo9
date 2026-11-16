@@ -314,3 +314,13 @@ these, never promotions). After the grace end the read-only notice (U-03-T12) ta
 
 Billing endpoints stay usable while the organisation is read-only (`allowed_when_read_only`):
 paying is how it becomes writable again.
+
+## Entitlements follow every billing change (U-04-T14)
+
+Every subscription change billing makes goes through `Subscription.save()` (checkout, subscription
+events, failed and paid invoices, the dunning's read-only step, customers, cancellation), whose
+signal bumps the organisation's entitlement version (U-03-T06: at once and again at commit). On
+top, `process_event` bumps the event's organisation after every handler, so a handler that changes
+billing state another way can't leave a stale answer. The next request — `entitlements_for` and
+`GET …/entitlements` — answers the new state (`tests/test_billing_entitlements_cache.py`: each
+step with the cache warm before it).

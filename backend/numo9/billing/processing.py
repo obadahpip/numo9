@@ -7,6 +7,7 @@
 - calls the handler registered for its type (``register_handler``; U-04-T07 subscriptions,
   U-04-T08 invoices) in the event's transaction; a type without handler is recorded as
   processed (Stripe sends more types than Numo9 needs);
+- after a handler the organisation's entitlement cache is bumped (U-04-T14);
 - on success sets ``processed_at``; on an error records ``attempts`` and ``error`` and raises
   (the task retries with backoff), the handler's changes rolled back.
 """
@@ -47,6 +48,25 @@ class EventFailed(RuntimeError):
     pass
 
 
+def _invalidate(pk: int) -> None:
+    """Entitlements reflect the event within one request (U-04-T14).
+
+    Every subscription change goes through ``Subscription.save()``, whose signal bumps the
+    organisation's entitlement version; this bump of the event's organisation (now and again at
+    commit) also covers a handler that changed billing state another way.
+    """
+    from numo9.entitlements.cache import bump_organisation
+    from numo9.tenancy.models import Organisation
+
+    org_id = StripeEvent.objects.filter(pk=pk).values_list("organisation_id", flat=True).first()
+    if org_id is not None:
+        public_id = (
+            Organisation.objects.filter(pk=org_id).values_list("public_id", flat=True).first()
+        )
+        if public_id is not None:
+            bump_organisation(str(public_id))
+
+
 def process_event(pk: int) -> str:
     """Run the event's handler once; ``processed``, ``skipped`` or ``ignored`` (no handler)."""
     try:
@@ -57,6 +77,7 @@ def process_event(pk: int) -> str:
             handler = handler_for(event.type)
             if handler is not None:
                 handler(event)
+                _invalidate(pk)
             StripeEvent.objects.filter(pk=pk).update(
                 processed_at=timezone.now(), attempts=event.attempts + 1, error=""
             )
