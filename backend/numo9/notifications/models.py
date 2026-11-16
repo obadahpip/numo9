@@ -167,3 +167,95 @@ class NotificationPreference(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.user_id} · {self.category}"
+
+
+class EmailStatus(models.TextChoices):
+    """Where an outgoing email stands (A-07-T03; bounced/complained from A-07-T08)."""
+
+    QUEUED = "queued", _("Waiting to send")
+    SENDING = "sending", _("Sending")
+    RETRYING = "retrying", _("Waiting to try again")
+    SENT = "sent", _("Sent")
+    FAILED = "failed", _("Not sent")
+    BOUNCED = "bounced", _("Bounced")
+    COMPLAINED = "complained", _("Marked as spam")
+
+
+#: An email in one of these states may still be sent by the worker.
+EMAIL_SENDABLE: frozenset[str] = frozenset({EmailStatus.QUEUED, EmailStatus.RETRYING})
+
+
+class EmailMessage(OrgOwnedModel):
+    """The message log: one row per outgoing email to one address (A-07-T03).
+
+    Written before the Celery message is sent, updated by the sending task: ``queued`` →
+    ``sending`` → ``sent`` (or ``retrying`` → … → ``failed`` once the retries are used up). The
+    provider's message id (``provider_message_id``) and the row's ``public_id`` (sent as message
+    metadata) let delivery webhooks find it again (A-07-T08 bounces and complaints).
+
+    Emails of an organisation (invoices, reminders, notifications) carry it; account emails that
+    belong to no organisation (sign-up, password reset) leave it empty — read through
+    ``platform_messages`` by the sending task, webhooks and the platform console only.
+    """
+
+    organisation = models.ForeignKey(  # type: ignore[assignment]  # nullable here
+        "tenancy.Organisation",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="email_messages",
+        verbose_name=_("organisation"),
+    )
+    kind = models.CharField(_("message type"), max_length=120, blank=True)
+    to_email = models.EmailField(_("to"))
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("recipient"),
+    )
+    from_email = models.CharField(_("from"), max_length=320)
+    reply_to = models.CharField(_("reply to"), max_length=320, blank=True)
+    subject = models.CharField(_("subject"), max_length=998)
+    text_body = models.TextField(_("text"))
+    html_body = models.TextField(_("HTML"), blank=True)
+    language = models.CharField(_("language"), max_length=10, blank=True)
+    headers = models.JSONField(_("headers"), default=dict, blank=True)
+    metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+    status = models.CharField(
+        _("status"), max_length=16, choices=EmailStatus.choices, default=EmailStatus.QUEUED
+    )
+    attempts = models.PositiveSmallIntegerField(_("attempts"), default=0)
+    max_retries = models.PositiveSmallIntegerField(_("maximum retries"), default=5)
+    provider = models.CharField(_("provider"), max_length=60, blank=True)
+    provider_message_id = models.CharField(_("provider message id"), max_length=255, blank=True)
+    error = models.TextField(_("error"), blank=True)
+    last_attempt_at = models.DateTimeField(_("last try at"), null=True, blank=True)
+    next_retry_at = models.DateTimeField(_("next try at"), null=True, blank=True)
+    sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
+    event_at = models.DateTimeField(_("delivery event at"), null=True, blank=True)
+
+    # Sending task, delivery webhooks and the platform console only (see the docstring).
+    platform_messages = models.Manager["EmailMessage"]()
+
+    class Meta:
+        verbose_name = _("email message")
+        verbose_name_plural = _("email messages")
+        default_manager_name = "objects"
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(status__in=EmailStatus.values),
+                name="notifications_email_status_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "-created_at"), name="notif_email_org_idx"),
+            models.Index(fields=("status", "-created_at"), name="notif_email_status_idx"),
+            models.Index(fields=("provider_message_id",), name="notif_email_provider_idx"),
+            models.Index(fields=("to_email", "-created_at"), name="notif_email_to_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.to_email} · {self.subject[:40]} [{self.status}]"

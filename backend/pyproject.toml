@@ -48,6 +48,11 @@ module = ["allauth", "allauth.*", "qrcode", "qrcode.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
+# django-anymail ships no type information (A-07-T03).
+module = ["anymail", "anymail.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # Celery ships no type information (A-08-T01).
 module = ["celery", "celery.*"]
 ignore_missing_imports = true

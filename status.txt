@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 224   Remaining: 2563   Progress: 8.04%
+TOTAL ATOMIC TASKS: 2787   Completed: 225   Remaining: 2562   Progress: 8.07%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -304,7 +304,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [A-07]
 ✅ A-07-T01 — Notification model (recipient, org, category, title key, body params, link, read_at) + API list/mark-read
 ✅ A-07-T02 — Notification service notify(event, recipients, channels) with category preferences
-❌ A-07-T03 — Email sending via django-anymail through Celery with retries; message log table
+✅ A-07-T03 — Email sending via django-anymail through Celery with retries; message log table
 ❌ A-07-T04 — Template system: MJML base layout, branding (logo, colour) per practice/org, EN/FR variants by locale
 ❌ A-07-T05 — SendingDomain model + provider API to create domain, fetch DKIM records
 ❌ A-07-T06 — DNS verification job (dnspython/checkdmarc) for SPF, DKIM, DMARC, return-path; status per record

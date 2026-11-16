@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 04:51-0500\n"
+"POT-Creation-Date: 2026-11-16 05:06-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,7 +85,7 @@ msgid "name"
 msgstr ""
 
 msgid "language"
-msgstr ""
+msgstr "langue"
 
 msgid "time format"
 msgstr ""
@@ -714,7 +714,7 @@ msgid "%(field)s is required."
 msgstr ""
 
 msgid "text"
-msgstr ""
+msgstr "texte"
 
 #, fuzzy
 #| msgid "Number"
@@ -1673,10 +1673,10 @@ msgid "Message-ID"
 msgstr ""
 
 msgid "subject"
-msgstr ""
+msgstr "objet"
 
 msgid "recipient"
-msgstr ""
+msgstr "destinataire"
 
 msgid "raw message key"
 msgstr ""
@@ -3041,6 +3041,72 @@ msgstr "organisation"
 #| msgid "organisation"
 msgid "notification preferences"
 msgstr "organisation"
+
+#, fuzzy
+#| msgid "Waiting to start"
+msgid "Waiting to send"
+msgstr "En attente de démarrage"
+
+msgid "Sending"
+msgstr "Envoi en cours"
+
+msgid "Sent"
+msgstr "Envoyé"
+
+msgid "Not sent"
+msgstr "Non envoyé"
+
+msgid "Bounced"
+msgstr "Rejeté"
+
+msgid "Marked as spam"
+msgstr "Signalé comme pourriel"
+
+#, fuzzy
+#| msgid "details"
+msgid "message type"
+msgstr "détails"
+
+msgid "to"
+msgstr "à"
+
+msgid "from"
+msgstr "de"
+
+msgid "reply to"
+msgstr "répondre à"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "headers"
+msgstr "en-têtes"
+
+msgid "metadata"
+msgstr "métadonnées"
+
+msgid "provider"
+msgstr "fournisseur"
+
+msgid "provider message id"
+msgstr "identifiant du message chez le fournisseur"
+
+#, fuzzy
+#| msgid "next try at"
+msgid "last try at"
+msgstr "prochain essai le"
+
+msgid "sent at"
+msgstr "envoyé le"
+
+msgid "delivery event at"
+msgstr "événement de livraison le"
+
+msgid "email message"
+msgstr "courriel"
+
+msgid "email messages"
+msgstr "courriels"
 
 #, fuzzy
 #| msgid "organisation"

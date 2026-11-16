@@ -5,8 +5,8 @@ the person's preferences allow. Channels register under their name:
 
 - ``in_app`` — a ``Notification`` row (the bell, A-07-T01);
 - ``email`` — an email in the person's language: subject = the message title, text = the body
-  and a link to the page. Sent after the surrounding transaction commits, so a rolled-back event
-  never emails anyone (A-07-T03 sends it through Celery with retries and a message log).
+  and a link to the page. Logged and sent by the worker after the surrounding transaction
+  commits (``mail.queue_email``, A-07-T03), so a rolled-back event never emails anyone.
 
 SMS and WhatsApp follow the same interface (A-07-T12).
 """
@@ -18,8 +18,6 @@ from dataclasses import dataclass, field
 from typing import Any, Protocol
 
 from django.conf import settings
-from django.core.mail import send_mail
-from django.db import transaction
 
 from numo9.tenancy.models import Organisation
 
@@ -85,20 +83,28 @@ class InAppChannel:
         return notification
 
 
-#: The function that actually sends an email channel message; A-07-T03 replaces it with the
-#: queued sender (``numo9.notifications.mail.queue_email``).
+#: The function that sends an email channel message (tests may swap it).
 EmailSender = Callable[[Delivery, str, str], Any]
 
 
-def _send_now(delivery: Delivery, subject: str, text: str) -> None:
-    transaction.on_commit(
-        lambda: send_mail(subject, text, settings.DEFAULT_FROM_EMAIL, [delivery.recipient.email])
+def _queue(delivery: Delivery, subject: str, text: str) -> Any:
+    """Log the email and send it through the worker after commit (A-07-T03)."""
+    from .mail import queue_email
+
+    return queue_email(
+        delivery.recipient.email,
+        subject,
+        text,
+        organisation=delivery.organisation,
+        recipient=delivery.recipient,
+        kind=delivery.event.title_key,
+        language=delivery.language,
     )
 
 
 class EmailChannel:
     name = EMAIL
-    sender: EmailSender = staticmethod(_send_now)
+    sender: EmailSender = staticmethod(_queue)
 
     def deliver(self, delivery: Delivery) -> Any:
         if not getattr(delivery.recipient, "email", ""):

@@ -1,5 +1,6 @@
 """Settings shared by every environment. Environment modules import * from here."""
 
+import os
 from datetime import timedelta
 from pathlib import Path
 from typing import Any
@@ -60,6 +61,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    # Transactional email through the provider's API, delivery webhooks (A-07-T03, T08).
+    "anymail",
     # Schedules in the database, run by numo9.jobs.beat.LockedDatabaseScheduler (A-08-T05).
     "django_celery_beat",
     # Sign-up, email verification, login, password reset — JSON API only (A-02).
@@ -352,6 +355,15 @@ EMAIL_HOST_USER = env_str("DJANGO_EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = env_str("DJANGO_EMAIL_HOST_PASSWORD", "")
 EMAIL_USE_TLS = env_bool("DJANGO_EMAIL_USE_TLS", False)
 DEFAULT_FROM_EMAIL = env_str("DJANGO_DEFAULT_FROM_EMAIL", "Numo9 <no-reply@numo9.ca>")
+# Email provider (A-07-T03): staging/prod set DJANGO_EMAIL_BACKEND to django-anymail's backend
+# for the provider chosen in SP-03 (e.g. anymail.backends.postmark.EmailBackend) and its
+# settings as ANYMAIL_<NAME> variables (ANYMAIL_POSTMARK_SERVER_TOKEN, ANYMAIL_WEBHOOK_SECRET…);
+# every ANYMAIL_* variable becomes a key of ANYMAIL.
+ANYMAIL: dict[str, str] = {
+    name.removeprefix("ANYMAIL_"): value
+    for name, value in os.environ.items()
+    if name.startswith("ANYMAIL_") and value
+}
 
 # ---- Background jobs: Celery (A-08-T01, numo9/celery.py, docs/architecture/jobs.md) -----------
 # Redis is the broker and the result backend: by default the server of REDIS_URL (the shared

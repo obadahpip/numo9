@@ -108,3 +108,21 @@ def clamd(settings: Any) -> Iterator[Any]:
     settings.NUMO9_CLAMD_TIMEOUT = 5
     yield fake
     fake.close()
+
+
+# ---- outgoing email (A-07-T03) -----------------------------------------------------------------
+
+
+@pytest.fixture
+def mail_worker() -> Iterator[list[Any]]:
+    """Queued emails are sent at once by an in-process 'worker' (the task's own code), when the
+    surrounding transaction commits — as in production, minus the broker. Yields the results."""
+    from numo9.notifications import mail
+
+    results: list[Any] = []
+
+    def run(args: Any = None, kwargs: Any = None, **options: Any) -> None:
+        results.append(mail.send_email.apply(args=args, kwargs=kwargs))
+
+    with mock.patch.object(mail.send_email, "apply_async", run):
+        yield results

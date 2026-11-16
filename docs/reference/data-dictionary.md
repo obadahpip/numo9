@@ -445,6 +445,30 @@ One person's choice for one category in one organisation (A-07-T02). `OrgOwnedMo
 | `in_app` | boolean | no | Shown in the bell |
 | `email` | boolean | no | Sent by email |
 
+### `notifications_emailmessage` — Email message (message log) {#notifications-emailmessage}
+
+One outgoing email to one address (A-07-T03). `OrgOwnedModel` with an **optional** organisation (account emails have none); read through `platform_messages` by the sending task, webhooks and the console.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; `public_id` travels as provider metadata `numo9_message` |
+| `organisation_id` | bigint → `tenancy_organisation` | yes | The organisation the email is for; empty for account emails |
+| `kind` | varchar(120) | no | Message type (catalogue key), sent as a tag |
+| `to_email` | varchar(254) | no | The one recipient address |
+| `recipient_id` | bigint → `accounts_user` | yes | The person, when the address is a user's; `SET NULL` |
+| `from_email`, `reply_to` | varchar(320) | no | Sender and Reply-To |
+| `subject` | varchar(998) | no | One header line |
+| `text_body`, `html_body` | text | no | Plain text (always) and HTML (optional) |
+| `language` | varchar(10) | no | Language it was written in |
+| `headers`, `metadata` | jsonb | no | Extra headers; provider metadata |
+| `status` | varchar(16) | no | `queued`, `sending`, `retrying`, `sent`, `failed`, `bounced`, `complained` (`notifications_email_status_valid`) |
+| `attempts`, `max_retries` | smallint | no | Tries so far; retries allowed (5) |
+| `provider`, `provider_message_id` | varchar | no | Who sent it and their message id (webhooks look it up) |
+| `error` | text | no | Last error (scrubbed) |
+| `last_attempt_at`, `next_retry_at`, `sent_at`, `event_at` | timestamptz | yes | Last try, next try, sent, last delivery event |
+
+Indexes: `(organisation, -created_at)`, `(status, -created_at)`, `(provider_message_id)`, `(to_email, -created_at)`.
+
 ## Accountant workspace (`workspace`) {#workspace}
 
 Design: [Organisation directory](../architecture/directory.md).

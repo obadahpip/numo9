@@ -26,7 +26,7 @@ from numo9.notifications.texts import register_text
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import Organisation, OrganisationMember
 
-pytestmark = pytest.mark.django_db
+pytestmark = [pytest.mark.django_db, pytest.mark.usefixtures("mail_worker")]
 
 register_text("notifications.test.alert", "Alert about %(what)s", "Something about %(what)s.")
 register_event("test.jobs_alert", "jobs", title_key="notifications.test.alert")

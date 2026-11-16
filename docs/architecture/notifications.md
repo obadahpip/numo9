@@ -4,7 +4,7 @@
 |---|---|
 | **Deliverable** | A-07 · Notifications, email & custom sending domain, Phase 0 (component A — platform) |
 | **Branch** | `feature/A-07-notifications-email` |
-| **Code** | `backend/numo9/notifications/` (models, texts, events, channels, services, serializers, api, urls) |
+| **Code** | `backend/numo9/notifications/` (models, texts, events, channels, services, mail, serializers, api, urls) |
 | **Depends on** | A-01 (tenancy), A-03 (permissions), A-08 (jobs, for email sending — A-07-T03) |
 | **Used by** | A-08 job results, A-06 quarantined files, A-02 security events, U-04 billing, B-03 imports, approvals (C-04, E) |
 | **Gaps** | gap-42 (branded email from the organisation's own domain — A-07-T04…T10) |
@@ -94,9 +94,39 @@ another's. API: `GET notifications/preferences` (each category with `in_app`, `e
 `is_default`) and `PATCH notifications/preferences` `{"category", "in_app", "email"}` — a locked
 category answers `409 notifications.category_locked`.
 
+## Sending email: Celery, retries, message log (A-07-T03)
+
+Every email goes through `numo9.notifications.mail.queue_email(to, subject, text, html=…,
+organisation=…, recipient=…, kind=…, language=…, reply_to=…, headers=…, metadata=…)` — the email
+channel of `notify()` uses it, and later modules (documents, reminders, statements) do too.
+
+1. **Logged first** — an `EmailMessage` row, `queued` (data dictionary:
+   [`notifications_emailmessage`](../reference/data-dictionary.md#notifications-emailmessage)).
+   The subject is folded to one header line (no header injection).
+2. **Sent after commit** — the Celery task `numo9.notifications.send_email` on the `high` queue;
+   a rolled-back request leaves no row and sends nothing.
+3. **Sent once** — the task locks the row (`FOR UPDATE SKIP LOCKED`) and only sends a `queued` or
+   `retrying` message: a redelivered Celery message of a sent email is skipped.
+4. **Through the provider** — Django's email backend: django-anymail's backend for the provider
+   in staging/prod (`DJANGO_EMAIL_BACKEND=anymail.backends.<esp>.EmailBackend`; every
+   `ANYMAIL_*` environment variable becomes a key of `ANYMAIL`, e.g.
+   `ANYMAIL_POSTMARK_SERVER_TOKEN`), Mailpit over SMTP in dev, `locmem` in tests. The provider is
+   chosen in SP-03 (data-residency register). The provider's message id, the provider name and
+   `sent_at` are stored: `sent`.
+5. **Retried when it can help** — provider outage or 5xx/408/429, SMTP or network errors →
+   `retrying` with the error, `attempts` and `next_retry_at`, retried with the jobs backoff
+   (30 s base, doubling with jitter, 1 h cap) up to `max_retries` = 5; then `failed`. Refused
+   recipients, other 4xx answers and invalid messages fail at once (retrying cannot fix them).
+
+Each message carries `metadata.numo9_message` = the row's public id and its `kind` as a tag, so
+delivery webhooks find it again (bounces and complaints, A-07-T08). Organisation emails are read
+through the scoped manager; account emails with no organisation (sign-up, password reset) only
+through `EmailMessage.platform_messages` (sending task, webhooks, platform console).
+
 ## Tests
 
 | Task | Tests |
 |---|---|
 | T01 | `tests/test_notifications_api.py` |
 | T02 | `tests/test_notifications_service.py` |
+| T03 | `tests/test_notifications_mail.py` |
