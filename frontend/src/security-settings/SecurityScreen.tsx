@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Badge,
   Button,
@@ -481,8 +482,9 @@ function TwoFactorSection({
         >
           <p>{fm(m.scan)}</p>
           {/* The QR code is an inline data: SVG from the API — nothing for next/image to optimise. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {setup.qr ? <img src={setup.qr} alt={fm(m.qr)} width={180} height={180} /> : null}
+          {setup.qr ? (
+            <Image src={setup.qr} alt={fm(m.qr)} width={180} height={180} unoptimized />
+          ) : null}
           <p className="font-mono text-sm break-all">{fm(m.key, { secret: setup.secret })}</p>
           <label htmlFor={codeId} className="font-medium">
             {fm(m.code)}
