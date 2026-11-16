@@ -360,3 +360,10 @@ reason, grace end, package, interval and cancellation as chronological delivery.
   nothing; a replay with a new event id but an older `created` can't roll the state back
   (U-04-T15); a session cookie changes nothing.
 - The RBAC matrix (A-03-T10) covers the billing endpoints like every other.
+
+## Runbook (U-04-T17)
+
+Incidents — failing webhooks, unprocessed events, a payment that didn't restore access, dunning,
+503s, refunds and disputes, a subscription deleted by hand, a late downgrade — are in the
+[operations runbook § Stripe billing incidents](../operations/runbook.md#stripe-billing-incidents-u-04-t17),
+with the tool `manage.py billing_events` (list, `--retry`, `--event evt_…`).
