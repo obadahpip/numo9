@@ -33,6 +33,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
         frozenset(
             {
                 "accounts.User",
+                # Known sign-in devices (A-02-T07): reviewed — a hash per browser/system.
+                "accounts.KnownDevice",
                 "tenancy.Practice",
                 "tenancy.PracticeMember",
                 "tenancy.Organisation",

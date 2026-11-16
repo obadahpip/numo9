@@ -12,3 +12,10 @@ class AccountsConfig(AppConfig):
         from . import mfa
 
         mfa.install()
+
+        # Known devices and the new-device email at every sign-in (A-02-T07).
+        from django.contrib.auth.signals import user_logged_in
+
+        from .devices import on_logged_in
+
+        user_logged_in.connect(on_logged_in, dispatch_uid="numo9.accounts.devices")

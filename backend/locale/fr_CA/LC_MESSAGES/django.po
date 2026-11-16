@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:43-0500\n"
+"POT-Creation-Date: 2026-11-16 05:48-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,15 @@ msgstr ""
 
 msgid "Accounts"
 msgstr ""
+
+#, python-format
+msgid "%(browser)s on %(system)s"
+msgstr "%(browser)s sur %(system)s"
+
+#, fuzzy
+#| msgid "device"
+msgid "Unknown device"
+msgstr "appareil"
 
 msgid "I'm an accountant"
 msgstr ""
@@ -110,10 +119,32 @@ msgid "date joined"
 msgstr ""
 
 msgid "user"
-msgstr ""
+msgstr "utilisateur"
 
 msgid "users"
 msgstr ""
+
+msgid "fingerprint"
+msgstr "empreinte"
+
+msgid "device"
+msgstr "appareil"
+
+msgid "first seen"
+msgstr "vu pour la première fois"
+
+msgid "last seen"
+msgstr "vu pour la dernière fois"
+
+#, fuzzy
+#| msgid "device"
+msgid "known device"
+msgstr "appareil"
+
+#, fuzzy
+#| msgid "device"
+msgid "known devices"
+msgstr "appareil"
 
 msgid "This password has appeared in a data breach, so attackers try it first. Choose a different password."
 msgstr ""
@@ -207,9 +238,6 @@ msgstr "modifications"
 
 msgid "details"
 msgstr "détails"
-
-msgid "device"
-msgstr "appareil"
 
 msgid "request ID"
 msgstr "ID de requête"
