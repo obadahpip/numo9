@@ -107,7 +107,9 @@ export function NotFoundSearch() {
         <ul aria-label={fm(messages.results)} className="flex flex-col gap-1">
           {results.map((destination) => (
             <li key={destination.href}>
-              <Link href={destination.href} className="text-sm underline">
+              {/* Not prefetched: these short URLs only redirect into the organisation, and a
+                  prefetched redirect lands on another origin under the CSP (S-03-T02). */}
+              <Link href={destination.href} prefetch={false} className="text-sm underline">
                 {destination.label}
               </Link>
             </li>

@@ -1,0 +1,1 @@
+{% autoescape off %}{% if days_left > 1 %}Il reste {{ days_left }} jours à votre essai de Numo9{% elif days_left == 1 %}Il reste 1 jour à votre essai de Numo9{% else %}Votre essai de Numo9 est terminé{% endif %}{% endautoescape %}

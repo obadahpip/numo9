@@ -2,7 +2,7 @@
 
 import { AppShell as Shell, type ShellCrumb, type ShellLinkComponent } from "@numo9/ui";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
@@ -12,6 +12,12 @@ import { GoToOrganisationSlot } from "@/directory/GoToOrganisationSlot";
 import { decide, EntitlementsProvider, useEntitlements } from "@/entitlements/store";
 import { defineMessages, useFormatMessage } from "@/i18n";
 import { JobTray } from "@/jobs/JobTray";
+import {
+  centreMessages,
+  NotificationCentre,
+  UnreadAnnouncer,
+} from "@/notifications/NotificationCentre";
+import { useUnreadCount } from "@/notifications/useUnreadCount";
 import { primaryNav } from "@/routing/navigation";
 import {
   findOrgModule,
@@ -96,8 +102,8 @@ interface AppShellProps {
 
 /**
  * Numo9 application shell (A-10-T05): the `@numo9/ui` shell with i18n labels, the organisation's
- * primary navigation, breadcrumbs, the org switcher (A-01-T14) and the job tray (A-08-T07). The
- * notification centre (A-07), command palette (A-09), practice navigation (V-01) and the
+ * primary navigation, breadcrumbs, the org switcher (A-01-T14), the job tray (A-08-T07) and the
+ * notification bell + centre (A-07-T09). The command palette (A-09), practice navigation (V-01) and the
  * signed-in user (A-02) plug into the shell's slots as those deliverables land. A module with its
  * own settings section shows its gear at the end of the breadcrumb bar (A-05-T10, gap-03);
  * settings pages read Organisation / Settings / <section>.
@@ -119,6 +125,8 @@ export function AppShell(props: Readonly<AppShellProps>) {
 function ShellFrame({ org, modulePath, section, practice, children }: Readonly<AppShellProps>) {
   const fm = useFormatMessage();
   const entitlements = useEntitlements();
+  const unread = useUnreadCount(org);
+  const [centreOpen, setCentreOpen] = useState(false);
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
   const homeHref = org
     ? orgModuleUrl(org, "home")
@@ -162,7 +170,15 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
           <ModuleSettingsLink org={org} module={entry} linkComponent={NextLink} />
         ) : undefined
       }
-      notifications={{ label: fm(messages.notifications) }}
+      notifications={
+        org
+          ? {
+              label: fm(centreMessages.bell, { count: unread.count ?? 0 }),
+              count: unread.count ?? 0,
+              onOpen: () => setCentreOpen(true),
+            }
+          : { label: fm(messages.notifications) }
+      }
       user={{
         label: fm(messages.userMenu),
         items: org
@@ -177,6 +193,17 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
       }}
       linkComponent={NextLink}
     >
+      {org ? (
+        <>
+          <NotificationCentre
+            org={org}
+            open={centreOpen}
+            onOpenChange={setCentreOpen}
+            onCount={unread.set}
+          />
+          <UnreadAnnouncer count={unread.count} />
+        </>
+      ) : null}
       {org && entry && entry.feature !== CORE ? (
         // The module's own feature key: its locked panel in place, the URL unchanged (gap-14).
         <Gated feature={entry.feature} headingLevel={1}>

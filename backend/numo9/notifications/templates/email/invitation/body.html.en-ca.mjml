@@ -1,0 +1,7 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">You're invited to {{ target }}</mj-text>
+        <mj-text padding="0 24px 12px">{{ inviter }} invited you to join {{ target }} as {{ role }}.</mj-text>
+        <mj-text padding="0 24px 12px">The invitation works once and expires on {{ expires }}. Open it with {{ email }}.</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Accept invitation</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">{{ link }}</mj-text>{% endblock %}
+{% block footer %}You get this email because {{ inviter }} invited {{ email }}. Not expecting it? Ignore it.{% endblock %}

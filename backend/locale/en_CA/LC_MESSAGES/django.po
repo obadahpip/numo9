@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 03:30-0500\n"
+"POT-Creation-Date: 2026-11-16 05:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,6 +79,12 @@ msgid "public ID"
 msgstr ""
 
 msgid "email address"
+msgstr ""
+
+msgid "email delivery"
+msgstr ""
+
+msgid "email delivery problem at"
 msgstr ""
 
 msgid "name"
@@ -1902,6 +1908,24 @@ msgstr ""
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr ""
 
+msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
+msgstr ""
+
+#, python-format
+msgid "%(domain)s isn't a domain name. Enter the part after @ in your email address, e.g. refined.ca."
+msgstr ""
+
+#, python-format
+msgid "Emails can't be sent from %(domain)s: only the domain's owner can add its DNS records. Use your organisation's own domain."
+msgstr ""
+
+#, python-format
+msgid "%(domain)s is already set up for this organisation."
+msgstr ""
+
+msgid "The email provider didn't answer. Try again in a few minutes."
+msgstr ""
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -2744,6 +2768,198 @@ msgstr ""
 msgid "Message details are a set of named values."
 msgstr ""
 
+msgid "In the app"
+msgstr ""
+
+msgid "person"
+msgstr ""
+
+msgid "in the app"
+msgstr ""
+
+msgid "by email"
+msgstr ""
+
+msgid "notification preference"
+msgstr ""
+
+msgid "notification preferences"
+msgstr ""
+
+msgid "Waiting to send"
+msgstr ""
+
+msgid "Sending"
+msgstr ""
+
+msgid "Sent"
+msgstr ""
+
+msgid "Not sent"
+msgstr ""
+
+msgid "Bounced"
+msgstr ""
+
+msgid "Marked as spam"
+msgstr ""
+
+msgid "message type"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "from"
+msgstr ""
+
+msgid "reply to"
+msgstr ""
+
+msgid "HTML"
+msgstr ""
+
+msgid "headers"
+msgstr ""
+
+msgid "metadata"
+msgstr ""
+
+msgid "provider"
+msgstr ""
+
+msgid "provider message id"
+msgstr ""
+
+msgid "last try at"
+msgstr ""
+
+msgid "sent at"
+msgstr ""
+
+msgid "delivery event at"
+msgstr ""
+
+msgid "email message"
+msgstr ""
+
+msgid "email messages"
+msgstr ""
+
+msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."
+msgstr ""
+
+msgid "The logo must be an https:// address so email apps can show it."
+msgstr ""
+
+msgid "name in emails"
+msgstr ""
+
+msgid "logo"
+msgstr ""
+
+msgid "accent colour"
+msgstr ""
+
+msgid "organisation email branding"
+msgstr ""
+
+msgid "practice email branding"
+msgstr ""
+
+msgid "Waiting for DNS records"
+msgstr ""
+
+msgid "Some records are missing"
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Records are wrong"
+msgstr ""
+
+msgid "Not checked yet"
+msgstr ""
+
+msgid "Found and correct"
+msgstr ""
+
+msgid "Not found"
+msgstr ""
+
+msgid "Found, but not right"
+msgstr ""
+
+msgid "SPF"
+msgstr ""
+
+msgid "DKIM"
+msgstr ""
+
+msgid "DMARC"
+msgstr ""
+
+msgid "Return path"
+msgstr ""
+
+msgid "domain"
+msgstr ""
+
+msgid "sender name before @"
+msgstr ""
+
+msgid "provider domain id"
+msgstr ""
+
+msgid "DKIM selector"
+msgstr ""
+
+msgid "DKIM private key"
+msgstr ""
+
+msgid "verified at"
+msgstr ""
+
+msgid "last checked at"
+msgstr ""
+
+msgid "sending domain"
+msgstr ""
+
+msgid "sending domains"
+msgstr ""
+
+msgid "host"
+msgstr ""
+
+msgid "value"
+msgstr ""
+
+msgid "found in DNS"
+msgstr ""
+
+msgid "checked at"
+msgstr ""
+
+msgid "sending domain record"
+msgstr ""
+
+msgid "sending domain records"
+msgstr ""
+
+msgid "until"
+msgstr ""
+
+msgid "detail"
+msgstr ""
+
+msgid "email suppression"
+msgstr ""
+
+msgid "email suppressions"
+msgstr ""
+
 msgid "Notification"
 msgstr ""
 
@@ -2768,6 +2984,36 @@ msgid "%(file)s was blocked"
 msgstr ""
 
 msgid "The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."
+msgstr ""
+
+#, python-format
+msgid "New sign-in on %(device)s"
+msgstr ""
+
+#, python-format
+msgid "Your account was signed in on %(when)s from %(device)s (%(ip)s). Not you? Change your password and sign out the other sessions."
+msgstr ""
+
+#, python-format
+msgid "Payment for %(organisation)s didn't go through"
+msgstr ""
+
+#, python-format
+msgid "Update the payment method by %(grace_until)s to keep working without a break."
+msgstr ""
+
+#, python-format
+msgid "%(organisation)s is read-only"
+msgstr ""
+
+msgid "The subscription payment is overdue. Everyone can still see and export; update the payment method to make changes again."
+msgstr ""
+
+#, python-format
+msgid "Your trial ends on %(ends_on)s"
+msgstr ""
+
+msgid "Choose a package to keep working without a break. Everything you entered stays."
 msgstr ""
 
 msgid "Sole proprietorship"

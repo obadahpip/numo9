@@ -1,0 +1,9 @@
+{% autoescape off %}{% if days_left > 0 %}L’essai de {{ organisation }} se termine le {{ ends_on }}{% else %}L’essai de {{ organisation }} est terminé{% endif %}
+
+{% if days_left > 0 %}Choisissez un forfait avant le {{ ends_on }} pour continuer sans interruption. Tout ce que vous avez saisi est conservé.{% else %}Vos livres sont en lecture seule : vous pouvez encore tout consulter et exporter. Choisissez un forfait pour continuer.{% endif %}
+
+Choisir un forfait: {{ link }}
+
+--
+En tant que propriétaire de {{ organisation }}, vous recevez ce courriel.
+{% endautoescape %}

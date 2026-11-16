@@ -81,3 +81,27 @@ class ReadAllRequestSerializer(serializers.Serializer[Any]):
 class ReadAllResultSerializer(serializers.Serializer[Any]):
     marked = serializers.IntegerField()
     unread_count = serializers.IntegerField()
+
+
+class PreferenceSerializer(serializers.Serializer[Any]):
+    """One category of the preferences page (A-07-T02)."""
+
+    category = serializers.ChoiceField(choices=NotificationCategory.choices, read_only=True)
+    category_label = serializers.SerializerMethodField()
+    in_app = serializers.BooleanField()
+    email = serializers.BooleanField()
+    locked = serializers.BooleanField(read_only=True, help_text="Cannot be turned off (security)")
+    is_default = serializers.BooleanField(read_only=True, help_text="Nobody changed it yet")
+
+    def get_category_label(self, preference: Any) -> str:
+        return str(NotificationCategory(preference.category).label)
+
+
+class PreferenceListSerializer(serializers.Serializer[Any]):
+    results = PreferenceSerializer(many=True)
+
+
+class PreferenceUpdateSerializer(serializers.Serializer[Any]):
+    category = serializers.ChoiceField(choices=NotificationCategory.choices)
+    in_app = serializers.BooleanField(required=False)
+    email = serializers.BooleanField(required=False)

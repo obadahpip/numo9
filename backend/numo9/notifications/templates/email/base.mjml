@@ -1,0 +1,28 @@
+{% load i18n %}<mjml lang="{{ language }}">
+  <mj-head>
+    <mj-title>{{ subject }}</mj-title>
+    <mj-preview>{{ preheader }}</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" />
+      <mj-text font-size="16px" line-height="24px" color="#1A1A1A" />
+      <mj-button background-color="{{ brand.colour }}" color="{{ brand.on_colour }}" font-size="16px" font-weight="600" border-radius="6px" inner-padding="12px 24px" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#F4F5F7" width="600px">
+    <mj-section padding="24px 0 8px">
+      <mj-column>
+        {% if brand.logo_url %}<mj-image src="{{ brand.logo_url }}" alt="{{ brand.name }}" width="160px" align="left" padding="0 24px" />{% else %}<mj-text font-size="20px" font-weight="700" color="{{ brand.colour }}" padding="0 24px">{{ brand.name }}</mj-text>{% endif %}
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#FFFFFF" border-top="4px solid {{ brand.colour }}" padding="24px 0">
+      <mj-column>
+{% block content %}{% endblock %}
+      </mj-column>
+    </mj-section>
+    <mj-section padding="16px 0 32px">
+      <mj-column>
+        <mj-text font-size="12px" line-height="18px" color="#5C6370" padding="0 24px">{% block footer %}{% endblock %}</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

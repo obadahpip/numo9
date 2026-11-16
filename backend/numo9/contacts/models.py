@@ -417,6 +417,12 @@ class ContactPerson(AuditedModel, OrgOwnedModel):
     first_name = models.CharField(_("first name"), max_length=100, blank=True)
     last_name = models.CharField(_("last name"), max_length=100, blank=True)
     email = models.EmailField(_("email address"), max_length=254, blank=True)
+    # Set by the email provider's bounce / complaint webhook (A-07-T08): "bounced", "complained";
+    # empty = no delivery problem known.
+    email_status = models.CharField(
+        _("email delivery"), max_length=16, blank=True, default="", db_default=""
+    )
+    email_status_at = models.DateTimeField(_("email delivery problem at"), null=True, blank=True)
     phone = models.CharField(_("telephone"), max_length=32, blank=True)
     job_title = models.CharField(_("job title"), max_length=100, blank=True)
     is_primary = models.BooleanField(_("primary person"), default=False)

@@ -27,6 +27,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from numo9.security.fields import EncryptedField
 from numo9.tenancy.models import OrgOwnedModel
 
 TITLE_KEY = re.compile(r"^[a-z][a-z0-9_]*(\.[a-z0-9_]+){1,4}$")
@@ -124,3 +125,345 @@ class Notification(OrgOwnedModel):
         if kwargs.get("update_fields") is None:
             self.clean()
         super().save(*args, **kwargs)
+
+
+class NotificationChannel(models.TextChoices):
+    """Where a notification is delivered (A-07-T02; SMS/WhatsApp interface: A-07-T12)."""
+
+    IN_APP = "in_app", _("In the app")
+    EMAIL = "email", _("Email")
+
+
+class NotificationPreference(OrgOwnedModel):
+    """One person's choice for one category in one organisation (A-07-T02).
+
+    No row = the category's default (``numo9.notifications.events.DEFAULTS``). Categories marked
+    *locked* there (security) ignore the row: those messages always arrive.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="notification_preferences",
+        verbose_name=_("person"),
+    )
+    category = models.CharField(_("category"), max_length=20, choices=NotificationCategory.choices)
+    in_app = models.BooleanField(_("in the app"), default=True)
+    email = models.BooleanField(_("by email"), default=True)
+
+    class Meta:
+        verbose_name = _("notification preference")
+        verbose_name_plural = _("notification preferences")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "user", "category"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="notifications_one_preference_per_category",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(category__in=NotificationCategory.values),
+                name="notifications_preference_category_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user_id} · {self.category}"
+
+
+class EmailStatus(models.TextChoices):
+    """Where an outgoing email stands (A-07-T03; bounced/complained from A-07-T08)."""
+
+    QUEUED = "queued", _("Waiting to send")
+    SENDING = "sending", _("Sending")
+    RETRYING = "retrying", _("Waiting to try again")
+    SENT = "sent", _("Sent")
+    FAILED = "failed", _("Not sent")
+    BOUNCED = "bounced", _("Bounced")
+    COMPLAINED = "complained", _("Marked as spam")
+
+
+#: An email in one of these states may still be sent by the worker.
+EMAIL_SENDABLE: frozenset[str] = frozenset({EmailStatus.QUEUED, EmailStatus.RETRYING})
+
+
+class EmailMessage(OrgOwnedModel):
+    """The message log: one row per outgoing email to one address (A-07-T03).
+
+    Written before the Celery message is sent, updated by the sending task: ``queued`` →
+    ``sending`` → ``sent`` (or ``retrying`` → … → ``failed`` once the retries are used up). The
+    provider's message id (``provider_message_id``) and the row's ``public_id`` (sent as message
+    metadata) let delivery webhooks find it again (A-07-T08 bounces and complaints).
+
+    Emails of an organisation (invoices, reminders, notifications) carry it; account emails that
+    belong to no organisation (sign-up, password reset) leave it empty — read through
+    ``platform_messages`` by the sending task, webhooks and the platform console only.
+    """
+
+    organisation = models.ForeignKey(  # type: ignore[assignment]  # nullable here
+        "tenancy.Organisation",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="email_messages",
+        verbose_name=_("organisation"),
+    )
+    kind = models.CharField(_("message type"), max_length=120, blank=True)
+    to_email = models.EmailField(_("to"))
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("recipient"),
+    )
+    from_email = models.CharField(_("from"), max_length=320)
+    reply_to = models.CharField(_("reply to"), max_length=320, blank=True)
+    subject = models.CharField(_("subject"), max_length=998)
+    text_body = models.TextField(_("text"))
+    html_body = models.TextField(_("HTML"), blank=True)
+    language = models.CharField(_("language"), max_length=10, blank=True)
+    headers = models.JSONField(_("headers"), default=dict, blank=True)
+    metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+    status = models.CharField(
+        _("status"), max_length=16, choices=EmailStatus.choices, default=EmailStatus.QUEUED
+    )
+    attempts = models.PositiveSmallIntegerField(_("attempts"), default=0)
+    max_retries = models.PositiveSmallIntegerField(_("maximum retries"), default=5)
+    provider = models.CharField(_("provider"), max_length=60, blank=True)
+    provider_message_id = models.CharField(_("provider message id"), max_length=255, blank=True)
+    error = models.TextField(_("error"), blank=True)
+    last_attempt_at = models.DateTimeField(_("last try at"), null=True, blank=True)
+    next_retry_at = models.DateTimeField(_("next try at"), null=True, blank=True)
+    sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
+    event_at = models.DateTimeField(_("delivery event at"), null=True, blank=True)
+
+    # Sending task, delivery webhooks and the platform console only (see the docstring).
+    platform_messages = models.Manager["EmailMessage"]()
+
+    class Meta:
+        verbose_name = _("email message")
+        verbose_name_plural = _("email messages")
+        default_manager_name = "objects"
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(status__in=EmailStatus.values),
+                name="notifications_email_status_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "-created_at"), name="notif_email_org_idx"),
+            models.Index(fields=("status", "-created_at"), name="notif_email_status_idx"),
+            models.Index(fields=("provider_message_id",), name="notif_email_provider_idx"),
+            models.Index(fields=("to_email", "-created_at"), name="notif_email_to_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.to_email} · {self.subject[:40]} [{self.status}]"
+
+
+# ---- email branding (A-07-T04) ---------------------------------------------------------------
+
+HEX_COLOUR = re.compile(r"^#[0-9A-Fa-f]{6}$")
+
+
+def validate_colour(value: str) -> None:
+    if not HEX_COLOUR.match(value or ""):
+        raise ValidationError(
+            _("Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."),
+            code="notifications.colour_invalid",
+        )
+
+
+def validate_logo_url(value: str) -> None:
+    if value and not value.startswith("https://"):
+        raise ValidationError(
+            _("The logo must be an https:// address so email apps can show it."),
+            code="notifications.logo_not_https",
+        )
+
+
+class BrandingFields(models.Model):
+    """What a branded email shows: the sender's name, logo and accent colour."""
+
+    display_name = models.CharField(_("name in emails"), max_length=120, blank=True)
+    logo_url = models.URLField(
+        _("logo"), max_length=500, blank=True, validators=[validate_logo_url]
+    )
+    colour = models.CharField(
+        _("accent colour"), max_length=7, blank=True, validators=[validate_colour]
+    )
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def clean(self) -> None:
+        if self.colour:
+            validate_colour(self.colour)
+        validate_logo_url(self.logo_url)
+
+
+class OrganisationBranding(BrandingFields, OrgOwnedModel):
+    """An organisation's own email branding (wins over its practice's)."""
+
+    class Meta:
+        verbose_name = _("organisation email branding")
+        verbose_name_plural = _("organisation email branding")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation",),
+                condition=models.Q(deleted_at__isnull=True),
+                name="notifications_one_branding_per_organisation",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation_id} · {self.display_name or '—'}"
+
+
+class PracticeBranding(BrandingFields):
+    """A practice's email branding: used for its client organisations without their own."""
+
+    practice = models.OneToOneField(
+        "tenancy.Practice",
+        on_delete=models.CASCADE,
+        related_name="email_branding",
+        verbose_name=_("practice"),
+    )
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("practice email branding")
+        verbose_name_plural = _("practice email branding")
+
+    def __str__(self) -> str:
+        return f"{self.practice_id} · {self.display_name or '—'}"
+
+
+# ---- custom sending domains (A-07-T05, T06) ----------------------------------------------------
+
+DOMAIN = re.compile(r"^(?=.{4,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$")
+
+
+class DomainStatus(models.TextChoices):
+    PENDING = "pending", _("Waiting for DNS records")
+    PARTIAL = "partial", _("Some records are missing")
+    VERIFIED = "verified", _("Verified")
+    FAILED = "failed", _("Records are wrong")
+
+
+class RecordStatus(models.TextChoices):
+    UNCHECKED = "unchecked", _("Not checked yet")
+    OK = "ok", _("Found and correct")
+    MISSING = "missing", _("Not found")
+    WRONG = "wrong", _("Found, but not right")
+
+
+class RecordKind(models.TextChoices):
+    SPF = "spf", _("SPF")
+    DKIM = "dkim", _("DKIM")
+    DMARC = "dmarc", _("DMARC")
+    RETURN_PATH = "return_path", _("Return path")
+
+
+class SendingDomain(OrgOwnedModel):
+    """An organisation's own domain for its emails (``billing@refined.ca``), A-07-T05.
+
+    Created at the email provider (``providers``), which gives the DKIM key and the return-path
+    host; the records the organisation must add to its DNS are ``SendingDomainRecord`` rows. The
+    DNS check (A-07-T06) sets each record's status and the domain's: only a ``verified`` domain
+    sends; until then emails go from Numo9's domain with Reply-To the organisation.
+    """
+
+    domain = models.CharField(_("domain"), max_length=253)
+    from_local_part = models.CharField(_("sender name before @"), max_length=64, default="billing")
+    provider = models.CharField(_("provider"), max_length=60)
+    provider_domain_id = models.CharField(_("provider domain id"), max_length=255, blank=True)
+    dkim_selector = models.CharField(_("DKIM selector"), max_length=63, blank=True)
+    # Only when Numo9 signs itself (the ``local`` provider); an email provider keeps its own key.
+    dkim_private_key = EncryptedField(_("DKIM private key"), blank=True)
+    status = models.CharField(
+        _("status"), max_length=16, choices=DomainStatus.choices, default=DomainStatus.PENDING
+    )
+    verified_at = models.DateTimeField(_("verified at"), null=True, blank=True)
+    last_checked_at = models.DateTimeField(_("last checked at"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("sending domain")
+        verbose_name_plural = _("sending domains")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "domain"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="notifications_one_sending_domain_per_name",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=DomainStatus.values),
+                name="notifications_domain_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.domain
+
+    @property
+    def from_address(self) -> str:
+        return f"{self.from_local_part}@{self.domain}"
+
+
+class SendingDomainRecord(OrgOwnedModel):
+    """One DNS record a sending domain needs (A-07-T05), with what the last check found (T06)."""
+
+    sending_domain = models.ForeignKey(
+        SendingDomain, on_delete=models.CASCADE, related_name="records", verbose_name=_("domain")
+    )
+    kind = models.CharField(_("record"), max_length=16, choices=RecordKind.choices)
+    record_type = models.CharField(_("type"), max_length=8, default="TXT")  # TXT | CNAME
+    host = models.CharField(_("host"), max_length=253)
+    value = models.TextField(_("value"))
+    status = models.CharField(
+        _("status"), max_length=16, choices=RecordStatus.choices, default=RecordStatus.UNCHECKED
+    )
+    found = models.TextField(_("found in DNS"), blank=True)
+    checked_at = models.DateTimeField(_("checked at"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("sending domain record")
+        verbose_name_plural = _("sending domain records")
+        ordering = ("pk",)
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("sending_domain", "kind"), name="notifications_one_record_per_kind"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.kind} {self.host}"
+
+
+class EmailSuppression(models.Model):
+    """An address not emailed until ``until`` after a bounce or complaint (A-07-T08).
+
+    One row per address across the platform (a hard bounce is a fact about the address, whoever
+    sends): ``queue_email`` logs messages to it as ``failed`` without sending. A bounce suppresses
+    for 30 days; a complaint (marked as spam) too — the person can be emailed again afterwards or
+    once someone corrects the address.
+    """
+
+    email = models.EmailField(_("email address"), unique=True)
+    reason = models.CharField(_("reason"), max_length=16)  # bounced | complained
+    until = models.DateTimeField(_("until"))
+    detail = models.CharField(_("detail"), max_length=500, blank=True)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("email suppression")
+        verbose_name_plural = _("email suppressions")
+
+    def __str__(self) -> str:
+        return f"{self.email} ({self.reason} until {self.until:%Y-%m-%d})"

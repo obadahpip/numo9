@@ -1,0 +1,6 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">{% if days_left > 0 %}L’essai de {{ organisation }} se termine le {{ ends_on }}{% else %}L’essai de {{ organisation }} est terminé{% endif %}</mj-text>
+        <mj-text padding="0 24px 12px">{% if days_left > 0 %}Choisissez un forfait avant le {{ ends_on }} pour continuer sans interruption. Tout ce que vous avez saisi est conservé.{% else %}Vos livres sont en lecture seule : vous pouvez encore tout consulter et exporter. Choisissez un forfait pour continuer.{% endif %}</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Choisir un forfait</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">{{ link }}</mj-text>{% endblock %}
+{% block footer %}En tant que propriétaire de {{ organisation }}, vous recevez ce courriel.{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Nouvelle connexion sur {{ device }}</mj-text>
+        <mj-text padding="0 24px 12px">Votre compte Numo9 {{ email }} a été connecté le {{ when }} depuis {{ device }} ({{ ip }}).</mj-text>
+        <mj-text padding="0 24px 12px">Si c’était vous, rien à faire. Sinon, changez votre mot de passe maintenant et déconnectez les autres sessions.</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Voir mes sessions</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">{{ link }}</mj-text>{% endblock %}
+{% block footer %}Vous recevez toujours ce courriel : les alertes de connexion ne peuvent pas être désactivées.{% endblock %}

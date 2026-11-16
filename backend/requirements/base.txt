@@ -28,6 +28,12 @@ celery==5.6.3
 django-celery-beat==2.9.0
 # Telephone numbers: parse, validate and store as E.164 (A-05-T02 organisation settings)
 phonenumbers==9.0.43
+# Transactional email through the provider's API + delivery webhooks (A-07-T03, T08)
+django-anymail==15.2
+# Email templates: MJML compiled to email HTML by mrml (Rust; no Node.js at runtime) (A-07-T04)
+mrml==0.2.4
+# DNS checks of sending domains: SPF, DKIM, DMARC, return path (A-07-T06)
+dnspython==2.9.2
 # Spreadsheet exports (A-04-T08 audit log; B-03 contact import/export)
 openpyxl==3.1.5
 charset-normalizer==3.5.2

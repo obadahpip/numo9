@@ -22,7 +22,8 @@ jobs:
   backend:
     name: backend (ruff, mypy, pytest, migrations)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The full suite took 16 min on the runner before A-07 and ran past 20 min with it.
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: backend

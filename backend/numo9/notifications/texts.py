@@ -72,3 +72,32 @@ register_text(
     _("%(file)s was blocked"),
     _("The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."),
 )
+
+# ---- system messages (A-07-T11): in-app side of the system email catalogue --------------------
+
+register_text(
+    "notifications.security.new_device",
+    _("New sign-in on %(device)s"),
+    _(
+        "Your account was signed in on %(when)s from %(device)s (%(ip)s). Not you? Change your "
+        "password and sign out the other sessions."
+    ),
+)
+register_text(
+    "notifications.billing.payment_failed",
+    _("Payment for %(organisation)s didn't go through"),
+    _("Update the payment method by %(grace_until)s to keep working without a break."),
+)
+register_text(
+    "notifications.billing.read_only",
+    _("%(organisation)s is read-only"),
+    _(
+        "The subscription payment is overdue. Everyone can still see and export; update the "
+        "payment method to make changes again."
+    ),
+)
+register_text(
+    "notifications.trial.ending",
+    _("Your trial ends on %(ends_on)s"),
+    _("Choose a package to keep working without a break. Everything you entered stays."),
+)

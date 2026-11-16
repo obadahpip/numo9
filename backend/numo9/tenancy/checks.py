@@ -56,6 +56,12 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Saved directory views (V-01-T08): one user's named filter/column/sort state in a practice;
         # names filter values, holds no organisation records.
         "workspace.SavedView",
+        # Email branding of a practice (A-07-T04): its name, logo address and colour in the emails
+        # of its client organisations; no organisation data.
+        "notifications.PracticeBranding",
+        # Email suppression list (A-07-T08): an address the provider reported as bouncing or
+        # complaining, not emailed for 30 days; an address, no organisation data.
+        "notifications.EmailSuppression",
     }
 )
 

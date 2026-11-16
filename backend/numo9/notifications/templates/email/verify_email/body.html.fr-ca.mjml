@@ -1,0 +1,7 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Vérifiez votre adresse courriel</mj-text>
+        <mj-text padding="0 24px 12px">Bonjour {{ name }}, ouvrez le lien ci-dessous dans les 3 jours pour vérifier {{ email }} et terminer la création de votre compte Numo9.</mj-text>
+        <mj-text padding="0 24px 12px">Si vous ne vous êtes pas inscrit à Numo9, ignorez ce courriel : rien ne se passe sans le lien.</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Vérifier mon adresse</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">{{ link }}</mj-text>{% endblock %}
+{% block footer %}Vous recevez ce courriel parce que quelqu’un s’est inscrit à Numo9 avec {{ email }}.{% endblock %}

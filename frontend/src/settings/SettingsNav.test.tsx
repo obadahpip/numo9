@@ -11,6 +11,7 @@ const SECTIONS = [
   ["Lock dates", "/o/acme/settings/lock-dates"],
   ["Users and roles", "/o/acme/settings/users-roles"],
   ["Email domain", "/o/acme/settings/email-domain"],
+  ["Notifications", "/o/acme/settings/notifications"],
   ["Subscription", "/o/acme/settings/subscription"],
   ["Numbering", "/o/acme/settings/numbering"],
   ["Custom fields", "/o/acme/settings/custom-fields"],

@@ -57,6 +57,11 @@ const labels = defineMessages({
     defaultMessage: "Settings: Email domain",
     description: "Settings section",
   },
+  settingsNotifications: {
+    id: "routes.settingsNotifications",
+    defaultMessage: "Settings: Notifications",
+    description: "Settings section",
+  },
   settingsSubscription: {
     id: "routes.settingsSubscription",
     defaultMessage: "Settings: Subscription",
@@ -114,6 +119,11 @@ const sectionLabels = defineMessages({
     id: "settings.nav.emailDomain",
     defaultMessage: "Email domain",
     description: "Settings section",
+  },
+  notifications: {
+    id: "settings.nav.notifications",
+    defaultMessage: "Notifications",
+    description: "Settings section: the person's own notification choices",
   },
   subscription: {
     id: "settings.nav.subscription",
@@ -277,6 +287,13 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.settingsEmailDomain,
     sectionLabel: sectionLabels.emailDomain,
     aliases: ["settings/email"],
+  },
+  {
+    path: "settings/notifications",
+    feature: CORE,
+    label: labels.settingsNotifications,
+    sectionLabel: sectionLabels.notifications,
+    aliases: ["notifications", "settings/notification-preferences"],
   },
   {
     path: "settings/subscription",

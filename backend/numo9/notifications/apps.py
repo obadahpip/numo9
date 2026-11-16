@@ -14,7 +14,10 @@ class NotificationsConfig(AppConfig):
         # Tenant sweep (A-01-T09): a notification needs a recipient.
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
+        from . import bounces  # noqa: F401  (connects the anymail tracking signal, A-07-T08)
+
         SWEEP_FACTORIES["notifications.Notification"] = _sweep_notification
+        SWEEP_FACTORIES["notifications.SendingDomain"] = _sweep_domain
 
 
 def _sweep_notification(organisation: Any) -> Any:
@@ -33,3 +36,15 @@ def _sweep_notification(organisation: Any) -> Any:
     )
     notification.save()
     return notification
+
+
+def _sweep_domain(organisation: Any) -> Any:
+    import uuid
+
+    from .models import SendingDomain
+
+    domain = SendingDomain(
+        organisation=organisation, domain=f"sweep-{uuid.uuid4().hex[:12]}.ca", provider="local"
+    )
+    domain.save()
+    return domain

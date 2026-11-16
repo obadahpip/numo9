@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 03:30-0500\n"
+"POT-Creation-Date: 2026-11-16 05:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,13 +79,23 @@ msgid "public ID"
 msgstr "identifiant public"
 
 msgid "email address"
-msgstr ""
+msgstr "adresse courriel"
+
+#, fuzzy
+#| msgid "Email received"
+msgid "email delivery"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "email delivery problem at"
+msgstr "événement de livraison le"
 
 msgid "name"
 msgstr ""
 
 msgid "language"
-msgstr ""
+msgstr "langue"
 
 msgid "time format"
 msgstr ""
@@ -416,7 +426,7 @@ msgid "created at"
 msgstr ""
 
 msgid "updated at"
-msgstr ""
+msgstr "mis à jour le"
 
 msgid "product"
 msgstr ""
@@ -714,7 +724,7 @@ msgid "%(field)s is required."
 msgstr ""
 
 msgid "text"
-msgstr ""
+msgstr "texte"
 
 #, fuzzy
 #| msgid "Number"
@@ -757,7 +767,7 @@ msgid "Roles"
 msgstr ""
 
 msgid "Email"
-msgstr ""
+msgstr "Courriel"
 
 msgid "Phone"
 msgstr ""
@@ -1040,7 +1050,7 @@ msgid "Choose a contact of this organisation."
 msgstr "Choisissez un rôle utilisé dans cette organisation."
 
 msgid "type"
-msgstr ""
+msgstr "type"
 
 #, fuzzy
 #| msgid "action"
@@ -1427,7 +1437,7 @@ msgid "status changed at"
 msgstr "commencée le"
 
 msgid "reason"
-msgstr ""
+msgstr "raison"
 
 #, fuzzy
 #| msgid "Description"
@@ -1673,10 +1683,10 @@ msgid "Message-ID"
 msgstr ""
 
 msgid "subject"
-msgstr ""
+msgstr "objet"
 
 msgid "recipient"
-msgstr ""
+msgstr "destinataire"
 
 msgid "raw message key"
 msgstr ""
@@ -2080,6 +2090,27 @@ msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
 #, python-format
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr "Vous avez %(max)s vues enregistrées, le maximum permis. Supprimez d’abord une vue que vous n’utilisez plus."
+
+msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
+msgstr "Les notifications de sécurité ne peuvent pas être désactivées : elles vous informent des connexions et des changements à votre compte."
+
+#, python-format
+msgid "%(domain)s isn't a domain name. Enter the part after @ in your email address, e.g. refined.ca."
+msgstr "%(domain)s n’est pas un nom de domaine. Entrez la partie après @ de votre adresse courriel, p. ex. refined.ca."
+
+#, python-format
+msgid "Emails can't be sent from %(domain)s: only the domain's owner can add its DNS records. Use your organisation's own domain."
+msgstr "Impossible d’envoyer des courriels depuis %(domain)s : seul le propriétaire du domaine peut y ajouter des enregistrements DNS. Utilisez le domaine de votre organisation."
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "%(domain)s is already set up for this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, fuzzy
+#| msgid "File storage isn't answering right now. Try again in a minute."
+msgid "The email provider didn't answer. Try again in a few minutes."
+msgstr "Le stockage des fichiers ne répond pas pour le moment. Réessayez dans une minute."
 
 #, python-format
 msgid "%(items)s and %(last)s"
@@ -3013,6 +3044,236 @@ msgstr ""
 msgid "Message details are a set of named values."
 msgstr "Les limites doivent être une liste de valeurs nommées."
 
+msgid "In the app"
+msgstr "Dans l’application"
+
+#, fuzzy
+#| msgid "impersonator"
+msgid "person"
+msgstr "personne connectée à sa place"
+
+msgid "in the app"
+msgstr "dans l’application"
+
+#, fuzzy
+#| msgid "owner email"
+msgid "by email"
+msgstr "courriel du propriétaire"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "notification preference"
+msgstr "organisation"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "notification preferences"
+msgstr "organisation"
+
+#, fuzzy
+#| msgid "Waiting to start"
+msgid "Waiting to send"
+msgstr "En attente de démarrage"
+
+msgid "Sending"
+msgstr "Envoi en cours"
+
+msgid "Sent"
+msgstr "Envoyé"
+
+msgid "Not sent"
+msgstr "Non envoyé"
+
+msgid "Bounced"
+msgstr "Rejeté"
+
+msgid "Marked as spam"
+msgstr "Signalé comme pourriel"
+
+#, fuzzy
+#| msgid "details"
+msgid "message type"
+msgstr "détails"
+
+msgid "to"
+msgstr "à"
+
+msgid "from"
+msgstr "de"
+
+msgid "reply to"
+msgstr "répondre à"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "headers"
+msgstr "en-têtes"
+
+msgid "metadata"
+msgstr "métadonnées"
+
+msgid "provider"
+msgstr "fournisseur"
+
+msgid "provider message id"
+msgstr "identifiant du message chez le fournisseur"
+
+#, fuzzy
+#| msgid "next try at"
+msgid "last try at"
+msgstr "prochain essai le"
+
+msgid "sent at"
+msgstr "envoyé le"
+
+msgid "delivery event at"
+msgstr "événement de livraison le"
+
+msgid "email message"
+msgstr "courriel"
+
+msgid "email messages"
+msgstr "courriels"
+
+msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."
+msgstr "Entrez la couleur sous la forme # suivi de six chiffres hexadécimaux, p. ex. #1F4E79."
+
+msgid "The logo must be an https:// address so email apps can show it."
+msgstr "Le logo doit être une adresse https:// pour que les applications de courriel puissent l’afficher."
+
+#, fuzzy
+#| msgid "owner email"
+msgid "name in emails"
+msgstr "courriel du propriétaire"
+
+msgid "logo"
+msgstr "logo"
+
+msgid "accent colour"
+msgstr "couleur d’accent"
+
+#, fuzzy
+#| msgid "Change organisation settings"
+msgid "organisation email branding"
+msgstr "Modifier les paramètres de l’organisation"
+
+#, fuzzy
+#| msgid "Practice admin"
+msgid "practice email branding"
+msgstr "Administrateur du cabinet"
+
+#, fuzzy
+#| msgid "Waiting to start"
+msgid "Waiting for DNS records"
+msgstr "En attente de démarrage"
+
+msgid "Some records are missing"
+msgstr "Des enregistrements manquent"
+
+msgid "Verified"
+msgstr "Vérifié"
+
+msgid "Records are wrong"
+msgstr "Les enregistrements sont incorrects"
+
+msgid "Not checked yet"
+msgstr "Pas encore vérifié"
+
+msgid "Found and correct"
+msgstr "Trouvé et correct"
+
+msgid "Not found"
+msgstr "Introuvable"
+
+msgid "Found, but not right"
+msgstr "Trouvé, mais incorrect"
+
+msgid "SPF"
+msgstr ""
+
+msgid "DKIM"
+msgstr ""
+
+msgid "DMARC"
+msgstr ""
+
+msgid "Return path"
+msgstr "Chemin de retour"
+
+msgid "domain"
+msgstr "domaine"
+
+msgid "sender name before @"
+msgstr "nom de l’expéditeur avant @"
+
+#, fuzzy
+#| msgid "provider message id"
+msgid "provider domain id"
+msgstr "identifiant du message chez le fournisseur"
+
+msgid "DKIM selector"
+msgstr "sélecteur DKIM"
+
+msgid "DKIM private key"
+msgstr "clé privée DKIM"
+
+#, fuzzy
+#| msgid "started at"
+msgid "verified at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "started at"
+msgid "last checked at"
+msgstr "commencée le"
+
+msgid "sending domain"
+msgstr "domaine d’envoi"
+
+msgid "sending domains"
+msgstr "domaines d’envoi"
+
+msgid "host"
+msgstr "hôte"
+
+msgid "value"
+msgstr "valeur"
+
+#, fuzzy
+#| msgid "founding offer"
+msgid "found in DNS"
+msgstr "offre fondatrice"
+
+#, fuzzy
+#| msgid "started at"
+msgid "checked at"
+msgstr "commencée le"
+
+msgid "sending domain record"
+msgstr "enregistrement du domaine d’envoi"
+
+msgid "sending domain records"
+msgstr "enregistrements du domaine d’envoi"
+
+msgid "until"
+msgstr "jusqu’au"
+
+#, fuzzy
+#| msgid "details"
+msgid "detail"
+msgstr "détails"
+
+#, fuzzy
+#| msgid "email message"
+msgid "email suppression"
+msgstr "courriel"
+
+#, fuzzy
+#| msgid "email messages"
+msgid "email suppressions"
+msgstr "courriels"
+
 #, fuzzy
 #| msgid "organisation"
 msgid "Notification"
@@ -3020,7 +3281,7 @@ msgstr "organisation"
 
 #, python-format
 msgid "%(job)s finished"
-msgstr ""
+msgstr "%(job)s est terminé"
 
 #, python-format
 msgid "%(summary)s"
@@ -3028,11 +3289,11 @@ msgstr ""
 
 #, python-format
 msgid "%(job)s didn't finish"
-msgstr ""
+msgstr "%(job)s n’a pas pu se terminer"
 
 #, python-format
 msgid "%(error)s Open the job tray to try again."
-msgstr ""
+msgstr "%(error)s Ouvrez le panneau des tâches pour réessayer."
 
 #, python-format
 msgid "%(file)s was blocked"
@@ -3040,6 +3301,37 @@ msgstr ""
 
 msgid "The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."
 msgstr ""
+
+#, python-format
+msgid "New sign-in on %(device)s"
+msgstr "Nouvelle connexion sur %(device)s"
+
+#, python-format
+msgid "Your account was signed in on %(when)s from %(device)s (%(ip)s). Not you? Change your password and sign out the other sessions."
+msgstr "Votre compte a été connecté le %(when)s depuis %(device)s (%(ip)s). Ce n’était pas vous? Changez votre mot de passe et déconnectez les autres sessions."
+
+#, python-format
+msgid "Payment for %(organisation)s didn't go through"
+msgstr "Le paiement de %(organisation)s n’a pas abouti"
+
+#, python-format
+msgid "Update the payment method by %(grace_until)s to keep working without a break."
+msgstr "Mettez à jour le moyen de paiement d’ici le %(grace_until)s pour continuer sans interruption."
+
+#, fuzzy, python-format
+#| msgid "Change organisation settings"
+msgid "%(organisation)s is read-only"
+msgstr "Modifier les paramètres de l’organisation"
+
+msgid "The subscription payment is overdue. Everyone can still see and export; update the payment method to make changes again."
+msgstr "Le paiement de l’abonnement est en retard. Tout le monde peut encore consulter et exporter; mettez à jour le moyen de paiement pour pouvoir modifier à nouveau."
+
+#, python-format
+msgid "Your trial ends on %(ends_on)s"
+msgstr "Votre essai se termine le %(ends_on)s"
+
+msgid "Choose a package to keep working without a break. Everything you entered stays."
+msgstr "Choisissez un forfait pour continuer sans interruption. Tout ce que vous avez saisi est conservé."
 
 msgid "Sole proprietorship"
 msgstr ""
@@ -4116,3 +4408,6 @@ msgstr "vues de répertoire enregistrées"
 
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"
+
+#~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
+#~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."

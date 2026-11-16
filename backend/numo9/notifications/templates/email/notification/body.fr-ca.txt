@@ -1,0 +1,9 @@
+{% autoescape off %}{{ title }}
+{% if body %}
+{{ body }}
+{% endif %}{% if link %}
+Ouvrir dans Numo9 : {{ link }}
+{% endif %}
+--
+Vous recevez ce courriel en raison de vos paramètres de notification{% if organisation %} pour {{ organisation }}{% endif %} dans Numo9. Modifiez-les sous Notifications.
+{% endautoescape %}

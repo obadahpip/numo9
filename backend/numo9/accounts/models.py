@@ -81,6 +81,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     #: Random id used in APIs and URLs instead of the sequential primary key (A-03-T07/T09).
     public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
     email = models.EmailField(_("email address"), max_length=254, unique=True)
+    # Bounce / complaint webhook (A-07-T08): "bounced", "complained"; empty = none known.
+    email_status = models.CharField(
+        _("email delivery"), max_length=16, blank=True, default="", db_default=""
+    )
+    email_status_at = models.DateTimeField(_("email delivery problem at"), null=True, blank=True)
     name = models.CharField(_("name"), max_length=150)
     locale = models.CharField(
         _("language"), max_length=5, choices=Locale.choices, default=Locale.EN_CA

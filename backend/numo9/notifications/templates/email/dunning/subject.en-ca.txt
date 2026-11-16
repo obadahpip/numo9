@@ -1,0 +1,1 @@
+{% autoescape off %}{% if day >= 7 %}{{ organisation }} is now read-only{% else %}Payment for {{ organisation }} didn't go through{% endif %}{% endautoescape %}
