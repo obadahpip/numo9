@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 262   Remaining: 2525   Progress: 9.40%
+TOTAL ATOMIC TASKS: 2787   Completed: 263   Remaining: 2524   Progress: 9.44%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -360,7 +360,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-04-T05 — Checkout session endpoint POST /api/v1/orgs/{id}/billing/checkout (card + acss_debit) owner-only
 ✅ U-04-T06 — Webhook endpoint with signature check, event persistence, Celery dispatch
 ✅ U-04-T07 — Handlers: checkout.session.completed, customer.subscription.created/updated/deleted → local state machine
-❌ U-04-T08 — Handlers: invoice.paid, invoice.payment_failed, invoice.finalized → PlatformInvoice mirror + receipt email
+✅ U-04-T08 — Handlers: invoice.paid, invoice.payment_failed, invoice.finalized → PlatformInvoice mirror + receipt email
 ❌ U-04-T09 — Dunning scheduler: grace_until = failure + 7 d; reminder emails day 0/3/5/7; transition to read_only at grace end (beat job, idempotent)
 ❌ U-04-T10 — Upgrade/downgrade service with proration preview (invoices.upcoming)
 ❌ U-04-T11 — Cancellation + export job (ZIP of CSV/XLSX/PDF/JSON) delivered as signed URL

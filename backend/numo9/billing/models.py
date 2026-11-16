@@ -17,6 +17,9 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from numo9.audit.mixins import AuditedModel
+from numo9.tenancy.models import OrgOwnedModel
+
 
 class StripeEvent(models.Model):
     public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
@@ -67,3 +70,62 @@ class StripeEvent(models.Model):
         data = (self.payload or {}).get("data") or {}
         obj = data.get("object") or {}
         return obj if isinstance(obj, dict) else {}
+
+
+class PlatformInvoiceStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    OPEN = "open", _("Due")
+    PAID = "paid", _("Paid")
+    UNCOLLECTIBLE = "uncollectible", _("Uncollectible")
+    VOID = "void", _("Void")
+
+
+class PlatformInvoice(AuditedModel, OrgOwnedModel):
+    """Numo9's invoice to the organisation — a mirror of the Stripe invoice (U-04-T08).
+
+    Stripe numbers and issues the invoice; Numo9 keeps a copy for the billing page (list, PDF
+    link) and for its reports: one row per Stripe invoice (``stripe_invoice_id`` unique), updated
+    by every ``invoice.finalized`` / ``.paid`` / ``.payment_failed`` event. Amounts are in cents
+    of ``currency`` (CAD), as Stripe gives them.
+    """
+
+    stripe_invoice_id = models.CharField(_("Stripe invoice"), max_length=64, unique=True)
+    number = models.CharField(_("number"), max_length=64, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=16,
+        choices=PlatformInvoiceStatus.choices,
+        default=PlatformInvoiceStatus.DRAFT,
+    )
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    subtotal_cents = models.BigIntegerField(_("subtotal"), default=0)
+    tax_cents = models.BigIntegerField(_("tax"), default=0)
+    total_cents = models.BigIntegerField(_("total"), default=0)
+    amount_paid_cents = models.BigIntegerField(_("paid"), default=0)
+    amount_due_cents = models.BigIntegerField(_("due"), default=0)
+    period_start = models.DateTimeField(_("period from"), null=True, blank=True)
+    period_end = models.DateTimeField(_("period to"), null=True, blank=True)
+    issued_at = models.DateTimeField(_("issued at"), null=True, blank=True)
+    paid_at = models.DateTimeField(_("paid at"), null=True, blank=True)
+    attempt_count = models.PositiveSmallIntegerField(_("payment attempts"), default=0)
+    next_attempt_at = models.DateTimeField(_("next payment attempt"), null=True, blank=True)
+    hosted_url = models.URLField(_("invoice page"), max_length=500, blank=True)
+    pdf_url = models.URLField(_("PDF"), max_length=500, blank=True)
+    stripe_subscription_id = models.CharField(_("Stripe subscription"), max_length=64, blank=True)
+    receipt_sent_at = models.DateTimeField(_("receipt sent at"), null=True, blank=True)
+    #: Stripe ``created`` of the last event applied (an older event never overwrites, U-04-T15).
+    stripe_event_created = models.DateTimeField(_("last event at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-issued_at", "-id")
+        verbose_name = _("Numo9 invoice")
+        verbose_name_plural = _("Numo9 invoices")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(status__in=PlatformInvoiceStatus.values),
+                name="billing_invoice_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.number or self.stripe_invoice_id

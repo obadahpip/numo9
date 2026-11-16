@@ -151,3 +151,39 @@ def deliver(event: dict[str, Any]) -> Any:
     process_event(row.pk)
     row.refresh_from_db()
     return row
+
+
+def stripe_invoice(
+    inv_id: str = "in_1",
+    status: str = "paid",
+    total: int = 5537,
+    subtotal: int = 4900,
+    number: str = "NUMO9-0001",
+    customer: str = "cus_test_0001",
+    subscription: str = "sub_1",
+    attempt_count: int = 1,
+) -> dict[str, Any]:
+    return {
+        "id": inv_id,
+        "object": "invoice",
+        "customer": customer,
+        "subscription": subscription,
+        "number": number,
+        "status": status,
+        "currency": "cad",
+        "subtotal": subtotal,
+        "total": total,
+        "total_excluding_tax": subtotal,
+        "amount_due": total,
+        "amount_paid": total if status == "paid" else 0,
+        "attempt_count": attempt_count,
+        "next_payment_attempt": None if status == "paid" else 1_790_259_200,
+        "created": 1_790_000_000,
+        "status_transitions": {
+            "finalized_at": 1_790_000_100,
+            "paid_at": 1_790_000_200 if status == "paid" else None,
+        },
+        "hosted_invoice_url": f"https://invoice.stripe.com/i/{inv_id}",
+        "invoice_pdf": f"https://pay.stripe.com/invoice/{inv_id}/pdf",
+        "lines": {"data": [{"period": {"start": 1_790_000_000, "end": 1_792_592_000}}]},
+    }

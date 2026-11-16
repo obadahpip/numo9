@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:56-0500\n"
+"POT-Creation-Date: 2026-11-16 14:02-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -462,6 +462,87 @@ msgstr ""
 msgid "Stripe events"
 msgstr ""
 
+msgid "Draft"
+msgstr ""
+
+msgid "Due"
+msgstr ""
+
+msgid "Paid"
+msgstr ""
+
+msgid "Uncollectible"
+msgstr ""
+
+msgid "Void"
+msgstr ""
+
+msgid "Stripe invoice"
+msgstr ""
+
+msgid "number"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "subtotal"
+msgstr ""
+
+msgid "tax"
+msgstr ""
+
+msgid "total"
+msgstr ""
+
+msgid "paid"
+msgstr ""
+
+msgid "due"
+msgstr ""
+
+msgid "period from"
+msgstr ""
+
+msgid "period to"
+msgstr ""
+
+msgid "issued at"
+msgstr ""
+
+msgid "paid at"
+msgstr ""
+
+msgid "payment attempts"
+msgstr ""
+
+msgid "next payment attempt"
+msgstr ""
+
+msgid "invoice page"
+msgstr ""
+
+msgid "PDF"
+msgstr ""
+
+msgid "Stripe subscription"
+msgstr ""
+
+msgid "receipt sent at"
+msgstr ""
+
+msgid "last event at"
+msgstr ""
+
+msgid "Numo9 invoice"
+msgstr ""
+
+msgid "Numo9 invoices"
+msgstr ""
+
 msgid "See the subscription, payment method and Numo9 invoices"
 msgstr ""
 
@@ -523,9 +604,6 @@ msgid "Translation key of the product's name, e.g. 'catalogue.product.accounting
 msgstr ""
 
 msgid "kind"
-msgstr ""
-
-msgid "status"
 msgstr ""
 
 msgid "sort order"
@@ -984,9 +1062,6 @@ msgid "tax ID"
 msgstr ""
 
 msgid "Another tax number printed on documents, e.g. a foreign registration number."
-msgstr ""
-
-msgid "currency"
 msgstr ""
 
 msgid "credit limit"
@@ -1477,9 +1552,6 @@ msgid "Stripe customer"
 msgstr ""
 
 msgid "One Stripe customer per organisation (cus_…)."
-msgstr ""
-
-msgid "Stripe subscription"
 msgstr ""
 
 msgid "billing interval"
@@ -2727,9 +2799,6 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
-msgid "Draft"
-msgstr ""
-
 msgid "Awaiting approval"
 msgstr ""
 
@@ -3275,6 +3344,14 @@ msgid "The subscription payment is overdue. Everyone can still see and export; u
 msgstr ""
 
 #, python-format
+msgid "Receipt: %(amount)s paid for %(organisation)s"
+msgstr ""
+
+#, python-format
+msgid "Numo9 invoice %(number)s is paid. Thank you. The invoice is on the Subscription page."
+msgstr ""
+
+#, python-format
 msgid "Your trial ends on %(ends_on)s"
 msgstr ""
 
@@ -3436,9 +3513,6 @@ msgid "Registered"
 msgstr ""
 
 msgid "Closed"
-msgstr ""
-
-msgid "number"
 msgstr ""
 
 msgid "effective from"
@@ -4276,9 +4350,6 @@ msgid "Invite a client organisation's owner"
 msgstr ""
 
 msgid "change the practice's security settings"
-msgstr ""
-
-msgid "Paid"
 msgstr ""
 
 msgid "Comfortable"

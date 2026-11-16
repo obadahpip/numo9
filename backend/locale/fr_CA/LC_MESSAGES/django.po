@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:56-0500\n"
+"POT-Creation-Date: 2026-11-16 14:02-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -466,6 +466,87 @@ msgstr "dernière erreur"
 msgid "Stripe events"
 msgstr "Événements Stripe"
 
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Due"
+msgstr "À payer"
+
+msgid "Paid"
+msgstr "Payée"
+
+msgid "Uncollectible"
+msgstr "Irrécouvrable"
+
+msgid "Void"
+msgstr "Annulée"
+
+msgid "Stripe invoice"
+msgstr "Facture Stripe"
+
+msgid "number"
+msgstr "numéro"
+
+msgid "status"
+msgstr "statut"
+
+msgid "currency"
+msgstr "devise"
+
+msgid "subtotal"
+msgstr "sous-total"
+
+msgid "tax"
+msgstr "taxes"
+
+msgid "total"
+msgstr "total"
+
+msgid "paid"
+msgstr "payé"
+
+msgid "due"
+msgstr "à payer"
+
+msgid "period from"
+msgstr "période du"
+
+msgid "period to"
+msgstr "période au"
+
+msgid "issued at"
+msgstr "émise le"
+
+msgid "paid at"
+msgstr "payée le"
+
+msgid "payment attempts"
+msgstr "tentatives de paiement"
+
+msgid "next payment attempt"
+msgstr "prochaine tentative de paiement"
+
+msgid "invoice page"
+msgstr "page de la facture"
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid "Stripe subscription"
+msgstr "Abonnement Stripe"
+
+msgid "receipt sent at"
+msgstr "reçu envoyé le"
+
+msgid "last event at"
+msgstr "dernier événement le"
+
+msgid "Numo9 invoice"
+msgstr "Facture Numo9"
+
+msgid "Numo9 invoices"
+msgstr "Factures Numo9"
+
 msgid "See the subscription, payment method and Numo9 invoices"
 msgstr "Voir l’abonnement, le mode de paiement et les factures de Numo9"
 
@@ -530,9 +611,6 @@ msgstr ""
 
 msgid "kind"
 msgstr ""
-
-msgid "status"
-msgstr "statut"
 
 msgid "sort order"
 msgstr ""
@@ -1059,9 +1137,6 @@ msgstr ""
 
 msgid "Another tax number printed on documents, e.g. a foreign registration number."
 msgstr ""
-
-msgid "currency"
-msgstr "devise"
 
 msgid "credit limit"
 msgstr "limite de crédit"
@@ -1605,9 +1680,6 @@ msgstr "Client Stripe"
 
 msgid "One Stripe customer per organisation (cus_…)."
 msgstr "Un client Stripe par organisation (cus_…)."
-
-msgid "Stripe subscription"
-msgstr "Abonnement Stripe"
 
 msgid "billing interval"
 msgstr "fréquence de facturation"
@@ -2922,9 +2994,6 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
-msgid "Draft"
-msgstr "Brouillon"
-
 msgid "Awaiting approval"
 msgstr ""
 
@@ -3532,6 +3601,14 @@ msgid "The subscription payment is overdue. Everyone can still see and export; u
 msgstr "Le paiement de l’abonnement est en retard. Tout le monde peut encore consulter et exporter; mettez à jour le moyen de paiement pour pouvoir modifier à nouveau."
 
 #, python-format
+msgid "Receipt: %(amount)s paid for %(organisation)s"
+msgstr "Reçu : %(amount)s payé pour %(organisation)s"
+
+#, python-format
+msgid "Numo9 invoice %(number)s is paid. Thank you. The invoice is on the Subscription page."
+msgstr "La facture Numo9 %(number)s est payée. Merci. La facture se trouve sur la page Abonnement."
+
+#, python-format
 msgid "Your trial ends on %(ends_on)s"
 msgstr "Votre essai se termine le %(ends_on)s"
 
@@ -3694,9 +3771,6 @@ msgstr "Inscrit"
 
 msgid "Closed"
 msgstr "Fermé"
-
-msgid "number"
-msgstr "numéro"
 
 msgid "effective from"
 msgstr "en vigueur du"
@@ -4548,9 +4622,6 @@ msgstr "Inviter le propriétaire d’une organisation cliente"
 
 msgid "change the practice's security settings"
 msgstr "modifier les paramètres de sécurité du cabinet"
-
-msgid "Paid"
-msgstr "Payée"
 
 msgid "Comfortable"
 msgstr "Confortable"

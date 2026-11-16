@@ -172,3 +172,22 @@ before or after the subscription events, and before the owner's browser returns.
 organisation matches fails and is retried. Every change is a `Subscription.save()` — audited, the
 organisation's status follows, the entitlement cache is bumped — and the event records its
 organisation.
+
+## Platform invoices and receipts (U-04-T08)
+
+`billing.PlatformInvoice` (organisation record, audited) — Numo9's invoice to the organisation,
+a mirror of the Stripe invoice: `stripe_invoice_id` (unique), Stripe's `number`, `status`
+(`draft`, `open`, `paid`, `uncollectible`, `void`), `currency`, amounts in cents (`subtotal`,
+`tax` = total − total excluding tax, `total`, `amount_paid`, `amount_due`), `period_start/end`,
+`issued_at` (finalized), `paid_at`, `attempt_count`, `next_attempt_at`, `hosted_url`, `pdf_url`,
+the Stripe subscription, `receipt_sent_at` and `stripe_event_created` (the last event applied).
+
+Handlers of `invoice.finalized`, `invoice.paid`, `invoice.payment_failed` upsert the row for the
+organisation of the invoice's customer (or subscription) — the local rows are exactly Stripe's
+invoices; an event older than the last one applied changes nothing.
+
+- `invoice.paid` — the owner gets a **receipt** once per invoice (notification `billing.receipt`,
+  category *Billing and subscription*: in the app and by email): "Receipt: $55.37 paid for Maple
+  Bakery Inc."; a past-due or read-only subscription comes back to active (the dunning stops).
+- `invoice.payment_failed` — the subscription goes past due with the 7-day grace (if the
+  subscription event hasn't already) and the dunning starts (U-04-T09).
