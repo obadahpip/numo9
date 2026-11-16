@@ -86,6 +86,26 @@ lines with exact amounts (`ValidatedLine`), the totals per book and the entry's 
 (`both` when it touches both books, else the one it touches). Lock dates and the period hook
 (C-02-T07) and numbering/insertion/audit (C-02-T08) come on top.
 
+## Lock dates and closed periods (C-02-T07)
+
+`numo9.ledger.periods.assert_can_post(organisation, date, user=None, module="gl")` — run by the
+posting service before anything is written:
+
+1. **Lock dates** (A-05): the module's own lock and the general-ledger lock
+   (`assert_not_locked`) — `LockedPeriod`, 409 `lock.violation`, naming the lock ("The General
+   ledger lock date is 2026-03-31 (everyone): …"). Sales postings pass `module="ar"`, bills
+   `"ap"`, bank `"bank"`, payroll `"payroll"`; manual journals `"gl"`. When both stop it, the
+   module's lock is named. Advisers pass an *everyone except advisers* lock; a system job
+   (`user=None`) is stopped like everyone.
+2. **Closed periods** (C-06): every check registered with `register_period_check(check)` —
+   `check(organisation, date) -> ClosedPeriod | None`. C-06 registers the year-end close; until
+   then nothing is registered and every period is open (the stub). A closed period raises
+   `PeriodClosed`, 409 `ledger.period.closed`, body `period` (`start`, `end`, `label`): "Fiscal
+   year 2025 (2025-01-01 to 2025-12-31) is closed: nothing can be posted in it. …".
+
+The lock is checked first. `JournalEntry.save()` still refuses becoming posted on or before the GL
+lock (A-05-T06) — a second layer for code that bypasses the service.
+
 ## Trial balance per book (C-02-T11)
 
 `numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
@@ -110,6 +130,7 @@ the active organisation:
 | T04 | `tests/test_ledger_append_only.py` |
 | T05 | `tests/test_ledger_sequence.py` (incl. threads on real connections) |
 | T06 | `tests/test_ledger_validation.py` (incl. Hypothesis) |
+| T07 | `tests/test_ledger_periods.py` |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
 | T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:10-0500\n"
+"POT-Creation-Date: 2026-11-16 13:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3003,6 +3003,10 @@ msgstr "Numéro"
 #| msgid "Number"
 msgid "journal number sequences"
 msgstr "Numéro"
+
+#, python-format
+msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
+msgstr "La période %(period)s (du %(start)s au %(end)s) est fermée : rien ne peut y être comptabilisé. Datez l'écriture après le %(end)s ou demandez à un conseiller de rouvrir la période."
 
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."

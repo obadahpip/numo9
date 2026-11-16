@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 247   Remaining: 2540   Progress: 8.86%
+TOTAL ATOMIC TASKS: 2787   Completed: 248   Remaining: 2539   Progress: 8.90%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -343,7 +343,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ B-01-T13 — Credit limit check service (warn/block + override approval request) used by D/E later
 
 [C-02]
-❌ C-02-T07 — Lock-date & period hook (A-05 GL lock; C-06 stub)
+✅ C-02-T07 — Lock-date & period hook (A-05 GL lock; C-06 stub)
 ❌ C-02-T08 — post_journal() atomic service (validate → sequence → insert → status Posted → audit)
 ❌ C-02-T09 — State machine Draft → Awaiting approval → Posted → Reversed (django-fsm-like, explicit transitions)
 ❌ C-02-T10 — reverse() service (mirror lines, link, row lock)
