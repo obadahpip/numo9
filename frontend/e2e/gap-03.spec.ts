@@ -18,6 +18,7 @@ const SECTIONS = [
   ["lock-dates", "Lock dates"],
   ["users-roles", "Users and roles"],
   ["email-domain", "Email domain"],
+  ["notifications", "Notifications"],
   ["subscription", "Subscription"],
   ["numbering", "Numbering"],
   ["custom-fields", "Custom fields"],

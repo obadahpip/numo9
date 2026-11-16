@@ -129,7 +129,7 @@ def _run_probe(org: Organisation, verdict: str, monkeypatch: pytest.MonkeyPatch)
 
     def wait(token: str, **kwargs: Any) -> Any:
         sent = mail.outbox[-1]
-        inbox.append(_arrived(sent.subject, verdict))
+        inbox.append(_arrived(str(sent.subject), verdict))
         kwargs["imap_factory"] = FakeMailbox(inbox)
         kwargs["interval"] = 0
         return original(token, **kwargs)

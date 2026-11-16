@@ -249,6 +249,23 @@ message's organisation — another organisation's contacts are untouched — and
 **Suppressed for 30 days** (`EmailSuppression`, one row per address): `queue_email` logs messages
 to it as `failed` ("Suppressed until …") without sending.
 
+## Notification centre UI (A-07-T09)
+
+`frontend/src/notifications/`:
+
+- **Bell** — the shell's bell (`AppShell`) shows the unread count (`useUnreadCount`: on load,
+  every 30 s, when the tab becomes visible, and after any change in this tab); its accessible name
+  says the count ("Notifications, 3 unread").
+- **Live region** — `UnreadAnnouncer`, a polite `role="status"` region: "You have 3 unread
+  notifications." when the count goes **up** after the first load (never on page load).
+- **Drawer** — `NotificationCentre`: grouped by day (Today, Yesterday, then the date), unread
+  ones marked (dot + "Unread:" for screen readers), opening one marks it read and goes to its
+  page, "Mark as read" per item, "Mark all as read", "Show older notifications" (cursor pages),
+  link to the preferences page.
+- **Preferences** — Settings → Notifications (`/o/:org/settings/notifications`): one row per
+  category with switches *In the app* and *By email*; a change saves at once and is announced;
+  Security is locked on with the reason.
+
 ## Tests
 
 | Task | Tests |
@@ -261,3 +278,4 @@ to it as `failed` ("Suppressed until …") without sending.
 | T06 | `tests/test_notifications_dnscheck.py` (fake DNS zone + the dnspython path) |
 | T07 | `tests/test_notifications_dmarc.py` (parser, harness with a fake IMAP mailbox; live run opt-in) |
 | T08 | `tests/test_notifications_bounces.py` (Postmark payloads through anymail's webhook) |
+| T09 | `frontend/e2e/notification-centre.spec.ts` (bell, drawer, live region, preferences, axe) |
