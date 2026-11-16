@@ -12,7 +12,14 @@ class ContactsConfig(AppConfig):
     verbose_name = "Contacts"
 
     def ready(self) -> None:
+        from numo9.imports.fields import register_entity
         from numo9.tenancy.models import Organisation
+
+        from .importing import CONTACT, PERSON
+
+        # What a contacts file can map to (B-03-T03).
+        register_entity(CONTACT)
+        register_entity(PERSON)
 
         # Every new organisation starts with the default payment terms (B-01-T05).
         post_save.connect(

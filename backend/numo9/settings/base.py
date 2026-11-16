@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "numo9.contacts",
     # File storage, documents inbox, attachments, inbound email (A-06).
     "numo9.files",
+    # Spreadsheet imports: file parser, saved column mappings (B-03).
+    "numo9.imports",
     # Accountant workspace: organisation directory, saved views (V-01).
     "numo9.workspace",
     "django.contrib.admin",

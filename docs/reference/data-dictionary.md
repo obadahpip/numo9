@@ -253,6 +253,26 @@ Seeded rows: `due_on_receipt`, `net_15`, `net_30`, `net_60`, `2_10_net_30`, `eom
 Audit actions: `contacts.paymentterm.created`, `.updated`.
 
 
+## Spreadsheet imports (`imports`) {#imports}
+
+Saved column mappings of the import framework (B-03); see [Spreadsheet imports](../architecture/imports.md).
+
+### `imports_importmapping` — Saved import mapping {#imports-importmapping}
+
+A named column → field mapping saved by an organisation for one record type (B-03-T03). Business
+record: `OrgOwnedModel` and `AuditedModel` (use count and fingerprint not audited); no row-level
+security (header names only, no data).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `entity` | varchar(40) | no | Registered import entity: `contacts.contact`, `contacts.person`, `ledger.account`… |
+| `name` | varchar(80) | no | Not empty (`imports_mapping_name_required`); unique per organisation and entity, case-insensitive, among mappings not deleted (`imports_mapping_name_unique`) |
+| `columns` | jsonb | no | `{header: field_key}`, `""` = not imported; validated against the entity's fields (each field once, required fields present) |
+| `header_key` | varchar(64) | no | SHA-256 of the normalised, sorted headers; index `imports_mapping_headers_idx` (organisation, entity, header_key) finds the mapping for a file with the same headers |
+| `use_count` | integer ≥ 0 | no | Applied imports that used the mapping |
+| `last_used_at` | timestamptz | yes | Last applied import; mappings are listed most recently used first |
+
 ## Documents and files (`files`) {#files}
 
 Tables of the documents store (A-06, [architecture](../architecture/files.md)).

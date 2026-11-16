@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — import contacts, step 2 map columns">
+<title>Numo9 wireframe — import contacts, step 2 map columns</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<rect x="60" y="12" width="230" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="72" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.  ▾</text>
+<rect x="298" y="16" width="92" height="24" rx="12" fill="#2B3038" stroke="#2B3038" stroke-width="1"/>
+<text x="344" y="32" font-size="11" fill="#D0D5DD" font-weight="500" text-anchor="middle">Practice: OA</text>
+<text x="410" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="468" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Contacts</text>
+<text x="558" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="664" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Documents</text>
+<text x="762" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Settings</text>
+<rect x="468" y="52" width="64" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="1348" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1364" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">?</text>
+<rect x="1308" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1324" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">🔔</text>
+<rect x="1268" y="12" width="32" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1284" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">⧗</text>
+<rect x="1176" y="12" width="84" height="32" rx="6" fill="#111111" stroke="#2B3038" stroke-width="1"/>
+<text x="1218" y="33" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">+ Create</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<rect x="0" y="56" width="1440" height="40" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="24" y="81" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Maple Leaf Supply Ltd.  /  Contacts  /  Import contacts</text>
+<text x="24" y="136" font-size="24" fill="#111111" font-weight="700" text-anchor="start">Import contacts</text>
+<text x="24" y="160" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">clients-mars-2026.csv · 512 rows · 9 columns · Windows-1252 · first row is the header</text>
+<circle cx="38" cy="196" r="14" fill="#12B76A" stroke="#D0D5DD" stroke-width="1"/>
+<text x="38" y="201" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">✓</text>
+<text x="60" y="201" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Upload</text>
+<line x1="164" y1="196" x2="254" y2="196" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="288" cy="196" r="14" fill="#111111" stroke="#D0D5DD" stroke-width="1"/>
+<text x="288" y="201" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<text x="310" y="201" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Map columns</text>
+<line x1="414" y1="196" x2="504" y2="196" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="538" cy="196" r="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="538" y="201" font-size="12" fill="#5B6472" font-weight="700" text-anchor="middle">3</text>
+<text x="560" y="201" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Review</text>
+<line x1="664" y1="196" x2="754" y2="196" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="788" cy="196" r="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="788" y="201" font-size="12" fill="#5B6472" font-weight="700" text-anchor="middle">4</text>
+<text x="810" y="201" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Import</text>
+<circle cx="1010" cy="196" r="10" fill="#B42318"/>
+<text x="1010" y="200" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<text x="1040" y="201" font-size="12" fill="#5B6472" font-weight="500" text-anchor="start">Step 2 of 4 · Map columns</text>
+<line x1="24" y1="226" x2="1416" y2="226" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="24" y="244" width="1000" height="40" rx="6" fill="#FAFAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="269" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Column in your file</text>
+<text x="300" y="269" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Sample values (first 3 rows)</text>
+<text x="640" y="269" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Numo9 field</text>
+<text x="900" y="269" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Match</text>
+<text x="40" y="313" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Nom</text>
+<text x="300" y="313" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Érable Café · Boulangerie Tremblay · Nord Ltd.</text>
+<rect x="640" y="292" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="313" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Display name  ▾</text>
+<rect x="900" y="297" width="100" height="22" rx="11" fill="#ECFDF3" stroke="#ECFDF3" stroke-width="1"/>
+<text x="950.0" y="312" font-size="11" fill="#027A48" font-weight="600" text-anchor="middle">Exact (FR)</text>
+<line x1="24" y1="332" x2="1024" y2="332" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="361" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Courriel</text>
+<text x="300" y="361" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">info@erable.ca · bt@tremblay.qc.ca · —</text>
+<rect x="640" y="340" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="361" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Email  ▾</text>
+<rect x="900" y="345" width="100" height="22" rx="11" fill="#ECFDF3" stroke="#ECFDF3" stroke-width="1"/>
+<text x="950.0" y="360" font-size="11" fill="#027A48" font-weight="600" text-anchor="middle">Exact (FR)</text>
+<line x1="24" y1="380" x2="1024" y2="380" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="409" font-size="13" fill="#111111" font-weight="600" text-anchor="start">No client</text>
+<text x="300" y="409" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">C-0001 · C-0002 · C-0103</text>
+<rect x="640" y="388" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="409" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Contact number  ▾</text>
+<rect x="900" y="393" width="100" height="22" rx="11" fill="#FFFAEB" stroke="#FFFAEB" stroke-width="1"/>
+<text x="950.0" y="408" font-size="11" fill="#B54708" font-weight="600" text-anchor="middle">Similar</text>
+<line x1="24" y1="428" x2="1024" y2="428" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="457" font-size="13" fill="#111111" font-weight="600" text-anchor="start">NE</text>
+<text x="300" y="457" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">123456782 · 987654320 · —</text>
+<rect x="640" y="436" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="457" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Business Number (BN)  ▾</text>
+<rect x="900" y="441" width="100" height="22" rx="11" fill="#ECFDF3" stroke="#ECFDF3" stroke-width="1"/>
+<text x="950.0" y="456" font-size="11" fill="#027A48" font-weight="600" text-anchor="middle">Exact (FR)</text>
+<line x1="24" y1="476" x2="1024" y2="476" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="505" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Province</text>
+<text x="300" y="505" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">QC · QC · ON</text>
+<rect x="640" y="484" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="505" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Billing province  ▾</text>
+<rect x="900" y="489" width="100" height="22" rx="11" fill="#FFFAEB" stroke="#FFFAEB" stroke-width="1"/>
+<text x="950.0" y="504" font-size="11" fill="#B54708" font-weight="600" text-anchor="middle">Similar</text>
+<line x1="24" y1="524" x2="1024" y2="524" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="553" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Code postal</text>
+<text x="300" y="553" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">H2X 1Y4 · G1R 2J6 · M5V 2T6</text>
+<rect x="640" y="532" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="553" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Billing postal code  ▾</text>
+<rect x="900" y="537" width="100" height="22" rx="11" fill="#ECFDF3" stroke="#ECFDF3" stroke-width="1"/>
+<text x="950.0" y="552" font-size="11" fill="#027A48" font-weight="600" text-anchor="middle">Exact (FR)</text>
+<line x1="24" y1="572" x2="1024" y2="572" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="601" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Devise</text>
+<text x="300" y="601" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">CAD · CAD · USD</text>
+<rect x="640" y="580" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="601" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Currency  ▾</text>
+<rect x="900" y="585" width="100" height="22" rx="11" fill="#ECFDF3" stroke="#ECFDF3" stroke-width="1"/>
+<text x="950.0" y="600" font-size="11" fill="#027A48" font-weight="600" text-anchor="middle">Exact (FR)</text>
+<line x1="24" y1="620" x2="1024" y2="620" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="649" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Ref ancien</text>
+<text x="300" y="649" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">OLD-881 · OLD-882 · OLD-990</text>
+<rect x="640" y="628" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="649" font-size="13" fill="#111111" font-weight="400" text-anchor="start">External ID  ▾</text>
+<rect x="900" y="633" width="100" height="22" rx="11" fill="#F2F4F7" stroke="#F2F4F7" stroke-width="1"/>
+<text x="950.0" y="648" font-size="11" fill="#344054" font-weight="600" text-anchor="middle">You chose</text>
+<line x1="24" y1="668" x2="1024" y2="668" stroke="#EBEDF0" stroke-width="1"/>
+<text x="40" y="697" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Notes internes</text>
+<text x="300" y="697" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Livre le mardi · — · Paye en retard</text>
+<rect x="640" y="676" width="240" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="652" y="697" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Don&#x27;t import  ▾</text>
+<rect x="900" y="681" width="100" height="22" rx="11" fill="#FEF3F2" stroke="#FEF3F2" stroke-width="1"/>
+<text x="950.0" y="696" font-size="11" fill="#B42318" font-weight="600" text-anchor="middle">No match</text>
+<line x1="24" y1="716" x2="1024" y2="716" stroke="#EBEDF0" stroke-width="1"/>
+<circle cx="14" cy="300" r="10" fill="#B42318"/>
+<text x="14" y="304" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<circle cx="630" cy="300" r="10" fill="#B42318"/>
+<text x="630" y="304" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<circle cx="1012" cy="300" r="10" fill="#B42318"/>
+<text x="1012" y="304" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<rect x="1048" y="244" width="368" height="250" rx="8" fill="#F5F7FA" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1068" y="272" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Match rows to existing contacts by</text>
+<text x="1068" y="298" font-size="13" fill="#344054" font-weight="400" text-anchor="start">1. External ID  (Ref ancien)</text>
+<text x="1068" y="320" font-size="13" fill="#344054" font-weight="400" text-anchor="start">2. Contact number  (No client)</text>
+<text x="1068" y="342" font-size="13" fill="#344054" font-weight="400" text-anchor="start">☐ 3. Business Number, when 1 and 2 are empty</text>
+<text x="1068" y="370" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Never by name: renamed contacts are updated.</text>
+<line x1="1068" y1="388" x2="1396" y2="388" stroke="#EBEDF0" stroke-width="1"/>
+<text x="1068" y="414" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Required fields</text>
+<text x="1068" y="438" font-size="12" fill="#027A48" font-weight="500" text-anchor="start">✓ Display name is mapped</text>
+<text x="1068" y="460" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Every field is mapped once at most.</text>
+<circle cx="1038" cy="258" r="10" fill="#B42318"/>
+<text x="1038" y="262" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">5</text>
+<rect x="1048" y="510" width="368" height="120" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1068" y="538" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Save this mapping</text>
+<rect x="1068" y="552" width="328" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1080" y="573" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Export from old system (Mar 2026)</text>
+<text x="1068" y="606" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Next file with the same headers maps itself.</text>
+<circle cx="1038" cy="524" r="10" fill="#B42318"/>
+<text x="1038" y="528" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">6</text>
+<rect x="0" y="836" width="1440" height="64" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<rect x="1060" y="852" width="110" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1115.0" y="872" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">←  Back</text>
+<rect x="1180" y="852" width="100" height="32" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1230.0" y="872" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Cancel</text>
+<rect x="1290" y="852" width="126" height="32" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1353.0" y="872" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Next: Review  →</text>
+<text x="24" y="873" font-size="12" fill="#B42318" font-weight="500" text-anchor="start">Two columns can&#x27;t map to the same field: “Courriel and E-mail both map to Email — choose one.”</text>
+<circle cx="14" cy="868" r="10" fill="#B42318"/>
+<text x="14" y="872" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">7</text>
+</svg>

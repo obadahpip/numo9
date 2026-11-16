@@ -81,6 +81,7 @@ nav:
       - "Chart of accounts": architecture/chart-of-accounts.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md
       - "Contacts": architecture/contacts.md
+      - "Spreadsheet imports": architecture/imports.md
       - "Documents and files": architecture/files.md
       - "Organisation directory": architecture/directory.md
   - Developer guides:
