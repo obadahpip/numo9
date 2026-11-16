@@ -194,6 +194,19 @@ models from the import graph and fails on a journal-line write in its code — `
 in any module, raw SQL `INSERT INTO`/`UPDATE`/`DELETE FROM ledger_journalline`. Migrations are
 skipped; reads are fine anywhere. The database triggers (C-02-T04) remain the last line.
 
+## Journals read API (C-02-T15)
+
+| Endpoint | Answer |
+|---|---|
+| `GET /api/v1/o/<org>/journals` | Entries newest first (date, number): `id`, `number` (`JE-000042`), `date`, `type`, `status`, `narration`, `source` (`type`, `id`), `book_scope`, `total` (Σ debits), `lines` (count), `reversal_of` / `reversed_by` (`id`, `number`); `count`, `next_offset`. Filters: `status` (comma-separated; default posted + reversed), `from`, `to`, `type`, `source_type` + `source_id` (one document's entries), `account` (public id: entries with a line on it), `book` (`accounting` / `tax`: entries in that book), `q` (narration, or a number `JE-000042` / `42`); `limit` 1–200 (50), `offset`. A bad filter is a 400 naming it |
+| `GET /api/v1/o/<org>/journals/<id>` | The entry plus every line (`line`, `account` `{id, code, name}`, `debit`, `credit`, `book`, `contact` `{id, name}`, `description`, `tax_code`, `tracking`), `books` (debit and credit totals of each book it touches), `posted_by`, `posted_at` and `audit` (action, by, at — posted, reversed…) |
+
+Amounts are strings with two decimals. Permission `accounting.journals.view` (risk low; the
+accounting roles have it); feature `accounting.journals.read` (402 outside the package); another
+organisation's journal is a 404; documented in the OpenAPI schema (`journals_list`,
+`journals_get`). Tenant sweep factory `ledger.JournalEntry` posts a journal through the service.
+Read-only: nothing writes entries but the posting service.
+
 ## Trial balance per book (C-02-T11)
 
 `numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
@@ -224,6 +237,7 @@ the active organisation:
 | T10 | `tests/test_ledger_reverse.py` (incl. two threads reversing at once) |
 | T12 | `tests/test_ledger_post_storm.py` |
 | T14 | `tests/test_ledger_write_contract.py` (fixture `tests/fixtures/ledger_writes/direct_write.py.txt`) |
+| T15 | `tests/test_ledger_journals_api.py` (+ `tests/test_tenant_sweep.py`) |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
 | T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |

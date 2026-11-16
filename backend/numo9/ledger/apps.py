@@ -29,6 +29,11 @@ class LedgerConfig(AppConfig):
         # transactional tests): missing codes are created, existing rows are kept.
         post_migrate.connect(_seed_after_migrate, sender=self)
 
+        # Tenant sweep (A-01-T09): the journals API needs a posted entry (C-02-T15).
+        from numo9.tenancy.sweep import SWEEP_FACTORIES
+
+        SWEEP_FACTORIES["ledger.JournalEntry"] = _sweep_journal
+
 
 def _seed_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
     from django.apps import apps as global_apps
@@ -48,3 +53,42 @@ def _has_posted_lines(account: Any) -> bool:
             entry__status__in=LOCKED_STATUSES,
         ).exists()
     )
+
+
+def _sweep_journal(organisation: Any) -> Any:
+    """A posted journal of the organisation, through the posting service."""
+    from decimal import Decimal
+
+    from django.utils import timezone
+
+    from numo9.tenancy.context import org_context
+
+    from .models import SUBTYPE_TYPE, Account
+    from .services import post_journal
+    from .validation import JournalSpec, LineSpec
+
+    with org_context(organisation):
+        accounts = []
+        for code, subtype in (("1000", "bank"), ("4000", "revenue")):
+            found = Account._base_manager.filter(organisation=organisation, code=code).first()
+            if found is None:
+                found = Account(
+                    organisation=organisation,
+                    code=code,
+                    name_i18n={"en-ca": f"Sweep {code}"},
+                    type=SUBTYPE_TYPE[subtype],
+                    subtype=subtype,
+                )
+                found.save()
+            accounts.append(found)
+        return post_journal(
+            JournalSpec(
+                date=timezone.localdate(),
+                narration="Sweep",
+                lines=(
+                    LineSpec(accounts[0], debit=Decimal("1.00")),
+                    LineSpec(accounts[1], credit=Decimal("1.00")),
+                ),
+            ),
+            user=None,
+        )
