@@ -266,6 +266,22 @@ to it as `failed` ("Suppressed until …") without sending.
   category with switches *In the app* and *By email*; a change saves at once and is announced;
   Security is locked on with the reason.
 
+## Email-domain settings UI (A-07-T10)
+
+Settings → Email domain (`/o/:org/settings/email-domain`, `frontend/src/email-domains/`):
+
+- no domain yet → the set-up form (domain, "Send as" part before @); the server's message is
+  shown under the field (e.g. a public mailbox domain);
+- a domain → its status badge (Waiting for DNS records / Some records are missing / Records
+  are wrong / Verified), the sender address, and **one card per DNS record**: type, host and
+  value each with a **Copy** button, and the record's live status — ✓ found and correct, or ✗
+  with the plain-language fix ("Not found yet. Add this record at your DNS host." / "A record is
+  there but isn't right. Replace its value with the one above. Found: …");
+- **live checker**: while the domain isn't verified the page runs the check
+  (`POST …/check`) every 20 s and on **Check now**; when it flips to Verified the badge changes,
+  a polite live region announces "Verified: your emails now go from …", and the checker stops;
+- **Remove domain** asks for confirmation first.
+
 ## Tests
 
 | Task | Tests |
@@ -279,3 +295,4 @@ to it as `failed` ("Suppressed until …") without sending.
 | T07 | `tests/test_notifications_dmarc.py` (parser, harness with a fake IMAP mailbox; live run opt-in) |
 | T08 | `tests/test_notifications_bounces.py` (Postmark payloads through anymail's webhook) |
 | T09 | `frontend/e2e/notification-centre.spec.ts` (bell, drawer, live region, preferences, axe) |
+| T10 | `frontend/e2e/email-domain.spec.ts` (set-up, live checker flips to verified, copy, remove, axe) |
