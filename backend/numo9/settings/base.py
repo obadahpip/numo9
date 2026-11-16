@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "numo9.files",
     # Spreadsheet imports: file parser, saved column mappings (B-03).
     "numo9.imports",
+    # Notifications: in-app notification centre (A-07).
+    "numo9.notifications",
     # Accountant workspace: organisation directory, saved views (V-01).
     "numo9.workspace",
     "django.contrib.admin",

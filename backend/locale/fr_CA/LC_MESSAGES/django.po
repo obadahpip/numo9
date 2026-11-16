@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 03:29-0500\n"
+"POT-Creation-Date: 2026-11-16 03:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2947,6 +2947,100 @@ msgstr ""
 msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
 msgstr ""
 
+#, fuzzy
+#| msgid "Accountant"
+msgid "Account and system"
+msgstr "Comptable"
+
+msgid "Security"
+msgstr "Sécurité"
+
+#, fuzzy
+#| msgid "Background job"
+msgid "Background jobs"
+msgstr "Tâche en arrière-plan"
+
+#, fuzzy
+#| msgid "Approval limit set"
+msgid "Approvals"
+msgstr "Limite d’approbation fixée"
+
+msgid "Reminders"
+msgstr ""
+
+#, fuzzy
+#| msgid "Description"
+msgid "Billing and subscription"
+msgstr "Description"
+
+msgid "category"
+msgstr ""
+
+msgid "message"
+msgstr ""
+
+#, fuzzy
+#| msgid "details"
+msgid "message details"
+msgstr "détails"
+
+msgid "link"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "read at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "notification"
+msgstr "organisation"
+
+#, fuzzy
+#| msgid "organisation"
+msgid "notifications"
+msgstr "organisation"
+
+msgid "A message key looks like notifications.job.finished."
+msgstr ""
+
+msgid "A notification links to a page of the app (a path such as /o/…)."
+msgstr ""
+
+#, fuzzy
+#| msgid "Limits must be a list of named values."
+msgid "Message details are a set of named values."
+msgstr "Les limites doivent être une liste de valeurs nommées."
+
+#, fuzzy
+#| msgid "organisation"
+msgid "Notification"
+msgstr "organisation"
+
+#, python-format
+msgid "%(job)s finished"
+msgstr ""
+
+#, python-format
+msgid "%(summary)s"
+msgstr ""
+
+#, python-format
+msgid "%(job)s didn't finish"
+msgstr ""
+
+#, python-format
+msgid "%(error)s Open the job tray to try again."
+msgstr ""
+
+#, python-format
+msgid "%(file)s was blocked"
+msgstr ""
+
+msgid "The virus scan found a threat: the file can't be opened. Ask the sender for a clean copy."
+msgstr ""
+
 msgid "Sole proprietorship"
 msgstr ""
 
@@ -3782,9 +3876,6 @@ msgstr "Employés, congés et dossiers RH."
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
-
-msgid "Security"
-msgstr "Sécurité"
 
 msgid "Tenancy"
 msgstr ""
