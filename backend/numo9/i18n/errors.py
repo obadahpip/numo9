@@ -640,3 +640,13 @@ EMAIL_DOMAIN_PROVIDER = define(
     _("The email provider didn't answer. Try again in a few minutes."),
     status.HTTP_503_SERVICE_UNAVAILABLE,
 )
+
+# ---- security baseline (S-03) -------------------------------------------------------------------
+SECURITY_REAUTHENTICATION_REQUIRED = define(
+    "security.reauthentication_required",
+    _(
+        "Confirm your password to see this value. For your security, the confirmation lasts 5 "
+        "minutes."
+    ),
+    status.HTTP_401_UNAUTHORIZED,
+)

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 236   Remaining: 2551   Progress: 8.47%
+TOTAL ATOMIC TASKS: 2787   Completed: 237   Remaining: 2550   Progress: 8.50%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -324,7 +324,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-03-T14 — "Why can't I?" ExplainPanel payload (rule, required permission, who has it) + request-access notification   [notification by email + open requests on Users and roles; notification-centre delivery with A-07]
 
 [S-03]
-❌ S-03-T05 — MaskedValue serializer + "reveal" endpoint with permission, re-auth and audit hook
+✅ S-03-T05 — MaskedValue serializer + "reveal" endpoint with permission, re-auth and audit hook
 
 [A-02]
 ❌ A-02-T06 — 2FA enforcement policy flags (platform owner always; practice admin when practice enables)

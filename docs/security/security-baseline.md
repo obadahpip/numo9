@@ -102,6 +102,25 @@ Rotation (no downtime): add the new key and make it active → deploy →
 `--dry-run` counts, `--check` fails while any value is on an old key) → remove the old key.
 Tests: `backend/tests/test_encrypted_field.py`.
 
+
+## S-03-T05 — Masked values and "Reveal"
+
+Sensitive values (`EncryptedField`: SIN, bank account numbers) never leave the API in full.
+`numo9.security.masking.MaskedValueField` serialises them as `{"masked": "•••• 4286",
+"has_value": true, "reveal": {"record_type", "record_id", "field"} | null}` — the last 4
+characters only, a value of 4 or fewer fully hidden; `reveal` is set only for fields declared
+with `register_revealable("<app>.<Model>", "<field>")` that have a value.
+
+`POST /api/v1/o/<org>/reveal` `{"record_type", "record_id", "field"}` → `{"value": …}`:
+
+| Condition | Answer |
+|---|---|
+| no permission `security.sensitive.reveal` (High risk; owners and admins by default) | **403** |
+| no password confirmation in the last 5 minutes (`POST /_allauth/browser/v1/auth/reauthenticate`) | **401** `security.reauthentication_required` |
+| field not revealable, or the record not in this organisation | **404** |
+| otherwise | **200** with the value, and the audit event `security.value.revealed` (record + `meta.field`, **never the value**) |
+
+Tests: `backend/tests/test_security_reveal.py`.
 ## S-03-T06 — Log scrubbing
 
 `numo9/security/scrubbing.py` removes personal and secret data from every log line and every
