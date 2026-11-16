@@ -129,3 +129,36 @@ class PlatformInvoice(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return self.number or self.stripe_invoice_id
+
+
+class DunningReminder(OrgOwnedModel):
+    """One dunning step taken for a failed payment (U-04-T09) — so each is taken once.
+
+    A dunning cycle is one grace period of a subscription (``grace_until``); ``day`` is 0, 3, 5 or
+    7 days after the failure (day 7 = the grace ends: read-only). The unique constraint makes the
+    scheduler idempotent: a step already taken for that grace period is never taken again.
+    """
+
+    subscription = models.ForeignKey(
+        "entitlements.Subscription",
+        on_delete=models.PROTECT,
+        related_name="dunning_reminders",
+        verbose_name=_("subscription"),
+    )
+    grace_until = models.DateTimeField(_("grace period ends"))
+    day = models.PositiveSmallIntegerField(_("day"))
+    sent_at = models.DateTimeField(_("sent at"), default=timezone.now)
+    recipients = models.PositiveSmallIntegerField(_("recipients"), default=0)
+
+    class Meta:
+        ordering = ("subscription", "grace_until", "day")
+        verbose_name = _("dunning reminder")
+        verbose_name_plural = _("dunning reminders")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("subscription", "grace_until", "day"), name="billing_dunning_once"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(day__in=(0, 3, 5, 7)), name="billing_dunning_day_valid"
+            ),
+        ]

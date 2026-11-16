@@ -469,6 +469,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.notifications.check_sending_domains",
         "schedule": crontab(minute="4,19,34,49"),
     },
+    # Dunning (U-04-T09): reminders on days 3 and 5, read-only exactly when the grace ends.
+    "numo9.billing.run_dunning": {
+        "task": "numo9.billing.run_dunning",
+        "schedule": crontab(minute="7,22,37,52"),
+    },
 }
 
 # ---- File storage and documents inbox (A-06, docs/architecture/files.md) ------------------------

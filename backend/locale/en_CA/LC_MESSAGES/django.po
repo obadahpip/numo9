@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:02-0500\n"
+"POT-Creation-Date: 2026-11-16 14:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -541,6 +541,27 @@ msgid "Numo9 invoice"
 msgstr ""
 
 msgid "Numo9 invoices"
+msgstr ""
+
+msgid "subscription"
+msgstr ""
+
+msgid "grace period ends"
+msgstr ""
+
+msgid "day"
+msgstr ""
+
+msgid "sent at"
+msgstr ""
+
+msgid "recipients"
+msgstr ""
+
+msgid "dunning reminder"
+msgstr ""
+
+msgid "dunning reminders"
 msgstr ""
 
 msgid "See the subscription, payment method and Numo9 invoices"
@@ -1527,9 +1548,6 @@ msgstr ""
 msgid "current period ends"
 msgstr ""
 
-msgid "grace period ends"
-msgstr ""
-
 msgid "A past-due subscription keeps full access until then."
 msgstr ""
 
@@ -1564,9 +1582,6 @@ msgid "Cancelled by the owner: access continues until the period ends."
 msgstr ""
 
 msgid "payment method"
-msgstr ""
-
-msgid "subscription"
 msgstr ""
 
 msgid "subscriptions"
@@ -3166,9 +3181,6 @@ msgid "provider message id"
 msgstr ""
 
 msgid "last try at"
-msgstr ""
-
-msgid "sent at"
 msgstr ""
 
 msgid "delivery event at"

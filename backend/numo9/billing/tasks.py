@@ -9,7 +9,10 @@ from celery import shared_task
 from numo9.jobs.queues import HIGH
 from numo9.jobs.retry import backoff_delay
 
+from .dunning import run_dunning_job
 from .processing import EventFailed, process_event
+
+__all__ = ["process_stripe_event", "run_dunning_job"]
 
 TASK_NAME = "numo9.billing.process_stripe_event"
 MAX_RETRIES = 8

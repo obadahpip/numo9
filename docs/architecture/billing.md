@@ -191,3 +191,27 @@ invoices; an event older than the last one applied changes nothing.
   Bakery Inc."; a past-due or read-only subscription comes back to active (the dunning stops).
 - `invoice.payment_failed` — the subscription goes past due with the 7-day grace (if the
   subscription event hasn't already) and the dunning starts (U-04-T09).
+
+## Dunning (U-04-T09)
+
+A renewal that fails puts the subscription **past due** with `grace_until` = failure + 7 days
+(full access meanwhile). Then:
+
+| Day | Step |
+|---|---|
+| 0 | Reminder at once (`invoice.payment_failed` handler, `start_dunning`) |
+| 3, 5 | Reminders (Stripe retries the card or debit in between) |
+| 7 | The grace ends: **read-only** (reason `payment_failed`) and the owners are told |
+
+A step is the `dunning` system email (A-07-T11; each owner in their language: amount, failure
+date, grace end, link to the billing page) plus an in-app notification (`billing.payment_failed`;
+day 7 `billing.read_only` — both mandatory).
+
+`numo9.billing.dunning.run_dunning(now)` — platform job `numo9.billing.run_dunning`, beat every
+15 minutes — takes for each past-due subscription the **latest** step due and not taken (a job that
+missed runs never sends a burst of old reminders). Each step is recorded once —
+`billing.DunningReminder`, unique per subscription, grace period and day — so a second run or a
+re-delivered failure event sends nothing twice. Read-only is exact at `grace_until`: the
+entitlement engine already answers read-only for a past-due subscription after its grace end
+(U-03), and the job records the status within 15 minutes. `invoice.paid` makes the subscription
+active and stops the dunning; a later failure starts a new cycle (new grace period).
