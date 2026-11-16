@@ -151,3 +151,32 @@ def remove_domain(sending_domain: SendingDomain) -> None:
     except ProviderError as exc:
         raise api_error(errors.EMAIL_DOMAIN_PROVIDER) from exc
     sending_domain.soft_delete()
+
+
+def sender_for(organisation: Any) -> tuple[str, str]:
+    """(From, Reply-To) for an organisation's emails (A-07 business rule).
+
+    A **verified** sending domain sends as ``<brand name> <billing@its-domain>``; otherwise the
+    email goes from Numo9's address with Reply-To the organisation's email address (its settings),
+    so answers still reach the organisation and no receiver sees a From that fails DMARC.
+    """
+    from email.utils import formataddr, parseaddr
+
+    from numo9.orgsettings.models import OrganisationSettings
+    from numo9.tenancy.context import org_context
+
+    from .templating import brand_for
+
+    with org_context(organisation):
+        verified = (
+            SendingDomain.objects.filter(status=DomainStatus.VERIFIED, deleted_at__isnull=True)
+            .order_by("verified_at", "pk")
+            .first()
+        )
+        profile = OrganisationSettings.objects.filter(deleted_at__isnull=True).first()
+    name = brand_for(organisation).name
+    if verified is not None:
+        return formataddr((name, verified.from_address)), ""
+    default_name, default_address = parseaddr(str(settings.DEFAULT_FROM_EMAIL))
+    reply_to = profile.email if profile is not None and profile.email else ""
+    return formataddr((f"{name} via {default_name or 'Numo9'}", default_address)), reply_to

@@ -214,6 +214,23 @@ first time), any `wrong` → `failed`, some `ok` → `partial`, else `pending`.
 for a day (a record removed later is noticed). **Check now** — `POST email-domains/<id>/check`
 (the settings page's live checker, A-07-T10).
 
+## Sender address and the DMARC harness (A-07-T07)
+
+**Sender** — `domains.sender_for(organisation)`: a verified sending domain sends as
+`"<brand>" <invoices@refined.ca>`; otherwise `"<brand> via Numo9" <no-reply@numo9.ca>` with
+Reply-To the organisation's email address (its settings), so no receiver sees a From that fails
+DMARC and answers still reach the organisation. `queue_email(organisation=…)` applies it when no
+sender is given.
+
+**Harness** — `manage.py dmarc_probe --org <id> --to <test mailbox> --imap-host … --imap-user …
+--imap-password …` (or `NUMO9_DMARC_IMAP_*`): sends a probe with a random token from the verified
+domain through the configured provider, polls the mailbox over IMAP until it arrives, parses its
+`Authentication-Results` (RFC 8601: `numo9.notifications.dmarc.parse_authentication_results` —
+folded headers, comments, quoted values, Google / Microsoft 365 / Fastmail formats) and exits 1
+unless `dmarc=pass` aligned with the domain (`header.from`). Run it on staging after a domain is
+verified; `tests/test_notifications_dmarc.py::test_live_dmarc_probe` runs it in CI when
+`NUMO9_TEST_DMARC_ORG`, `_TO`, `_IMAP_HOST`, `_IMAP_USER`, `_IMAP_PASSWORD` are set.
+
 ## Tests
 
 | Task | Tests |
@@ -224,3 +241,4 @@ for a day (a record removed later is noticed). **Check now** — `POST email-dom
 | T04 | `tests/test_notifications_templates.py` (snapshots in `tests/snapshots/email/`) |
 | T05 | `tests/test_notifications_domains.py` (provider mocked: `tests/notification_helpers.FakeProvider`) |
 | T06 | `tests/test_notifications_dnscheck.py` (fake DNS zone + the dnspython path) |
+| T07 | `tests/test_notifications_dmarc.py` (parser, harness with a fake IMAP mailbox; live run opt-in) |

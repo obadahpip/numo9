@@ -77,7 +77,16 @@ def queue_email(
     headers: dict[str, str] | None = None,
     metadata: dict[str, Any] | None = None,
 ) -> EmailMessage:
-    """Log one email and send it through the worker once the transaction commits."""
+    """Log one email and send it through the worker once the transaction commits.
+
+    An organisation's email without an explicit sender goes from its verified domain, or from
+    Numo9 with Reply-To the organisation (``domains.sender_for``).
+    """
+    if organisation is not None and from_email is None:
+        from .domains import sender_for
+
+        from_email, default_reply_to = sender_for(organisation)
+        reply_to = reply_to or default_reply_to
     message = EmailMessage(
         organisation=organisation,
         to_email=to,
