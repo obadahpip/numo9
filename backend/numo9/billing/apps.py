@@ -10,4 +10,4 @@ class BillingConfig(AppConfig):
 
     def ready(self) -> None:
         # Event handlers register themselves with the processing registry (U-04-T07, T08).
-        from . import dunning, invoices, subscriptions  # noqa: F401
+        from . import dunning, export, invoices, subscriptions  # noqa: F401

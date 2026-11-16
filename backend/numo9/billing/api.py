@@ -25,7 +25,8 @@ from numo9.tenancy.context import current_org
 
 from .changes import change, preview
 from .checkout import METHODS, start_checkout
-from .permissions import BILLING_MANAGE
+from .export import cancel, export_link, latest_export, resume, start_export
+from .permissions import BILLING_MANAGE, BILLING_VIEW
 
 
 class CheckoutRequestSerializer(serializers.Serializer[Any]):
@@ -159,3 +160,92 @@ class ChangeView(APIView):
             body.validated_data.get("proration_date"),
         )
         return Response(_preview_body(result))
+
+
+class ExportSerializer(serializers.Serializer[Any]):
+    job = serializers.UUIDField(allow_null=True)
+    status = serializers.CharField(allow_null=True)
+    url = serializers.URLField(allow_null=True)
+    expires_at = serializers.DateTimeField(allow_null=True)
+    created_at = serializers.DateTimeField(allow_null=True)
+
+
+def _export_body(run: Any) -> dict[str, Any]:
+    if run is None:
+        return {"job": None, "status": None, "url": None, "expires_at": None, "created_at": None}
+    link = export_link(run)
+    return {
+        "job": run.public_id,
+        "status": run.status,
+        "url": link.url if link else None,
+        "expires_at": link.expires_at if link else None,
+        "created_at": run.created_at,
+    }
+
+
+class CancelSerializer(serializers.Serializer[Any]):
+    resume = serializers.BooleanField(default=False)
+
+
+class CancelResponseSerializer(serializers.Serializer[Any]):
+    cancel_at_period_end = serializers.BooleanField()
+    current_period_end = serializers.DateTimeField(allow_null=True)
+    export = ExportSerializer(allow_null=True)
+
+
+class CancelView(APIView):
+    required_feature = CORE
+    serializer_class = CancelSerializer
+
+    @requires_permission(BILLING_MANAGE.key)
+    @extend_schema(
+        operation_id="billing_cancel",
+        summary="Cancel at the end of the paid period (with the data export), or resume",
+        request=CancelSerializer,
+        responses=CancelResponseSerializer,
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        body = CancelSerializer(data=request.data)
+        body.is_valid(raise_exception=True)
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        if body.validated_data["resume"]:
+            subscription, run = resume(organisation, request.user), None
+        else:
+            subscription, run = cancel(organisation, request.user)
+        return Response(
+            {
+                "cancel_at_period_end": subscription.cancel_at_period_end,
+                "current_period_end": subscription.current_period_end,
+                "export": _export_body(run) if run is not None else None,
+            }
+        )
+
+
+class ExportView(APIView):
+    required_feature = CORE
+    serializer_class = ExportSerializer
+
+    @requires_permission(BILLING_VIEW.key)
+    @extend_schema(
+        operation_id="billing_export_get",
+        summary="The latest data export and a fresh download link",
+        responses=ExportSerializer,
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        return Response(_export_body(latest_export(organisation)))
+
+    @requires_permission(BILLING_MANAGE.key)
+    @extend_schema(
+        operation_id="billing_export_start",
+        summary="Export every dataset and document (ZIP: CSV, XLSX, JSON ledger, files)",
+        request=None,
+        responses={202: ExportSerializer},
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        run = start_export(organisation, request.user)
+        return Response(_export_body(run), status=status.HTTP_202_ACCEPTED)

@@ -236,3 +236,32 @@ active and stops the dunning; a later failure starts a new cycle (new grace peri
   period's last hour, once — the renewal invoice is billed at it.
 - Refused: same package and interval (`billing.no_change`), not paying through Stripe yet
   (`billing.not_paying` — use checkout), unknown package or unsynced price. Owner only.
+
+## Cancellation and the data export (U-04-T11)
+
+| Endpoint | |
+|---|---|
+| `POST /api/v1/o/<org>/billing/cancel` `{resume: false}` | Cancel at the end of the paid period and start the export → `{cancel_at_period_end, current_period_end, export}` |
+| `POST …/billing/cancel` `{resume: true}` | Keep the subscription (before the period ends) |
+| `POST /api/v1/o/<org>/billing/export` | Start an export any time → 202 |
+| `GET /api/v1/o/<org>/billing/export` | The latest export: `{job, status, url, expires_at, created_at}` — a **fresh 5-minute signed URL** each time |
+
+Cancelling sets the Stripe subscription to `cancel_at_period_end` (no refund; access continues
+until `current_period_end`), records it locally and starts the export. At the period end Stripe
+deletes the subscription → *cancelled* (read and export only, U-04-T07).
+
+The organisation job `numo9.billing.export_organisation` (queue `io`) writes one ZIP to the
+organisation's prefix in the files bucket (`org/<id>/…/numo9-export-<time>.zip`):
+
+| Path | Content |
+|---|---|
+| `README.txt` | What is in the file, when, which organisation |
+| `csv/<dataset>.csv` | One CSV per dataset (UTF-8 with BOM — opens in Excel) |
+| `numo9-export.xlsx` | The same datasets, one sheet each |
+| `json/ledger.json` | Every posted journal with its lines |
+| `documents/<name>` | The organisation's clean documents as uploaded (quarantined ones are listed in `csv/documents.csv`, not included) |
+
+Datasets are registered with `register_dataset(name, columns)` by the module that owns them —
+Phase 0: `organisation_settings`, `tax_registrations`, `lock_dates`, `contacts`,
+`chart_of_accounts`, `journal_lines`, `documents`, `numo9_invoices`; each later module adds its
+own (`tests/test_billing_export.py` checks the ZIP holds every registered dataset).

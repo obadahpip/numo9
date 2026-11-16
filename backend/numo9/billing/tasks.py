@@ -11,9 +11,15 @@ from numo9.jobs.retry import backoff_delay
 
 from .changes import apply_changes_job
 from .dunning import run_dunning_job
+from .export import export_organisation
 from .processing import EventFailed, process_event
 
-__all__ = ["apply_changes_job", "process_stripe_event", "run_dunning_job"]
+__all__ = [
+    "apply_changes_job",
+    "export_organisation",
+    "process_stripe_event",
+    "run_dunning_job",
+]
 
 TASK_NAME = "numo9.billing.process_stripe_event"
 MAX_RETRIES = 8
