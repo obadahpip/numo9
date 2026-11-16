@@ -352,3 +352,19 @@ settings. It proves that
 - the CSV export prints it with a real 12-hour (`p.m.`) or 24-hour time per the viewer's
   preference — never `16:33PM`;
 - the same change made by a person names the person.
+
+## Translations and Canadian terminology (A-05-T15)
+
+Every string of the organisation-settings module ships in **en-CA and fr-CA**: the backend
+`orgsettings` messages (field labels, validation errors, lock violations, impact preview text) in
+`backend/locale/fr_CA/LC_MESSAGES/django.po`, and the settings shell, General, Tax registrations,
+Lock dates and navigation keys in `frontend/messages/fr-CA.json`. No entry is left empty or fuzzy.
+
+Terminology follows the Canadian glossary (CI glossary lint): *GST/HST*, *QST*, *business number
+(BN)*, *program account*, *fiscal year end*, *lock date*; French uses Revenu Québec / ARC terms
+(*TPS/TVH*, *TVQ*, *numéro d'entreprise (NE)*, *compte de programme*, *fin d'exercice*,
+*date de verrouillage*). Xero's "Tax" / "GST" / "Financial settings" wording is not used.
+
+Tests: `frontend/e2e/settings-i18n.spec.ts` (each settings page renders in French with no
+English leftovers and passes axe), `backend/tests/test_orgsettings_api.py`
+(`test_french_reader_gets_french_errors`), and the frontend `check_i18n` parity check.

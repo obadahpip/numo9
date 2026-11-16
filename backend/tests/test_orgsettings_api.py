@@ -188,3 +188,19 @@ def test_lock_change_notifies_the_admins(org: Organisation) -> None:
     assert note.body_params["date"] == "2026-06-30" and note.link.endswith("/settings/lock-dates")
     with org_context(org):
         assert not Notification.objects.filter(recipient__email__startswith="owner-").exists()
+
+
+def test_french_reader_gets_french_errors(org: Organisation) -> None:
+    """A-05-T15: the model's rules come back in the reader's language (fr-CA)."""
+    user = User.objects.create_user(
+        "francine@refined.ca", password="x" * 12, name="F", locale="fr-ca"
+    )
+    OrganisationMember.objects.create(organisation=org, user=user, role="owner")
+    browser = Client()
+    browser.force_login(user)
+    bad = patch(browser, url(org), {"mailing_province": "ON", "mailing_postal_code": "H2X 1Y4"})
+    assert bad.status_code == 400
+    message = bad.json()["mailing_postal_code"][0]
+    assert "Les codes postaux commençant par H" in message and "vérifiez le code postal" in message
+    matrix = browser.get(url(org, "/lock-dates")).json()
+    assert matrix[0]["module_label"] == "Grand livre"
