@@ -80,6 +80,21 @@ Security emails can't be turned off.
 
 Tests: `backend/tests/test_auth_sessions.py`.
 
+### Security settings page (A-02-T13)
+
+`/account/security` (`frontend/src/security-settings/`), for the signed-in person:
+
+- **Two-factor authentication** — On/Off; *Turn on* → QR code + key + 6-digit code → on, and the
+  10 recovery codes are shown **once** in a dialog that only "I've saved them" closes; *Turn off*.
+- **Recovery codes** — "7 of 10 codes unused"; *Make new recovery codes* shows the new ones once
+  (old ones stop working).
+- **Where you're signed in** — device, IP, last active, "This device"; *Sign out* per other
+  session and *Sign out other sessions* (A-02-T07 API); the result is announced.
+- Changes allauth protects ask for the password first (**Confirm it's you** dialog → `POST
+  /auth/reauthenticate`), then the change runs again.
+
+Tests: `frontend/e2e/security-settings.spec.ts`.
+
 ## Password reset (A-02-T04)
 
 | Call | Answer |
