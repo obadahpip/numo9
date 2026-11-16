@@ -147,6 +147,26 @@ draft.") for anything else. Every move reloads the entry under a row lock.
 | `post_entry(entry, user=…, module="gl")` | Draft or Awaiting approval → Posted: steps 1–2 and 4–6 of `post_journal` on the stored lines (re-validated, lock and period checked at posting time) |
 | `reverse(entry, …)` | Posted → Reversed (C-02-T10) — the only way out of Posted; Reversed is final |
 
+## Reversal (C-02-T10)
+
+`reverse(entry, *, date=None, narration="", user=…, module="gl") → JournalEntry` (the reversal):
+
+- the original is reloaded **under a row lock** — two people reversing it at once: one wins, the
+  other gets `ledger.journal.illegal_transition` (it is already Reversed);
+- the reversal is posted through `post_journal`: every line mirrored (debit ↔ credit, same
+  account, book, contact, tracking, description, tax code), type `reversal`, the original's
+  source, `reversal_of` = the original, its own number, dated `date` (default: the original's
+  date) and checked against lock dates and closed periods **on that date** — a locked original
+  date is reversed into an open period by passing `date`; narration "Reversal of JE-000007"
+  unless given;
+- the original goes Posted → Reversed (status only — the append-only trigger allows exactly
+  that) with an audit event `ledger.journalentry.reversed` (meta `reversed_by`);
+- refused: an entry not posted (draft, awaiting approval, already reversed —
+  `ledger.journal.illegal_transition`), and a reversal (`ledger.journal.reversal_of_reversal`:
+  post a new journal instead).
+
+Original and reversal net to zero in every account of both books.
+
 ## Trial balance per book (C-02-T11)
 
 `numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
@@ -174,6 +194,7 @@ the active organisation:
 | T07 | `tests/test_ledger_periods.py` |
 | T08 | `tests/test_ledger_post_journal.py` |
 | T09 | `tests/test_ledger_journal_states.py` (every pair of states) |
+| T10 | `tests/test_ledger_reverse.py` (incl. two threads reversing at once) |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
 | T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |

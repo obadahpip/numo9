@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:25-0500\n"
+"POT-Creation-Date: 2026-11-16 13:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2786,6 +2786,14 @@ msgstr ""
 
 #, python-format
 msgid "%(journal)s is %(status)s: only drafts can be edited."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s reverses another journal: it can't be reversed itself. Post a new journal instead."
+msgstr ""
+
+#, python-format
+msgid "Reversal of %(number)s"
 msgstr ""
 
 msgid "Choose the home province or territory (e.g. ON)."

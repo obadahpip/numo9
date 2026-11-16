@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:25-0500\n"
+"POT-Creation-Date: 2026-11-16 13:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3019,6 +3019,14 @@ msgstr "%(journal)s a le statut « %(from)s » : il ne peut pas passer au statut
 #, python-format
 msgid "%(journal)s is %(status)s: only drafts can be edited."
 msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent être modifiés."
+
+#, python-format
+msgid "%(journal)s reverses another journal: it can't be reversed itself. Post a new journal instead."
+msgstr "%(journal)s contrepasse une autre écriture : elle ne peut pas être contrepassée elle-même. Passez plutôt une nouvelle écriture."
+
+#, python-format
+msgid "Reversal of %(number)s"
+msgstr "Contrepassation de %(number)s"
 
 msgid "Choose the home province or territory (e.g. ON)."
 msgstr ""

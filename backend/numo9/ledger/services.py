@@ -29,6 +29,10 @@ draft in a locked period may be kept); ``submit`` sends it for approval (who may
 C-04); ``post_entry`` posts a draft or an approved entry through steps 1–6 with its stored lines;
 ``reverse`` (C-02-T10) is the only way out of Posted. Reversed is final.
 
+**Reversal** (C-02-T10) — ``reverse(entry, date=…)`` posts the mirror entry (debits ↔ credits,
+same books, contacts and tracking) with ``reversal_of`` = the original, under a row lock on the
+original, and marks the original Reversed: corrections never edit a posted entry.
+
 Every module posts through this service — sales invoices, bills, payments, payroll, manual
 journals (C-04), opening balances (C-05); nothing else writes ``JournalLine`` (import-linter
 contract, C-02-T14).
@@ -49,7 +53,7 @@ from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import acting_practice, current_org, org_context
 from numo9.tenancy.models import Organisation
 
-from .models import JournalEntry, JournalLine, JournalStatus, LedgerError
+from .models import JournalEntry, JournalLine, JournalStatus, JournalType, LedgerError
 from .periods import assert_can_post
 from .sequence import allocate_journal_number, format_journal_number
 from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journal
@@ -316,3 +320,79 @@ def post_entry(
             entry.book_scope = checked.book_scope
         lines = list(entry.lines.order_by("line_no").select_related("account"))
         return _number_and_post(entry, lines, person, entry.status)
+
+
+# ---- reversal (C-02-T10) ----------------------------------------------------------------------
+
+
+def reverse(
+    entry: JournalEntry,
+    *,
+    date: Any = None,
+    narration: str = "",
+    user: Any = ACTING,
+    module: str = LockModule.GL,
+) -> JournalEntry:
+    """Posted → Reversed: post the mirror entry (debits ↔ credits) linked to the original.
+
+    The original is locked (``SELECT … FOR UPDATE``) so two people can't reverse it at once; the
+    reversal is a new posted entry with its own number, type ``reversal``, the same source and
+    ``reversal_of`` = the original, dated ``date`` (the original's date by default) and checked
+    against lock dates and closed periods on that date. A reversal can't itself be reversed
+    (``ledger.journal.reversal_of_reversal``) and an entry is reversed once (Reversed is final).
+    Together they net to zero in every book.
+    """
+    person = acting_user() if user is ACTING else user
+    organisation = entry.organisation
+    with org_context(organisation, acting_practice()), transaction.atomic():
+        original = _locked(entry)
+        if original.reversal_of_id is not None:
+            raise IllegalTransition(
+                _(
+                    "%(journal)s reverses another journal: it can't be reversed itself. Post a new "
+                    "journal instead."
+                ),
+                code="ledger.journal.reversal_of_reversal",
+                params={"journal": str(original)},
+            )
+        assert_transition(original, JournalStatus.REVERSED)
+        number = format_journal_number(organisation, original.number)
+        lines = original.lines.order_by("line_no").select_related("account")
+        spec = JournalSpec(
+            date=date or original.date,
+            type=JournalType.REVERSAL,
+            narration=narration or _("Reversal of %(number)s") % {"number": number},
+            source_type=original.source_type,
+            source_id=original.source_id,
+            lines=tuple(
+                LineSpec(
+                    account=line.account,
+                    debit=line.credit,
+                    credit=line.debit,
+                    book=line.book,
+                    contact=line.contact_id,
+                    tracking=line.tracking,
+                    description=line.description,
+                    tax_code=line.tax_code,
+                )
+                for line in lines
+            ),
+        )
+        reversal = post_journal(spec, user=person, module=module, reversal_of=original)
+        now = timezone.now()
+        JournalEntry._base_manager.filter(pk=original.pk).update(
+            status=JournalStatus.REVERSED, updated_at=now
+        )
+        original.status = JournalStatus.REVERSED
+        audit.record(
+            "ledger.journalentry.reversed",
+            obj=original,
+            changes={"status": [JournalStatus.POSTED, JournalStatus.REVERSED]},
+            meta={
+                "number": number,
+                "reversed_by": format_journal_number(organisation, reversal.number),
+                "date": spec.date.isoformat(),
+            },
+            actor=person if getattr(person, "is_authenticated", False) else None,
+        )
+        return reversal

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 250   Remaining: 2537   Progress: 8.97%
+TOTAL ATOMIC TASKS: 2787   Completed: 251   Remaining: 2536   Progress: 9.01%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -346,7 +346,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ C-02-T07 — Lock-date & period hook (A-05 GL lock; C-06 stub)
 ✅ C-02-T08 — post_journal() atomic service (validate → sequence → insert → status Posted → audit)
 ✅ C-02-T09 — State machine Draft → Awaiting approval → Posted → Reversed (django-fsm-like, explicit transitions)
-❌ C-02-T10 — reverse() service (mirror lines, link, row lock)
+✅ C-02-T10 — reverse() service (mirror lines, link, row lock)
 ❌ C-02-T12 — Concurrency test: 1,000 concurrent postings across 20 workers → gap-free sequence, all balanced
 ❌ C-02-T14 — import-linter contract: only ledger.services writes JournalLine
 ❌ C-02-T15 — Read API GET /journals, /journals/{id} (lines, books, source, audit) + feature key + sweep
