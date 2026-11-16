@@ -1,8 +1,11 @@
 """Concrete models used only by tests (never installed outside numo9.settings.test)."""
 
+from typing import Any
+
 from django.db import models
 
 from numo9.audit.mixins import AuditedModel
+from numo9.orgsettings.locks import LockGuardMixin
 from numo9.security.fields import EncryptedField
 from numo9.tenancy.models import OrgOwnedModel
 
@@ -60,3 +63,18 @@ class SubscriptionStandIn(OrgOwnedModel):
     interval = models.CharField(max_length=8, default="month")
     status = models.CharField(max_length=16, default="active")
     grandfathered = models.BooleanField(default=False)
+
+
+class LockedDocument(LockGuardMixin, OrgOwnedModel):
+    """A generic sales document under the lock service (A-05-T06): drafts don't count."""
+
+    lock_module = "ar"
+    lock_date_field = "date"
+
+    date = models.DateField()
+    status = models.CharField(max_length=16, default="draft")
+    total = models.DecimalField(max_digits=18, decimal_places=2, default=0)
+
+    def lock_applies(self, stored: dict[str, Any] | None) -> bool:
+        was_draft = stored is None or stored["status"] == "draft"
+        return not (self.status == "draft" and was_draft)

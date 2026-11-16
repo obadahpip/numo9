@@ -148,6 +148,22 @@ on or before it are refused. Date it after 2026-03-31, or ask someone who manage
 
 Tests: `backend/tests/test_orgsettings_lock_service.py` (incl. a property test: refused ⇔ date ≤ lock).
 
+### Hooks: posting engine and document save (A-05-T06)
+
+`numo9.orgsettings.locks.LockGuardMixin` — a model declares `lock_module` and `lock_date_field`
+(and, if not every save counts, `lock_applies(stored)`): saving checks the **new** date and, when
+an existing record's date changes, the **old** one (moving a document out of a locked period is a
+change in that period); deleting checks the stored date. The person is the audit context's (the
+request's user; a system job is stopped like everyone).
+
+- **Journal entries** (C-02): `lock_module = "gl"`; the check runs when an entry **becomes
+  posted** — a draft dated in a locked period may be kept and edited but not posted; Posted →
+  Reversed (status only) is allowed, the reversal being a new entry checked on its own date.
+- **Documents** (invoices, bills… as modules arrive): the same mixin with their module (`ar`,
+  `ap`, …); drafts usually don't count (`lock_applies`).
+
+Tests: `backend/tests/test_orgsettings_lock_hooks.py`.
+
 ## Numbering (A-05-T08)
 
 `NumberingSequence(doc_type, prefix, next_number, padding)` — one per organisation and document

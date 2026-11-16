@@ -137,3 +137,72 @@ def assert_not_locked(
     violation = check_lock(organisation, module, date, user)
     if violation is not None:
         raise LockedPeriod(violation)
+
+
+# ---- generic document save and the posting engine (A-05-T06) ---------------------------------
+
+
+def acting_user() -> Any:
+    """The person the current change is attributed to (audit context, A-04-T04); None = system."""
+    from numo9.audit.context import current_actor
+
+    return current_actor().user
+
+
+class LockGuardMixin:
+    """Refuse saving or deleting a record in a locked period (A-05-T06).
+
+    A model declares ``lock_module`` (``"ar"``, ``"gl"``…) and ``lock_date_field`` (``"date"``)
+    and, if not every save counts, overrides ``lock_applies(stored)`` (``stored`` = the row as in
+    the database, ``None`` when new). On save the **new** date is checked and, when an existing
+    record's date changes, the **old** date too (moving a document out of a locked period changes
+    that period). Delete checks the stored date. The person is the audit context's (a request's
+    user, or nobody for a system job — stopped like everyone).
+    """
+
+    lock_module: str = ""
+    lock_date_field: str = "date"
+
+    def lock_applies(self, stored: dict[str, Any] | None) -> bool:
+        return True
+
+    def _lock_stored(self) -> dict[str, Any] | None:
+        pk = getattr(self, "pk", None)
+        if pk is None:
+            return None
+        model: Any = type(self)
+        names = [field.attname for field in model._meta.concrete_fields]
+        row: dict[str, Any] | None = model._base_manager.filter(pk=pk).values(*names).first()
+        return row
+
+    def _lock_organisation(self) -> Organisation:
+        organisation: Organisation = self.organisation  # type: ignore[attr-defined]
+        return organisation
+
+    def assert_lock_allows_save(self) -> None:
+        stored = self._lock_stored()
+        if not self.lock_applies(stored):
+            return
+        dates = [getattr(self, self.lock_date_field)]
+        if stored is not None and stored.get(self.lock_date_field) not in (None, dates[0]):
+            dates.append(stored[self.lock_date_field])
+        user = acting_user()
+        for day in dates:
+            if day is not None:
+                assert_not_locked(self._lock_organisation(), self.lock_module, day, user)
+
+    def assert_lock_allows_delete(self) -> None:
+        stored = self._lock_stored()
+        if stored is None or not self.lock_applies(stored):
+            return
+        day = stored.get(self.lock_date_field)
+        if day is not None:
+            assert_not_locked(self._lock_organisation(), self.lock_module, day, acting_user())
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.assert_lock_allows_save()
+        super().save(*args, **kwargs)  # type: ignore[misc]
+
+    def delete(self, *args: Any, **kwargs: Any) -> Any:
+        self.assert_lock_allows_delete()
+        return super().delete(*args, **kwargs)  # type: ignore[misc]
