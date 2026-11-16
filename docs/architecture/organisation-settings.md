@@ -302,6 +302,18 @@ unsaved-changes guard.
 
 Tests: `frontend/e2e/settings-general.spec.ts`.
 
+## Tax registrations page (A-05-T12, gap-39)
+
+Settings → Tax registrations (`/o/:org/settings/registrations`): the **one** page for every
+statutory number — BN, its program accounts (RT, RP, RC) and provincial numbers (QST, PST BC/SK,
+RST MB). A repeater: one editable row per registration (type, number, effective from / to,
+status), saved on its own with the server's rules shown on the row's field (BN check digit,
+BN ↔ program account, overlapping periods), removed (soft), and a **History** drawer per row
+(A-04-T10, `orgsettings.TaxRegistration`). No other page edits tax registrations (until G-06
+extends this page with sales-tax settings).
+
+Tests: `frontend/e2e/settings-registrations.spec.ts`.
+
 ## Attribution: no silent system change (A-05-T14, gap-44)
 
 Every settings record — `OrganisationSettings`, `TaxRegistration`, `LockDate`,
