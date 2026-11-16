@@ -15,6 +15,7 @@ class NotificationsConfig(AppConfig):
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
         SWEEP_FACTORIES["notifications.Notification"] = _sweep_notification
+        SWEEP_FACTORIES["notifications.SendingDomain"] = _sweep_domain
 
 
 def _sweep_notification(organisation: Any) -> Any:
@@ -33,3 +34,15 @@ def _sweep_notification(organisation: Any) -> Any:
     )
     notification.save()
     return notification
+
+
+def _sweep_domain(organisation: Any) -> Any:
+    import uuid
+
+    from .models import SendingDomain
+
+    domain = SendingDomain(
+        organisation=organisation, domain=f"sweep-{uuid.uuid4().hex[:12]}.ca", provider="local"
+    )
+    domain.save()
+    return domain

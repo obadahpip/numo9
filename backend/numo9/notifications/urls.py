@@ -2,11 +2,22 @@
 
 from django.urls import path
 
-from . import api
+from . import api, domains_api
 
 ORG = "o/<uuid:org>/"
 
 urlpatterns = [
+    path(f"{ORG}email-domains", domains_api.DomainListView.as_view(), name="email-domains"),
+    path(
+        f"{ORG}email-domains/<uuid:public_id>",
+        domains_api.DomainDetailView.as_view(),
+        name="email-domain",
+    ),
+    path(
+        f"{ORG}email-domains/<uuid:public_id>/refresh",
+        domains_api.DomainRefreshView.as_view(),
+        name="email-domain-refresh",
+    ),
     path(f"{ORG}notifications", api.NotificationListView.as_view(), name="notifications"),
     path(
         f"{ORG}notifications/unread-count",

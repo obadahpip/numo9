@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:12-0500\n"
+"POT-Creation-Date: 2026-11-16 05:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1906,6 +1906,21 @@ msgid "Security notifications can't be turned off: they tell you about sign-ins 
 msgstr ""
 
 #, python-format
+msgid "%(domain)s isn't a domain name. Enter the part after @ in your email address, e.g. refined.ca."
+msgstr ""
+
+#, python-format
+msgid "Emails can't be sent from %(domain)s: only the domain's owner can add its DNS records. Use your organisation's own domain."
+msgstr ""
+
+#, python-format
+msgid "%(domain)s is already set up for this organisation."
+msgstr ""
+
+msgid "The email provider didn't answer. Try again in a few minutes."
+msgstr ""
+
+#, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
 
@@ -2844,6 +2859,87 @@ msgid "organisation email branding"
 msgstr ""
 
 msgid "practice email branding"
+msgstr ""
+
+msgid "Waiting for DNS records"
+msgstr ""
+
+msgid "Some records are missing"
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Records are wrong"
+msgstr ""
+
+msgid "Not checked yet"
+msgstr ""
+
+msgid "Found and correct"
+msgstr ""
+
+msgid "Not found"
+msgstr ""
+
+msgid "Found, but not right"
+msgstr ""
+
+msgid "SPF"
+msgstr ""
+
+msgid "DKIM"
+msgstr ""
+
+msgid "DMARC"
+msgstr ""
+
+msgid "Return path"
+msgstr ""
+
+msgid "domain"
+msgstr ""
+
+msgid "sender name before @"
+msgstr ""
+
+msgid "provider domain id"
+msgstr ""
+
+msgid "DKIM selector"
+msgstr ""
+
+msgid "DKIM private key"
+msgstr ""
+
+msgid "verified at"
+msgstr ""
+
+msgid "last checked at"
+msgstr ""
+
+msgid "sending domain"
+msgstr ""
+
+msgid "sending domains"
+msgstr ""
+
+msgid "host"
+msgstr ""
+
+msgid "value"
+msgstr ""
+
+msgid "found in DNS"
+msgstr ""
+
+msgid "checked at"
+msgstr ""
+
+msgid "sending domain record"
+msgstr ""
+
+msgid "sending domain records"
 msgstr ""
 
 msgid "Notification"

@@ -27,6 +27,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from numo9.security.fields import EncryptedField
 from numo9.tenancy.models import OrgOwnedModel
 
 TITLE_KEY = re.compile(r"^[a-z][a-z0-9_]*(\.[a-z0-9_]+){1,4}$")
@@ -341,3 +342,104 @@ class PracticeBranding(BrandingFields):
 
     def __str__(self) -> str:
         return f"{self.practice_id} · {self.display_name or '—'}"
+
+
+# ---- custom sending domains (A-07-T05, T06) ----------------------------------------------------
+
+DOMAIN = re.compile(r"^(?=.{4,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$")
+
+
+class DomainStatus(models.TextChoices):
+    PENDING = "pending", _("Waiting for DNS records")
+    PARTIAL = "partial", _("Some records are missing")
+    VERIFIED = "verified", _("Verified")
+    FAILED = "failed", _("Records are wrong")
+
+
+class RecordStatus(models.TextChoices):
+    UNCHECKED = "unchecked", _("Not checked yet")
+    OK = "ok", _("Found and correct")
+    MISSING = "missing", _("Not found")
+    WRONG = "wrong", _("Found, but not right")
+
+
+class RecordKind(models.TextChoices):
+    SPF = "spf", _("SPF")
+    DKIM = "dkim", _("DKIM")
+    DMARC = "dmarc", _("DMARC")
+    RETURN_PATH = "return_path", _("Return path")
+
+
+class SendingDomain(OrgOwnedModel):
+    """An organisation's own domain for its emails (``billing@refined.ca``), A-07-T05.
+
+    Created at the email provider (``providers``), which gives the DKIM key and the return-path
+    host; the records the organisation must add to its DNS are ``SendingDomainRecord`` rows. The
+    DNS check (A-07-T06) sets each record's status and the domain's: only a ``verified`` domain
+    sends; until then emails go from Numo9's domain with Reply-To the organisation.
+    """
+
+    domain = models.CharField(_("domain"), max_length=253)
+    from_local_part = models.CharField(_("sender name before @"), max_length=64, default="billing")
+    provider = models.CharField(_("provider"), max_length=60)
+    provider_domain_id = models.CharField(_("provider domain id"), max_length=255, blank=True)
+    dkim_selector = models.CharField(_("DKIM selector"), max_length=63, blank=True)
+    # Only when Numo9 signs itself (the ``local`` provider); an email provider keeps its own key.
+    dkim_private_key = EncryptedField(_("DKIM private key"), blank=True)
+    status = models.CharField(
+        _("status"), max_length=16, choices=DomainStatus.choices, default=DomainStatus.PENDING
+    )
+    verified_at = models.DateTimeField(_("verified at"), null=True, blank=True)
+    last_checked_at = models.DateTimeField(_("last checked at"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("sending domain")
+        verbose_name_plural = _("sending domains")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "domain"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="notifications_one_sending_domain_per_name",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=DomainStatus.values),
+                name="notifications_domain_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.domain
+
+    @property
+    def from_address(self) -> str:
+        return f"{self.from_local_part}@{self.domain}"
+
+
+class SendingDomainRecord(OrgOwnedModel):
+    """One DNS record a sending domain needs (A-07-T05), with what the last check found (T06)."""
+
+    sending_domain = models.ForeignKey(
+        SendingDomain, on_delete=models.CASCADE, related_name="records", verbose_name=_("domain")
+    )
+    kind = models.CharField(_("record"), max_length=16, choices=RecordKind.choices)
+    record_type = models.CharField(_("type"), max_length=8, default="TXT")  # TXT | CNAME
+    host = models.CharField(_("host"), max_length=253)
+    value = models.TextField(_("value"))
+    status = models.CharField(
+        _("status"), max_length=16, choices=RecordStatus.choices, default=RecordStatus.UNCHECKED
+    )
+    found = models.TextField(_("found in DNS"), blank=True)
+    checked_at = models.DateTimeField(_("checked at"), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("sending domain record")
+        verbose_name_plural = _("sending domain records")
+        ordering = ("pk",)
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("sending_domain", "kind"), name="notifications_one_record_per_kind"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.kind} {self.host}"

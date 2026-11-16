@@ -616,3 +616,27 @@ NOTIFICATIONS_CATEGORY_LOCKED = define(
     ),
     status.HTTP_409_CONFLICT,
 )
+EMAIL_DOMAIN_INVALID = define(
+    "email_domain.invalid",
+    _(
+        "%(domain)s isn't a domain name. Enter the part after @ in your email address, e.g. "
+        "refined.ca."
+    ),
+)
+EMAIL_DOMAIN_NOT_YOURS = define(
+    "email_domain.not_yours",
+    _(
+        "Emails can't be sent from %(domain)s: only the domain's owner can add its DNS records. "
+        "Use your organisation's own domain."
+    ),
+)
+EMAIL_DOMAIN_EXISTS = define(
+    "email_domain.exists",
+    _("%(domain)s is already set up for this organisation."),
+    status.HTTP_409_CONFLICT,
+)
+EMAIL_DOMAIN_PROVIDER = define(
+    "email_domain.provider_unavailable",
+    _("The email provider didn't answer. Try again in a few minutes."),
+    status.HTTP_503_SERVICE_UNAVAILABLE,
+)

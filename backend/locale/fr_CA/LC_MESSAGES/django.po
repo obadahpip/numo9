@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 05:12-0500\n"
+"POT-Creation-Date: 2026-11-16 05:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1040,7 +1040,7 @@ msgid "Choose a contact of this organisation."
 msgstr "Choisissez un rôle utilisé dans cette organisation."
 
 msgid "type"
-msgstr ""
+msgstr "type"
 
 #, fuzzy
 #| msgid "action"
@@ -2083,6 +2083,24 @@ msgstr "Vous avez %(max)s vues enregistrées, le maximum permis. Supprimez d’a
 
 msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
 msgstr "Les notifications de sécurité ne peuvent pas être désactivées : elles vous informent des connexions et des changements à votre compte."
+
+#, python-format
+msgid "%(domain)s isn't a domain name. Enter the part after @ in your email address, e.g. refined.ca."
+msgstr "%(domain)s n’est pas un nom de domaine. Entrez la partie après @ de votre adresse courriel, p. ex. refined.ca."
+
+#, python-format
+msgid "Emails can't be sent from %(domain)s: only the domain's owner can add its DNS records. Use your organisation's own domain."
+msgstr "Impossible d’envoyer des courriels depuis %(domain)s : seul le propriétaire du domaine peut y ajouter des enregistrements DNS. Utilisez le domaine de votre organisation."
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "%(domain)s is already set up for this organisation."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, fuzzy
+#| msgid "File storage isn't answering right now. Try again in a minute."
+msgid "The email provider didn't answer. Try again in a few minutes."
+msgstr "Le stockage des fichiers ne répond pas pour le moment. Réessayez dans une minute."
 
 #, python-format
 msgid "%(items)s and %(last)s"
@@ -3134,6 +3152,99 @@ msgstr "Modifier les paramètres de l’organisation"
 #| msgid "Practice admin"
 msgid "practice email branding"
 msgstr "Administrateur du cabinet"
+
+#, fuzzy
+#| msgid "Waiting to start"
+msgid "Waiting for DNS records"
+msgstr "En attente de démarrage"
+
+msgid "Some records are missing"
+msgstr "Des enregistrements manquent"
+
+msgid "Verified"
+msgstr "Vérifié"
+
+msgid "Records are wrong"
+msgstr "Les enregistrements sont incorrects"
+
+msgid "Not checked yet"
+msgstr "Pas encore vérifié"
+
+msgid "Found and correct"
+msgstr "Trouvé et correct"
+
+msgid "Not found"
+msgstr "Introuvable"
+
+msgid "Found, but not right"
+msgstr "Trouvé, mais incorrect"
+
+msgid "SPF"
+msgstr ""
+
+msgid "DKIM"
+msgstr ""
+
+msgid "DMARC"
+msgstr ""
+
+msgid "Return path"
+msgstr "Chemin de retour"
+
+msgid "domain"
+msgstr "domaine"
+
+msgid "sender name before @"
+msgstr "nom de l’expéditeur avant @"
+
+#, fuzzy
+#| msgid "provider message id"
+msgid "provider domain id"
+msgstr "identifiant du message chez le fournisseur"
+
+msgid "DKIM selector"
+msgstr "sélecteur DKIM"
+
+msgid "DKIM private key"
+msgstr "clé privée DKIM"
+
+#, fuzzy
+#| msgid "started at"
+msgid "verified at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "started at"
+msgid "last checked at"
+msgstr "commencée le"
+
+msgid "sending domain"
+msgstr "domaine d’envoi"
+
+msgid "sending domains"
+msgstr "domaines d’envoi"
+
+msgid "host"
+msgstr "hôte"
+
+msgid "value"
+msgstr "valeur"
+
+#, fuzzy
+#| msgid "founding offer"
+msgid "found in DNS"
+msgstr "offre fondatrice"
+
+#, fuzzy
+#| msgid "started at"
+msgid "checked at"
+msgstr "commencée le"
+
+msgid "sending domain record"
+msgstr "enregistrement du domaine d’envoi"
+
+msgid "sending domain records"
+msgstr "enregistrements du domaine d’envoi"
 
 #, fuzzy
 #| msgid "organisation"
@@ -4238,3 +4349,6 @@ msgstr "vues de répertoire enregistrées"
 
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"
+
+#~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
+#~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."

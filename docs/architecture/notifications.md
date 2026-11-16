@@ -162,6 +162,37 @@ The `notification` template is what `notify()` emails: title, body, "Open in Num
 Snapshots of both languages: `backend/tests/snapshots/email/` (`NUMO9_UPDATE_SNAPSHOTS=1` to
 rewrite after a reviewed template change).
 
+## Custom sending domains (A-07-T05)
+
+An organisation sends from its own domain (`invoices@refined.ca`) once the domain is verified
+(A-07-T06); until then from Numo9's domain with Reply-To the organisation.
+
+`numo9.notifications.domains.add_domain(domain, from_local_part)` normalises the name
+(`WWW.Refined.CA.` → `refined.ca`), refuses non-domains, public mailbox domains (gmail.com,
+outlook.com, videotron.ca…) and Numo9's own domain, creates the domain at the **email provider**
+and stores `SendingDomain` (`pending`) with the records to publish
+(`SendingDomainRecord`; data dictionary:
+[`notifications_sendingdomain`](../reference/data-dictionary.md#notifications-sendingdomain)):
+
+| Record | Host | Type | Value |
+|---|---|---|---|
+| SPF | `refined.ca` | TXT | `v=spf1 include:<NUMO9_EMAIL_SPF_INCLUDE> ~all` (default `spf.numo9.ca`) |
+| DKIM | `<selector>._domainkey.refined.ca` | TXT or CNAME (provider's) | the provider's key |
+| DMARC | `_dmarc.refined.ca` | TXT | `v=DMARC1; p=quarantine; adkim=r; aspf=r` |
+| Return path | `bounces.refined.ca` (provider's host) | CNAME | the provider's bounce host |
+
+**Providers** (`numo9.notifications.providers`): an adapter per email provider implements
+`create_domain`, `fetch_domain`, `delete_domain` and registers under its name;
+`NUMO9_EMAIL_DOMAIN_PROVIDER` selects it. The provider is chosen in SP-03 — until its adapter is
+added, `local` generates the DKIM key in Numo9 (RSA 2048; the private key is stored encrypted,
+`EncryptedField`, never returned by the API). A provider that is down answers
+`503 email_domain.provider_unavailable` and nothing is stored. `refresh_from_provider` fetches the
+DKIM record again after a key rotation: a changed record goes back to *unchecked* and a verified
+domain to *partial*.
+
+API under `/api/v1/o/<org>/` (`organisation.settings.manage`, `CORE`): `GET/POST email-domains`,
+`GET/DELETE email-domains/<id>`, `POST email-domains/<id>/refresh`.
+
 ## Tests
 
 | Task | Tests |
@@ -170,3 +201,4 @@ rewrite after a reviewed template change).
 | T02 | `tests/test_notifications_service.py` |
 | T03 | `tests/test_notifications_mail.py` |
 | T04 | `tests/test_notifications_templates.py` (snapshots in `tests/snapshots/email/`) |
+| T05 | `tests/test_notifications_domains.py` (provider mocked: `tests/notification_helpers.FakeProvider`) |

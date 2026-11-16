@@ -484,6 +484,33 @@ An organisation's name, logo and colour in its emails (A-07-T04). `OrgOwnedModel
 
 The same fields for a practice (`practice_id` one-to-one, `CASCADE`; `updated_at`): used for its client organisations without their own branding. Platform model (no organisation data).
 
+### `notifications_sendingdomain` — Sending domain {#notifications-sendingdomain}
+
+An organisation's own domain for its emails (A-07-T05). `OrgOwnedModel`; one live row per organisation and name (`notifications_one_sending_domain_per_name`).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `domain` | varchar(253) | no | Lower-case host name |
+| `from_local_part` | varchar(64) | no | Before the @ of the sender (`billing`) |
+| `provider`, `provider_domain_id` | varchar | no | The email provider and its id for the domain |
+| `dkim_selector` | varchar(63) | no | DKIM selector |
+| `dkim_private_key` | text (encrypted) | no | Only for the `local` provider; AES-256-GCM (`EncryptedField`) |
+| `status` | varchar(16) | no | `pending`, `partial`, `verified`, `failed` (`notifications_domain_status_valid`) |
+| `verified_at`, `last_checked_at` | timestamptz | yes | First verified; last DNS check |
+
+### `notifications_sendingdomainrecord` — Sending domain DNS record {#notifications-sendingdomainrecord}
+
+One DNS record a sending domain needs, with the last check (A-07-T05, T06). `OrgOwnedModel`; one per domain and kind (`notifications_one_record_per_kind`).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `sending_domain_id` | bigint → `notifications_sendingdomain` | no | `CASCADE` |
+| `kind` | varchar(16) | no | `spf`, `dkim`, `dmarc`, `return_path` |
+| `record_type`, `host`, `value` | varchar/text | no | What to publish |
+| `status` | varchar(16) | no | `unchecked`, `ok`, `missing`, `wrong` |
+| `found`, `checked_at` | text / timestamptz | — | What the last check found, when |
+
 ## Accountant workspace (`workspace`) {#workspace}
 
 Design: [Organisation directory](../architecture/directory.md).
