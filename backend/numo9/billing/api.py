@@ -26,6 +26,7 @@ from numo9.tenancy.context import current_org
 from .changes import change, preview
 from .checkout import METHODS, start_checkout
 from .export import cancel, export_link, latest_export, resume, start_export
+from .overview import overview, portal_url
 from .permissions import BILLING_MANAGE, BILLING_VIEW
 
 
@@ -249,3 +250,48 @@ class ExportView(APIView):
         assert organisation is not None  # noqa: S101
         run = start_export(organisation, request.user)
         return Response(_export_body(run), status=status.HTTP_202_ACCEPTED)
+
+
+class BillingOverviewSerializer(serializers.Serializer[Any]):
+    billing_available = serializers.BooleanField()
+    subscription = serializers.DictField(allow_null=True)
+    pending_change = serializers.DictField(allow_null=True)
+    packages = serializers.ListField(child=serializers.DictField())
+    invoices = serializers.ListField(child=serializers.DictField())
+
+
+class OverviewView(APIView):
+    required_feature = CORE
+    serializer_class = BillingOverviewSerializer
+
+    @requires_permission(BILLING_VIEW.key)
+    @extend_schema(
+        operation_id="billing_overview",
+        summary="The subscription, packages offered, Numo9 invoices (the billing page)",
+        responses=BillingOverviewSerializer,
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        return Response(BillingOverviewSerializer(overview(organisation)).data)
+
+
+class BillingPortalSerializer(serializers.Serializer[Any]):
+    url = serializers.URLField()
+
+
+class PortalView(APIView):
+    required_feature = CORE
+    serializer_class = BillingPortalSerializer
+
+    @requires_permission(BILLING_MANAGE.key)
+    @extend_schema(
+        operation_id="billing_portal",
+        summary="Stripe's page to update the payment method",
+        request=None,
+        responses={201: BillingPortalSerializer},
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        organisation = current_org()
+        assert organisation is not None  # noqa: S101
+        return Response({"url": portal_url(organisation)}, status=status.HTTP_201_CREATED)

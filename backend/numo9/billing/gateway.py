@@ -87,6 +87,10 @@ class BillingGateway(Protocol):
 
     def retrieve_subscription(self, subscription: str) -> dict[str, Any]: ...
 
+    def create_portal_session(self, *, customer: str, return_url: str) -> str:
+        """A Stripe customer-portal session (update the payment method); return its URL."""
+        ...
+
 
 def _plain(obj: Any) -> dict[str, Any]:
     to_dict = getattr(obj, "to_dict_recursive", None) or getattr(obj, "to_dict", None)
@@ -208,6 +212,12 @@ class StripeBillingApi:
 
     def retrieve_subscription(self, subscription: str) -> dict[str, Any]:
         return _plain(self.client.v1.subscriptions.retrieve(subscription))
+
+    def create_portal_session(self, *, customer: str, return_url: str) -> str:
+        session = self.client.v1.billing_portal.sessions.create(
+            params={"customer": customer, "return_url": return_url}
+        )
+        return str(session.url)
 
 
 def billing_enabled() -> bool:

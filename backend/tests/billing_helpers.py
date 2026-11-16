@@ -187,3 +187,11 @@ def stripe_invoice(
         "invoice_pdf": f"https://pay.stripe.com/invoice/{inv_id}/pdf",
         "lines": {"data": [{"period": {"start": 1_790_000_000, "end": 1_792_592_000}}]},
     }
+
+
+def _portal(self: Any, *, customer: str, return_url: str) -> str:
+    self._call("create_portal_session", customer=customer, return_url=return_url)
+    return f"https://billing.stripe.com/p/session/{customer}"
+
+
+FakeGateway.create_portal_session = _portal  # type: ignore[attr-defined]

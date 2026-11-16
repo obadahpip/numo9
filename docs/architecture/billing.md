@@ -265,3 +265,27 @@ Datasets are registered with `register_dataset(name, columns)` by the module tha
 Phase 0: `organisation_settings`, `tax_registrations`, `lock_dates`, `contacts`,
 `chart_of_accounts`, `journal_lines`, `documents`, `numo9_invoices`; each later module adds its
 own (`tests/test_billing_export.py` checks the ZIP holds every registered dataset).
+
+## Billing page (U-04-T12)
+
+Settings → **Subscription** (`/o/<org>/settings/subscription`, `frontend/src/billing/`), for the
+organisation's owner (anyone else: "Only the organisation's owner can see and change the
+subscription."). Data: `GET /api/v1/o/<org>/billing` (`billing_overview`: the subscription,
+a pending downgrade, the packages offered with monthly and annual prices, the Numo9 invoices) and
+`GET …/billing/export`.
+
+- **Package card** — package name (trial: "Trial — every product"), status badge, price per month
+  or year, "Next charge: $49.00 on 15 Dec 2026" (or "Cancelled — access until …"), a pending
+  downgrade, the payment method (card or PAD) with **Update payment method** (`POST
+  …/billing/portal` → Stripe's customer portal; the card or bank details never reach Numo9), and
+  **Cancel subscription** (confirmation dialog: access until the period end, then read-only;
+  the export starts) / **Keep the subscription**.
+- **Packages** — monthly / annual toggle, each package with its price and **Choose …**: a trial
+  organisation goes straight to Stripe Checkout (one click); a paying one confirms the change in a
+  dialog (two clicks — the proration comparison is U-04-T13).
+- **Numo9 invoices** — number (link to the PDF), date, total, status.
+- **Your data** — the latest export: "being prepared" or the download link (fresh signed URL).
+- Back from Checkout (`?checkout=success`): "Thank you. Your payment is being confirmed…" while
+  the webhooks arrive.
+
+English and French; axe clean (`frontend/e2e/billing.spec.ts`; API `tests/test_billing_overview.py`).
