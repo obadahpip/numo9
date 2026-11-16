@@ -288,6 +288,20 @@ the full navigation and itself marked; clicking through the navigation lands on 
 section and no two modules share one generic page. Unit: `SettingsNav.test.tsx`,
 `AppShell.test.tsx`.
 
+## General settings page (A-05-T11)
+
+Settings → General (`/o/:org/settings/general`, `frontend/src/settings/general/`): organisation
+(display and legal name, industry, business structure), **mailing address** (street, city,
+**Province picker** — provinces and territories grouped, in the reader's language — and
+**Postal code** masked to `A1A 1A1` as typed), contact (telephone, email, website), **fiscal
+year end** (month, day) and **time zone** (Canadian zones); base currency shown read-only (CAD).
+Client rules show under the field before any request (display name required, postal code
+format, day 1–31, email shape); the server's rules come back on the field from the 400
+(numeric-only legal name, postal code ↔ province…). Form kit: error summary, sticky save bar,
+unsaved-changes guard.
+
+Tests: `frontend/e2e/settings-general.spec.ts`.
+
 ## Attribution: no silent system change (A-05-T14, gap-44)
 
 Every settings record — `OrganisationSettings`, `TaxRegistration`, `LockDate`,

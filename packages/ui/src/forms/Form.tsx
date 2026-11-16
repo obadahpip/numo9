@@ -21,11 +21,15 @@ import {
   type Resolver,
   type UseFormReturn,
 } from "react-hook-form";
-import type { z } from "zod";
+import { config as zodConfig, type z } from "zod";
 
 import { ErrorSummary, type ErrorSummaryItem } from "./ErrorSummary";
 import { StickySaveBar } from "./StickySaveBar";
 import { UnsavedChangesDialog, useUnsavedChangesGuard } from "./useUnsavedChangesGuard";
+
+// Zod 4 compiles object schemas with `new Function` unless told not to; the app's Content Security
+// Policy forbids eval (S-03-T02), so every form validates without it.
+zodConfig({ jitless: true });
 
 /** Every visible string of the form kit (i18n messages from the app). */
 export interface FormLabels {

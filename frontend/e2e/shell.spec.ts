@@ -83,8 +83,9 @@ for (const width of VIEWPORTS) {
 
     test("a 63-character organisation slug truncates instead of overflowing", async ({ page }) => {
       const slug = `a${"b".repeat(61)}c`;
-      await page.goto(`/o/${slug}/settings/general`);
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Settings: General");
+      // A registry placeholder page (General has its own screen since A-05-T11).
+      await page.goto(`/o/${slug}/settings/numbering`);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Settings: Numbering");
       expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
       const user = await page.getByRole("button", { name: "Account menu" }).boundingBox();
       expect(user!.x + user!.width).toBeLessThanOrEqual(width);
