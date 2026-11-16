@@ -211,7 +211,7 @@ first time), any `wrong` → `failed`, some `ok` → `partial`, else `pending`.
 
 **Job** — `numo9.notifications.check_sending_domains` (platform job, `io` queue, beat at :04,
 :19, :34, :49): unverified domains added in the last 14 days, and verified domains not checked
-for a day (a record removed later is noticed). **Check now** — `POST email-domains/<id>/check`
+for a day (a record removed later is noticed). **Verify now** — `POST email-domains/<id>/check`
 (the settings page's live checker, A-07-T10).
 
 ## Sender address and the DMARC harness (A-07-T07)
@@ -278,7 +278,7 @@ Settings → Email domain (`/o/:org/settings/email-domain`, `frontend/src/email-
   with the plain-language fix ("Not found yet. Add this record at your DNS host." / "A record is
   there but isn't right. Replace its value with the one above. Found: …");
 - **live checker**: while the domain isn't verified the page runs the check
-  (`POST …/check`) every 20 s and on **Check now**; when it flips to Verified the badge changes,
+  (`POST …/check`) every 20 s and on **Verify now**; when it flips to Verified the badge changes,
   a polite live region announces "Verified: your emails now go from …", and the checker stops;
 - **Remove domain** asks for confirmation first.
 

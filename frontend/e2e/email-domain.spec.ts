@@ -122,8 +122,8 @@ test("status flips to verified through the live checker", async ({ page }) => {
     "Not found yet. Add this record at your DNS host.",
   );
 
-  // "Check now": partial.
-  await page.getByRole("button", { name: "Check now" }).click();
+  // "Verify now": partial.
+  await page.getByRole("button", { name: "Verify now" }).click();
   await expect(badge).toHaveText("Some records are missing");
   await expect(page.locator('[data-record="spf"]')).toContainText("✓ Found and correct");
 

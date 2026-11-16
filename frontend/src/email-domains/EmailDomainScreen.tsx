@@ -79,7 +79,7 @@ const m = defineMessages({
     defaultMessage: "Not checked yet",
     description: "Record status",
   },
-  check: { id: "emailDomain.check", defaultMessage: "Check now", description: "Button" },
+  check: { id: "emailDomain.check", defaultMessage: "Verify now", description: "Button" },
   checking: {
     id: "emailDomain.checking",
     defaultMessage: "Checking your DNS…",
@@ -121,7 +121,7 @@ const m = defineMessages({
   },
   loadFailedBody: {
     id: "emailDomain.loadFailedBody",
-    defaultMessage: "Check your connection, then try again.",
+    defaultMessage: "Verify your connection, then try again.",
     description: "Error body",
   },
   retry: { id: "emailDomain.retry", defaultMessage: "Try again", description: "Retry" },
@@ -142,7 +142,7 @@ const TONES = {
 /**
  * Settings → Email domain (A-07-T10): set up the organisation's own sending domain, then one
  * copyable card per DNS record with its live status ✓/✗ and a plain-language fix. While the
- * domain is not verified the page checks again every 20 s (and on "Check now"); the status flips
+ * domain is not verified the page checks again every 20 s (and on "Verify now"); the status flips
  * to Verified as soon as every record is right, and that is announced.
  */
 export function EmailDomainScreen({ org }: Readonly<{ org: string }>) {

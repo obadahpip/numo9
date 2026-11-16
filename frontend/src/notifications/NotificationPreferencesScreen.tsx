@@ -59,7 +59,7 @@ const messages = defineMessages({
   },
   loadFailedBody: {
     id: "notifications.prefs.loadFailedBody",
-    defaultMessage: "Check your connection, then try again.",
+    defaultMessage: "Verify your connection, then try again.",
     description: "Error body",
   },
   retry: { id: "notifications.prefs.retry", defaultMessage: "Try again", description: "Retry" },

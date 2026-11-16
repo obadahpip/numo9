@@ -20,7 +20,7 @@ first time); any wrong → ``failed``; some correct → ``partial``; none → ``
 
 ``check_sending_domains`` (platform job, beat every 15 minutes) checks every domain that is not
 verified yet and was added in the last 14 days, and every verified domain once a day (records
-removed later are noticed); the settings page's "Check now" runs ``check_domain`` directly.
+removed later are noticed); the settings page's "Verify now" runs ``check_domain`` directly.
 """
 
 from __future__ import annotations

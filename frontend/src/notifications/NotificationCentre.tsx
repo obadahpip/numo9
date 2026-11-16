@@ -80,7 +80,7 @@ export const centreMessages = defineMessages({
   },
   loadFailedBody: {
     id: "notifications.loadFailedBody",
-    defaultMessage: "Check your connection, then try again.",
+    defaultMessage: "Verify your connection, then try again.",
     description: "Error body",
   },
   retry: { id: "notifications.retry", defaultMessage: "Try again", description: "Retry button" },
