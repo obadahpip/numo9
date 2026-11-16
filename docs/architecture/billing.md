@@ -324,3 +324,21 @@ top, `process_event` bumps the event's organisation after every handler, so a ha
 billing state another way can't leave a stale answer. The next request — `entitlements_for` and
 `GET …/entitlements` — answers the new state (`tests/test_billing_entitlements_cache.py`: each
 step with the cache warm before it).
+
+## Out-of-order events (U-04-T15)
+
+Stripe doesn't guarantee delivery order, and retries re-deliver late. Every event that changes the
+subscription's state is applied by **Stripe's `created` time**, not by arrival:
+`Subscription.stripe_event_created` (migration `entitlements.0005`) keeps the time of the latest
+event applied, and `numo9.billing.subscriptions.is_newer(subscription, created, target)` decides:
+
+- an event older than the last one applied changes nothing (its invoice row is still mirrored if
+  it is newer for that invoice);
+- on the same second the further-along status wins — `PRECEDENCE`: cancelled > read-only > past
+  due > active > trialing;
+- the checkout event activates only when no newer subscription event decided the state.
+
+Moving to *active* or *cancelled* clears the grace end. `tests/test_billing_out_of_order.py`
+(Hypothesis): any subset of a subscription's life (checkout, created, paid, failed renewal and
+recovery, upgrade, cancel at period end, deleted), delivered in any order, ends in the same status,
+reason, grace end, package, interval and cancellation as chronological delivery.

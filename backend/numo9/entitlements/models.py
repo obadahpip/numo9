@@ -176,6 +176,9 @@ class Subscription(AuditedModel, OrgOwnedModel):
         blank=True,
         db_default="",
     )
+    #: Stripe ``created`` of the latest billing event applied (U-04-T15): an older event that
+    #: arrives late never overwrites a newer state.
+    stripe_event_created = models.DateTimeField(_("last billing event at"), null=True, blank=True)
 
     class Meta:
         ordering = ("-created_at", "-id")

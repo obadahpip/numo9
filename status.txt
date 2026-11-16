@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 269   Remaining: 2518   Progress: 9.65%
+TOTAL ATOMIC TASKS: 2787   Completed: 270   Remaining: 2517   Progress: 9.69%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -367,7 +367,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-04-T12 — Billing page UI (package card, method, invoices, cancel)
 ✅ U-04-T13 — Proration comparison modal + dunning banner
 ✅ U-04-T14 — Entitlement cache invalidation on every subscription change
-❌ U-04-T15 — Out-of-order event resolution (precedence by created)
+✅ U-04-T15 — Out-of-order event resolution (precedence by created)
 ❌ U-04-T16 — Security tests: practice user never sees billing endpoints for own account; webhook replay
 ❌ U-04-T17 — Runbook section "Stripe billing incidents"
 

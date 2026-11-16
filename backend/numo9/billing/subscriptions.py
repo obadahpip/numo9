@@ -62,6 +62,38 @@ STATE_TABLE: dict[str, str | None] = {
 }
 
 
+#: Tie-break when two events carry the same ``created`` second: the further-along state wins.
+PRECEDENCE: dict[str, int] = {
+    SubscriptionStatus.TRIALING: 0,
+    SubscriptionStatus.ACTIVE: 1,
+    SubscriptionStatus.PAST_DUE: 2,
+    SubscriptionStatus.READ_ONLY: 3,
+    SubscriptionStatus.CANCELLED: 4,
+}
+
+
+def is_newer(subscription: Subscription, at: dt.datetime, target: str | None = None) -> bool:
+    """Should an event created ``at`` change the subscription (U-04-T15)?
+
+    Events are applied by Stripe's ``created`` time, not by arrival: an event older than the last
+    one applied changes nothing; on the same second the further-along status wins
+    (``PRECEDENCE``: cancelled > read-only > past due > active).
+    """
+    last = subscription.stripe_event_created
+    if last is None or at > last:
+        return True
+    if at < last:
+        return False
+    if target is None:
+        return True
+    return PRECEDENCE.get(target, 0) >= PRECEDENCE.get(subscription.status, 0)
+
+
+def stamp(subscription: Subscription, at: dt.datetime) -> None:
+    last = subscription.stripe_event_created
+    subscription.stripe_event_created = at if last is None or at > last else last
+
+
 class UnknownSubscription(LookupError):
     """No organisation matches the event's subscription, customer or metadata."""
 
@@ -132,6 +164,7 @@ def apply_status(subscription: Subscription, stripe_status: str, at: dt.datetime
     elif target == SubscriptionStatus.CANCELLED:
         subscription.status_reason = StatusReason.CANCELLED
         subscription.cancel_at_period_end = False
+        subscription.grace_until = None
 
 
 def _save(subscription: Subscription, event: StripeEvent) -> Subscription:
@@ -153,6 +186,9 @@ def on_subscription(event: StripeEvent) -> Subscription:
         customer=str(obj.get("customer") or ""),
         organisation_id=metadata.get(METADATA_KEY, ""),
     )
+    stripe_status = "canceled" if event.type.endswith(".deleted") else str(obj.get("status"))
+    if not is_newer(subscription, event.stripe_created, STATE_TABLE.get(stripe_status)):
+        return subscription  # an older event arriving late (out of order)
     item = _item(obj)
     price = item.get("price") or {}
     subscription.stripe_subscription_id = str(obj.get("id") or "")
@@ -170,8 +206,8 @@ def on_subscription(event: StripeEvent) -> Subscription:
     methods = (obj.get("payment_settings") or {}).get("payment_method_types") or []
     if len(methods) == 1 and methods[0] in PaymentMethodType.values:
         subscription.payment_method_type = methods[0]
-    stripe_status = "canceled" if event.type.endswith(".deleted") else str(obj.get("status"))
     apply_status(subscription, stripe_status, event.stripe_created)
+    stamp(subscription, event.stripe_created)
     return _save(subscription, event)
 
 
@@ -196,9 +232,12 @@ def on_checkout_completed(event: StripeEvent) -> Subscription | None:
     methods = obj.get("payment_method_types") or []
     if len(methods) == 1 and methods[0] in PaymentMethodType.values:
         subscription.payment_method_type = methods[0]
-    # Paid by card, or a PAD debit still processing ("unpaid" for 3–5 days): access continues.
-    if subscription.status in (SubscriptionStatus.TRIALING, SubscriptionStatus.CANCELLED) or (
-        obj.get("payment_status") == "paid"
+    # Paid by card, or a PAD debit still processing ("unpaid" for 3–5 days): access continues —
+    # unless a newer subscription event already decided the state (out of order, U-04-T15).
+    if is_newer(subscription, event.stripe_created, SubscriptionStatus.ACTIVE) and (
+        subscription.status in (SubscriptionStatus.TRIALING, SubscriptionStatus.CANCELLED)
+        or obj.get("payment_status") == "paid"
     ):
         apply_status(subscription, "active", event.stripe_created)
+        stamp(subscription, event.stripe_created)
     return _save(subscription, event)

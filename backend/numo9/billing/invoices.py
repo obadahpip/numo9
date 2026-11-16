@@ -29,7 +29,7 @@ from numo9.tenancy.models import OrganisationMember
 from .customers import METADATA_KEY
 from .models import PlatformInvoice, PlatformInvoiceStatus, StripeEvent
 from .processing import register_handler
-from .subscriptions import apply_status, find_subscription
+from .subscriptions import apply_status, find_subscription, is_newer, stamp
 
 
 def _ts(value: Any) -> dt.datetime | None:
@@ -119,8 +119,12 @@ def on_invoice_paid(event: StripeEvent) -> PlatformInvoice:
     from numo9.notifications.services import notify
 
     invoice, subscription = mirror(event)
-    if subscription.status in (SubscriptionStatus.PAST_DUE, SubscriptionStatus.READ_ONLY):
+    if subscription.status in (
+        SubscriptionStatus.PAST_DUE,
+        SubscriptionStatus.READ_ONLY,
+    ) and is_newer(subscription, event.stripe_created, SubscriptionStatus.ACTIVE):
         apply_status(subscription, "active", event.stripe_created)
+        stamp(subscription, event.stripe_created)
         subscription.save()
     if invoice.receipt_sent_at is None and invoice.status == PlatformInvoiceStatus.PAID:
         organisation = subscription.organisation
@@ -145,8 +149,12 @@ def on_invoice_payment_failed(event: StripeEvent) -> PlatformInvoice:
     from .dunning import start_dunning
 
     invoice, subscription = mirror(event)
-    if subscription.status in (SubscriptionStatus.ACTIVE, SubscriptionStatus.TRIALING):
+    if subscription.status in (
+        SubscriptionStatus.ACTIVE,
+        SubscriptionStatus.TRIALING,
+    ) and is_newer(subscription, event.stripe_created, SubscriptionStatus.PAST_DUE):
         apply_status(subscription, "past_due", event.stripe_created)
+        stamp(subscription, event.stripe_created)
         subscription.save()
     start_dunning(subscription, invoice)
     return invoice
