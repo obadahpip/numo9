@@ -26,6 +26,9 @@ class EntitlementsSerializer(serializers.Serializer[Any]):
         "payment_failed, trial_ended, cancelled, platform, read_only"
     )
     since = serializers.DateTimeField(allow_null=True, help_text="Read-only since (read_only)")
+    grace_until = serializers.DateTimeField(
+        allow_null=True, help_text="Payment overdue: full access until then (past_due, U-04-T13)"
+    )
     package = serializers.CharField(allow_null=True)
     package_name = serializers.CharField(allow_null=True)
     status = serializers.CharField(allow_null=True, help_text="Subscription status, if any")

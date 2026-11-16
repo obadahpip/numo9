@@ -289,3 +289,28 @@ a pending downgrade, the packages offered with monthly and annual prices, the Nu
   the webhooks arrive.
 
 English and French; axe clean (`frontend/e2e/billing.spec.ts`; API `tests/test_billing_overview.py`).
+
+## Proration comparison and the dunning banner (U-04-T13)
+
+**Change dialog** (`frontend/src/billing/ChangeDialog.tsx`) — choosing another package when
+paying opens a comparison: *Now* and *After the change* (package and price), and Stripe's own
+figure for today from `GET …/billing/change/preview`:
+
+- upgrade — "You'll be charged $25.13 today: the new price for the rest of this period, less what
+  you've already paid for it.";
+- downgrade — "Nothing to pay today. You keep Growth until 15 Dec 2026; from then on you'll pay
+  $29.00 per month.".
+
+Confirming sends the preview's `proration_date`, so the amount charged equals the amount shown.
+
+**Payment-due notice** (`frontend/src/entitlements/PaymentDueNotice.tsx`) — the dunning banner, in
+the shell's banner slot on every organisation page while the payment is overdue and the grace
+period runs (entitlements reason `past_due`; the entitlements API now gives `grace_until`): "The
+subscription payment didn't go through. Everything works until 23 Nov 2026; after that the
+organisation becomes read-only." The owner gets **Update payment method** — one click to Stripe's
+customer portal (`POST …/billing/portal`); everyone else: "Ask the organisation's owner to update
+the payment method." It is an account-state notice like the read-only notice (gap-12 allows
+these, never promotions). After the grace end the read-only notice (U-03-T12) takes over.
+
+Billing endpoints stay usable while the organisation is read-only (`allowed_when_read_only`):
+paying is how it becomes writable again.

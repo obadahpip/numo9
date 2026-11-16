@@ -7,6 +7,7 @@ import { useState, type ReactNode } from "react";
 import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
+import { PaymentDueNotice } from "@/entitlements/PaymentDueNotice";
 import { ReadOnlyNotice } from "@/entitlements/ReadOnlyNotice";
 import { GoToOrganisationSlot } from "@/directory/GoToOrganisationSlot";
 import { decide, EntitlementsProvider, useEntitlements } from "@/entitlements/store";
@@ -156,7 +157,14 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
       }}
       brand={{ label: fm(messages.brandHome), href: homeHref }}
       nav={org ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key)) : []}
-      banner={org ? <ReadOnlyNotice /> : undefined}
+      banner={
+        org ? (
+          <>
+            <ReadOnlyNotice />
+            <PaymentDueNotice />
+          </>
+        ) : undefined
+      }
       breadcrumbs={breadcrumbs}
       orgSwitcher={
         org ? (

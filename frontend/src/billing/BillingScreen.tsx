@@ -6,7 +6,6 @@ import {
   Dialog,
   ErrorState,
   formatDate,
-  formatMoney,
   LoadingRegion,
   SkeletonTable,
   type BadgeTone,
@@ -29,6 +28,7 @@ import {
   type Interval,
 } from "./api";
 import { ChangeDialog } from "./ChangeDialog";
+import { money } from "./money";
 
 export const m = defineMessages({
   title: { id: "billing.title", defaultMessage: "Subscription", description: "Page heading" },
@@ -238,10 +238,6 @@ const STATUS_TONES: Record<string, BadgeTone> = {
   cancelled: "neutral",
   demo: "neutral",
 };
-
-export function money(cents: number | null | undefined, locale: AppLocale): string {
-  return formatMoney(((cents ?? 0) / 100).toFixed(2), { locale });
-}
 
 type State = "loading" | "failed" | "forbidden" | BillingOverview;
 

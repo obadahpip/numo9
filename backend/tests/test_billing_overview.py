@@ -106,3 +106,33 @@ def test_owner_only_and_billing_off() -> None:
         body = client.get(f"/api/v1/o/{org.public_id}/billing").json()
         assert body["billing_available"] is False and body["subscription"]["status"] == "trialing"
         assert client.post(f"/api/v1/o/{org.public_id}/billing/portal").status_code == 503
+
+
+def test_billing_works_while_read_only() -> None:
+    org, owner = owned_org()
+    Subscription._base_manager.filter(organisation=org).update(
+        stripe_customer_id="cus_test_0001",
+        stripe_subscription_id="sub_1",
+        status="read_only",
+        status_reason="payment_failed",
+        package=Package.objects.get(code="growth"),
+    )
+    client = Client()
+    client.force_login(owner)
+    base = f"/api/v1/o/{org.public_id}/billing"
+    assert client.get(base).status_code == 200
+    assert client.post(f"{base}/portal").status_code == 201
+
+
+def test_payment_due_in_the_entitlements() -> None:
+    org, owner = owned_org()
+    grace = dt.datetime(2030, 1, 8, tzinfo=dt.UTC)
+    Subscription._base_manager.filter(organisation=org).update(status="past_due", grace_until=grace)
+    from numo9.entitlements.cache import bump_organisation
+
+    bump_organisation(str(org.public_id))
+    client = Client()
+    client.force_login(owner)
+    body = client.get(f"/api/v1/o/{org.public_id}/entitlements").json()
+    assert (body["mode"], body["reason"]) == ("full", "past_due")
+    assert body["grace_until"].startswith("2030-01-08")

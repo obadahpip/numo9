@@ -52,7 +52,9 @@ def entitlements_data(organisation: Organisation) -> dict[str, Any]:
     answer = entitlements_for(organisation)
     names = catalogue_names()
     body = answer.as_dict()
-    body.pop("valid_until")
+    valid_until = body.pop("valid_until")
+    # Payment overdue (U-04-T13): the end of the grace period, for the payment-due notice.
+    body["grace_until"] = valid_until if body.get("reason") == "past_due" else None
     package = answer.package
     body["package_name"] = names["package_names"].get(package, package) if package else None
     body["version"] = version(organisation)

@@ -48,6 +48,7 @@ class CheckoutResponseSerializer(serializers.Serializer[Any]):
 
 class CheckoutView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = CheckoutRequestSerializer
 
     @requires_permission(BILLING_MANAGE.key)
@@ -118,6 +119,7 @@ def _preview_body(result: Any) -> dict[str, Any]:
 
 class ChangePreviewView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = ChangePreviewSerializer
 
     @requires_permission(BILLING_MANAGE.key)
@@ -140,6 +142,7 @@ class ChangePreviewView(APIView):
 
 class ChangeView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = ChangeRequestSerializer
 
     @requires_permission(BILLING_MANAGE.key)
@@ -196,6 +199,7 @@ class CancelResponseSerializer(serializers.Serializer[Any]):
 
 class CancelView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = CancelSerializer
 
     @requires_permission(BILLING_MANAGE.key)
@@ -225,6 +229,7 @@ class CancelView(APIView):
 
 class ExportView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = ExportSerializer
 
     @requires_permission(BILLING_VIEW.key)
@@ -262,6 +267,7 @@ class BillingOverviewSerializer(serializers.Serializer[Any]):
 
 class OverviewView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = BillingOverviewSerializer
 
     @requires_permission(BILLING_VIEW.key)
@@ -282,6 +288,7 @@ class BillingPortalSerializer(serializers.Serializer[Any]):
 
 class PortalView(APIView):
     required_feature = CORE
+    allowed_when_read_only = True  # paying makes the organisation writable again (U-03)
     serializer_class = BillingPortalSerializer
 
     @requires_permission(BILLING_MANAGE.key)

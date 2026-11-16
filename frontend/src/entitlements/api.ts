@@ -21,6 +21,8 @@ export interface Entitlements {
   reason: string;
   /** ISO date-time the organisation became read-only (read_only), else null. */
   since: string | null;
+  /** Payment overdue (reason past_due): full access until then (U-04-T13), else null. */
+  grace_until?: string | null;
   package: string | null;
   package_name: string | null;
   status: string | null;

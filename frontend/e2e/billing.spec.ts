@@ -123,11 +123,21 @@ test("billing page: package card, method, invoices; upgrade in ≤ 3 clicks", as
   await expect(page.locator('[data-package="growth"]')).toContainText("Your package");
   await expectAccessible(page);
 
-  // 1: choose, 2: confirm.
+  // 1: choose, 2: confirm — the comparison shows Stripe's prorated charge (U-04-T13).
   await page.getByRole("button", { name: "Choose Complete" }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "Confirm change" }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.locator('[data-change-preview="upgrade"]')).toBeVisible();
+  await expect(dialog).toContainText("$49.00 per month");
+  await expect(dialog).toContainText("$99.00 per month");
+  await expect(dialog.locator("[data-charge]")).toContainText("You'll be charged $25.13 today");
+  await expectAccessible(page);
+  await dialog.getByRole("button", { name: "Confirm change" }).click();
   await expect(page.locator("[data-billing-status]")).toHaveText("Your package is now Complete.");
-  expect(calls.at(-1)?.body).toMatchObject({ package: "complete", interval: "month" });
+  expect(calls.at(-1)?.body).toEqual({
+    package: "complete",
+    interval: "month",
+    proration_date: 1790000000,
+  });
 });
 
 test("a trial organisation goes to Stripe Checkout in one click", async ({ page }) => {
@@ -149,7 +159,7 @@ test("a trial organisation goes to Stripe Checkout in one click", async ({ page 
   await expect(page.locator('[data-package="growth"]')).toContainText("$490.00 per year");
   await page.getByRole("button", { name: "Choose Growth" }).click();
   await expect(page).toHaveURL(/checkout=success/);
-  expect(calls[0].body).toEqual({ package: "growth", interval: "year" });
+  expect(calls[0]?.body).toEqual({ package: "growth", interval: "year" });
 });
 
 test("cancel at the period end, then the export is prepared", async ({ page }) => {

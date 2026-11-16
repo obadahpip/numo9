@@ -269,13 +269,21 @@
     "cancelTitle": "Annuler l’abonnement?",
     "cancelled": "L’abonnement prend fin le {date}. Votre exportation est en préparation.",
     "change": {
-      "body": "Votre forfait devient {package}, facturé {interval, select, year {annuellement} other {mensuellement}}.",
       "cancel": "Annuler",
       "close": "Fermer",
+      "colAfter": "Après le changement",
+      "colNow": "Maintenant",
       "confirm": "Confirmer le changement",
       "done": "Votre forfait est maintenant {package}.",
+      "downgrade": "Rien à payer aujourd’hui. Vous gardez {current} jusqu’au {date}; ensuite, vous paierez {amount}.",
       "failed": "Le forfait n’a pas changé. Réessayez dans un instant.",
-      "title": "Passer à {package}?"
+      "loading": "Calcul du prix…",
+      "price": "{amount} {interval, select, year {par année} other {par mois}}",
+      "rowPackage": "Forfait",
+      "rowPrice": "Prix",
+      "scheduled": "Votre forfait passe à {package} le {date}.",
+      "title": "Passer à {package}?",
+      "upgrade": "Vous serez facturé {amount} aujourd’hui : le nouveau prix pour le reste de cette période, moins ce que vous avez déjà payé pour celle-ci."
     },
     "checkoutDone": "Merci. Votre paiement est en cours de confirmation — cette page se mettra à jour dans un instant.",
     "choose": "Choisir {package}",
@@ -651,6 +659,13 @@
       "reactivate": "Reactivate the subscription",
       "readable": "You can still see and export everything.",
       "trialEnded": "This organisation has been read-only since {date}: the free trial ended."
+    },
+    "paymentDue": {
+      "askOwner": "Demandez au propriétaire de l’organisation de mettre à jour le mode de paiement.",
+      "failed": "La page de paiement ne s’est pas ouverte. Réessayez dans un instant.",
+      "label": "Paiement en retard",
+      "text": "Le paiement de l’abonnement n’a pas abouti. Tout fonctionne jusqu’au {date}; ensuite, l’organisation passera en lecture seule.",
+      "update": "Mettre à jour le mode de paiement"
     }
   },
   "files": {
