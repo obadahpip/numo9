@@ -1,0 +1,8 @@
+{% extends "account/email/base_message.txt" %}{% load i18n %}
+{% block content %}{% autoescape off %}{% blocktranslate %}Someone asked to reset the password of a Numo9 account with {{ email }}, but there is no Numo9 account with this address.{% endblocktranslate %}
+
+{% translate "If it was you, you may have signed up with another address — or create an account:" %}
+
+{{ signup_url }}
+
+{% translate "Didn't ask? Ignore this email." %}{% endautoescape %}{% endblock content %}

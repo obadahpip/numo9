@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from allauth.account.adapter import DefaultAccountAdapter
 from django.conf import settings
 from django.http import HttpRequest
+from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from numo9.security import bruteforce
@@ -55,7 +56,21 @@ class AccountAdapter(DefaultAccountAdapter):  # type: ignore[misc]  # allauth is
     }
 
     def send_mail(self, template_prefix: str, email: str, context: dict[str, Any]) -> None:
-        super().send_mail(template_prefix, email, {"current_site": brand(), **context})
+        """allauth's emails (verification, password reset, password changed…) in the language
+        of the account they are about (A-02-T15): the user's locale when the address belongs to
+        a user, otherwise the request's language."""
+        from .models import User, normalise_email
+
+        owner_pk = getattr(context.get("user"), "pk", None)
+        users = (
+            User.objects.filter(pk=owner_pk)
+            if owner_pk  # else: no user in the context — the account of the address, if any
+            else User.objects.filter(email=normalise_email(email))
+        )
+        # Read from the database: the context's user object may predate the sign-up's language.
+        language = users.values_list("locale", flat=True).first() or translation.get_language()
+        with translation.override(language):
+            super().send_mail(template_prefix, email, {"current_site": brand(), **context})
 
     # ---- brute-force protection (S-03-T07) -------------------------------------------------
 

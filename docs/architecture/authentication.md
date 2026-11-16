@@ -95,6 +95,21 @@ Tests: `backend/tests/test_auth_sessions.py`.
 
 Tests: `frontend/e2e/security-settings.spec.ts`.
 
+## Languages of auth emails and screens (A-02-T15)
+
+- **Screens** — every `auth.*` and `security.*` key has its French (fr-CA) text in
+  `frontend/messages/fr-CA.json` (no English placeholder); the CI missing-key gate covers them and
+  `frontend/e2e/auth-i18n.spec.ts` checks sign-in, sign-up, reset and Security in French.
+- **Emails** — allauth's emails use Numo9's own templates (`numo9/accounts/templates/account/
+  email/`: verification, password reset, unknown account, password changed, account already
+  exists) whose text is in Numo9's catalogue with Canadian French (*courriel*, not *e-mail*). They
+  go in the language **of the account they are about** — `AccountAdapter.send_mail` reads the
+  user's locale from the database (the address's account when the context has no user), falling
+  back to the request's language — so a French-speaking user's reset email is French even when
+  requested from an English browser. Invitations and the new-device alert follow the same rule.
+
+Tests: `backend/tests/test_auth_i18n.py`, `frontend/e2e/auth-i18n.spec.ts`.
+
 ## Password reset (A-02-T04)
 
 | Call | Answer |
