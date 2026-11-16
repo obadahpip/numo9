@@ -9,7 +9,8 @@ Mounted in ``numo9/accounts/urls.py`` at the same paths as allauth's own views, 
   activation answer carries the 10 recovery codes — the only time they are shown;
 - login answers with the status the error means (A-02-T03): ``401`` for a wrong email or
   password (allauth says ``400``), ``429`` with ``Retry-After`` when the account is locked or the
-  IP is rate limited; malformed input stays ``400``.
+  IP is rate limited; malformed input stays ``400``;
+- the session list (A-02-T07) adds a readable ``device`` to each of allauth's sessions.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from allauth.headless.account import views as headless
 from allauth.headless.internal.restkit.response import ErrorResponse
 from allauth.headless.mfa import response as mfa_response
 from allauth.headless.mfa import views as headless_mfa
+from allauth.headless.usersessions import views as headless_sessions
 from allauth.mfa.adapter import get_adapter as get_mfa_adapter
 from allauth.mfa.totp.internal import flows as totp_flows
 from django.conf import settings
@@ -29,6 +31,8 @@ from django.db import transaction
 from django.http import HttpRequest, HttpResponse
 
 from numo9.security import bruteforce
+
+from .devices import device_name
 
 # allauth error codes on the login form and the HTTP status Numo9 answers with.
 LOGIN_ERROR_STATUS = {
@@ -80,4 +84,16 @@ class ManageTOTPView(headless_mfa.ManageTOTPView):  # type: ignore[misc]  # alla
         response: HttpResponse = mfa_response.AuthenticatorResponse(
             request, totp, meta={"recovery_codes": codes}
         )
+        return response
+
+
+class SessionsView(headless_sessions.SessionsView):  # type: ignore[misc]  # allauth is untyped
+    """Session registry (A-02-T07): allauth's list, plus a readable ``device`` per session."""
+
+    def _respond_session_list(self) -> HttpResponse:
+        response: HttpResponse = super()._respond_session_list()
+        payload = json.loads(response.content)
+        for row in payload.get("data", []):
+            row["device"] = device_name(row.get("user_agent", ""))
+        response.content = json.dumps(payload).encode()
         return response

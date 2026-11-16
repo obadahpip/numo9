@@ -71,6 +71,8 @@ INSTALLED_APPS = [
     "allauth.headless",
     # TOTP 2FA, recovery codes, trusted browsers (A-02-T05).
     "allauth.mfa",
+    # Session registry: every signed-in browser with IP, user agent, last seen; revoke (A-02-T07).
+    "allauth.usersessions",
 ]
 
 MIDDLEWARE = [
@@ -83,6 +85,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     # django-allauth login flow state (A-02-T02).
     "allauth.account.middleware.AccountMiddleware",
+    # Session registry: records each session's IP, user agent and last-seen time (A-02-T07).
+    "allauth.usersessions.middleware.UserSessionsMiddleware",
     # Request language: user's locale → numo9_locale cookie → Accept-Language (A-10-T14).
     "numo9.i18n.middleware.LocaleMiddleware",
     # Audit context (A-04-T04): request id, client IP, device and the request's user for every
@@ -349,6 +353,9 @@ MFA_RECOVERY_CODES_SHOW_ONCE = True
 MFA_TRUST_ENABLED = True
 MFA_TRUST_COOKIE_AGE = timedelta(days=30)
 MFA_TRUST_COOKIE_NAME = "numo9_trusted_device"
+# Session registry (A-02-T07): last-seen time kept per session (updated at most every 5 minutes
+# by allauth's middleware), shown in Security settings.
+USERSESSIONS_TRACK_ACTIVITY = True
 
 # ---- Email (A-07 adds the provider and custom sending domains) ---------------------------------
 EMAIL_BACKEND = env_str("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")

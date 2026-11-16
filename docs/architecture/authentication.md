@@ -60,6 +60,26 @@ Tests: `backend/tests/test_auth_signup.py`.
 
 Tests: `backend/tests/test_auth_login.py`.
 
+## Session registry and new-device email (A-02-T07)
+
+Every signed-in browser is a session in django-allauth's **usersessions** registry (IP, user
+agent, created, last seen — activity tracked, `USERSESSIONS_TRACK_ACTIVITY`):
+
+| Call | Answer |
+|---|---|
+| `GET /_allauth/browser/v1/auth/sessions` | 200: each session `id`, `device` ("Chrome on Windows", Numo9's addition, in the reader's language), `ip`, `user_agent`, `created_at`, `last_seen_at`, `is_current` · 401 not signed in |
+| `DELETE /_allauth/browser/v1/auth/sessions` `{"sessions": [id, …]}` | ends those sessions server-side → the list that remains; one id = **revoke one**, every non-current id = **sign out other sessions**; another person's id is refused (400) |
+
+An ended session is deleted, so that browser's **next request is 401** (allauth and Numo9 APIs).
+
+**New-device email** — at each sign-in the browser and system family are compared with the
+person's `KnownDevice` rows (SHA-256 of user id + families; no user agent or IP kept). A new one
+is remembered and, unless it's the first sign-in ever, the `new_device` system email (A-07-T11)
+goes out in the person's language with the device, IP, time and a link to Security settings.
+Security emails can't be turned off.
+
+Tests: `backend/tests/test_auth_sessions.py`.
+
 ## Password reset (A-02-T04)
 
 | Call | Answer |
