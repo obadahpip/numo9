@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView
 
+from numo9.billing.webhooks import stripe_webhook
+
 from .health import healthz
 
 urlpatterns = [
@@ -30,4 +32,6 @@ urlpatterns = [
     # Email provider delivery webhooks (A-07-T08): django-anymail's tracking views,
     # /webhooks/email/<provider>/tracking/, HTTP basic auth with ANYMAIL_WEBHOOK_SECRET.
     path("webhooks/email/", include("anymail.urls")),
+    # Stripe billing webhooks (U-04-T06): signed by Stripe, stored once, processed by Celery.
+    path("webhooks/stripe/", stripe_webhook, name="stripe-webhook"),
 ]

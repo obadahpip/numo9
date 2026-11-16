@@ -239,6 +239,9 @@ TENANT_SWEEP_EXEMPT = [
     # Email provider delivery webhooks (A-07-T08): basic auth with the webhook secret; events
     # are matched to the logged message, which names its organisation.
     r"^webhooks/email/",
+    # Stripe webhooks (U-04-T06): signed by Stripe; events name their customer, whose
+    # organisation the handlers then act on.
+    r"^webhooks/stripe/",
     # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
     r"^api/v1/platform/",
     # Organisation directory and saved views of a practice (V-01): no organisation in the URL; rows

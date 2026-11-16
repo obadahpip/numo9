@@ -120,3 +120,27 @@ The subscription is recorded from Stripe's webhooks (U-04-T07), never from the r
 every other organisation permission), accountants and other staff don't — 403; another
 organisation is a 404. Billing is part of every organisation (`CORE`, never gated). Billing off →
 503 `billing.unavailable`.
+
+## Webhook endpoint (U-04-T06)
+
+`POST /webhooks/stripe/` (no session, no CSRF: Stripe authenticates with the signature):
+
+1. **Signature** — `Stripe-Signature` checked against the raw body with `STRIPE_WEBHOOK_SECRET`
+   (Stripe's 5-minute tolerance stops old captured requests). Not configured, missing or wrong →
+   **400** (`not_configured`, `no_signature`, `bad_signature`), nothing stored. A body that isn't
+   a Stripe event → 400 `bad_event`.
+2. **Persistence** — `record_event` (U-04-T03).
+3. **Dispatch** — a new event is queued for the Celery task `numo9.billing.process_stripe_event`
+   (queue `high`) when the transaction commits; the endpoint answers **200**
+   `{"received": true, "duplicate": false}` at once. A replayed or re-delivered event answers 200
+   `"duplicate": true` and queues nothing.
+
+`numo9.billing.processing.process_event(pk)` (the task): locks the event row; an event already
+processed is skipped; the handler registered for its type (`register_handler(*types)`: U-04-T07
+subscriptions, U-04-T08 invoices) runs in the event's transaction; a type without handler is
+recorded as processed ("ignored"). On success `processed_at` is set; on an error the handler's
+changes roll back, `attempts` and `error` (scrubbed) are recorded and the task retries with the
+jobs backoff (8 retries). The path is exempt from the tenant sweep (`TENANT_SWEEP_EXEMPT`).
+
+Local development: `stripe listen --forward-to localhost:8000/webhooks/stripe/` (Stripe CLI)
+prints the `whsec_` to put in `.env`; `stripe trigger invoice.paid` sends a test event.
