@@ -57,7 +57,8 @@ class PracticeSecurityView(APIView):
         practice = resolve_practice(request)
         if not has_practice_perm(request.user, practice, SETTINGS_MANAGE):
             raise api_error(
-                errors.PERMISSION_DENIED, action=_("change the practice's security settings")
+                errors.PRACTICE_PERMISSION_DENIED,
+                action=_("change the practice's security settings"),
             )
         payload = PracticeSecuritySerializer(data=request.data)
         payload.is_valid(raise_exception=True)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:06-0500\n"
+"POT-Creation-Date: 2026-11-16 06:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2006,6 +2006,10 @@ msgid "The email provider didn't answer. Try again in a few minutes."
 msgstr ""
 
 msgid "Confirm your password to see this value. For your security, the confirmation lasts 5 minutes."
+msgstr ""
+
+#, python-format
+msgid "You don't have permission to %(action)s in this practice. Ask a practice admin."
 msgstr ""
 
 msgid "Turn on two-factor authentication to continue: your role requires it. Set it up in Security settings — it takes a minute."

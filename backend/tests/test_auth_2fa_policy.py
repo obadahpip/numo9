@@ -116,7 +116,7 @@ def test_practice_flag_api(practice: Practice) -> None:
 
     assert _client(accountant).get(url).json() == {"require_2fa_for_admins": False}
     refused = _client(accountant).patch(url, body, content_type="application/json")
-    assert refused.status_code == 403
+    assert refused.status_code == 403 and refused.json()["code"] == "practice.permission_denied"
     changed = _client(admin).patch(url, body, content_type="application/json")
     assert changed.status_code == 200 and changed.json() == body
     practice.refresh_from_db()
