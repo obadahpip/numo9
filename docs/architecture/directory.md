@@ -175,3 +175,18 @@ an organisation can be in several groups). Both are practice data (allow-listed 
 
 When a practice stops serving an organisation (assignment switched off or deleted) its
 memberships in that practice's groups are removed; other practices' groups keep theirs.
+
+## Tags (V-02-T03)
+
+`workspace.Tag` — a practice's colour label for its client organisations ("Year-end soon"):
+`name` (1–40 characters), `name_key` (the name without case, accents and repeated spaces —
+**unique per practice**, database constraint `workspace_tag_name_unique_per_practice`), `colour`
+from the 12-colour palette `TagColour` (red, orange, amber, olive, green, teal, cyan, blue, indigo,
+violet, magenta, slate — each named; a tag always shows its name, never colour alone).
+`workspace.OrgTag` puts a tag on an organisation (once). Practice data: another practice never
+sees these tags, even on the same client.
+
+`numo9.workspace.tags` — `create_tag`, `rename_tag`, `recolour_tag`, `tag_organisation`,
+`untag_organisation`, `tags_of(practice, organisation)`; refusals `TagError`:
+`workspace.tag.name_taken`, `name_required`, `name_long`, `colour`, `not_served` (only the
+practice's clients). When a practice stops serving an organisation its tags on it are removed.

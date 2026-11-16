@@ -71,6 +71,9 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # served organisations it files where; names, no organisation business data.
         "workspace.OrgGroup",
         "workspace.OrgGroupMembership",
+        # Practice tags (V-02-T03): a practice's labels and which clients carry them.
+        "workspace.Tag",
+        "workspace.OrgTag",
     }
 )
 

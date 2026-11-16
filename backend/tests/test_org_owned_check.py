@@ -69,6 +69,9 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 # Practice groups (V-02-T02): reviewed — a practice's tree and its filing.
                 "workspace.OrgGroup",
                 "workspace.OrgGroupMembership",
+                # Practice tags (V-02-T03): reviewed — labels and which clients carry them.
+                "workspace.Tag",
+                "workspace.OrgTag",
             }
         )
         == PLATFORM_MODELS

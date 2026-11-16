@@ -172,9 +172,12 @@ def groups_of(practice: Practice) -> list[OrgGroup]:
 
 
 def _forget_organisation(practice_id: int, organisation_id: int) -> None:
+    from .tags import forget_organisation
+
     OrgGroupMembership.objects.filter(
         group__practice_id=practice_id, organisation_id=organisation_id
     ).delete()
+    forget_organisation(practice_id, organisation_id)  # its tags too (V-02-T03)
 
 
 def _assignment_saved(sender: Any, instance: PracticeAssignment, **kwargs: Any) -> None:

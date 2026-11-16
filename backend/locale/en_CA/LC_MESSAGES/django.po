@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:47-0500\n"
+"POT-Creation-Date: 2026-11-16 14:48-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4502,5 +4502,67 @@ msgstr ""
 msgid "organisations in groups"
 msgstr ""
 
+msgid "Red"
+msgstr ""
+
+msgid "Orange"
+msgstr ""
+
+msgid "Amber"
+msgstr ""
+
+msgid "Olive"
+msgstr ""
+
+msgid "Green"
+msgstr ""
+
+msgid "Teal"
+msgstr ""
+
+msgid "Cyan"
+msgstr ""
+
+msgid "Blue"
+msgstr ""
+
+msgid "Indigo"
+msgstr ""
+
+msgid "Violet"
+msgstr ""
+
+msgid "Magenta"
+msgstr ""
+
+msgid "Slate"
+msgstr ""
+
+msgid "colour"
+msgstr ""
+
+msgid "tag"
+msgstr ""
+
+msgid "organisation tag"
+msgstr ""
+
+msgid "organisation tags"
+msgstr ""
+
 msgid "See the practice's client organisations in the directory"
+msgstr ""
+
+msgid "Give the tag a name."
+msgstr ""
+
+#, python-format
+msgid "Use %(max)d characters or fewer."
+msgstr ""
+
+msgid "Choose one of the 12 colours."
+msgstr ""
+
+#, python-format
+msgid "There's already a tag called %(name)s."
 msgstr ""

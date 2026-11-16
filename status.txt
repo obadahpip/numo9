@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 276   Remaining: 2511   Progress: 9.90%
+TOTAL ATOMIC TASKS: 2787   Completed: 277   Remaining: 2510   Progress: 9.94%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -380,7 +380,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [V-02]
 ✅ V-02-T01 — Wireframes: group tree, tag picker, group staff panel
 ✅ V-02-T02 — OrgGroup tree model (treebeard MP_Node, practice FK) + OrgGroupMembership
-❌ V-02-T03 — Tag + OrgTag models (practice-scoped, colour enum)
+✅ V-02-T03 — Tag + OrgTag models (practice-scoped, colour enum)
 ❌ V-02-T04 — GroupStaffAssignment (group, practice_member, role)
 ❌ V-02-T05 — Effective-access resolver update in A-01 scoping (direct ∪ group ∪ ancestors), cached per user
 ❌ V-02-T06 — Cache invalidation on any membership/assignment change

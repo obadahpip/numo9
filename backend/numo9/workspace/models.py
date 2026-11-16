@@ -27,7 +27,7 @@ the organisations the user may access in that practice (isolation tests:
 from __future__ import annotations
 
 import uuid
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
@@ -273,3 +273,95 @@ class OrgGroupMembership(models.Model):
 
     def __str__(self) -> str:
         return f"{self.organisation} ∈ {self.group}"
+
+
+# ---- tags (V-02-T03) ---------------------------------------------------------------------------
+
+
+class TagColour(models.TextChoices):
+    """The 12-colour tag palette (V-02): each colour has a name; a tag always shows its name."""
+
+    RED = "red", _("Red")
+    ORANGE = "orange", _("Orange")
+    AMBER = "amber", _("Amber")
+    OLIVE = "olive", _("Olive")
+    GREEN = "green", _("Green")
+    TEAL = "teal", _("Teal")
+    CYAN = "cyan", _("Cyan")
+    BLUE = "blue", _("Blue")
+    INDIGO = "indigo", _("Indigo")
+    VIOLET = "violet", _("Violet")
+    MAGENTA = "magenta", _("Magenta")
+    SLATE = "slate", _("Slate")
+
+
+class Tag(models.Model):
+    """A practice's colour tag for its client organisations (V-02-T03): "Year-end soon".
+
+    Practice-scoped: another practice never sees it, even on the same client. ``name_key`` is the
+    name without case, accents and repeated spaces — unique per practice (database constraint), so
+    "Québec" and "quebec" are one tag.
+    """
+
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    practice = models.ForeignKey(
+        Practice, on_delete=models.CASCADE, related_name="+", verbose_name=_("practice")
+    )
+    name = models.CharField(_("name"), max_length=40)
+    name_key = models.CharField(_("name key"), max_length=40, editable=False)
+    colour = models.CharField(
+        _("colour"), max_length=10, choices=TagColour.choices, default=TagColour.SLATE
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        ordering = ("name_key",)
+        verbose_name = _("tag")
+        verbose_name_plural = _("tags")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("practice", "name_key"), name="workspace_tag_name_unique_per_practice"
+            ),
+            models.CheckConstraint(condition=~models.Q(name_key=""), name="workspace_tag_name"),
+            models.CheckConstraint(
+                condition=_in("colour", TagColour), name="workspace_tag_colour_valid"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        from .tags import tag_key
+
+        self.name = " ".join((self.name or "").split())
+        self.name_key = tag_key(self.name)
+        update_fields = kwargs.get("update_fields")
+        if update_fields is not None and "name" in update_fields:
+            kwargs["update_fields"] = [*update_fields, "name_key"]
+        super().save(*args, **kwargs)
+
+
+class OrgTag(models.Model):
+    """A tag on an organisation, in the tag's practice (V-02-T03)."""
+
+    tag = models.ForeignKey(
+        Tag, on_delete=models.CASCADE, related_name="assignments", verbose_name=_("tag")
+    )
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.CASCADE, related_name="+", verbose_name=_("organisation")
+    )
+    added_at = models.DateTimeField(_("added at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("organisation tag")
+        verbose_name_plural = _("organisation tags")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("tag", "organisation"), name="workspace_org_tag_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation} #{self.tag}"
