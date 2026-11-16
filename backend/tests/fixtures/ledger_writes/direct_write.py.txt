@@ -1,0 +1,23 @@
+"""A module that writes journal lines directly — every write here must be reported."""
+
+from django.db import connection
+
+from numo9.ledger.models import JournalEntry, JournalLine
+
+
+def sneaky(entry: JournalEntry, account: object) -> None:
+    JournalLine(entry=entry, account=account, debit=1)  # 9: constructor
+    JournalLine.objects.create(entry=entry, account=account, debit=1)  # 10
+    JournalLine.objects.bulk_create([])  # 11
+    JournalLine.objects.filter(entry=entry).update(debit=2)  # 12: queryset chain
+    JournalLine._base_manager.filter(entry=entry).delete()  # 13
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE ledger_journalline SET debit = 0")  # 15
+        cursor.execute("delete from ledger_journalline where id = %s", [1])  # 16
+
+
+def reads_are_fine(entry: JournalEntry) -> object:
+    total = JournalLine.objects.filter(entry=entry).count()
+    rows = JournalLine.objects.filter(entry=entry).values_list("debit", flat=True)
+    entry.lines.all()
+    return total, list(rows), "SELECT * FROM ledger_journalline"

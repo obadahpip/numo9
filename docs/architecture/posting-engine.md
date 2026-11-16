@@ -181,6 +181,19 @@ while a second organisation posts 200 from 4 workers — numbers 1..1000 and 1..
 (about 25 s). `manage.py post_storm --org <public id> --n 1000 --workers 20 [--fail-every 7]` runs
 it against a staging copy (scratch organisation only: it posts real journals).
 
+## Only the service writes lines (C-02-T14)
+
+An import-linter contract (`backend/pyproject.toml` `[tool.importlinter]`, custom type
+`ledger_writes` in `backend/tools/import_contracts.py`; CI step "import-linter" runs
+`lint-imports` in `backend/`): **only `numo9.ledger.services` writes `JournalLine`**. Other apps
+must import `numo9.ledger.models` (accounts; entries to read), so a module-level *forbidden*
+contract can't express it: the contract takes every module of `numo9` that imports the ledger
+models from the import graph and fails on a journal-line write in its code — `JournalLine(...)`,
+`JournalLine.objects`/`_base_manager` `.create`/`.bulk_create`/`.get_or_create`/
+`.update_or_create`/`.update`/`.bulk_update`/`.delete` (also at the end of a queryset chain) — and,
+in any module, raw SQL `INSERT INTO`/`UPDATE`/`DELETE FROM ledger_journalline`. Migrations are
+skipped; reads are fine anywhere. The database triggers (C-02-T04) remain the last line.
+
 ## Trial balance per book (C-02-T11)
 
 `numo9.ledger.trial_balance.trial_balance(book, as_of=None, include_zero=False) → TrialBalance` for
@@ -210,6 +223,7 @@ the active organisation:
 | T09 | `tests/test_ledger_journal_states.py` (every pair of states) |
 | T10 | `tests/test_ledger_reverse.py` (incl. two threads reversing at once) |
 | T12 | `tests/test_ledger_post_storm.py` |
+| T14 | `tests/test_ledger_write_contract.py` (fixture `tests/fixtures/ledger_writes/direct_write.py.txt`) |
 | T11 | `tests/test_ledger_trial_balance.py` (incl. Hypothesis, cumulative ledger) |
 | T13 | `tests/test_ledger_posting_property.py` — 10,000 Hypothesis examples: random valid journals (1–3 books, 2–8 lines, 0.01–10,000,000,000.00) are posted and each book's trial balance sums to zero; random invalid ones (11 defects: too few lines, a cent off, float, third decimal, negative, both/no side, unknown book, archived/parent/foreign account) are rejected with the defect's code and write nothing (no entry, line or number). About 4–5 minutes; `NUMO9_PROPERTY_EXAMPLES=500` for a quick local run |
 | T17 | `tests/test_ledger_trial_balance_performance.py` — 100,000 posted lines (10,000 entries × 10 lines over 40 accounts, three book groups) plus 20,000 lines of another organisation, inserted with `generate_series` the engine's way (drafts, lines, then Posted with consecutive numbers): the accounting and tax trial balances each answer in < 1 s (about 0.1 s here), balanced; a half-year as-of report too |
