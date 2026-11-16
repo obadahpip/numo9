@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:53-0500\n"
+"POT-Creation-Date: 2026-11-16 13:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1271,6 +1271,57 @@ msgstr ""
 msgid "%(name)s is quarantined (virus found): upload a clean copy."
 msgstr ""
 
+msgid "Waiting for approval"
+msgstr ""
+
+msgid "Approved"
+msgstr ""
+
+msgid "Declined"
+msgstr ""
+
+msgid "Used"
+msgstr ""
+
+msgid "amount"
+msgstr ""
+
+msgid "owed when requested"
+msgstr ""
+
+msgid "document type"
+msgstr ""
+
+msgid "document"
+msgstr ""
+
+msgid "reason"
+msgstr ""
+
+msgid "decided by"
+msgstr ""
+
+msgid "decided at"
+msgstr ""
+
+msgid "note"
+msgstr ""
+
+msgid "expires at"
+msgstr ""
+
+msgid "used at"
+msgstr ""
+
+msgid "credit limit override"
+msgstr ""
+
+msgid "credit limit overrides"
+msgstr ""
+
+msgid "Approve sales over a customer's credit limit"
+msgstr ""
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1380,9 +1431,6 @@ msgstr ""
 msgid "status changed at"
 msgstr ""
 
-msgid "reason"
-msgstr ""
-
 msgid "subscription"
 msgstr ""
 
@@ -1410,9 +1458,6 @@ msgid "This organisation already has a subscription: change it instead."
 msgstr ""
 
 msgid "granted by"
-msgstr ""
-
-msgid "expires at"
 msgstr ""
 
 msgid "entitlement override"
@@ -1557,9 +1602,6 @@ msgid "thumbnail key"
 msgstr ""
 
 msgid "password-protected"
-msgstr ""
-
-msgid "document"
 msgstr ""
 
 msgid "documents"
@@ -2013,6 +2055,31 @@ msgid "You don't have permission to %(action)s in this practice. Ask a practice 
 msgstr ""
 
 msgid "Turn on two-factor authentication to continue: your role requires it. Set it up in Security settings — it takes a minute."
+msgstr ""
+
+#, python-format
+msgid "This takes %(contact)s to %(projected)s, %(over)s over its credit limit of %(limit)s."
+msgstr ""
+
+#, python-format
+msgid "This takes %(contact)s to %(projected)s, %(over)s over its credit limit of %(limit)s. Request an override to go ahead."
+msgstr ""
+
+msgid "Say why the sale should go ahead over the credit limit."
+msgstr ""
+
+msgid "Nobody here can approve credit limit overrides yet. Ask an owner to give someone a role that allows it."
+msgstr ""
+
+#, python-format
+msgid "This override request is already %(status)s."
+msgstr ""
+
+#, python-format
+msgid "This override request expired on %(date)s. Request a new one."
+msgstr ""
+
+msgid "approve credit limit overrides"
 msgstr ""
 
 #, python-format
@@ -3113,6 +3180,30 @@ msgstr ""
 msgid "%(person)s set the %(level)s lock to %(date)s."
 msgstr ""
 
+#, python-format
+msgid "Credit limit override requested for %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "%(person)s asks to go %(over)s over the credit limit of %(limit)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Credit limit override approved for %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "%(person)s approved going %(over)s over the credit limit. %(note)s"
+msgstr ""
+
+#, python-format
+msgid "Credit limit override declined for %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "%(person)s declined going %(over)s over the credit limit. %(note)s"
+msgstr ""
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr ""
 
@@ -3331,9 +3422,6 @@ msgid "Purchase order"
 msgstr ""
 
 msgid "Contact"
-msgstr ""
-
-msgid "document type"
 msgstr ""
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
@@ -3785,9 +3873,6 @@ msgid "Choose a role used in this organisation."
 msgstr ""
 
 msgid "requester"
-msgstr ""
-
-msgid "note"
 msgstr ""
 
 msgid "people notified"

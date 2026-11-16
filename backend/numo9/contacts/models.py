@@ -35,6 +35,7 @@ from datetime import date
 from decimal import Decimal
 from typing import TYPE_CHECKING, Any, ClassVar
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models, transaction
@@ -1412,4 +1413,95 @@ class ExemptionCertificate(AuditedModel, OrgOwnedModel):
             self.reminded_state, self.reminded_for = "", None
             if update_fields is not None:
                 kwargs["update_fields"] = [*update_fields, "reminded_state", "reminded_for"]
+        super().save(*args, **kwargs)
+
+
+class CreditOverrideStatus(models.TextChoices):
+    PENDING = "pending", _("Waiting for approval")
+    APPROVED = "approved", _("Approved")
+    REJECTED = "rejected", _("Declined")
+    USED = "used", _("Used")
+
+
+#: Days an override request (and an approval not yet used) stays valid.
+CREDIT_OVERRIDE_DAYS = 7
+
+
+class CreditOverride(AuditedModel, OrgOwnedModel):
+    """A request to go over a customer's credit limit, and its decision (B-01-T13, gap-20).
+
+    When a contact's ``credit_mode`` is ``block`` and a document would take what the contact owes
+    over its ``credit_limit``, the document can only be saved with an **approved override**
+    (``numo9.contacts.credit``):
+
+    - ``amount`` — the document total asked for (the contact's currency); ``exposure`` and
+      ``limit`` — what the contact owed and its limit when the request was made;
+    - ``document_type`` / ``document_ref`` — the document it is for (``invoice`` and the invoice's
+      id, …); an approval only covers that document, up to that amount;
+    - ``created_by`` — who asked; ``decided_by`` — who approved or declined: someone holding
+      ``contacts.credit_limit.override``, never the requester;
+    - ``status`` — waiting → approved or declined; an approval is **used once** (``used_at``);
+      a request or an unused approval expires after ``CREDIT_OVERRIDE_DAYS`` (``expires_at``).
+    """
+
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.PROTECT,
+        related_name="credit_overrides",
+        verbose_name=_("contact"),
+    )
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+    exposure = models.DecimalField(_("owed when requested"), max_digits=18, decimal_places=2)
+    limit = models.DecimalField(_("credit limit"), max_digits=18, decimal_places=2)
+    currency = models.CharField(_("currency"), max_length=3, default=DEFAULT_CURRENCY)
+    document_type = models.CharField(_("document type"), max_length=40)
+    document_ref = models.CharField(_("document"), max_length=64, blank=True)
+    reason = models.CharField(_("reason"), max_length=500)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=CreditOverrideStatus.choices,
+        default=CreditOverrideStatus.PENDING,
+    )
+    decided_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("decided by"),
+    )
+    decided_at = models.DateTimeField(_("decided at"), null=True, blank=True)
+    decision_note = models.CharField(_("note"), max_length=500, blank=True)
+    expires_at = models.DateTimeField(_("expires at"))
+    used_at = models.DateTimeField(_("used at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+        verbose_name = _("credit limit override")
+        verbose_name_plural = _("credit limit overrides")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="contacts_credit_override_amount_positive"
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(reason=""), name="contacts_credit_override_reason_required"
+            ),
+            models.CheckConstraint(
+                condition=_in("status", CreditOverrideStatus),
+                name="contacts_credit_override_status_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["contact", "status"], name="contacts_credit_override_open"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} {self.amount} ({self.status})"
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.contact_id and not self.organisation_id:
+            self.organisation_id = self.contact.organisation_id
+        self.reason = " ".join((self.reason or "").split())
+        self.decision_note = " ".join((self.decision_note or "").split())
         super().save(*args, **kwargs)

@@ -109,3 +109,21 @@ register_text(
     _("%(module)s lock date changed"),
     _("%(person)s set the %(level)s lock to %(date)s."),
 )
+
+# ---- credit limits (B-01-T13) ------------------------------------------------------------------
+
+register_text(
+    "notifications.contacts.credit_override_requested",
+    _("Credit limit override requested for %(contact)s"),
+    _("%(person)s asks to go %(over)s over the credit limit of %(limit)s: %(reason)s"),
+)
+register_text(
+    "notifications.contacts.credit_override_approved",
+    _("Credit limit override approved for %(contact)s"),
+    _("%(person)s approved going %(over)s over the credit limit. %(note)s"),
+)
+register_text(
+    "notifications.contacts.credit_override_rejected",
+    _("Credit limit override declined for %(contact)s"),
+    _("%(person)s declined going %(over)s over the credit limit. %(note)s"),
+)

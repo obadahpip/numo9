@@ -113,3 +113,20 @@ register_event(
 register_event("trial.ending", C.BILLING, title_key="notifications.trial.ending")
 # Lock dates (A-05-T13, flow F6): the organisation's admins are told when a lock moves.
 register_event("settings.lock_changed", C.SYSTEM, title_key="notifications.settings.lock_changed")
+
+# ---- credit limits (B-01-T13) ------------------------------------------------------------------
+register_event(
+    "contacts.credit_override_requested",
+    C.APPROVALS,
+    title_key="notifications.contacts.credit_override_requested",
+)
+register_event(
+    "contacts.credit_override_approved",
+    C.APPROVALS,
+    title_key="notifications.contacts.credit_override_approved",
+)
+register_event(
+    "contacts.credit_override_rejected",
+    C.APPROVALS,
+    title_key="notifications.contacts.credit_override_rejected",
+)

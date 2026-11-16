@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:53-0500\n"
+"POT-Creation-Date: 2026-11-16 13:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1028,7 +1028,7 @@ msgid "currency"
 msgstr "devise"
 
 msgid "credit limit"
-msgstr ""
+msgstr "limite de crédit"
 
 #, fuzzy
 #| msgid "Empty = no limit."
@@ -1069,10 +1069,8 @@ msgstr ""
 msgid "Values of the organisation's custom fields, by field key (B-01-T09)."
 msgstr ""
 
-#, fuzzy
-#| msgid "Contacts"
 msgid "contact"
-msgstr "Contacts"
+msgstr "contact"
 
 #, fuzzy
 #| msgid "Contacts"
@@ -1393,6 +1391,57 @@ msgstr ""
 msgid "%(name)s is quarantined (virus found): upload a clean copy."
 msgstr "%(name)s a été mis en quarantaine (virus détecté) et ne peut être ni joint ni ouvert."
 
+msgid "Waiting for approval"
+msgstr "En attente d'approbation"
+
+msgid "Approved"
+msgstr "Approuvée"
+
+msgid "Declined"
+msgstr "Refusée"
+
+msgid "Used"
+msgstr "Utilisée"
+
+msgid "amount"
+msgstr "montant"
+
+msgid "owed when requested"
+msgstr "solde dû à la demande"
+
+msgid "document type"
+msgstr "type de document"
+
+msgid "document"
+msgstr "document"
+
+msgid "reason"
+msgstr "raison"
+
+msgid "decided by"
+msgstr "décision prise par"
+
+msgid "decided at"
+msgstr "décision prise le"
+
+msgid "note"
+msgstr "note"
+
+msgid "expires at"
+msgstr "expire le"
+
+msgid "used at"
+msgstr "utilisée le"
+
+msgid "credit limit override"
+msgstr "dérogation à la limite de crédit"
+
+msgid "credit limit overrides"
+msgstr "dérogations à la limite de crédit"
+
+msgid "Approve sales over a customer's credit limit"
+msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1509,9 +1558,6 @@ msgstr ""
 msgid "status changed at"
 msgstr "commencée le"
 
-msgid "reason"
-msgstr "raison"
-
 #, fuzzy
 #| msgid "Description"
 msgid "subscription"
@@ -1546,9 +1592,6 @@ msgid "This organisation already has a subscription: change it instead."
 msgstr "Cette organisation a déjà un propriétaire. Demandez au propriétaire de vous inviter ou d’ajouter des utilisateurs."
 
 msgid "granted by"
-msgstr ""
-
-msgid "expires at"
 msgstr ""
 
 msgid "entitlement override"
@@ -1710,11 +1753,6 @@ msgstr ""
 
 msgid "password-protected"
 msgstr ""
-
-#, fuzzy
-#| msgid "Documents"
-msgid "document"
-msgstr "Documents"
 
 #, fuzzy
 #| msgid "Documents"
@@ -2191,6 +2229,31 @@ msgstr "Vous n’avez pas la permission de %(action)s dans ce cabinet. Demandez 
 
 msgid "Turn on two-factor authentication to continue: your role requires it. Set it up in Security settings — it takes a minute."
 msgstr "Activez l’authentification à deux facteurs pour continuer : votre rôle l’exige. Configurez-la dans les paramètres de sécurité — cela prend une minute."
+
+#, python-format
+msgid "This takes %(contact)s to %(projected)s, %(over)s over its credit limit of %(limit)s."
+msgstr "Cela porte le solde de %(contact)s à %(projected)s, soit %(over)s au-delà de sa limite de crédit de %(limit)s."
+
+#, python-format
+msgid "This takes %(contact)s to %(projected)s, %(over)s over its credit limit of %(limit)s. Request an override to go ahead."
+msgstr "Cela porte le solde de %(contact)s à %(projected)s, soit %(over)s au-delà de sa limite de crédit de %(limit)s. Demandez une dérogation pour continuer."
+
+msgid "Say why the sale should go ahead over the credit limit."
+msgstr "Indiquez pourquoi la vente devrait être conclue au-delà de la limite de crédit."
+
+msgid "Nobody here can approve credit limit overrides yet. Ask an owner to give someone a role that allows it."
+msgstr "Personne ici ne peut encore approuver les dérogations à la limite de crédit. Demandez à un propriétaire d'attribuer à quelqu'un un rôle qui le permet."
+
+#, python-format
+msgid "This override request is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+#, python-format
+msgid "This override request expired on %(date)s. Request a new one."
+msgstr "Cette demande de dérogation a expiré le %(date)s. Faites-en une nouvelle."
+
+msgid "approve credit limit overrides"
+msgstr "approuver les dérogations à la limite de crédit"
 
 #, python-format
 msgid "%(items)s and %(last)s"
@@ -3378,6 +3441,30 @@ msgstr "Date de verrouillage modifiée : %(module)s"
 msgid "%(person)s set the %(level)s lock to %(date)s."
 msgstr "%(person)s a fixé le verrouillage « %(level)s » au %(date)s."
 
+#, python-format
+msgid "Credit limit override requested for %(contact)s"
+msgstr "Dérogation à la limite de crédit demandée pour %(contact)s"
+
+#, python-format
+msgid "%(person)s asks to go %(over)s over the credit limit of %(limit)s: %(reason)s"
+msgstr "%(person)s demande de dépasser de %(over)s la limite de crédit de %(limit)s : %(reason)s"
+
+#, python-format
+msgid "Credit limit override approved for %(contact)s"
+msgstr "Dérogation à la limite de crédit approuvée pour %(contact)s"
+
+#, python-format
+msgid "%(person)s approved going %(over)s over the credit limit. %(note)s"
+msgstr "%(person)s a approuvé un dépassement de %(over)s de la limite de crédit. %(note)s"
+
+#, python-format
+msgid "Credit limit override declined for %(contact)s"
+msgstr "Dérogation à la limite de crédit refusée pour %(contact)s"
+
+#, python-format
+msgid "%(person)s declined going %(over)s over the credit limit. %(note)s"
+msgstr "%(person)s a refusé un dépassement de %(over)s de la limite de crédit. %(note)s"
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"
 
@@ -3597,9 +3684,6 @@ msgstr "Bon de commande"
 
 msgid "Contact"
 msgstr "Contact"
-
-msgid "document type"
-msgstr "type de document"
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
 msgstr "Nombre minimal de chiffres, complété par des zéros (4 : 0001)."
@@ -4059,9 +4143,6 @@ msgstr "Choisissez un rôle utilisé dans cette organisation."
 
 msgid "requester"
 msgstr "demandeur"
-
-msgid "note"
-msgstr "note"
 
 msgid "people notified"
 msgstr "personnes avisées"
