@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:20-0500\n"
+"POT-Creation-Date: 2026-11-16 13:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3011,6 +3011,14 @@ msgstr "La période %(period)s (du %(start)s au %(end)s) est fermée : rien ne p
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
+
+#, python-format
+msgid "%(journal)s is %(from)s: it can't become %(to)s."
+msgstr "%(journal)s a le statut « %(from)s » : il ne peut pas passer au statut « %(to)s »."
+
+#, python-format
+msgid "%(journal)s is %(status)s: only drafts can be edited."
+msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent être modifiés."
 
 msgid "Choose the home province or territory (e.g. ON)."
 msgstr ""

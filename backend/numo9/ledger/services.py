@@ -16,6 +16,19 @@
 Any failure rolls the whole transaction back: no entry, no line, no number used (the next
 posting gets it), no audit event.
 
+**States** (C-02-T09) — explicit transitions only, anything else raises ``IllegalTransition``
+(``ledger.journal.illegal_transition``):
+
+    Draft ──submit()──▶ Awaiting approval ──post_entry()──▶ Posted ──reverse()──▶ Reversed
+      │                  │  ▲                                  ▲
+      │                  └──┘ return_to_draft()                │
+      └──────────────────── post_entry() ──────────────────────┘
+
+``save_draft(spec)`` keeps a journal as a draft (validated, not checked against lock dates: a
+draft in a locked period may be kept); ``submit`` sends it for approval (who may approve is
+C-04); ``post_entry`` posts a draft or an approved entry through steps 1–6 with its stored lines;
+``reverse`` (C-02-T10) is the only way out of Posted. Reversed is final.
+
 Every module posts through this service — sales invoices, bills, payments, payroll, manual
 journals (C-04), opening balances (C-05); nothing else writes ``JournalLine`` (import-linter
 contract, C-02-T14).
@@ -27,6 +40,7 @@ from typing import Any
 
 from django.db import transaction
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from numo9.audit import service as audit
 from numo9.contacts.models import Contact
@@ -35,10 +49,10 @@ from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import acting_practice, current_org, org_context
 from numo9.tenancy.models import Organisation
 
-from .models import JournalEntry, JournalLine, JournalStatus
+from .models import JournalEntry, JournalLine, JournalStatus, LedgerError
 from .periods import assert_can_post
 from .sequence import allocate_journal_number, format_journal_number
-from .validation import JournalSpec, ValidatedJournal, validate_journal
+from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journal
 
 #: ``user`` not given: the person of the audit context (a request's user; None for a system job).
 ACTING: Any = object()
@@ -167,3 +181,138 @@ def post_journal(
         lines = _lines(entry, checked)
         JournalLine.objects.bulk_create(lines)
         return _number_and_post(entry, lines, person, JournalStatus.DRAFT)
+
+
+# ---- states (C-02-T09) ---------------------------------------------------------------------
+
+#: The allowed transitions; Posted → Reversed only through ``reverse()`` (C-02-T10).
+TRANSITIONS: dict[str, frozenset[str]] = {
+    JournalStatus.DRAFT: frozenset({JournalStatus.AWAITING_APPROVAL, JournalStatus.POSTED}),
+    JournalStatus.AWAITING_APPROVAL: frozenset({JournalStatus.DRAFT, JournalStatus.POSTED}),
+    JournalStatus.POSTED: frozenset({JournalStatus.REVERSED}),
+    JournalStatus.REVERSED: frozenset(),
+}
+
+
+class IllegalTransition(LedgerError):
+    """A status change the state machine doesn't allow."""
+
+
+def _status_label(status: str) -> str:
+    return str(JournalStatus(status).label).lower()
+
+
+def assert_transition(entry: JournalEntry, to: str) -> None:
+    """Raise ``IllegalTransition`` unless ``entry.status → to`` is allowed."""
+    if to not in TRANSITIONS.get(entry.status, frozenset()):
+        raise IllegalTransition(
+            _("%(journal)s is %(from)s: it can't become %(to)s."),
+            code="ledger.journal.illegal_transition",
+            params={
+                "journal": str(entry),
+                "from": _status_label(entry.status),
+                "to": _status_label(to),
+            },
+        )
+
+
+def _locked(entry: JournalEntry) -> JournalEntry:
+    """The entry reloaded under a row lock (two people acting on it wait for each other)."""
+    locked: JournalEntry = JournalEntry.objects.select_for_update().get(pk=entry.pk)
+    return locked
+
+
+def _spec_of(entry: JournalEntry) -> JournalSpec:
+    lines = entry.lines.order_by("line_no").select_related("account")
+    return JournalSpec(
+        date=entry.date,
+        type=entry.type,
+        narration=entry.narration,
+        source_type=entry.source_type,
+        source_id=entry.source_id,
+        lines=tuple(
+            LineSpec(
+                account=line.account,
+                debit=line.debit,
+                credit=line.credit,
+                book=line.book,
+                contact=line.contact_id,
+                tracking=line.tracking,
+                description=line.description,
+                tax_code=line.tax_code,
+            )
+            for line in lines
+        ),
+    )
+
+
+def save_draft(
+    spec: JournalSpec,
+    *,
+    entry: JournalEntry | None = None,
+    organisation: Organisation | None = None,
+    user: Any = ACTING,
+) -> JournalEntry:
+    """Create a draft from ``spec``, or replace a draft's header and lines (validated)."""
+    organisation = _organisation(organisation)
+    person = acting_user() if user is ACTING else user
+    with org_context(organisation, acting_practice()), transaction.atomic():
+        checked = validate_journal(spec, organisation)
+        if entry is None:
+            entry = JournalEntry(
+                organisation=organisation,
+                created_by=person if getattr(person, "is_authenticated", False) else None,
+            )
+        else:
+            entry = _locked(entry)
+            if entry.status != JournalStatus.DRAFT:
+                raise IllegalTransition(
+                    _("%(journal)s is %(status)s: only drafts can be edited."),
+                    code="ledger.journal.not_draft",
+                    params={"journal": str(entry), "status": _status_label(entry.status)},
+                )
+        entry.date, entry.type, entry.narration = spec.date, spec.type, spec.narration
+        entry.source_type, entry.source_id = spec.source_type, str(spec.source_id or "")
+        entry.book_scope = checked.book_scope
+        entry.save()
+        JournalLine.objects.filter(entry=entry).delete()
+        JournalLine.objects.bulk_create(_lines(entry, checked))
+        return entry
+
+
+def _move(entry: JournalEntry, to: str) -> JournalEntry:
+    with org_context(entry.organisation, acting_practice()), transaction.atomic():
+        entry = _locked(entry)
+        assert_transition(entry, to)
+        entry.status = to
+        entry.save()
+        return entry
+
+
+def submit(entry: JournalEntry) -> JournalEntry:
+    """Draft → Awaiting approval."""
+    return _move(entry, JournalStatus.AWAITING_APPROVAL)
+
+
+def return_to_draft(entry: JournalEntry) -> JournalEntry:
+    """Awaiting approval → Draft (sent back for changes)."""
+    return _move(entry, JournalStatus.DRAFT)
+
+
+def post_entry(
+    entry: JournalEntry, *, user: Any = ACTING, module: str = LockModule.GL
+) -> JournalEntry:
+    """Draft or Awaiting approval → Posted: steps 1–6 of ``post_journal`` on its stored lines."""
+    person = acting_user() if user is ACTING else user
+    organisation = entry.organisation
+    with org_context(organisation, acting_practice()), transaction.atomic():
+        entry = _locked(entry)
+        assert_transition(entry, JournalStatus.POSTED)
+        spec = _spec_of(entry)
+        checked = validate_journal(spec, organisation)
+        assert_can_post(organisation, entry.date, person, module)
+        if entry.book_scope != checked.book_scope:
+            JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
+            entry.book_scope = checked.book_scope
+        lines = list(entry.lines.order_by("line_no").select_related("account"))
+        return _number_and_post(entry, lines, person, entry.status)
