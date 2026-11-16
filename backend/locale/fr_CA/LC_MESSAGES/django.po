@@ -3380,6 +3380,9 @@ msgstr "Votre essai se termine le %(ends_on)s"
 msgid "Choose a package to keep working without a break. Everything you entered stays."
 msgstr "Choisissez un forfait pour continuer sans interruption. Tout ce que vous avez saisi est conservé."
 
+msgid "Journal entries not posted (draft or awaiting approval)"
+msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"
+
 #, python-format
 msgid "The %(module)s lock date is %(date)s (%(level)s): changes dated on or before it are refused. Date it after %(date)s, or ask someone who manages lock dates."
 msgstr "La date de verrouillage %(module)s est le %(date)s (%(level)s) : les modifications datées de ce jour ou d’avant sont refusées. Datez-la après le %(date)s, ou demandez à une personne qui gère les dates de verrouillage."

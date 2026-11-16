@@ -164,6 +164,19 @@ request's user; a system job is stopped like everyone).
 
 Tests: `backend/tests/test_orgsettings_lock_hooks.py`.
 
+### Lock impact preview (A-05-T07) [EXTRA]
+
+`GET /api/v1/o/<org>/settings/lock-dates/impact?module=gl&date=2026-03-31`
+(`organisation.settings.manage`) → `{"module", "date", "items": [{"module", "kind", "label",
+"count"}], "total"}`: the records **not yet posted** dated on or before the date — after locking
+they can't be posted without moving the lock back. Sources register with
+`numo9.orgsettings.impact.register_impact(module, kind, label, count)`; Phase 0 has `gl` /
+`journals` (draft or awaiting approval); AR, AP, bank, payroll and tax add theirs as they arrive.
+A module's preview lists its own sources; the GL preview lists **every** module's (the GL lock
+stops them all).
+
+Tests: `backend/tests/test_orgsettings_lock_impact.py`.
+
 ## Numbering (A-05-T08)
 
 `NumberingSequence(doc_type, prefix, next_number, padding)` — one per organisation and document

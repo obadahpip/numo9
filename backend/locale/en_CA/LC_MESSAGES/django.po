@@ -3105,6 +3105,9 @@ msgstr ""
 msgid "Choose a package to keep working without a break. Everything you entered stays."
 msgstr ""
 
+msgid "Journal entries not posted (draft or awaiting approval)"
+msgstr ""
+
 #, python-format
 msgid "The %(module)s lock date is %(date)s (%(level)s): changes dated on or before it are refused. Date it after %(date)s, or ask someone who manages lock dates."
 msgstr ""
