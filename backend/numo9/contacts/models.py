@@ -1567,3 +1567,80 @@ class StatementSend(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.contact} · {self.kind} {self.as_at:%Y-%m-%d}"
+
+
+# ---- supplier statements (B-02-T07) ------------------------------------------------------------
+
+
+class SupplierStatementSource(models.TextChoices):
+    FILE = "file", _("Imported file")
+    MANUAL = "manual", _("Typed in")
+
+
+class SupplierStatement(OrgOwnedModel):
+    """A statement a supplier sent us (B-02-T07): their lines, to reconcile against our bills
+    (B-02-T08). Imported from CSV/XLSX with a column mapping, or typed in."""
+
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.PROTECT,
+        related_name="supplier_statements",
+        verbose_name=_("supplier"),
+    )
+    statement_date = models.DateField(_("statement date"))
+    their_balance = models.DecimalField(
+        _("their balance"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    currency = models.CharField(_("currency"), max_length=3, default=DEFAULT_CURRENCY)
+    source = models.CharField(_("source"), max_length=8, choices=SupplierStatementSource.choices)
+    file_name = models.CharField(_("file name"), max_length=255, blank=True)
+    columns = models.JSONField(
+        _("column mapping"), default=dict, blank=True, help_text=_("File header → line field.")
+    )
+
+    class Meta:
+        ordering = ("-statement_date", "-pk")
+        verbose_name = _("supplier statement")
+        verbose_name_plural = _("supplier statements")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=_in("source", SupplierStatementSource),
+                name="contacts_supplier_statement_source_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} · {self.statement_date:%Y-%m-%d}"
+
+
+class SupplierStatementLine(OrgOwnedModel):
+    """One line of a supplier's statement: their document, its date and amount (positive: we
+    owe it; negative: their credit or our payment)."""
+
+    statement = models.ForeignKey(
+        SupplierStatement,
+        on_delete=models.CASCADE,  # the lines are the statement's content
+        related_name="lines",
+        verbose_name=_("supplier statement"),
+    )
+    position = models.PositiveIntegerField(_("position"))
+    date = models.DateField(_("date"))
+    invoice_number = models.CharField(_("invoice number"), max_length=100, blank=True)
+    reference = models.CharField(_("reference"), max_length=200, blank=True)
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+    source_row = models.PositiveIntegerField(_("file row"), null=True, blank=True)
+    note = models.CharField(_("note"), max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("statement", "position")
+        verbose_name = _("supplier statement line")
+        verbose_name_plural = _("supplier statement lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("statement", "position"), name="contacts_supplier_line_position_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.invoice_number or self.reference} {self.amount}"

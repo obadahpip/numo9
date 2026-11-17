@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:07-0500\n"
+"POT-Creation-Date: 2026-11-17 17:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1629,8 +1629,101 @@ msgstr "relevé envoyé"
 msgid "statements sent"
 msgstr "relevés envoyés"
 
+msgid "Imported file"
+msgstr "Fichier importé"
+
+msgid "Typed in"
+msgstr "Saisi"
+
+msgid "supplier"
+msgstr "fournisseur"
+
+msgid "statement date"
+msgstr "date du relevé"
+
+msgid "their balance"
+msgstr "leur solde"
+
+msgid "source"
+msgstr ""
+
+msgid "column mapping"
+msgstr "correspondance des colonnes"
+
+msgid "File header → line field."
+msgstr "En-tête du fichier → champ de la ligne."
+
+msgid "supplier statement"
+msgstr "relevé du fournisseur"
+
+msgid "supplier statements"
+msgstr "relevés des fournisseurs"
+
+#, fuzzy
+#| msgid "Due date"
+msgid "date"
+msgstr "Date d’échéance"
+
+msgid "invoice number"
+msgstr "numéro de facture"
+
+msgid "reference"
+msgstr "référence"
+
+msgid "description"
+msgstr ""
+
+msgid "file row"
+msgstr "ligne du fichier"
+
+msgid "supplier statement line"
+msgstr "ligne de relevé du fournisseur"
+
+msgid "supplier statement lines"
+msgstr "lignes de relevé du fournisseur"
+
 msgid "Approve sales over a customer's credit limit"
 msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
+
+msgid "Supplier statement lines"
+msgstr "Lignes de relevé du fournisseur"
+
+msgid "Invoice number"
+msgstr "Numéro de facture"
+
+msgid "Reference"
+msgstr "Référence"
+
+msgid "Amount"
+msgstr "Montant"
+
+msgid "Debit"
+msgstr "Débit"
+
+msgid "Credit"
+msgstr "Crédit"
+
+#, python-format
+msgid "The file has no column called %(header)s."
+msgstr "Le fichier n’a pas de colonne %(header)s."
+
+#, python-format
+msgid "Two columns are mapped to %(field)s."
+msgstr "Deux colonnes correspondent à %(field)s."
+
+msgid "Map a column to Date and one to Amount (or Debit and Credit)."
+msgstr "Associez une colonne à Date et une à Montant (ou Débit et Crédit)."
+
+#, python-format
+msgid "%(count)d rows can't be read: fix them in the file and import it again."
+msgstr "%(count)d lignes sont illisibles : corrigez-les dans le fichier, puis importez-le de nouveau."
+
+msgid "The file has no lines."
+msgstr "Le fichier ne contient aucune ligne."
+
+#, python-format
+msgid "%(name)s isn't a supplier."
+msgstr "%(name)s n’est pas un fournisseur."
 
 msgid "Statement"
 msgstr "Relevé"
@@ -1658,9 +1751,6 @@ msgstr "Document"
 
 msgid "Due date"
 msgstr "Date d’échéance"
-
-msgid "Amount"
-msgstr "Montant"
 
 msgid "Balance"
 msgstr "Solde"
@@ -1949,9 +2039,6 @@ msgid "size (bytes)"
 msgstr ""
 
 msgid "SHA-256"
-msgstr ""
-
-msgid "source"
 msgstr ""
 
 msgid "sender"
@@ -3014,9 +3101,6 @@ msgstr ""
 msgid "Extraordinary items and income taxes"
 msgstr ""
 
-msgid "description"
-msgstr ""
-
 #, fuzzy
 #| msgid "Action"
 msgid "section"
@@ -3167,11 +3251,6 @@ msgstr ""
 #| msgid "Number"
 msgid "journal number"
 msgstr "Numéro"
-
-#, fuzzy
-#| msgid "Due date"
-msgid "date"
-msgstr "Date d’échéance"
 
 #, fuzzy
 #| msgid "job type"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:07-0500\n"
+"POT-Creation-Date: 2026-11-17 17:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1511,7 +1511,98 @@ msgstr ""
 msgid "statements sent"
 msgstr ""
 
+msgid "Imported file"
+msgstr ""
+
+msgid "Typed in"
+msgstr ""
+
+msgid "supplier"
+msgstr ""
+
+msgid "statement date"
+msgstr ""
+
+msgid "their balance"
+msgstr ""
+
+msgid "source"
+msgstr ""
+
+msgid "column mapping"
+msgstr ""
+
+msgid "File header → line field."
+msgstr ""
+
+msgid "supplier statement"
+msgstr ""
+
+msgid "supplier statements"
+msgstr ""
+
+msgid "date"
+msgstr ""
+
+msgid "invoice number"
+msgstr ""
+
+msgid "reference"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "file row"
+msgstr ""
+
+msgid "supplier statement line"
+msgstr ""
+
+msgid "supplier statement lines"
+msgstr ""
+
 msgid "Approve sales over a customer's credit limit"
+msgstr ""
+
+msgid "Supplier statement lines"
+msgstr ""
+
+msgid "Invoice number"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "Debit"
+msgstr ""
+
+msgid "Credit"
+msgstr ""
+
+#, python-format
+msgid "The file has no column called %(header)s."
+msgstr ""
+
+#, python-format
+msgid "Two columns are mapped to %(field)s."
+msgstr ""
+
+msgid "Map a column to Date and one to Amount (or Debit and Credit)."
+msgstr ""
+
+#, python-format
+msgid "%(count)d rows can't be read: fix them in the file and import it again."
+msgstr ""
+
+msgid "The file has no lines."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't a supplier."
 msgstr ""
 
 msgid "Statement"
@@ -1539,9 +1630,6 @@ msgid "Document"
 msgstr ""
 
 msgid "Due date"
-msgstr ""
-
-msgid "Amount"
 msgstr ""
 
 msgid "Balance"
@@ -1813,9 +1901,6 @@ msgid "size (bytes)"
 msgstr ""
 
 msgid "SHA-256"
-msgstr ""
-
-msgid "source"
 msgstr ""
 
 msgid "sender"
@@ -2831,9 +2916,6 @@ msgstr ""
 msgid "Extraordinary items and income taxes"
 msgstr ""
 
-msgid "description"
-msgstr ""
-
 msgid "section"
 msgstr ""
 
@@ -2967,9 +3049,6 @@ msgid "Journal %(number)s is posted: it can't be changed or deleted. Reverse it 
 msgstr ""
 
 msgid "journal number"
-msgstr ""
-
-msgid "date"
 msgstr ""
 
 msgid "journal type"

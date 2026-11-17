@@ -400,3 +400,26 @@ page with content inside the margins, aging totals = amount due, activity openin
 
 All in the caller's transaction: the emails leave only when it commits.
 `backend/tests/test_contacts_statement_send.py`.
+
+## Supplier statements — import (B-02-T07)
+
+`contacts.SupplierStatement` (supplier, statement date, their balance, currency, source *file* or
+*typed in*, file name, the column mapping used) and its `SupplierStatementLine` rows (position,
+date, invoice number, reference, description, amount — positive: we owe it, negative: their
+credit or our payment —, the file row, a note). Reconciled against our bills by B-02-T08.
+
+`supplier_statements.import_supplier_statement(contact, data, filename, statement_date,
+columns=None, their_balance=None)`:
+
+- the file goes through the B-03 parser (CSV in any Canadian encoding and delimiter, XLSX values);
+- columns: given, the organisation's saved mapping for the same headers, or auto-suggested — the
+  import entity `supplier_statement_line` (`date`, `amount` *or* `debit`/`credit`,
+  `invoice_number`, `reference`, `description`, English and French header names);
+- dates `2026-10-02`, `2026/10/02`, `Oct 2, 2026`, `2 oct. 2026`; amounts `$1,234.56`,
+  `1 234,56 $`, `(860.00)` and `125.00 CR` (negative);
+- any unreadable row refuses the whole file (`contacts.supplier_statement.bad_rows`, every
+  problem by row and field) — nothing half-imported; otherwise **one line per data row**, in file
+  order;
+- only contacts with the supplier role; `create_manual_statement` / `add_line` type lines in.
+
+`backend/tests/test_contacts_supplier_statement_import.py`.
