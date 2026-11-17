@@ -326,6 +326,21 @@
     "updateMethod": "Mettre à jour le mode de paiement",
     "yours": "Votre forfait"
   },
+  "bulk": {
+    "action": {
+      "export": "Export",
+      "group": "Move to group",
+      "message": "Message",
+      "settings": "Settings",
+      "staff": "Assign staff",
+      "tags": "Tags"
+    },
+    "actions": "Bulk actions",
+    "allSelected": "{count, plural, one {The # organisation matching is selected} other {All # organisations matching are selected}}",
+    "clear": "Clear selection",
+    "selectAll": "{count, plural, one {Select the # organisation matching} other {Select all # matching}}",
+    "selectedPage": "{count, plural, one {# selected} other {# selected}}"
+  },
   "catalogue": {
     "gated": {
       "askOwner": "Ask the owner",

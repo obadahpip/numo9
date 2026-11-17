@@ -96,3 +96,16 @@ reason, message and before/after.
 
 Status is **polled** (the progress drawer asks every second while the job runs); no server-sent
 events are needed for a job of a few hundred organisations. Another practice's job is 404.
+
+## Selection in the directory (V-03-T08)
+
+The directory grid is selectable (row checkboxes, the page checkbox, Space and Shift+click
+ranges — the `@numo9/ui` DataGrid). While rows are ticked the grid's bulk bar shows the count,
+**"Select all 1,240 matching"** and the actions (`src/bulk/SelectionBar.tsx`).
+
+`src/bulk/selection.ts` holds the selection: `{mode: "ids", ids}` for ticked rows, or
+`{mode: "all", query, count}` for every organisation matching the current search, filters and
+archived switch. `selectionBody()` sends the API `{"ids": [...]}` or `{"query": {...}}` — *all
+matching* is evaluated again by the server, never as the browser's list of ids. Changing the
+search or a filter clears an "all matching" selection (it belonged to the old query); unticking a
+row turns it back into ticked ids. (The grouped view, V-02-T08, stays read-only.)
