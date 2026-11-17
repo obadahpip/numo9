@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Bulk action — progress and results (V-03)">
+<title>Numo9 wireframe — Bulk action — progress and results (V-03)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="300" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Directory</text>
+<rect x="300" y="52" width="72" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="432" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Dashboard</text>
+<text x="564" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Groups &amp; tags</text>
+<text x="728" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<rect x="960" y="56" width="480" height="840" rx="0" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="984" y="96" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Changing sales terms</text>
+<text x="984" y="118" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Started 2:14 PM by Sam Patel · runs in the background</text>
+<rect x="984" y="140" width="432" height="12" rx="6" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="984" y="140" width="300" height="12" rx="6" fill="#111111" stroke="#D0D5DD" stroke-width="1"/>
+<circle cx="1424" cy="146" r="10" fill="#B42318"/>
+<text x="1424" y="150" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">1</text>
+<rect x="984" y="168" width="100" height="60" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="992" y="188" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Succeeded</text>
+<text x="992" y="216" font-size="20" fill="#111111" font-weight="800" text-anchor="start">862</text>
+<rect x="1092" y="168" width="100" height="60" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1100" y="188" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Skipped</text>
+<text x="1100" y="216" font-size="20" fill="#111111" font-weight="800" text-anchor="start">41</text>
+<rect x="1200" y="168" width="100" height="60" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1208" y="188" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Failed</text>
+<text x="1208" y="216" font-size="20" fill="#111111" font-weight="800" text-anchor="start">2</text>
+<rect x="1308" y="168" width="100" height="60" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1316" y="188" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Waiting</text>
+<text x="1316" y="216" font-size="20" fill="#111111" font-weight="800" text-anchor="start">335</text>
+<rect x="984" y="248" width="140" height="34" rx="6" fill="#B42318" stroke="#B42318" stroke-width="1"/>
+<text x="1054.0" y="270" font-size="13" fill="#FFFFFF" font-weight="700" text-anchor="middle">Cancel the rest</text>
+<circle cx="1140" cy="264" r="10" fill="#B42318"/>
+<text x="1140" y="268" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">2</text>
+<text x="984" y="310" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Results</text>
+<rect x="984" y="320" width="37" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1002.5" y="336" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">All</text>
+<rect x="1029" y="320" width="79" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1068.5" y="336" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Succeeded</text>
+<rect x="1116" y="320" width="65" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1148.5" y="336" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Skipped</text>
+<rect x="1189" y="320" width="58" height="24" rx="12" fill="#111111" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1218.0" y="336" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">Failed</text>
+<rect x="984" y="356" width="432" height="120" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="984" y="356" width="432" height="40" rx="4" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="994" y="378" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Organisation</text>
+<text x="1164" y="378" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Outcome</text>
+<text x="1254" y="378" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Why</text>
+<line x1="984" y1="396" x2="1416" y2="396" stroke="#EAECF0"/>
+<text x="994" y="418" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Pine Dental PC</text>
+<text x="1164" y="418" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Failed</text>
+<text x="1254" y="418" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Fiscal year end: posted transactions</text>
+<line x1="984" y1="436" x2="1416" y2="436" stroke="#EAECF0"/>
+<text x="994" y="458" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Oak &amp; Co.</text>
+<text x="1164" y="458" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Failed</text>
+<text x="1254" y="458" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Locked for editing by someone else</text>
+<rect x="984" y="470" width="180" height="34" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="1074.0" y="492" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Download results CSV</text>
+<circle cx="1180" cy="486" r="10" fill="#B42318"/>
+<text x="1180" y="490" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">3</text>
+</svg>
