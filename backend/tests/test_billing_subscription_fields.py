@@ -8,6 +8,8 @@ rolls back and forward.
 
 from __future__ import annotations
 
+from typing import Any
+
 import pytest
 from django.db import IntegrityError, connection, transaction
 from django.db.migrations.executor import MigrationExecutor
@@ -19,7 +21,7 @@ from tests.entitlement_helpers import subscribe
 pytestmark = pytest.mark.django_db
 
 
-def _sub(name: str, **fields: object) -> Subscription:
+def _sub(name: str, **fields: Any) -> Subscription:
     return subscribe(Organisation.objects.create(name=name), None, **fields)
 
 
