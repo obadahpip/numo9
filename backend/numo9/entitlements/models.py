@@ -488,6 +488,12 @@ class TrialRegistry(models.Model):
         Organisation, on_delete=models.PROTECT, related_name="+", verbose_name=_("organisation")
     )
     started_at = models.DateTimeField(_("trial started"), default=timezone.now)
+    converted_at = models.DateTimeField(
+        _("converted at"),
+        null=True,
+        blank=True,
+        help_text=_("When the first payment turned the trial into a paid subscription."),
+    )
 
     class Meta:
         verbose_name = _("trial started")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:23-0500\n"
+"POT-Creation-Date: 2026-11-17 17:28-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1995,6 +1995,12 @@ msgstr "courriel du propriétaire"
 
 msgid "trial started"
 msgstr "essai commencé"
+
+msgid "converted at"
+msgstr "converti le"
+
+msgid "When the first payment turned the trial into a paid subscription."
+msgstr "Quand le premier paiement a transformé l’essai en abonnement payant."
 
 msgid "trials started"
 msgstr "essais commencés"

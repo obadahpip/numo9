@@ -19,6 +19,7 @@ from __future__ import annotations
 import datetime as dt
 import re
 import zoneinfo
+from collections.abc import Callable
 from typing import Any
 
 from django.core.exceptions import ValidationError
@@ -408,3 +409,49 @@ def run_trial_expiry(now: dt.datetime | None = None) -> int:
 @platform_job(name=EXPIRY_JOB, queue=DEFAULT)
 def expire_trials_job() -> int:
     return run_trial_expiry()
+
+
+# ---- conversion (U-05-T09) ---------------------------------------------------------------------
+
+#: ``check(subscription)`` — run when a trial converts: the founding-1,000 offer (U-08) registers
+#: its eligibility check here (trial organisations count toward the founding counter only from
+#: their first successful payment).
+ConversionCheck = Callable[[Subscription], None]
+_conversion_checks: list[ConversionCheck] = []
+
+
+def register_conversion_check(check: ConversionCheck) -> ConversionCheck:
+    if check not in _conversion_checks:
+        _conversion_checks.append(check)
+    return check
+
+
+def is_trial(subscription: Subscription) -> bool:
+    """A trial, running or ended unpaid — what the first successful payment converts."""
+    return subscription.status == SubscriptionStatus.TRIALING or (
+        subscription.status == SubscriptionStatus.READ_ONLY
+        and subscription.status_reason == StatusReason.TRIAL_ENDED
+    )
+
+
+def trial_converted(subscription: Subscription, at: dt.datetime) -> None:
+    """The first successful payment turned the trial into a paid subscription (the billing state
+    table already made it ``active``). Only the subscription's status changes — no business record
+    is touched, so the books are exactly as they were. Records the conversion once (registry),
+    audits it and runs the conversion checks (founding offer, U-08)."""
+    from numo9.audit.service import record
+
+    updated = TrialRegistry.objects.filter(
+        organisation_id=subscription.organisation_id, converted_at__isnull=True
+    ).update(converted_at=at)
+    if not updated:
+        return  # converted before (a re-delivered event) or never registered
+    with org_context(subscription.organisation):
+        record(
+            "entitlements.trial.converted",
+            obj=subscription,
+            organisation=subscription.organisation,
+            meta={"package": subscription.package.code if subscription.package else ""},
+        )
+    for check in list(_conversion_checks):
+        check(subscription)

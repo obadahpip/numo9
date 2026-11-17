@@ -101,3 +101,16 @@ holding the lock makes the job wait, then skip. Meanwhile the entitlement engine
 trial is cached only until the trial's end.
 `backend/tests/test_trial_expiry.py` — not before 23:59:59 local, after it read-only with data
 intact and one day-0 email; converted at the last minute → skipped; a real two-connection race.
+
+## Conversion (U-05-T09)
+
+The first successful payment (`invoice.paid`, or a paid Checkout) moves the subscription to
+`active` through the billing state table (`billing.subscriptions.apply_status`). When it was a
+trial — running, or ended unpaid (read-only, `trial_ended`) — that is a **conversion**
+(`trials.trial_converted`): only the subscription's status changes, **no business record is
+touched**; the registry records `converted_at` once (a re-delivered event changes nothing), the
+audit log gets `entitlements.trial.converted`, and the registered conversion checks run —
+`register_conversion_check(check)`, where the founding-1,000 offer (U-08) adds its eligibility
+check (trial organisations count toward the founding counter only from their first payment).
+`backend/tests/test_trial_conversion.py` — row counts of every organisation-owned table identical
+before and after; ended trials convert too.
