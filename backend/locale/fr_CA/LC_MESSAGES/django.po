@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:12-0500\n"
+"POT-Creation-Date: 2026-11-17 17:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1986,6 +1986,18 @@ msgstr "Un essai dure de 1 à %(max)d jours."
 
 msgid "Choose a published package for the trial."
 msgstr "Choisissez un forfait publié pour l’essai."
+
+msgid "Business Number (9 digits)"
+msgstr "Numéro d’entreprise (9 chiffres)"
+
+msgid "owner email"
+msgstr "courriel du propriétaire"
+
+msgid "trial started"
+msgstr "essai commencé"
+
+msgid "trials started"
+msgstr "essais commencés"
 
 msgid "Wait until the file has been checked for viruses."
 msgstr ""
@@ -4890,9 +4902,6 @@ msgstr "Numéro d’entreprise"
 
 msgid "owner"
 msgstr "propriétaire"
-
-msgid "owner email"
-msgstr "courriel du propriétaire"
 
 msgid "trial ends"
 msgstr "fin de l’essai"

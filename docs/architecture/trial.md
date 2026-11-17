@@ -12,3 +12,13 @@ Number and per owner email.
 (`days`, 1–90, default 30). `TrialConfig.current()` reads it (creating the default once). A draft
 package is refused. The Platform Owner edits it in the console (U-06). Platform data (allow-listed
 in `tenancy.checks.PLATFORM_MODELS`). `backend/tests/test_trial_config.py`.
+
+## Trial registry (U-05-T02)
+
+`entitlements.TrialRegistry` — one row per trial started: the organisation, when, and the
+**normalised** Business Number (nine digits) and owner email it was started with. Partial unique
+indexes `entitlements_trial_one_per_bn` and `entitlements_trial_one_per_email` (only non-empty
+values) make the database refuse a second trial with the same BN or email, even when two sign-ups
+race; check constraints refuse values that aren't normalised (9 digits; lower-case email). Empty
+values never collide (no BN yet, no owner yet). Platform data, never shown to tenants.
+`backend/tests/test_trial_registry.py`.

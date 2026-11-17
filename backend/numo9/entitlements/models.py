@@ -471,3 +471,50 @@ class TrialConfig(models.Model):
     def current(cls) -> TrialConfig:
         config, _created = cls.objects.get_or_create(pk=cls.SINGLETON_ID)
         return config
+
+
+class TrialRegistry(models.Model):
+    """Every free trial started (U-05-T02): which organisation, and the normalised Business
+    Number and owner email it was started with. **One trial per BN and per email**: both are
+    unique when present (partial unique indexes), so a second trial with the same BN or email is
+    refused by the database even if two sign-ups race. Values are stored normalised
+    (``trials.normalise_bn`` / ``normalise_email``); empty when unknown (an accountant-created
+    organisation has no owner yet; the BN is often entered later, U-05 edge case). Platform data:
+    it outlives the organisation's trial and is never shown to tenants."""
+
+    normalised_bn = models.CharField(_("Business Number (9 digits)"), max_length=9, blank=True)
+    normalised_email = models.CharField(_("owner email"), max_length=254, blank=True)
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.PROTECT, related_name="+", verbose_name=_("organisation")
+    )
+    started_at = models.DateTimeField(_("trial started"), default=timezone.now)
+
+    class Meta:
+        verbose_name = _("trial started")
+        verbose_name_plural = _("trials started")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("normalised_bn",),
+                condition=~models.Q(normalised_bn=""),
+                name="entitlements_trial_one_per_bn",
+            ),
+            models.UniqueConstraint(
+                fields=("normalised_email",),
+                condition=~models.Q(normalised_email=""),
+                name="entitlements_trial_one_per_email",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(normalised_bn="") | models.Q(normalised_bn__regex=r"^[0-9]{9}$"),
+                name="entitlements_trial_bn_digits",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(normalised_email=models.functions.Lower("normalised_email")),
+                name="entitlements_trial_email_lower",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation",), name="entitlements_trial_org_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation} · {self.started_at:%Y-%m-%d}"
