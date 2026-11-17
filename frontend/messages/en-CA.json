@@ -677,6 +677,19 @@
       "label": "Payment overdue",
       "text": "The subscription payment didn't go through. Everything works until {date}; after that the organisation becomes read-only.",
       "update": "Update payment method"
+    },
+    "trial": {
+      "askOwner": "The organisation's owner chooses the package.",
+      "chip": "{days, plural, =0 {Trial — last day} one {Trial — # day left} other {Trial — # days left}}",
+      "choose": "Choose a package",
+      "close": "Close",
+      "compare": "Compare packages",
+      "current": "Your trial",
+      "ends": "The trial ends on {date}. Choose a package before then to keep working without a break — everything you entered stays.",
+      "includes": "Includes {products}",
+      "loading": "Loading packages…",
+      "title": "Your free trial",
+      "trying": "You're trying {package}."
     }
   },
   "files": {

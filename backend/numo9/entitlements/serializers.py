@@ -29,6 +29,13 @@ class EntitlementsSerializer(serializers.Serializer[Any]):
     grace_until = serializers.DateTimeField(
         allow_null=True, help_text="Payment overdue: full access until then (past_due, U-04-T13)"
     )
+    trial_ends_at = serializers.DateTimeField(
+        allow_null=True, help_text="Free trial (trialing): when it ends (local 23:59:59, U-05)"
+    )
+    trial_days_left = serializers.IntegerField(
+        allow_null=True,
+        help_text="Free trial: whole days left on the organisation's calendar (0 = last day)",
+    )
     package = serializers.CharField(allow_null=True)
     package_name = serializers.CharField(allow_null=True)
     status = serializers.CharField(allow_null=True, help_text="Subscription status, if any")

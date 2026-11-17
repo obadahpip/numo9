@@ -7,6 +7,7 @@ import { useState, type ReactNode } from "react";
 import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
+import { TrialChip } from "@/entitlements/TrialChip";
 import { PaymentDueNotice } from "@/entitlements/PaymentDueNotice";
 import { ReadOnlyNotice } from "@/entitlements/ReadOnlyNotice";
 import { GoToOrganisationSlot } from "@/directory/GoToOrganisationSlot";
@@ -174,8 +175,13 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
       jobTray={org ? <JobTray org={org} /> : undefined}
       search={org || practice ? <GoToOrganisationSlot practice={practice} org={org} /> : undefined}
       status={
-        org && entry?.settings ? (
-          <ModuleSettingsLink org={org} module={entry} linkComponent={NextLink} />
+        org ? (
+          <>
+            <TrialChip />
+            {entry?.settings ? (
+              <ModuleSettingsLink org={org} module={entry} linkComponent={NextLink} />
+            ) : null}
+          </>
         ) : undefined
       }
       notifications={

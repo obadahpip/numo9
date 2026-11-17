@@ -23,6 +23,10 @@ export interface Entitlements {
   since: string | null;
   /** Payment overdue (reason past_due): full access until then (U-04-T13), else null. */
   grace_until?: string | null;
+  /** Free trial (reason trialing, U-05-T10): when it ends (local 23:59:59), else null. */
+  trial_ends_at?: string | null;
+  /** Free trial: whole days left on the organisation's calendar (0 = the last day). */
+  trial_days_left?: number | null;
   package: string | null;
   package_name: string | null;
   status: string | null;

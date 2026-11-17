@@ -114,3 +114,17 @@ audit log gets `entitlements.trial.converted`, and the registered conversion che
 check (trial organisations count toward the founding counter only from their first payment).
 `backend/tests/test_trial_conversion.py` — row counts of every organisation-owned table identical
 before and after; ended trials convert too.
+
+## Trial chip and package comparison (U-05-T10)
+
+The entitlements bootstrap (`GET /api/v1/o/<org>/entitlements`) answers `trial_ends_at` and
+`trial_days_left` (whole days on the organisation's calendar, 0 = the last day) while the reason
+is `trialing`, `null` otherwise. The header shows **`TrialChip`** (`frontend/src/entitlements`) to
+every role (gap-41: the plan state is visible to all): "Trial — 12 days left" / "Trial — last
+day" — neutral above 7 days, amber at 7 or fewer, red at 1 or 0; the words always carry the days
+(never colour alone; token pairs from the A-10 contrast-checked palette). It opens a drawer:
+when the trial ends, the package being tried, the packages compared (what each includes, the
+trial's marked) from `GET /api/v1/o/<org>/package-features`, and *Choose a package* (subscription
+page) for whoever may change it — "The organisation's owner chooses the package" for everyone else.
+Tests: `frontend/src/entitlements/TrialChip.test.tsx` (thresholds, drawer, axe),
+`backend/tests/test_trial_bootstrap.py`.
