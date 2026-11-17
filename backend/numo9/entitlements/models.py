@@ -398,3 +398,76 @@ class OrgProductHistory(OrgOwnedModel):
 
     def __str__(self) -> str:
         return self.product.code
+
+
+# ---- free trial (U-05) -------------------------------------------------------------------------
+
+#: Trial length when nothing else is configured (U-05 business rule).
+TRIAL_DAYS = 30
+TRIAL_MAX_DAYS = 90
+
+
+class TrialConfig(models.Model):
+    """The free trial every new organisation starts (U-05-T01): which package it tries and for
+    how many days. **One row** (``pk = 1``, a database check): ``TrialConfig.current()`` reads it,
+    creating the default (no package — the engine's ``NUMO9_TRIAL_PACKAGE`` or every product —,
+    30 days) the first time. The Platform Owner changes it in the console (U-06). Platform data,
+    not an organisation's."""
+
+    SINGLETON_ID = 1
+
+    package = models.ForeignKey(
+        Package,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("trial package"),
+        help_text=_("Empty: the configured trial package, else every product."),
+    )
+    days = models.PositiveSmallIntegerField(_("trial length (days)"), default=TRIAL_DAYS)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("updated by"),
+    )
+
+    class Meta:
+        verbose_name = _("trial settings")
+        verbose_name_plural = _("trial settings")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(id=1), name="entitlements_trial_config_single"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(days__gte=1, days__lte=TRIAL_MAX_DAYS),
+                name="entitlements_trial_config_days",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.days} days · {self.package or '—'}"
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        self.pk = self.SINGLETON_ID
+        super().save(*args, **kwargs)
+
+    def clean(self) -> None:
+        if not 1 <= int(self.days or 0) <= TRIAL_MAX_DAYS:
+            raise ValidationError(
+                {"days": _("A trial lasts 1 to %(max)d days.") % {"max": TRIAL_MAX_DAYS}},
+                code="trial_days",
+            )
+        if self.package is not None and self.package.status == PackageStatus.DRAFT:
+            raise ValidationError(
+                {"package": _("Choose a published package for the trial.")}, code="trial_package"
+            )
+
+    @classmethod
+    def current(cls) -> TrialConfig:
+        config, _created = cls.objects.get_or_create(pk=cls.SINGLETON_ID)
+        return config

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 291   Remaining: 2496   Progress: 10.44%
+TOTAL ATOMIC TASKS: 2787   Completed: 292   Remaining: 2495   Progress: 10.48%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -399,7 +399,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ B-02-T07 — SupplierStatement + lines import (CSV/XLSX mapping)
 
 [U-05]
-❌ U-05-T01 — TrialConfig singleton model + admin field in U-06
+✅ U-05-T01 — TrialConfig singleton model + admin field in U-06
 ❌ U-05-T02 — TrialRegistry (normalised_bn, normalised_email, org, started_at) with unique indexes
 ❌ U-05-T03 — Normalisers for BN and email (+tests incl. spaces, RT suffix, plus-addressing)
 ❌ U-05-T04 — start_trial(org) service: creates Subscription(trialing, trial_end = local 23:59:59 day 30)

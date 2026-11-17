@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:10-0500\n"
+"POT-Creation-Date: 2026-11-17 17:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1964,6 +1964,28 @@ msgstr ""
 
 msgid "product history"
 msgstr ""
+
+msgid "trial package"
+msgstr "forfait d’essai"
+
+msgid "Empty: the configured trial package, else every product."
+msgstr "Vide : le forfait d’essai configuré, sinon tous les produits."
+
+msgid "trial length (days)"
+msgstr "durée de l’essai (jours)"
+
+msgid "updated by"
+msgstr "mis à jour par"
+
+msgid "trial settings"
+msgstr "paramètres de l’essai"
+
+#, python-format
+msgid "A trial lasts 1 to %(max)d days."
+msgstr "Un essai dure de 1 à %(max)d jours."
+
+msgid "Choose a published package for the trial."
+msgstr "Choisissez un forfait publié pour l’essai."
 
 msgid "Wait until the file has been checked for viruses."
 msgstr ""

@@ -48,6 +48,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 # Product catalogue (U-01-T02/T03): reviewed — the same for every tenant.
                 "catalogue.Product",
                 "catalogue.FeatureKey",
+                # Free trial (U-05-T01): reviewed — the platform's trial settings.
+                "entitlements.TrialConfig",
                 # Packages (U-02-T02, T03, T06): reviewed — packages, prices, promo codes.
                 "packages.Package",
                 "packages.PackageProduct",

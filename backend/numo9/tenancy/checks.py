@@ -41,6 +41,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "rbac.RoleAssignment",
         # Product catalogue (U-01): products and feature keys are the same for every tenant.
         "catalogue.Product",
+        # Free trial (U-05): the platform's trial settings (one row).
+        "entitlements.TrialConfig",
         "catalogue.FeatureKey",
         # Packages (U-02): packages for sale, their products, prices and promo codes (platform data;
         # promo redemptions are organisation records — packages.PromoRedemption is OrgOwned).
