@@ -162,5 +162,10 @@ class OrganisationCreateView(APIView):
                 OrganisationMember.objects.create(
                     organisation=organisation, user=_user(request), role=OrganisationRole.OWNER
                 )
+            from numo9.entitlements.trials import start_trial
+
+            # Every new organisation starts its free trial (U-05-T05) — an accountant-created
+            # one too (its owner is invited later).
+            start_trial(organisation)
         body = _describe(organisation, request.user)
         return Response(MyOrganisationSerializer(body).data, status=status.HTTP_201_CREATED)

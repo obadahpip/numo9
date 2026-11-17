@@ -45,3 +45,14 @@ organisation that already has a current subscription keeps it. `trial_days_left(
 counts whole days on the organisation's calendar (0 on the last day).
 `backend/tests/test_trial_start.py` — DST fixtures in Toronto (fall back, spring forward), Regina
 (no DST), St. John's (half-hour zone).
+
+## Every new organisation starts a trial (U-05-T05)
+
+`start_trial` is called where organisations are created, in the same transaction:
+
+- the owner's sign-up, organisation path (`accounts.forms.SignupForm.signup`);
+- `POST /api/v1/organisations` — a signed-in user creating their own organisation, **or an
+  accountant creating one for a client** (the owner is invited later).
+
+The accountant sign-up path creates a practice — practices are free, no trial.
+`backend/tests/test_trial_hooks.py`.

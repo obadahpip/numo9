@@ -94,3 +94,6 @@ class SignupForm(forms.Form):
             OrganisationMember.objects.create(
                 organisation=organisation, user=user, role=OrganisationRole.OWNER
             )
+            from numo9.entitlements.trials import start_trial
+
+            start_trial(organisation)  # every new organisation starts its free trial (U-05-T05)
