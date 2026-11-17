@@ -146,6 +146,17 @@ def move_group(group: OrgGroup, parent: OrgGroup | None) -> OrgGroup:
     return group
 
 
+@transaction.atomic
+def delete_group(group: OrgGroup) -> int:
+    """Delete ``group`` with its sub-groups; returns how many groups went. Their organisations stay
+    the practice's clients; their memberships and staff assignments go (cascade), which removes
+    the access they granted on the next request (V-02-T06)."""
+    subtree = OrgGroup.objects.filter(practice_id=group.practice_id, path__startswith=group.path)
+    count: int = subtree.count()
+    OrgGroup.objects.get(pk=group.pk).delete()  # treebeard deletes the descendants too
+    return count
+
+
 def add_organisation(group: OrgGroup, organisation: Organisation) -> OrgGroupMembership:
     served = PracticeAssignment.objects.filter(
         practice_id=group.practice_id, organisation=organisation, active=True

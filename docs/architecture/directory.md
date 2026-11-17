@@ -255,3 +255,32 @@ request answers 404: staff unassigned, organisation removed, membership deleted,
 and memberships; grants (filing, bulk create) apply on the next request; access through a second
 group or a direct assignment survives; another user's warm cache is refreshed too; the group role
 decides read vs change.
+
+## Groups and tags API (V-02-T07)
+
+Under `/api/v1/practice/` (`numo9.workspace.groups_api`), practice-scoped like the directory:
+
+| Endpoint | What |
+|---|---|
+| `GET groups?practice=…` | the tree in order: parent, depth, organisations filed directly, distinct organisations in the subtree, staff assigned directly |
+| `POST groups` | create (`name`, optional `parent`) |
+| `GET groups/<id>` | one group, its organisations and its staff — assigned here or *inherited* from an ancestor (`inherited_from`) |
+| `PATCH groups/<id>` | rename (`name`) and/or move (`parent`: group id, `null` = top level) |
+| `GET groups/<id>/impact` | what deleting it affects: groups, organisations, staff assignments, staff, and staff who would lose access to at least one organisation (other groups and direct assignments counted) |
+| `DELETE groups/<id>` | delete with its sub-groups (organisations stay clients; access granted by its staff rows goes on the next request) |
+| `POST groups/<id>/organisations` / `DELETE groups/<id>/organisations/<org>` | file organisations (`organisations`: up to 500 ids) / take one out |
+| `PUT` / `DELETE groups/<id>/staff/<user>` | assign with a `role` (or change it) / unassign |
+| `GET tags`, `POST tags`, `PATCH tags/<id>`, `DELETE tags/<id>` | the practice's tags (`colour_label` names the colour) |
+| `POST tags/<id>/organisations` / `DELETE tags/<id>/organisations/<org>` | tag / untag |
+
+Reading needs `practice.directory.view` (every practice role). **Every change needs
+`practice.groups.manage`** — a practice permission only the Practice admin system role holds by
+default (custom practice roles may be given it). Another practice's group, tag or client, or a
+practice the user isn't a member of, answers 404. A group or tag rule refused answers 400 with the
+service's code and the field (`workspace.group.too_deep`, `.name_taken`, `.into_itself`,
+`workspace.tag.colour`…). `backend/tests/test_workspace_groups_api.py`.
+
+The views are declared `AUTHENTICATED` (the practice comes from the query, body or object, not
+from an active organisation) and name the practice permission they check with
+`rbac.drf.checks_practice_permission(key)`; the permission matrix (A-03-T10) reads it and expects
+`403 permission.denied` for every practice role without the key.

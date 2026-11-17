@@ -175,6 +175,8 @@ SPECTACULAR_SETTINGS = {
         "PriceStateEnum": "numo9.packages.serializers.PRICE_STATES",  # U-02-T07
         "BulkActionEnum": "numo9.files.listing.BULK_ACTION_CHOICES",  # A-06-T10
         "DirectoryStatusEnum": "numo9.workspace.models.DirectoryStatus",  # V-01-T05
+        "GroupStaffRoleEnum": "numo9.workspace.models.GroupStaffRole",  # V-02-T07
+        "TagColourEnum": "numo9.workspace.models.TagColour",  # V-02-T07
         # Feature keys' action (U-01): named once a second "action" choice set exists (A-06-T10).
         "FeatureActionEnum": [("read", "read"), ("write", "write"), ("approve", "approve")],
     },

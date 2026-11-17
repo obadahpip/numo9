@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:49-0500\n"
+"POT-Creation-Date: 2026-11-17 16:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4688,6 +4688,10 @@ msgstr "%(person)s n’est pas membre de ce cabinet."
 msgid "Choose a role for this group."
 msgstr "Choisissez un rôle pour ce groupe."
 
+#, python-format
+msgid "Choose 1 to %(max)d organisations."
+msgstr "Choisissez de 1 à %(max)d organisations."
+
 msgid "Comfortable"
 msgstr "Confortable"
 
@@ -4837,6 +4841,9 @@ msgstr "affectations aux groupes"
 
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"
+
+msgid "Organise the practice's clients into groups and tags, and assign staff to groups"
+msgstr "Organiser les clients du cabinet en groupes et en étiquettes, et affecter le personnel aux groupes"
 
 msgid "Give the tag a name."
 msgstr "Donnez un nom à l’étiquette."

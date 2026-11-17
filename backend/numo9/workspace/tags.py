@@ -114,6 +114,13 @@ def untag_organisation(tag: Tag, organisation: Organisation) -> int:
     return count
 
 
+def delete_tag(tag: Tag) -> int:
+    """Delete a tag; it comes off every organisation. Returns how many organisations had it."""
+    count = OrgTag.objects.filter(tag=tag).count()
+    tag.delete()
+    return count
+
+
 def tags_of(practice: Practice, organisation: Organisation) -> list[Tag]:
     return list(
         Tag.objects.filter(practice=practice, assignments__organisation=organisation).order_by(
