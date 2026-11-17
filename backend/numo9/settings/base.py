@@ -490,6 +490,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.entitlements.expire_trials",
         "schedule": crontab(minute="*/5"),
     },
+    # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
+    "numo9.platform.snapshot_metrics": {
+        "task": "numo9.platform.snapshot_metrics",
+        "schedule": crontab(minute=51, hour=5),  # 05:51 UTC = 00:51 / 01:51 Toronto
+    },
     # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
     "numo9.billing.apply_changes": {
         "task": "numo9.billing.apply_changes",

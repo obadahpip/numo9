@@ -45,6 +45,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # started (normalised BN / owner email → organisation) that prevents a second trial.
         "entitlements.TrialConfig",
         "entitlements.TrialRegistry",
+        # Platform console (U-06): daily platform metrics (no organisation's data).
+        "platform.PlatformMetricDaily",
         "catalogue.FeatureKey",
         # Packages (U-02): packages for sale, their products, prices and promo codes (platform data;
         # promo redemptions are organisation records — packages.PromoRedemption is OrgOwned).

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:38-0500\n"
+"POT-Creation-Date: 2026-11-17 17:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4430,6 +4430,27 @@ msgstr "utilisation d’un code promotionnel"
 
 msgid "promo code redemptions"
 msgstr "utilisations de codes promotionnels"
+
+msgid "MRR (CAD cents)"
+msgstr "RMR (cents CAD)"
+
+msgid "active organisations"
+msgstr "organisations actives"
+
+msgid "trials"
+msgstr "essais"
+
+msgid "conversion rate (30 days)"
+msgstr "taux de conversion (30 jours)"
+
+msgid "churn rate (30 days)"
+msgstr "taux d’attrition (30 jours)"
+
+msgid "computed at"
+msgstr "calculé le"
+
+msgid "daily platform metrics"
+msgstr "indicateurs quotidiens de la plateforme"
 
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"

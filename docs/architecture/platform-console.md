@@ -65,3 +65,21 @@ console pages `/console/organisations` (filters from U-06-T03, paged table, demo
 
 Dates in the organisation's time zone. Tests: `backend/tests/test_platform_organisation_detail.py`,
 `frontend/src/console/organisations/OrganisationDetailScreen.test.tsx`.
+
+## Metrics service and daily snapshot (U-06-T05)
+
+`numo9.platform.metrics` computes the console's figures; **demo organisations are never counted**
+(organisation status `demo` or a `demo` subscription).
+
+| Metric | Definition |
+|---|---|
+| MRR | Σ over `active` + `past_due` subscriptions of the price in force today for their package and interval, a month's worth (annual ÷ 12, half-up to the cent), CAD cents |
+| Active | organisations with an `active` or `past_due` subscription |
+| Trials | organisations whose subscription is `trialing` |
+| Conversion (30 days) | trials converted in the window ÷ trials that ended in it (converted, or read-only `trial_ended` with the period ending in the window); `null` when none ended |
+| Churn (30 days) | subscriptions cancelled in the window ÷ (active now + cancelled in the window); `null` when nothing was active |
+
+`metrics.drill_down("active" | "mrr" | "trials")` returns the organisations a tile counts, so a
+tile and its list never disagree. `PlatformMetricDaily` (platform model, one row per date,
+`update_or_create`) is written nightly by `numo9.platform.snapshot_metrics` (beat 05:51 UTC);
+trend charts read it instead of recomputing history.
