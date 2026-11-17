@@ -22,3 +22,14 @@ values) make the database refuse a second trial with the same BN or email, even 
 race; check constraints refuse values that aren't normalised (9 digits; lower-case email). Empty
 values never collide (no BN yet, no owner yet). Platform data, never shown to tenants.
 `backend/tests/test_trial_registry.py`.
+
+## Normalisers (U-05-T03)
+
+`numo9.entitlements.trials`:
+
+| Function | In | Out |
+|---|---|---|
+| `normalise_bn` | `123 456 782`, `123-456-782`, `123456782RT0001`, `123456782 rt 0001` | `123456782` — the nine digits, program account suffix (RT, RP, RC, RZ…) dropped; `""` when not nine digits with a valid check digit |
+| `normalise_email` | `  Dana+numo9@Refined.CA ` | `dana@refined.ca` — trimmed, lower-case, plus-addressing stripped; `""` when not an address |
+
+`backend/tests/test_trial_normalisers.py` (table tests).
