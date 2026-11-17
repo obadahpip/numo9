@@ -343,3 +343,19 @@ only through a practice group is swept over **every organisation-scoped endpoint
 URLconf (rows made by the sweep's factories). While assigned, the endpoints answer; after each
 revocation — unassigned, client removed from the group, sub-group moved out, group deleted —
 every verb of every endpoint answers 404 (405 where the view lacks the verb) on the next request.
+
+## Audit (V-02-T13)
+
+Every group, tag and assignment change writes one audit event (A-04, `numo9.audit.service.record`)
+with its actor, in the caller's transaction; `practice` is always set. A refused change or one that
+changes nothing (same name, already filed) writes nothing.
+
+| Action | Where | Changes / details |
+|---|---|---|
+| `workspace.group.created` / `.renamed` / `.moved` / `.deleted` | practice log | `name`, `parent` (names); deleted: the sub-groups that went |
+| `workspace.group.staff_assigned` / `.staff_role_changed` / `.staff_unassigned` | practice log | `role`; the staff member in details |
+| `workspace.group.organisation_added` / `.organisation_removed` | practice log **and the organisation's log** | group and organisation names |
+| `workspace.tag.created` / `.renamed` / `.recoloured` / `.deleted` | practice log | `name`, `colour` |
+| `workspace.tag.organisation_tagged` / `.organisation_untagged` | practice log **and the organisation's log** | tag and organisation names |
+
+`backend/tests/test_workspace_groups_audit.py`.

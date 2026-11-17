@@ -35,6 +35,28 @@ class GroupError(ValidationError):
     pass
 
 
+def _audit(
+    action: str,
+    group: OrgGroup,
+    *,
+    organisation: Organisation | None = None,
+    changes: dict[str, Any] | None = None,
+    meta: dict[str, Any] | None = None,
+) -> None:
+    """One audit event (V-02-T13): practice-level for structure changes; an organisation
+    filed in / taken out of a group also writes it in that organisation's log."""
+    from numo9.audit.service import record
+
+    record(
+        f"workspace.group.{action}",
+        obj=group,
+        organisation=organisation,
+        practice=group.practice,
+        changes=changes,
+        meta=meta,
+    )
+
+
 def _key(name: str) -> str:
     folded = unicodedata.normalize("NFKD", " ".join(name.split()).casefold())
     return "".join(c for c in folded if not unicodedata.combining(c))
@@ -103,6 +125,12 @@ def create_group(practice: Practice, name: str, parent: OrgGroup | None = None) 
         group: OrgGroup = OrgGroup.objects.add_root({"practice": practice, "name": name})
     else:
         group = OrgGroup.objects.add_child(parent, {"practice": practice, "name": name})
+    _audit(
+        "created",
+        group,
+        changes={"name": [None, name]},
+        meta={"parent": parent.name if parent else None},
+    )
     return group
 
 
@@ -110,8 +138,11 @@ def create_group(practice: Practice, name: str, parent: OrgGroup | None = None) 
 def rename_group(group: OrgGroup, name: str) -> OrgGroup:
     name = _clean_name(name)
     _assert_name_free(group.practice, OrgGroup.objects.get_parent(group), name, exclude=group)
+    before = group.name
     group.name = name
     group.save(update_fields=["name", "updated_at"])
+    if before != name:
+        _audit("renamed", group, changes={"name": [before, name]})
     return group
 
 
@@ -133,6 +164,7 @@ def move_group(group: OrgGroup, parent: OrgGroup | None) -> OrgGroup:
         if parent.depth + _subtree_height(group) > GROUP_MAX_DEPTH:
             raise _too_deep()
     _assert_name_free(group.practice, parent, group.name, exclude=group)
+    old_parent = OrgGroup.objects.get_parent(group)
     if parent is None:
         if group.is_root():
             return group
@@ -143,6 +175,13 @@ def move_group(group: OrgGroup, parent: OrgGroup | None) -> OrgGroup:
 
     bump()  # the subtree's paths changed with raw SQL (no signals): access may have changed
     group.refresh_from_db()
+    _audit(
+        "moved",
+        group,
+        changes={
+            "parent": [old_parent.name if old_parent else None, parent.name if parent else None]
+        },
+    )
     return group
 
 
@@ -153,6 +192,8 @@ def delete_group(group: OrgGroup) -> int:
     the access they granted on the next request (V-02-T06)."""
     subtree = OrgGroup.objects.filter(practice_id=group.practice_id, path__startswith=group.path)
     count: int = subtree.count()
+    names = list(subtree.order_by("path").values_list("name", flat=True))
+    _audit("deleted", group, changes={"name": [group.name, None]}, meta={"groups": names})
     OrgGroup.objects.get(pk=group.pk).delete()  # treebeard deletes the descendants too
     return count
 
@@ -167,9 +208,16 @@ def add_organisation(group: OrgGroup, organisation: Organisation) -> OrgGroupMem
             % {"organisation": organisation.name},
             code="workspace.group.not_served",
         )
-    membership, _created = OrgGroupMembership.objects.get_or_create(
+    membership, created = OrgGroupMembership.objects.get_or_create(
         group=group, organisation=organisation
     )
+    if created:
+        _audit(
+            "organisation_added",
+            group,
+            organisation=organisation,
+            meta={"group": group.name, "organisation": organisation.name},
+        )
     return membership
 
 
@@ -177,6 +225,13 @@ def remove_organisation(group: OrgGroup, organisation: Organisation) -> int:
     rows = OrgGroupMembership.objects.filter(group=group, organisation=organisation)
     count = rows.count()
     rows.delete()
+    if count:
+        _audit(
+            "organisation_removed",
+            group,
+            organisation=organisation,
+            meta={"group": group.name, "organisation": organisation.name},
+        )
     return count
 
 
@@ -232,7 +287,11 @@ def assign_staff(group: OrgGroup, member: Any, role: str = "accountant") -> Any:
     row, created = GroupStaffAssignment.objects.get_or_create(
         group=group, practice_member=member, defaults={"role": role}
     )
-    if not created and row.role != role:
+    person = {"user": str(member.user.public_id), "name": member.user.name}
+    if created:
+        _audit("staff_assigned", group, changes={"role": [None, role]}, meta=person)
+    elif row.role != role:
+        _audit("staff_role_changed", group, changes={"role": [row.role, role]}, meta=person)
         row.role = role
         row.save(update_fields=["role", "updated_at"])
     return row
@@ -242,6 +301,13 @@ def unassign_staff(group: OrgGroup, member: Any) -> int:
     from .models import GroupStaffAssignment
 
     rows = GroupStaffAssignment.objects.filter(group=group, practice_member=member)
-    count = rows.count()
+    roles = list(rows.values_list("role", flat=True))
     rows.delete()
-    return count
+    if roles:
+        _audit(
+            "staff_unassigned",
+            group,
+            changes={"role": [roles[0], None]},
+            meta={"user": str(member.user.public_id), "name": member.user.name},
+        )
+    return len(roles)
