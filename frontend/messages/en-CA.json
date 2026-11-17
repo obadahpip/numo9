@@ -392,6 +392,12 @@
     "tagline": "Numbers build a brighter tomorrow"
   },
   "console": {
+    "catalogue": {
+      "nav": "Catalogue",
+      "packages": "Packages",
+      "products": "Products",
+      "promoCodes": "Promo codes"
+    },
     "jobs": {
       "any": "Any",
       "apply": "Show",
@@ -485,6 +491,7 @@
       "next": "Next",
       "noSubscription": "No subscription.",
       "none": "—",
+      "openPackage": "Open the {package} package",
       "package": "Package",
       "pageOf": "Page {page} of {pages}",
       "practiceLine": "{name} — {role}, {staff, plural, one {# staff member} other {# staff}} assigned{active, select, true {} other { (switched off)}}",

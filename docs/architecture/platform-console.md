@@ -98,3 +98,12 @@ over 30, 90 or 365 days, whose figures also open as a table (exact values, scree
 
 The tile and its list come from the same query (`metrics.drill_down`), so **the tile's count is
 always the list's `count`**. Both need `platform.console.view`.
+
+## Package editor in the console (U-06-T07)
+
+The U-02 screens are reused unchanged inside the console frame: **Packages and prices**
+(`platform.catalogue.manage`) holds `/console/packages` (list, `new`, `<code>` — the editor, price
+timeline and Stripe sync of U-02-T09/T10), `/console/products` (U-01-T11) and
+`/console/promo-codes` (U-02-T11), with a "Catalogue" sub-navigation between them
+(`console/shell/CatalogueNav.tsx`). An organisation's detail links its current package to the
+editor for staff who may manage the catalogue.

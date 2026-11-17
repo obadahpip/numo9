@@ -63,6 +63,11 @@ export const m = defineMessages({
     defaultMessage: "Subscription",
     description: "Section heading",
   },
+  openPackage: {
+    id: "console.orgs.openPackage",
+    defaultMessage: "Open the {package} package",
+    description: "Link from an organisation's subscription to the package editor",
+  },
   noSubscription: {
     id: "console.orgs.noSubscription",
     defaultMessage: "No subscription.",

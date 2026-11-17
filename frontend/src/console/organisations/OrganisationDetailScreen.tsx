@@ -12,6 +12,9 @@ import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
 
 import { useFormatMessage } from "@/i18n";
+import { packageUrl } from "@/packages/PackagesScreen";
+
+import { usePlatformMe } from "../shell/ConsoleFrame";
 
 import { getOrganisation, type PlatformOrganisationDetail, type TimelineItem } from "./api";
 import { m } from "./messages";
@@ -31,6 +34,8 @@ export function OrganisationDetailScreen({ id, extra }: { id: string; extra?: Re
   const [data, setData] = useState<PlatformOrganisationDetail | null>(null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  const canEditPackages =
+    usePlatformMe()?.permissions.includes("platform.catalogue.manage") ?? false;
   useEffect(() => {
     let cancelled = false;
     void getOrganisation(id).then((result) => {
@@ -95,6 +100,18 @@ export function OrganisationDetailScreen({ id, extra }: { id: string; extra?: Re
                   })
                 : fm(m.none),
             })}
+            {data.subscription.package && canEditPackages ? (
+              <>
+                {" "}
+                <Link
+                  href={packageUrl(data.subscription.package)}
+                  className="font-semibold text-fg-link underline"
+                  data-package-link=""
+                >
+                  {fm(m.openPackage, { package: data.subscription.package })}
+                </Link>
+              </>
+            ) : null}
           </p>
         ) : (
           <p className="text-sm text-fg-muted">{fm(m.noSubscription)}</p>

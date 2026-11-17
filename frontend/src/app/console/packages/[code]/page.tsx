@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/AppShell";
+import { CatalogueNav } from "@/console/shell/CatalogueNav";
 import { ConsoleFrame } from "@/console/shell/ConsoleFrame";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
@@ -19,7 +20,10 @@ export default async function PackagePage({ params }: { params: Promise<{ code: 
   return (
     <AppShell section={fm(messages.crumb)}>
       <ConsoleFrame current="/console/packages">
-        <PackageEditor code={decodeURIComponent(code)} />
+        <div className="flex flex-col gap-4">
+          <CatalogueNav current="/console/packages" />
+          <PackageEditor code={decodeURIComponent(code)} />
+        </div>
       </ConsoleFrame>
     </AppShell>
   );
