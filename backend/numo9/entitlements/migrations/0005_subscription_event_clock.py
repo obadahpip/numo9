@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("entitlements", "0004_subscription_billing"),
     ]
@@ -13,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="subscription",
             name="stripe_event_created",
-            field=models.DateTimeField(
-                blank=True, null=True, verbose_name="last billing event at"
-            ),
+            field=models.DateTimeField(blank=True, null=True, verbose_name="last billing event at"),
         ),
     ]

@@ -123,9 +123,12 @@ def test_failing_handler_is_recorded_and_retried(configured: list[int]) -> None:
         assert row.processed_at is None and row.attempts == 1
         assert "RuntimeError: Stripe object missing" in row.error
         assert not Organisation.objects.filter(name="Should roll back").exists()
-        with mock.patch.object(
-            tasks.process_stripe_event, "retry", side_effect=RuntimeError("retry")
-        ), pytest.raises(RuntimeError, match="retry"):
+        with (
+            mock.patch.object(
+                tasks.process_stripe_event, "retry", side_effect=RuntimeError("retry")
+            ),
+            pytest.raises(RuntimeError, match="retry"),
+        ):
             tasks.process_stripe_event.run(row.pk)
     finally:
         processing._handlers.pop("test.broken", None)
