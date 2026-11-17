@@ -360,3 +360,51 @@ def run_trial_reminders(now: dt.datetime | None = None) -> dict[str, int]:
 @platform_job(name=REMINDER_JOB, queue=DEFAULT)
 def trial_reminders_job() -> dict[str, int]:
     return run_trial_reminders()
+
+
+# ---- expiry (U-05-T08) -------------------------------------------------------------------------
+
+EXPIRY_JOB = "numo9.entitlements.expire_trials"
+
+
+def expire_trial(subscription_id: int, now: dt.datetime) -> bool:
+    """End one trial whose time is up: **read-only** (reason ``trial_ended``), data kept, export
+    allowed. The row is locked and re-read first, so a conversion that commits at the last minute
+    wins: an active (converted) subscription is skipped. Tells the owners at once (milestone 0).
+    """
+    with transaction.atomic():
+        locked = (
+            Subscription._base_manager.select_for_update()
+            .select_related("organisation")
+            .filter(pk=subscription_id)
+            .first()
+        )
+        if (
+            locked is None
+            or locked.status != SubscriptionStatus.TRIALING
+            or locked.current_period_end is None
+            or locked.current_period_end > now
+        ):
+            return False
+        with org_context(locked.organisation):
+            locked.status = SubscriptionStatus.READ_ONLY
+            locked.status_reason = StatusReason.TRIAL_ENDED
+            locked.save()
+    send_reminder(locked, 0, now=now)
+    return True
+
+
+def run_trial_expiry(now: dt.datetime | None = None) -> int:
+    """End every trial whose end has passed (beat every 5 minutes); returns how many."""
+    now = now or timezone.now()
+    due = Subscription._base_manager.filter(
+        deleted_at__isnull=True,
+        status=SubscriptionStatus.TRIALING,
+        current_period_end__lte=now,
+    ).values_list("pk", flat=True)
+    return sum(1 for pk in list(due) if expire_trial(pk, now))
+
+
+@platform_job(name=EXPIRY_JOB, queue=DEFAULT)
+def expire_trials_job() -> int:
+    return run_trial_expiry()

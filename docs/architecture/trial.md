@@ -88,3 +88,16 @@ owner's language: organisation, days left, local end date, link to the subscript
 one email per milestone per owner, however often or late the job runs. A converted trial (active)
 gets nothing more. `backend/tests/test_trial_reminders.py` — the job run every hour through a whole
 30-day Toronto trial across the DST change sends 7, 3, 1, 0 once each.
+
+## Expiry (U-05-T08)
+
+The platform job `numo9.entitlements.expire_trials` (beat every 5 minutes) ends every trial whose
+end (local 23:59:59 on the last day) has passed: **read-only**, reason `trial_ended` — books
+readable, export allowed, nothing deleted — and tells the owners at once (milestone 0).
+`expire_trial` locks the subscription row (`SELECT … FOR UPDATE`) and re-reads it: a conversion
+that committed first — even at 23:59 local — leaves it `active`, and the job skips it; a conversion
+holding the lock makes the job wait, then skip. Meanwhile the entitlement engine already treats a
+`trialing` subscription past its end as read-only (`trial_ended`), and an entitlement answer for a
+trial is cached only until the trial's end.
+`backend/tests/test_trial_expiry.py` — not before 23:59:59 local, after it read-only with data
+intact and one day-0 email; converted at the last minute → skipped; a real two-connection race.

@@ -482,6 +482,12 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.entitlements.trial_reminders",
         "schedule": crontab(minute=13),
     },
+    # Free trial expiry (U-05-T08): read-only within 5 minutes of local 23:59:59 on the last day
+    # (the entitlement engine already treats an ended trial as read-only meanwhile).
+    "numo9.entitlements.expire_trials": {
+        "task": "numo9.entitlements.expire_trials",
+        "schedule": crontab(minute="*/5"),
+    },
     # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
     "numo9.billing.apply_changes": {
         "task": "numo9.billing.apply_changes",

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 298   Remaining: 2489   Progress: 10.69%
+TOTAL ATOMIC TASKS: 2787   Completed: 299   Remaining: 2488   Progress: 10.73%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -406,7 +406,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-05-T05 — Hook into org creation (A-02 sign-up / accountant creates org)
 ✅ U-05-T06 — Duplicate trial refusal with clear error (trial_already_used, shows masked existing org name to platform owner only)
 ✅ U-05-T07 — Reminder job 7/3/1/0 days (idempotent per org+day)
-❌ U-05-T08 — Expiry job with row lock; skips if converted
+✅ U-05-T08 — Expiry job with row lock; skips if converted
 ❌ U-05-T09 — Conversion: first successful payment flips trialing→active without touching data; founding check (U-08)
 ❌ U-05-T10 — Header trial chip + comparison drawer
 ❌ U-05-T11 — Trial-ended read-only experience (banner, export button, subscribe CTA)
