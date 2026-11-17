@@ -35,5 +35,8 @@ urlpatterns = [
         api.ImpersonationEndView.as_view(),
         name="platform-impersonation-end",
     ),
+    path("platform/flags", api.PlatformFlagListView.as_view(), name="platform-flags"),
+    path("platform/flags/<str:name>", api.PlatformFlagDetailView.as_view(), name="platform-flag"),
+    path("me/flags", api.MeFlagsView.as_view(), name="me-flags"),
     path("platform/practices", api.PlatformPracticeListView.as_view(), name="platform-practices"),
 ]

@@ -1,5 +1,10 @@
 """Platform console models (U-06).
 
+``FeatureFlag`` (U-06-T12) — django-waffle's flag (``WAFFLE_FLAG_MODEL``) with Numo9's rules: on
+for everyone, off for everyone, or by rule — listed organisations, listed practices, listed users
+and a **stable** percentage of organisations (the same organisation always falls on the same
+side, unlike waffle's per-browser cookie).
+
 ``ImpersonationSession`` (U-06-T08) — one row per support session in which a platform staff
 member (``actor``) acts as a user (``target_user``) of **one** organisation, with the reason they
 gave, when it started, when it expires (default 30 minutes, at most 2 hours) and when it ended
@@ -14,15 +19,18 @@ data (no organisation).
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import uuid
-from typing import ClassVar
+from decimal import Decimal
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from waffle.models import AbstractUserFlag
 
-from numo9.tenancy.models import Organisation
+from numo9.tenancy.models import Organisation, Practice
 
 DEFAULT_MINUTES = 30
 MAX_MINUTES = 120
@@ -141,3 +149,66 @@ class ImpersonationSession(models.Model):
 
         audit_session(self, ENDED)  # U-06-T10: in the organisation's audit log
         return True
+
+
+def percent_bucket(name: str, key: Any) -> Decimal:
+    """Where ``key`` (an organisation or user id) falls for flag ``name``: 0.0–99.9, stable."""
+    digest = hashlib.sha256(f"{name}:{key}".encode()).hexdigest()
+    return Decimal(int(digest[:8], 16) % 1000) / 10
+
+
+class FeatureFlag(AbstractUserFlag):
+    organisations = models.ManyToManyField(
+        Organisation,
+        blank=True,
+        related_name="+",
+        verbose_name=_("organisations"),
+        help_text=_("On for these organisations."),
+    )
+    practices = models.ManyToManyField(
+        Practice,
+        blank=True,
+        related_name="+",
+        verbose_name=_("practices"),
+        help_text=_("On for these practices (the acting practice, or one the user belongs to)."),
+    )
+
+    objects: ClassVar[models.Manager[FeatureFlag]] = models.Manager()  # type: ignore[assignment]
+
+    class Meta(AbstractUserFlag.Meta):
+        abstract = False
+        ordering = ("name",)
+        verbose_name = _("feature flag")
+        verbose_name_plural = _("feature flags")
+
+    def is_active(self, request: Any, read_only: bool = False) -> bool:
+        if not self.pk:
+            return False
+        if self.everyone is not None:
+            return bool(self.everyone)
+        organisation = getattr(request, "organisation", None)
+        if organisation is not None and self.organisations.filter(pk=organisation.pk).exists():
+            return True
+        if self._for_practice(request):
+            return True
+        if self._is_active_for_user(request):
+            return True
+        if self.percent is not None and self.percent > 0:
+            user = getattr(request, "user", None)
+            key = (
+                organisation.public_id
+                if organisation is not None
+                else getattr(user, "public_id", None)
+            )
+            if key is not None:
+                return percent_bucket(self.name, key) < self.percent
+        return False
+
+    def _for_practice(self, request: Any) -> bool:
+        acting = getattr(request, "acting_practice", None)
+        if acting is not None:
+            return self.practices.filter(pk=acting.pk).exists()
+        user = getattr(request, "user", None)
+        if user is None or not user.is_authenticated:
+            return False
+        return self.practices.filter(members__user=user).exists()

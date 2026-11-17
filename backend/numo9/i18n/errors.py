@@ -631,6 +631,31 @@ IMPERSONATION_ALREADY_OPEN = define(
     status.HTTP_409_CONFLICT,
 )
 
+# ---- feature flags (U-06-T12) ------------------------------------------------------------------
+FLAG_BAD_NAME = define(
+    "flags.bad_name",
+    _(
+        "Use 2–100 lower-case letters, digits, dots, hyphens or underscores, starting with a "
+        "letter (for example payroll.new_t4_screen)."
+    ),
+)
+FLAG_EXISTS = define(
+    "flags.exists",
+    _("A flag named %(name)s already exists. Open it to change who sees it."),
+    status.HTTP_409_CONFLICT,
+)
+FLAG_BAD_PERCENT = define(
+    "flags.bad_percent",
+    _(
+        "Enter a percentage from 0 to 99.9, with at most one decimal (for example 12.5). To turn "
+        "the flag on for everyone, choose On."
+    ),
+)
+FLAG_UNKNOWN_TARGET = define(
+    "flags.unknown_target",
+    _("%(value)s isn't a known %(name)s. Choose one from the list."),
+)
+
 # ---- free trial (U-05) -------------------------------------------------------------------------
 TRIAL_ALREADY_USED = define(
     "entitlements.trial_already_used",

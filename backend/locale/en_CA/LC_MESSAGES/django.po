@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:04-0500\n"
+"POT-Creation-Date: 2026-11-17 18:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2431,6 +2431,20 @@ msgstr ""
 msgid "You're already signed in as another user. End that session first."
 msgstr ""
 
+msgid "Use 2–100 lower-case letters, digits, dots, hyphens or underscores, starting with a letter (for example payroll.new_t4_screen)."
+msgstr ""
+
+#, python-format
+msgid "A flag named %(name)s already exists. Open it to change who sees it."
+msgstr ""
+
+msgid "Enter a percentage from 0 to 99.9, with at most one decimal (for example 12.5). To turn the flag on for everyone, choose On."
+msgstr ""
+
+#, python-format
+msgid "%(value)s isn't a known %(name)s. Choose one from the list."
+msgstr ""
+
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr ""
 
@@ -4267,6 +4281,24 @@ msgstr ""
 msgid "impersonation sessions"
 msgstr ""
 
+msgid "organisations"
+msgstr ""
+
+msgid "On for these organisations."
+msgstr ""
+
+msgid "practices"
+msgstr ""
+
+msgid "On for these practices (the acting practice, or one the user belongs to)."
+msgstr ""
+
+msgid "feature flag"
+msgstr ""
+
+msgid "feature flags"
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr ""
@@ -4571,16 +4603,10 @@ msgstr ""
 msgid "practice admins must use two-factor authentication"
 msgstr ""
 
-msgid "practices"
-msgstr ""
-
 msgid "practice member"
 msgstr ""
 
 msgid "practice members"
-msgstr ""
-
-msgid "organisations"
 msgstr ""
 
 msgid "organisation member"

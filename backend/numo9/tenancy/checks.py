@@ -49,6 +49,10 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "platform.PlatformMetricDaily",
         # Impersonation (U-06-T08): a platform record about one organisation, never tenant data.
         "platform.ImpersonationSession",
+        # Feature flags (U-06-T12): platform settings naming organisations/practices they apply to.
+        "platform.FeatureFlag",
+        "waffle.Switch",
+        "waffle.Sample",
         "catalogue.FeatureKey",
         # Packages (U-02): packages for sale, their products, prices and promo codes (platform data;
         # promo redemptions are organisation records — packages.PromoRedemption is OrgOwned).

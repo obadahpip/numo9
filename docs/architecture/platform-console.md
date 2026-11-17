@@ -166,3 +166,25 @@ the staff member (the label reads "Dana Lee (dana@…) — signed in by Sam Supp
   `GET …/impersonation/current` returns a session: "You're signed in as Dana Lee in Maple Leaf
   Supply", a `mm:ss` countdown (role `timer`) and "End session" (back to the organisation in the
   console). At zero it asks the API again — which ends the session — and says it ended.
+
+## Feature flags (U-06-T12)
+
+**django-waffle** with Numo9's flag model: `WAFFLE_FLAG_MODEL = "platform.FeatureFlag"`
+(waffle's `AbstractUserFlag` plus `organisations` and `practices`). A flag is **on for everyone**,
+**off for everyone** or **by rule** (`everyone` null) — on for its organisations (the request's,
+from the URL or `X-Numo9-Org`), its practices (the acting practice, or one the user belongs to),
+its users, and a **stable percentage of organisations** (0–99.9: `sha256(name:organisation)`
+buckets, so an organisation never flips between page loads — unlike waffle's cookie). Unknown
+flags are off and never created by a lookup. waffle's own migrations are replaced
+(`MIGRATION_MODULES["waffle"] = "numo9.platform.waffle_migrations"`) so the swapped-out
+`waffle_flag` tables are not created.
+
+| Endpoint | Who | Does |
+|---|---|---|
+| `GET/POST /api/v1/platform/flags` | `platform.flags.manage` | list; create (off until changed) |
+| `PATCH/DELETE /api/v1/platform/flags/<name>` | `platform.flags.manage` | `mode` on/off/rules, `percent`, `note`, `organisations`, `practices`; delete |
+| `GET /api/v1/me/flags` | signed in | `{flags: {name: bool}}` for this request |
+
+Every change writes a platform audit event (`platform.flag.created/updated/deleted`, with the
+before/after mode, percentage and targets) and flushes waffle's cache on commit, so the next
+`/me/flags` reflects it. The console page `/console/flags` edits them.

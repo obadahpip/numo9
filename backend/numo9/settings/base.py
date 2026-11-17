@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "numo9.billing",
     # Platform-owner console (U-06): console API, metrics, impersonation, feature flags.
     "numo9.platform",
+    # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
+    "waffle",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -159,6 +161,7 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
     "ENUM_NAME_OVERRIDES": {
         "PracticeRoleEnum": "numo9.tenancy.models.PracticeRole",
+        "FeatureFlagModeEnum": "numo9.platform.api.FLAG_MODES",  # U-06-T12
         "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",
         "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
         "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",
@@ -544,3 +547,15 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---- feature flags (U-06-T12) ------------------------------------------------------------------
+# django-waffle with numo9.platform.FeatureFlag: on for everyone / off for everyone / by rule
+# (organisations, practices, users, a stable percentage of organisations). Unknown flags are off
+# and never created by a lookup.
+WAFFLE_FLAG_MODEL = "platform.FeatureFlag"
+# waffle's own tables without its (swapped-out) flag tables: see numo9/platform/waffle_migrations.
+MIGRATION_MODULES = {"waffle": "numo9.platform.waffle_migrations"}
+WAFFLE_FLAG_DEFAULT = False
+WAFFLE_CREATE_MISSING_FLAGS = False
+WAFFLE_LOG_MISSING_FLAGS = None
+WAFFLE_CACHE_PREFIX = "numo9:waffle:"

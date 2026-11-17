@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:04-0500\n"
+"POT-Creation-Date: 2026-11-17 18:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2596,6 +2596,20 @@ msgstr "On ne peut pas se connecter en tant que membre du personnel de la platef
 msgid "You're already signed in as another user. End that session first."
 msgstr "Vous êtes déjà connecté en tant qu’un autre utilisateur. Terminez d’abord cette session."
 
+msgid "Use 2–100 lower-case letters, digits, dots, hyphens or underscores, starting with a letter (for example payroll.new_t4_screen)."
+msgstr "Utilisez de 2 à 100 lettres minuscules, chiffres, points, traits d’union ou traits de soulignement, en commençant par une lettre (par exemple payroll.new_t4_screen)."
+
+#, python-format
+msgid "A flag named %(name)s already exists. Open it to change who sees it."
+msgstr "Un indicateur nommé %(name)s existe déjà. Ouvrez-le pour changer qui le voit."
+
+msgid "Enter a percentage from 0 to 99.9, with at most one decimal (for example 12.5). To turn the flag on for everyone, choose On."
+msgstr "Entrez un pourcentage de 0 à 99,9, avec au plus une décimale (par exemple 12,5). Pour activer l’indicateur pour tout le monde, choisissez Activé."
+
+#, python-format
+msgid "%(value)s isn't a known %(name)s. Choose one from the list."
+msgstr "%(value)s n’est pas un(e) %(name)s connu(e). Choisissez dans la liste."
+
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
 
@@ -4520,6 +4534,24 @@ msgstr "session d’emprunt d’identité"
 msgid "impersonation sessions"
 msgstr "sessions d’emprunt d’identité"
 
+msgid "organisations"
+msgstr ""
+
+msgid "On for these organisations."
+msgstr "Activé pour ces organisations."
+
+msgid "practices"
+msgstr ""
+
+msgid "On for these practices (the acting practice, or one the user belongs to)."
+msgstr "Activé pour ces cabinets (le cabinet agissant, ou un cabinet dont l’utilisateur est membre)."
+
+msgid "feature flag"
+msgstr "indicateur de fonctionnalité"
+
+msgid "feature flags"
+msgstr "indicateurs de fonctionnalité"
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr "%(name)s demande un accès dans %(organisation)s"
@@ -4838,16 +4870,10 @@ msgstr ""
 msgid "practice admins must use two-factor authentication"
 msgstr "les administrateurs du cabinet doivent utiliser l’authentification à deux facteurs"
 
-msgid "practices"
-msgstr ""
-
 msgid "practice member"
 msgstr ""
 
 msgid "practice members"
-msgstr ""
-
-msgid "organisations"
 msgstr ""
 
 msgid "organisation member"

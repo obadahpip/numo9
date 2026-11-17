@@ -55,6 +55,10 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "platform.PlatformMetricDaily",
                 # Impersonation (U-06-T08): reviewed — staff sessions, read by the platform only.
                 "platform.ImpersonationSession",
+                # Feature flags (U-06-T12): reviewed — platform switches, no tenant data.
+                "platform.FeatureFlag",
+                "waffle.Switch",
+                "waffle.Sample",
                 # Packages (U-02-T02, T03, T06): reviewed — packages, prices, promo codes.
                 "packages.Package",
                 "packages.PackageProduct",

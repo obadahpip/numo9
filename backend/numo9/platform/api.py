@@ -24,7 +24,7 @@ from numo9.catalogue.drf import CORE
 from numo9.i18n import errors
 from numo9.i18n.errors import api_error
 from numo9.rbac.drf import AUTHENTICATED, requires_permission
-from numo9.rbac.permissions import CONSOLE_VIEW, IMPERSONATE
+from numo9.rbac.permissions import CONSOLE_VIEW, FLAGS_MANAGE, IMPERSONATE
 from numo9.rbac.resolver import platform_permissions
 from numo9.tenancy.models import OrganisationStatus
 
@@ -416,3 +416,146 @@ class ImpersonationEndView(APIView):
             ended = session
         request.session.pop(SESSION_KEY, None)
         return Response({"session": None, "ended": session_data(ended) if ended else None})
+
+
+# ---- feature flags (U-06-T12) ------------------------------------------------------------------
+
+
+FLAG_MODES = [("on", "on"), ("off", "off"), ("rules", "rules")]
+
+
+class FlagTargetSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+
+
+class FlagUserSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    email = serializers.CharField()
+
+
+class FeatureFlagSerializer(serializers.Serializer[Any]):
+    name = serializers.CharField()
+    note = serializers.CharField()
+    mode = serializers.ChoiceField(
+        choices=FLAG_MODES, help_text="on/off for everyone, or by the rules below"
+    )
+    percent = serializers.DecimalField(
+        max_digits=4, decimal_places=1, allow_null=True, help_text="Stable % of organisations"
+    )
+    organisations = FlagTargetSerializer(many=True)
+    practices = FlagTargetSerializer(many=True)
+    users = FlagUserSerializer(many=True)
+    updated_at = serializers.DateTimeField()
+
+
+class FeatureFlagListSerializer(serializers.Serializer[Any]):
+    flags = FeatureFlagSerializer(many=True)
+
+
+class FeatureFlagCreateSerializer(serializers.Serializer[Any]):
+    name = serializers.CharField(allow_blank=True)
+    note = serializers.CharField(required=False, allow_blank=True, max_length=1000)
+
+
+class FeatureFlagUpdateSerializer(serializers.Serializer[Any]):
+    mode = serializers.ChoiceField(choices=FLAG_MODES, required=False)
+    percent = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    note = serializers.CharField(required=False, allow_blank=True, max_length=1000)
+    organisations = serializers.ListField(child=serializers.CharField(), required=False)
+    practices = serializers.ListField(child=serializers.CharField(), required=False)
+
+
+class MeFlagsSerializer(serializers.Serializer[Any]):
+    flags = serializers.DictField(child=serializers.BooleanField())
+
+
+def _flag(name: str) -> Any:
+    from .models import FeatureFlag
+
+    flag = FeatureFlag.objects.filter(name=name).first()
+    if flag is None:
+        raise NotFound
+    return flag
+
+
+class PlatformFlagListView(APIView):
+    required_feature = CORE
+
+    @requires_permission(FLAGS_MANAGE.key)
+    @extend_schema(
+        operation_id="platform_flags_list",
+        summary="Every feature flag and who it is on for",
+        responses=FeatureFlagListSerializer,
+    )
+    def get(self, request: Request) -> Response:
+        from .flags import flag_data
+        from .models import FeatureFlag
+
+        rows = FeatureFlag.objects.prefetch_related("organisations", "practices", "users")
+        return Response({"flags": [flag_data(flag) for flag in rows]})
+
+    @requires_permission(FLAGS_MANAGE.key)
+    @extend_schema(
+        operation_id="platform_flags_create",
+        summary="Create a feature flag (off for everyone until changed)",
+        request=FeatureFlagCreateSerializer,
+        responses={201: FeatureFlagSerializer},
+    )
+    def post(self, request: Request) -> Response:
+        from .flags import create, flag_data
+
+        body = FeatureFlagCreateSerializer(data=request.data)
+        body.is_valid(raise_exception=True)
+        flag = create(
+            body.validated_data["name"], body.validated_data.get("note", ""), actor=request.user
+        )
+        return Response(flag_data(flag), status=201)
+
+
+class PlatformFlagDetailView(APIView):
+    required_feature = CORE
+
+    @requires_permission(FLAGS_MANAGE.key)
+    @extend_schema(
+        operation_id="platform_flags_update",
+        summary="Turn a flag on/off for everyone, or set its organisations, practices and %",
+        request=FeatureFlagUpdateSerializer,
+        responses=FeatureFlagSerializer,
+    )
+    def patch(self, request: Request, name: str) -> Response:
+        from .flags import flag_data, update
+
+        flag = _flag(name)
+        body = FeatureFlagUpdateSerializer(data=request.data, partial=True)
+        body.is_valid(raise_exception=True)
+        return Response(flag_data(update(flag, dict(body.validated_data), actor=request.user)))
+
+    @requires_permission(FLAGS_MANAGE.key)
+    @extend_schema(
+        operation_id="platform_flags_delete", summary="Delete a feature flag", responses={204: None}
+    )
+    def delete(self, request: Request, name: str) -> Response:
+        from .flags import delete
+
+        delete(_flag(name), actor=request.user)
+        return Response(status=204)
+
+
+class MeFlagsView(APIView):
+    """The feature flags for this request: the organisation (URL or ``X-Numo9-Org``), the acting
+    practice and the signed-in user."""
+
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)
+    @extend_schema(
+        operation_id="me_flags",
+        summary="Feature flags on or off for the signed-in user (and organisation)",
+        responses=MeFlagsSerializer,
+    )
+    def get(self, request: Request) -> Response:
+        from .flags import active_flags
+
+        return Response({"flags": active_flags(request._request)})
