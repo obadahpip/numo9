@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 324   Remaining: 2463   Progress: 11.63%
+TOTAL ATOMIC TASKS: 2787   Completed: 325   Remaining: 2462   Progress: 11.66%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -436,7 +436,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ V-03-T06 — Actions: group, tags, staff, settings, message (A-07), export (CSV/XLSX)
 ✅ V-03-T07 — APIs: create preview, confirm, cancel, status stream (SSE/polling), results CSV
 ✅ V-03-T08 — Selection model in directory (page + "all matching" by query)
-❌ V-03-T09 — Preview diff UI + confirm
+✅ V-03-T09 — Preview diff UI + confirm
 ❌ V-03-T10 — Progress drawer + results table
 ❌ V-03-T11 — Audit per org (actor, bulk_job_id)
 ❌ V-03-T12 — Load test: 200-org job completes, all rows have outcome

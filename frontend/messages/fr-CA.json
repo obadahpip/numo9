@@ -337,9 +337,77 @@
     },
     "actions": "Bulk actions",
     "allSelected": "{count, plural, one {The # organisation matching is selected} other {All # organisations matching are selected}}",
+    "apply": "{count, plural, one {Apply to # organisation} other {Apply to # organisations}}",
+    "back": "Back",
+    "cancel": "Cancel",
+    "choose": "Choose…",
     "clear": "Clear selection",
+    "close": "Close",
+    "col": {
+      "change": "Change",
+      "current": "Current",
+      "new": "New",
+      "organisation": "Organisation"
+    },
+    "dialogTitle": "{action} — {count, plural, one {# organisation} other {# organisations}}",
+    "failed": "We couldn't prepare the bulk action. Try again.",
+    "field": {
+      "addTags": "Add these tags",
+      "body": "Message",
+      "day": "Day",
+      "days": "Days or day",
+      "format": "File",
+      "group": "Group",
+      "member": "Staff member",
+      "mode": "How",
+      "month": "Month (1–12)",
+      "removeTags": "Remove these tags",
+      "setting": "Setting",
+      "subject": "Subject",
+      "termsType": "Due date"
+    },
+    "format": {
+      "csv": "CSV",
+      "xlsx": "Excel (XLSX)"
+    },
+    "messageHint": "Sent to each organisation's owners and admins, in the app and by email.",
+    "mode": {
+      "add": "Add (keep other groups)",
+      "assign": "Assign",
+      "move": "Move (leave other groups)",
+      "remove": "Remove from the group",
+      "unassign": "Unassign"
+    },
+    "noChange": "{count, plural, one {# no change} other {# no change}}",
+    "noTags": "The practice has no tags yet.",
+    "nothingYet": "Nothing has changed yet. Review the changes, then apply.",
+    "previewButton": "Preview changes",
     "selectAll": "{count, plural, one {Select the # organisation matching} other {Select all # matching}}",
-    "selectedPage": "{count, plural, one {# selected} other {# selected}}"
+    "selectedPage": "{count, plural, one {# selected} other {# selected}}",
+    "setting": {
+      "fiscalYearEnd": "Fiscal year end (only organisations without posted transactions)",
+      "purchaseTerms": "Default purchase terms",
+      "salesTerms": "Default sales terms",
+      "timeFormat": "Time format"
+    },
+    "showing": "Showing {shown} of {total}. The full list is in the results after applying.",
+    "skipped": "{count, plural, one {# skipped} other {# skipped}}",
+    "status": {
+      "change": "Will change",
+      "noChange": "No change",
+      "skipped": "Skipped"
+    },
+    "terms": {
+      "dayOfCurrentMonth": "of the current month",
+      "dayOfFollowingMonth": "of the following month",
+      "daysAfterDocument": "days after the document date",
+      "daysAfterMonthEnd": "days after the end of the document month"
+    },
+    "time": {
+      "h12": "12-hour (2:30 PM)",
+      "h24": "24-hour (14:30)"
+    },
+    "willChange": "{count, plural, one {# will change} other {# will change}}"
   },
   "catalogue": {
     "gated": {

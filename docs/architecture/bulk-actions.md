@@ -109,3 +109,15 @@ archived switch. `selectionBody()` sends the API `{"ids": [...]}` or `{"query": 
 matching* is evaluated again by the server, never as the browser's list of ids. Changing the
 search or a filter clears an "all matching" selection (it belonged to the old query); unticking a
 row turns it back into ticked ids. (The grouped view, V-02-T08, stays read-only.)
+
+## Preview and confirm UI (V-03-T09)
+
+`src/bulk/BulkActionDialog.tsx`, opened from the selection bar: **1 — parameters** for the
+action (group and how; tags to add / remove; staff member and assign/unassign — the list comes
+from `GET /api/v1/practice/staff`, V-05-T02; one safe setting and its value; subject and message;
+CSV or Excel), **2 — preview**: *Nothing has changed yet*, the server's counts (will change /
+no change / skipped), the diff table (organisation, change or the reason it is skipped, current →
+new per field) for the first 50 lines, "Showing 50 of 1,240". *Apply to N organisations*
+confirms the job (`POST …/confirm`) and hands it to the progress drawer; *Back* returns to the
+parameters. A refusal of the API (`bulk.bad_action`, `bulk.unsafe_setting`, …) is shown in the
+dialog.

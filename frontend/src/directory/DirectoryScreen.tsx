@@ -15,6 +15,8 @@ import { useLocale } from "next-intl";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { apiRequest } from "@/auth/client";
+import type { BulkJob } from "@/bulk/api";
+import { BulkActionDialog } from "@/bulk/BulkActionDialog";
 import { SelectionBar, type BulkActionKey } from "@/bulk/SelectionBar";
 import { EMPTY_SELECTION, type BulkSelection } from "@/bulk/selection";
 import { useFormatMessage, type FormatMessage } from "@/i18n";
@@ -170,6 +172,11 @@ export function DirectoryScreen({
   const [groupBy, setGroupBy] = useState<"" | "group">("");
   // V-03-T08: ticked rows, or every organisation matching (the server's query).
   const [selection, setSelection] = useState<BulkSelection>(EMPTY_SELECTION);
+  // V-03-T09/T10: the bulk action being prepared, then the job it started.
+  const [bulk, setBulk] = useState<{ action: BulkActionKey; selection: BulkSelection } | null>(
+    null,
+  );
+  const [bulkJob, setBulkJob] = useState<BulkJob | null>(null);
   const groupById = useId();
   const gridBox = useRef<HTMLDivElement>(null);
 
@@ -496,7 +503,11 @@ export function DirectoryScreen({
                         count: page?.count ?? rows.length,
                       })
                     }
-                    onAction={(action) => onBulkAction?.(action, selection)}
+                    onAction={(action) =>
+                      onBulkAction
+                        ? onBulkAction(action, selection)
+                        : setBulk({ action, selection })
+                    }
                   />
                 )}
                 data={rows}
@@ -586,6 +597,20 @@ export function DirectoryScreen({
           onCreated={(id) => go(orgModuleUrl(id, "home"))}
         />
       ) : null}
+      {bulk ? (
+        <BulkActionDialog
+          practice={practice}
+          action={bulk.action}
+          selection={bulk.selection}
+          onClose={() => setBulk(null)}
+          onStarted={(job) => {
+            setBulk(null);
+            setSelection(EMPTY_SELECTION);
+            setBulkJob(job);
+          }}
+        />
+      ) : null}
+      {bulkJob ? <span hidden data-bulk-job={bulkJob.id} /> : null}
     </div>
   );
 }
