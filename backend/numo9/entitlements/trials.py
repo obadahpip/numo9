@@ -26,6 +26,8 @@ from django.db import IntegrityError, transaction
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from numo9.jobs.queues import DEFAULT
+from numo9.jobs.runtime import platform_job
 from numo9.orgsettings.validators import luhn_valid
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import (
@@ -35,7 +37,14 @@ from numo9.tenancy.models import (
     OrganisationRole,
 )
 
-from .models import Subscription, SubscriptionStatus, TrialConfig, TrialRegistry
+from .models import (
+    StatusReason,
+    Subscription,
+    SubscriptionStatus,
+    TrialConfig,
+    TrialRegistry,
+    TrialReminder,
+)
 
 _BN = re.compile(r"^(\d{9})(?:(?:RT|RP|RC|RZ|RR|RM|RN|RD|RG)\d{4})?$")
 
@@ -240,3 +249,114 @@ def bn_entered(sender: Any, instance: Any, **kwargs: Any) -> None:
     number = instance.business_number  # the BN of a BN or program (RT, RP…) registration
     if number:
         claim_bn(instance.organisation, number)
+
+
+# ---- reminders (U-05-T07) ----------------------------------------------------------------------
+
+REMINDER_JOB = "numo9.entitlements.trial_reminders"
+
+
+def due_milestone(subscription: Subscription, now: dt.datetime) -> int | None:
+    """The reminder due now: 7, 3 or 1 days left (the latest one reached — a job that missed a
+    run sends only the current one), or 0 for a trial that ended. Days count on the
+    organisation's calendar."""
+    if subscription.status == SubscriptionStatus.TRIALING:
+        left = trial_days_left(subscription, now=now)
+        if left is None:
+            return None
+        for milestone in (1, 3, 7):
+            if 0 <= left <= milestone:
+                return milestone
+        return None
+    if (
+        subscription.status == SubscriptionStatus.READ_ONLY
+        and subscription.status_reason == StatusReason.TRIAL_ENDED
+    ):
+        return 0
+    return None
+
+
+def _owners(subscription: Subscription) -> list[Any]:
+    return [
+        member.user
+        for member in OrganisationMember.objects.filter(
+            organisation_id=subscription.organisation_id, role=OrganisationRole.OWNER
+        ).select_related("user")
+    ]
+
+
+def _send_reminder(subscription: Subscription, milestone: int) -> int:
+    from django.conf import settings
+
+    from numo9.notifications.catalogue import render_system
+    from numo9.notifications.mail import queue_email
+
+    organisation = subscription.organisation
+    zone = zoneinfo.ZoneInfo(organisation.time_zone or DEFAULT_TIME_ZONE)
+    ends = subscription.current_period_end
+    context = {
+        "organisation": organisation.name,
+        "days_left": milestone,
+        "ends_on": ends.astimezone(zone).date().isoformat() if ends else "",
+        "link": f"{settings.FRONTEND_URL}/o/{organisation.public_id}/settings/subscription",
+    }
+    owners = _owners(subscription)
+    for owner in owners:
+        email = render_system(
+            "trial_reminder",
+            context,
+            language=getattr(owner, "locale", None),
+            organisation=organisation,
+        )
+        queue_email(
+            owner.email,
+            email.subject,
+            email.text,
+            html=email.html,
+            recipient=owner,
+            organisation=organisation,
+            kind=f"trial.reminder.day{milestone}",
+            language=email.language,
+        )
+    return len(owners)
+
+
+def send_reminder(
+    subscription: Subscription, milestone: int, *, now: dt.datetime | None = None
+) -> bool:
+    """Send a milestone's reminder once; False when it was already sent."""
+    try:
+        with transaction.atomic(), org_context(subscription.organisation):
+            row = TrialReminder.objects.create(
+                organisation_id=subscription.organisation_id,
+                subscription=subscription,
+                milestone=milestone,
+                sent_at=now or timezone.now(),
+            )
+            row.recipients = _send_reminder(subscription, milestone)
+            row.save(update_fields=["recipients"])
+    except IntegrityError:
+        return False
+    return True
+
+
+def run_trial_reminders(now: dt.datetime | None = None) -> dict[str, int]:
+    """Send every due trial reminder (beat, hourly: organisations' days start at different UTC
+    hours). Idempotent: one email per milestone per trial."""
+    now = now or timezone.now()
+    sent = {str(m): 0 for m in TrialReminder.MILESTONES}
+    rows = Subscription._base_manager.filter(
+        deleted_at__isnull=True,
+        status__in=(SubscriptionStatus.TRIALING, SubscriptionStatus.READ_ONLY),
+        current_period_end__isnull=False,
+    ).select_related("organisation")
+    for subscription in rows:
+        milestone = due_milestone(subscription, now)
+        if milestone is not None and send_reminder(subscription, milestone, now=now):
+            sent[str(milestone)] += 1
+    return sent
+
+
+@platform_job(name=REMINDER_JOB, queue=DEFAULT)
+def trial_reminders_job() -> dict[str, int]:
+    return run_trial_reminders()

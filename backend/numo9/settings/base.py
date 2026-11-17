@@ -476,6 +476,12 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.billing.run_dunning",
         "schedule": crontab(minute="7,22,37,52"),
     },
+    # Free trial reminders (U-05-T07): 7, 3, 1 days before the end and when it ended — hourly,
+    # because organisations' days start at different UTC hours; once per milestone.
+    "numo9.entitlements.trial_reminders": {
+        "task": "numo9.entitlements.trial_reminders",
+        "schedule": crontab(minute=13),
+    },
     # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
     "numo9.billing.apply_changes": {
         "task": "numo9.billing.apply_changes",

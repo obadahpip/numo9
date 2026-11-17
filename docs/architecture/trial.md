@@ -72,3 +72,19 @@ with the same value are settled by the registry's unique indexes.
 | A BN entered after the trial started (`TaxRegistration` save) | checked then (`pre_save`): another organisation's trial with that BN → `ValidationError` `trial_already_used` (the settings API answers 400); otherwise stored on the trial |
 
 `backend/tests/test_trial_duplicates.py`.
+
+## Reminders (U-05-T07)
+
+The platform job `numo9.entitlements.trial_reminders` (beat **hourly** at :13 — organisations'
+days start at different UTC hours) emails each owner the `trial_reminder` system message (A-07,
+owner's language: organisation, days left, local end date, link to the subscription page):
+
+| Milestone | When |
+|---|---|
+| 7, 3, 1 | the trial has 7 / 3 / 1 days left or fewer, on the organisation's calendar (the latest one reached: a job that missed runs never sends a burst of old reminders) |
+| 0 | the trial ended (read-only, reason `trial_ended`) |
+
+`entitlements.TrialReminder` (unique per subscription and milestone) makes it idempotent: exactly
+one email per milestone per owner, however often or late the job runs. A converted trial (active)
+gets nothing more. `backend/tests/test_trial_reminders.py` — the job run every hour through a whole
+30-day Toronto trial across the DST change sends 7, 3, 1, 0 once each.

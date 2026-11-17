@@ -518,3 +518,38 @@ class TrialRegistry(models.Model):
 
     def __str__(self) -> str:
         return f"{self.organisation} · {self.started_at:%Y-%m-%d}"
+
+
+class TrialReminder(OrgOwnedModel):
+    """One trial reminder sent (U-05-T07): 7, 3 and 1 days before the trial ends and the day it
+    ended (0). Unique per subscription and milestone, so the reminder job is idempotent: running
+    it twice, or late, never sends a milestone twice."""
+
+    MILESTONES = (7, 3, 1, 0)
+
+    subscription = models.ForeignKey(
+        Subscription,
+        on_delete=models.PROTECT,
+        related_name="trial_reminders",
+        verbose_name=_("subscription"),
+    )
+    milestone = models.PositiveSmallIntegerField(_("days left"))
+    sent_at = models.DateTimeField(_("sent at"), default=timezone.now)
+    recipients = models.PositiveSmallIntegerField(_("recipients"), default=0)
+
+    class Meta:
+        ordering = ("subscription", "-milestone")
+        verbose_name = _("trial reminder")
+        verbose_name_plural = _("trial reminders")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("subscription", "milestone"), name="entitlements_trial_reminder_once"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(milestone__in=(7, 3, 1, 0)),
+                name="entitlements_trial_reminder_milestone",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.subscription} · {self.milestone} d"
