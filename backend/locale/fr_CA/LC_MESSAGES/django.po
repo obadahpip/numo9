@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:30-0500\n"
+"POT-Creation-Date: 2026-11-16 14:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1211,7 +1211,7 @@ msgid "archived at"
 msgstr "commencée le"
 
 msgid "name key"
-msgstr ""
+msgstr "clé du nom"
 
 msgid "The display name without case, accents and company forms (duplicates)."
 msgstr ""
@@ -1889,7 +1889,7 @@ msgid "tax year"
 msgstr "traitement des taxes"
 
 msgid "tags"
-msgstr ""
+msgstr "étiquettes"
 
 msgid "folder"
 msgstr ""
@@ -4657,6 +4657,37 @@ msgstr "Inviter le propriétaire d’une organisation cliente"
 msgid "change the practice's security settings"
 msgstr "modifier les paramètres de sécurité du cabinet"
 
+msgid "Give the group a name."
+msgstr "Donnez un nom au groupe."
+
+msgid "Use 80 characters or fewer."
+msgstr "Utilisez 80 caractères au plus."
+
+#, python-format
+msgid "There's already a group called %(name)s here."
+msgstr "Il y a déjà un groupe nommé %(name)s à cet endroit."
+
+#, python-format
+msgid "Groups can be %(max)d levels deep at most."
+msgstr "Les groupes peuvent compter %(max)d niveaux au plus."
+
+msgid "That group belongs to another practice."
+msgstr "Ce groupe appartient à un autre cabinet."
+
+msgid "A group can't move inside itself or one of its sub-groups."
+msgstr "Un groupe ne peut pas être déplacé dans lui-même ni dans l’un de ses sous-groupes."
+
+#, python-format
+msgid "%(organisation)s isn't a client of this practice."
+msgstr "%(organisation)s n’est pas un client de ce cabinet."
+
+#, python-format
+msgid "%(person)s isn't a member of this practice."
+msgstr "%(person)s n’est pas membre de ce cabinet."
+
+msgid "Choose a role for this group."
+msgstr "Choisissez un rôle pour ce groupe."
+
 msgid "Comfortable"
 msgstr "Confortable"
 
@@ -4729,8 +4760,97 @@ msgstr "vue de répertoire enregistrée"
 msgid "saved directory views"
 msgstr "vues de répertoire enregistrées"
 
+msgid "organisation group"
+msgstr "groupe d’organisations"
+
+msgid "organisation groups"
+msgstr "groupes d’organisations"
+
+msgid "group"
+msgstr ""
+
+msgid "added at"
+msgstr "ajoutée le"
+
+msgid "organisation in a group"
+msgstr "organisation dans un groupe"
+
+msgid "organisations in groups"
+msgstr "organisations dans des groupes"
+
+msgid "Red"
+msgstr "Rouge"
+
+msgid "Orange"
+msgstr "Orange"
+
+msgid "Amber"
+msgstr "Ambre"
+
+msgid "Olive"
+msgstr "Olive"
+
+msgid "Green"
+msgstr "Vert"
+
+msgid "Teal"
+msgstr "Sarcelle"
+
+msgid "Cyan"
+msgstr "Cyan"
+
+msgid "Blue"
+msgstr "Bleu"
+
+msgid "Indigo"
+msgstr "Indigo"
+
+msgid "Violet"
+msgstr "Violet"
+
+msgid "Magenta"
+msgstr "Magenta"
+
+msgid "Slate"
+msgstr "Ardoise"
+
+msgid "colour"
+msgstr "couleur"
+
+msgid "tag"
+msgstr "étiquette"
+
+msgid "organisation tag"
+msgstr "étiquette d’organisation"
+
+msgid "organisation tags"
+msgstr "étiquettes d’organisation"
+
+msgid "staff member"
+msgstr "membre du personnel"
+
+msgid "group staff assignment"
+msgstr "affectation au groupe"
+
+msgid "group staff assignments"
+msgstr "affectations aux groupes"
+
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"
+
+msgid "Give the tag a name."
+msgstr "Donnez un nom à l’étiquette."
+
+#, python-format
+msgid "Use %(max)d characters or fewer."
+msgstr "Utilisez %(max)d caractères au plus."
+
+msgid "Choose one of the 12 colours."
+msgstr "Choisissez l’une des 12 couleurs."
+
+#, python-format
+msgid "There's already a tag called %(name)s."
+msgstr "Il y a déjà une étiquette nommée %(name)s."
 
 #~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
 #~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."

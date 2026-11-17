@@ -27,13 +27,14 @@ the organisations the user may access in that practice (isolation tests:
 from __future__ import annotations
 
 import uuid
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
+from treebeard.mp_tree import MP_Node
 
 from numo9.tenancy.models import Organisation, Practice
 
@@ -196,3 +197,224 @@ class SavedView(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} · {self.practice} · {self.name}"
+
+
+# ---- groups (V-02) ---------------------------------------------------------------------------
+
+#: Deepest level of the group tree: a top-level group is depth 1 (V-02 business rule).
+GROUP_MAX_DEPTH = 5
+
+
+class OrgGroup(MP_Node):  # type: ignore[misc]
+    """A practice's group of client organisations (V-02-T02): "Toronto office → Retail clients".
+
+    A tree per practice, stored as a **materialised path** (``django-treebeard`` ``MP_Node``:
+    ``path``, ``depth``, ``numchild``) — reading a subtree or the ancestors is one indexed query and
+    a cycle can't be represented. Depth 1 to ``GROUP_MAX_DEPTH`` (5), also a database check.
+    Siblings are kept in name order; a name is unique among its siblings (case ignored). An
+    organisation can be in several groups (``OrgGroupMembership``). Practice data, not an
+    organisation's records: allow-listed like the practice memberships.
+    """
+
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    practice = models.ForeignKey(
+        Practice, on_delete=models.CASCADE, related_name="+", verbose_name=_("practice")
+    )
+    name = models.CharField(_("name"), max_length=80)
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    node_order_by: ClassVar[list[str]] = ["name"]
+
+    class Meta:
+        verbose_name = _("organisation group")
+        verbose_name_plural = _("organisation groups")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(depth__gte=1, depth__lte=GROUP_MAX_DEPTH),
+                name="workspace_group_max_depth",
+            ),
+            models.CheckConstraint(condition=~models.Q(name=""), name="workspace_group_name"),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("practice", "depth"), name="workspace_group_practice_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class OrgGroupMembership(models.Model):
+    """An organisation in a practice group (V-02-T02); in several groups at once if needed.
+
+    The organisation must be one the group's practice serves (``clean``); removing the practice's
+    assignment removes its memberships (V-02 edge case "org removed from practice").
+    """
+
+    group = models.ForeignKey(
+        OrgGroup, on_delete=models.CASCADE, related_name="memberships", verbose_name=_("group")
+    )
+    organisation = models.ForeignKey(
+        Organisation,
+        on_delete=models.CASCADE,
+        related_name="group_memberships",
+        verbose_name=_("organisation"),
+    )
+    added_at = models.DateTimeField(_("added at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("organisation in a group")
+        verbose_name_plural = _("organisations in groups")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("group", "organisation"), name="workspace_group_membership_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation} ∈ {self.group}"
+
+
+# ---- tags (V-02-T03) ---------------------------------------------------------------------------
+
+
+class TagColour(models.TextChoices):
+    """The 12-colour tag palette (V-02): each colour has a name; a tag always shows its name."""
+
+    RED = "red", _("Red")
+    ORANGE = "orange", _("Orange")
+    AMBER = "amber", _("Amber")
+    OLIVE = "olive", _("Olive")
+    GREEN = "green", _("Green")
+    TEAL = "teal", _("Teal")
+    CYAN = "cyan", _("Cyan")
+    BLUE = "blue", _("Blue")
+    INDIGO = "indigo", _("Indigo")
+    VIOLET = "violet", _("Violet")
+    MAGENTA = "magenta", _("Magenta")
+    SLATE = "slate", _("Slate")
+
+
+class Tag(models.Model):
+    """A practice's colour tag for its client organisations (V-02-T03): "Year-end soon".
+
+    Practice-scoped: another practice never sees it, even on the same client. ``name_key`` is the
+    name without case, accents and repeated spaces — unique per practice (database constraint), so
+    "Québec" and "quebec" are one tag.
+    """
+
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    practice = models.ForeignKey(
+        Practice, on_delete=models.CASCADE, related_name="+", verbose_name=_("practice")
+    )
+    name = models.CharField(_("name"), max_length=40)
+    name_key = models.CharField(_("name key"), max_length=40, editable=False)
+    colour = models.CharField(
+        _("colour"), max_length=10, choices=TagColour.choices, default=TagColour.SLATE
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        ordering = ("name_key",)
+        verbose_name = _("tag")
+        verbose_name_plural = _("tags")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("practice", "name_key"), name="workspace_tag_name_unique_per_practice"
+            ),
+            models.CheckConstraint(condition=~models.Q(name_key=""), name="workspace_tag_name"),
+            models.CheckConstraint(
+                condition=_in("colour", TagColour), name="workspace_tag_colour_valid"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        from .tags import tag_key
+
+        self.name = " ".join((self.name or "").split())
+        self.name_key = tag_key(self.name)
+        update_fields = kwargs.get("update_fields")
+        if update_fields is not None and "name" in update_fields:
+            kwargs["update_fields"] = [*update_fields, "name_key"]
+        super().save(*args, **kwargs)
+
+
+class OrgTag(models.Model):
+    """A tag on an organisation, in the tag's practice (V-02-T03)."""
+
+    tag = models.ForeignKey(
+        Tag, on_delete=models.CASCADE, related_name="assignments", verbose_name=_("tag")
+    )
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.CASCADE, related_name="+", verbose_name=_("organisation")
+    )
+    added_at = models.DateTimeField(_("added at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("organisation tag")
+        verbose_name_plural = _("organisation tags")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("tag", "organisation"), name="workspace_org_tag_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation} #{self.tag}"
+
+
+# ---- group staff (V-02-T04) --------------------------------------------------------------------
+
+
+class GroupStaffRole(models.TextChoices):
+    """The role a staff member works with in a group (practice admins see every client anyway)."""
+
+    ACCOUNTANT = "accountant", _("Accountant")
+    REVIEWER = "reviewer", _("Reviewer")
+    PAYROLL_SPECIALIST = "payroll_specialist", _("Payroll specialist")
+    READ_ONLY = "read_only", _("Read-only staff")
+
+
+class GroupStaffAssignment(models.Model):
+    """A practice member assigned to a group (V-02-T04): they work on every organisation in the
+    group and its sub-groups, including organisations added later (the access resolver, V-02-T05).
+
+    One row per group and member (unique); the member belongs to the group's practice. Removing the
+    row revokes what it granted (on the member's next request, V-02-T06); access through another
+    group or a direct assignment stays.
+    """
+
+    public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
+    group = models.ForeignKey(
+        OrgGroup, on_delete=models.CASCADE, related_name="staff", verbose_name=_("group")
+    )
+    practice_member = models.ForeignKey(
+        "tenancy.PracticeMember",
+        on_delete=models.PROTECT,
+        related_name="group_assignments",
+        verbose_name=_("staff member"),
+    )
+    role = models.CharField(
+        _("role"), max_length=32, choices=GroupStaffRole.choices, default=GroupStaffRole.ACCOUNTANT
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("group staff assignment")
+        verbose_name_plural = _("group staff assignments")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("group", "practice_member"), name="workspace_group_staff_unique"
+            ),
+            models.CheckConstraint(
+                condition=_in("role", GroupStaffRole), name="workspace_group_staff_role_valid"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.practice_member} → {self.group} ({self.role})"

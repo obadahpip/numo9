@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:30-0500\n"
+"POT-Creation-Date: 2026-11-16 14:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4388,6 +4388,37 @@ msgstr ""
 msgid "change the practice's security settings"
 msgstr ""
 
+msgid "Give the group a name."
+msgstr ""
+
+msgid "Use 80 characters or fewer."
+msgstr ""
+
+#, python-format
+msgid "There's already a group called %(name)s here."
+msgstr ""
+
+#, python-format
+msgid "Groups can be %(max)d levels deep at most."
+msgstr ""
+
+msgid "That group belongs to another practice."
+msgstr ""
+
+msgid "A group can't move inside itself or one of its sub-groups."
+msgstr ""
+
+#, python-format
+msgid "%(organisation)s isn't a client of this practice."
+msgstr ""
+
+#, python-format
+msgid "%(person)s isn't a member of this practice."
+msgstr ""
+
+msgid "Choose a role for this group."
+msgstr ""
+
 msgid "Comfortable"
 msgstr ""
 
@@ -4460,5 +4491,94 @@ msgstr ""
 msgid "saved directory views"
 msgstr ""
 
+msgid "organisation group"
+msgstr ""
+
+msgid "organisation groups"
+msgstr ""
+
+msgid "group"
+msgstr ""
+
+msgid "added at"
+msgstr ""
+
+msgid "organisation in a group"
+msgstr ""
+
+msgid "organisations in groups"
+msgstr ""
+
+msgid "Red"
+msgstr ""
+
+msgid "Orange"
+msgstr ""
+
+msgid "Amber"
+msgstr ""
+
+msgid "Olive"
+msgstr ""
+
+msgid "Green"
+msgstr ""
+
+msgid "Teal"
+msgstr ""
+
+msgid "Cyan"
+msgstr ""
+
+msgid "Blue"
+msgstr ""
+
+msgid "Indigo"
+msgstr ""
+
+msgid "Violet"
+msgstr ""
+
+msgid "Magenta"
+msgstr ""
+
+msgid "Slate"
+msgstr ""
+
+msgid "colour"
+msgstr ""
+
+msgid "tag"
+msgstr ""
+
+msgid "organisation tag"
+msgstr ""
+
+msgid "organisation tags"
+msgstr ""
+
+msgid "staff member"
+msgstr ""
+
+msgid "group staff assignment"
+msgstr ""
+
+msgid "group staff assignments"
+msgstr ""
+
 msgid "See the practice's client organisations in the directory"
+msgstr ""
+
+msgid "Give the tag a name."
+msgstr ""
+
+#, python-format
+msgid "Use %(max)d characters or fewer."
+msgstr ""
+
+msgid "Choose one of the 12 colours."
+msgstr ""
+
+#, python-format
+msgid "There's already a tag called %(name)s."
 msgstr ""

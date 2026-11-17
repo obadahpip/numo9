@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 274   Remaining: 2513   Progress: 9.83%
+TOTAL ATOMIC TASKS: 2787   Completed: 279   Remaining: 2508   Progress: 10.01%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -378,11 +378,11 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-01-T12 — In-app "Package & features" page (searchable matrix, grouped, ticks per package, highlights current package)
 
 [V-02]
-❌ V-02-T01 — Wireframes: group tree, tag picker, group staff panel
-❌ V-02-T02 — OrgGroup tree model (treebeard MP_Node, practice FK) + OrgGroupMembership
-❌ V-02-T03 — Tag + OrgTag models (practice-scoped, colour enum)
-❌ V-02-T04 — GroupStaffAssignment (group, practice_member, role)
-❌ V-02-T05 — Effective-access resolver update in A-01 scoping (direct ∪ group ∪ ancestors), cached per user
+✅ V-02-T01 — Wireframes: group tree, tag picker, group staff panel
+✅ V-02-T02 — OrgGroup tree model (treebeard MP_Node, practice FK) + OrgGroupMembership
+✅ V-02-T03 — Tag + OrgTag models (practice-scoped, colour enum)
+✅ V-02-T04 — GroupStaffAssignment (group, practice_member, role)
+✅ V-02-T05 — Effective-access resolver update in A-01 scoping (direct ∪ group ∪ ancestors), cached per user
 ❌ V-02-T06 — Cache invalidation on any membership/assignment change
 ❌ V-02-T07 — APIs: groups CRUD/move, tags CRUD, assign orgs, assign staff
 ❌ V-02-T08 — Directory "group by" + group filter + tag filter (V-01 extension)

@@ -53,6 +53,11 @@ module = ["anymail", "anymail.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
+# django-treebeard ships no type information (V-02-T02).
+module = ["treebeard", "treebeard.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # Celery ships no type information (A-08-T01).
 module = ["celery", "celery.*"]
 ignore_missing_imports = true

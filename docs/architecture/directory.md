@@ -150,3 +150,79 @@ saved view after logout/login, keyboard-only flow, axe; `@visual` snapshots of t
 | V-03 bulk actions | "Select all matching" sends the same query parameters (`api.parse_directory_params`) to the server |
 | V-04 dashboards | Widgets return directory filter parameters for drill-down |
 | G (GST/HST), D/E (invoices), K (filings) | `register_summary_provider` returning `gst_cycle`, `overdue_count`, `unfiled_count`, then `schedule_refresh(org)` on their own changes |
+
+## Groups (V-02-T02)
+
+`workspace.OrgGroup` — a practice's tree of groups of client organisations ("Toronto office →
+Retail clients"), stored as a **materialised path** (`django-treebeard` `MP_Node`: `path`,
+`depth`, `numchild`): a subtree or the ancestors are one indexed query, and a cycle can't be
+represented. `workspace.OrgGroupMembership` files an organisation in a group (unique per group;
+an organisation can be in several groups). Both are practice data (allow-listed in
+`numo9.tenancy.checks`), never an organisation's records.
+
+`numo9.workspace.groups` — `create_group(practice, name, parent=None)`, `rename_group`,
+`move_group(group, parent | None)` (with its sub-groups), `add_organisation` /
+`remove_organisation`, `groups_of(practice)` (tree order). Refusals are `GroupError` with a code:
+
+| Code | Rule |
+|---|---|
+| `workspace.group.too_deep` | Depth 1–5: a sixth level, or a move that would put the moved subtree's deepest group at level 6. The database checks it too (`workspace_group_max_depth`) |
+| `workspace.group.into_itself` | Not inside itself or one of its sub-groups |
+| `workspace.group.other_practice` | Parent from the same practice only |
+| `workspace.group.name_taken` | Unique among siblings, case and accents ignored (the same name under another parent is fine) |
+| `workspace.group.name_required` / `name_long` | 1–80 characters |
+| `workspace.group.not_served` | Only organisations the practice actively serves |
+
+When a practice stops serving an organisation (assignment switched off or deleted) its
+memberships in that practice's groups are removed; other practices' groups keep theirs.
+
+## Tags (V-02-T03)
+
+`workspace.Tag` — a practice's colour label for its client organisations ("Year-end soon"):
+`name` (1–40 characters), `name_key` (the name without case, accents and repeated spaces —
+**unique per practice**, database constraint `workspace_tag_name_unique_per_practice`), `colour`
+from the 12-colour palette `TagColour` (red, orange, amber, olive, green, teal, cyan, blue, indigo,
+violet, magenta, slate — each named; a tag always shows its name, never colour alone).
+`workspace.OrgTag` puts a tag on an organisation (once). Practice data: another practice never
+sees these tags, even on the same client.
+
+`numo9.workspace.tags` — `create_tag`, `rename_tag`, `recolour_tag`, `tag_organisation`,
+`untag_organisation`, `tags_of(practice, organisation)`; refusals `TagError`:
+`workspace.tag.name_taken`, `name_required`, `name_long`, `colour`, `not_served` (only the
+practice's clients). When a practice stops serving an organisation its tags on it are removed.
+
+## Group staff (V-02-T04)
+
+`workspace.GroupStaffAssignment` — a practice member assigned to a group with a role
+(`GroupStaffRole`: accountant, reviewer, payroll specialist, read-only — practice admins see every
+client already). **One row per group and member** (`workspace_group_staff_unique`): assigning again
+changes the role. The member must belong to the group's practice
+(`workspace.group.staff_other_practice`). Deleting a group removes its staff rows; a member who
+still has group assignments can't be deleted (practice records are never cascade-deleted).
+`numo9.workspace.groups.assign_staff(group, member, role)` / `unassign_staff(group, member)`.
+
+The assignment grants access to every organisation of the group and of its sub-groups, including
+organisations added later — the access resolver (V-02-T05) reads it; revocation applies on the
+member's next request (V-02-T06).
+
+## Access through groups (V-02-T05)
+
+The A-01 resolver (`numo9.tenancy.access`) now grants an organisation to a user who is a member,
+a practice admin of a practice actively serving it, its assigned staff — **or** assigned to a
+practice group that holds it: the group itself **or any of its descendants** ("Toronto office"
+covers "Toronto office → Retail clients"), as long as the group's practice still actively serves
+the organisation. Organisations filed later are reachable at once.
+
+The group part is an access source the workspace app registers
+(`tenancy.access.register_access_source`), so `accessible_organisations` and `can_access` — every
+organisation-scoped request and the organisation list — include it.
+`numo9.workspace.access.group_organisation_ids(user)` is one query (materialised paths: "path
+starts with an assigned group's path") **cached per user** (`access:groups:<user>:<generation>`).
+The generation is bumped — at once and again at commit — on any save or delete of a group,
+membership, group staff assignment, practice assignment or practice member, and after every group
+move (paths change with raw SQL): a revocation applies on the next request (V-02-T06 adds the
+integration tests per change).
+
+`backend/tests/test_workspace_group_access.py` — Hypothesis: random trees (depth ≤ 5), filings,
+group staff, direct staff, practice admins and assignments switched off; the resolver equals a
+brute-force model of the rule for every user and organisation.

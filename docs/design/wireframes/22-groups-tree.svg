@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Groups &amp; tags — group tree with move by drag or keyboard (V-02)">
+<title>Numo9 wireframe — Groups &amp; tags — group tree with move by drag or keyboard (V-02)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="260" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Directory</text>
+<text x="396" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Dashboard</text>
+<text x="532" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Groups &amp; tags</text>
+<rect x="532" y="52" width="104" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="684" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<rect x="928" y="12" width="240" height="32" rx="6" fill="#1F2329" stroke="#2B3038" stroke-width="1"/>
+<text x="940" y="33" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Go to organisation…   Ctrl+K</text>
+<rect x="1392" y="12" width="32" height="32" rx="16" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="1408" y="33" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">OA</text>
+<rect x="0" y="56" width="320" height="844" rx="0" fill="#FAFAFB" stroke="#EBEDF0" stroke-width="1"/>
+<text x="20" y="84" font-size="11" fill="#5B6472" font-weight="700" text-anchor="start">GROUPS</text>
+<rect x="220" y="68" width="88" height="26" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="264" y="86" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">+ New group</text>
+<circle cx="300" cy="66" r="10" fill="#B42318"/>
+<text x="300" y="70" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<text x="20" y="124" font-size="13" fill="#111111" font-weight="500" text-anchor="start">  All organisations</text>
+<text x="300" y="124" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">142</text>
+<text x="20" y="158" font-size="13" fill="#111111" font-weight="500" text-anchor="start">▾ Toronto office</text>
+<text x="300" y="158" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">61</text>
+<rect x="8" y="172" width="304" height="30" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<rect x="8" y="172" width="3" height="30" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="38" y="192" font-size="13" fill="#111111" font-weight="600" text-anchor="start">▾ Retail clients</text>
+<text x="300" y="192" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">24</text>
+<text x="56" y="226" font-size="13" fill="#111111" font-weight="500" text-anchor="start">  Grocery</text>
+<text x="300" y="226" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">9</text>
+<text x="38" y="260" font-size="13" fill="#111111" font-weight="500" text-anchor="start">▾ Professional services</text>
+<text x="300" y="260" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">37</text>
+<text x="20" y="294" font-size="13" fill="#111111" font-weight="500" text-anchor="start">▾ Montréal office</text>
+<text x="300" y="294" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">48</text>
+<text x="38" y="328" font-size="13" fill="#111111" font-weight="500" text-anchor="start">▾ Restaurants</text>
+<text x="300" y="328" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">18</text>
+<text x="20" y="362" font-size="13" fill="#111111" font-weight="500" text-anchor="start">  No group</text>
+<text x="300" y="362" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">33</text>
+<rect x="24" y="382" width="272" height="40" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="36" y="407" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">⠿ Drag a group onto another to move it</text>
+<circle cx="300" cy="380" r="10" fill="#B42318"/>
+<text x="300" y="384" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<text x="340" y="92" font-size="20" fill="#111111" font-weight="700" text-anchor="start">Retail clients</text>
+<text x="340" y="114" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Toronto office › Retail clients · 24 organisations · 2 sub-groups</text>
+<rect x="1180" y="74" width="116" height="32" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="1238" y="95" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Move to…</text>
+<rect x="1306" y="74" width="116" height="32" rx="6" fill="#FFFFFF" stroke="#B42318" stroke-width="1"/>
+<text x="1364" y="95" font-size="13" fill="#B42318" font-weight="600" text-anchor="middle">Delete group</text>
+<circle cx="1172" cy="72" r="10" fill="#B42318"/>
+<text x="1172" y="76" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<rect x="1040" y="116" width="382" height="230" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="1056" y="142" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Move “Retail clients” to…</text>
+<rect x="1056" y="154" width="350" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1068" y="176" font-size="13" fill="#A3A9B3" font-weight="400" text-anchor="start">Search groups</text>
+<text x="1068" y="217" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Top level</text>
+<text x="1068" y="249" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Toronto office</text>
+<text x="1396" y="249" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">current</text>
+<rect x="1056" y="262" width="350" height="28" rx="6" fill="#FFFBE6" stroke="#FFFBE6" stroke-width="1"/>
+<text x="1068" y="281" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Montréal office</text>
+<text x="1068" y="313" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Professional services</text>
+<text x="1056" y="334" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">↑/↓ choose · Enter move · Esc cancel · max depth 5</text>
+<text x="340" y="380" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Organisations in this group</text>
+<rect x="340" y="392" width="1080" height="36" rx="0" fill="#F5F6F8" stroke="#EBEDF0" stroke-width="1"/>
+<text x="356" y="415" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Organisation</text>
+<text x="640" y="415" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Province</text>
+<text x="760" y="415" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Package</text>
+<text x="900" y="415" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Groups</text>
+<text x="1140" y="415" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Tags</text>
+<rect x="340" y="428" width="1080" height="44" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="356" y="455" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Maple Leaf Supply Ltd.</text>
+<text x="640" y="455" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ON</text>
+<text x="760" y="455" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Growth</text>
+<text x="900" y="455" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Retail clients, Payroll clients</text>
+<rect x="1140" y="439" width="121" height="22" rx="11" fill="#B42318" stroke="#B42318" stroke-width="1"/>
+<circle cx="1151" cy="450" r="4" fill="#FFFFFF"/>
+<text x="1160" y="454" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="start">Year-end soon</text>
+<rect x="340" y="472" width="1080" height="44" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="356" y="499" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Érable Distribution inc.</text>
+<text x="640" y="499" font-size="13" fill="#111111" font-weight="400" text-anchor="start">QC</text>
+<text x="760" y="499" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Complete</text>
+<text x="900" y="499" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Retail clients</text>
+<rect x="1140" y="483" width="72" height="22" rx="11" fill="#6941C6" stroke="#6941C6" stroke-width="1"/>
+<circle cx="1151" cy="494" r="4" fill="#FFFFFF"/>
+<text x="1160" y="498" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="start">Quebec</text>
+<rect x="1218" y="483" width="79" height="22" rx="11" fill="#175CD3" stroke="#175CD3" stroke-width="1"/>
+<circle cx="1229" cy="494" r="4" fill="#FFFFFF"/>
+<text x="1238" y="498" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="start">Payroll</text>
+<rect x="340" y="516" width="1080" height="44" rx="0" fill="#FFFFFF" stroke="#EBEDF0" stroke-width="1"/>
+<text x="356" y="543" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Northern Grocers Co-op</text>
+<text x="640" y="543" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ON</text>
+<text x="760" y="543" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Essentials</text>
+<text x="900" y="543" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Grocery</text>
+<rect x="1140" y="527" width="51" height="22" rx="11" fill="#067647" stroke="#067647" stroke-width="1"/>
+<circle cx="1151" cy="538" r="4" fill="#FFFFFF"/>
+<text x="1160" y="542" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="start">VIP</text>
+<circle cx="1132" cy="392" r="10" fill="#B42318"/>
+<text x="1132" y="396" font-size="11" fill="#FFFFFF" font-weight="700" text-anchor="middle">4</text>
+<text x="340" y="600" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Empty group: “No organisations in this group yet. Add some from the directory (bulk action ‘Add to group’).”</text>
+</svg>

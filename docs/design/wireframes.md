@@ -37,6 +37,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 18 | Import contacts — 2 Map columns | B-03-T03, T12 | Auto-suggested field per column with sample values and match confidence (EN/FR headers), match keys (External ID → number → opt-in BN, never name), save mapping |
 | 19 | Import contacts — 3 Review (dry run) | B-03-T07, T12 | Counts (new / updated / unchanged / errors), filter tabs, per-row action and changed fields, duplicates within the file, errors CSV |
 | 20 | Import contacts — 4 Import | B-03-T08, T12 | Background job with progress, job tray, result with links, re-import = 0 changes, failure and retry |
+| 21 | Groups & tags — group tree | V-02-T09 | Left-rail tree with counts, New group, drag to move, keyboard "Move to…" (max depth 5), organisations of the group with group and tag columns |
+| 22 | Tag picker | V-02-T10 | Type-to-filter, apply/remove, type-to-create, 12-colour palette named (never colour alone), unique names per practice |
+| 23 | Group staff panel + delete-group dialog | V-02-T07, T11 | Staff and role per group, inherited access shown, add/remove, delete dialog with affected organisations and staff counts |
 
 ## 1. Application shell
 
@@ -316,3 +319,35 @@ old system with French headers, saved in Windows-1252.
 | 4 | Result | Created / updated / unchanged / skipped counts; every change is in the audit log with the file name and row number |
 | 5 | Next actions | Open the created or updated contacts (filtered list), download the errors CSV, import another file. Re-importing the same file shows 0 new and 0 updated (gap-21) |
 | 6 | Failure | If the job stops, the message says which rows were saved; Try again re-runs the dry run so saved rows show as unchanged |
+
+## 21. Groups & tags — group tree (V-02-T01)
+
+![Groups and tags — group tree](wireframes/22-groups-tree.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | New group | Creates a group at the top level or, with a group selected, inside it; name required, unique among its siblings |
+| 2 | Tree | Practice-scoped groups with organisation counts ("All organisations" and "No group" are views, not groups); drag a group onto another to move it with its sub-groups; a group can't go inside itself; depth 5 at most |
+| 3 | Move to… | The keyboard alternative to dragging: search groups, `↑/↓` choose, `Enter` move, `Esc` cancel; the current parent is marked; refused moves say why (depth 5, inside itself) |
+| 4 | Organisations of the group | The directory grid (V-01) filtered to the group, with Groups and Tags columns; an organisation can be in several groups |
+
+## 22. Tag picker (V-02-T01)
+
+![Tag picker](wireframes/23-tag-picker.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Search | Opens from "+ Tag" on a row (or the bulk bar); typing filters the practice's tags; `Space` toggles one |
+| 2 | Create | When no tag has the typed name: "Create tag “…”" — created and applied in one step (`Enter`) |
+| 3 | Colour | 12 accessible colours, each with its name; a tag always shows its name next to the colour (never colour alone); names are unique per practice, case and accents ignored |
+
+## 23. Group staff panel and delete-group dialog (V-02-T01)
+
+![Group staff panel and delete-group dialog](wireframes/24-group-staff.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Group staff | Staff assigned to a group can open every organisation in it and its sub-groups, including organisations added later; one role per person per group |
+| 2 | Inherited access | "Access comes from" names the group that grants it; inherited rows (from a parent group) are changed on that group |
+| 3 | Delete group | Practice admins only; the dialog counts what changes — organisations leaving the group (they stay in the practice), sub-groups moving up, staff assignments removed and the organisations people lose access to (those they can't reach another way); typed confirmation |
+

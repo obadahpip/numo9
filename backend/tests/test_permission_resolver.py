@@ -227,6 +227,7 @@ def test_cached_within_a_request_only(world: dict[str, Any]) -> None:
 def test_without_a_cache_every_check_reads_the_database(world: dict[str, Any]) -> None:
     org = world["org"]
     user = member(org, "admin", "admin2@maple.ca")
+    has_perm(user, org, VIEW)  # warms the per-user group-access cache (V-02-T05), not this one
     with CaptureQueriesContext(connection) as queries:
         has_perm(user, org, VIEW)
     first = len(queries)
