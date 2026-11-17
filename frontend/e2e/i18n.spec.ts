@@ -5,12 +5,13 @@ import { expect, test } from "@playwright/test";
  * the pseudo-locale en-XA (+30 % accented text) without clipped or overflowing layouts at 360 and
  * 1280 px (Phase 0 plan §3.6).
  */
-const PAGE = "/o/acme/settings/lock-dates";
+// A registry placeholder page (Lock dates has its own screen since A-05-T13).
+const PAGE = "/o/acme/settings/numbering";
 
 test("default locale is en-CA", async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator("html")).toHaveAttribute("lang", "en-CA");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Settings: Lock dates");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Settings: Numbering");
 });
 
 test("French from Accept-Language or the locale cookie", async ({ browser, baseURL }) => {

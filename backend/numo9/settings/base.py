@@ -163,6 +163,9 @@ SPECTACULAR_SETTINGS = {
         "ProductKindEnum": "numo9.catalogue.models.ProductKind",  # U-01-T09
         "ProductStatusEnum": "numo9.catalogue.models.ProductStatus",  # U-01-T09
         "PackageStatusEnum": "numo9.packages.models.PackageStatus",  # U-02-T07
+        "ApprovalDocTypeEnum": "numo9.rbac.models.ApprovalDocumentType",  # A-03-T09
+        "NumberingDocTypeEnum": "numo9.orgsettings.models.DocType",  # A-05-T09
+        "TermsTypeEnum": "numo9.orgsettings.models.TermsType",  # A-05-T09
         "BillingIntervalEnum": "numo9.packages.models.BillingInterval",  # U-02-T07
         "PromoKindEnum": "numo9.packages.models.PromoKind",  # U-02-T07
         "PromoDurationEnum": "numo9.packages.models.PromoDuration",  # U-02-T07

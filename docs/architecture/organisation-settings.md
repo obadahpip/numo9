@@ -130,6 +130,53 @@ both one row each. Rules (codes `orgsettings.lock.*`):
   old → new `date` and `reason` and its author or `System: <job>`; the record history drawer
   (A-04-T10) reads it (`object_type = orgsettings.LockDate`, `object_id` = the lock's public id).
 
+## Lock service (A-05-T05)
+
+`numo9.orgsettings.locks`: `check_lock(organisation, module, date, user)` → `LockViolation(module,
+level, date)` or `None`; `assert_not_locked(...)` raises `LockedPeriod` — HTTP **409**,
+`{"detail": "The Sales and accounts receivable lock date is 2026-03-31 (everyone): changes dated
+on or before it are refused. Date it after 2026-03-31, or ask someone who manages lock dates.",
+"code": "lock.violation", "lock": {"module", "level", "date"}}`.
+
+| Rule | |
+|---|---|
+| On or before | a change dated on or before the lock date is refused; after it is allowed |
+| Organisation-local | a date-time is converted to the organisation's time zone first (22:30 on 31 March in Toronto is the 31st, even though it is 1 April in UTC) |
+| Levels | `everyone` stops everybody; `advisers_only` stops everybody except **advisers** — staff of a practice actively assigned to the organisation, with access to it, as practice admin, accountant, reviewer or payroll specialist (read-only staff are not advisers). A system change (no user) is stopped like everyone |
+| GL applies everywhere | a module's own lock **and** the GL lock apply; when both stop the change, the module's own lock is named |
+| No caching | every check reads the database — a lock set a moment ago applies at once |
+
+Tests: `backend/tests/test_orgsettings_lock_service.py` (incl. a property test: refused ⇔ date ≤ lock).
+
+### Hooks: posting engine and document save (A-05-T06)
+
+`numo9.orgsettings.locks.LockGuardMixin` — a model declares `lock_module` and `lock_date_field`
+(and, if not every save counts, `lock_applies(stored)`): saving checks the **new** date and, when
+an existing record's date changes, the **old** one (moving a document out of a locked period is a
+change in that period); deleting checks the stored date. The person is the audit context's (the
+request's user; a system job is stopped like everyone).
+
+- **Journal entries** (C-02): `lock_module = "gl"`; the check runs when an entry **becomes
+  posted** — a draft dated in a locked period may be kept and edited but not posted; Posted →
+  Reversed (status only) is allowed, the reversal being a new entry checked on its own date.
+- **Documents** (invoices, bills… as modules arrive): the same mixin with their module (`ar`,
+  `ap`, …); drafts usually don't count (`lock_applies`).
+
+Tests: `backend/tests/test_orgsettings_lock_hooks.py`.
+
+### Lock impact preview (A-05-T07) [EXTRA]
+
+`GET /api/v1/o/<org>/settings/lock-dates/impact?module=gl&date=2026-03-31`
+(`organisation.settings.manage`) → `{"module", "date", "items": [{"module", "kind", "label",
+"count"}], "total"}`: the records **not yet posted** dated on or before the date — after locking
+they can't be posted without moving the lock back. Sources register with
+`numo9.orgsettings.impact.register_impact(module, kind, label, count)`; Phase 0 has `gl` /
+`journals` (draft or awaiting approval); AR, AP, bank, payroll and tax add theirs as they arrive.
+A module's preview lists its own sources; the GL preview lists **every** module's (the GL lock
+stops them all).
+
+Tests: `backend/tests/test_orgsettings_lock_impact.py`.
+
 ## Numbering (A-05-T08)
 
 `NumberingSequence(doc_type, prefix, next_number, padding)` — one per organisation and document
@@ -174,6 +221,27 @@ sequenceDiagram
   `orgsettings.numberingsequence.updated` event; allocations are not (the document's own creation
   is). Lowering `next_number` is allowed (a typo can be fixed); documents keep their own unique
   number constraint (D-03).
+
+## Settings API (A-05-T09)
+
+Under `/api/v1/o/<org>/` — reading `organisation.profile.view` (every role), changing
+`organisation.settings.manage` (owners, admins); feature `CORE`. Models validate and audit every
+change; their errors come back as **400** with the field and the message (e.g. a numeric-only
+legal name, an invalid BN, a lock moved back without a reason, levels out of order). OpenAPI
+operation ids `settings_*` (`/api/schema/`).
+
+| Method and path | What |
+|---|---|
+| `GET / PATCH settings` | The organisation settings (A-05-T01); `base_currency` is CAD, read-only; `printed_name` read-only |
+| `GET / POST settings/registrations` | Tax registrations (A-05-T03); 201 on add |
+| `GET / PATCH / DELETE settings/registrations/<id>` | One registration; DELETE is a soft delete (204); another organisation's id is 404 |
+| `GET settings/lock-dates` | Every module × level: `[{module, module_label, advisers_only: {date, reason, updated_at}, everyone: {…}}]` |
+| `PATCH settings/lock-dates` | `{module, level, date | null, reason}` — set, move or remove one lock; answers the whole matrix |
+| `GET settings/lock-dates/impact?module=&date=` | Impact preview (A-05-T07) |
+| `GET settings/numbering` | Every document type's sequence: `doc_type`, `prefix`, `next_number`, `padding`, `preview` |
+| `PATCH settings/numbering` | `{doc_type, prefix?, next_number?, padding?}` |
+
+Tests: `backend/tests/test_orgsettings_api.py`.
 
 ## Settings shell and module gears (A-05-T10, gap-03)
 
@@ -220,6 +288,52 @@ the full navigation and itself marked; clicking through the navigation lands on 
 section and no two modules share one generic page. Unit: `SettingsNav.test.tsx`,
 `AppShell.test.tsx`.
 
+## General settings page (A-05-T11)
+
+Settings → General (`/o/:org/settings/general`, `frontend/src/settings/general/`): organisation
+(display and legal name, industry, business structure), **mailing address** (street, city,
+**Province picker** — provinces and territories grouped, in the reader's language — and
+**Postal code** masked to `A1A 1A1` as typed), contact (telephone, email, website), **fiscal
+year end** (month, day) and **time zone** (Canadian zones); base currency shown read-only (CAD).
+Client rules show under the field before any request (display name required, postal code
+format, day 1–31, email shape); the server's rules come back on the field from the 400
+(numeric-only legal name, postal code ↔ province…). Form kit: error summary, sticky save bar,
+unsaved-changes guard.
+
+Tests: `frontend/e2e/settings-general.spec.ts`.
+
+## Tax registrations page (A-05-T12, gap-39)
+
+Settings → Tax registrations (`/o/:org/settings/registrations`): the **one** page for every
+statutory number — BN, its program accounts (RT, RP, RC) and provincial numbers (QST, PST BC/SK,
+RST MB). A repeater: one editable row per registration (type, number, effective from / to,
+status), saved on its own with the server's rules shown on the row's field (BN check digit,
+BN ↔ program account, overlapping periods), removed (soft), and a **History** drawer per row
+(A-04-T10, `orgsettings.TaxRegistration`). No other page edits tax registrations (until G-06
+extends this page with sales-tax settings).
+
+Tests: `frontend/e2e/settings-registrations.spec.ts`.
+
+## Lock dates page (A-05-T13, flow F6)
+
+Settings → Lock dates (`/o/:org/settings/lock-dates`): a matrix of the six modules × the two
+levels (*Everyone except advisers*, *Everyone*); each cell shows its date or "Not locked" (the
+button's accessible name starts with that text). Choosing a cell opens a dialog with:
+
+- the **date** (empty = remove the lock);
+- the **impact preview** (A-05-T07), refreshed as the date changes: "3 records not posted are
+  dated on or before 2026-06-30: after locking, they can't be posted unless the lock moves
+  back", with the count per source;
+- the **reason**, required (client and server) when the lock moves back or is removed.
+
+Saving updates the matrix and announces it; the server's rules (e.g. the *everyone* lock later
+than the *advisers* lock) show in the dialog. The organisation's **other owners and admins are
+notified** (event `settings.lock_changed`, category *Account and system*, link to the page) —
+flow F6's "notification to org admins"; the audit entry comes from the model (A-05-T04).
+
+Tests: `frontend/e2e/settings-lock-dates.spec.ts`, `backend/tests/test_orgsettings_api.py`
+(`test_lock_change_notifies_the_admins`).
+
 ## Attribution: no silent system change (A-05-T14, gap-44)
 
 Every settings record — `OrganisationSettings`, `TaxRegistration`, `LockDate`,
@@ -238,3 +352,19 @@ settings. It proves that
 - the CSV export prints it with a real 12-hour (`p.m.`) or 24-hour time per the viewer's
   preference — never `16:33PM`;
 - the same change made by a person names the person.
+
+## Translations and Canadian terminology (A-05-T15)
+
+Every string of the organisation-settings module ships in **en-CA and fr-CA**: the backend
+`orgsettings` messages (field labels, validation errors, lock violations, impact preview text) in
+`backend/locale/fr_CA/LC_MESSAGES/django.po`, and the settings shell, General, Tax registrations,
+Lock dates and navigation keys in `frontend/messages/fr-CA.json`. No entry is left empty or fuzzy.
+
+Terminology follows the Canadian glossary (CI glossary lint): *GST/HST*, *QST*, *business number
+(BN)*, *program account*, *fiscal year end*, *lock date*; French uses Revenu Québec / ARC terms
+(*TPS/TVH*, *TVQ*, *numéro d'entreprise (NE)*, *compte de programme*, *fin d'exercice*,
+*date de verrouillage*). Xero's "Tax" / "GST" / "Financial settings" wording is not used.
+
+Tests: `frontend/e2e/settings-i18n.spec.ts` (each settings page renders in French with no
+English leftovers and passes axe), `backend/tests/test_orgsettings_api.py`
+(`test_french_reader_gets_french_errors`), and the frontend `check_i18n` parity check.

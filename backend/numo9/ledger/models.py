@@ -41,6 +41,7 @@ from django.utils import timezone, translation
 from django.utils.translation import gettext_lazy as _
 
 from numo9.audit.mixins import AuditedModel
+from numo9.orgsettings.locks import LockGuardMixin
 from numo9.tenancy.managers import OrgScopedManager
 from numo9.tenancy.models import OrgOwnedModel
 
@@ -633,7 +634,7 @@ def _locked_error(entry: JournalEntry | None, number: int | None = None) -> Jour
 _REVERSAL_CHANGES = frozenset({"status", "updated_at"})
 
 
-class JournalEntry(AuditedModel, OrgOwnedModel):
+class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
     """One double-entry journal (C-02-T02): header of the lines that post together.
 
     - ``number`` — the organisation's journal number, given when the entry is posted (gap-free
@@ -647,7 +648,15 @@ class JournalEntry(AuditedModel, OrgOwnedModel):
     - ``book_scope`` — the books its lines touch (``both`` when lines touch both books);
     - ``reversal_of`` — the entry this one reverses (a reversal has its own number);
     - ``posted_by`` / ``posted_at`` — set when posted (with ``created_by`` from ``OrgOwnedModel``).
+
+    Lock dates (A-05-T06): posting an entry dated on or before the GL lock is refused
+    (``LockedPeriod``, 409 ``lock.violation``) — checked when the entry **becomes** posted;
+    drafts in a locked period may be kept and edited, and reversing a posted entry (status only;
+    the reversal is a new entry, checked on its own date) is not a change in its period.
     """
+
+    lock_module = "gl"
+    lock_date_field = "date"
 
     number = models.PositiveBigIntegerField(_("journal number"), null=True, blank=True)
     date = models.DateField(_("date"))
@@ -739,6 +748,11 @@ class JournalEntry(AuditedModel, OrgOwnedModel):
     def is_locked(self) -> bool:
         return self.status in LOCKED_STATUSES
 
+    def lock_applies(self, stored: dict[str, Any] | None) -> bool:
+        """Lock dates apply when the entry is being posted (A-05-T06)."""
+        was = stored["status"] if stored is not None else None
+        return self.status == JournalStatus.POSTED and was != JournalStatus.POSTED
+
     # ---- append-only guard (C-02-T04) ----------------------------------------------------
 
     def _stored(self) -> dict[str, Any] | None:
@@ -775,7 +789,8 @@ class JournalEntry(AuditedModel, OrgOwnedModel):
         stored = self._stored()
         if stored is not None and stored["status"] in LOCKED_STATUSES:
             raise _locked_error(self, stored["number"])
-        return super().delete(*args, **kwargs)
+        deleted: tuple[int, dict[str, int]] = super().delete(*args, **kwargs)
+        return deleted
 
 
 class JournalLine(OrgOwnedModel):

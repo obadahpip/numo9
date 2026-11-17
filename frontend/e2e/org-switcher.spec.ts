@@ -63,7 +63,7 @@ for (const width of [360, 1440]) {
       await expect(switcherButton(page)).toHaveAccessibleName(
         "Switch organisation Érable Québec Rénovations via Profitex",
       );
-      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Settings: Lock dates");
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText("Lock dates"); // A-05-T13 page
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth),
       ).toBeLessThanOrEqual(0);

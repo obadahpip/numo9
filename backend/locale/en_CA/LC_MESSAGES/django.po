@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:25-0500\n"
+"POT-Creation-Date: 2026-11-16 06:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3103,6 +3103,21 @@ msgid "Your trial ends on %(ends_on)s"
 msgstr ""
 
 msgid "Choose a package to keep working without a break. Everything you entered stays."
+msgstr ""
+
+#, python-format
+msgid "%(module)s lock date changed"
+msgstr ""
+
+#, python-format
+msgid "%(person)s set the %(level)s lock to %(date)s."
+msgstr ""
+
+msgid "Journal entries not posted (draft or awaiting approval)"
+msgstr ""
+
+#, python-format
+msgid "The %(module)s lock date is %(date)s (%(level)s): changes dated on or before it are refused. Date it after %(date)s, or ask someone who manages lock dates."
 msgstr ""
 
 msgid "Sole proprietorship"

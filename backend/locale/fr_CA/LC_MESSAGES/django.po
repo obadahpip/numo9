@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 06:25-0500\n"
+"POT-Creation-Date: 2026-11-16 06:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -852,7 +852,7 @@ msgid "Phone"
 msgstr ""
 
 msgid "Business Number (BN)"
-msgstr ""
+msgstr "Numéro d’entreprise (NE)"
 
 msgid "Tax ID"
 msgstr ""
@@ -1004,10 +1004,10 @@ msgid "Unique in the organisation; the next number is used when left empty."
 msgstr ""
 
 msgid "display name"
-msgstr ""
+msgstr "nom affiché"
 
 msgid "legal name"
-msgstr ""
+msgstr "dénomination sociale"
 
 msgid "As registered; printed on statements and tax slips."
 msgstr ""
@@ -1094,7 +1094,7 @@ msgid "last name"
 msgstr ""
 
 msgid "telephone"
-msgstr ""
+msgstr "téléphone"
 
 #, fuzzy
 #| msgid "job type"
@@ -1131,25 +1131,23 @@ msgstr "Choisissez un rôle utilisé dans cette organisation."
 msgid "type"
 msgstr "type"
 
-#, fuzzy
-#| msgid "action"
 msgid "attention"
-msgstr "action"
+msgstr "à l’attention de"
 
 msgid "street address or PO box"
-msgstr ""
+msgstr "adresse municipale ou case postale"
 
 msgid "address line 2"
-msgstr ""
+msgstr "ligne d’adresse 2"
 
 msgid "city"
-msgstr ""
+msgstr "ville"
 
 msgid "province or territory"
-msgstr ""
+msgstr "province ou territoire"
 
 msgid "Two-letter code (ON, QC…) for a Canadian address."
-msgstr ""
+msgstr "Code à deux lettres (ON, QC…) pour une adresse canadienne."
 
 msgid "region"
 msgstr ""
@@ -1157,18 +1155,14 @@ msgstr ""
 msgid "Region or county of an address outside Canada."
 msgstr ""
 
-#, fuzzy
-#| msgid "error code"
 msgid "postal code"
-msgstr "code d’erreur"
+msgstr "code postal"
 
-#, fuzzy
-#| msgid "Accounting"
 msgid "country"
-msgstr "Comptabilité"
+msgstr "pays"
 
 msgid "ISO 3166-1 two-letter code; CA for Canada."
-msgstr ""
+msgstr "Code ISO 3166-1 à deux lettres; CA pour le Canada."
 
 #, fuzzy
 #| msgid "IP address"
@@ -1181,7 +1175,7 @@ msgid "addresses"
 msgstr "Adresse IP"
 
 msgid "Use the two-letter country code, e.g. CA."
-msgstr ""
+msgstr "Utilisez le code de pays à deux lettres, p. ex. CA."
 
 #, python-format
 msgid "Provinces are for Canadian addresses: use Region for %(country)s."
@@ -1310,7 +1304,7 @@ msgid "Another payment term is already called %(name)s."
 msgstr ""
 
 msgid "Choose a day of the month from 1 to 31."
-msgstr ""
+msgstr "Choisissez un jour du mois de 1 à 31."
 
 #, python-format
 msgid "A payment term is at most %(max)d days."
@@ -1403,11 +1397,11 @@ msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
 msgid "A Business Number has 9 digits, e.g. 123456782."
-msgstr ""
+msgstr "Un numéro d’entreprise compte 9 chiffres, p. ex. 123456782."
 
 #, python-format
 msgid "%(bn)s is not a valid Business Number: check the digits (the last one is a check digit)."
-msgstr ""
+msgstr "%(bn)s n’est pas un numéro d’entreprise valide : vérifiez les chiffres (le dernier est un chiffre de contrôle)."
 
 msgid "Choose at least one role: customer, supplier, employee, contractor or government agency."
 msgstr ""
@@ -2510,8 +2504,6 @@ msgstr ""
 msgid "Current asset"
 msgstr ""
 
-#, fuzzy
-#| msgid "Banking"
 msgid "Bank"
 msgstr "Banque"
 
@@ -2930,16 +2922,14 @@ msgstr ""
 msgid "journal lines"
 msgstr ""
 
-#, fuzzy
-#| msgid "Number"
 msgid "next number"
-msgstr "Numéro"
+msgstr "prochain numéro"
 
 msgid "prefix"
-msgstr ""
+msgstr "préfixe"
 
 msgid "digits"
-msgstr ""
+msgstr "chiffres"
 
 #, fuzzy
 #| msgid "Number"
@@ -3380,348 +3370,331 @@ msgstr "Votre essai se termine le %(ends_on)s"
 msgid "Choose a package to keep working without a break. Everything you entered stays."
 msgstr "Choisissez un forfait pour continuer sans interruption. Tout ce que vous avez saisi est conservé."
 
+#, python-format
+msgid "%(module)s lock date changed"
+msgstr "Date de verrouillage modifiée : %(module)s"
+
+#, python-format
+msgid "%(person)s set the %(level)s lock to %(date)s."
+msgstr "%(person)s a fixé le verrouillage « %(level)s » au %(date)s."
+
+msgid "Journal entries not posted (draft or awaiting approval)"
+msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"
+
+#, python-format
+msgid "The %(module)s lock date is %(date)s (%(level)s): changes dated on or before it are refused. Date it after %(date)s, or ask someone who manages lock dates."
+msgstr "La date de verrouillage %(module)s est le %(date)s (%(level)s) : les modifications datées de ce jour ou d’avant sont refusées. Datez-la après le %(date)s, ou demandez à une personne qui gère les dates de verrouillage."
+
 msgid "Sole proprietorship"
-msgstr ""
+msgstr "Entreprise individuelle"
 
 msgid "Partnership"
-msgstr ""
+msgstr "Société de personnes"
 
-#, fuzzy
-#| msgid "Bulk operation"
 msgid "Corporation"
-msgstr "Opération groupée"
+msgstr "Société par actions"
 
-#, fuzzy
-#| msgid "organisation"
 msgid "Non-profit organisation"
-msgstr "organisation"
+msgstr "Organisme sans but lucratif"
 
 msgid "Registered charity"
-msgstr ""
+msgstr "Organisme de bienfaisance enregistré"
 
 msgid "Co-operative"
-msgstr ""
+msgstr "Coopérative"
 
 msgid "Trust"
-msgstr ""
+msgstr "Fiducie"
 
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 msgid "days after the document date"
-msgstr ""
+msgstr "jours après la date du document"
 
 msgid "days after the end of the document month"
-msgstr ""
+msgstr "jours après la fin du mois du document"
 
 msgid "of the following month"
-msgstr ""
+msgstr "du mois suivant"
 
 msgid "of the current month"
-msgstr ""
+msgstr "du mois courant"
 
 msgid "As registered; printed on statements, invoices and tax forms."
-msgstr ""
+msgstr "Telle qu’enregistrée; imprimée sur les relevés, les factures et les formulaires fiscaux."
 
 msgid "The name people see in Numo9."
-msgstr ""
+msgstr "Le nom affiché dans Numo9."
 
 msgid "industry"
-msgstr ""
+msgstr "secteur d’activité"
 
 msgid "business structure"
-msgstr ""
+msgstr "structure de l’entreprise"
 
 msgid "physical address same as mailing address"
-msgstr ""
+msgstr "adresse physique identique à l’adresse postale"
 
 msgid "website"
-msgstr ""
+msgstr "site Web"
 
 msgid "fiscal year end month"
-msgstr ""
+msgstr "mois de fin d’exercice"
 
 msgid "fiscal year end day"
-msgstr ""
+msgstr "jour de fin d’exercice"
 
 msgid "base currency"
-msgstr ""
+msgstr "devise de base"
 
 msgid "time zone"
-msgstr ""
+msgstr "fuseau horaire"
 
 msgid "Times on the organisation's documents and emails; each person sees their own preference in the app."
-msgstr ""
+msgstr "Heures sur les documents et courriels de l’organisation; chaque personne voit sa propre préférence dans l’application."
 
 msgid "sales: default due date"
-msgstr ""
+msgstr "ventes : échéance par défaut"
 
 msgid "sales: days or day"
-msgstr ""
+msgstr "ventes : jours ou jour"
 
 msgid "purchases: default due date"
-msgstr ""
+msgstr "achats : échéance par défaut"
 
-#, fuzzy
-#| msgid "purchase orders"
 msgid "purchases: days or day"
-msgstr "bons de commande"
+msgstr "achats : jours ou jour"
 
-#, fuzzy
-#| msgid "Change organisation settings"
 msgid "organisation settings"
-msgstr "Modifier les paramètres de l’organisation"
+msgstr "paramètres de l’organisation"
 
 #, python-format
 msgid "That month has no day %(day)d."
-msgstr ""
+msgstr "Ce mois n’a pas de jour %(day)d."
 
-#, fuzzy
-#| msgid "GST/HST registration: %(bn)s"
 msgid "GST/HST program account (RT)"
-msgstr "Inscription TPS/TVH : %(bn)s"
+msgstr "Compte de programme de TPS/TVH (RT)"
 
 msgid "Payroll program account (RP)"
-msgstr ""
+msgstr "Compte de programme de retenues sur la paie (RP)"
 
 msgid "Corporate income tax program account (RC)"
-msgstr ""
+msgstr "Compte de programme d’impôt des sociétés (RC)"
 
-#, fuzzy
-#| msgid "sequence number"
 msgid "Quebec QST number"
-msgstr "numéro de séquence"
+msgstr "Numéro de TVQ du Québec"
 
 msgid "British Columbia PST number"
-msgstr ""
+msgstr "Numéro de TVP de la Colombie-Britannique"
 
 msgid "Saskatchewan PST number"
-msgstr ""
+msgstr "Numéro de TVP de la Saskatchewan"
 
 msgid "Manitoba RST number"
-msgstr ""
+msgstr "Numéro de TVD du Manitoba"
 
 msgid "Applied for"
-msgstr ""
+msgstr "Demande présentée"
 
 msgid "Registered"
-msgstr ""
+msgstr "Inscrit"
 
 msgid "Closed"
-msgstr ""
+msgstr "Fermé"
 
-#, fuzzy
-#| msgid "Number"
 msgid "number"
-msgstr "Numéro"
+msgstr "numéro"
 
 msgid "effective from"
-msgstr ""
+msgstr "en vigueur du"
 
 msgid "effective to"
-msgstr ""
+msgstr "en vigueur jusqu’au"
 
 msgid "CRA approval reference"
-msgstr ""
+msgstr "Référence d’approbation de l’ARC"
 
 msgid "Reference of the CRA or Revenu Québec letter approving the registration."
-msgstr ""
+msgstr "Référence de la lettre de l’ARC ou de Revenu Québec approuvant l’inscription."
 
-#, fuzzy
-#| msgid "organisation"
 msgid "tax registration"
-msgstr "organisation"
+msgstr "inscription fiscale"
 
-#, fuzzy
-#| msgid "GST/HST registration: %(bn)s"
 msgid "tax registrations"
-msgstr "Inscription TPS/TVH : %(bn)s"
+msgstr "inscriptions fiscales"
 
-#, fuzzy
-#| msgid "The start date must be on or before the end date."
 msgid "The end date is before the start date."
-msgstr "La date de début doit être égale ou antérieure à la date de fin."
+msgstr "La date de fin est antérieure à la date de début."
 
 #, python-format
 msgid "%(registration)s is already registered for these dates: end it before adding another."
-msgstr ""
+msgstr "%(registration)s est déjà inscrit pour ces dates : terminez-le avant d’en ajouter un autre."
 
 #, python-format
 msgid "%(registration)s carries Business Number %(bn)s: the organisation's BN and its program accounts must match."
-msgstr ""
+msgstr "%(registration)s porte le numéro d’entreprise %(bn)s : le NE de l’organisation et ses comptes de programme doivent correspondre."
 
 #, python-format
 msgid "This program account belongs to BN %(bn)s, not to the organisation's Business Number %(registered)s."
-msgstr ""
+msgstr "Ce compte de programme appartient au NE %(bn)s, et non au numéro d’entreprise de l’organisation %(registered)s."
 
 msgid "General ledger"
-msgstr ""
+msgstr "Grand livre"
 
-#, fuzzy
-#| msgid "Accountant delegate"
 msgid "Sales and accounts receivable"
-msgstr "Délégué comptable"
+msgstr "Ventes et comptes clients"
 
-#, fuzzy
-#| msgid "Accountant"
 msgid "Purchases and accounts payable"
-msgstr "Comptable"
+msgstr "Achats et comptes fournisseurs"
 
-#, fuzzy
-#| msgid "Sales"
 msgid "Sales tax"
-msgstr "Ventes"
+msgstr "Taxes de vente"
 
 msgid "Everyone except advisers"
-msgstr ""
+msgstr "Tout le monde sauf les conseillers"
 
 msgid "Everyone"
-msgstr ""
+msgstr "Tout le monde"
 
 msgid "module"
-msgstr ""
+msgstr "module"
 
 msgid "level"
-msgstr ""
+msgstr "niveau"
 
 msgid "lock date"
-msgstr ""
+msgstr "date de verrouillage"
 
-#, fuzzy
-#| msgid "The start date must be on or before the end date."
 msgid "Changes dated on or before this date are refused."
-msgstr "La date de début doit être égale ou antérieure à la date de fin."
+msgstr "Les modifications datées de ce jour ou d’avant sont refusées."
 
 msgid "lock dates"
-msgstr ""
+msgstr "dates de verrouillage"
 
 msgid "A lock date's module and level don't change: set another lock instead."
-msgstr ""
+msgstr "Le module et le niveau d’une date de verrouillage ne changent pas : définissez plutôt un autre verrouillage."
 
 #, python-format
 msgid "Moving a lock date back reopens %(date)s and earlier: say why in the reason."
-msgstr ""
+msgstr "Reculer une date de verrouillage rouvre le %(date)s et les dates antérieures : indiquez pourquoi dans la raison."
 
 #, python-format
 msgid "The lock for everyone (%(everyone)s) can't be later than the lock for everyone except advisers (%(advisers)s)."
-msgstr ""
+msgstr "Le verrouillage pour tout le monde (%(everyone)s) ne peut pas être postérieur au verrouillage pour tout le monde sauf les conseillers (%(advisers)s)."
 
 msgid "Invoice"
-msgstr ""
+msgstr "Facture"
 
 msgid "Credit note"
-msgstr ""
+msgstr "Note de crédit"
 
 msgid "Quote"
-msgstr ""
+msgstr "Soumission"
 
 msgid "Purchase order"
 msgstr "Bon de commande"
 
-#, fuzzy
-#| msgid "Contacts"
 msgid "Contact"
-msgstr "Contacts"
+msgstr "Contact"
 
 msgid "document type"
-msgstr ""
+msgstr "type de document"
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
-msgstr ""
+msgstr "Nombre minimal de chiffres, complété par des zéros (4 : 0001)."
 
 msgid "numbering sequence"
-msgstr ""
+msgstr "séquence de numérotation"
 
 msgid "numbering sequences"
-msgstr ""
+msgstr "séquences de numérotation"
 
 msgid "A prefix uses letters, digits and - / _ . # only (e.g. INV-)."
-msgstr ""
+msgstr "Un préfixe n’utilise que des lettres, des chiffres et - / _ . # (p. ex. FAC-)."
 
 msgid "Alberta"
-msgstr ""
+msgstr "Alberta"
 
 msgid "British Columbia"
-msgstr ""
+msgstr "Colombie-Britannique"
 
 msgid "Manitoba"
-msgstr ""
+msgstr "Manitoba"
 
 msgid "New Brunswick"
-msgstr ""
+msgstr "Nouveau-Brunswick"
 
 msgid "Newfoundland and Labrador"
-msgstr ""
+msgstr "Terre-Neuve-et-Labrador"
 
 msgid "Nova Scotia"
-msgstr ""
+msgstr "Nouvelle-Écosse"
 
 msgid "Northwest Territories"
-msgstr ""
+msgstr "Territoires du Nord-Ouest"
 
 msgid "Nunavut"
-msgstr ""
+msgstr "Nunavut"
 
 msgid "Ontario"
-msgstr ""
+msgstr "Ontario"
 
 msgid "Prince Edward Island"
-msgstr ""
+msgstr "Île-du-Prince-Édouard"
 
 msgid "Quebec"
-msgstr ""
+msgstr "Québec"
 
 msgid "Saskatchewan"
-msgstr ""
+msgstr "Saskatchewan"
 
 msgid "Yukon"
-msgstr ""
+msgstr "Yukon"
 
 #, python-format
 msgid "A legal name needs letters: %(value)s looks like a number."
-msgstr ""
+msgstr "Une dénomination sociale contient des lettres : %(value)s ressemble à un numéro."
 
 msgid "Enter a Canadian postal code like A1A 1A1."
-msgstr ""
+msgstr "Entrez un code postal canadien comme A1A 1A1."
 
 #, python-format
 msgid "Postal codes starting with %(letter)s are in %(expected)s, not in %(province)s: check the postal code or the province."
-msgstr ""
+msgstr "Les codes postaux commençant par %(letter)s sont situés en %(expected)s, pas en %(province)s : vérifiez le code postal ou la province."
 
 msgid "Choose a province or territory."
-msgstr ""
+msgstr "Choisissez une province ou un territoire."
 
 msgid "Enter a valid telephone number, e.g. 416 555 0123 or +44 20 7946 0958."
-msgstr ""
+msgstr "Entrez un numéro de téléphone valide, p. ex. 416 555 0123 ou +44 20 7946 0958."
 
 msgid "Enter the number."
-msgstr ""
+msgstr "Entrez le numéro."
 
 #, python-format
 msgid "A program account looks like 123456782 %(program)s 0001."
-msgstr ""
+msgstr "Un compte de programme ressemble à 123456782 %(program)s 0001."
 
 #, python-format
 msgid "This is a %(letters)s number: a %(program)s registration needs %(program)s."
-msgstr ""
+msgstr "Il s’agit d’un numéro %(letters)s : une inscription %(program)s exige %(program)s."
 
 #, python-format
 msgid "The reference number after %(program)s starts at 0001."
-msgstr ""
+msgstr "Le numéro de référence après %(program)s commence à 0001."
 
 msgid "A QST number looks like 1234567890 TQ 0001."
-msgstr ""
+msgstr "Un numéro de TVQ ressemble à 1234567890 TQ 0001."
 
 msgid "A British Columbia PST number looks like PST-1234-5678."
-msgstr ""
+msgstr "Un numéro de TVP de la Colombie-Britannique ressemble à PST-1234-5678."
 
 msgid "Enter the number's 6 to 10 digits."
-msgstr ""
+msgstr "Entrez les 6 à 10 chiffres du numéro."
 
-#, fuzzy
-#| msgid "Close the organisation"
 msgid "Choose the type of registration."
-msgstr "Fermer l’organisation"
+msgstr "Choisissez le type d’inscription."
 
 msgid "Enter the text for each language."
 msgstr "Entrez le texte pour chaque langue."
