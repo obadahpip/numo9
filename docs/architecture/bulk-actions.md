@@ -81,3 +81,18 @@ no pending row.
 `numo9.bulk.exports`: `export_file(job)` builds the export action's CSV (UTF-8 with BOM) or XLSX
 from the succeeded rows; `results_csv(job)` lists every selected organisation with its outcome,
 reason, message and before/after.
+
+## API (V-03-T07)
+
+| Method and path | Who | Answer |
+|---|---|---|
+| `POST /api/v1/practice/bulk` `{practice?, action, params, selection}` | directory view + the action's practice permission | `201 {job, preview}` — nothing changed yet |
+| `GET /api/v1/practice/bulk/<id>` | the practice's members (directory view) | status, `total`, `done`, `percent`, `counts` per outcome, `export_ready` |
+| `POST …/confirm` | the person who created it | `202` the job, queued (one row per organisation); `409 bulk.not_preview` if already applied or cancelled |
+| `POST …/cancel` | the person who created it | the job, `cancel_requested` |
+| `GET …/rows?outcome=&page=` | members | 100 a page, each with outcome, reason, message, before/after |
+| `GET …/results.csv` | members | every organisation with its outcome |
+| `GET …/export` | members | the export action's CSV/XLSX once completed (404 before) |
+
+Status is **polled** (the progress drawer asks every second while the job runs); no server-sent
+events are needed for a job of a few hundred organisations. Another practice's job is 404.

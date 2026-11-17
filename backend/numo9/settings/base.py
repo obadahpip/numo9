@@ -164,6 +164,7 @@ SPECTACULAR_SETTINGS = {
     "ENUM_NAME_OVERRIDES": {
         "PracticeRoleEnum": "numo9.tenancy.models.PracticeRole",
         "FeatureFlagModeEnum": "numo9.platform.api.FLAG_MODES",  # U-06-T12
+        "BulkJobActionEnum": "numo9.bulk.models.BulkAction",  # V-03-T07
         "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",
         "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
         "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",

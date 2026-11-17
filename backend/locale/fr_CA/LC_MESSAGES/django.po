@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:38-0500\n"
+"POT-Creation-Date: 2026-11-17 18:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -633,6 +633,9 @@ msgstr "Choisissez CSV ou Excel."
 
 msgid "Choose one of the bulk actions."
 msgstr "Choisissez l’une des actions groupées."
+
+msgid "see the practice's bulk actions"
+msgstr "voir les actions groupées du cabinet"
 
 msgid "Organisation"
 msgstr "Organisation"
