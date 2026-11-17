@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 318   Remaining: 2469   Progress: 11.41%
+TOTAL ATOMIC TASKS: 2787   Completed: 319   Remaining: 2468   Progress: 11.45%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -430,7 +430,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [V-03]
 ✅ V-03-T01 — Wireframes: selection bar, preview diff, progress, results
 ✅ V-03-T02 — BulkJob + BulkJobRow models (action, params, status, outcome, message)
-❌ V-03-T03 — Safe-settings whitelist registry + validators
+✅ V-03-T03 — Safe-settings whitelist registry + validators
 ❌ V-03-T04 — Preview service (computes diffs without writing)
 ❌ V-03-T05 — Executor Celery task, per-row transaction, permission check per org, resumable
 ❌ V-03-T06 — Actions: group, tags, staff, settings, message (A-07), export (CSV/XLSX)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:26-0500\n"
+"POT-Creation-Date: 2026-11-17 18:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -706,6 +706,38 @@ msgid "bulk job row"
 msgstr ""
 
 msgid "bulk job rows"
+msgstr ""
+
+msgid "Choose how the due date is worked out."
+msgstr ""
+
+msgid "Enter the number of days."
+msgstr ""
+
+msgid "Choose a day of the month from 1 to 31."
+msgstr ""
+
+#, python-format
+msgid "Enter 0 to %(max)s days."
+msgstr ""
+
+msgid "Choose 12-hour or 24-hour times."
+msgstr ""
+
+msgid "Choose the month and day of the fiscal year end."
+msgstr ""
+
+msgid "Choose the month of the fiscal year end."
+msgstr ""
+
+msgid "Choose the day of the fiscal year end."
+msgstr ""
+
+#, python-format
+msgid "That month has no day %(day)d."
+msgstr ""
+
+msgid "Choose at least one setting to change."
 msgstr ""
 
 msgid "Product"
@@ -1454,9 +1486,6 @@ msgstr ""
 
 #, python-format
 msgid "Another payment term is already called %(name)s."
-msgstr ""
-
-msgid "Choose a day of the month from 1 to 31."
 msgstr ""
 
 #, python-format
@@ -2545,6 +2574,24 @@ msgstr ""
 
 #, python-format
 msgid "%(value)s isn't a known %(name)s. Choose one from the list."
+msgstr ""
+
+#, python-format
+msgid "%(name)s can't be changed for many organisations at once. Change it in each organisation's settings."
+msgstr ""
+
+#, python-format
+msgid "%(message)s"
+msgstr ""
+
+msgid "Select at least one organisation."
+msgstr ""
+
+#, python-format
+msgid "Select at most %(limit)s organisations for one bulk action."
+msgstr ""
+
+msgid "This bulk action was already applied or cancelled."
 msgstr ""
 
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
@@ -3874,10 +3921,6 @@ msgid "purchases: days or day"
 msgstr ""
 
 msgid "organisation settings"
-msgstr ""
-
-#, python-format
-msgid "That month has no day %(day)d."
 msgstr ""
 
 msgid "GST/HST program account (RT)"

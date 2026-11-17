@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:26-0500\n"
+"POT-Creation-Date: 2026-11-17 18:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -713,6 +713,38 @@ msgstr "ligne d’action groupée"
 
 msgid "bulk job rows"
 msgstr "lignes d’action groupée"
+
+msgid "Choose how the due date is worked out."
+msgstr "Choisissez comment l’échéance est calculée."
+
+msgid "Enter the number of days."
+msgstr "Entrez le nombre de jours."
+
+msgid "Choose a day of the month from 1 to 31."
+msgstr "Choisissez un jour du mois de 1 à 31."
+
+#, python-format
+msgid "Enter 0 to %(max)s days."
+msgstr "Entrez de 0 à %(max)s jours."
+
+msgid "Choose 12-hour or 24-hour times."
+msgstr "Choisissez l’heure sur 12 ou 24 heures."
+
+msgid "Choose the month and day of the fiscal year end."
+msgstr "Choisissez le mois et le jour de fin d’exercice."
+
+msgid "Choose the month of the fiscal year end."
+msgstr "Choisissez le mois de fin d’exercice."
+
+msgid "Choose the day of the fiscal year end."
+msgstr "Choisissez le jour de fin d’exercice."
+
+#, python-format
+msgid "That month has no day %(day)d."
+msgstr "Ce mois n’a pas de jour %(day)d."
+
+msgid "Choose at least one setting to change."
+msgstr "Choisissez au moins un paramètre à modifier."
 
 msgid "Product"
 msgstr ""
@@ -1562,9 +1594,6 @@ msgstr "Entrez le texte anglais."
 #, python-format
 msgid "Another payment term is already called %(name)s."
 msgstr ""
-
-msgid "Choose a day of the month from 1 to 31."
-msgstr "Choisissez un jour du mois de 1 à 31."
 
 #, python-format
 msgid "A payment term is at most %(max)d days."
@@ -2711,6 +2740,24 @@ msgstr "Entrez un pourcentage de 0 à 99,9, avec au plus une décimale (par exem
 #, python-format
 msgid "%(value)s isn't a known %(name)s. Choose one from the list."
 msgstr "%(value)s n’est pas un(e) %(name)s connu(e). Choisissez dans la liste."
+
+#, python-format
+msgid "%(name)s can't be changed for many organisations at once. Change it in each organisation's settings."
+msgstr "%(name)s ne peut pas être modifié pour plusieurs organisations à la fois. Modifiez-le dans les paramètres de chaque organisation."
+
+#, python-format
+msgid "%(message)s"
+msgstr "%(message)s"
+
+msgid "Select at least one organisation."
+msgstr "Sélectionnez au moins une organisation."
+
+#, python-format
+msgid "Select at most %(limit)s organisations for one bulk action."
+msgstr "Sélectionnez au plus %(limit)s organisations pour une action groupée."
+
+msgid "This bulk action was already applied or cancelled."
+msgstr "Cette action groupée a déjà été appliquée ou annulée."
 
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
@@ -4128,10 +4175,6 @@ msgstr "achats : jours ou jour"
 
 msgid "organisation settings"
 msgstr "paramètres de l’organisation"
-
-#, python-format
-msgid "That month has no day %(day)d."
-msgstr "Ce mois n’a pas de jour %(day)d."
 
 msgid "GST/HST program account (RT)"
 msgstr "Compte de programme de TPS/TVH (RT)"
