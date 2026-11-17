@@ -111,6 +111,10 @@ class Practice(models.Model):
     require_2fa_for_admins = models.BooleanField(
         _("practice admins must use two-factor authentication"), default=False, db_default=False
     )
+    # Staff management (V-05): a member who hasn't signed in for this many days is dormant.
+    dormant_days = models.PositiveSmallIntegerField(
+        _("dormant after (days without signing in)"), default=60, db_default=60
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
@@ -170,6 +174,8 @@ class PracticeMember(models.Model):
         verbose_name=_("user"),
     )
     role = models.CharField(_("role"), max_length=32, choices=PracticeRole.choices)
+    # Staff management (V-05-T05): a suspended member keeps their history but reaches nothing.
+    suspended_at = models.DateTimeField(_("suspended at"), null=True, blank=True)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
 
     objects = AccessRowsManager()

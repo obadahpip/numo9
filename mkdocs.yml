@@ -82,6 +82,7 @@ nav:
       - "Free trial": architecture/trial.md
       - "Platform console": architecture/platform-console.md
       - "Bulk actions": architecture/bulk-actions.md
+      - "Practice staff": architecture/practice-staff.md
       - "Chart of accounts": architecture/chart-of-accounts.md
       - "Posting engine": architecture/posting-engine.md
       - "Organisation settings and lock dates": architecture/organisation-settings.md

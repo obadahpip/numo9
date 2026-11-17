@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     "numo9.platform",
     # Bulk edit and bulk actions over a practice's organisations (V-03).
     "numo9.bulk",
+    # Practice staff management: list, assignments, suspend/remove, dormant, activity (V-05).
+    "numo9.staff",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
