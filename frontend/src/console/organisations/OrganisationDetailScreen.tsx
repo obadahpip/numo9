@@ -6,7 +6,7 @@
  * their roles and last sign-in, the practices serving it, and the organisation's latest audit
  * events.
  */
-import { ErrorState, formatDate, formatDateTime, type AppLocale } from "@numo9/ui";
+import { Button, ErrorState, formatDate, formatDateTime, type AppLocale } from "@numo9/ui";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState, type ReactNode } from "react";
@@ -14,6 +14,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useFormatMessage } from "@/i18n";
 import { packageUrl } from "@/packages/PackagesScreen";
 
+import { StartImpersonationDialog } from "../impersonation/StartImpersonationDialog";
+import { m as im } from "../impersonation/messages";
 import { usePlatformMe } from "../shell/ConsoleFrame";
 
 import { getOrganisation, type PlatformOrganisationDetail, type TimelineItem } from "./api";
@@ -34,6 +36,8 @@ export function OrganisationDetailScreen({ id, extra }: { id: string; extra?: Re
   const [data, setData] = useState<PlatformOrganisationDetail | null>(null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
+  const [actingAs, setActingAs] = useState<{ id: string; name: string } | null>(null);
+  const canImpersonate = usePlatformMe()?.permissions.includes("platform.impersonate") ?? false;
   const canEditPackages =
     usePlatformMe()?.permissions.includes("platform.catalogue.manage") ?? false;
   useEffect(() => {
@@ -132,13 +136,20 @@ export function OrganisationDetailScreen({ id, extra }: { id: string; extra?: Re
       <Section title={fm(m.users)}>
         <ul className="flex flex-col gap-1 text-sm" data-users="">
           {data.users.map((user) => (
-            <li key={user.id}>
-              {fm(m.userLine, {
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                last: user.last_login ? when(user.last_login) : fm(m.none),
-              })}
+            <li key={user.id} className="flex flex-wrap items-center gap-2" data-user={user.id}>
+              <span>
+                {fm(m.userLine, {
+                  name: user.name,
+                  email: user.email,
+                  role: user.role,
+                  last: user.last_login ? when(user.last_login) : fm(m.none),
+                })}
+              </span>
+              {canImpersonate ? (
+                <Button size="sm" variant="ghost" onClick={() => setActingAs(user)}>
+                  {fm(im.signInAs, { name: user.name })}
+                </Button>
+              ) : null}
             </li>
           ))}
         </ul>
@@ -177,6 +188,14 @@ export function OrganisationDetailScreen({ id, extra }: { id: string; extra?: Re
           <p className="text-sm text-fg-muted">{fm(m.auditNone)}</p>
         )}
       </Section>
+      {actingAs ? (
+        <StartImpersonationDialog
+          organisation={{ id: data.id, name: data.name }}
+          user={actingAs}
+          open
+          onClose={() => setActingAs(null)}
+        />
+      ) : null}
     </div>
   );
 }

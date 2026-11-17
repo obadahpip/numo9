@@ -154,3 +154,15 @@ The organisation's own audit log (its owner sees it in Settings → Audit log) r
 
 All of them have `actor_kind = impersonation`, `actor_user` = the user acted as and `impersonator` =
 the staff member (the label reads "Dana Lee (dana@…) — signed in by Sam Support (…)").
+
+## Impersonation UI (U-06-T11)
+
+- **Start** — on an organisation's detail page each user has "Sign in as …" (staff with
+  `platform.impersonate`). The modal (`StartImpersonationDialog`) explains what is recorded and
+  what stays locked, asks for the reason (required, 500 characters) and the time limit (15 min,
+  30 min — default, 1 h, 2 h), then opens the organisation's home as that user.
+- **Red bar** — `ImpersonationBar` is mounted in the app shell's banner slot, so it shows on
+  **every page** (organisation pages, the console, pages outside an organisation) while
+  `GET …/impersonation/current` returns a session: "You're signed in as Dana Lee in Maple Leaf
+  Supply", a `mm:ss` countdown (role `timer`) and "End session" (back to the organisation in the
+  console). At zero it asks the API again — which ends the session — and says it ended.

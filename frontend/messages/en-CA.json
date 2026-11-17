@@ -398,6 +398,26 @@
       "products": "Products",
       "promoCodes": "Promo codes"
     },
+    "impersonation": {
+      "backToConsole": "Back to the console",
+      "bar": "You're signed in as {name} in {organisation}",
+      "barLabel": "Support session",
+      "cancel": "Cancel",
+      "close": "Close",
+      "description": "You'll see {organisation} as {name} sees it. Everything you do is recorded in the organisation's audit log under both names. Payment methods, billing changes, passwords, two-factor authentication and email addresses stay locked.",
+      "duration": "Time limit",
+      "end": "End session",
+      "endedTitle": "Your session as {name} has ended",
+      "failed": "We couldn't start the session. Try again.",
+      "hours": "{hours, plural, one {# hour} other {# hours}}",
+      "minutes": "{minutes, plural, one {# minute} other {# minutes}}",
+      "reason": "Reason",
+      "reasonHint": "For example the support ticket. The organisation's owner can read it.",
+      "remaining": "{time} left",
+      "signInAs": "Sign in as {name}",
+      "start": "Start session",
+      "title": "Sign in as {name}"
+    },
     "jobs": {
       "any": "Any",
       "apply": "Show",
