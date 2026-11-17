@@ -141,6 +141,68 @@ export const m = defineMessages({
     description: "Error loading the groups",
   },
   retry: { id: "groups.retry", defaultMessage: "Try again", description: "Retry button" },
+  tagsTitle: {
+    id: "groups.tags.title",
+    defaultMessage: "Tags",
+    description: "Heading of the practice's tags",
+  },
+  tagsIntro: {
+    id: "groups.tags.intro",
+    defaultMessage:
+      "Tags mark clients across groups (“Year-end soon”). Type a new name to create one.",
+    description: "Explanation of the tags section",
+  },
+  tagsEmpty: {
+    id: "groups.tags.empty",
+    defaultMessage: "No tags yet.",
+    description: "Tags section with no tags",
+  },
+  tagUsage: {
+    id: "groups.tags.usage",
+    defaultMessage: "{count, plural, one {# organisation} other {# organisations}}",
+    description: "How many organisations have the tag",
+  },
+  tagPickerLabel: {
+    id: "groups.tags.picker",
+    defaultMessage: "Find or create a tag",
+    description: "Label of the tag picker",
+  },
+  tagCreate: {
+    id: "groups.tags.create",
+    defaultMessage: "Create tag “{name}” ({colour})",
+    description: "Tag picker option creating a new tag with the chosen colour",
+  },
+  tagColour: {
+    id: "groups.tags.colour",
+    defaultMessage: "Colour of the new tag",
+    description: "Legend of the colour choice for a new tag",
+  },
+  tagColourName: {
+    id: "groups.tags.colourName",
+    defaultMessage: "({colour})",
+    description: "Screen-reader text after a tag's name: its colour's name",
+  },
+  tagCreated: {
+    id: "groups.tags.created",
+    defaultMessage: "Tag {name} created.",
+    description: "Announcement after creating a tag",
+  },
+  colourRed: { id: "groups.colour.red", defaultMessage: "Red", description: "Tag colour" },
+  colourOrange: { id: "groups.colour.orange", defaultMessage: "Orange", description: "Tag colour" },
+  colourAmber: { id: "groups.colour.amber", defaultMessage: "Amber", description: "Tag colour" },
+  colourOlive: { id: "groups.colour.olive", defaultMessage: "Olive", description: "Tag colour" },
+  colourGreen: { id: "groups.colour.green", defaultMessage: "Green", description: "Tag colour" },
+  colourTeal: { id: "groups.colour.teal", defaultMessage: "Teal", description: "Tag colour" },
+  colourCyan: { id: "groups.colour.cyan", defaultMessage: "Cyan", description: "Tag colour" },
+  colourBlue: { id: "groups.colour.blue", defaultMessage: "Blue", description: "Tag colour" },
+  colourIndigo: { id: "groups.colour.indigo", defaultMessage: "Indigo", description: "Tag colour" },
+  colourViolet: { id: "groups.colour.violet", defaultMessage: "Violet", description: "Tag colour" },
+  colourMagenta: {
+    id: "groups.colour.magenta",
+    defaultMessage: "Magenta",
+    description: "Tag colour",
+  },
+  colourSlate: { id: "groups.colour.slate", defaultMessage: "Slate", description: "Tag colour" },
   failed: {
     id: "groups.failed",
     defaultMessage: "That didn't work. Try again.",

@@ -98,9 +98,7 @@ it("moves a group with the keyboard only", async () => {
   within(dialog).getByRole("button", { name: "Move" }).focus();
   await user.keyboard("{Enter}");
   await waitFor(() => expect(patches).toEqual([{ id: "ret", body: { parent: "ott" } }]));
-  await waitFor(() =>
-    expect(screen.getByRole("status")).toHaveTextContent("Retail clients moved."),
-  );
+  expect(await screen.findByText("Retail clients moved.")).toHaveAttribute("role", "status");
   await expectNoAxeViolations(container);
 });
 

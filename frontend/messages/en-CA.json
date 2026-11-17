@@ -824,6 +824,20 @@
     "breadcrumb": "Groups",
     "cancel": "Cancel",
     "close": "Close",
+    "colour": {
+      "amber": "Amber",
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "green": "Green",
+      "indigo": "Indigo",
+      "magenta": "Magenta",
+      "olive": "Olive",
+      "orange": "Orange",
+      "red": "Red",
+      "slate": "Slate",
+      "teal": "Teal",
+      "violet": "Violet"
+    },
     "counts": "{organisations, plural, one {# organisation} other {# organisations}} · {staff, plural, one {# staff member} other {# staff}}",
     "create": {
       "subTitle": "New sub-group of {name}",
@@ -859,6 +873,17 @@
     },
     "retry": "Try again",
     "save": "Save",
+    "tags": {
+      "colour": "Colour of the new tag",
+      "colourName": "({colour})",
+      "create": "Create tag “{name}” ({colour})",
+      "created": "Tag {name} created.",
+      "empty": "No tags yet.",
+      "intro": "Tags mark clients across groups (“Year-end soon”). Type a new name to create one.",
+      "picker": "Find or create a tag",
+      "title": "Tags",
+      "usage": "{count, plural, one {# organisation} other {# organisations}}"
+    },
     "title": "Groups and tags",
     "tree": {
       "label": "Practice groups"

@@ -323,3 +323,9 @@ tags*):
   its sub-groups or its current parent; never deeper than 5 levels — `moveTargets`), chosen with
   the radio group and confirmed with *Move*. A refusal from the API (rule or permission) is shown
   as the server words it; a done move is announced (`role="status"`).
+- **Tags** (`TagsSection.tsx`, `TagPicker.tsx`, V-02-T10) — the practice's tags with their usage
+  counts, each shown as name + colour swatch + the colour's name for screen readers (colour is
+  never the only signal). The picker is a combobox: typing filters the tags (accents and case
+  ignored); when no tag has the typed name the last option is *Create tag “…” (colour)* — Enter
+  creates it inline (`POST /api/v1/practice/tags`) with the colour chosen from the 12 named
+  colours; a refusal (name taken, no permission) is shown.

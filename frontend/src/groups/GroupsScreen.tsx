@@ -8,6 +8,7 @@ import { useFormatMessage } from "@/i18n";
 import { groupsApi, moveTargets, refusal, type Group } from "./api";
 import { GroupTree } from "./GroupTree";
 import { m } from "./messages";
+import { TagsSection } from "./TagsSection";
 
 type Editing =
   | { kind: "create"; parent: Group | null }
@@ -124,6 +125,7 @@ export function GroupsScreen({ practice }: { practice: string }) {
           }}
         />
       ) : null}
+      <TagsSection practice={practice} />
       <p role="status" className="sr-only">
         {announcement}
       </p>
