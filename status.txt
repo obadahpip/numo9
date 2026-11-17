@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 273   Remaining: 2514   Progress: 9.80%
+TOTAL ATOMIC TASKS: 2787   Completed: 274   Remaining: 2513   Progress: 9.83%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -375,7 +375,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-02-T14 — Tests: future-dated price leaves current subscriptions unchanged (fixture with subscription renewing before effective date)
 
 [U-01]
-❌ U-01-T12 — In-app "Package & features" page (searchable matrix, grouped, ticks per package, highlights current package)   [page, API (GET /api/v1/o/<org>/package-features) and Playwright + axe built and passing on U-02-shaped fixture packages; ✅ once U-02 supplies real packages and U-03/U-04 the organisation's current package]
+✅ U-01-T12 — In-app "Package & features" page (searchable matrix, grouped, ticks per package, highlights current package)
 
 [V-02]
 ❌ V-02-T01 — Wireframes: group tree, tag picker, group staff panel
