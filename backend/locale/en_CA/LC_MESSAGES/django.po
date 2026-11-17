@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:10-0500\n"
+"POT-Creation-Date: 2026-11-16 13:36-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2276,6 +2276,21 @@ msgstr ""
 msgid "Background job"
 msgstr ""
 
+msgid "Use a date like 2026-03-31."
+msgstr ""
+
+msgid "Use a whole number."
+msgstr ""
+
+msgid "Unknown status."
+msgstr ""
+
+msgid "Use accounting or tax."
+msgstr ""
+
+msgid "There's no journal with this id in this organisation."
+msgstr ""
+
 msgid "Unknown system role."
 msgstr ""
 
@@ -2773,7 +2788,30 @@ msgid "journal number sequences"
 msgstr ""
 
 #, python-format
+msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
+msgstr ""
+
+msgid "See journals and every posted entry"
+msgstr ""
+
+#, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s is %(from)s: it can't become %(to)s."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s is %(status)s: only drafts can be edited."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s reverses another journal: it can't be reversed itself. Post a new journal instead."
+msgstr ""
+
+#, python-format
+msgid "Reversal of %(number)s"
 msgstr ""
 
 msgid "Choose the home province or territory (e.g. ON)."

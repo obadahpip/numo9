@@ -93,3 +93,15 @@ markers = [
   "gap(*ids): gap-closure test for xero_teardown gap(s), e.g. @pytest.mark.gap('gap-06'); run by the CI gap-tests job",
   "tenant_isolation: cross-tenant isolation test; run by the CI tenant-sweep job (A-01 adds manage.py tenant_sweep)",
 ]
+
+# ---- import-linter (C-02-T14): run `lint-imports` from backend/ ------------------------------
+[tool.importlinter]
+root_package = "numo9"
+include_external_packages = false
+contract_types = ["ledger_writes: tools.import_contracts.LedgerWritesContract"]
+
+[[tool.importlinter.contracts]]
+name = "Only numo9.ledger.services writes JournalLine (ADR-0003)"
+type = "ledger_writes"
+models_module = "numo9.ledger.models"
+allowed_modules = ["numo9.ledger.services"]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:10-0500\n"
+"POT-Creation-Date: 2026-11-16 13:36-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2455,6 +2455,21 @@ msgstr "exécutions de tâches"
 msgid "Background job"
 msgstr "Tâche en arrière-plan"
 
+msgid "Use a date like 2026-03-31."
+msgstr "Utilisez une date comme 2026-03-31."
+
+msgid "Use a whole number."
+msgstr "Utilisez un nombre entier."
+
+msgid "Unknown status."
+msgstr "Statut inconnu."
+
+msgid "Use accounting or tax."
+msgstr "Utilisez accounting (comptable) ou tax (fiscal)."
+
+msgid "There's no journal with this id in this organisation."
+msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
+
 msgid "Unknown system role."
 msgstr ""
 
@@ -3005,8 +3020,31 @@ msgid "journal number sequences"
 msgstr "Numéro"
 
 #, python-format
+msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
+msgstr "La période %(period)s (du %(start)s au %(end)s) est fermée : rien ne peut y être comptabilisé. Datez l'écriture après le %(end)s ou demandez à un conseiller de rouvrir la période."
+
+msgid "See journals and every posted entry"
+msgstr "Voir les écritures de journal et toutes les écritures comptabilisées"
+
+#, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
+
+#, python-format
+msgid "%(journal)s is %(from)s: it can't become %(to)s."
+msgstr "%(journal)s a le statut « %(from)s » : il ne peut pas passer au statut « %(to)s »."
+
+#, python-format
+msgid "%(journal)s is %(status)s: only drafts can be edited."
+msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent être modifiés."
+
+#, python-format
+msgid "%(journal)s reverses another journal: it can't be reversed itself. Post a new journal instead."
+msgstr "%(journal)s contrepasse une autre écriture : elle ne peut pas être contrepassée elle-même. Passez plutôt une nouvelle écriture."
+
+#, python-format
+msgid "Reversal of %(number)s"
+msgstr "Contrepassation de %(number)s"
 
 msgid "Choose the home province or territory (e.g. ON)."
 msgstr ""

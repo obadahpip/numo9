@@ -94,6 +94,9 @@ jobs:
       - name: mypy
         run: mypy .
 
+      - name: import-linter — only the posting service writes journal lines (C-02-T14)
+        run: lint-imports
+
       - name: Migrations are up to date
         run: python manage.py makemigrations --check --dry-run
 
