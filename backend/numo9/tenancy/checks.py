@@ -47,6 +47,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "entitlements.TrialRegistry",
         # Platform console (U-06): daily platform metrics (no organisation's data).
         "platform.PlatformMetricDaily",
+        # Impersonation (U-06-T08): a platform record about one organisation, never tenant data.
+        "platform.ImpersonationSession",
         "catalogue.FeatureKey",
         # Packages (U-02): packages for sale, their products, prices and promo codes (platform data;
         # promo redemptions are organisation records — packages.PromoRedemption is OrgOwned).

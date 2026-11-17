@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:45-0500\n"
+"POT-Creation-Date: 2026-11-17 17:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4451,6 +4451,39 @@ msgstr "calculé le"
 
 msgid "daily platform metrics"
 msgstr "indicateurs quotidiens de la plateforme"
+
+msgid "Ended by the staff member"
+msgstr "Terminée par le membre du personnel"
+
+msgid "Time limit reached"
+msgstr "Limite de temps atteinte"
+
+msgid "Ended by the platform"
+msgstr "Terminée par la plateforme"
+
+msgid "platform staff member"
+msgstr "membre du personnel de la plateforme"
+
+msgid "user acted as"
+msgstr "utilisateur incarné"
+
+msgid "started"
+msgstr "commencée"
+
+msgid "expires"
+msgstr "expire"
+
+msgid "ended"
+msgstr "terminée"
+
+msgid "how it ended"
+msgstr "fin"
+
+msgid "impersonation session"
+msgstr "session d’emprunt d’identité"
+
+msgid "impersonation sessions"
+msgstr "sessions d’emprunt d’identité"
 
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"

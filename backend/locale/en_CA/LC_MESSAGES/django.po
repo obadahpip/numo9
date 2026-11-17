@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:45-0500\n"
+"POT-Creation-Date: 2026-11-17 17:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4197,6 +4197,39 @@ msgid "computed at"
 msgstr ""
 
 msgid "daily platform metrics"
+msgstr ""
+
+msgid "Ended by the staff member"
+msgstr ""
+
+msgid "Time limit reached"
+msgstr ""
+
+msgid "Ended by the platform"
+msgstr ""
+
+msgid "platform staff member"
+msgstr ""
+
+msgid "user acted as"
+msgstr ""
+
+msgid "started"
+msgstr ""
+
+msgid "expires"
+msgstr ""
+
+msgid "ended"
+msgstr ""
+
+msgid "how it ended"
+msgstr ""
+
+msgid "impersonation session"
+msgstr ""
+
+msgid "impersonation sessions"
 msgstr ""
 
 #, python-format

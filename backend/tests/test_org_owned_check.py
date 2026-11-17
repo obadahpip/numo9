@@ -53,6 +53,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "entitlements.TrialRegistry",
                 # Platform console (U-06-T05): reviewed — daily platform-wide metrics.
                 "platform.PlatformMetricDaily",
+                # Impersonation (U-06-T08): reviewed — staff sessions, read by the platform only.
+                "platform.ImpersonationSession",
                 # Packages (U-02-T02, T03, T06): reviewed — packages, prices, promo codes.
                 "packages.Package",
                 "packages.PackageProduct",

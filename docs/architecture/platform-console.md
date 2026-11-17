@@ -107,3 +107,16 @@ timeline and Stripe sync of U-02-T09/T10), `/console/products` (U-01-T11) and
 `/console/promo-codes` (U-02-T11), with a "Catalogue" sub-navigation between them
 (`console/shell/CatalogueNav.tsx`). An organisation's detail links its current package to the
 editor for staff who may manage the catalogue.
+
+## Impersonation sessions (U-06-T08)
+
+`ImpersonationSession` (platform model) — one row per session: `actor` (platform staff),
+`target_user`, `organisation` (the **one** organisation the session is scoped to, even when the
+user belongs to many), `reason` (required, ≤ 500 characters), `started_at`, `expires_at`
+(default 30 minutes, at most 2 hours — a database check), `ended_at` and `end_reason`
+(`ended` / `expired` / `revoked`). The database also refuses self-impersonation and a second open
+session for the same staff member.
+
+`numo9.platform.impersonation.start()` applies the rules before creating the row (the user acted
+as must be a member of that organisation and hold no platform role); `current()` returns the open
+session and closes it as `expired` once its time is up.
