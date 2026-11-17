@@ -33,3 +33,15 @@ values never collide (no BN yet, no owner yet). Platform data, never shown to te
 | `normalise_email` | `  Dana+numo9@Refined.CA ` | `dana@refined.ca` — trimmed, lower-case, plus-addressing stripped; `""` when not an address |
 
 `backend/tests/test_trial_normalisers.py` (table tests).
+
+## Starting a trial (U-05-T04)
+
+`trials.start_trial(organisation)` — a `trialing` `Subscription` of the configured package
+(`TrialConfig`), ending at **23:59:59 organisation-local time on the last day** (the start day is
+day 1; `trial_end(start, days, time_zone)`), stored in UTC. Computed on the local calendar, so a
+DST change during the trial (spring forward in March, fall back in November) never moves the end
+off local 23:59:59. Saving the subscription mirrors `trial` on `Organisation.status`. An
+organisation that already has a current subscription keeps it. `trial_days_left(subscription)`
+counts whole days on the organisation's calendar (0 on the last day).
+`backend/tests/test_trial_start.py` — DST fixtures in Toronto (fall back, spring forward), Regina
+(no DST), St. John's (half-hour zone).
