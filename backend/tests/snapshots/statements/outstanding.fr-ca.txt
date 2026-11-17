@@ -1,0 +1,26 @@
+NUMO9
+Les chiffres bâtissent un avenir meilleur
+Maple Leaf Supply Ltd.
+120 King Street West
+Toronto ON  M5V 2T6
+Inscription TPS/TVH : 123456782RT0001
+ar@mapleleafsupply.example.ca 
+Relevé des montants impayés
+Relevé de
+Cedar Roofing Co.
+45 Elm Avenue
+Ottawa ON  K1P 5G4
+Date 30 nov. 2026
+Au 30 nov. 2026
+Compte C-0042
+Devise CAD
+DATE DOCUMENT DATE D’ÉCHÉANCE MONTANT SOLDE
+20 août 2026 INV-1012 19 sept. 2026 1 130,00 $ 1 130,00 $
+2 oct. 2026 INV-1031 1 nov. 2026 565,00 $ 1 695,00 $
+28 oct. 2026 INV-1043 27 nov. 2026 2 260,00 $ 3 955,00 $
+14 nov. 2026 CN-0007 -226,00 $ 3 729,00 $
+COURANT EN RETARD DE 1 À 30 JOURS 31 À 60 JOURS 61 À 90 JOURS PLUS DE 90 JOURS
+-226,00 $ 2 825,00 $ 0,00 $ 1 130,00 $ 0,00 $
+Montant dû (CAD)  3 729,00 $ 
+Veuillez indiquer votre numéro de compte avec votre paiement.
+Préparé avec Numo9 Page 1 de 1

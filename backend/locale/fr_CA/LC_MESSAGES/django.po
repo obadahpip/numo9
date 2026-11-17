@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 16:24-0500\n"
+"POT-Creation-Date: 2026-11-17 17:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1013,10 +1013,8 @@ msgstr "Numéro d’entreprise (NE)"
 msgid "Tax ID"
 msgstr ""
 
-#, fuzzy
-#| msgid "currency"
 msgid "Currency"
-msgstr "devise"
+msgstr "Devise"
 
 msgid "Credit limit"
 msgstr ""
@@ -1595,6 +1593,67 @@ msgstr "dérogations à la limite de crédit"
 msgid "Approve sales over a customer's credit limit"
 msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
 
+msgid "Statement"
+msgstr "Relevé"
+
+msgid "Statement of activity"
+msgstr "Relevé des opérations"
+
+msgid "Statement of outstanding items"
+msgstr "Relevé des montants impayés"
+
+msgid "Statement for"
+msgstr "Relevé de"
+
+msgid "Period"
+msgstr "Période"
+
+msgid "As at"
+msgstr "Au"
+
+msgid "Account"
+msgstr "Compte"
+
+msgid "Document"
+msgstr "Document"
+
+msgid "Due date"
+msgstr "Date d’échéance"
+
+msgid "Amount"
+msgstr "Montant"
+
+msgid "Balance"
+msgstr "Solde"
+
+msgid "Opening balance"
+msgstr "Solde d’ouverture"
+
+msgid "Nothing outstanding."
+msgstr "Aucun montant impayé."
+
+msgid "Current"
+msgstr "Courant"
+
+msgid "1–30 days past due"
+msgstr "En retard de 1 à 30 jours"
+
+msgid "31–60 days"
+msgstr "31 à 60 jours"
+
+msgid "61–90 days"
+msgstr "61 à 90 jours"
+
+msgid "Over 90 days"
+msgstr "Plus de 90 jours"
+
+#, python-format
+msgid "Amount due (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Please quote your account number with your payment."
+msgstr "Veuillez indiquer votre numéro de compte avec votre paiement."
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1632,17 +1691,11 @@ msgstr "Document type"
 msgid "Bill to"
 msgstr "Facturer à"
 
-msgid "Due date"
-msgstr "Date d’échéance"
-
 msgid "Quantity"
 msgstr "Quantité"
 
 msgid "Unit price"
 msgstr "Prix unitaire"
-
-msgid "Amount"
-msgstr "Montant"
 
 msgid "Subtotal"
 msgstr "Sous-total"
@@ -3064,9 +3117,6 @@ msgstr "Achats"
 #| msgid "arguments"
 msgid "Payment"
 msgstr "arguments"
-
-msgid "Opening balance"
-msgstr ""
 
 #, fuzzy
 #| msgid "Documents"
