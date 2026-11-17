@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:43-0500\n"
+"POT-Creation-Date: 2026-11-17 18:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -427,6 +427,24 @@ msgstr "Courriel reçu"
 
 msgid "Numo9 support signed in as this user"
 msgstr "Le soutien Numo9 s’est connecté en tant que cet utilisateur"
+
+msgid "Groups changed in a bulk action"
+msgstr "Groupes modifiés par une action groupée"
+
+msgid "Tags changed in a bulk action"
+msgstr "Étiquettes modifiées par une action groupée"
+
+msgid "Assigned staff changed in a bulk action"
+msgstr "Personnel affecté modifié par une action groupée"
+
+msgid "Settings changed in a bulk action"
+msgstr "Paramètres modifiés par une action groupée"
+
+msgid "Message sent in a bulk action"
+msgstr "Message envoyé par une action groupée"
+
+msgid "Included in a bulk export"
+msgstr "Inclus dans une exportation groupée"
 
 msgid "Numo9 support session ended"
 msgstr "Session du soutien Numo9 terminée"

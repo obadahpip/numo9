@@ -10,7 +10,9 @@
 - ``run_bulk_job`` — the executor. Each organisation is one transaction: the row is locked, its
   access is checked again for the person who started the job (directory access and the action's
   organisation permission — ``skipped: no_access`` / ``no_permission``), the change is applied and
-  the outcome written **in the same transaction**. A worker killed mid-job leaves finished rows
+  the outcome written **in the same transaction** — with its audit event in the organisation's log
+  (``bulk.<action>.applied``, the person who started the job as actor, ``bulk_job_id``;
+  V-03-T11). A worker killed mid-job leaves finished rows
   finished and the current one untouched; the rerun (A-08 retries, or a redelivery) takes the
   rows still pending — each organisation is changed exactly once. An error in one organisation
   rolls back that organisation only (``failed: error``) and the job goes on. When the job ends,
@@ -19,6 +21,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+from contextlib import contextmanager
 from typing import Any
 
 from django.db import transaction
@@ -127,8 +131,10 @@ def _process(job: BulkJob, row_id: int) -> None:
         ).exists() and has_practice_perm(job.created_by, job.practice, action.practice_permission)
         ctx = Context(organisation, job.practice, job.created_by, job.params, {"job": job})
         try:
-            with transaction.atomic():
+            with transaction.atomic(), _attributed(job):
                 line = evaluate(action, ctx, allowed, write=True)
+                if line.status == "change":
+                    _audit(job, organisation, line.before, line.after)
         except Exception as exc:  # noqa: BLE001 — one organisation's failure is its outcome
             row.outcome, row.reason = RowOutcome.FAILED, "error"
             row.message = reason_text("error")[:500]
@@ -151,6 +157,37 @@ def report_progress(done: int, total: int | None = None) -> None:
     """The job tray's progress — when running as the background job (not when called inline)."""
     if current_job() is not None:
         _job_progress(done, total)
+
+
+@contextmanager
+def _attributed(job: BulkJob) -> Iterator[None]:
+    """Every audit event of the row — the services' own and ``bulk.<action>.applied`` — names the
+    person who started the job (not "System") and carries ``bulk_job_id`` (V-03-T11)."""
+    from numo9.audit.context import audit_context, user_label
+    from numo9.audit.models import ActorKind
+
+    with audit_context(
+        kind=ActorKind.USER,
+        user=job.created_by,
+        label=user_label(job.created_by),
+        meta={"bulk_job_id": str(job.public_id), "bulk_action": job.action},
+    ):
+        yield
+
+
+def _audit(job: BulkJob, organisation: Any, before: dict[str, Any], after: dict[str, Any]) -> None:
+    from numo9.audit.service import record
+
+    record(
+        f"bulk.{job.action}.applied",
+        organisation=organisation,
+        object_type="tenancy.Organisation",
+        object_id=str(organisation.public_id),
+        object_label=organisation.name,
+        changes={field: [before.get(field), value] for field, value in after.items()},
+        meta={"bulk_job_id": str(job.public_id), "bulk_action": job.action},
+        actor=job.created_by,
+    )
 
 
 def _no_change_text() -> str:

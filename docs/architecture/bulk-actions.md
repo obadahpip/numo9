@@ -131,3 +131,13 @@ dialog.
 Succeeded / Skipped / Failed / Cancelled), each organisation with its outcome and reason, links
 the results CSV (and the export file of an export) and the directory reloads. Closing the drawer
 doesn't stop the job (it is also in the job tray).
+
+## Audit per organisation (V-03-T11)
+
+Each organisation the job changes gets one event in **its own** audit log, written in the row's
+transaction: `bulk.<action>.applied` ("Settings changed in a bulk action", "Tags changed in a bulk
+action"…), `actor_kind = user` with the person who started the job (not "System: …"), the changes
+field by field (before → after) and `meta.bulk_job_id` / `meta.bulk_action`. The row runs inside
+an `audit_context` naming that person, so the services' own events (the settings change, the tag
+added…) are attributed the same way and carry `bulk_job_id` too. Skipped and failed organisations
+get no event (nothing changed). 200 organisations → 200 events (test).
