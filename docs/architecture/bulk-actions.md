@@ -141,3 +141,12 @@ field by field (before → after) and `meta.bulk_job_id` / `meta.bulk_action`. T
 an `audit_context` naming that person, so the services' own events (the settings change, the tag
 added…) are attributed the same way and carry `bulk_job_id` too. Skipped and failed organisations
 get no event (nothing changed). 200 organisations → 200 events (test).
+
+## Load test (V-03-T12)
+
+`backend/tests/test_bulk_load.py` runs a 200-organisation tag job the way a worker does (the
+captured A-08 message delivered to `numo9.bulk.run`), with 10 organisations already tagged, one no
+longer served, one whose change raises, and a worker killed after 100 organisations, then
+redelivered. Result: **0 rows without an outcome** (none pending, every `processed_at` set),
+188 succeeded / 11 skipped / 1 failed = 200, each organisation tagged exactly once, inside the
+60-second budget.
