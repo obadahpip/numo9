@@ -1,0 +1,26 @@
+NUMO9
+Numbers build a brighter tomorrow
+Maple Leaf Supply Ltd.
+120 King Street West
+Toronto ON  M5V 2T6
+GST/HST registration: 123456782RT0001
+ar@mapleleafsupply.example.ca 
+Statement of outstanding items
+Statement for
+Cedar Roofing Co.
+45 Elm Avenue
+Ottawa ON  K1P 5G4
+Date 30 Nov 2026
+As at 30 Nov 2026
+Account C-0042
+Currency CAD
+DATE DOCUMENT DUE DATE AMOUNT BALANCE
+20 Aug 2026 INV-1012 19 Sep 2026 $1,130.00 $1,130.00
+2 Oct 2026 INV-1031 1 Nov 2026 $565.00 $1,695.00
+28 Oct 2026 INV-1043 27 Nov 2026 $2,260.00 $3,955.00
+14 Nov 2026 CN-0007 -$226.00 $3,729.00
+CURRENT 1–30 DAYS PAST DUE 31–60 DAYS 61–90 DAYS OVER 90 DAYS
+-$226.00 $2,825.00 $0.00 $1,130.00 $0.00
+Amount due (CAD)  $3,729.00 
+Please quote your account number with your payment.
+Prepared with Numo9 Page 1 of 1

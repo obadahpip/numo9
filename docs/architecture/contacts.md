@@ -360,3 +360,22 @@ customer, Érable Distribution inc., defaults to GST + QST (deliverable acceptan
 | T13 | `tests/test_contacts_credit.py` |
 | T16 | `frontend/src/contacts/DuplicatePanel.test.tsx` |
 | T19 | `tests/test_contacts_gaps.py` (+ `tests/fixtures/contacts_ca/contacts.json`) |
+
+## Statements — the PDF (B-02-T05)
+
+`numo9.contacts.statements` — `StatementDocument` is what the statement engine (B-02-T04)
+produces: issuer and contact (`Party`), kind, issue date, *as at* (or the period end), the lines
+with running balances, the aging buckets and the amount due, in the **contact's currency**.
+`render_statement_pdf(document, locale=…)` renders `contacts/statement.html` on the A-10 document
+baseline (`documents/base.html`): Letter 8.5 × 11 in, 1 in margins, brand header with the issuer,
+page counter; English or French (`en-ca` / `fr-ca` keys in the backend catalogues).
+
+| Kind | Shows |
+|---|---|
+| `outstanding` | the open items as at a date: date, document, due date, amount, running balance; aging buckets Current / 1–30 / 31–60 / 61–90 / over 90 days past due (`aging_of`: days past due at the as-at date; no due date = current); amount due |
+| `activity` | a period: opening balance, then every document and payment with its description and running balance; closing balance = amount due |
+
+`sample_statement(kind)` is the Canadian fixture in the engine's shape. Tests:
+`backend/tests/test_contacts_statement_pdf.py` — text snapshots of the four renderings
+(`tests/snapshots/statements/<kind>.<locale>.txt`, `NUMO9_UPDATE_SNAPSHOTS=1` to rewrite), Letter
+page with content inside the margins, aging totals = amount due, activity opening + lines = closing.

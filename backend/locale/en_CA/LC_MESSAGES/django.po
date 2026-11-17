@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 16:23-0500\n"
+"POT-Creation-Date: 2026-11-17 17:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1475,6 +1475,67 @@ msgstr ""
 msgid "Approve sales over a customer's credit limit"
 msgstr ""
 
+msgid "Statement"
+msgstr ""
+
+msgid "Statement of activity"
+msgstr ""
+
+msgid "Statement of outstanding items"
+msgstr ""
+
+msgid "Statement for"
+msgstr ""
+
+msgid "Period"
+msgstr ""
+
+msgid "As at"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Document"
+msgstr ""
+
+msgid "Due date"
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "Balance"
+msgstr ""
+
+msgid "Opening balance"
+msgstr ""
+
+msgid "Nothing outstanding."
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
+msgid "1–30 days past due"
+msgstr ""
+
+msgid "31–60 days"
+msgstr ""
+
+msgid "61–90 days"
+msgstr ""
+
+msgid "Over 90 days"
+msgstr ""
+
+#, python-format
+msgid "Amount due (%(currency)s)"
+msgstr ""
+
+msgid "Please quote your account number with your payment."
+msgstr ""
+
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
 msgstr ""
 
@@ -1511,16 +1572,10 @@ msgstr ""
 msgid "Bill to"
 msgstr ""
 
-msgid "Due date"
-msgstr ""
-
 msgid "Quantity"
 msgstr ""
 
 msgid "Unit price"
-msgstr ""
-
-msgid "Amount"
 msgstr ""
 
 msgid "Subtotal"
@@ -2866,9 +2921,6 @@ msgid "Purchases"
 msgstr ""
 
 msgid "Payment"
-msgstr ""
-
-msgid "Opening balance"
 msgstr ""
 
 msgid "Adjustment"
