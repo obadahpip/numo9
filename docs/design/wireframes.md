@@ -40,6 +40,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 21 | Groups & tags — group tree | V-02-T09 | Left-rail tree with counts, New group, drag to move, keyboard "Move to…" (max depth 5), organisations of the group with group and tag columns |
 | 22 | Tag picker | V-02-T10 | Type-to-filter, apply/remove, type-to-create, 12-colour palette named (never colour alone), unique names per practice |
 | 23 | Group staff panel + delete-group dialog | V-02-T07, T11 | Staff and role per group, inherited access shown, add/remove, delete dialog with affected organisations and staff counts |
+| 24 | Contact activity timeline | B-02-T10 | Activity tab, type filter chips, newest first, amounts in the contact's currency, rows open their record |
+| 25 | Statement preview and send | B-02-T05, T06, T11 | Outstanding/Activity, as-at date, language, Letter preview with aging, send dialog, history |
+| 26 | Supplier statement reconciliation | B-02-T07, T08, T12 | Difference summary, two columns with auto-match, manual match and notes, import of their lines |
 
 ## 1. Application shell
 
@@ -351,3 +354,35 @@ old system with French headers, saved in Windows-1252.
 | 2 | Inherited access | "Access comes from" names the group that grants it; inherited rows (from a parent group) are changed on that group |
 | 3 | Delete group | Practice admins only; the dialog counts what changes — organisations leaving the group (they stay in the practice), sub-groups moving up, staff assignments removed and the organisations people lose access to (those they can't reach another way); typed confirmation |
 
+
+## 24. Contact activity timeline (B-02-T01)
+
+![Contact activity timeline](wireframes/25-contact-timeline.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Activity tab | One timeline per contact: documents, payments, emails, notes and changes, newest first |
+| 2 | Type filter | Chips per kind of event ("All" by default); search within the timeline |
+| 3 | Rows | Date, event, reference, amount (contact's currency, blank when none), who; each row opens its record |
+
+## 25. Statement preview and send (B-02-T01)
+
+![Statement preview and send](wireframes/26-statement-preview.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Options | *Outstanding* (as at a date) or *Activity* (a date range with opening balance); language defaults to the contact's |
+| 2 | Preview | Exactly the PDF: Letter 8.5 × 11 in with 1 in margins, organisation and contact addresses, lines, aging buckets (Current, 1–30, 31–60, 61–90, 90+), amount due in the contact's currency |
+| 3 | Send | Email to the contact's billing person with the PDF attached (A-07); subject and body in the contact's language |
+| 4 | History | Every statement sent (date, type, recipients, who); it also appears on the activity timeline |
+
+## 26. Supplier statement reconciliation (B-02-T01)
+
+![Supplier statement reconciliation](wireframes/27-supplier-reconciliation.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Summary | Their balance, ours, the difference and what explains it (their lines without a bill, bills not on their statement) |
+| 2 | Two columns | Their statement lines and our bills side by side; auto-match by invoice number, then by amount within ±3 days; unmatched highlighted |
+| 3 | Manual match | Select one line on each side and match; notes on a line; the difference updates at once |
+| 4 | Import | Their statement from CSV/XLSX with a column mapping (date, invoice number, amount, reference) or typed lines; lines added = rows in the file |
