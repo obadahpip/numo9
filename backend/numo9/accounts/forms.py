@@ -63,6 +63,8 @@ class SignupForm(forms.Form):
                     code="practice_name_required",
                 ),
             )
+        if path == SignupPath.ORGANISATION:
+            self._check_trial(data)
         if path == SignupPath.ORGANISATION and not data.get("organisation_name"):
             self.add_error(
                 "organisation_name",
@@ -72,6 +74,23 @@ class SignupForm(forms.Form):
                 ),
             )
         return data
+
+    def _check_trial(self, data: dict[str, Any]) -> None:
+        """One free trial per owner email (U-05-T06): refuse the organisation path up front."""
+        from numo9.entitlements.trials import (
+            TRIAL_ALREADY_USED_CODE,
+            TrialAlreadyUsed,
+            check_trial_available,
+            normalise_email,
+        )
+
+        email = normalise_email(str(data.get("email") or self.data.get("email") or ""))
+        try:
+            check_trial_available(email=email)
+        except TrialAlreadyUsed as refused:
+            self.add_error(
+                "email", forms.ValidationError(refused.messages[0], code=TRIAL_ALREADY_USED_CODE)
+            )
 
     def signup(self, request: HttpRequest, user: User) -> None:
         """Called by allauth inside the sign-up transaction, after the user is saved."""
@@ -96,4 +115,5 @@ class SignupForm(forms.Form):
             )
             from numo9.entitlements.trials import start_trial
 
-            start_trial(organisation)  # every new organisation starts its free trial (U-05-T05)
+            # every new organisation starts its free trial (U-05-T05), one per email (T06)
+            start_trial(organisation, email=user.email)

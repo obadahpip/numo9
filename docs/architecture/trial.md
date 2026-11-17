@@ -56,3 +56,19 @@ counts whole days on the organisation's calendar (0 on the last day).
 
 The accountant sign-up path creates a practice — practices are free, no trial.
 `backend/tests/test_trial_hooks.py`.
+
+## One trial per BN and per owner email (U-05-T06)
+
+`start_trial` records the trial in the registry with the organisation's BN (from any BN or program
+registration, normalised) and the owner's email (normalised; the sign-up passes it). A BN or email
+that already had a trial raises `TrialAlreadyUsed` (a `ValidationError`, code
+`trial_already_used`, `field` = `bn` or `email`) and **nothing is created**; two concurrent trials
+with the same value are settled by the registry's unique indexes.
+
+| Where | Answer |
+|---|---|
+| Sign-up, organisation path | form error on `email`, code `trial_already_used` (allauth 400) — checked before anything is created |
+| `POST /api/v1/organisations` | `409 entitlements.trial_already_used` with `field`; the Platform Owner (`platform.console.view`) also gets `existing_organisation`, the **masked** name of the organisation that used it (`Ma*** Le*** Su*** Lt***`); nobody else does |
+| A BN entered after the trial started (`TaxRegistration` save) | checked then (`pre_save`): another organisation's trial with that BN → `ValidationError` `trial_already_used` (the settings API answers 400); otherwise stored on the trial |
+
+`backend/tests/test_trial_duplicates.py`.

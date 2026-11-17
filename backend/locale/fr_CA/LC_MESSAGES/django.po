@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:15-0500\n"
+"POT-Creation-Date: 2026-11-17 17:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1999,6 +1999,12 @@ msgstr "essai commencé"
 msgid "trials started"
 msgstr "essais commencés"
 
+msgid "A free trial was already used with this Business Number. Choose a package to start using Numo9 with this organisation."
+msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
+
+msgid "A free trial was already used with this email address. Choose a package to start using Numo9 with this organisation."
+msgstr "Un essai gratuit a déjà été utilisé avec cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
+
 msgid "Wait until the file has been checked for viruses."
 msgstr ""
 
@@ -2535,6 +2541,9 @@ msgstr "Choisissez quoi faire avec les documents sélectionnés."
 #, python-format
 msgid "Select up to %(max)s documents at a time."
 msgstr "Sélectionnez au plus %(max)s documents à la fois."
+
+msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
+msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
 
 msgid "You belong to more than one practice. Choose the practice whose directory to open."
 msgstr "Vous êtes membre de plus d’un cabinet. Choisissez le cabinet dont vous voulez ouvrir le répertoire."
