@@ -48,3 +48,21 @@ writes: zero; an organisation without settings is previewed from defaults, not c
 The actions (`numo9.bulk.actions`) each declare the practice permission checked once
 (`practice.groups.manage` for group and tags, `practice.clients.assign` for staff,
 `practice.directory.view` otherwise) and the organisation permission checked per row.
+
+## Executor (V-03-T05)
+
+`numo9.bulk.service`:
+
+| Step | What happens |
+|---|---|
+| `create_job` | the action's practice permission, `clean` of the parameters, the preview; the `BulkJob` is stored as `preview` |
+| `confirm` | the selection is resolved again, **one pending row per organisation** is created and the platform job `numo9.bulk.run` is started once (keyed by the bulk job; a second confirm answers `409 bulk.not_preview`) |
+| `cancel` | sets `cancel_requested_at`; the executor stops before the next organisation — finished rows stay, the rest become `cancelled` (a job still in preview is cancelled at once) |
+| `execute` | for each pending row, in order, **one transaction**: lock the row, skip it if an earlier attempt finished it, check again the directory access and permissions of the person who started the job, apply, write the outcome |
+
+Because the change and the outcome commit together, a worker killed between rows or in the middle
+of one leaves finished rows finished and the interrupted one untouched; the redelivered or retried
+job (A-08) takes the pending rows — every organisation is changed exactly once. An exception in
+one organisation rolls back only that organisation (`failed: error`, "Nothing was changed"); a
+change already in place is `skipped: no_change`. The job ends `completed` (or `cancelled`) with
+no pending row.

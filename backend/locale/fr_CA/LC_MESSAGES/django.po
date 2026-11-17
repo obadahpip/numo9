@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:34-0500\n"
+"POT-Creation-Date: 2026-11-17 18:36-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -799,6 +799,9 @@ msgstr "Ce mois n’a pas de jour %(day)d."
 
 msgid "Choose at least one setting to change."
 msgstr "Choisissez au moins un paramètre à modifier."
+
+msgid "Already as asked: nothing to change."
+msgstr "Déjà comme demandé : rien à modifier."
 
 msgid "Product"
 msgstr ""
