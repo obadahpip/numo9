@@ -146,3 +146,13 @@ When the trial ends unpaid the organisation is read-only (`trial_ended`):
 
 `frontend/src/entitlements/TrialEnded.test.tsx` (readable list, locked change, banner, export,
 non-owner, axe).
+
+## Reminder emails (U-05-T12)
+
+The `trial_reminder` system message (A-07 catalogue, `templates/email/trial_reminder/`: subject,
+text and MJML, English and French) covers the four reminders by `days_left`: 7, 3 and 1 days
+before the end — the organisation's name, the end date, *choose a package before then*, and what
+happens to the data if not (read-only after 11:59 p.m. that day, **nothing deleted**, still
+visible and exportable) — and 0, when it ended (read-only, nothing deleted, choose a package to
+make changes again). Plain words, one call to action, sent to each owner in their language.
+`backend/tests/test_trial_reminder_emails.py` — the 8 renderings against their snapshots.

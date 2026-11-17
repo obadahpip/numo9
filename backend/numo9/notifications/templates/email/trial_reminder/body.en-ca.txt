@@ -1,6 +1,6 @@
 {% autoescape off %}{% if days_left > 0 %}Your trial of {{ organisation }} ends on {{ ends_on }}{% else %}Your trial of {{ organisation }} has ended{% endif %}
 
-{% if days_left > 0 %}Choose a package before {{ ends_on }} to keep working without a break. Everything you entered stays.{% else %}Your books are read-only: you can still see and export everything. Choose a package to continue.{% endif %}
+{% if days_left > 0 %}Choose a package before {{ ends_on }} to keep working without a break. If you don't, the organisation becomes read-only after 11:59 p.m. that day: nothing is deleted, and you can still see and export everything.{% else %}Your books are read-only: nothing was deleted, and you can still see and export everything. Choose a package to make changes again.{% endif %}
 
 Choose a package: {{ link }}
 
