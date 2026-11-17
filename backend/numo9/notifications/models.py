@@ -225,6 +225,15 @@ class EmailMessage(OrgOwnedModel):
     language = models.CharField(_("language"), max_length=10, blank=True)
     headers = models.JSONField(_("headers"), default=dict, blank=True)
     metadata = models.JSONField(_("metadata"), default=dict, blank=True)
+    attachments = models.JSONField(
+        _("attachments"),
+        default=list,
+        db_default=models.Value([], output_field=models.JSONField()),  # existing rows: none
+        blank=True,
+        help_text=_(
+            'Files in object storage sent with the email: [{"key", "filename", "content_type"}].'
+        ),
+    )
     status = models.CharField(
         _("status"), max_length=16, choices=EmailStatus.choices, default=EmailStatus.QUEUED
     )

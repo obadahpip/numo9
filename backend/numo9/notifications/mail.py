@@ -76,8 +76,13 @@ def queue_email(
     reply_to: str = "",
     headers: dict[str, str] | None = None,
     metadata: dict[str, Any] | None = None,
+    attachments: list[dict[str, str]] | None = None,
 ) -> EmailMessage:
     """Log one email and send it through the worker once the transaction commits.
+
+    ``attachments`` — files already in the organisation's object storage (A-06), as
+    ``{"key", "filename", "content_type"}``: the worker reads and attaches them when it sends
+    (B-02-T06 statements), so the message log never holds file bytes.
 
     An organisation's email without an explicit sender goes from its verified domain, or from
     Numo9 with Reply-To the organisation (``domains.sender_for``).
@@ -100,6 +105,14 @@ def queue_email(
         html_body=html,
         headers=dict(headers or {}),
         metadata=dict(metadata or {}),
+        attachments=[
+            {
+                "key": str(item["key"]),
+                "filename": str(item["filename"]),
+                "content_type": str(item.get("content_type") or "application/octet-stream"),
+            }
+            for item in attachments or []
+        ],
     )
     from .bounces import suppressed_until
 
@@ -127,6 +140,17 @@ def build_message(message: EmailMessage) -> EmailMultiAlternatives:
     )
     if message.html_body:
         email.attach_alternative(message.html_body, "text/html")
+    for item in message.attachments or []:
+        from numo9.files.storage import key_in_org, open_object
+
+        if message.organisation is None or not key_in_org(message.organisation, item["key"]):
+            # only the organisation's own files travel with its email
+            raise PermanentEmailError(f"attachment outside the organisation: {item['filename']}")
+        handle = open_object(item["key"])
+        try:
+            email.attach(item["filename"], handle.read(), item["content_type"])
+        finally:
+            handle.close()
     # django-anymail: metadata and tags travel with the message and come back in webhooks.
     email.metadata = {"numo9_message": str(message.public_id), **message.metadata}  # type: ignore[attr-defined]
     if message.kind:

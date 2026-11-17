@@ -27,6 +27,10 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import Any
 
+from django.dispatch import Signal
+from django.utils import translation
+
+from numo9.documents.formatting import format_date, format_money
 from numo9.documents.pdf import render_html, render_pdf
 
 TEMPLATE = "contacts/statement.html"
@@ -189,3 +193,111 @@ def sample_statement(kind: StatementKind = StatementKind.OUTSTANDING) -> Stateme
         opening_balance=opening,
         lines=lines,
     )
+
+
+# ---- sending (B-02-T06) ------------------------------------------------------------------------
+
+
+class StatementError(ValueError):
+    """A statement can't be sent (no recipient)."""
+
+
+#: Sent after a statement went out: ``statement_sent.send(sender=StatementSend, send=row)`` —
+#: the contact activity timeline (B-02-T02) records it from this signal.
+statement_sent = Signal()
+
+
+def statement_recipients(contact: Any) -> list[str]:
+    """The contact's people marked "include in emails" that have an address (primary first)."""
+    people = contact.people.filter(include_in_emails=True).exclude(email="")
+    return list(dict.fromkeys(people.order_by("-is_primary", "pk").values_list("email", flat=True)))
+
+
+def send_statement(
+    contact: Any,
+    document: StatementDocument,
+    *,
+    to: list[str] | None = None,
+    language: str | None = None,
+    user: Any = None,
+) -> Any:
+    """Email the statement as a PDF to the contact (A-07) and keep it in the history.
+
+    The PDF is rendered in the contact's language (or ``language``), stored in the
+    organisation's object storage and attached to one email per recipient; a ``StatementSend``
+    row records what was sent, and ``statement_sent`` tells the activity timeline. Everything is
+    in the caller's transaction: the emails leave only when it commits.
+    """
+    from numo9.audit.service import record
+    from numo9.files.storage import new_key, put_bytes
+    from numo9.notifications.mail import queue_email
+    from numo9.notifications.templating import render_email
+
+    from .models import StatementSend
+
+    recipients = list(dict.fromkeys(e.strip() for e in (to or statement_recipients(contact))))
+    recipients = [e for e in recipients if e]
+    if not recipients:
+        raise StatementError("The contact has no one to email statements to.")
+    locale = (language or contact.language or "en-ca").lower()
+    organisation = contact.organisation
+    pdf = render_statement_pdf(document, locale=locale)
+    file_name = (
+        f"statement-{document.contact_number or contact.number}-{document.as_at:%Y-%m-%d}.pdf"
+    )
+    key = new_key(organisation, file_name)
+    put_bytes(key, pdf, "application/pdf")
+    with translation.override(locale):
+        context = {
+            "contact": document.contact.legal_name,
+            "kind": document.kind.value,
+            "as_at": format_date(document.as_at, locale),
+            "period_start": format_date(document.period_start, locale)
+            if document.period_start
+            else "",
+            "amount_due": f"{format_money(document.amount_due, locale)} {document.currency}",
+        }
+    email = render_email("statement", context, language=locale, organisation=organisation)
+    attachment = {"key": key, "filename": file_name, "content_type": "application/pdf"}
+    messages = [
+        queue_email(
+            address,
+            email.subject,
+            email.text,
+            html=email.html,
+            organisation=organisation,
+            kind="contacts.statement",
+            language=email.language,
+            attachments=[attachment],
+        )
+        for address in recipients
+    ]
+    row = StatementSend.objects.create(
+        organisation=organisation,
+        contact=contact,
+        kind=document.kind.value,
+        as_at=document.as_at,
+        period_start=document.period_start,
+        amount_due=document.amount_due,
+        currency=document.currency,
+        language=email.language,
+        recipients=recipients,
+        subject=email.subject,
+        file_key=key,
+        file_name=file_name,
+        email_messages=[str(message.public_id) for message in messages],
+        sent_by=user if getattr(user, "is_authenticated", False) else None,
+    )
+    record(
+        "contacts.statement.sent",
+        obj=contact,
+        meta={
+            "kind": row.kind,
+            "as_at": row.as_at.isoformat(),
+            "amount_due": str(row.amount_due),
+            "recipients": recipients,
+        },
+        actor=user,
+    )
+    statement_sent.send(sender=StatementSend, send=row)
+    return row

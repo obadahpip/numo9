@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:03-0500\n"
+"POT-Creation-Date: 2026-11-17 17:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1590,6 +1590,45 @@ msgstr "dérogation à la limite de crédit"
 msgid "credit limit overrides"
 msgstr "dérogations à la limite de crédit"
 
+msgid "Outstanding"
+msgstr "Impayés"
+
+msgid "Activity"
+msgstr "Opérations"
+
+msgid "as at"
+msgstr "au"
+
+msgid "period start"
+msgstr "début de la période"
+
+msgid "amount due"
+msgstr "montant dû"
+
+msgid "sent to"
+msgstr "envoyé à"
+
+msgid "subject"
+msgstr "objet"
+
+msgid "file"
+msgstr "fichier"
+
+msgid "file name"
+msgstr ""
+
+msgid "email messages"
+msgstr "courriels"
+
+msgid "sent by"
+msgstr "envoyé par"
+
+msgid "statement sent"
+msgstr "relevé envoyé"
+
+msgid "statements sent"
+msgstr "relevés envoyés"
+
 msgid "Approve sales over a customer's credit limit"
 msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
 
@@ -1901,9 +1940,6 @@ msgstr ""
 msgid "storage key"
 msgstr ""
 
-msgid "file name"
-msgstr ""
-
 #, fuzzy
 #| msgid "Record type"
 msgid "file type"
@@ -2011,9 +2047,6 @@ msgstr "événements du journal d’audit"
 
 msgid "Message-ID"
 msgstr ""
-
-msgid "subject"
-msgstr "objet"
 
 msgid "recipient"
 msgstr "destinataire"
@@ -3501,6 +3534,9 @@ msgstr "en-têtes"
 msgid "metadata"
 msgstr "métadonnées"
 
+msgid "Files in object storage sent with the email: [{\"key\", \"filename\", \"content_type\"}]."
+msgstr "Fichiers du stockage d’objets envoyés avec le courriel : [{\"key\", \"filename\", \"content_type\"}]."
+
 msgid "provider"
 msgstr "fournisseur"
 
@@ -3515,9 +3551,6 @@ msgstr "événement de livraison le"
 
 msgid "email message"
 msgstr "courriel"
-
-msgid "email messages"
-msgstr "courriels"
 
 msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."
 msgstr "Entrez la couleur sous la forme # suivi de six chiffres hexadécimaux, p. ex. #1F4E79."

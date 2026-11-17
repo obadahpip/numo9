@@ -1,0 +1,11 @@
+{% autoescape off %}Statement for {{ contact }}
+
+{% if kind == "activity" %}Your statement of activity from {{ period_start }} to {{ as_at }} is attached.{% else %}Your statement of outstanding items as at {{ as_at }} is attached.{% endif %}
+
+Amount due: {{ amount_due }}
+
+Questions about this statement? Reply to this email.
+
+--
+{{ organisation }}
+{% endautoescape %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:03-0500\n"
+"POT-Creation-Date: 2026-11-17 17:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1472,6 +1472,45 @@ msgstr ""
 msgid "credit limit overrides"
 msgstr ""
 
+msgid "Outstanding"
+msgstr ""
+
+msgid "Activity"
+msgstr ""
+
+msgid "as at"
+msgstr ""
+
+msgid "period start"
+msgstr ""
+
+msgid "amount due"
+msgstr ""
+
+msgid "sent to"
+msgstr ""
+
+msgid "subject"
+msgstr ""
+
+msgid "file"
+msgstr ""
+
+msgid "file name"
+msgstr ""
+
+msgid "email messages"
+msgstr ""
+
+msgid "sent by"
+msgstr ""
+
+msgid "statement sent"
+msgstr ""
+
+msgid "statements sent"
+msgstr ""
+
 msgid "Approve sales over a customer's credit limit"
 msgstr ""
 
@@ -1767,9 +1806,6 @@ msgstr ""
 msgid "storage key"
 msgstr ""
 
-msgid "file name"
-msgstr ""
-
 msgid "file type"
 msgstr ""
 
@@ -1855,9 +1891,6 @@ msgid "attachments"
 msgstr ""
 
 msgid "Message-ID"
-msgstr ""
-
-msgid "subject"
 msgstr ""
 
 msgid "recipient"
@@ -3250,6 +3283,9 @@ msgstr ""
 msgid "metadata"
 msgstr ""
 
+msgid "Files in object storage sent with the email: [{\"key\", \"filename\", \"content_type\"}]."
+msgstr ""
+
 msgid "provider"
 msgstr ""
 
@@ -3263,9 +3299,6 @@ msgid "delivery event at"
 msgstr ""
 
 msgid "email message"
-msgstr ""
-
-msgid "email messages"
 msgstr ""
 
 msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."

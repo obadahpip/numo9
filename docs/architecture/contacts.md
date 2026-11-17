@@ -379,3 +379,24 @@ page counter; English or French (`en-ca` / `fr-ca` keys in the backend catalogue
 `backend/tests/test_contacts_statement_pdf.py` — text snapshots of the four renderings
 (`tests/snapshots/statements/<kind>.<locale>.txt`, `NUMO9_UPDATE_SNAPSHOTS=1` to rewrite), Letter
 page with content inside the margins, aging totals = amount due, activity opening + lines = closing.
+
+## Statements — sending and history (B-02-T06)
+
+`statements.send_statement(contact, document, to=None, language=None, user=None)`:
+
+1. recipients — `to`, or the contact's people marked *include in emails* that have an address
+   (primary first); nobody → `StatementError`;
+2. the PDF is rendered in the contact's language (or `language`) and stored in the
+   organisation's object storage (A-06 key `org/<id>/…/statement-<number>-<date>.pdf`);
+3. one email per recipient through the A-07 message log (`queue_email`, kind
+   `contacts.statement`, template `email/statement` EN/FR) with the PDF as an **attachment** —
+   `EmailMessage.attachments` holds `{"key", "filename", "content_type"}` and the worker reads
+   the file when it sends; a key outside the message's organisation is a permanent failure,
+   never sent;
+4. `contacts.StatementSend` — the history row: kind, as-at / period start, amount due, currency,
+   language, recipients, subject, the stored file, the email messages' ids, who and when;
+5. audit `contacts.statement.sent`, and the signal `statement_sent(send=row)` — the activity
+   timeline (B-02-T02) records the statement from it.
+
+All in the caller's transaction: the emails leave only when it commits.
+`backend/tests/test_contacts_statement_send.py`.
