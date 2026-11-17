@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:20-0500\n"
+"POT-Creation-Date: 2026-11-17 18:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -601,6 +601,119 @@ msgstr "Voir l’abonnement, le mode de paiement et les factures de Numo9"
 msgid "Subscribe, change the package or payment method, cancel the subscription"
 msgstr "S’abonner, changer de forfait ou de mode de paiement, annuler l’abonnement"
 
+msgid "Move to a group"
+msgstr "Déplacer dans un groupe"
+
+msgid "Add or remove tags"
+msgstr "Ajouter ou retirer des étiquettes"
+
+msgid "Assign or unassign staff"
+msgstr "Affecter ou retirer du personnel"
+
+msgid "Change settings"
+msgstr "Modifier les paramètres"
+
+msgid "Send a message"
+msgstr "Envoyer un message"
+
+msgid "Export the list"
+msgstr "Exporter la liste"
+
+msgid "Preview"
+msgstr "Aperçu"
+
+msgid "Waiting to start"
+msgstr "En attente de démarrage"
+
+msgid "Running"
+msgstr "En cours"
+
+msgid "Completed"
+msgstr "Terminé"
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Waiting"
+msgstr "En attente"
+
+msgid "Succeeded"
+msgstr "Réussi"
+
+msgid "Skipped"
+msgstr "Ignoré"
+
+msgid "Failed"
+msgstr "Échec"
+
+msgid "started by"
+msgstr "lancé par"
+
+msgid "parameters"
+msgstr "paramètres"
+
+msgid "selection"
+msgstr "sélection"
+
+msgid "{\"ids\": [organisation ids]} or {\"query\": {directory search and filters}}"
+msgstr "{\"ids\": [identifiants d’organisations]} ou {\"query\": {recherche et filtres du répertoire}}"
+
+msgid "organisations"
+msgstr ""
+
+msgid "background job"
+msgstr "tâche en arrière-plan"
+
+msgid "result file"
+msgstr "fichier de résultats"
+
+msgid "created at"
+msgstr ""
+
+msgid "confirmed at"
+msgstr "confirmé le"
+
+msgid "started at"
+msgstr "commencée le"
+
+msgid "finished at"
+msgstr "terminée le"
+
+msgid "cancel requested at"
+msgstr "annulation demandée le"
+
+msgid "bulk job"
+msgstr "action groupée"
+
+msgid "bulk jobs"
+msgstr "actions groupées"
+
+#, fuzzy
+#| msgid "Action"
+msgid "position"
+msgstr "Action"
+
+msgid "outcome"
+msgstr "résultat"
+
+msgid "reason code"
+msgstr "code de motif"
+
+msgid "message"
+msgstr ""
+
+msgid "before"
+msgstr "avant"
+
+msgid "after"
+msgstr "après"
+
+msgid "bulk job row"
+msgstr "ligne d’action groupée"
+
+msgid "bulk job rows"
+msgstr "lignes d’action groupée"
+
 msgid "Product"
 msgstr ""
 
@@ -661,9 +774,6 @@ msgid "kind"
 msgstr ""
 
 msgid "sort order"
-msgstr ""
-
-msgid "created at"
 msgstr ""
 
 msgid "updated at"
@@ -1372,11 +1482,6 @@ msgstr ""
 msgid "required"
 msgstr ""
 
-#, fuzzy
-#| msgid "Action"
-msgid "position"
-msgstr "Action"
-
 msgid "custom field"
 msgstr ""
 
@@ -1846,9 +1951,6 @@ msgid "Trial"
 msgstr "Essai"
 
 msgid "Payment overdue (grace period)"
-msgstr ""
-
-msgid "Cancelled"
 msgstr ""
 
 msgid "Demo"
@@ -2834,20 +2936,11 @@ msgstr "colonnes"
 msgid "Reason"
 msgstr ""
 
-msgid "Waiting to start"
-msgstr "En attente de démarrage"
-
-msgid "Running"
-msgstr "En cours"
-
 msgid "Waiting to try again"
 msgstr "En attente d’un nouvel essai"
 
 msgid "Done"
 msgstr "Terminé"
-
-msgid "Failed"
-msgstr "Échec"
 
 msgid "Failed after several tries"
 msgstr "Échec après plusieurs essais"
@@ -2896,12 +2989,6 @@ msgstr "identifiant de tâche Celery"
 
 msgid "worker"
 msgstr "processus de travail"
-
-msgid "started at"
-msgstr "commencée le"
-
-msgid "finished at"
-msgstr "terminée le"
 
 msgid "next try at"
 msgstr "prochain essai le"
@@ -3628,9 +3715,6 @@ msgid "Billing and subscription"
 msgstr "Description"
 
 msgid "category"
-msgstr ""
-
-msgid "message"
 msgstr ""
 
 #, fuzzy
@@ -4533,9 +4617,6 @@ msgstr "session d’emprunt d’identité"
 
 msgid "impersonation sessions"
 msgstr "sessions d’emprunt d’identité"
-
-msgid "organisations"
-msgstr ""
 
 msgid "On for these organisations."
 msgstr "Activé pour ces organisations."

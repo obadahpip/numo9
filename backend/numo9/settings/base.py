@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "numo9.billing",
     # Platform-owner console (U-06): console API, metrics, impersonation, feature flags.
     "numo9.platform",
+    # Bulk edit and bulk actions over a practice's organisations (V-03).
+    "numo9.bulk",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
