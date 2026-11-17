@@ -4,10 +4,10 @@
 
 - ``count(package)`` — subscriptions on the package that haven't ended (not cancelled): a package
   with subscribers is never deleted, only retired;
-- ``affected_by_price(package, interval, effective_from)`` — subscriptions on the package that will
-  renew at a price starting that day. The billing interval and the grandfathered flag arrive with
-  the Stripe fields (U-04-T02); until then every subscription on the package that hasn't ended is
-  counted, whatever the interval;
+- ``affected_by_price(package, interval, effective_from)`` — subscriptions on the package and
+  billing interval (U-04-T02) that haven't ended: each renews at the new price at its first
+  renewal on or after ``effective_from`` (U-02-T14) — a renewal before that day keeps the old
+  price;
 - ``package_of(organisation)`` — the package code of the organisation's current subscription.
 """
 
@@ -36,7 +36,13 @@ class Subscriptions:
         return _live_on(package)
 
     def affected_by_price(self, package: Package, interval: str, effective_from: date) -> int:
-        return _live_on(package)
+        return (
+            Subscription._base_manager.filter(
+                package_id=package.pk, interval=interval, deleted_at__isnull=True
+            )
+            .exclude(status=SubscriptionStatus.CANCELLED)
+            .count()
+        )
 
     def package_of(self, organisation: Organisation) -> str | None:
         subscription = current_subscription(organisation)

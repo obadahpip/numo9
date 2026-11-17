@@ -89,3 +89,19 @@ stripe-mock (`NUMO9_TEST_STRIPE_MOCK_URL`; CI service `stripe/stripe-mock`).
 - `/console/promo-codes` — list with usage bars (redemptions ÷ maximum), create dialog, expire.
 
 Wireframes: [Phase 0 wireframes §8–10](../design/wireframes.md#8-package-editor-u-02-t01).
+
+## Future-dated prices and current subscriptions (U-02-T14)
+
+A price version scheduled for a later date never touches a subscription before its first renewal
+on or after that date: the price sync creates a **new** Stripe Price and leaves the old one as it
+was, so Stripe keeps renewing current subscriptions at the old price. The platform job
+`numo9.billing.apply_changes` (U-04-T10, beat every 15 minutes) also runs
+`apply_renewal_prices`: in the last hour before a subscription renews, it moves the subscription
+to the price version in force **on its renewal day** (`renewal_price`), without proration —
+once (it compares with the Stripe subscription's current price). A renewal before the effective
+date therefore keeps the old price; the first renewal after it gets the new one. Subscriptions
+cancelling at the period end or with a pending downgrade are left alone. The console's "affected
+subscriptions" count (`affected_by_price`) counts the package's subscribers **on that interval**.
+
+Tests: `backend/tests/test_packages_future_price.py` (renewing 15 Feb vs 15 Mar around a price
+starting 1 Mar).
