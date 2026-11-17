@@ -15,6 +15,7 @@ export interface GroupTreeProps {
   onMoveTo: (group: Group) => void;
   onAddSub: (group: Group) => void;
   onRename: (group: Group) => void;
+  onDelete: (group: Group) => void;
 }
 
 const DRAG_TYPE = "application/x-numo9-group";
@@ -22,9 +23,17 @@ const DRAG_TYPE = "application/x-numo9-group";
 /**
  * Group tree (V-02-T09): the practice's groups in tree order as an ARIA tree (`aria-level`,
  * roving focus with ↑/↓, Home/End). Each group shows its organisations (sub-groups included) and
- * staff, and has Add sub-group, Rename and Move to… (the keyboard alternative to dragging). Drag a group onto another group to move it under it, or onto the "Top level" zone.
+ * staff, and has Add sub-group, Rename, Move to… (the keyboard alternative to dragging) and Delete
+ * (which opens the impact dialog, V-02-T11). Drag a group onto another group to move it under it, or onto the "Top level" zone.
  */
-export function GroupTree({ groups, onMove, onMoveTo, onAddSub, onRename }: GroupTreeProps) {
+export function GroupTree({
+  groups,
+  onMove,
+  onMoveTo,
+  onAddSub,
+  onRename,
+  onDelete,
+}: GroupTreeProps) {
   const t = useFormatMessage();
   const [focused, setFocused] = useState(0);
   const [dragging, setDragging] = useState<string | null>(null);
@@ -140,6 +149,14 @@ export function GroupTree({ groups, onMove, onMoveTo, onAddSub, onRename }: Grou
                 onClick={() => onMoveTo(group)}
               >
                 {t(m.moveTo)}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                aria-label={t(m.deleteFor, { name: group.name })}
+                onClick={() => onDelete(group)}
+              >
+                {t(m.delete)}
               </Button>
             </div>
           </li>

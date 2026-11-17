@@ -141,6 +141,56 @@ export const m = defineMessages({
     description: "Error loading the groups",
   },
   retry: { id: "groups.retry", defaultMessage: "Try again", description: "Retry button" },
+  delete: { id: "groups.delete.button", defaultMessage: "Delete", description: "Button" },
+  deleteFor: {
+    id: "groups.delete.for",
+    defaultMessage: "Delete {name}",
+    description: "Accessible name of the delete button",
+  },
+  deleteTitle: {
+    id: "groups.delete.title",
+    defaultMessage: "Delete {name}?",
+    description: "Title of the delete-group dialog",
+  },
+  deleteConfirm: {
+    id: "groups.delete.confirm",
+    defaultMessage: "Delete group",
+    description: "Button confirming the deletion",
+  },
+  impactLoading: {
+    id: "groups.impact.loading",
+    defaultMessage: "Checking what this affects…",
+    description: "Delete dialog while the impact counts load",
+  },
+  impactGroups: {
+    id: "groups.impact.groups",
+    defaultMessage:
+      "{count, plural, =0 {No sub-groups} one {# sub-group is deleted with it} other {# sub-groups are deleted with it}}",
+    description: "Delete dialog: sub-groups deleted too",
+  },
+  impactOrganisations: {
+    id: "groups.impact.organisations",
+    defaultMessage:
+      "{count, plural, =0 {No organisations are filed here} one {# organisation leaves the group (it stays your client)} other {# organisations leave the group (they stay your clients)}}",
+    description: "Delete dialog: organisations filed in the group and its sub-groups",
+  },
+  impactStaff: {
+    id: "groups.impact.staff",
+    defaultMessage:
+      "{count, plural, =0 {No staff are assigned here} one {# staff member loses this group ({assignments} assignments)} other {# staff lose this group ({assignments} assignments)}}",
+    description: "Delete dialog: staff assigned to the group and its sub-groups",
+  },
+  impactLosing: {
+    id: "groups.impact.losing",
+    defaultMessage:
+      "{count, plural, =0 {Nobody loses access to a client.} one {# staff member loses access to at least one client.} other {# staff lose access to at least one client.}}",
+    description: "Delete dialog: staff who lose access to at least one organisation",
+  },
+  deleted: {
+    id: "groups.deleted",
+    defaultMessage: "{name} deleted.",
+    description: "Announcement after deleting a group",
+  },
   tagsTitle: {
     id: "groups.tags.title",
     defaultMessage: "Tags",

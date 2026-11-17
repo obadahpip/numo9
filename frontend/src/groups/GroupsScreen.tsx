@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 import { useFormatMessage } from "@/i18n";
 
 import { groupsApi, moveTargets, refusal, type Group } from "./api";
+import { DeleteGroupDialog } from "./DeleteGroupDialog";
 import { GroupTree } from "./GroupTree";
 import { m } from "./messages";
 import { TagsSection } from "./TagsSection";
@@ -14,6 +15,7 @@ type Editing =
   | { kind: "create"; parent: Group | null }
   | { kind: "rename"; group: Group }
   | { kind: "move"; group: Group }
+  | { kind: "delete"; group: Group }
   | null;
 
 /**
@@ -89,6 +91,18 @@ export function GroupsScreen({ practice }: { practice: string }) {
           onMoveTo={(group) => setEditing({ kind: "move", group })}
           onAddSub={(group) => setEditing({ kind: "create", parent: group })}
           onRename={(group) => setEditing({ kind: "rename", group })}
+          onDelete={(group) => setEditing({ kind: "delete", group })}
+        />
+      ) : null}
+      {editing?.kind === "delete" ? (
+        <DeleteGroupDialog
+          group={editing.group}
+          onClose={() => setEditing(null)}
+          onDeleted={() => {
+            setAnnouncement(t(m.deleted, { name: editing.group.name }));
+            setEditing(null);
+            void load();
+          }}
         />
       ) : null}
       {editing?.kind === "move" ? (

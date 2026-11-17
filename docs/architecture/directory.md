@@ -329,3 +329,8 @@ tags*):
   ignored); when no tag has the typed name the last option is *Create tag “…” (colour)* — Enter
   creates it inline (`POST /api/v1/practice/tags`) with the colour chosen from the 12 named
   colours; a refusal (name taken, no permission) is shown.
+- **Delete** (`DeleteGroupDialog.tsx`, V-02-T11) — the dialog first asks `GET …/groups/<id>/impact`
+  and lists what goes: sub-groups deleted with it, organisations leaving the group (they stay
+  clients), staff and assignments, and how many staff lose access to at least one client (other
+  groups and direct assignments counted). *Delete group* stays disabled until the counts are in;
+  confirming sends `DELETE` and the tree reloads.
