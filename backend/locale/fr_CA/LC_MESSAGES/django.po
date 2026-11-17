@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:36-0500\n"
+"POT-Creation-Date: 2026-11-17 18:38-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -633,6 +633,42 @@ msgstr "Choisissez CSV ou Excel."
 
 msgid "Choose one of the bulk actions."
 msgstr "Choisissez l’une des actions groupées."
+
+msgid "Organisation"
+msgstr "Organisation"
+
+msgid "Business Number"
+msgstr "Numéro d’entreprise"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Groups"
+msgstr "Groupes"
+
+msgid "Tags"
+msgstr "Étiquettes"
+
+msgid "Assigned staff"
+msgstr "Personnel affecté"
+
+msgid "Organisations"
+msgstr "Organisations"
+
+msgid "Outcome"
+msgstr "Résultat"
+
+msgid "Reason"
+msgstr ""
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Before"
+msgstr "Avant"
+
+msgid "After"
+msgstr "Après"
 
 msgid "Move to a group"
 msgstr "Déplacer dans un groupe"
@@ -3037,9 +3073,6 @@ msgstr ""
 msgid "Column"
 msgstr "colonnes"
 
-msgid "Reason"
-msgstr ""
-
 msgid "Waiting to try again"
 msgstr "En attente d’un nouvel essai"
 
@@ -4142,6 +4175,14 @@ msgstr "Dérogation à la limite de crédit refusée pour %(contact)s"
 msgid "%(person)s declined going %(over)s over the credit limit. %(note)s"
 msgstr "%(person)s a refusé un dépassement de %(over)s de la limite de crédit. %(note)s"
 
+#, python-format
+msgid "%(practice)s: %(subject)s"
+msgstr "%(practice)s : %(subject)s"
+
+#, python-format
+msgid "%(body)s"
+msgstr "%(body)s"
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"
 
@@ -4806,9 +4847,6 @@ msgstr "Risque élevé"
 msgid "Critical"
 msgstr "Critique"
 
-msgid "Organisation"
-msgstr "Organisation"
-
 msgid "scope"
 msgstr ""
 
@@ -5220,9 +5258,6 @@ msgstr "Compacte"
 
 msgid "Quarterly"
 msgstr "Trimestriel"
-
-msgid "Business Number"
-msgstr "Numéro d’entreprise"
 
 msgid "owner"
 msgstr "propriétaire"

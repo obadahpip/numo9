@@ -132,3 +132,11 @@ register_text(
     _("Credit limit override declined for %(contact)s"),
     _("%(person)s declined going %(over)s over the credit limit. %(note)s"),
 )
+
+# ---- practice messages (V-03-T06) --------------------------------------------------------------
+
+register_text(
+    "notifications.practice.message",
+    _("%(practice)s: %(subject)s"),
+    _("%(body)s"),
+)

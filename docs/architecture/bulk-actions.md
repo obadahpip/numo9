@@ -66,3 +66,18 @@ job (A-08) takes the pending rows — every organisation is changed exactly once
 one organisation rolls back only that organisation (`failed: error`, "Nothing was changed"); a
 change already in place is `skipped: no_change`. The job ends `completed` (or `cancelled`) with
 no pending row.
+
+## Actions (V-03-T06)
+
+| Action | Parameters | Practice permission | Per organisation | Before → after |
+|---|---|---|---|---|
+| `group` | `group`, `mode` `add` / `move` (leave the practice's other groups) / `remove` | `practice.groups.manage` | V-02 `add_organisation` / `remove_organisation` | group names |
+| `tags` | `add`, `remove` (tag ids) | `practice.groups.manage` | V-02 `tag_organisation` / `untag_organisation` | tag names |
+| `staff` | `member` (user id of a practice member), `mode` `assign` / `unassign` | `practice.clients.assign` | the organisation's practice assignment (direct access, A-01) | assigned staff names |
+| `settings` | `settings` — safe settings only (T03) | `practice.directory.view` | `organisation.settings.manage` there; validated and saved (audited, A-05) | the setting values |
+| `message` | `subject` (≤ 150), `body` (≤ 5,000) | `practice.directory.view` | notification `practice.message` (in-app + email, A-07) to the organisation's owners and admins; none → `skipped: no_recipients` | number of recipients |
+| `export` | `format` `csv` / `xlsx` | `practice.directory.view` | the organisation's line (name, BN, status, groups, tags, staff) | the line |
+
+`numo9.bulk.exports`: `export_file(job)` builds the export action's CSV (UTF-8 with BOM) or XLSX
+from the succeeded rows; `results_csv(job)` lists every selected organisation with its outcome,
+reason, message and before/after.

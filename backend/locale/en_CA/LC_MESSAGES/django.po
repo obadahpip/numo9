@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:36-0500\n"
+"POT-Creation-Date: 2026-11-17 18:38-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -628,6 +628,42 @@ msgid "Choose CSV or Excel."
 msgstr ""
 
 msgid "Choose one of the bulk actions."
+msgstr ""
+
+msgid "Organisation"
+msgstr ""
+
+msgid "Business Number"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Groups"
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Assigned staff"
+msgstr ""
+
+msgid "Organisations"
+msgstr ""
+
+msgid "Outcome"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Before"
+msgstr ""
+
+msgid "After"
 msgstr ""
 
 msgid "Move to a group"
@@ -2864,9 +2900,6 @@ msgstr ""
 msgid "Column"
 msgstr ""
 
-msgid "Reason"
-msgstr ""
-
 msgid "Waiting to try again"
 msgstr ""
 
@@ -3889,6 +3922,14 @@ msgstr ""
 msgid "%(person)s declined going %(over)s over the credit limit. %(note)s"
 msgstr ""
 
+#, python-format
+msgid "%(practice)s: %(subject)s"
+msgstr ""
+
+#, python-format
+msgid "%(body)s"
+msgstr ""
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr ""
 
@@ -4545,9 +4586,6 @@ msgstr ""
 msgid "Critical"
 msgstr ""
 
-msgid "Organisation"
-msgstr ""
-
 msgid "scope"
 msgstr ""
 
@@ -4952,9 +4990,6 @@ msgid "Compact"
 msgstr ""
 
 msgid "Quarterly"
-msgstr ""
-
-msgid "Business Number"
 msgstr ""
 
 msgid "owner"
