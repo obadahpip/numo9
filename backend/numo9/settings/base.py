@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     "numo9.workspace",
     # Subscription billing with Stripe: events, platform invoices, dunning (U-04).
     "numo9.billing",
+    # Platform-owner console (U-06): console API, metrics, impersonation, feature flags.
+    "numo9.platform",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

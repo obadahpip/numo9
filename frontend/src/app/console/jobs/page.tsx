@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/AppShell";
+import { ConsoleFrame } from "@/console/shell/ConsoleFrame";
 import { ConsoleJobsScreen } from "@/console/jobs/ConsoleJobsScreen";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
@@ -20,7 +21,9 @@ export default async function ConsoleJobsPage() {
   const fm = await getFormatMessage();
   return (
     <AppShell section={fm(messages.crumb)}>
-      <ConsoleJobsScreen />
+      <ConsoleFrame current="/console/jobs">
+        <ConsoleJobsScreen />
+      </ConsoleFrame>
     </AppShell>
   );
 }

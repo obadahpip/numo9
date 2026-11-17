@@ -20,3 +20,19 @@ colour, so staff never confuse it with an organisation.
 Founding counter and demo manager panels arrive with U-07/U-08 (U-06-T13).
 
 Wireframes: [design/wireframes.md §27–29](../design/wireframes.md) (and §7 for the metrics home).
+
+## Shell and route guard (U-06-T02)
+
+Every `/console/*` page renders inside `ConsoleFrame` (`frontend/src/console/shell`). It first asks
+**`GET /api/v1/platform/me`** (`numo9.platform.api`):
+
+| Who | API | Screen |
+|---|---|---|
+| no platform role (organisation users, accountants, practice admins) | `404` | the **404 page** — nothing of the console renders, nothing leaks |
+| platform role without two-factor authentication | `403 auth.two_factor_required` | "Turn on two-factor authentication" with a link to Security settings |
+| platform staff with 2FA | the user and their platform permissions | the console's navigation on its own dark-blue accent bar (never an organisation's colours), with only the areas their permissions open, the current one marked |
+
+The guard is a convenience: every console endpoint still checks its own `platform.*` permission
+(security tests, U-06-T14). `backend/tests/test_platform_guard.py`,
+`frontend/src/console/shell/ConsoleFrame.test.tsx`; the Playwright console suites answer the
+guard with a platform owner (`e2e/auth-helpers.ts` `mockPlatformMe`).

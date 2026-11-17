@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/AppShell";
+import { ConsoleFrame } from "@/console/shell/ConsoleFrame";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
 import { PackagesScreen } from "@/packages/PackagesScreen";
@@ -20,7 +21,9 @@ export default async function ConsolePackagesPage() {
   const fm = await getFormatMessage();
   return (
     <AppShell section={fm(messages.crumb)}>
-      <PackagesScreen />
+      <ConsoleFrame current="/console/packages">
+        <PackagesScreen />
+      </ConsoleFrame>
     </AppShell>
   );
 }

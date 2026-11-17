@@ -449,6 +449,22 @@
     },
     "promoCodes": {
       "crumb": "Platform console · Promo codes"
+    },
+    "shell": {
+      "flags": "Feature flags",
+      "home": "Go to Home",
+      "jobs": "Jobs",
+      "loading": "Opening the console…",
+      "metrics": "Metrics",
+      "nav": "Platform console",
+      "notFoundBody": "The address may be mistyped, or the page may have moved. Search for the page or go to Home.",
+      "notFoundTitle": "We can't find that page",
+      "organisations": "Organisations",
+      "packages": "Packages and prices",
+      "practices": "Practices",
+      "twoFactorAction": "Set it up",
+      "twoFactorBody": "The platform console needs two-factor authentication. It takes a minute.",
+      "twoFactorTitle": "Turn on two-factor authentication"
     }
   },
   "contacts": {
