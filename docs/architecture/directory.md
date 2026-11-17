@@ -334,3 +334,12 @@ tags*):
   clients), staff and assignments, and how many staff lose access to at least one client (other
   groups and direct assignments counted). *Delete group* stays disabled until the counts are in;
   confirming sends `DELETE` and the tree reloads.
+
+## Isolation sweep: group revocation (V-02-T12)
+
+`backend/tests/test_workspace_group_revocation_sweep.py` (marker `tenant_isolation`, run by the CI
+tenant-sweep job) extends the A-01 router sweep to group access: a staff member reaching a client
+only through a practice group is swept over **every organisation-scoped endpoint** of the real
+URLconf (rows made by the sweep's factories). While assigned, the endpoints answer; after each
+revocation — unassigned, client removed from the group, sub-group moved out, group deleted —
+every verb of every endpoint answers 404 (405 where the view lacks the verb) on the next request.
