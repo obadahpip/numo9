@@ -65,6 +65,8 @@ from .search import (
     YES,
     DirectoryParams,
     DirectoryQuery,
+    GroupInfo,
+    practice_groups,
 )
 from .serializers import DirectoryPageSerializer
 
@@ -87,10 +89,19 @@ COLUMNS: dict[str, tuple[str, ...]] = {
     "overdue": ("overdue_count",),
     "unfiled": ("unfiled_count",),
     "tags": ("tags",),
+    "groups": ("groups",),
 }
 
 
 # ---- practice ----------------------------------------------------------------------------------
+
+
+def _is_uuid(value: str) -> bool:
+    try:
+        uuid.UUID(value)
+    except ValueError:
+        return False
+    return True
 
 
 def _parse_uuid(value: str) -> uuid.UUID:
@@ -180,7 +191,11 @@ def parse_directory_params(query: Any) -> tuple[DirectoryParams, list[str], bool
         values = [v.strip() for v in query.getlist(name) if v.strip()]
         allowed = filter_choices(name)
         for value in values:
-            if (allowed is not None and value not in allowed) or len(value) > 100:
+            if (
+                (allowed is not None and value not in allowed)
+                or len(value) > 100
+                or (name == "group" and not _is_uuid(value))
+            ):
                 raise bad_parameter(errors.WORKSPACE_BAD_FILTER, name, name=name, value=value[:100])
         if values:
             filters[name] = sorted(set(values), key=values.index)
@@ -197,6 +212,11 @@ def parse_directory_params(query: Any) -> tuple[DirectoryParams, list[str], bool
         raise bad_parameter(
             errors.WORKSPACE_BAD_FILTER, "archived", name="archived", value=archived[:100]
         )
+    group_by = query.get("group_by", "")
+    if group_by not in ("", "group"):
+        raise bad_parameter(
+            errors.WORKSPACE_BAD_FILTER, "group_by", name="group_by", value=group_by[:100]
+        )
     params = DirectoryParams(
         q=(query.get("q") or "")[:200],
         filters=filters,
@@ -204,6 +224,7 @@ def parse_directory_params(query: Any) -> tuple[DirectoryParams, list[str], bool
         sort=sort,
         page=_int(query.get("page"), 1, "page", 1, 1_000_000),
         page_size=_int(query.get("page_size"), DEFAULT_PAGE_SIZE, "page_size", 1, MAX_PAGE_SIZE),
+        group_by=group_by,
     )
     return params, columns, query.get("facets", "1") != "0"
 
@@ -217,13 +238,18 @@ def _package_names() -> dict[str, str]:
 
 
 def present_row(
-    row: OrgDirectorySummary, columns: list[str], package_names: dict[str, str]
+    row: OrgDirectorySummary,
+    columns: list[str],
+    package_names: dict[str, str],
+    groups: dict[int, list[dict[str, str]]] | None = None,
 ) -> dict[str, Any]:
     out: dict[str, Any] = {"id": row.organisation.public_id, "name": row.name}
     now = timezone.now()
     for column in columns:
         for name in COLUMNS[column]:
-            if name == "package_name":
+            if name == "groups":  # the groups it's filed in directly (badges, V-02-T08)
+                out[name] = (groups or {}).get(row.organisation_id, [])
+            elif name == "package_name":
                 out[name] = package_names.get(row.package, row.package)
             elif name == "trial_days_left":
                 out[name] = (
@@ -236,7 +262,11 @@ def present_row(
     return out
 
 
-def _labels(name: str, package_names: dict[str, str]) -> dict[str, str]:
+def _labels(
+    name: str, package_names: dict[str, str], group_names: dict[str, str] | None = None
+) -> dict[str, str]:
+    if name == "group":
+        return group_names or {}
     if name == "status":
         return {k: str(v) for k, v in DirectoryStatus.choices}
     if name == "province":
@@ -253,12 +283,23 @@ def _labels(name: str, package_names: dict[str, str]) -> dict[str, str]:
 
 
 def present_facets(
-    facets: dict[str, list[dict[str, Any]]], package_names: dict[str, str]
+    facets: dict[str, list[dict[str, Any]]],
+    package_names: dict[str, str],
+    groups: list[GroupInfo] | None = None,
 ) -> dict[str, list[dict[str, Any]]]:
+    group_names = {group.id: group.name for group in groups or []}
+    depth = {group.id: group.depth for group in groups or []}
     out: dict[str, list[dict[str, Any]]] = {}
     for name, items in facets.items():
-        labels = _labels(name, package_names)
-        out[name] = [{**item, "label": labels.get(item["value"], item["value"])} for item in items]
+        labels = _labels(name, package_names, group_names)
+        out[name] = [
+            {
+                **item,
+                "label": labels.get(item["value"], item["value"]),
+                **({"depth": depth.get(item["value"], 1)} if name == "group" else {}),
+            }
+            for item in items
+        ]
     return out
 
 
@@ -275,6 +316,12 @@ _LIST_PARAMETERS = [
     OpenApiParameter("page_size", OpenApiTypes.INT, description=f"1–{MAX_PAGE_SIZE}"),
     OpenApiParameter("columns", OpenApiTypes.STR, description="e.g. name,bn,province"),
     OpenApiParameter("facets", OpenApiTypes.STR, enum=["0", "1"]),
+    OpenApiParameter(
+        "group_by",
+        OpenApiTypes.STR,
+        enum=["group"],
+        description="group: add the group headers (counts and organisation ids per group).",
+    ),
 ]
 
 
@@ -297,6 +344,14 @@ class DirectoryView(APIView):
         query = DirectoryQuery(request.user, practice, params)
         rows, count = query.page()
         package_names = _package_names()
+        groups = practice_groups(practice)
+        badges: dict[int, list[dict[str, str]]] = {}
+        if "groups" in columns:
+            names = {group.id: group.name for group in groups}
+            _within, direct = query.groups_of()
+            badges = {
+                pk: [{"id": gid, "name": names[gid]} for gid in ids] for pk, ids in direct.items()
+            }
         body: dict[str, Any] = {
             "practice": {"id": practice.public_id, "name": practice.name},
             "count": count,
@@ -305,8 +360,29 @@ class DirectoryView(APIView):
             "page_size": params.page_size,
             "pages": max(1, math.ceil(count / params.page_size)),
             "columns": columns,
-            "results": [present_row(row, columns, package_names) for row in rows],
+            "results": [present_row(row, columns, package_names, badges) for row in rows],
         }
         if with_facets:
-            body["facets"] = present_facets(query.facets(), package_names)
+            body["facets"] = present_facets(query.facets(), package_names, groups)
+        if params.group_by == "group":
+            public = dict(
+                OrgDirectorySummary.objects.filter(practice=practice).values_list(
+                    "organisation_id", "organisation__public_id"
+                )
+            )
+            body["grouping"] = [
+                {
+                    "group": None
+                    if item["group"] is None
+                    else {
+                        "id": item["group"].id,
+                        "name": item["group"].name,
+                        "depth": item["group"].depth,
+                        "parent": item["group"].parent,
+                    },
+                    "count": item["count"],
+                    "organisations": [public[pk] for pk in item["organisation_ids"]],
+                }
+                for item in query.grouping()
+            ]
         return Response(body)

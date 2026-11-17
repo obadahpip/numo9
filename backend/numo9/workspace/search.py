@@ -14,8 +14,9 @@ BN first) unless a sort is chosen.
 
 **Filters** — any of several values within a filter (OR), every filter together (AND):
 ``package``, ``status``, ``province``, ``fye`` (month), ``gst_cycle``, ``payroll``, ``overdue``,
-``unfiled`` (``yes`` / ``no``) and ``tag``. Archived organisations (cancelled) are left out unless
-``include_archived`` (or the status filter names ``archived``).
+``unfiled`` (``yes`` / ``no``), ``tag`` and ``group`` (V-02-T08: a group's public id; an
+organisation in the group **or any of its sub-groups** matches). Archived organisations
+(cancelled) are left out unless ``include_archived`` (or the status filter names ``archived``).
 
 **Facets** — for each filter, how many organisations each value would show **with every other
 filter applied** (the usual faceted-search rule): choosing a value in a filter that had none
@@ -36,7 +37,13 @@ from django.db.models import Case, F, Q, QuerySet, Value, When
 from numo9.tenancy.access import PRACTICE_WIDE_ROLES, accessible_organisations
 from numo9.tenancy.models import Practice, PracticeAssignment, PracticeMember
 
-from .models import DirectoryStatus, OrgDirectorySummary
+from .models import (
+    DirectoryStatus,
+    GroupStaffAssignment,
+    OrgDirectorySummary,
+    OrgGroup,
+    OrgGroupMembership,
+)
 
 YES, NO = "yes", "no"
 BOOLEAN_FILTERS: dict[str, Q] = {
@@ -51,7 +58,7 @@ VALUE_FILTERS: dict[str, str] = {
     "fye": "fye_month",
     "gst_cycle": "gst_cycle",
 }
-FILTERS: tuple[str, ...] = (*VALUE_FILTERS, *BOOLEAN_FILTERS, "tag")
+FILTERS: tuple[str, ...] = (*VALUE_FILTERS, *BOOLEAN_FILTERS, "tag", "group")
 
 #: Sort keys of the API → model fields (``-key`` sorts descending).
 SORTS: dict[str, tuple[str, ...]] = {
@@ -103,6 +110,7 @@ class DirectoryParams:
     sort: list[str] = field(default_factory=list)  # ["name", "-overdue"]
     page: int = 1
     page_size: int = 50
+    group_by: str = ""  # "group": group headers (V-02-T08)
 
 
 def directory_scope(user: Any, practice: Practice) -> QuerySet[OrgDirectorySummary]:
@@ -114,12 +122,86 @@ def directory_scope(user: Any, practice: Practice) -> QuerySet[OrgDirectorySumma
     if member is None:
         return none
     assignments = PracticeAssignment.objects.filter(practice=practice, active=True)
+    rows = OrgDirectorySummary.objects.filter(practice=practice)
     if member.role not in PRACTICE_WIDE_ROLES:
-        assignments = assignments.filter(assigned_staff=member)
-    return OrgDirectorySummary.objects.filter(
-        practice=practice,
-        organisation_id__in=assignments.values("organisation_id"),
-    ).filter(organisation_id__in=accessible_organisations(user).values("pk"))
+        direct = assignments.filter(assigned_staff=member).values("organisation_id")
+        rows = rows.filter(
+            Q(organisation_id__in=direct)
+            | Q(organisation_id__in=group_scope(member))  # through the practice's groups (V-02)
+        )
+    rows = rows.filter(organisation_id__in=assignments.values("organisation_id"))
+    return rows.filter(organisation_id__in=accessible_organisations(user).values("pk"))
+
+
+def group_scope(member: PracticeMember) -> list[int]:
+    """Organisations a staff member reaches through this practice's groups: filed in a group
+    they're assigned to or one of its sub-groups (V-02-T08)."""
+    paths = list(
+        GroupStaffAssignment.objects.filter(practice_member=member).values_list(
+            "group__path", flat=True
+        )
+    )
+    if not paths:
+        return []
+    cover = Q()
+    for path in paths:
+        cover |= Q(group__path__startswith=path)
+    return list(
+        OrgGroupMembership.objects.filter(group__practice_id=member.practice_id)
+        .filter(cover)
+        .values_list("organisation_id", flat=True)
+        .distinct()
+    )
+
+
+@dataclass(frozen=True)
+class GroupInfo:
+    id: str  # public id
+    name: str
+    path: str
+    depth: int
+    parent: str | None
+
+
+def practice_groups(practice: Practice) -> list[GroupInfo]:
+    """The practice's groups in tree order (depth-first, siblings by name)."""
+    rows = list(
+        OrgGroup.objects.filter(practice=practice)
+        .order_by("path")
+        .values_list("public_id", "name", "path", "depth")
+    )
+    by_path = {path: str(public_id) for public_id, _n, path, _d in rows}
+    return [
+        GroupInfo(
+            id=str(public_id),
+            name=name,
+            path=path,
+            depth=depth,
+            parent=by_path.get(path[: -OrgGroup.steplen]) if depth > 1 else None,
+        )
+        for public_id, name, path, depth in rows
+    ]
+
+
+def organisation_groups(practice: Practice) -> tuple[dict[int, set[str]], dict[int, list[str]]]:
+    """Per organisation: the groups it's in **with their ancestors** (what the group filter
+    matches) and the groups it's filed in directly (the row's badges), as public ids."""
+    groups = practice_groups(practice)
+    by_path = {group.path: group for group in groups}
+    within: dict[int, set[str]] = {}
+    direct: dict[int, list[str]] = {}
+    memberships = OrgGroupMembership.objects.filter(group__practice=practice).values_list(
+        "organisation_id", "group__path"
+    )
+    for organisation_id, path in memberships.order_by("group__path"):
+        group = by_path[path]
+        direct.setdefault(organisation_id, []).append(group.id)
+        ancestors = within.setdefault(organisation_id, set())
+        for depth in range(1, group.depth + 1):
+            ancestor = by_path.get(path[: depth * OrgGroup.steplen])
+            if ancestor is not None:
+                ancestors.add(ancestor.id)
+    return within, direct
 
 
 class DirectoryQuery:
@@ -127,6 +209,7 @@ class DirectoryQuery:
 
     def __init__(self, user: Any, practice: Practice, params: DirectoryParams) -> None:
         self.params = params
+        self.practice = practice
         self.scope = directory_scope(user, practice)
         words = query_words(params.q)
         self.search: SearchQuery | None = (
@@ -173,6 +256,19 @@ class DirectoryQuery:
                 condition |= ~BOOLEAN_FILTERS[name]
             return condition
         condition = Q()
+        if name == "group":  # any of the chosen groups, sub-groups included
+            paths = list(
+                OrgGroup.objects.filter(
+                    practice=self.practice, public_id__in=[_uuid_or_none(v) for v in values]
+                ).values_list("path", flat=True)
+            )
+            if not paths:
+                return Q(pk__in=[])
+            cover = Q()
+            for path in paths:
+                cover |= Q(group__path__startswith=path)
+            inside = OrgGroupMembership.objects.filter(group__practice=self.practice).filter(cover)
+            return Q(organisation_id__in=inside.values("organisation_id"))
         for tag in values:  # tag: any of the chosen tags
             condition |= Q(tags__contains=[tag])
         return condition
@@ -224,10 +320,17 @@ class DirectoryQuery:
         "overdue_count",
         "unfiled_count",
         "tags",
+        "organisation_id",
     )
+
+    def groups_of(self) -> tuple[dict[int, set[str]], dict[int, list[str]]]:
+        if not hasattr(self, "_groups_of"):
+            self._groups_of = organisation_groups(self.practice)
+        return self._groups_of
 
     def _slim(self) -> list[dict[str, Any]]:
         if not hasattr(self, "_slim_rows"):
+            within, _direct = self.groups_of()
             self._slim_rows = [
                 {
                     "status": status,
@@ -239,6 +342,8 @@ class DirectoryQuery:
                     "overdue": overdue > 0,
                     "unfiled": unfiled > 0,
                     "tag": set(tags or []),
+                    "group": within.get(organisation_id, set()),
+                    "organisation_id": organisation_id,
                 }
                 for (
                     status,
@@ -250,6 +355,7 @@ class DirectoryQuery:
                     overdue,
                     unfiled,
                     tags,
+                    organisation_id,
                 ) in self._searched().values_list(*self._SLIM)
             ]
         return self._slim_rows
@@ -259,7 +365,7 @@ class DirectoryQuery:
             if name == skip or not values:
                 continue
             value = row[name]
-            if name == "tag":
+            if name in ("tag", "group"):
                 if not value & set(values):
                     return False
             elif name in BOOLEAN_FILTERS:
@@ -294,7 +400,7 @@ class DirectoryQuery:
                 if not self._passes(row, skip=name):
                     continue
                 value = row[name]
-                if name == "tag":
+                if name in ("tag", "group"):
                     counts.update(value)
                 elif name in BOOLEAN_FILTERS:
                     counts[YES if value else NO] += 1
@@ -309,8 +415,44 @@ class DirectoryQuery:
                         counts.setdefault(status, 0)
             for value in self.params.filters.get(name, []):  # a chosen value stays listed
                 counts.setdefault(value, 0)
+            if name == "group":  # every group is offered, in tree order
+                order = [group.id for group in practice_groups(self.practice)]
+                answer[name] = [{"value": gid, "count": counts.get(gid, 0)} for gid in order]
+                continue
             answer[name] = [{"value": v, "count": n} for v, n in _ordered(name, dict(counts))]
         return answer
+
+    def grouping(self) -> list[dict[str, Any]]:
+        """Group-by headers (V-02-T08): for each group in tree order, the matching organisations
+        filed in it directly (ids in result order) and its count; then those in no group."""
+        _within, direct = self.groups_of()
+        matching = [row["organisation_id"] for row in self._slim() if self._passes(row)]
+        order = {pk: index for index, pk in enumerate(self._result_ids())}
+        matching.sort(key=lambda pk: order.get(pk, len(order)))
+        buckets: dict[str | None, list[int]] = {}
+        for pk in matching:
+            filed: list[str | None] = [*direct.get(pk, [])] or [None]
+            for gid in filed:
+                buckets.setdefault(gid, []).append(pk)
+        out: list[dict[str, Any]] = []
+        for group in practice_groups(self.practice):
+            ids = buckets.get(group.id, [])
+            out.append({"group": group, "organisation_ids": ids, "count": len(ids)})
+        ungrouped = buckets.get(None, [])
+        out.append({"group": None, "organisation_ids": ungrouped, "count": len(ungrouped)})
+        return out
+
+    def _result_ids(self) -> list[int]:
+        return list(self.results().values_list("organisation_id", flat=True))
+
+
+def _uuid_or_none(value: str) -> Any:
+    import uuid
+
+    try:
+        return uuid.UUID(value)
+    except ValueError:
+        return None
 
 
 _STATUS_ORDER = {status: index for index, status in enumerate(DirectoryStatus.values)}

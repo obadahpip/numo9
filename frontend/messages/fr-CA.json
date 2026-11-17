@@ -475,6 +475,7 @@
       "actions": "Actions",
       "bn": "BN",
       "fye": "FYE",
+      "groups": "Groups",
       "gstCycle": "GST/HST cycle",
       "industry": "Industry",
       "legalName": "Legal name",
@@ -510,6 +511,7 @@
     },
     "facet": {
       "fye": "Fiscal year end",
+      "group": "Groups",
       "gstCycle": "GST/HST cycle",
       "none": "None in this list",
       "overdue": "Overdue items",
@@ -559,9 +561,17 @@
       "selectRow": "Select {row}",
       "selected": "{count, number} selected"
     },
+    "groupBy": {
+      "group": "Group",
+      "label": "Group by",
+      "none": "No grouping"
+    },
+    "groupHeader": "{name} — {count, plural, one {# organisation} other {# organisations}}",
+    "groupToggle": "Show or hide {name}",
     "loading": "Loading organisations",
     "newOrganisation": "New organisation",
     "no": "No",
+    "noGroup": "No group",
     "noResults": {
       "body": "Try another spelling or fewer filters. Archived organisations show only with “Show archived organisations”.",
       "title": "No organisations match"

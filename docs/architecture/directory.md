@@ -284,3 +284,28 @@ The views are declared `AUTHENTICATED` (the practice comes from the query, body 
 from an active organisation) and name the practice permission they check with
 `rbac.drf.checks_practice_permission(key)`; the permission matrix (A-03-T10) reads it and expects
 `403 permission.denied` for every practice role without the key.
+
+## Directory: group filter, group by, tags (V-02-T08)
+
+`GET /api/v1/practice/orgs` gains:
+
+- **`group`** filter (repeatable, any of them): a group's public id; an organisation filed in that
+  group **or one of its sub-groups** matches. Its facet lists every group of the practice in tree
+  order with `depth` (1 = top) and the count with the other filters applied. An id that isn't a
+  UUID is a 400 (`field: "group"`); an unknown id matches nothing.
+- **`groups`** column: the groups the organisation is filed in directly, `[{"id", "name"}]` — the
+  badges of the row.
+- **`group_by=group`** adds `grouping`: per group in tree order, `count` (matching organisations
+  filed in it directly) and `organisations` (their ids, in the directory's order), then
+  `group: null` for the organisations in no group. An organisation in two groups is under both.
+- **Tags** reach the rows: the workspace registers its tags provider (`tags.provide_tags`) and
+  every tag change (tag, untag, rename, delete) refreshes the affected rows, so the `tag` filter,
+  its facet and the search see tag names.
+- Staff assigned to a group see its organisations (and its sub-groups') in the directory, as they
+  can open them (`search.group_scope`).
+
+The screen (`frontend/src/directory`): a **Groups** filter in the panel (indented by level), a
+**Groups** column with badges, and a **Group by** choice (*No grouping* / *Group*) that shows one
+section per group — header "Toronto office — 12 organisations", collapsible — then *No group*
+(`GroupedDirectory.tsx`). Tests: `backend/tests/test_workspace_directory_groups.py`,
+`frontend/src/directory/DirectoryGroups.test.tsx`.

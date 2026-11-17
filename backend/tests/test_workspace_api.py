@@ -129,6 +129,7 @@ def test_lists_the_practice_directory(world: dict[str, Any], schema: dict[str, A
         "overdue",
         "unfiled",
         "tag",
+        "group",  # V-02-T08
     }
     assert {"value": "ON", "label": "Ontario", "count": 1} in body["facets"]["province"]
     assert {"value": "growth", "label": "Growth", "count": 1} in body["facets"]["package"]

@@ -33,6 +33,7 @@ import {
 } from "./api";
 import { ACTIONS_COLUMN, ALL_COLUMNS, DEFAULT_COLUMNS, directoryColumns } from "./columns";
 import { FACET_TITLES, FiltersPanel } from "./FiltersPanel";
+import { GroupedDirectory } from "./GroupedDirectory";
 import { m } from "./messages";
 import { SavedViewsRail } from "./SavedViewsRail";
 import { SEARCH_DEBOUNCE_MS, useDebounced } from "./useDebounced";
@@ -156,6 +157,8 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
   const [creating, setCreating] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [height, setHeight] = useState(560);
+  const [groupBy, setGroupBy] = useState<"" | "group">("");
+  const groupById = useId();
   const gridBox = useRef<HTMLDivElement>(null);
 
   const go = useCallback(
@@ -205,17 +208,19 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
   useEffect(() => {
     if (!viewsLoaded) return; // the default view decides the first request
     const controller = new AbortController();
-    void directoryApi.list({ practice, ...request, signal: controller.signal }).then((result) => {
-      if (controller.signal.aborted) return;
-      if (result.status === 200 && Array.isArray(result.body.results)) {
-        setPage(result.body);
-        setStatus("ready");
-      } else {
-        setStatus("error");
-      }
-    });
+    void directoryApi
+      .list({ practice, ...request, groupBy, signal: controller.signal })
+      .then((result) => {
+        if (controller.signal.aborted) return;
+        if (result.status === 200 && Array.isArray(result.body.results)) {
+          setPage(result.body);
+          setStatus("ready");
+        } else {
+          setStatus("error");
+        }
+      });
     return () => controller.abort();
-  }, [practice, request, attempt, viewsLoaded]);
+  }, [practice, request, attempt, viewsLoaded, groupBy]);
 
   // ---- grid height: the rest of the window -----------------------------------------------
   useEffect(() => {
@@ -375,6 +380,27 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
           >
             {filterCount ? t(m.filtersCount, { count: filterCount }) : t(m.filters)}
           </Button>
+          <div
+            role="group"
+            aria-labelledby={groupById}
+            className="flex items-center gap-1"
+            data-group-by=""
+          >
+            <span id={groupById} className="me-1 text-sm font-medium text-fg">
+              {t(m.groupBy)}
+            </span>
+            {(["", "group"] as const).map((value) => (
+              <Button
+                key={value || "none"}
+                size="sm"
+                variant={groupBy === value ? "primary" : "secondary"}
+                aria-pressed={groupBy === value}
+                onClick={() => setGroupBy(value)}
+              >
+                {t(value ? m.groupByGroup : m.groupByNone)}
+              </Button>
+            ))}
+          </div>
           <ul className="flex flex-wrap gap-2" data-filter-chips="">
             {chips.map(({ key, value }) => {
               const chip = t(m.gridChip, {
@@ -413,75 +439,93 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
             />
           ) : null}
           <div ref={gridBox} className="min-w-0 flex-1">
-            <DataGrid
-              manual
-              data={rows}
-              columns={columns}
-              getRowId={(row) => row.id}
-              getRowLabel={(row) => row.name}
-              labels={labels}
-              view={view}
-              onViewChange={(view) => setState((current) => fromView(view, current))}
-              onRowOpen={(row) => go(orgModuleUrl(row.id, "home"))}
-              onRowOpenNewTab={(row) => goNewTab(orgModuleUrl(row.id, "home"))}
-              totalCount={page?.count}
-              unfilteredCount={total}
-              isFiltered={filtered}
-              searchPlaceholder={t(m.searchPlaceholder)}
-              status={status}
-              height={height}
-              emptyState={
-                <EmptyState
-                  title={t(m.emptyTitle)}
-                  body={t(demoHref ? m.emptyBody : m.emptyBodyNoDemo)}
-                  illustration="organisations"
-                  headingLevel={2}
-                  actions={[
-                    <Button key="create" variant="primary" onClick={() => setCreating(true)}>
-                      {t(m.emptyCreate)}
-                    </Button>,
-                    ...(demoHref
-                      ? [
-                          <Button key="demo" onClick={() => go(demoHref)}>
-                            {t(m.emptyDemo)}
-                          </Button>,
-                        ]
-                      : []),
-                  ]}
-                />
-              }
-              noResultsState={
-                <EmptyState
-                  title={t(m.noResultsTitle)}
-                  body={t(m.noResultsBody)}
-                  illustration="search"
-                  headingLevel={2}
-                  actions={[
-                    <Button
-                      key="clear"
-                      variant="primary"
-                      onClick={() =>
-                        setState((current) => ({ ...current, q: "", filters: {}, archived: false }))
-                      }
-                    >
-                      {t(m.gridClear)}
-                    </Button>,
-                  ]}
-                />
-              }
-              errorState={
-                <ErrorState
-                  title={t(m.errorTitle)}
-                  body={t(m.errorBody)}
-                  retryLabel={t(m.retry)}
-                  onRetry={() => {
-                    setStatus("loading");
-                    setAttempt((n) => n + 1);
-                  }}
-                  headingLevel={2}
-                />
-              }
-            />
+            {groupBy === "group" && status === "ready" && page?.grouping && rows.length ? (
+              <GroupedDirectory
+                grouping={page.grouping}
+                rows={rows}
+                columns={columns}
+                labels={labels}
+                view={view}
+                onViewChange={(view) => setState((current) => fromView(view, current))}
+                onRowOpen={(row) => go(orgModuleUrl(row.id, "home"))}
+                onRowOpenNewTab={(row) => goNewTab(orgModuleUrl(row.id, "home"))}
+              />
+            ) : (
+              <DataGrid
+                manual
+                data={rows}
+                columns={columns}
+                getRowId={(row) => row.id}
+                getRowLabel={(row) => row.name}
+                labels={labels}
+                view={view}
+                onViewChange={(view) => setState((current) => fromView(view, current))}
+                onRowOpen={(row) => go(orgModuleUrl(row.id, "home"))}
+                onRowOpenNewTab={(row) => goNewTab(orgModuleUrl(row.id, "home"))}
+                totalCount={page?.count}
+                unfilteredCount={total}
+                isFiltered={filtered}
+                searchPlaceholder={t(m.searchPlaceholder)}
+                status={status}
+                height={height}
+                emptyState={
+                  <EmptyState
+                    title={t(m.emptyTitle)}
+                    body={t(demoHref ? m.emptyBody : m.emptyBodyNoDemo)}
+                    illustration="organisations"
+                    headingLevel={2}
+                    actions={[
+                      <Button key="create" variant="primary" onClick={() => setCreating(true)}>
+                        {t(m.emptyCreate)}
+                      </Button>,
+                      ...(demoHref
+                        ? [
+                            <Button key="demo" onClick={() => go(demoHref)}>
+                              {t(m.emptyDemo)}
+                            </Button>,
+                          ]
+                        : []),
+                    ]}
+                  />
+                }
+                noResultsState={
+                  <EmptyState
+                    title={t(m.noResultsTitle)}
+                    body={t(m.noResultsBody)}
+                    illustration="search"
+                    headingLevel={2}
+                    actions={[
+                      <Button
+                        key="clear"
+                        variant="primary"
+                        onClick={() =>
+                          setState((current) => ({
+                            ...current,
+                            q: "",
+                            filters: {},
+                            archived: false,
+                          }))
+                        }
+                      >
+                        {t(m.gridClear)}
+                      </Button>,
+                    ]}
+                  />
+                }
+                errorState={
+                  <ErrorState
+                    title={t(m.errorTitle)}
+                    body={t(m.errorBody)}
+                    retryLabel={t(m.retry)}
+                    onRetry={() => {
+                      setStatus("loading");
+                      setAttempt((n) => n + 1);
+                    }}
+                    headingLevel={2}
+                  />
+                }
+              />
+            )}
           </div>
         </div>
       </div>

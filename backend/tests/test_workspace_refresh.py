@@ -216,10 +216,11 @@ def test_unrelated_user_save_schedules_nothing(django_capture_on_commit_callback
 
 @pytest.fixture
 def providers() -> Iterator[None]:
+    previous = summary._tags_provider  # the workspace's own (V-02-T08): put it back after
     yield
     summary.unregister_summary_provider("gst")
     summary.unregister_summary_provider("broken")
-    summary.register_tags_provider(None)
+    summary.register_tags_provider(previous)
 
 
 def test_later_phases_plug_in_providers_and_tags(

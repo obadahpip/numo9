@@ -81,11 +81,29 @@ def create_tag(practice: Practice, name: str, colour: str = TagColour.SLATE) -> 
     return _save(Tag(practice=practice, name=name, colour=colour))
 
 
+def _directory_changed(tag: Tag, organisation_ids: Any = None) -> None:
+    """The directory rows show tag names (search, tag filter): refresh the affected rows."""
+    from .summary import tags_changed
+
+    if organisation_ids is None:
+        organisation_ids = list(
+            OrgTag.objects.filter(tag=tag).values_list("organisation_id", flat=True)
+        )
+    tags_changed(tag.practice, organisation_ids)
+
+
+def provide_tags(practice: Practice, organisation: Organisation) -> list[str]:
+    """The directory's tags provider (``summary.register_tags_provider``): tag names."""
+    return [tag.name for tag in tags_of(practice, organisation)]
+
+
 def rename_tag(tag: Tag, name: str) -> Tag:
     name = _name(name)
     _taken(tag.practice, name, exclude=tag)
     tag.name = name
-    return _save(tag, update_fields=["name", "updated_at"])
+    saved = _save(tag, update_fields=["name", "updated_at"])
+    _directory_changed(saved)
+    return saved
 
 
 def recolour_tag(tag: Tag, colour: str) -> Tag:
@@ -103,7 +121,9 @@ def tag_organisation(tag: Tag, organisation: Organisation) -> OrgTag:
             % {"organisation": organisation.name},
             code="workspace.tag.not_served",
         )
-    row, _created = OrgTag.objects.get_or_create(tag=tag, organisation=organisation)
+    row, created = OrgTag.objects.get_or_create(tag=tag, organisation=organisation)
+    if created:
+        _directory_changed(tag, [organisation.pk])
     return row
 
 
@@ -111,14 +131,17 @@ def untag_organisation(tag: Tag, organisation: Organisation) -> int:
     rows = OrgTag.objects.filter(tag=tag, organisation=organisation)
     count = rows.count()
     rows.delete()
+    if count:
+        _directory_changed(tag, [organisation.pk])
     return count
 
 
 def delete_tag(tag: Tag) -> int:
     """Delete a tag; it comes off every organisation. Returns how many organisations had it."""
-    count = OrgTag.objects.filter(tag=tag).count()
+    affected = list(OrgTag.objects.filter(tag=tag).values_list("organisation_id", flat=True))
     tag.delete()
-    return count
+    _directory_changed(tag, affected)
+    return len(affected)
 
 
 def tags_of(practice: Practice, organisation: Organisation) -> list[Tag]:
