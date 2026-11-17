@@ -577,6 +577,12 @@ FILES_BULK_TOO_MANY = define(
     _("Select up to %(max)s documents at a time."),
 )
 
+# ---- platform console (U-06) -------------------------------------------------------------------
+PLATFORM_BAD_FILTER = define(
+    "platform.bad_filter",
+    _("%(value)s isn't a valid value for %(name)s."),
+)
+
 # ---- free trial (U-05) -------------------------------------------------------------------------
 TRIAL_ALREADY_USED = define(
     "entitlements.trial_already_used",

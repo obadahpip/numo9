@@ -36,3 +36,16 @@ The guard is a convenience: every console endpoint still checks its own `platfor
 (security tests, U-06-T14). `backend/tests/test_platform_guard.py`,
 `frontend/src/console/shell/ConsoleFrame.test.tsx`; the Playwright console suites answer the
 guard with a platform owner (`e2e/auth-helpers.ts` `mockPlatformMe`).
+
+## Practices and organisations APIs (U-06-T03)
+
+`numo9.platform.directory`, both with `platform.console.view`:
+
+| Endpoint | Filters (repeatable values = any of them) | Row |
+|---|---|---|
+| `GET /api/v1/platform/organisations` | `status`, `package` (code, or `none`), `province`, `created_from` / `created_to` (inclusive dates), `q` (name, accents ignored) | id, name, status, `is_demo`, current package and subscription status, province, created |
+| `GET /api/v1/platform/practices` | `q`, `created_from` / `created_to` | id, name, staff count, active clients count, created |
+
+Newest first; `page` (1-based) and `page_size` (1–200, default 50); the answer carries `count`,
+`page`, `page_size`, `pages`. A value it can't use is `400 platform.bad_filter` with `field`.
+`backend/tests/test_platform_lists.py`.
