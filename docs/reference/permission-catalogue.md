@@ -71,7 +71,7 @@ Risk: low · medium · high · critical (what misuse could do). Scope: where it 
 | `practice.clients.create` | Create client organisations | Créer des organisations clientes | medium | practice | Practice admin, Accountant |
 | `practice.clients.invite_owner` | Invite a client organisation's owner | Inviter le propriétaire d’une organisation cliente | high | practice | Practice admin |
 | `practice.directory.view` | See the practice's client organisations in the directory | Voir les organisations clientes du cabinet dans le répertoire | low | practice | Practice admin, Accountant, Reviewer, Payroll specialist, Read-only staff |
-| `practice.groups.manage` | Organise the practice's clients into groups and tags, and assign staff to groups | Organise the practice's clients into groups and tags, and assign staff to groups | high | practice | Practice admin |
+| `practice.groups.manage` | Organise the practice's clients into groups and tags, and assign staff to groups | Organiser les clients du cabinet en groupes et en étiquettes, et affecter le personnel aux groupes | high | practice | Practice admin |
 | `practice.profile.view` | View the practice | Voir le cabinet | low | practice | Practice admin, Accountant, Reviewer, Payroll specialist, Read-only staff |
 | `practice.roles.manage` | Create, edit and give the practice's roles | Créer, modifier et attribuer les rôles du cabinet | critical | practice | Practice admin |
 | `practice.settings.manage` | Change practice settings | Modifier les paramètres du cabinet | high | practice | Practice admin |
