@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 289   Remaining: 2498   Progress: 10.37%
+TOTAL ATOMIC TASKS: 2787   Completed: 290   Remaining: 2497   Progress: 10.41%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -395,7 +395,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [B-02]
 ✅ B-02-T01 — Wireframes timeline, statement preview, supplier reconciliation
 ✅ B-02-T05 — Statement PDF template (WeasyPrint, Letter, inch margins, EN/FR keys)
-❌ B-02-T06 — Statement send via A-07 + history record
+✅ B-02-T06 — Statement send via A-07 + history record
 ❌ B-02-T07 — SupplierStatement + lines import (CSV/XLSX mapping)
 
 [U-05]

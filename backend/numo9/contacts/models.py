@@ -1505,3 +1505,65 @@ class CreditOverride(AuditedModel, OrgOwnedModel):
         self.reason = " ".join((self.reason or "").split())
         self.decision_note = " ".join((self.decision_note or "").split())
         super().save(*args, **kwargs)
+
+
+# ---- statements sent (B-02-T06) ----------------------------------------------------------------
+
+
+class StatementSendKind(models.TextChoices):
+    OUTSTANDING = "outstanding", _("Outstanding")
+    ACTIVITY = "activity", _("Activity")
+
+
+class StatementSend(OrgOwnedModel):
+    """A statement sent to a contact by email (B-02-T06) — the contact's statement history.
+
+    What was sent stays as it was: kind and dates, the amount due and currency, the recipients,
+    the language, the PDF (``file_key``: the organisation's object storage, A-06) and the email
+    messages (A-07 message log, by public id). Never edited after sending.
+    """
+
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.PROTECT,
+        related_name="statements_sent",
+        verbose_name=_("contact"),
+    )
+    kind = models.CharField(_("type"), max_length=12, choices=StatementSendKind.choices)
+    as_at = models.DateField(_("as at"))
+    period_start = models.DateField(_("period start"), null=True, blank=True)
+    amount_due = models.DecimalField(_("amount due"), max_digits=18, decimal_places=2)
+    currency = models.CharField(_("currency"), max_length=3, default=DEFAULT_CURRENCY)
+    language = models.CharField(_("language"), max_length=5, choices=Locale.choices)
+    recipients = models.JSONField(_("sent to"), default=list)
+    subject = models.CharField(_("subject"), max_length=998)
+    file_key = models.CharField(_("file"), max_length=512)
+    file_name = models.CharField(_("file name"), max_length=255)
+    email_messages = models.JSONField(_("email messages"), default=list, blank=True)
+    sent_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("sent by"),
+    )
+    sent_at = models.DateTimeField(_("sent at"), default=timezone.now)
+
+    class Meta:
+        ordering = ("-sent_at", "-pk")
+        verbose_name = _("statement sent")
+        verbose_name_plural = _("statements sent")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=_in("kind", StatementSendKind), name="contacts_statement_send_kind_valid"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=("organisation", "contact", "-sent_at"), name="contacts_stmt_sent_idx"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} · {self.kind} {self.as_at:%Y-%m-%d}"
