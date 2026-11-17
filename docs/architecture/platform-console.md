@@ -188,3 +188,22 @@ flags are off and never created by a lookup. waffle's own migrations are replace
 Every change writes a platform audit event (`platform.flag.created/updated/deleted`, with the
 before/after mode, percentage and targets) and flushes waffle's cache on commit, so the next
 `/me/flags` reflects it. The console page `/console/flags` edits them.
+
+## Security tests (U-06-T14)
+
+`backend/tests/test_platform_security.py` finds every method of every `/api/v1/platform/` route
+from the URLconf (packages, catalogue, jobs, audit and the console's own) and checks:
+
+- each declares a **platform** permission — except `platform/me` (404 for anyone without a
+  platform role) and the browser's own `impersonation/current` / `end`;
+- anonymous callers get 401/403, organisation owners and practice admins 403/404 (the own-session
+  endpoints answer them `session: null`), platform staff without 2FA
+  `403 auth.two_factor_required`;
+- each platform system role gets through exactly the methods whose permission it holds
+  (`permission.denied` otherwise).
+
+Impersonation limits: 1–120 minutes (API and database), reason required, staff and oneself
+refused, members of the organisation only; while impersonating **every** platform endpoint but
+`current`/`end` answers `impersonation.blocked` (a session can't start another); another
+organisation is 404 (URL or `X-Numo9-Org`); expiry ends the session; a session id copied into
+another staff member's browser does nothing.
