@@ -372,3 +372,8 @@ export function equivalentOrgUrl(targetOrg: string, currentPath?: string): strin
 export function practiceDirectoryUrl(practice: string): string {
   return `/p/${practice}/directory`;
 }
+
+/** Practice groups and tags (V-02-T09): the group tree, tags and staff of groups. */
+export function practiceGroupsUrl(practice: string): string {
+  return `/p/${practice}/groups`;
+}

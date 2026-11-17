@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 282   Remaining: 2505   Progress: 10.12%
+TOTAL ATOMIC TASKS: 2787   Completed: 283   Remaining: 2504   Progress: 10.15%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -386,7 +386,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ V-02-T06 — Cache invalidation on any membership/assignment change
 ✅ V-02-T07 — APIs: groups CRUD/move, tags CRUD, assign orgs, assign staff
 ✅ V-02-T08 — Directory "group by" + group filter + tag filter (V-01 extension)
-❌ V-02-T09 — Group tree UI with drag-and-drop + keyboard "Move to…"
+✅ V-02-T09 — Group tree UI with drag-and-drop + keyboard "Move to…"
 ❌ V-02-T10 — Tag picker (type-to-create, colour + label)
 ❌ V-02-T11 — Delete-group dialog with affected org/staff counts
 ❌ V-02-T12 — Isolation sweep extension: group revocation → 404 on every org record

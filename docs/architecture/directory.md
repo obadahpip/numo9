@@ -309,3 +309,17 @@ The screen (`frontend/src/directory`): a **Groups** filter in the panel (indente
 section per group — header "Toronto office — 12 organisations", collapsible — then *No group*
 (`GroupedDirectory.tsx`). Tests: `backend/tests/test_workspace_directory_groups.py`,
 `frontend/src/directory/DirectoryGroups.test.tsx`.
+
+## Groups screen (V-02-T09…T11)
+
+`/p/<practice>/groups` (`frontend/src/groups`, linked from the directory header as *Groups and
+tags*):
+
+- **Group tree** (`GroupTree.tsx`, V-02-T09) — an ARIA `tree` (`treeitem` with `aria-level`, one
+  tab stop, ↑/↓/Home/End move the focus), each group with its organisations (sub-groups included)
+  and staff counts and *Add sub-group*, *Rename*, *Move to…*. **Drag and drop**: drag a group onto
+  another to move it under it, or onto the *Top level* zone that appears while dragging.
+  **Keyboard alternative**: *Move to…* opens a dialog with the valid targets only (not the group,
+  its sub-groups or its current parent; never deeper than 5 levels — `moveTargets`), chosen with
+  the radio group and confirmed with *Move*. A refusal from the API (rule or permission) is shown
+  as the server words it; a done move is announced (`role="status"`).

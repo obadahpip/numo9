@@ -166,6 +166,11 @@ export const m = defineMessages({
     description: "Column: unfiled returns",
   },
   colTags: { id: "directory.col.tags", defaultMessage: "Tags", description: "Column" },
+  manageGroups: {
+    id: "directory.manageGroups",
+    defaultMessage: "Groups and tags",
+    description: "Link from the directory to the practice's groups and tags screen",
+  },
   colGroups: { id: "directory.col.groups", defaultMessage: "Groups", description: "Column" },
   colActions: {
     id: "directory.col.actions",

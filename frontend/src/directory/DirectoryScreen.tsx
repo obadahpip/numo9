@@ -16,7 +16,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEven
 
 import { apiRequest } from "@/auth/client";
 import { useFormatMessage, type FormatMessage } from "@/i18n";
-import { orgModuleUrl } from "@/routing/routes";
+import { orgModuleUrl, practiceGroupsUrl } from "@/routing/routes";
 
 import {
   directoryApi,
@@ -366,6 +366,12 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
             {active && modified ? (
               <Button onClick={() => void updateView(active)}>{t(m.viewsSaveChanges)}</Button>
             ) : null}
+            <a
+              href={practiceGroupsUrl(practice)}
+              className="inline-flex min-h-touch-target items-center px-2 text-sm font-semibold text-fg underline"
+            >
+              {t(m.manageGroups)}
+            </a>
             <Button variant="primary" onClick={() => setCreating(true)}>
               {t(m.newOrganisation)}
             </Button>

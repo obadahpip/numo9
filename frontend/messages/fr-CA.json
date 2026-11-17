@@ -569,6 +569,7 @@
     "groupHeader": "{name} — {count, plural, one {# organisation} other {# organisations}}",
     "groupToggle": "Show or hide {name}",
     "loading": "Loading organisations",
+    "manageGroups": "Groups and tags",
     "newOrganisation": "New organisation",
     "no": "No",
     "noGroup": "No group",
@@ -814,6 +815,54 @@
     "saving": "Saving…",
     "stay": "Stay on this page",
     "unsavedChanges": "You have unsaved changes."
+  },
+  "groups": {
+    "addSub": {
+      "label": "Add sub-group to {name}",
+      "short": "Add sub-group"
+    },
+    "breadcrumb": "Groups",
+    "cancel": "Cancel",
+    "close": "Close",
+    "counts": "{organisations, plural, one {# organisation} other {# organisations}} · {staff, plural, one {# staff member} other {# staff}}",
+    "create": {
+      "subTitle": "New sub-group of {name}",
+      "title": "New group"
+    },
+    "dragHint": "Drag a group onto another to move it there, or onto “Top level”. With the keyboard, use “Move to…”.",
+    "dropTop": "Drop here to move to the top level",
+    "empty": "No groups yet. Create one to organise your clients.",
+    "failed": "That didn't work. Try again.",
+    "intro": "Groups organise your clients (up to 5 levels). Staff assigned to a group work on every client in it and in its sub-groups.",
+    "loadFailed": "The groups couldn't be loaded.",
+    "loading": "Loading groups…",
+    "move": {
+      "body": "Choose where {name} goes. Its sub-groups move with it; staff access follows the new place.",
+      "confirm": "Move",
+      "none": "There's nowhere else this group can go (5 levels at most).",
+      "title": "Move {name}",
+      "top": "Top level"
+    },
+    "moveTo": {
+      "button": "Move to…",
+      "for": "Move {name} to…"
+    },
+    "moved": "{name} moved.",
+    "name": {
+      "label": "Group name"
+    },
+    "new": "New group",
+    "rename": {
+      "button": "Rename",
+      "for": "Rename {name}",
+      "title": "Rename {name}"
+    },
+    "retry": "Try again",
+    "save": "Save",
+    "title": "Groups and tags",
+    "tree": {
+      "label": "Practice groups"
+    }
   },
   "home": {
     "placeholder": "Application shell placeholder.",
