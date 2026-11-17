@@ -226,3 +226,32 @@ integration tests per change).
 `backend/tests/test_workspace_group_access.py` — Hypothesis: random trees (depth ≤ 5), filings,
 group staff, direct staff, practice admins and assignments switched off; the resolver equals a
 brute-force model of the rule for every user and organisation.
+
+## Cache invalidation (V-02-T06)
+
+Every way the access rows change bumps the generation, so a revocation applies on the member's
+**next request** — in every web and worker process (the generation is in the shared cache):
+
+| Change | How it is noticed |
+|---|---|
+| save / delete of a group, membership, group staff assignment, practice assignment or practice member (also cascades: deleting a group removes its sub-groups, memberships and staff) | `post_save` / `post_delete` |
+| bulk `update()` / `bulk_create()` / `bulk_update()` of memberships and group staff | `workspace.models.AccessQuerySet` (their default manager) |
+| bulk `update()` / `bulk_create()` / `bulk_update()` of practice members and practice assignments | `tenancy.models.AccessRowsQuerySet` sends `access_rows_changed` |
+| group move (treebeard rewrites paths with raw SQL) | `groups.move_group` bumps |
+
+The bump happens at once and again when the transaction commits, so a request that read the old
+rows while the change was in flight can't keep them cached.
+
+**Permissions follow the group role.** Access alone answers 403 on everything; the RBAC resolver
+(A-03) also asks the registered *practice role sources* (`rbac.resolver.register_practice_role_
+source`). The workspace source, `workspace.access.group_roles(user, organisation)`, names the role
+of each group assignment that reaches the organisation (accountant, reviewer, payroll specialist,
+read-only staff — the practice system roles of the same name): a member assigned to "Toronto
+office" as *Read-only staff* reads those clients' books and changes nothing.
+
+`backend/tests/test_workspace_group_access_invalidation.py` — warm cache, one change, the next
+request answers 404: staff unassigned, organisation removed, membership deleted, group deleted
+(cascade), sub-group moved out, practice stops serving (save and bulk update), bulk moves of staff
+and memberships; grants (filing, bulk create) apply on the next request; access through a second
+group or a direct assignment survives; another user's warm cache is refreshed too; the group role
+decides read vs change.
