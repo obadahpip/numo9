@@ -43,6 +43,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 24 | Contact activity timeline | B-02-T10 | Activity tab, type filter chips, newest first, amounts in the contact's currency, rows open their record |
 | 25 | Statement preview and send | B-02-T05, T06, T11 | Outstanding/Activity, as-at date, language, Letter preview with aging, send dialog, history |
 | 26 | Supplier statement reconciliation | B-02-T07, T08, T12 | Difference summary, two columns with auto-match, manual match and notes, import of their lines |
+| 27 | Console — organisations and detail | U-06-T03, T04 | Filters (status, package, province, created), paged grid, detail with subscription timeline, users, practices, audit link, sign-in-as |
+| 28 | Console — audited sign-in as a user | U-06-T09, T11 | Reason and duration (≤ 2 h), what is blocked, red bar with countdown and End session |
+| 29 | Console — metrics and feature flags | U-06-T05, T06, T12 | KPI tiles with drill-down, MRR trend, flags per organisation / practice / % / everyone |
 
 ## 1. Application shell
 
@@ -386,3 +389,32 @@ old system with French headers, saved in Windows-1252.
 | 2 | Two columns | Their statement lines and our bills side by side; auto-match by invoice number, then by amount within ±3 days; unmatched highlighted |
 | 3 | Manual match | Select one line on each side and match; notes on a line; the difference updates at once |
 | 4 | Import | Their statement from CSV/XLSX with a column mapping (date, invoice number, amount, reference) or typed lines; lines added = rows in the file |
+
+## 27. Platform console — organisations and detail (U-06-T01)
+
+![Console organisations](wireframes/28-console-organisations.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Filters | Status, package, province, created (range); paged, 50 a page; demo organisations listed but marked |
+| 2 | Detail | Status, package, province, created; subscription timeline (trial started, converted, renewed, read-only…) from the status history |
+| 3 | Actions | *Open audit log* (the organisation's log, as platform staff) and *Sign in as a user…* (`platform.impersonate`) |
+
+## 28. Platform console — audited sign-in as a user (U-06-T01)
+
+![Audited sign-in](wireframes/29-console-impersonation.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Red bar | On every page while signed in as someone: who, which organisation, time left (counting down), the reason; *End session* |
+| 2 | Start | One organisation only; reason required; 15 min to 2 h (default 30 min); everything done is in that organisation's audit log as "<user> — signed in by <staff>" |
+| 3 | Blocked | Payment methods and billing, password, two-factor, email address, the console itself: refused while signed in as someone |
+
+## 29. Platform console — metrics and feature flags (U-06-T01)
+
+![Metrics and flags](wireframes/30-console-flags.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | KPI tiles | MRR (CAD, annual ÷ 12), active organisations, trials, conversion, churn, founding x / 1,000 — demo organisations never counted; each tile opens the organisations it counts (same number) |
+| 2 | Feature flags | Everyone on/off, rollout %, chosen organisations and practices; a change applies on the next request; `/api/v1/me/flags` answers a user's flags |
