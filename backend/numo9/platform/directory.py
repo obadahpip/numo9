@@ -171,3 +171,106 @@ def practices(query: Any) -> dict[str, Any]:
             for practice in items
         ],
     }
+
+
+# ---- one organisation (U-06-T04) ---------------------------------------------------------------
+
+
+def _timeline(organisation: Organisation) -> list[dict[str, Any]]:
+    """The subscription's state history, oldest first: trial started, every status change (from
+    the audit log of the subscription), conversion."""
+    from numo9.audit.models import AuditEvent
+    from numo9.entitlements.models import TrialRegistry
+
+    items: list[dict[str, Any]] = []
+    trial = TrialRegistry.objects.filter(organisation=organisation).first()
+    if trial is not None:
+        items.append({"at": trial.started_at, "kind": "trial_started", "detail": ""})
+    events = AuditEvent.platform_events.filter(
+        organisation=organisation, object_type="entitlements.Subscription"
+    ).order_by("created_at", "id")
+    for event in events:
+        status = (event.changes or {}).get("status")
+        if event.action.endswith(".created"):
+            new = status[1] if isinstance(status, list) and len(status) == 2 else ""
+            items.append({"at": event.created_at, "kind": "subscribed", "detail": str(new or "")})
+        elif isinstance(status, list) and len(status) == 2:
+            items.append(
+                {"at": event.created_at, "kind": "status", "detail": f"{status[0]} → {status[1]}"}
+            )
+    if trial is not None and trial.converted_at is not None:
+        items.append({"at": trial.converted_at, "kind": "converted", "detail": ""})
+    items.sort(key=lambda item: item["at"])
+    return items
+
+
+def organisation_detail(organisation: Organisation) -> dict[str, Any]:
+    from numo9.audit.models import AuditEvent
+    from numo9.tenancy.models import OrganisationMember, PracticeAssignment
+
+    subscription = (
+        Subscription._base_manager.filter(organisation=organisation, deleted_at__isnull=True)
+        .select_related("package")
+        .order_by("-created_at")
+        .first()
+    )
+    settings_row = OrganisationSettings._base_manager.filter(organisation=organisation).first()
+    members = OrganisationMember.objects.filter(organisation=organisation).select_related("user")
+    assignments = (
+        PracticeAssignment.objects.filter(organisation=organisation)
+        .select_related("practice")
+        .annotate(staff=Count("assigned_staff", distinct=True))
+        .order_by("-active", "practice__name")
+    )
+    recent = AuditEvent.platform_events.filter(organisation=organisation).order_by(
+        "-created_at", "-id"
+    )[:20]
+    return {
+        "id": organisation.public_id,
+        "name": organisation.name,
+        "status": organisation.status,
+        "is_demo": organisation.status == OrganisationStatus.DEMO,
+        "province": settings_row.mailing_province if settings_row else "",
+        "time_zone": organisation.time_zone,
+        "created_at": organisation.created_at,
+        "subscription": None
+        if subscription is None
+        else {
+            "status": subscription.status,
+            "reason": subscription.status_reason,
+            "package": subscription.package.code if subscription.package else "",
+            "interval": subscription.interval,
+            "current_period_end": subscription.current_period_end,
+            "founding": subscription.founding,
+        },
+        "timeline": _timeline(organisation),
+        "users": [
+            {
+                "id": m.user.public_id,
+                "name": m.user.name,
+                "email": m.user.email,
+                "role": m.role,
+                "last_login": m.user.last_login,
+            }
+            for m in members.order_by("user__name")
+        ],
+        "practices": [
+            {
+                "id": a.practice.public_id,
+                "name": a.practice.name,
+                "role": a.role,
+                "active": a.active,
+                "staff_count": a.staff,
+            }
+            for a in assignments
+        ],
+        "recent_events": [
+            {
+                "at": e.created_at,
+                "action": e.action,
+                "actor": e.actor_label,
+                "record": e.object_label,
+            }
+            for e in recent
+        ],
+    }

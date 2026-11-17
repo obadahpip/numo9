@@ -161,3 +161,23 @@ class PlatformPracticeListView(APIView):
         from .directory import practices
 
         return _listing(request, practices)
+
+
+class PlatformOrganisationDetailView(APIView):
+    required_feature = CORE
+
+    @requires_permission(CONSOLE_VIEW.key)
+    @extend_schema(
+        operation_id="platform_organisations_detail",
+        summary="One organisation: subscription timeline, users, practices, recent audit events",
+        responses=OpenApiTypes.OBJECT,
+    )
+    def get(self, request: Request, org_id: Any) -> Response:
+        from numo9.tenancy.models import Organisation
+
+        from .directory import organisation_detail
+
+        organisation = Organisation.objects.filter(public_id=org_id).first()
+        if organisation is None:
+            raise NotFound
+        return Response(organisation_detail(organisation))

@@ -49,3 +49,19 @@ guard with a platform owner (`e2e/auth-helpers.ts` `mockPlatformMe`).
 Newest first; `page` (1-based) and `page_size` (1–200, default 50); the answer carries `count`,
 `page`, `page_size`, `pages`. A value it can't use is `400 platform.bad_filter` with `field`.
 `backend/tests/test_platform_lists.py`.
+
+## Organisation detail (U-06-T04)
+
+`GET /api/v1/platform/organisations/<id>` (`platform.console.view`, 404 for an unknown id) and the
+console pages `/console/organisations` (filters from U-06-T03, paged table, demo marked) and
+`/console/organisations/<id>`:
+
+- status, province, time zone, created; the current subscription (status, package, interval,
+  period end, founding);
+- **subscription history**, oldest first: trial started (trial registry), subscription created and
+  every status change (the subscription's audit events, A-04), trial converted;
+- users (role, last sign-in), practices serving it (role, staff assigned, switched off), and the
+  organisation's 20 latest audit events.
+
+Dates in the organisation's time zone. Tests: `backend/tests/test_platform_organisation_detail.py`,
+`frontend/src/console/organisations/OrganisationDetailScreen.test.tsx`.

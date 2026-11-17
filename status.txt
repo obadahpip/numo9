@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 306   Remaining: 2481   Progress: 10.98%
+TOTAL ATOMIC TASKS: 2787   Completed: 307   Remaining: 2480   Progress: 11.02%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -416,7 +416,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-06-T01 — Console IA + wireframes (dashboard, practices, orgs, packages, founding, demos, flags, impersonation)
 ✅ U-06-T02 — Platform shell layout, route guard (platform roles + 2FA enforced)
 ✅ U-06-T03 — Practices & organisations list APIs with filters (status, package, province, created)
-❌ U-06-T04 — Org detail view (subscription timeline, users, practices assigned, audit link)
+✅ U-06-T04 — Org detail view (subscription timeline, users, practices assigned, audit link)
 ❌ U-06-T05 — Metrics service (MRR, active, trials, conversion, churn) excluding demo orgs; nightly snapshot table PlatformMetricDaily
 ❌ U-06-T06 — KPI tiles + trend charts (Recharts) with drill-down
 ❌ U-06-T07 — Package editor integration (reuse U-02 screens)

@@ -11,5 +11,10 @@ urlpatterns = [
         api.PlatformOrganisationListView.as_view(),
         name="platform-organisations",
     ),
+    path(
+        "platform/organisations/<uuid:org_id>",
+        api.PlatformOrganisationDetailView.as_view(),
+        name="platform-organisation",
+    ),
     path("platform/practices", api.PlatformPracticeListView.as_view(), name="platform-practices"),
 ]
