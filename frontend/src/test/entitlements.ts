@@ -30,6 +30,7 @@ export function entitlementsBody(overrides: Partial<Entitlements> = {}): Entitle
     mode: "full",
     reason: "active",
     since: null,
+    grace_until: null,
     package: "growth",
     package_name: "Growth",
     status: "active",

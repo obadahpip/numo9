@@ -699,3 +699,38 @@ CREDIT_OVERRIDE_EXPIRED = define(
     status.HTTP_409_CONFLICT,
 )
 CREDIT_OVERRIDE_ACTION = _("approve credit limit overrides")
+
+# ---- billing (U-04) ---------------------------------------------------------------------------
+BILLING_UNAVAILABLE = define(
+    "billing.unavailable",
+    _("Billing isn't available right now. Try again later, or contact Numo9 support."),
+    status.HTTP_503_SERVICE_UNAVAILABLE,
+)
+BILLING_NO_SUBSCRIPTION = define(
+    "billing.no_subscription",
+    _("This organisation has no subscription yet. Start a trial first."),
+    status.HTTP_409_CONFLICT,
+)
+BILLING_PACKAGE_UNKNOWN = define(
+    "billing.package_unknown",
+    _("There's no package %(package)s for sale. Choose one of the packages offered."),
+)
+BILLING_PRICE_NOT_READY = define(
+    "billing.price_not_ready",
+    _("%(package)s can't be bought online yet. Try again in a few minutes."),
+    status.HTTP_409_CONFLICT,
+)
+BILLING_ALREADY_SUBSCRIBED = define(
+    "billing.already_subscribed",
+    _("This organisation already pays for a package. Change the package instead."),
+    status.HTTP_409_CONFLICT,
+)
+BILLING_NOT_PAYING = define(
+    "billing.not_paying",
+    _("This organisation doesn't pay for a package yet. Choose one first."),
+    status.HTTP_409_CONFLICT,
+)
+BILLING_NO_CHANGE = define(
+    "billing.no_change",
+    _("That's already your package and billing interval."),
+)

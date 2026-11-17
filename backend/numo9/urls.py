@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView
 
+from numo9.billing.webhooks import stripe_webhook
+
 from .health import healthz
 
 urlpatterns = [
@@ -23,10 +25,13 @@ urlpatterns = [
     path("api/v1/", include("numo9.notifications.urls")),  # notification centre (A-07)
     path("api/v1/", include("numo9.orgsettings.urls")),  # organisation settings, locks (A-05)
     path("api/v1/", include("numo9.ledger.urls")),  # journals read API (C-02-T15)
+    path("api/v1/", include("numo9.billing.urls")),  # subscription billing (U-04)
     # Sign-up, email verification, login, logout, password reset (A-02): django-allauth headless,
     # browser client only (/_allauth/browser/v1/…). OpenAPI: /_allauth/openapi.html in dev.
     path("_allauth/", include("numo9.accounts.urls")),
     # Email provider delivery webhooks (A-07-T08): django-anymail's tracking views,
     # /webhooks/email/<provider>/tracking/, HTTP basic auth with ANYMAIL_WEBHOOK_SECRET.
     path("webhooks/email/", include("anymail.urls")),
+    # Stripe billing webhooks (U-04-T06): signed by Stripe, stored once, processed by Celery.
+    path("webhooks/stripe/", stripe_webhook, name="stripe-webhook"),
 ]

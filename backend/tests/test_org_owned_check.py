@@ -64,6 +64,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "notifications.PracticeBranding",
                 # Email suppression list (A-07-T08): reviewed — an address and a reason.
                 "notifications.EmailSuppression",
+                # Stripe webhook events (U-04-T03): reviewed — Stripe's event log, idempotency.
+                "billing.StripeEvent",
             }
         )
         == PLATFORM_MODELS

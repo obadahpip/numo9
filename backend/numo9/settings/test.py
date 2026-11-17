@@ -24,7 +24,10 @@ MIGRATION_LINTER_OPTIONS = {
     # required + unique in one migration. The linter flags the NOT NULL / UNIQUE steps; they are
     # safe here — every existing row is filled first, and in Phase 0 there is no production
     # deployment whose old code could insert users while the migration runs.
-    "ignore_name": ["0002_user_public_id"],
+    # Reviewed (U-04-T02): the billing columns of entitlements_subscription are new and empty for
+    # every row, so the partial unique index on stripe_subscription_id (non-empty values only) and
+    # the customer index build on an index of blanks; the table has one row per organisation.
+    "ignore_name": ["0002_user_public_id", "0004_subscription_billing"],
 }
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")

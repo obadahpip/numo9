@@ -202,6 +202,15 @@ def _code(response: Any) -> str | None:
 # ---- the matrix ------------------------------------------------------------------------------
 
 
+@pytest.fixture(autouse=True)
+def billing_gateway(settings: Any) -> None:
+    """Billing endpoints (U-04) talk to the test gateway, not to Stripe (billing off = 503)."""
+    from tests.billing_helpers import FakeGateway
+
+    FakeGateway.reset()
+    settings.NUMO9_BILLING_GATEWAY = "tests.billing_helpers.FakeGateway"
+
+
 @pytest.mark.django_db
 @pytest.mark.parametrize(("declaration", "subject"), CASES)
 def test_matrix(declaration: Declaration, subject: Subject) -> None:

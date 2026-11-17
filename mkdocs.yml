@@ -86,6 +86,9 @@ nav:
       - "Spreadsheet imports": architecture/imports.md
       - "Documents and files": architecture/files.md
       - "Organisation directory": architecture/directory.md
+      - "Subscription billing": architecture/billing.md
+  - Operations:
+      - "Operations runbook": operations/runbook.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

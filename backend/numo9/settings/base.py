@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     "numo9.notifications",
     # Accountant workspace: organisation directory, saved views (V-01).
     "numo9.workspace",
+    # Subscription billing with Stripe: events, platform invoices, dunning (U-04).
+    "numo9.billing",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -188,6 +190,14 @@ NUMO9_PACKAGE_SOURCE = "numo9.packages.source.OfferedPackages"
 # points the client elsewhere (stripe-mock in tests); empty = Stripe's own API.
 STRIPE_SECRET_KEY = env_str("STRIPE_SECRET_KEY", "")
 STRIPE_API_BASE = env_str("STRIPE_API_BASE", "")
+# Billing (U-04-T01): the publishable key the billing page hands to Stripe.js, and the signing
+# secret of the webhook endpoint (/webhooks/stripe/) — both from the secrets file; empty = billing
+# off (the checkout endpoint answers 503, the webhook refuses every event).
+STRIPE_PUBLISHABLE_KEY = env_str("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_WEBHOOK_SECRET = env_str("STRIPE_WEBHOOK_SECRET", "")
+# Billing gateway (U-04): a dotted path to a class (tests), or empty = the Stripe API when a key is
+# set, otherwise billing off.
+NUMO9_BILLING_GATEWAY = ""
 # Gateway used by the sync job: a dotted path to a class (tests), or empty = the Stripe API when a
 # key is set, otherwise off.
 NUMO9_STRIPE_GATEWAY = ""
@@ -229,6 +239,9 @@ TENANT_SWEEP_EXEMPT = [
     # Email provider delivery webhooks (A-07-T08): basic auth with the webhook secret; events
     # are matched to the logged message, which names its organisation.
     r"^webhooks/email/",
+    # Stripe webhooks (U-04-T06): signed by Stripe; events name their customer, whose
+    # organisation the handlers then act on.
+    r"^webhooks/stripe/",
     # Platform console (A-08-T08 job dashboard): no organisation; platform.* permissions only.
     r"^api/v1/platform/",
     # Organisation directory and saved views of a practice (V-01): no organisation in the URL; rows
@@ -455,6 +468,16 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.notifications.check_sending_domains": {
         "task": "numo9.notifications.check_sending_domains",
         "schedule": crontab(minute="4,19,34,49"),
+    },
+    # Dunning (U-04-T09): reminders on days 3 and 5, read-only exactly when the grace ends.
+    "numo9.billing.run_dunning": {
+        "task": "numo9.billing.run_dunning",
+        "schedule": crontab(minute="7,22,37,52"),
+    },
+    # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
+    "numo9.billing.apply_changes": {
+        "task": "numo9.billing.apply_changes",
+        "schedule": crontab(minute="9,24,39,54"),
     },
 }
 

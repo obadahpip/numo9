@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:36-0500\n"
+"POT-Creation-Date: 2026-11-16 14:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -432,6 +432,165 @@ msgstr ""
 msgid "No events match these filters."
 msgstr ""
 
+msgid "Stripe event"
+msgstr ""
+
+msgid "event type"
+msgstr ""
+
+msgid "payload"
+msgstr ""
+
+msgid "created at Stripe"
+msgstr ""
+
+msgid "live mode"
+msgstr ""
+
+msgid "received at"
+msgstr ""
+
+msgid "processed at"
+msgstr ""
+
+msgid "attempts"
+msgstr ""
+
+msgid "last error"
+msgstr ""
+
+msgid "Stripe events"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Due"
+msgstr ""
+
+msgid "Paid"
+msgstr ""
+
+msgid "Uncollectible"
+msgstr ""
+
+msgid "Void"
+msgstr ""
+
+msgid "Stripe invoice"
+msgstr ""
+
+msgid "number"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "subtotal"
+msgstr ""
+
+msgid "tax"
+msgstr ""
+
+msgid "total"
+msgstr ""
+
+msgid "paid"
+msgstr ""
+
+msgid "due"
+msgstr ""
+
+msgid "period from"
+msgstr ""
+
+msgid "period to"
+msgstr ""
+
+msgid "issued at"
+msgstr ""
+
+msgid "paid at"
+msgstr ""
+
+msgid "payment attempts"
+msgstr ""
+
+msgid "next payment attempt"
+msgstr ""
+
+msgid "invoice page"
+msgstr ""
+
+msgid "PDF"
+msgstr ""
+
+msgid "Stripe subscription"
+msgstr ""
+
+msgid "receipt sent at"
+msgstr ""
+
+msgid "last event at"
+msgstr ""
+
+msgid "Numo9 invoice"
+msgstr ""
+
+msgid "Numo9 invoices"
+msgstr ""
+
+msgid "subscription"
+msgstr ""
+
+msgid "grace period ends"
+msgstr ""
+
+msgid "day"
+msgstr ""
+
+msgid "sent at"
+msgstr ""
+
+msgid "recipients"
+msgstr ""
+
+msgid "dunning reminder"
+msgstr ""
+
+msgid "dunning reminders"
+msgstr ""
+
+msgid "package"
+msgstr ""
+
+msgid "billing interval"
+msgstr ""
+
+msgid "takes effect at"
+msgstr ""
+
+msgid "applied at"
+msgstr ""
+
+msgid "cancelled at"
+msgstr ""
+
+msgid "scheduled package change"
+msgstr ""
+
+msgid "scheduled package changes"
+msgstr ""
+
+msgid "See the subscription, payment method and Numo9 invoices"
+msgstr ""
+
+msgid "Subscribe, change the package or payment method, cancel the subscription"
+msgstr ""
+
 msgid "Product"
 msgstr ""
 
@@ -487,9 +646,6 @@ msgid "Translation key of the product's name, e.g. 'catalogue.product.accounting
 msgstr ""
 
 msgid "kind"
-msgstr ""
-
-msgid "status"
 msgstr ""
 
 msgid "sort order"
@@ -950,9 +1106,6 @@ msgstr ""
 msgid "Another tax number printed on documents, e.g. a foreign registration number."
 msgstr ""
 
-msgid "currency"
-msgstr ""
-
 msgid "credit limit"
 msgstr ""
 
@@ -1404,13 +1557,13 @@ msgstr ""
 msgid "Set by Numo9"
 msgstr ""
 
-msgid "package"
+msgid "Card"
+msgstr ""
+
+msgid "Pre-authorised debit (PAD)"
 msgstr ""
 
 msgid "current period ends"
-msgstr ""
-
-msgid "grace period ends"
 msgstr ""
 
 msgid "A past-due subscription keeps full access until then."
@@ -1431,7 +1584,22 @@ msgstr ""
 msgid "status changed at"
 msgstr ""
 
-msgid "subscription"
+msgid "Stripe customer"
+msgstr ""
+
+msgid "One Stripe customer per organisation (cus_…)."
+msgstr ""
+
+msgid "cancels at the end of the period"
+msgstr ""
+
+msgid "Cancelled by the owner: access continues until the period ends."
+msgstr ""
+
+msgid "payment method"
+msgstr ""
+
+msgid "last billing event at"
 msgstr ""
 
 msgid "subscriptions"
@@ -1647,12 +1815,6 @@ msgid "refused attachments"
 msgstr ""
 
 msgid "Attachments that were not stored: name and reason code."
-msgstr ""
-
-msgid "received at"
-msgstr ""
-
-msgid "processed at"
 msgstr ""
 
 msgid "inbound emails"
@@ -2082,6 +2244,29 @@ msgstr ""
 msgid "approve credit limit overrides"
 msgstr ""
 
+msgid "Billing isn't available right now. Try again later, or contact Numo9 support."
+msgstr ""
+
+msgid "This organisation has no subscription yet. Start a trial first."
+msgstr ""
+
+#, python-format
+msgid "There's no package %(package)s for sale. Choose one of the packages offered."
+msgstr ""
+
+#, python-format
+msgid "%(package)s can't be bought online yet. Try again in a few minutes."
+msgstr ""
+
+msgid "This organisation already pays for a package. Change the package instead."
+msgstr ""
+
+msgid "This organisation doesn't pay for a package yet. Choose one first."
+msgstr ""
+
+msgid "That's already your package and billing interval."
+msgstr ""
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -2244,9 +2429,6 @@ msgid "error detail"
 msgstr ""
 
 msgid "idempotency key"
-msgstr ""
-
-msgid "attempts"
 msgstr ""
 
 msgid "maximum retries"
@@ -2656,9 +2838,6 @@ msgstr ""
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
 
-msgid "Draft"
-msgstr ""
-
 msgid "Awaiting approval"
 msgstr ""
 
@@ -3028,9 +3207,6 @@ msgstr ""
 msgid "last try at"
 msgstr ""
 
-msgid "sent at"
-msgstr ""
-
 msgid "delivery event at"
 msgstr ""
 
@@ -3204,6 +3380,14 @@ msgid "The subscription payment is overdue. Everyone can still see and export; u
 msgstr ""
 
 #, python-format
+msgid "Receipt: %(amount)s paid for %(organisation)s"
+msgstr ""
+
+#, python-format
+msgid "Numo9 invoice %(number)s is paid. Thank you. The invoice is on the Subscription page."
+msgstr ""
+
+#, python-format
 msgid "Your trial ends on %(ends_on)s"
 msgstr ""
 
@@ -3365,9 +3549,6 @@ msgid "Registered"
 msgstr ""
 
 msgid "Closed"
-msgstr ""
-
-msgid "number"
 msgstr ""
 
 msgid "effective from"
@@ -3644,9 +3825,6 @@ msgid "Annual"
 msgstr ""
 
 msgid "Before tax"
-msgstr ""
-
-msgid "billing interval"
 msgstr ""
 
 msgid "amount (cents)"
@@ -4208,9 +4386,6 @@ msgid "Invite a client organisation's owner"
 msgstr ""
 
 msgid "change the practice's security settings"
-msgstr ""
-
-msgid "Paid"
 msgstr ""
 
 msgid "Comfortable"

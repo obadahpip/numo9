@@ -46,7 +46,7 @@ from django.utils.translation import gettext_lazy as _
 
 from numo9.audit.mixins import AuditedModel
 from numo9.catalogue.models import Product
-from numo9.packages.models import Package, PackageStatus
+from numo9.packages.models import BillingInterval, Package, PackageStatus
 from numo9.tenancy.models import Organisation, OrganisationStatus, OrgOwnedModel
 
 
@@ -101,6 +101,13 @@ def current_subscription(organisation: Organisation | None) -> Subscription | No
     return ended
 
 
+class PaymentMethodType(models.TextChoices):
+    """How the organisation pays (U-04-T02): the method's details stay at Stripe."""
+
+    CARD = "card", _("Card")
+    ACSS_DEBIT = "acss_debit", _("Pre-authorised debit (PAD)")
+
+
 class Subscription(AuditedModel, OrgOwnedModel):
     package = models.ForeignKey(
         Package,
@@ -138,6 +145,40 @@ class Subscription(AuditedModel, OrgOwnedModel):
     status_reason = models.CharField(
         _("reason"), max_length=20, choices=StatusReason.choices, blank=True
     )
+    # ---- billing (U-04-T02): Stripe's ids; the card and the PAD mandate stay at Stripe ----
+    stripe_customer_id = models.CharField(
+        _("Stripe customer"),
+        max_length=64,
+        blank=True,
+        db_default="",
+        help_text=_("One Stripe customer per organisation (cus_…)."),
+    )
+    stripe_subscription_id = models.CharField(
+        _("Stripe subscription"), max_length=64, blank=True, db_default=""
+    )
+    interval = models.CharField(
+        _("billing interval"),
+        max_length=8,
+        choices=BillingInterval.choices,
+        default=BillingInterval.MONTH,
+        db_default=BillingInterval.MONTH,
+    )
+    cancel_at_period_end = models.BooleanField(
+        _("cancels at the end of the period"),
+        default=False,
+        db_default=False,
+        help_text=_("Cancelled by the owner: access continues until the period ends."),
+    )
+    payment_method_type = models.CharField(
+        _("payment method"),
+        max_length=16,
+        choices=PaymentMethodType.choices,
+        blank=True,
+        db_default="",
+    )
+    #: Stripe ``created`` of the latest billing event applied (U-04-T15): an older event that
+    #: arrives late never overwrites a newer state.
+    stripe_event_created = models.DateTimeField(_("last billing event at"), null=True, blank=True)
 
     class Meta:
         ordering = ("-created_at", "-id")
@@ -158,6 +199,20 @@ class Subscription(AuditedModel, OrgOwnedModel):
                 condition=models.Q(status_reason="") | _in("status_reason", StatusReason),
                 name="entitlements_subscription_reason_valid",
             ),
+            models.UniqueConstraint(
+                fields=("stripe_subscription_id",),
+                condition=~models.Q(stripe_subscription_id=""),
+                name="entitlements_stripe_subscription_unique",
+            ),
+            models.CheckConstraint(
+                condition=_in("interval", BillingInterval),
+                name="entitlements_subscription_interval_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(payment_method_type="")
+                | _in("payment_method_type", PaymentMethodType),
+                name="entitlements_subscription_method_valid",
+            ),
             models.CheckConstraint(
                 condition=~models.Q(status=SubscriptionStatus.PAST_DUE)
                 | models.Q(grace_until__isnull=False),
@@ -166,6 +221,7 @@ class Subscription(AuditedModel, OrgOwnedModel):
         ]
         indexes: ClassVar[list[models.Index]] = [
             models.Index(fields=("package", "status"), name="entitlements_sub_package_idx"),
+            models.Index(fields=("stripe_customer_id",), name="entitlements_sub_customer_idx"),
         ]
 
     def __str__(self) -> str:

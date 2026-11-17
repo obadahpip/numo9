@@ -30,6 +30,7 @@ export function entitlements(overrides: Record<string, unknown> = {}) {
     mode: "full",
     reason: "active",
     since: null,
+    grace_until: null,
     package: "starter",
     package_name: "Starter",
     status: "active",

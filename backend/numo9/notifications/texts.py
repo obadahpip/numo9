@@ -97,6 +97,11 @@ register_text(
     ),
 )
 register_text(
+    "notifications.billing.receipt",
+    _("Receipt: %(amount)s paid for %(organisation)s"),
+    _("Numo9 invoice %(number)s is paid. Thank you. The invoice is on the Subscription page."),
+)
+register_text(
     "notifications.trial.ending",
     _("Your trial ends on %(ends_on)s"),
     _("Choose a package to keep working without a break. Everything you entered stays."),

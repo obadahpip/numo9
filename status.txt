@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 255   Remaining: 2532   Progress: 9.15%
+TOTAL ATOMIC TASKS: 2787   Completed: 272   Remaining: 2515   Progress: 9.76%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -353,23 +353,23 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ C-02-T16 — Journal viewer UI (read-only detail, book badges, reversal link)
 
 [U-04]
-❌ U-04-T01 — Stripe account config doc + env vars in secrets manager (test/live keys, webhook secret)
-❌ U-04-T02 — Extend Subscription with stripe_customer_id, stripe_subscription_id, interval, cancel_at_period_end, payment_method_type
-❌ U-04-T03 — StripeEvent model (event_id unique, type, payload, processed_at, error)
-❌ U-04-T04 — Customer creation service (one per org, metadata org_id)
-❌ U-04-T05 — Checkout session endpoint POST /api/v1/orgs/{id}/billing/checkout (card + acss_debit) owner-only
-❌ U-04-T06 — Webhook endpoint with signature check, event persistence, Celery dispatch
-❌ U-04-T07 — Handlers: checkout.session.completed, customer.subscription.created/updated/deleted → local state machine
-❌ U-04-T08 — Handlers: invoice.paid, invoice.payment_failed, invoice.finalized → PlatformInvoice mirror + receipt email
-❌ U-04-T09 — Dunning scheduler: grace_until = failure + 7 d; reminder emails day 0/3/5/7; transition to read_only at grace end (beat job, idempotent)
-❌ U-04-T10 — Upgrade/downgrade service with proration preview (invoices.upcoming)
-❌ U-04-T11 — Cancellation + export job (ZIP of CSV/XLSX/PDF/JSON) delivered as signed URL
-❌ U-04-T12 — Billing page UI (package card, method, invoices, cancel)
-❌ U-04-T13 — Proration comparison modal + dunning banner
-❌ U-04-T14 — Entitlement cache invalidation on every subscription change
-❌ U-04-T15 — Out-of-order event resolution (precedence by created)
-❌ U-04-T16 — Security tests: practice user never sees billing endpoints for own account; webhook replay
-❌ U-04-T17 — Runbook section "Stripe billing incidents"
+✅ U-04-T01 — Stripe account config doc + env vars in secrets manager (test/live keys, webhook secret)
+✅ U-04-T02 — Extend Subscription with stripe_customer_id, stripe_subscription_id, interval, cancel_at_period_end, payment_method_type
+✅ U-04-T03 — StripeEvent model (event_id unique, type, payload, processed_at, error)
+✅ U-04-T04 — Customer creation service (one per org, metadata org_id)
+✅ U-04-T05 — Checkout session endpoint POST /api/v1/orgs/{id}/billing/checkout (card + acss_debit) owner-only
+✅ U-04-T06 — Webhook endpoint with signature check, event persistence, Celery dispatch
+✅ U-04-T07 — Handlers: checkout.session.completed, customer.subscription.created/updated/deleted → local state machine
+✅ U-04-T08 — Handlers: invoice.paid, invoice.payment_failed, invoice.finalized → PlatformInvoice mirror + receipt email
+✅ U-04-T09 — Dunning scheduler: grace_until = failure + 7 d; reminder emails day 0/3/5/7; transition to read_only at grace end (beat job, idempotent)
+✅ U-04-T10 — Upgrade/downgrade service with proration preview (invoices.upcoming)
+✅ U-04-T11 — Cancellation + export job (ZIP of CSV/XLSX/PDF/JSON) delivered as signed URL
+✅ U-04-T12 — Billing page UI (package card, method, invoices, cancel)
+✅ U-04-T13 — Proration comparison modal + dunning banner
+✅ U-04-T14 — Entitlement cache invalidation on every subscription change
+✅ U-04-T15 — Out-of-order event resolution (precedence by created)
+✅ U-04-T16 — Security tests: practice user never sees billing endpoints for own account; webhook replay
+✅ U-04-T17 — Runbook section "Stripe billing incidents"
 
 [U-02]
 ❌ U-02-T14 — Tests: future-dated price leaves current subscriptions unchanged (fixture with subscription renewing before effective date)

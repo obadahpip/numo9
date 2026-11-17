@@ -10,7 +10,7 @@ fails the build if an encrypted file holds a plain value or a key / `.env` file 
 
 | Where | What | Who can read it |
 |---|---|---|
-| `infra/secrets/staging.sops.env`, `infra/secrets/prod.sops.env` (in Git, **encrypted**) | Runtime secrets of the environment: `DJANGO_SECRET_KEY` (+ `_FALLBACKS`), `POSTGRES_PASSWORD`, field-encryption key ring (S-03-T04), later Stripe, email provider, Sentry DSN | The age recipients in `infra/secrets/recipients/<env>.txt` |
+| `infra/secrets/staging.sops.env`, `infra/secrets/prod.sops.env` (in Git, **encrypted**) | Runtime secrets of the environment: `DJANGO_SECRET_KEY` (+ `_FALLBACKS`), `POSTGRES_PASSWORD`, field-encryption key ring (S-03-T04), Stripe keys (U-04-T01), email provider, Sentry DSN | The age recipients in `infra/secrets/recipients/<env>.txt` |
 | Each host: `/etc/numo9/age/host.key` (root/deploy user, mode 400) | The host's own age private key — generated on the host, never copied | The host |
 | Each person: `~/.config/sops/age/keys.txt` (mode 600) | That person's age private key | That person |
 | GitHub Environments `staging` / `production` (secrets) | CI/CD credentials only: SSH deploy key, known hosts | Workflows of that environment (production needs approval, S-01-T13) |
@@ -58,6 +58,8 @@ change (PR description: what, why, who).
 |---|---|---|
 | `DJANGO_SECRET_KEY` | 1. Move the current value to `DJANGO_SECRET_KEY_FALLBACKS`. 2. Set a new `DJANGO_SECRET_KEY`. 3. Deploy. 4. After the session lifetime (14 days) and password-reset link expiry, empty `DJANGO_SECRET_KEY_FALLBACKS` and deploy again. | None — old sessions and signed links still verify through the fallback |
 | `POSTGRES_PASSWORD` | 1. `ALTER ROLE numo9 PASSWORD '<new>'` on the database (psql as admin). 2. Set the new value. 3. Deploy (containers restart with the new `.env`). | Seconds (connection restart) |
+| `STRIPE_SECRET_KEY` | 1. Stripe dashboard → Developers → API keys → *Roll key* with an expiry of 12 h (old key keeps working). 2. Set the new value. 3. Deploy. 4. Let the old key expire (or expire it now). | None |
+| `STRIPE_WEBHOOK_SECRET` | 1. Stripe dashboard → Webhooks → endpoint → *Roll secret* with an expiry of 12 h (events are signed with both). 2. Set the new value. 3. Deploy before the old secret expires. | None |
 | Field-encryption key (S-03-T04) | 1. Add a new key id to `NUMO9_FIELD_ENCRYPTION_KEYS` and make it `NUMO9_FIELD_ENCRYPTION_ACTIVE_KEY`. 2. Deploy. 3. `python manage.py rotate_field_encryption` re-encrypts every value. 4. Remove the old key after the command reports 0 values on it. | None |
 | Stripe / email / Sentry keys | 1. Create the new key in the provider console. 2. Set it. 3. Deploy. 4. Revoke the old key in the console. | None |
 | SSH deploy key (GitHub Environment) | 1. `ssh-keygen -t ed25519` for the deploy user, add the public key on the host. 2. Replace `*_SSH_PRIVATE_KEY` in the GitHub Environment. 3. Run a deploy. 4. Remove the old public key from `authorized_keys`. | None |

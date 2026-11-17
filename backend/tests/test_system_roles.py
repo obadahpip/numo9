@@ -45,15 +45,29 @@ def test_names_are_stored_in_english_and_translated_by_key() -> None:
         assert str(system_role("organisation", "owner").name) == "Propriétaire"
 
 
+#: Owner-only permissions: closing the organisation (A-03) and billing (U-04-T05).
+OWNER_ONLY = {"organisation.close", "organisation.billing.view", "organisation.billing.manage"}
+
+
+def test_owner_only_permissions_go_to_the_owner_role_only() -> None:
+    """U-04-T16: billing (and closing) never reach practice staff or broad organisation roles."""
+    owner_only = {p.key for p in catalogue if p.owner_only}
+    assert owner_only >= OWNER_ONLY
+    for role in SYSTEM_ROLES:
+        granted = role.permission_keys()
+        if role.key == "owner":
+            assert owner_only <= granted
+        else:
+            assert not granted & owner_only, role.key
+
+
 def test_owner_and_admin() -> None:
     assert grants("organisation", "owner") == ORG_PERMS
-    assert grants("organisation", "admin") == ORG_PERMS - {"organisation.close"}
+    assert grants("organisation", "admin") == ORG_PERMS - OWNER_ONLY
 
 
 def test_practice_admin_runs_the_practice_and_its_clients() -> None:
-    assert grants("practice", "practice_admin") == PRACTICE_PERMS | (
-        ORG_PERMS - {"organisation.close"}
-    )
+    assert grants("practice", "practice_admin") == PRACTICE_PERMS | (ORG_PERMS - OWNER_ONLY)
 
 
 def test_accountants_keep_books_but_do_not_manage_users() -> None:
@@ -78,7 +92,9 @@ def test_accountants_keep_books_but_do_not_manage_users() -> None:
 
 
 def test_read_only_and_reviewer_change_nothing() -> None:
-    read_only = {p.key for p in catalogue if p.read_only and p.scope != Scope.PLATFORM}
+    read_only = {
+        p.key for p in catalogue if p.read_only and p.scope != Scope.PLATFORM and not p.owner_only
+    }
     assert grants("practice", "read_only") == read_only
     reviewer = grants("practice", "reviewer")
     assert all(catalogue.get(k).read_only for k in reviewer)

@@ -111,6 +111,8 @@ register_event(
     "billing.read_only", C.BILLING, title_key="notifications.billing.read_only", mandatory=True
 )
 register_event("trial.ending", C.BILLING, title_key="notifications.trial.ending")
+# Receipt of a paid Numo9 invoice (U-04-T08): the owner, in the app and by email.
+register_event("billing.receipt", C.BILLING, title_key="notifications.billing.receipt")
 # Lock dates (A-05-T13, flow F6): the organisation's admins are told when a lock moves.
 register_event("settings.lock_changed", C.SYSTEM, title_key="notifications.settings.lock_changed")
 

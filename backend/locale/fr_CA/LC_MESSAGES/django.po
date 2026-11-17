@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 13:36-0500\n"
+"POT-Creation-Date: 2026-11-16 14:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -436,6 +436,165 @@ msgstr "%(count)s événements · exporté le %(when)s"
 msgid "No events match these filters."
 msgstr "Aucun événement ne correspond à ces filtres."
 
+msgid "Stripe event"
+msgstr "Événement Stripe"
+
+msgid "event type"
+msgstr "type d’événement"
+
+msgid "payload"
+msgstr "contenu"
+
+msgid "created at Stripe"
+msgstr "créé chez Stripe"
+
+msgid "live mode"
+msgstr "mode réel"
+
+msgid "received at"
+msgstr "reçu le"
+
+msgid "processed at"
+msgstr "traité le"
+
+msgid "attempts"
+msgstr "essais"
+
+msgid "last error"
+msgstr "dernière erreur"
+
+msgid "Stripe events"
+msgstr "Événements Stripe"
+
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Due"
+msgstr "À payer"
+
+msgid "Paid"
+msgstr "Payée"
+
+msgid "Uncollectible"
+msgstr "Irrécouvrable"
+
+msgid "Void"
+msgstr "Annulée"
+
+msgid "Stripe invoice"
+msgstr "Facture Stripe"
+
+msgid "number"
+msgstr "numéro"
+
+msgid "status"
+msgstr "statut"
+
+msgid "currency"
+msgstr "devise"
+
+msgid "subtotal"
+msgstr "sous-total"
+
+msgid "tax"
+msgstr "taxes"
+
+msgid "total"
+msgstr "total"
+
+msgid "paid"
+msgstr "payé"
+
+msgid "due"
+msgstr "à payer"
+
+msgid "period from"
+msgstr "période du"
+
+msgid "period to"
+msgstr "période au"
+
+msgid "issued at"
+msgstr "émise le"
+
+msgid "paid at"
+msgstr "payée le"
+
+msgid "payment attempts"
+msgstr "tentatives de paiement"
+
+msgid "next payment attempt"
+msgstr "prochaine tentative de paiement"
+
+msgid "invoice page"
+msgstr "page de la facture"
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid "Stripe subscription"
+msgstr "Abonnement Stripe"
+
+msgid "receipt sent at"
+msgstr "reçu envoyé le"
+
+msgid "last event at"
+msgstr "dernier événement le"
+
+msgid "Numo9 invoice"
+msgstr "Facture Numo9"
+
+msgid "Numo9 invoices"
+msgstr "Factures Numo9"
+
+msgid "subscription"
+msgstr "abonnement"
+
+msgid "grace period ends"
+msgstr "fin du délai de grâce"
+
+msgid "day"
+msgstr "jour"
+
+msgid "sent at"
+msgstr "envoyé le"
+
+msgid "recipients"
+msgstr "destinataires"
+
+msgid "dunning reminder"
+msgstr "relance de paiement"
+
+msgid "dunning reminders"
+msgstr "relances de paiement"
+
+msgid "package"
+msgstr "forfait"
+
+msgid "billing interval"
+msgstr "fréquence de facturation"
+
+msgid "takes effect at"
+msgstr "prend effet le"
+
+msgid "applied at"
+msgstr "appliqué le"
+
+msgid "cancelled at"
+msgstr "annulé le"
+
+msgid "scheduled package change"
+msgstr "changement de forfait prévu"
+
+msgid "scheduled package changes"
+msgstr "changements de forfait prévus"
+
+msgid "See the subscription, payment method and Numo9 invoices"
+msgstr "Voir l’abonnement, le mode de paiement et les factures de Numo9"
+
+msgid "Subscribe, change the package or payment method, cancel the subscription"
+msgstr "S’abonner, changer de forfait ou de mode de paiement, annuler l’abonnement"
+
 msgid "Product"
 msgstr ""
 
@@ -494,9 +653,6 @@ msgstr ""
 
 msgid "kind"
 msgstr ""
-
-msgid "status"
-msgstr "statut"
 
 msgid "sort order"
 msgstr ""
@@ -1024,9 +1180,6 @@ msgstr ""
 msgid "Another tax number printed on documents, e.g. a foreign registration number."
 msgstr ""
 
-msgid "currency"
-msgstr "devise"
-
 msgid "credit limit"
 msgstr "limite de crédit"
 
@@ -1527,13 +1680,13 @@ msgstr "Invitation annulée"
 msgid "Set by Numo9"
 msgstr ""
 
-msgid "package"
-msgstr "forfait"
+msgid "Card"
+msgstr "Carte"
+
+msgid "Pre-authorised debit (PAD)"
+msgstr "Débit préautorisé (DPA)"
 
 msgid "current period ends"
-msgstr ""
-
-msgid "grace period ends"
 msgstr ""
 
 msgid "A past-due subscription keeps full access until then."
@@ -1558,10 +1711,23 @@ msgstr ""
 msgid "status changed at"
 msgstr "commencée le"
 
-#, fuzzy
-#| msgid "Description"
-msgid "subscription"
-msgstr "Description"
+msgid "Stripe customer"
+msgstr "Client Stripe"
+
+msgid "One Stripe customer per organisation (cus_…)."
+msgstr "Un client Stripe par organisation (cus_…)."
+
+msgid "cancels at the end of the period"
+msgstr "prend fin à la fin de la période"
+
+msgid "Cancelled by the owner: access continues until the period ends."
+msgstr "Annulé par le propriétaire : l’accès se poursuit jusqu’à la fin de la période."
+
+msgid "payment method"
+msgstr "mode de paiement"
+
+msgid "last billing event at"
+msgstr "dernier événement de facturation le"
 
 #, fuzzy
 #| msgid "Description"
@@ -1807,16 +1973,6 @@ msgstr ""
 
 msgid "Attachments that were not stored: name and reason code."
 msgstr ""
-
-#, fuzzy
-#| msgid "started at"
-msgid "received at"
-msgstr "commencée le"
-
-#, fuzzy
-#| msgid "started at"
-msgid "processed at"
-msgstr "commencée le"
 
 msgid "inbound emails"
 msgstr ""
@@ -2255,6 +2411,29 @@ msgstr "Cette demande de dérogation a expiré le %(date)s. Faites-en une nouvel
 msgid "approve credit limit overrides"
 msgstr "approuver les dérogations à la limite de crédit"
 
+msgid "Billing isn't available right now. Try again later, or contact Numo9 support."
+msgstr "La facturation n’est pas disponible pour le moment. Réessayez plus tard ou communiquez avec le soutien Numo9."
+
+msgid "This organisation has no subscription yet. Start a trial first."
+msgstr "Cette organisation n’a pas encore d’abonnement. Commencez d’abord un essai."
+
+#, python-format
+msgid "There's no package %(package)s for sale. Choose one of the packages offered."
+msgstr "Il n’y a aucun forfait %(package)s en vente. Choisissez l’un des forfaits offerts."
+
+#, python-format
+msgid "%(package)s can't be bought online yet. Try again in a few minutes."
+msgstr "Le forfait %(package)s ne peut pas encore être acheté en ligne. Réessayez dans quelques minutes."
+
+msgid "This organisation already pays for a package. Change the package instead."
+msgstr "Cette organisation paie déjà un forfait. Changez plutôt de forfait."
+
+msgid "This organisation doesn't pay for a package yet. Choose one first."
+msgstr "Cette organisation ne paie pas encore de forfait. Choisissez-en un d’abord."
+
+msgid "That's already your package and billing interval."
+msgstr "C’est déjà votre forfait et votre fréquence de facturation."
+
 #, python-format
 msgid "%(items)s and %(last)s"
 msgstr ""
@@ -2424,9 +2603,6 @@ msgstr "détail de l’erreur"
 
 msgid "idempotency key"
 msgstr "clé d’idempotence"
-
-msgid "attempts"
-msgstr "essais"
 
 msgid "maximum retries"
 msgstr "nombre maximal de nouveaux essais"
@@ -2854,9 +3030,6 @@ msgstr ""
 #, python-format
 msgid "GIFI %(code)s is in %(section)s: it doesn't fit a %(type)s account."
 msgstr ""
-
-msgid "Draft"
-msgstr "Brouillon"
 
 msgid "Awaiting approval"
 msgstr ""
@@ -3287,9 +3460,6 @@ msgstr "identifiant du message chez le fournisseur"
 msgid "last try at"
 msgstr "dernier essai le"
 
-msgid "sent at"
-msgstr "envoyé le"
-
 msgid "delivery event at"
 msgstr "événement de livraison le"
 
@@ -3465,6 +3635,14 @@ msgid "The subscription payment is overdue. Everyone can still see and export; u
 msgstr "Le paiement de l’abonnement est en retard. Tout le monde peut encore consulter et exporter; mettez à jour le moyen de paiement pour pouvoir modifier à nouveau."
 
 #, python-format
+msgid "Receipt: %(amount)s paid for %(organisation)s"
+msgstr "Reçu : %(amount)s payé pour %(organisation)s"
+
+#, python-format
+msgid "Numo9 invoice %(number)s is paid. Thank you. The invoice is on the Subscription page."
+msgstr "La facture Numo9 %(number)s est payée. Merci. La facture se trouve sur la page Abonnement."
+
+#, python-format
 msgid "Your trial ends on %(ends_on)s"
 msgstr "Votre essai se termine le %(ends_on)s"
 
@@ -3627,9 +3805,6 @@ msgstr "Inscrit"
 
 msgid "Closed"
 msgstr "Fermé"
-
-msgid "number"
-msgstr "numéro"
 
 msgid "effective from"
 msgstr "en vigueur du"
@@ -3906,9 +4081,6 @@ msgstr "Annuel"
 
 msgid "Before tax"
 msgstr "Avant taxes"
-
-msgid "billing interval"
-msgstr "fréquence de facturation"
 
 msgid "amount (cents)"
 msgstr "montant (cents)"
@@ -4484,9 +4656,6 @@ msgstr "Inviter le propriétaire d’une organisation cliente"
 
 msgid "change the practice's security settings"
 msgstr "modifier les paramètres de sécurité du cabinet"
-
-msgid "Paid"
-msgstr "Payée"
 
 msgid "Comfortable"
 msgstr "Confortable"
