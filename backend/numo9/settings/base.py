@@ -94,6 +94,9 @@ MIDDLEWARE = [
     # 2FA policy: platform owners and (when their practice requires it) practice admins can't
     # use the API until they enrol (A-02-T06).
     "numo9.accounts.twofactor_policy.TwoFactorEnforcementMiddleware",
+    # Impersonation (U-06-T09): inside an open, time-boxed session the request acts as the user
+    # (one organisation, blocked endpoints refused); after the 2FA policy (the staff member's).
+    "numo9.platform.middleware.ImpersonationMiddleware",
     # Request language: user's locale → numo9_locale cookie → Accept-Language (A-10-T14).
     "numo9.i18n.middleware.LocaleMiddleware",
     # Audit context (A-04-T04): request id, client IP, device and the request's user for every

@@ -120,3 +120,24 @@ session for the same staff member.
 `numo9.platform.impersonation.start()` applies the rules before creating the row (the user acted
 as must be a member of that organisation and hold no platform role); `current()` returns the open
 session and closes it as `expired` once its time is up.
+
+## Impersonation auth: time box and blocked endpoints (U-06-T09)
+
+| Endpoint | Who | Does |
+|---|---|---|
+| `POST /api/v1/platform/impersonation` `{organisation, user, reason, minutes}` | `platform.impersonate` (2FA) | starts the session (U-06-T08 rules) and stores its id in the browser session |
+| `GET /api/v1/platform/impersonation/current` | signed in | `{session, ended}` — the open session, or the one that just expired |
+| `POST /api/v1/platform/impersonation/end` | signed in | ends it (`ended`); the next request is the staff member again |
+
+`numo9.platform.middleware.ImpersonationMiddleware` (after the 2FA policy, before the audit and
+tenant context) turns each request of that browser into the user's: `request.user` becomes the
+user acted as, `request.audit_impersonator` the staff member. It **ends** the session when its
+time is up (`expired`; that request answers `403 impersonation.expired` and changes nothing), when
+the staff member loses `platform.impersonate` (`revoked`) and on sign-out (`ended`).
+
+While impersonating, `BLOCKED` endpoints answer `403 impersonation.blocked`: billing portal,
+checkout, change (and its preview) and cancel; SIN/bank reveal; allauth password, email,
+authenticators (2FA), phone, providers, password reset, re-authentication and sessions; practice
+workspaces (`/api/v1/practice/…`) and creating organisations or practices; the Django admin; the
+console itself except `impersonation/current` and `impersonation/end`. Every other request is
+scoped to the session's organisation: another organisation answers 404.

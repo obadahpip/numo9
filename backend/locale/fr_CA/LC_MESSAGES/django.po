@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:56-0500\n"
+"POT-Creation-Date: 2026-11-17 18:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2560,6 +2560,35 @@ msgstr "Sélectionnez au plus %(max)s documents à la fois."
 #, python-format
 msgid "%(value)s isn't a valid value for %(name)s."
 msgstr "%(value)s n’est pas une valeur valide pour %(name)s."
+
+msgid "This isn't available while you're signed in as another user: payment methods, billing changes, passwords, two-factor authentication and email addresses stay with the user. End the session to continue."
+msgstr "Cette action n’est pas offerte pendant que vous êtes connecté en tant qu’un autre utilisateur : les modes de paiement, les changements de facturation, les mots de passe, l’authentification à deux facteurs et les adresses courriel restent à l’utilisateur. Terminez la session pour continuer."
+
+msgid "Your session as this user reached its time limit and ended. Nothing was changed by this request. Start a new session from the console if you still need it."
+msgstr "Votre session en tant que cet utilisateur a atteint sa limite de temps et a pris fin. Cette demande n’a rien modifié. Commencez une nouvelle session depuis la console si vous en avez encore besoin."
+
+msgid "Say why you need to sign in as this user (for example the support ticket)."
+msgstr "Indiquez pourquoi vous devez vous connecter en tant que cet utilisateur (par exemple le billet de soutien)."
+
+#, python-format
+msgid "Keep the reason under %(limit)s characters."
+msgstr "Limitez la raison à moins de %(limit)s caractères."
+
+#, python-format
+msgid "Choose a duration between 1 and %(max)s minutes."
+msgstr "Choisissez une durée entre 1 et %(max)s minutes."
+
+msgid "You can't sign in as yourself."
+msgstr "Vous ne pouvez pas vous connecter en tant que vous-même."
+
+msgid "This user isn't a member of this organisation. Choose one of its users."
+msgstr "Cet utilisateur n’est pas membre de cette organisation. Choisissez l’un de ses utilisateurs."
+
+msgid "Platform staff can't be signed in as. Choose a user who isn't Numo9 staff."
+msgstr "On ne peut pas se connecter en tant que membre du personnel de la plateforme. Choisissez un utilisateur qui ne fait pas partie du personnel de Numo9."
+
+msgid "You're already signed in as another user. End that session first."
+msgstr "Vous êtes déjà connecté en tant qu’un autre utilisateur. Terminez d’abord cette session."
 
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."

@@ -94,3 +94,12 @@ def current(actor: Any, now: dt.datetime | None = None) -> ImpersonationSession 
         session.end(ImpersonationEndReason.EXPIRED, now)
         return None
     return session
+
+
+def end_on_logout(sender: Any, request: Any = None, user: Any = None, **kwargs: Any) -> None:
+    """Signing out ends the staff member's open session (``ended``)."""
+    if user is None:
+        return
+    actor = getattr(request, "audit_impersonator", None) or user
+    for session in ImpersonationSession.objects.filter(actor=actor, ended_at__isnull=True):
+        session.end(ImpersonationEndReason.ENDED)

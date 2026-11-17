@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 311   Remaining: 2476   Progress: 11.16%
+TOTAL ATOMIC TASKS: 2787   Completed: 312   Remaining: 2475   Progress: 11.19%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -421,7 +421,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-06-T06 — KPI tiles + trend charts (Recharts) with drill-down
 ✅ U-06-T07 — Package editor integration (reuse U-02 screens)
 ✅ U-06-T08 — ImpersonationSession model (actor, target_user, org, reason, started, expires, ended)
-❌ U-06-T09 — Impersonation auth backend (django-hijack style, custom) with time-box, blocked endpoints list
+✅ U-06-T09 — Impersonation auth backend (django-hijack style, custom) with time-box, blocked endpoints list
 ❌ U-06-T10 — Audit entries in target org log for start/end and every write during impersonation (acting_as)
 ❌ U-06-T11 — Impersonation UI (modal, red bar, countdown, end)
 ❌ U-06-T12 — Feature flags admin (django-waffle) UI per org/practice/%

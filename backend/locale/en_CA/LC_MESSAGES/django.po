@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:56-0500\n"
+"POT-Creation-Date: 2026-11-17 18:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2394,6 +2394,35 @@ msgstr ""
 
 #, python-format
 msgid "%(value)s isn't a valid value for %(name)s."
+msgstr ""
+
+msgid "This isn't available while you're signed in as another user: payment methods, billing changes, passwords, two-factor authentication and email addresses stay with the user. End the session to continue."
+msgstr ""
+
+msgid "Your session as this user reached its time limit and ended. Nothing was changed by this request. Start a new session from the console if you still need it."
+msgstr ""
+
+msgid "Say why you need to sign in as this user (for example the support ticket)."
+msgstr ""
+
+#, python-format
+msgid "Keep the reason under %(limit)s characters."
+msgstr ""
+
+#, python-format
+msgid "Choose a duration between 1 and %(max)s minutes."
+msgstr ""
+
+msgid "You can't sign in as yourself."
+msgstr ""
+
+msgid "This user isn't a member of this organisation. Choose one of its users."
+msgstr ""
+
+msgid "Platform staff can't be signed in as. Choose a user who isn't Numo9 staff."
+msgstr ""
+
+msgid "You're already signed in as another user. End that session first."
 msgstr ""
 
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."

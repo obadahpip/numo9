@@ -24,7 +24,7 @@ from numo9.catalogue.drf import CORE
 from numo9.i18n import errors
 from numo9.i18n.errors import api_error
 from numo9.rbac.drf import AUTHENTICATED, requires_permission
-from numo9.rbac.permissions import CONSOLE_VIEW
+from numo9.rbac.permissions import CONSOLE_VIEW, IMPERSONATE
 from numo9.rbac.resolver import platform_permissions
 from numo9.tenancy.models import OrganisationStatus
 
@@ -260,3 +260,159 @@ class PlatformMetricDrillDownView(APIView):
         except KeyError:
             raise NotFound from None
         return _listing(request, lambda params: page_of_organisations(rows, params))
+
+
+# ---- impersonation (U-06-T09) ------------------------------------------------------------------
+
+_REFUSALS = {
+    "reason_required": errors.IMPERSONATION_REASON_REQUIRED,
+    "reason_too_long": errors.IMPERSONATION_REASON_TOO_LONG,
+    "bad_duration": errors.IMPERSONATION_BAD_DURATION,
+    "not_self": errors.IMPERSONATION_NOT_SELF,
+    "not_a_member": errors.IMPERSONATION_NOT_A_MEMBER,
+    "platform_user": errors.IMPERSONATION_PLATFORM_USER,
+    "already_open": errors.IMPERSONATION_ALREADY_OPEN,
+}
+
+
+class ImpersonationStartSerializer(serializers.Serializer[Any]):
+    organisation = serializers.UUIDField()
+    user = serializers.UUIDField()
+    reason = serializers.CharField(allow_blank=True, trim_whitespace=False)
+    minutes = serializers.IntegerField(required=False, default=30)
+
+
+class ImpersonationPersonSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    email = serializers.CharField()
+
+
+class ImpersonationOrganisationSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+
+
+class ImpersonationSessionSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    actor = ImpersonationPersonSerializer()
+    user = ImpersonationPersonSerializer()
+    organisation = ImpersonationOrganisationSerializer()
+    reason = serializers.CharField()
+    started_at = serializers.DateTimeField()
+    expires_at = serializers.DateTimeField()
+    ended_at = serializers.DateTimeField(allow_null=True)
+    end_reason = serializers.CharField()
+
+
+class ImpersonationCurrentSerializer(serializers.Serializer[Any]):
+    session = ImpersonationSessionSerializer(allow_null=True)
+    ended = ImpersonationSessionSerializer(
+        allow_null=True, help_text="A session that just reached its time limit."
+    )
+
+
+def session_data(session: Any) -> dict[str, Any]:
+    def person(user: Any) -> dict[str, Any]:
+        return {"id": user.public_id, "name": user.name, "email": user.email}
+
+    return {
+        "id": session.public_id,
+        "actor": person(session.actor),
+        "user": person(session.target_user),
+        "organisation": {"id": session.organisation.public_id, "name": session.organisation.name},
+        "reason": session.reason,
+        "started_at": session.started_at,
+        "expires_at": session.expires_at,
+        "ended_at": session.ended_at,
+        "end_reason": session.end_reason,
+    }
+
+
+class ImpersonationStartView(APIView):
+    """Start signing in as a user of one organisation (``platform.impersonate``): a reason and a
+    duration (default 30 minutes, at most 2 hours). From the next request on, the browser acts as
+    that user inside that organisation, until the session ends or expires."""
+
+    required_feature = CORE
+
+    @requires_permission(IMPERSONATE.key)
+    @extend_schema(
+        operation_id="platform_impersonation_start",
+        summary="Start a time-boxed, audited session as a user of one organisation",
+        request=ImpersonationStartSerializer,
+        responses={201: ImpersonationSessionSerializer},
+    )
+    def post(self, request: Request) -> Response:
+        from numo9.accounts.models import User
+        from numo9.tenancy.models import Organisation
+
+        from . import impersonation
+        from .middleware import SESSION_KEY
+
+        actor, _permissions = platform_user(request)
+        body = ImpersonationStartSerializer(data=request.data)
+        body.is_valid(raise_exception=True)
+        organisation = Organisation.objects.filter(public_id=body.validated_data["organisation"])
+        target = User.objects.filter(public_id=body.validated_data["user"]).first()
+        if not organisation.exists() or target is None:
+            raise NotFound
+        try:
+            session = impersonation.start(
+                actor,
+                target,
+                organisation.get(),
+                body.validated_data["reason"],
+                body.validated_data["minutes"],
+            )
+        except impersonation.ImpersonationRefused as refused:
+            raise api_error(_REFUSALS[refused.code], **refused.params) from None
+        request.session[SESSION_KEY] = str(session.public_id)
+        return Response(session_data(session), status=201)
+
+
+class ImpersonationCurrentView(APIView):
+    """The session the browser is in (``session``), or the one that just expired (``ended``)."""
+
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # the browser's own session; nothing else is shown
+    @extend_schema(
+        operation_id="platform_impersonation_current",
+        summary="The impersonation session this browser is in, if any",
+        responses=ImpersonationCurrentSerializer,
+    )
+    def get(self, request: Request) -> Response:
+        session = getattr(request._request, "impersonation", None)
+        ended = getattr(request._request, "impersonation_ended", None)
+        return Response(
+            {
+                "session": session_data(session) if session else None,
+                "ended": session_data(ended) if ended else None,
+            }
+        )
+
+
+class ImpersonationEndView(APIView):
+    """End the browser's session: the next request is the staff member again."""
+
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # only the browser's own session can be ended
+    @extend_schema(
+        operation_id="platform_impersonation_end",
+        summary="End the impersonation session this browser is in",
+        request=None,
+        responses=ImpersonationCurrentSerializer,
+    )
+    def post(self, request: Request) -> Response:
+        from .middleware import SESSION_KEY
+        from .models import ImpersonationEndReason
+
+        session = getattr(request._request, "impersonation", None)
+        ended = getattr(request._request, "impersonation_ended", None)
+        if session is not None:
+            session.end(ImpersonationEndReason.ENDED)
+            ended = session
+        request.session.pop(SESSION_KEY, None)
+        return Response({"session": None, "ended": session_data(ended) if ended else None})
