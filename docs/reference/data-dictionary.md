@@ -309,6 +309,32 @@ A payment term of the organisation's master list (B-01-T05). Business record: `O
 Seeded rows: `due_on_receipt`, `net_15`, `net_30`, `net_60`, `2_10_net_30`, `eom` (no audit event).
 Audit actions: `contacts.paymentterm.created`, `.updated`.
 
+### `contacts_creditoverride` — Credit limit override {#contacts-creditoverride}
+
+A request to go over a block-mode contact's credit limit for one document, and its decision
+(B-01-T13). Business record: `OrgOwnedModel` and `AuditedModel`; `created_by` is the requester.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `contact_id` | bigint | no | → `contacts_contact` (PROTECT) |
+| `amount` | numeric(18,2) | no | Document total asked for, contact's currency; > 0 (`contacts_credit_override_amount_positive`) |
+| `exposure` | numeric(18,2) | no | What the contact owed when asked |
+| `limit` | numeric(18,2) | no | The contact's credit limit when asked |
+| `currency` | varchar(3) | no | The contact's currency |
+| `document_type` | varchar(40) | no | `invoice`, `sales_order`… |
+| `document_ref` | varchar(64) | no | The document's id; empty = the next document of that type |
+| `reason` | varchar(500) | no | Required (`contacts_credit_override_reason_required`) |
+| `status` | varchar(10) | no | `pending`, `approved`, `rejected`, `used` (`contacts_credit_override_status_valid`) |
+| `decided_by_id` | bigint | yes | → `accounts_user`; never the requester |
+| `decided_at` | timestamptz | yes | |
+| `decision_note` | varchar(500) | no | |
+| `expires_at` | timestamptz | no | 7 days after the request, then 7 days after the approval |
+| `used_at` | timestamptz | yes | When a document used the approval (once) |
+
+Index `contacts_credit_override_open` (`contact_id`, `status`).
+Audit actions: `contacts.creditoverride.created`, `.updated`.
+
 
 ## Spreadsheet imports (`imports`) {#imports}
 

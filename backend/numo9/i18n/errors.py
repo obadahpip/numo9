@@ -663,3 +663,39 @@ AUTH_TWO_FACTOR_REQUIRED = define(
     ),
     status.HTTP_403_FORBIDDEN,
 )
+
+# ---- credit limits (B-01-T13, gap-20) -----------------------------------------------------------
+CREDIT_LIMIT_WARNING = _(
+    "This takes %(contact)s to %(projected)s, %(over)s over its credit limit of %(limit)s."
+)
+CREDIT_LIMIT_BLOCKED = define(
+    "contact.credit_limit_blocked",
+    _(
+        "This takes %(contact)s to %(projected)s, %(over)s over its credit limit of %(limit)s. "
+        "Request an override to go ahead."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+CREDIT_OVERRIDE_REASON = define(
+    "contact.credit_override_reason",
+    _("Say why the sale should go ahead over the credit limit."),
+)
+CREDIT_OVERRIDE_NO_APPROVER = define(
+    "contact.credit_override_no_approver",
+    _(
+        "Nobody here can approve credit limit overrides yet. Ask an owner to give someone a role "
+        "that allows it."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+CREDIT_OVERRIDE_DECIDED = define(
+    "contact.credit_override_decided",
+    _("This override request is already %(status)s."),
+    status.HTTP_409_CONFLICT,
+)
+CREDIT_OVERRIDE_EXPIRED = define(
+    "contact.credit_override_expired",
+    _("This override request expired on %(date)s. Request a new one."),
+    status.HTTP_409_CONFLICT,
+)
+CREDIT_OVERRIDE_ACTION = _("approve credit limit overrides")

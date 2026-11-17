@@ -295,6 +295,43 @@ tax engine (G-02) stops applying an expired certificate; the contact form (B-01-
 - renewing a certificate (a new expiry date, or none) clears the bookkeeping, so the reminders
   start again for the new date.
 
+## Credit limit check (B-01-T13, gap-20)
+
+`numo9/contacts/credit.py` — Xero only has "Block new invoices when credit limit is reached" and
+no way past it but clearing the box. Numo9's documents (D sales invoices, E sales orders) call
+
+```python
+check = assert_credit(contact, total, user=request.user, document_type="invoice",
+                      document_ref=str(invoice.public_id))   # in the saving transaction
+```
+
+| Contact | Exposure + document total | Result |
+|---|---|---|
+| no limit | any | `no_limit` — saved |
+| any mode | ≤ limit | `within` — saved |
+| `warn` | > limit | `warn` — saved; `check.message` is the warning the screen shows ("This takes Maple Leaf Supplies to $5,200.00, $200.00 over its credit limit of $5,000.00.") |
+| `block` | > limit, approved override for this document and amount | `override` — saved; the override is marked **used** |
+| `block` | > limit, no approved override | `CreditLimitBlocked`: `409 contact.credit_limit_blocked`, body `amount`, `exposure`, `limit`, `over_by`, `approvers` |
+
+- **Exposure** (what the contact owes) is the sum of the sources modules register with
+  `register_exposure(key, source)` — `source(contact, *, exclude)` returns the open amount in the
+  contact's currency, leaving out `exclude` (the document being revised, so it is not counted
+  twice). Phase 0 has no source yet: D-01 (invoices) and E-02 (sales orders) add theirs.
+- **Override** (`CreditOverride`): `request_override(contact, amount, user=…, reason=…,
+  document_type=…, document_ref=…)` — a reason is required (`contact.credit_override_reason`);
+  refused when nobody can approve (`contact.credit_override_no_approver`); everyone who can is
+  notified (`contacts.credit_override_requested`, category *Approvals*).
+- **Approver**: holds `contacts.credit_limit.override` (risk *critical*: owners, admins and
+  practice admins by default; a custom role can grant it) and is **never the requester**
+  (`approval.self_approval`, A-03-T08). `approve_override` / `reject_override` (note optional)
+  tell the requester (`contacts.credit_override_approved` / `_rejected`). A decided request
+  can't be decided again (`contact.credit_override_decided`).
+- An approval covers **one document type and document, up to the amount asked**, and is used
+  once. A request or an unused approval **expires after 7 days** (`CREDIT_OVERRIDE_DAYS`;
+  `contact.credit_override_expired`).
+- Every override is audited (`AuditedModel`); amounts are `Decimal` (a float or a negative amount
+  is a programming error).
+
 ## Gap tests (B-01-T19)
 
 `tests/test_contacts_gaps.py`, marked `@pytest.mark.gap(...)` (CI job `gap-tests`):
@@ -302,7 +339,7 @@ tax engine (G-02) stops applying an expired certificate; the contact form (B-01-
 | Gap | Observed |
 |---|---|
 | gap-19 | A new contact is in its role's list before any transaction; roles are set on the contact and a contact can have several (customer + supplier); no role is refused; archived contacts leave the role lists. The titled list tabs are B-01-T14's Playwright check |
-| gap-20 | Contact currency (CAD default, USD…); payment-terms master (B-01-T05); T4A withholding flag; credit limit warn or block; duplicates found while typing by name, BN and tax ID; Quebec contact → GST + QST; exemption certificate on the contact (number, file, expiry), flagged the day after it expires (B-01-T08). The credit override approval (B-01-T13) adds its test with its task |
+| gap-20 | Contact currency (CAD default, USD…); payment-terms master (B-01-T05); T4A withholding flag; credit limit warn or block; duplicates found while typing by name, BN and tax ID; Quebec contact → GST + QST; exemption certificate on the contact (number, file, expiry), flagged the day after it expires (B-01-T08). The credit override approval is `test_contacts_credit.py::test_block_mode_requires_an_approver` (B-01-T13) |
 
 Fixture `tests/fixtures/contacts_ca/contacts.json`: one customer per province and territory with
 its billing address and the tax hint it defaults to (as of 14 November 2026) — the Quebec
@@ -320,5 +357,6 @@ customer, Érable Distribution inc., defaults to GST + QST (deliverable acceptan
 | T08 | `tests/test_contacts_exemptions.py` |
 | T09 | `tests/test_contacts_custom_fields.py` |
 | T10 | `tests/test_contacts_duplicates.py` |
+| T13 | `tests/test_contacts_credit.py` |
 | T16 | `frontend/src/contacts/DuplicatePanel.test.tsx` |
 | T19 | `tests/test_contacts_gaps.py` (+ `tests/fixtures/contacts_ca/contacts.json`) |
