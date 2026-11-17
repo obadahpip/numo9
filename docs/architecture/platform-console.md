@@ -141,3 +141,16 @@ authenticators (2FA), phone, providers, password reset, re-authentication and se
 workspaces (`/api/v1/practice/…`) and creating organisations or practices; the Django admin; the
 console itself except `impersonation/current` and `impersonation/end`. Every other request is
 scoped to the session's organisation: another organisation answers 404.
+
+## Impersonation in the organisation's audit log (U-06-T10)
+
+The organisation's own audit log (its owner sees it in Settings → Audit log) records:
+
+| Action | When | `meta` |
+|---|---|---|
+| `platform.impersonation.started` — "Numo9 support signed in as this user" | the session starts | `acting_as`, `impersonator`, `impersonation_session`, `reason`, `expires_at` |
+| every write of the session (any action) | during it | `acting_as`, `impersonator`, `impersonation_session` |
+| `platform.impersonation.ended` — "Numo9 support session ended" | ended, expired, revoked or signed out | the same, plus `end_reason`, `ended_at` |
+
+All of them have `actor_kind = impersonation`, `actor_user` = the user acted as and `impersonator` =
+the staff member (the label reads "Dana Lee (dana@…) — signed in by Sam Support (…)").

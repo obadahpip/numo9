@@ -137,4 +137,7 @@ class ImpersonationSession(models.Model):
         self.ended_at = min(at, self.expires_at) if reason == ImpersonationEndReason.EXPIRED else at
         self.end_reason = reason
         self.save(update_fields=["ended_at", "end_reason"])
+        from .impersonation import ENDED, audit_session
+
+        audit_session(self, ENDED)  # U-06-T10: in the organisation's audit log
         return True

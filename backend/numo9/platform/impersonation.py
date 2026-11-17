@@ -11,6 +11,12 @@ organisation, for a reason, for a limited time.
 - a staff member has one open session at a time (an expired one still open is closed first).
 
 ``current()`` answers the staff member's open session, closing it as expired when its time is up.
+
+**Audit (U-06-T10).** Starting and ending a session write ``platform.impersonation.started`` /
+``platform.impersonation.ended`` in the **organisation's** audit log (its owner sees them),
+attributed to the user acted as with the staff member as ``impersonator``, with the reason, the
+time limit and how it ended in ``meta``. Every write during the session is attributed the same way
+by the request's audit context (``acting_as``, ``impersonator``, ``impersonation_session``).
 """
 
 from __future__ import annotations
@@ -25,6 +31,60 @@ from numo9.rbac.resolver import platform_permissions
 from numo9.tenancy.models import Organisation, OrganisationMember
 
 from .models import DEFAULT_MINUTES, MAX_MINUTES, ImpersonationEndReason, ImpersonationSession
+
+STARTED = "platform.impersonation.started"
+ENDED = "platform.impersonation.ended"
+
+
+def audit_session(session: ImpersonationSession, action: str) -> None:
+    """The start or end of ``session`` in its organisation's audit log."""
+    from numo9.audit.context import (
+        audit_context,
+        client_ip,
+        current_request,
+        request_id_of,
+        user_agent_of,
+        user_label,
+    )
+    from numo9.audit.models import ActorKind
+    from numo9.audit.service import record
+
+    request = current_request()
+    facts: dict[str, Any] = (
+        {
+            "ip": client_ip(request),
+            "user_agent": user_agent_of(request),
+            "request_id": request_id_of(request),
+        }
+        if request is not None
+        else {}
+    )
+    target, actor = session.target_user, session.actor
+    meta: dict[str, Any] = {
+        "acting_as": user_label(target),
+        "impersonator": user_label(actor),
+        "impersonation_session": str(session.public_id),
+        "reason": session.reason,
+        "expires_at": session.expires_at.isoformat(),
+    }
+    if action == ENDED:
+        meta["end_reason"] = session.end_reason
+        meta["ended_at"] = session.ended_at.isoformat() if session.ended_at else None
+    with audit_context(
+        kind=ActorKind.IMPERSONATION,
+        user=target,
+        impersonator=actor,
+        label=f"{user_label(target)} — signed in by {user_label(actor)}"[:300],
+        meta=meta,
+        **facts,
+    ):
+        record(
+            action,
+            organisation=session.organisation,
+            object_type="accounts.User",
+            object_id=str(target.public_id),
+            object_label=user_label(target),
+        )
 
 
 class ImpersonationRefused(Exception):
@@ -68,7 +128,7 @@ def start(
     _close_expired(actor, now)
     try:
         with transaction.atomic():
-            return ImpersonationSession.objects.create(
+            session = ImpersonationSession.objects.create(
                 actor=actor,
                 target_user=target_user,
                 organisation=organisation,
@@ -76,6 +136,8 @@ def start(
                 started_at=now,
                 expires_at=now + dt.timedelta(minutes=int(minutes)),
             )
+            audit_session(session, STARTED)
+            return session
     except IntegrityError:
         raise ImpersonationRefused("already_open") from None
 

@@ -137,11 +137,18 @@ def _from_request(request: HttpRequest) -> Actor:
     user = _authenticated(getattr(request, "user", None))
     impersonator = _authenticated(getattr(request, "audit_impersonator", None))
     if user is not None and impersonator is not None:
+        session = getattr(request, "impersonation", None)
         return Actor(
             kind=ActorKind.IMPERSONATION,
             user=user,
             impersonator=impersonator,
             label=f"{user_label(user)} — signed in by {user_label(impersonator)}"[:300],
+            # U-06-T10: every write of the session names who acted as whom, and which session.
+            meta={
+                "acting_as": user_label(user),
+                "impersonator": user_label(impersonator),
+                **({"impersonation_session": str(session.public_id)} if session else {}),
+            },
             **facts,
         )
     if user is not None:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:00-0500\n"
+"POT-Creation-Date: 2026-11-17 18:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -424,6 +424,12 @@ msgstr "Fichier ouvert"
 
 msgid "Email received"
 msgstr "Courriel reçu"
+
+msgid "Numo9 support signed in as this user"
+msgstr "Le soutien Numo9 s’est connecté en tant que cet utilisateur"
+
+msgid "Numo9 support session ended"
+msgstr "Session du soutien Numo9 terminée"
 
 #, python-format
 msgid "%(start)s to %(end)s · times in %(zone)s"
