@@ -488,8 +488,23 @@ test("select all matching sends the search as a query, previews, then applies", 
     confirmed = true;
     return route.fulfill({ status: 202, json: { ...job, status: "queued", total: 250 } });
   });
-  await page.route("**/api/v1/practice/bulk/job-1", (route) =>
-    route.fulfill({ json: { ...job, status: "running", total: 250 } }),
+  let polls = 0;
+  await page.route("**/api/v1/practice/bulk/job-1", (route) => {
+    polls += 1;
+    const done = Math.min(250, polls * 100);
+    return route.fulfill({
+      json: {
+        ...job,
+        status: done === 250 ? "completed" : "running",
+        total: 250,
+        done,
+        percent: Math.floor((done * 100) / 250),
+        counts: { pending: 250 - done, succeeded: done, skipped: 0, failed: 0, cancelled: 0 },
+      },
+    });
+  });
+  await page.route("**/api/v1/practice/bulk/job-1/rows*", (route) =>
+    route.fulfill({ json: { count: 0, page: 1, pages: 1, results: [] } }),
   );
 
   await page.goto(PAGE);
@@ -509,4 +524,10 @@ test("select all matching sends the search as a query, previews, then applies", 
   await expectAccessible(page);
   await dialog.getByRole("button", { name: "Apply to 250 organisations" }).click();
   await expect.poll(() => confirmed).toBe(true);
+  // V-03-T10: the progress drawer's counters follow the job live
+  const drawer = page.getByRole("dialog", { name: "Export the list" });
+  await expect(drawer.locator('[data-counter="succeeded"] dd')).toHaveText("100");
+  await expect(drawer.locator('[data-counter="succeeded"] dd')).toHaveText("200");
+  await expect(drawer.locator('[data-counter="succeeded"] dd')).toHaveText("250");
+  await expect(drawer.getByRole("link", { name: "Download the results (CSV)" })).toBeVisible();
 });

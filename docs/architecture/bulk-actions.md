@@ -121,3 +121,13 @@ new per field) for the first 50 lines, "Showing 50 of 1,240". *Apply to N organi
 confirms the job (`POST …/confirm`) and hands it to the progress drawer; *Back* returns to the
 parameters. A refusal of the API (`bulk.bad_action`, `bulk.unsafe_setting`, …) is shown in the
 dialog.
+
+## Progress drawer and results (V-03-T10)
+
+`src/bulk/BulkProgressDrawer.tsx` opens when a job is confirmed: status, a progress bar
+(`role=progressbar`, done of total), live counters — succeeded, skipped, failed, waiting — from
+`GET /api/v1/practice/bulk/<id>` polled every second while the job is queued or running, and
+*Cancel the rest*. When the job ends the drawer lists the results (`…/rows`, filter chips All /
+Succeeded / Skipped / Failed / Cancelled), each organisation with its outcome and reason, links
+the results CSV (and the export file of an export) and the directory reloads. Closing the drawer
+doesn't stop the job (it is also in the job tray).

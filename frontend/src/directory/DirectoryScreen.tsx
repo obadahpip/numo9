@@ -17,6 +17,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEven
 import { apiRequest } from "@/auth/client";
 import type { BulkJob } from "@/bulk/api";
 import { BulkActionDialog } from "@/bulk/BulkActionDialog";
+import { BulkProgressDrawer } from "@/bulk/BulkProgressDrawer";
 import { SelectionBar, type BulkActionKey } from "@/bulk/SelectionBar";
 import { EMPTY_SELECTION, type BulkSelection } from "@/bulk/selection";
 import { useFormatMessage, type FormatMessage } from "@/i18n";
@@ -610,7 +611,13 @@ export function DirectoryScreen({
           }}
         />
       ) : null}
-      {bulkJob ? <span hidden data-bulk-job={bulkJob.id} /> : null}
+      {bulkJob ? (
+        <BulkProgressDrawer
+          job={bulkJob}
+          onClose={() => setBulkJob(null)}
+          onFinished={() => setAttempt((n) => n + 1)}
+        />
+      ) : null}
     </div>
   );
 }

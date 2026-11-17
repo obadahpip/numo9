@@ -340,6 +340,8 @@
     "apply": "{count, plural, one {Apply to # organisation} other {Apply to # organisations}}",
     "back": "Back",
     "cancel": "Cancel",
+    "cancelRest": "Cancel the rest",
+    "cancelling": "Stopping before the next organisation…",
     "choose": "Choose…",
     "clear": "Clear selection",
     "close": "Close",
@@ -347,9 +349,20 @@
       "change": "Change",
       "current": "Current",
       "new": "New",
-      "organisation": "Organisation"
+      "organisation": "Organisation",
+      "outcome": "Outcome",
+      "why": "Why"
+    },
+    "count": {
+      "cancelled": "Cancelled",
+      "failed": "Failed",
+      "skipped": "Skipped",
+      "succeeded": "Succeeded",
+      "waiting": "Waiting"
     },
     "dialogTitle": "{action} — {count, plural, one {# organisation} other {# organisations}}",
+    "downloadCsv": "Download the results (CSV)",
+    "downloadExport": "Download the export",
     "failed": "We couldn't prepare the bulk action. Try again.",
     "field": {
       "addTags": "Add these tags",
@@ -366,9 +379,19 @@
       "subject": "Subject",
       "termsType": "Due date"
     },
+    "filter": {
+      "all": "All"
+    },
+    "filterOutcome": "Show",
     "format": {
       "csv": "CSV",
       "xlsx": "Excel (XLSX)"
+    },
+    "job": {
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "queued": "Waiting to start",
+      "running": "Running"
     },
     "messageHint": "Sent to each organisation's owners and admins, in the app and by email.",
     "mode": {
@@ -379,9 +402,14 @@
       "unassign": "Unassign"
     },
     "noChange": "{count, plural, one {# no change} other {# no change}}",
+    "noResults": "No organisation with this outcome.",
     "noTags": "The practice has no tags yet.",
     "nothingYet": "Nothing has changed yet. Review the changes, then apply.",
     "previewButton": "Preview changes",
+    "progressLabel": "{done} of {total} organisations done",
+    "progressStarted": "Started by {name}. It runs in the background: you can close this panel.",
+    "progressTitle": "{action}",
+    "results": "Results",
     "selectAll": "{count, plural, one {Select the # organisation matching} other {Select all # matching}}",
     "selectedPage": "{count, plural, one {# selected} other {# selected}}",
     "setting": {
