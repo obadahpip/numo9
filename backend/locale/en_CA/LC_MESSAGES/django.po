@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:29-0500\n"
+"POT-Creation-Date: 2026-11-17 18:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -597,6 +597,39 @@ msgstr ""
 msgid "Subscribe, change the package or payment method, cancel the subscription"
 msgstr ""
 
+msgid "Choose whether to add, move or remove."
+msgstr ""
+
+msgid "Choose one of the practice's groups."
+msgstr ""
+
+msgid "Choose tags of the practice."
+msgstr ""
+
+msgid "Choose at least one tag to add or remove."
+msgstr ""
+
+msgid "A tag can't be added and removed at once."
+msgstr ""
+
+msgid "Choose whether to assign or unassign."
+msgstr ""
+
+msgid "Choose a staff member of the practice."
+msgstr ""
+
+msgid "Write a subject of up to 150 characters."
+msgstr ""
+
+msgid "Write a message of up to 5,000 characters."
+msgstr ""
+
+msgid "Choose CSV or Excel."
+msgstr ""
+
+msgid "Choose one of the bulk actions."
+msgstr ""
+
 msgid "Move to a group"
 msgstr ""
 
@@ -706,6 +739,27 @@ msgid "bulk job row"
 msgstr ""
 
 msgid "bulk job rows"
+msgstr ""
+
+msgid "You don't have access to this organisation."
+msgstr ""
+
+msgid "Your role in this organisation can't make this change."
+msgstr ""
+
+msgid "The practice no longer serves this organisation."
+msgstr ""
+
+msgid "It has posted transactions: change its fiscal year end in its own settings."
+msgstr ""
+
+msgid "It has no owner or admin to send the message to."
+msgstr ""
+
+msgid "The bulk action was cancelled before this organisation."
+msgstr ""
+
+msgid "Something went wrong with this organisation. Nothing was changed."
 msgstr ""
 
 msgid "Choose how the due date is worked out."

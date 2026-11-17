@@ -29,3 +29,22 @@ other key (`400 bulk.unsafe_setting`) and validates each value (`400 bulk.bad_va
 
 Legal name, Business Number, currency, time zone, addresses and everything else stay one
 organisation at a time.
+
+## Preview (V-03-T04)
+
+`numo9.bulk.preview.preview(user, practice, action, params, selection)` computes every change
+**without writing** (no organisation data, no audit event, no bulk row — the test counts the SQL
+writes: zero; an organisation without settings is previewed from defaults, not created):
+
+- the **selection** is `{"ids": [...]}` (ticked rows, order kept) or `{"query": {...}}` — *select
+  all matching* re-runs the directory's own `DirectoryQuery` on the server (search and filters),
+  never a list of ids from the browser; at most 5,000 organisations;
+- each organisation gets one line: `change` (before → after), `no_change`, or `skipped` with a
+  reason — `no_access` (not in the user's directory: kept in the selection, never dropped),
+  `no_permission` (the action's organisation permission, e.g. `organisation.settings.manage`),
+  `not_served`, `fye_has_posted`, `no_recipients`;
+- the answer has the total, the counts and the first 50 lines.
+
+The actions (`numo9.bulk.actions`) each declare the practice permission checked once
+(`practice.groups.manage` for group and tags, `practice.clients.assign` for staff,
+`practice.directory.view` otherwise) and the organisation permission checked per row.
