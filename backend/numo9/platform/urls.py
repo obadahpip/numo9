@@ -16,5 +16,11 @@ urlpatterns = [
         api.PlatformOrganisationDetailView.as_view(),
         name="platform-organisation",
     ),
+    path("platform/metrics", api.PlatformMetricsView.as_view(), name="platform-metrics"),
+    path(
+        "platform/metrics/<str:metric>/organisations",
+        api.PlatformMetricDrillDownView.as_view(),
+        name="platform-metric-drill-down",
+    ),
     path("platform/practices", api.PlatformPracticeListView.as_view(), name="platform-practices"),
 ]

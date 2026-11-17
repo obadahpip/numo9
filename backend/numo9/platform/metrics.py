@@ -142,6 +142,34 @@ def drill_down(metric: str) -> QuerySet[Organisation]:
     return Organisation.objects.filter(pk__in=ids).order_by("name", "pk")
 
 
+def history(current: Metrics, days: int) -> list[dict[str, Any]]:
+    """The daily snapshots of the last ``days`` days, oldest first; today is the live figure
+    (``current``), so the chart's last point always equals the tiles."""
+    since = current.date - dt.timedelta(days=days - 1)
+    rows = PlatformMetricDaily.objects.filter(date__gte=since, date__lt=current.date).order_by(
+        "date"
+    )
+    points = [
+        {
+            "date": row.date,
+            "mrr_cents": row.mrr_cents,
+            "active": row.active,
+            "trials": row.trials,
+            "conversion_rate": row.conversion_rate,
+            "churn_rate": row.churn_rate,
+        }
+        for row in rows
+    ]
+    today = current.as_dict()
+    points.append(
+        {
+            key: today[key]
+            for key in ("date", "mrr_cents", "active", "trials", "conversion_rate", "churn_rate")
+        }
+    )
+    return points
+
+
 def snapshot(now: dt.datetime | None = None) -> PlatformMetricDaily:
     metrics = compute(now)
     row, _created = PlatformMetricDaily.objects.update_or_create(

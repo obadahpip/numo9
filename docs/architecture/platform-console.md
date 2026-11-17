@@ -83,3 +83,18 @@ Dates in the organisation's time zone. Tests: `backend/tests/test_platform_organ
 tile and its list never disagree. `PlatformMetricDaily` (platform model, one row per date,
 `update_or_create`) is written nightly by `numo9.platform.snapshot_metrics` (beat 05:51 UTC);
 trend charts read it instead of recomputing history.
+
+## KPI tiles, trend charts and drill-down (U-06-T06)
+
+`/console` (the console's home, "Metrics") shows five tiles — MRR, active organisations, trials,
+conversion and churn (30 days, with "1 of 2 trials that ended" / "1 of 10 cancelled" under the
+rate; a dash when there is nothing to divide by) — and a Recharts line chart of the selected tile
+over 30, 90 or 365 days, whose figures also open as a table (exact values, screen readers).
+
+| Endpoint | Answers |
+|---|---|
+| `GET /api/v1/platform/metrics?days=7–366` | `current` (computed live) and `history`: the `PlatformMetricDaily` rows of the period, then today's live point — the chart's last point equals the tiles |
+| `GET /api/v1/platform/metrics/{active,mrr,trials}/organisations` | the organisations the tile counts, in the organisations list's page shape |
+
+The tile and its list come from the same query (`metrics.drill_down`), so **the tile's count is
+always the list's `count`**. Both need `platform.console.view`.

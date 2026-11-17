@@ -181,3 +181,82 @@ class PlatformOrganisationDetailView(APIView):
         if organisation is None:
             raise NotFound
         return Response(organisation_detail(organisation))
+
+
+# ---- metrics (U-06-T06) ------------------------------------------------------------------------
+
+
+class PlatformMetricsCurrentSerializer(serializers.Serializer[Any]):
+    date = serializers.DateField()
+    mrr_cents = serializers.IntegerField()
+    active = serializers.IntegerField()
+    trials = serializers.IntegerField()
+    conversion_rate = serializers.DecimalField(max_digits=6, decimal_places=4, allow_null=True)
+    churn_rate = serializers.DecimalField(max_digits=6, decimal_places=4, allow_null=True)
+    converted = serializers.IntegerField()
+    trials_ended = serializers.IntegerField()
+    cancelled = serializers.IntegerField()
+    active_at_start = serializers.IntegerField()
+
+
+class PlatformMetricPointSerializer(serializers.Serializer[Any]):
+    date = serializers.DateField()
+    mrr_cents = serializers.IntegerField()
+    active = serializers.IntegerField()
+    trials = serializers.IntegerField()
+    conversion_rate = serializers.DecimalField(max_digits=6, decimal_places=4, allow_null=True)
+    churn_rate = serializers.DecimalField(max_digits=6, decimal_places=4, allow_null=True)
+
+
+class PlatformMetricsSerializer(serializers.Serializer[Any]):
+    current = PlatformMetricsCurrentSerializer()
+    history = PlatformMetricPointSerializer(many=True)
+
+
+class PlatformMetricsView(APIView):
+    """Today's figures (computed live) and the daily snapshots of the last ``days`` days."""
+
+    required_feature = CORE
+
+    @requires_permission(CONSOLE_VIEW.key)
+    @extend_schema(
+        operation_id="platform_metrics",
+        summary="KPI figures (live) and their daily history; demo organisations excluded",
+        parameters=[OpenApiParameter("days", OpenApiTypes.INT, description="7–366, default 90")],
+        responses=PlatformMetricsSerializer,
+    )
+    def get(self, request: Request) -> Response:
+        from .metrics import compute, history
+
+        raw = request.query_params.get("days", "90")
+        if not raw.isdigit() or not 7 <= int(raw) <= 366:
+            error = api_error(errors.PLATFORM_BAD_FILTER, name="days", value=raw[:100])
+            error.extra = {"field": "days"}
+            raise error
+        current = compute()
+        data = {"current": current.as_dict(), "history": history(current, int(raw))}
+        return Response(PlatformMetricsSerializer(data).data)
+
+
+class PlatformMetricDrillDownView(APIView):
+    """The organisations a tile counts (``active``, ``mrr``, ``trials``): the tile's number is
+    always this list's ``count``."""
+
+    required_feature = CORE
+
+    @requires_permission(CONSOLE_VIEW.key)
+    @extend_schema(
+        operation_id="platform_metric_drill_down",
+        summary="The organisations counted by one KPI tile",
+        parameters=_PAGING[3:],
+        responses=PlatformOrganisationPageSerializer,
+    )
+    def get(self, request: Request, metric: str) -> Response:
+        from .directory import page_of_organisations
+        from .metrics import drill_down
+
+        try:
+            rows = drill_down(metric)
+        except KeyError:
+            raise NotFound from None
+        return _listing(request, lambda params: page_of_organisations(rows, params))

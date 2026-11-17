@@ -191,6 +191,8 @@ def path_for(declaration: Declaration, world: World) -> str:
         "group_id": "00000000-0000-4000-8000-000000000000",
         "tag_id": "00000000-0000-4000-8000-000000000000",
         "org_id": str(world.org.public_id),
+        # Console metrics drill-down (U-06-T06): a tile that exists.
+        "metric": "active",
     }
     acting = Practice.objects.filter(name="Matrix Practice").first()
     if acting is not None:

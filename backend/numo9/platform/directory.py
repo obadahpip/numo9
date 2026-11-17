@@ -102,7 +102,7 @@ def _page(rows: QuerySet[Any], query: Any) -> tuple[list[Any], dict[str, int]]:
     }
 
 
-def organisations(query: Any) -> dict[str, Any]:
+def organisations(query: Any, within: QuerySet[Organisation] | None = None) -> dict[str, Any]:
     current = (
         Subscription._base_manager.filter(organisation=OuterRef("pk"), deleted_at__isnull=True)
         .exclude(status=SubscriptionStatus.CANCELLED)
@@ -116,6 +116,8 @@ def organisations(query: Any) -> dict[str, Any]:
         subscription_status=Subquery(current.values("status")[:1]),
         province=Subquery(province),
     )
+    if within is not None:
+        rows = rows.filter(pk__in=within.values("pk"))
     statuses = _values(query, "status")
     for value in statuses:
         if value not in OrganisationStatus.values:
@@ -149,6 +151,12 @@ def organisations(query: Any) -> dict[str, Any]:
             for org in items
         ],
     }
+
+
+def page_of_organisations(within: QuerySet[Organisation], query: Any) -> dict[str, Any]:
+    """A page of ``within`` (a metric's drill-down, U-06-T06), in the organisations list's
+    shape (``organisations`` filters apply too)."""
+    return organisations(query, within)
 
 
 def practices(query: Any) -> dict[str, Any]:
