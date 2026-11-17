@@ -128,3 +128,21 @@ trial's marked) from `GET /api/v1/o/<org>/package-features`, and *Choose a packa
 page) for whoever may change it — "The organisation's owner chooses the package" for everyone else.
 Tests: `frontend/src/entitlements/TrialChip.test.tsx` (thresholds, drawer, axe),
 `backend/tests/test_trial_bootstrap.py`.
+
+## After the trial: read-only, not a wall (U-05-T11)
+
+When the trial ends unpaid the organisation is read-only (`trial_ended`):
+
+- **Banner** (`ReadOnlyNotice`, in the shell's banner slot): "read-only since <date>: the free
+  trial ended. You can still see and export everything. Everything you entered during the trial
+  is kept." — the owner gets **Choose a package** (Settings → Subscription) and **Export your
+  data** (the U-04-T11 full export: CSV, XLSX, JSON ledger and documents in one ZIP; its link
+  appears on the subscription page); everyone else is told to ask the owner.
+- **Lists stay readable**: the read keys stay in the entitlements; screens behind them render.
+- **Changes show the locked panel** in place (`GatedPanel`): "This organisation is read-only —
+  the free trial ended… choose a package to make changes again", with *Choose a package* for the
+  owner (other read-only reasons say *reactivate the subscription*); never the "not in your
+  package" wording.
+
+`frontend/src/entitlements/TrialEnded.test.tsx` (readable list, locked change, banner, export,
+non-owner, axe).

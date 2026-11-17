@@ -72,6 +72,28 @@ export const gatedMessages = defineMessages({
       "Only the organisation's owner can change the package. Ask them to add {product}.",
     description: "Shown after Ask the owner: accountants and staff can't buy products",
   },
+  readOnlyTitle: {
+    id: "catalogue.gated.readOnlyTitle",
+    defaultMessage: "This organisation is read-only",
+    description: "Locked panel heading on a change while the organisation is read-only",
+  },
+  readOnlyTrial: {
+    id: "catalogue.gated.readOnlyTrial",
+    defaultMessage:
+      "The free trial ended. You can still see and export everything; choose a package to make changes again.",
+    description: "Locked panel text after the free trial (U-05-T11)",
+  },
+  readOnlyOther: {
+    id: "catalogue.gated.readOnlyOther",
+    defaultMessage:
+      "You can still see and export everything; reactivate the subscription to make changes again.",
+    description: "Locked panel text while read-only for any other reason",
+  },
+  choosePackage: {
+    id: "catalogue.gated.choosePackage",
+    defaultMessage: "Choose a package",
+    description: "Locked panel action for the owner while read-only: Settings → Subscription",
+  },
   askOwnerTextUnknown: {
     id: "catalogue.gated.askOwnerTextUnknown",
     defaultMessage: "Only the organisation's owner can change the package.",
@@ -127,6 +149,31 @@ export function GatedPanel({
       >
         {fm(gatedMessages.askOwner)}
       </button>,
+    );
+  }
+  if (data?.mode === "read_only") {
+    // U-05-T11: a change while read-only (trial ended, payment failed…) — say why, not "package".
+    const trial = data.reason === "trial_ended";
+    return (
+      <ExplainPanel
+        kind="gated"
+        headingLevel={headingLevel}
+        title={fm(gatedMessages.readOnlyTitle)}
+        body={fm(trial ? gatedMessages.readOnlyTrial : gatedMessages.readOnlyOther)}
+        actions={
+          owner && org
+            ? [
+                <a
+                  key="choose"
+                  href={orgModuleUrl(org, "settings/subscription")}
+                  className={ACTION}
+                >
+                  {fm(gatedMessages.choosePackage)}
+                </a>,
+              ]
+            : []
+        }
+      />
     );
   }
   return (
