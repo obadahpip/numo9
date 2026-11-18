@@ -14,6 +14,28 @@ export async function mockCsrf(page: Page): Promise<void> {
   await page.route("**/api/v1/auth/csrf", (route) =>
     route.fulfill({ json: { csrfToken: "test-csrf-token" } }),
   );
+  await mockPlatformMe(page);
+}
+
+/** The console's route guard (U-06-T02): signed in as a platform owner with 2FA, unless a test
+ * routes `/api/v1/platform/me` itself (later routes win). */
+export async function mockPlatformMe(
+  page: Page,
+  permissions: string[] = [
+    "platform.console.view",
+    "platform.catalogue.manage",
+    "platform.impersonate",
+    "platform.jobs.view",
+    "platform.jobs.manage",
+    "platform.flags.manage",
+    "platform.audit.view",
+  ],
+): Promise<void> {
+  await page.route("**/api/v1/platform/me", (route) =>
+    route.fulfill({
+      json: { id: "staff-1", name: "Priya Shah", email: "priya@numo9.ca", permissions },
+    }),
+  );
 }
 
 /** Body of a JSON request (fails the test when the CSRF header is missing on a POST). */

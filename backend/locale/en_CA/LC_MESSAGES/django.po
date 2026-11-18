@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:28-0500\n"
+"POT-Creation-Date: 2026-11-17 18:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -419,6 +419,12 @@ msgid "File opened"
 msgstr ""
 
 msgid "Email received"
+msgstr ""
+
+msgid "Numo9 support signed in as this user"
+msgstr ""
+
+msgid "Numo9 support session ended"
 msgstr ""
 
 #, python-format
@@ -2392,6 +2398,53 @@ msgstr ""
 msgid "Select up to %(max)s documents at a time."
 msgstr ""
 
+#, python-format
+msgid "%(value)s isn't a valid value for %(name)s."
+msgstr ""
+
+msgid "This isn't available while you're signed in as another user: payment methods, billing changes, passwords, two-factor authentication and email addresses stay with the user. End the session to continue."
+msgstr ""
+
+msgid "Your session as this user reached its time limit and ended. Nothing was changed by this request. Start a new session from the console if you still need it."
+msgstr ""
+
+msgid "Say why you need to sign in as this user (for example the support ticket)."
+msgstr ""
+
+#, python-format
+msgid "Keep the reason under %(limit)s characters."
+msgstr ""
+
+#, python-format
+msgid "Choose a duration between 1 and %(max)s minutes."
+msgstr ""
+
+msgid "You can't sign in as yourself."
+msgstr ""
+
+msgid "This user isn't a member of this organisation. Choose one of its users."
+msgstr ""
+
+msgid "Platform staff can't be signed in as. Choose a user who isn't Numo9 staff."
+msgstr ""
+
+msgid "You're already signed in as another user. End that session first."
+msgstr ""
+
+msgid "Use 2–100 lower-case letters, digits, dots, hyphens or underscores, starting with a letter (for example payroll.new_t4_screen)."
+msgstr ""
+
+#, python-format
+msgid "A flag named %(name)s already exists. Open it to change who sees it."
+msgstr ""
+
+msgid "Enter a percentage from 0 to 99.9, with at most one decimal (for example 12.5). To turn the flag on for everyone, choose On."
+msgstr ""
+
+#, python-format
+msgid "%(value)s isn't a known %(name)s. Choose one from the list."
+msgstr ""
+
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr ""
 
@@ -4174,6 +4227,78 @@ msgstr ""
 msgid "promo code redemptions"
 msgstr ""
 
+msgid "MRR (CAD cents)"
+msgstr ""
+
+msgid "active organisations"
+msgstr ""
+
+msgid "trials"
+msgstr ""
+
+msgid "conversion rate (30 days)"
+msgstr ""
+
+msgid "churn rate (30 days)"
+msgstr ""
+
+msgid "computed at"
+msgstr ""
+
+msgid "daily platform metrics"
+msgstr ""
+
+msgid "Ended by the staff member"
+msgstr ""
+
+msgid "Time limit reached"
+msgstr ""
+
+msgid "Ended by the platform"
+msgstr ""
+
+msgid "platform staff member"
+msgstr ""
+
+msgid "user acted as"
+msgstr ""
+
+msgid "started"
+msgstr ""
+
+msgid "expires"
+msgstr ""
+
+msgid "ended"
+msgstr ""
+
+msgid "how it ended"
+msgstr ""
+
+msgid "impersonation session"
+msgstr ""
+
+msgid "impersonation sessions"
+msgstr ""
+
+msgid "organisations"
+msgstr ""
+
+msgid "On for these organisations."
+msgstr ""
+
+msgid "practices"
+msgstr ""
+
+msgid "On for these practices (the acting practice, or one the user belongs to)."
+msgstr ""
+
+msgid "feature flag"
+msgstr ""
+
+msgid "feature flags"
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr ""
@@ -4478,16 +4603,10 @@ msgstr ""
 msgid "practice admins must use two-factor authentication"
 msgstr ""
 
-msgid "practices"
-msgstr ""
-
 msgid "practice member"
 msgstr ""
 
 msgid "practice members"
-msgstr ""
-
-msgid "organisations"
 msgstr ""
 
 msgid "organisation member"

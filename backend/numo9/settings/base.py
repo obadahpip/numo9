@@ -55,6 +55,10 @@ INSTALLED_APPS = [
     "numo9.workspace",
     # Subscription billing with Stripe: events, platform invoices, dunning (U-04).
     "numo9.billing",
+    # Platform-owner console (U-06): console API, metrics, impersonation, feature flags.
+    "numo9.platform",
+    # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
+    "waffle",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -92,6 +96,9 @@ MIDDLEWARE = [
     # 2FA policy: platform owners and (when their practice requires it) practice admins can't
     # use the API until they enrol (A-02-T06).
     "numo9.accounts.twofactor_policy.TwoFactorEnforcementMiddleware",
+    # Impersonation (U-06-T09): inside an open, time-boxed session the request acts as the user
+    # (one organisation, blocked endpoints refused); after the 2FA policy (the staff member's).
+    "numo9.platform.middleware.ImpersonationMiddleware",
     # Request language: user's locale → numo9_locale cookie → Accept-Language (A-10-T14).
     "numo9.i18n.middleware.LocaleMiddleware",
     # Audit context (A-04-T04): request id, client IP, device and the request's user for every
@@ -154,6 +161,7 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
     "ENUM_NAME_OVERRIDES": {
         "PracticeRoleEnum": "numo9.tenancy.models.PracticeRole",
+        "FeatureFlagModeEnum": "numo9.platform.api.FLAG_MODES",  # U-06-T12
         "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",
         "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
         "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",
@@ -488,6 +496,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.entitlements.expire_trials",
         "schedule": crontab(minute="*/5"),
     },
+    # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
+    "numo9.platform.snapshot_metrics": {
+        "task": "numo9.platform.snapshot_metrics",
+        "schedule": crontab(minute=51, hour=5),  # 05:51 UTC = 00:51 / 01:51 Toronto
+    },
     # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
     "numo9.billing.apply_changes": {
         "task": "numo9.billing.apply_changes",
@@ -534,3 +547,15 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---- feature flags (U-06-T12) ------------------------------------------------------------------
+# django-waffle with numo9.platform.FeatureFlag: on for everyone / off for everyone / by rule
+# (organisations, practices, users, a stable percentage of organisations). Unknown flags are off
+# and never created by a lookup.
+WAFFLE_FLAG_MODEL = "platform.FeatureFlag"
+# waffle's own tables without its (swapped-out) flag tables: see numo9/platform/waffle_migrations.
+MIGRATION_MODULES = {"waffle": "numo9.platform.waffle_migrations"}
+WAFFLE_FLAG_DEFAULT = False
+WAFFLE_CREATE_MISSING_FLAGS = False
+WAFFLE_LOG_MISSING_FLAGS = None
+WAFFLE_CACHE_PREFIX = "numo9:waffle:"

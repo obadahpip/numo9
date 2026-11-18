@@ -179,3 +179,41 @@ describe("Numo9 AppShell (A-10-T05)", () => {
     expect(screen.getByRole("link", { name: "Numo9 home" })).toHaveAttribute("href", "/");
   });
 });
+
+describe("AppShell impersonation bar (U-06-T11)", () => {
+  const session = {
+    id: "s-1",
+    actor: { id: "a", name: "Sam Support", email: "sam@numo9.ca" },
+    user: { id: "u", name: "Dana Lee", email: "dana@maple.ca" },
+    organisation: { id: "org-1", name: "Maple Leaf Supply" },
+    reason: "Ticket #42",
+    started_at: new Date(Date.now() - 60_000).toISOString(),
+    expires_at: new Date(Date.now() + 20 * 60_000).toISOString(),
+    ended_at: null,
+    end_reason: "",
+  };
+
+  it.each([
+    ["an organisation page", { org: "org-1", modulePath: "home" }],
+    ["a page outside an organisation", { section: "Profile" }],
+  ])("is visible on %s while a session is open", async (_name, props) => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) =>
+        String(input).includes("/platform/impersonation/current")
+          ? new Response(JSON.stringify({ session, ended: null }), {
+              headers: { "Content-Type": "application/json" },
+            })
+          : new Promise<Response>(() => undefined),
+      ),
+    );
+    renderWithIntl(
+      <AppShell {...props}>
+        <h1>Page</h1>
+      </AppShell>,
+    );
+    const bar = await screen.findByRole("region", { name: "Support session" });
+    expect(bar).toHaveTextContent("You're signed in as Dana Lee in Maple Leaf Supply");
+    expect(within(bar).getByRole("button", { name: "End session" })).toBeVisible();
+  });
+});

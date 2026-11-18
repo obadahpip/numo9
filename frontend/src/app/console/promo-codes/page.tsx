@@ -1,4 +1,6 @@
 import { AppShell } from "@/components/AppShell";
+import { CatalogueNav } from "@/console/shell/CatalogueNav";
+import { ConsoleFrame } from "@/console/shell/ConsoleFrame";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
 import { ConsolePromoCodesScreen } from "@/packages/ConsolePromoCodesScreen";
@@ -19,7 +21,12 @@ export default async function ConsolePromoCodesPage() {
   const fm = await getFormatMessage();
   return (
     <AppShell section={fm(messages.crumb)}>
-      <ConsolePromoCodesScreen />
+      <ConsoleFrame current="/console/packages">
+        <div className="flex flex-col gap-4">
+          <CatalogueNav current="/console/promo-codes" />
+          <ConsolePromoCodesScreen />
+        </div>
+      </ConsoleFrame>
     </AppShell>
   );
 }

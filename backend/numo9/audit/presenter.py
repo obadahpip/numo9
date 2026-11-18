@@ -62,6 +62,8 @@ ACTION_LABELS: dict[str, Promise] = {
     "files.document.duplicate_received": _("Same file received again"),
     "files.document.downloaded": _("File opened"),
     "files.inbound.processed": _("Email received"),
+    "platform.impersonation.started": _("Numo9 support signed in as this user"),
+    "platform.impersonation.ended": _("Numo9 support session ended"),
 }
 
 TYPE_LABELS: dict[str, Promise] = {

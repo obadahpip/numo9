@@ -7,6 +7,7 @@ import { useState, type ReactNode } from "react";
 import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
+import { ImpersonationBar } from "@/console/impersonation/ImpersonationBar";
 import { TrialChip } from "@/entitlements/TrialChip";
 import { PaymentDueNotice } from "@/entitlements/PaymentDueNotice";
 import { ReadOnlyNotice } from "@/entitlements/ReadOnlyNotice";
@@ -159,12 +160,16 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
       brand={{ label: fm(messages.brandHome), href: homeHref }}
       nav={org ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key)) : []}
       banner={
-        org ? (
-          <>
-            <ReadOnlyNotice />
-            <PaymentDueNotice />
-          </>
-        ) : undefined
+        <>
+          {/* U-06-T11: the red support-session bar, on every page while impersonating. */}
+          <ImpersonationBar />
+          {org ? (
+            <>
+              <ReadOnlyNotice />
+              <PaymentDueNotice />
+            </>
+          ) : null}
+        </>
       }
       breadcrumbs={breadcrumbs}
       orgSwitcher={

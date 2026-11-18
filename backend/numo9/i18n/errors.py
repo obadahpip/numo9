@@ -577,6 +577,85 @@ FILES_BULK_TOO_MANY = define(
     _("Select up to %(max)s documents at a time."),
 )
 
+# ---- platform console (U-06) -------------------------------------------------------------------
+PLATFORM_BAD_FILTER = define(
+    "platform.bad_filter",
+    _("%(value)s isn't a valid value for %(name)s."),
+)
+
+# ---- impersonation (U-06-T09) -----------------------------------------------------------------
+IMPERSONATION_BLOCKED = define(
+    "impersonation.blocked",
+    _(
+        "This isn't available while you're signed in as another user: payment methods, billing "
+        "changes, passwords, two-factor authentication and email addresses stay with the user. "
+        "End the session to continue."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
+IMPERSONATION_EXPIRED = define(
+    "impersonation.expired",
+    _(
+        "Your session as this user reached its time limit and ended. Nothing was changed by this "
+        "request. Start a new session from the console if you still need it."
+    ),
+    status.HTTP_403_FORBIDDEN,
+)
+IMPERSONATION_REASON_REQUIRED = define(
+    "impersonation.reason_required",
+    _("Say why you need to sign in as this user (for example the support ticket)."),
+)
+IMPERSONATION_REASON_TOO_LONG = define(
+    "impersonation.reason_too_long",
+    _("Keep the reason under %(limit)s characters."),
+)
+IMPERSONATION_BAD_DURATION = define(
+    "impersonation.bad_duration",
+    _("Choose a duration between 1 and %(max)s minutes."),
+)
+IMPERSONATION_NOT_SELF = define(
+    "impersonation.not_self",
+    _("You can't sign in as yourself."),
+)
+IMPERSONATION_NOT_A_MEMBER = define(
+    "impersonation.not_a_member",
+    _("This user isn't a member of this organisation. Choose one of its users."),
+)
+IMPERSONATION_PLATFORM_USER = define(
+    "impersonation.platform_user",
+    _("Platform staff can't be signed in as. Choose a user who isn't Numo9 staff."),
+)
+IMPERSONATION_ALREADY_OPEN = define(
+    "impersonation.already_open",
+    _("You're already signed in as another user. End that session first."),
+    status.HTTP_409_CONFLICT,
+)
+
+# ---- feature flags (U-06-T12) ------------------------------------------------------------------
+FLAG_BAD_NAME = define(
+    "flags.bad_name",
+    _(
+        "Use 2–100 lower-case letters, digits, dots, hyphens or underscores, starting with a "
+        "letter (for example payroll.new_t4_screen)."
+    ),
+)
+FLAG_EXISTS = define(
+    "flags.exists",
+    _("A flag named %(name)s already exists. Open it to change who sees it."),
+    status.HTTP_409_CONFLICT,
+)
+FLAG_BAD_PERCENT = define(
+    "flags.bad_percent",
+    _(
+        "Enter a percentage from 0 to 99.9, with at most one decimal (for example 12.5). To turn "
+        "the flag on for everyone, choose On."
+    ),
+)
+FLAG_UNKNOWN_TARGET = define(
+    "flags.unknown_target",
+    _("%(value)s isn't a known %(name)s. Choose one from the list."),
+)
+
 # ---- free trial (U-05) -------------------------------------------------------------------------
 TRIAL_ALREADY_USED = define(
     "entitlements.trial_already_used",

@@ -1,5 +1,7 @@
 import { ProductsScreen } from "@/catalogue/ProductsScreen";
 import { AppShell } from "@/components/AppShell";
+import { CatalogueNav } from "@/console/shell/CatalogueNav";
+import { ConsoleFrame } from "@/console/shell/ConsoleFrame";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
 
@@ -20,7 +22,12 @@ export default async function ConsoleProductsPage() {
   const fm = await getFormatMessage();
   return (
     <AppShell section={fm(messages.crumb)}>
-      <ProductsScreen />
+      <ConsoleFrame current="/console/packages">
+        <div className="flex flex-col gap-4">
+          <CatalogueNav current="/console/products" />
+          <ProductsScreen />
+        </div>
+      </ConsoleFrame>
     </AppShell>
   );
 }

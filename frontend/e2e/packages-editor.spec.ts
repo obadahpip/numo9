@@ -253,3 +253,30 @@ test("editor fits a phone screen", async ({ page }) => {
   await expect(page.getByTestId("pricing-card")).toBeVisible();
   await expectNoHorizontalScroll(page);
 });
+
+test("the package editor is reached from the console, with the catalogue sub-navigation (U-06-T07)", async ({
+  page,
+}) => {
+  await mockCatalogue(page);
+  await page.route(API, (r) => r.fulfill({ status: 200, json: fixture }));
+  await page.goto("/console/packages");
+  const consoleNav = page.getByRole("navigation", { name: "Platform console" });
+  await expect(consoleNav.getByRole("link", { name: "Packages and prices" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  const catalogue = page.getByRole("navigation", { name: "Catalogue" });
+  await expect(catalogue.getByRole("link", { name: "Packages" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await expect(catalogue.getByRole("link", { name: "Products" })).toHaveAttribute(
+    "href",
+    "/console/products",
+  );
+  await expect(catalogue.getByRole("link", { name: "Promo codes" })).toHaveAttribute(
+    "href",
+    "/console/promo-codes",
+  );
+  await expectAccessible(page);
+});
