@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 346   Remaining: 2441   Progress: 12.41%
+TOTAL ATOMIC TASKS: 2787   Completed: 348   Remaining: 2439   Progress: 12.49%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -466,8 +466,8 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 [C-01]
 ✅ C-01-T08 — Archive service (balance must be 0, not system)
 ✅ C-01-T09 — API /api/v1/orgs/{id}/accounts CRUD, tree, renumber, archive, bulk; feature key; sweep
-❌ C-01-T11 — CoA tree table UI with tabs, inline code edit, bulk actions
-❌ C-01-T12 — Account drawer (flags, GIFI picker, tax default, balance)
+✅ C-01-T11 — CoA tree table UI with tabs, inline code edit, bulk actions
+✅ C-01-T12 — Account drawer (flags, GIFI picker, tax default, balance)
 
 [B-01]
 ❌ B-01-T06 — Sales/purchase defaults fields (account FKs to C-01, payment_term FK, amounts_are)
