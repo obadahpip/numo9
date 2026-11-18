@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 379   Remaining: 2408   Progress: 13.60%
+TOTAL ATOMIC TASKS: 2787   Completed: 380   Remaining: 2407   Progress: 13.63%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -509,7 +509,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-07-T01 — Demo dataset specification (company, 25 contacts across 6 provinces, CoA, opening TB) signed off by client
 ✅ U-07-T02 — is_demo, demo_seed_version, last_active_at fields on Organisation
 ✅ U-07-T03 — Seed builder framework: registry of per-module seeders executed via services
-❌ U-07-T04 — Phase 0 seeders: org settings, CoA template, contacts, opening balances JE
+✅ U-07-T04 — Phase 0 seeders: org settings, CoA template, contacts, opening balances JE
 ❌ U-07-T05 — Template-org cloning for speed (prebuilt hidden template refreshed on seed version change)
 ❌ U-07-T06 — Reset service (delete org data in FK-safe order, re-clone)
 ❌ U-07-T07 — Exclusions: metrics, founding, Stripe, real email (email backend routes demo to DemoOutbox)

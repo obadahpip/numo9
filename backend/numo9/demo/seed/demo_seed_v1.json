@@ -18,7 +18,7 @@
   "time_zone": "America/Toronto"
  },
  "chart": {
-  "template": "coa_ca_v1",
+  "template": "ca_v1",
   "province": "ON"
  },
  "contacts": [

@@ -24,7 +24,7 @@ Status: **awaiting client sign-off** — see the sign-off record at the end.
 
 ## Chart of accounts
 
-The standard Canadian template `coa_ca_v1` (C-01) for home province ON — the same chart
+The standard Canadian template `ca_v1` (C-01) for home province ON — the same chart
 a new organisation in Ontario gets, so the demo shows exactly what a real one will.
 
 ## Contacts — 25 across 6 provinces
