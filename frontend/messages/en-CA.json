@@ -1003,6 +1003,38 @@
       "text": "Everything you added or changed goes away and the sample data comes back as it was.",
       "title": "Reset the demo?"
     },
+    "tour": {
+      "back": "Back",
+      "close": "Close the tour",
+      "done": "Finish",
+      "next": "Next",
+      "s1": {
+        "text": "This is Maple & Pine Supply Co., a sample Ontario retailer. Try anything — you can reset it at any time.",
+        "title": "Welcome"
+      },
+      "s2": {
+        "text": "25 customers and suppliers across six provinces, with people, addresses and Business Numbers.",
+        "title": "Contacts"
+      },
+      "s3": {
+        "text": "The Canadian chart a new Ontario organisation gets, with GIFI codes and the opening balances already posted.",
+        "title": "Chart of accounts"
+      },
+      "s4": {
+        "text": "Open a customer, preview their statement and email it. In the demo, emails land in the Demo outbox instead.",
+        "title": "Statements"
+      },
+      "s5": {
+        "text": "Reset demo brings the sample data back exactly as it was.",
+        "title": "Reset"
+      },
+      "s6": {
+        "text": "Ready? Start my free trial creates your own empty organisation with 30 days free.",
+        "title": "Your own books"
+      },
+      "skip": "Skip the tour",
+      "title": "{title} ({step} of {total})"
+    },
     "trial": {
       "confirm": "Start the trial",
       "name": "Your organisation's name",

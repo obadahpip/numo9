@@ -12,6 +12,8 @@ const ORG = "acme";
 const NEW_ORG = "99999999-9999-4999-8999-999999999999";
 
 async function mockPage(page: Page, reason: string) {
+  // The guided tour (U-07-T13, e2e/demo-tour.spec.ts) was already dismissed in this browser.
+  await page.addInitScript(() => localStorage.setItem("numo9.demoTour.dismissed", "1"));
   await mockCsrf(page);
   await mockEntitlements(page, ORG, entitlements({ reason, status: reason }));
   await page.route("**/api/v1/o/acme/contacts?*", (r) =>
