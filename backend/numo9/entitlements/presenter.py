@@ -48,6 +48,17 @@ def catalogue_names() -> dict[str, Any]:
     return names
 
 
+def _days_left(ends_at: Any, organisation: Organisation) -> int:
+    import datetime as dt
+    import zoneinfo
+
+    from django.utils import timezone
+
+    zone = zoneinfo.ZoneInfo(organisation.time_zone)
+    end = ends_at if isinstance(ends_at, dt.datetime) else dt.datetime.fromisoformat(str(ends_at))
+    return max(0, (end.astimezone(zone).date() - timezone.now().astimezone(zone).date()).days)
+
+
 def entitlements_data(organisation: Organisation) -> dict[str, Any]:
     answer = entitlements_for(organisation)
     names = catalogue_names()
@@ -55,6 +66,11 @@ def entitlements_data(organisation: Organisation) -> dict[str, Any]:
     valid_until = body.pop("valid_until")
     # Payment overdue (U-04-T13): the end of the grace period, for the payment-due notice.
     body["grace_until"] = valid_until if body.get("reason") == "past_due" else None
+    # Free trial (U-05-T10): when it ends and whole days left on the organisation's calendar,
+    # for the header's trial chip.
+    trialing = body.get("reason") == "trialing" and valid_until is not None
+    body["trial_ends_at"] = valid_until if trialing else None
+    body["trial_days_left"] = _days_left(valid_until, organisation) if trialing else None
     package = answer.package
     body["package_name"] = names["package_names"].get(package, package) if package else None
     body["version"] = version(organisation)

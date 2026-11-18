@@ -199,6 +199,11 @@ def _mode_and_reason(
         if grace is not None and now >= grace:  # grace over, even before the job flips it
             return READ_ONLY, StatusReason.PAYMENT_FAILED.value, grace, None
         return FULL, status, None, grace
+    if status == SubscriptionStatus.TRIALING:
+        end = subscription.current_period_end
+        if end is not None and now > end:  # trial over, even before the expiry job flips it
+            return READ_ONLY, StatusReason.TRIAL_ENDED.value, end, None
+        return FULL, status, None, end
     if status == SubscriptionStatus.READ_ONLY:
         reason = subscription.status_reason or SubscriptionStatus.READ_ONLY.value
         if reason == StatusReason.PAYMENT_FAILED and subscription.grace_until is not None:

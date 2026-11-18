@@ -1,6 +1,6 @@
 {% extends "email/base.mjml" %}
 {% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">{% if days_left > 0 %}Your trial of {{ organisation }} ends on {{ ends_on }}{% else %}Your trial of {{ organisation }} has ended{% endif %}</mj-text>
-        <mj-text padding="0 24px 12px">{% if days_left > 0 %}Choose a package before {{ ends_on }} to keep working without a break. Everything you entered stays.{% else %}Your books are read-only: you can still see and export everything. Choose a package to continue.{% endif %}</mj-text>
+        <mj-text padding="0 24px 12px">{% if days_left > 0 %}Choose a package before {{ ends_on }} to keep working without a break. If you don't, the organisation becomes read-only after 11:59 p.m. that day: nothing is deleted, and you can still see and export everything.{% else %}Your books are read-only: nothing was deleted, and you can still see and export everything. Choose a package to make changes again.{% endif %}</mj-text>
         <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Choose a package</mj-button>
         <mj-text font-size="13px" color="#5C6370" padding="0 24px">{{ link }}</mj-text>{% endblock %}
 {% block footer %}As an owner of {{ organisation }}, you get this email.{% endblock %}

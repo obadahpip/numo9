@@ -155,10 +155,14 @@ def _package_of(price_id: str, fallback_code: str) -> Package | None:
 
 
 def apply_status(subscription: Subscription, stripe_status: str, at: dt.datetime) -> None:
-    """Move the local status by the state table (fields only; the caller saves)."""
+    """Move the local status by the state table (fields only; the caller saves). A trial (running
+    or ended unpaid) that becomes active is a conversion (U-05-T09)."""
     target = STATE_TABLE.get(stripe_status)
     if target is None or target == subscription.status:
         return
+    from numo9.entitlements.trials import is_trial, trial_converted
+
+    converting = target == SubscriptionStatus.ACTIVE and is_trial(subscription)
     subscription.status = target
     if target == SubscriptionStatus.ACTIVE:
         subscription.grace_until, subscription.status_reason = None, ""
@@ -171,6 +175,8 @@ def apply_status(subscription: Subscription, stripe_status: str, at: dt.datetime
         subscription.status_reason = StatusReason.CANCELLED
         subscription.cancel_at_period_end = False
         subscription.grace_until = None
+    if converting:
+        trial_converted(subscription, at)
 
 
 def _save(subscription: Subscription, event: StripeEvent) -> Subscription:

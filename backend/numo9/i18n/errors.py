@@ -577,6 +577,16 @@ FILES_BULK_TOO_MANY = define(
     _("Select up to %(max)s documents at a time."),
 )
 
+# ---- free trial (U-05) -------------------------------------------------------------------------
+TRIAL_ALREADY_USED = define(
+    "entitlements.trial_already_used",
+    _(
+        "A free trial was already used with this Business Number or email address. Choose a "
+        "package to start using Numo9 with this organisation."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+
 # ---- accountant workspace: organisation directory, saved views (V-01) -------------------------
 WORKSPACE_PRACTICE_REQUIRED = define(
     "workspace.practice_required",

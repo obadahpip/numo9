@@ -23,7 +23,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
-from numo9.i18n.errors import UNKNOWN_PRACTICE, error_detail
+from numo9.i18n import errors
+from numo9.i18n.errors import UNKNOWN_PRACTICE, CatalogueError, api_error, error_detail
 from numo9.rbac.drf import AUTHENTICATED, requires_permission
 
 from .access import PRACTICE_WIDE_ROLES, accessible_organisations
@@ -119,6 +120,19 @@ class PracticeCreateView(APIView):
         return Response(PracticeSerializer(body).data, status=status.HTTP_201_CREATED)
 
 
+def trial_refused(request: Request, refused: Any) -> CatalogueError:
+    """409 ``entitlements.trial_already_used`` (U-05-T06). The organisation that used the trial
+    is named — masked — to the Platform Owner only; everyone else just learns it was used."""
+    from numo9.entitlements.trials import mask_name
+    from numo9.rbac.resolver import has_platform_perm
+
+    error = api_error(errors.TRIAL_ALREADY_USED)
+    error.extra = {"field": refused.field}
+    if has_platform_perm(request.user, "platform.console.view"):
+        error.extra["existing_organisation"] = mask_name(refused.existing.name)
+    return error
+
+
 class OrganisationCreateView(APIView):
     # Anyone signed in may create an organisation; with ``practice`` the user must be a member
     # of that practice (checked below).
@@ -162,5 +176,14 @@ class OrganisationCreateView(APIView):
                 OrganisationMember.objects.create(
                     organisation=organisation, user=_user(request), role=OrganisationRole.OWNER
                 )
+            from numo9.entitlements.trials import TrialAlreadyUsed, start_trial
+
+            # Every new organisation starts its free trial (U-05-T05) — an accountant-created
+            # one too (its owner is invited later). One trial per BN and owner email (T06): a
+            # refused trial creates nothing.
+            try:
+                start_trial(organisation)
+            except TrialAlreadyUsed as refused:  # leaving the atomic block rolls everything back
+                raise trial_refused(request, refused) from None
         body = _describe(organisation, request.user)
         return Response(MyOrganisationSerializer(body).data, status=status.HTTP_201_CREATED)

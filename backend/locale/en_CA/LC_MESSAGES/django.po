@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 17:10-0500\n"
+"POT-Creation-Date: 2026-11-17 17:28-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1831,6 +1831,61 @@ msgstr ""
 msgid "product history"
 msgstr ""
 
+msgid "trial package"
+msgstr ""
+
+msgid "Empty: the configured trial package, else every product."
+msgstr ""
+
+msgid "trial length (days)"
+msgstr ""
+
+msgid "updated by"
+msgstr ""
+
+msgid "trial settings"
+msgstr ""
+
+#, python-format
+msgid "A trial lasts 1 to %(max)d days."
+msgstr ""
+
+msgid "Choose a published package for the trial."
+msgstr ""
+
+msgid "Business Number (9 digits)"
+msgstr ""
+
+msgid "owner email"
+msgstr ""
+
+msgid "trial started"
+msgstr ""
+
+msgid "converted at"
+msgstr ""
+
+msgid "When the first payment turned the trial into a paid subscription."
+msgstr ""
+
+msgid "trials started"
+msgstr ""
+
+msgid "days left"
+msgstr ""
+
+msgid "trial reminder"
+msgstr ""
+
+msgid "trial reminders"
+msgstr ""
+
+msgid "A free trial was already used with this Business Number. Choose a package to start using Numo9 with this organisation."
+msgstr ""
+
+msgid "A free trial was already used with this email address. Choose a package to start using Numo9 with this organisation."
+msgstr ""
+
 msgid "Wait until the file has been checked for viruses."
 msgstr ""
 
@@ -2335,6 +2390,9 @@ msgstr ""
 
 #, python-format
 msgid "Select up to %(max)s documents at a time."
+msgstr ""
+
+msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr ""
 
 msgid "You belong to more than one practice. Choose the practice whose directory to open."
@@ -4600,9 +4658,6 @@ msgid "Business Number"
 msgstr ""
 
 msgid "owner"
-msgstr ""
-
-msgid "owner email"
 msgstr ""
 
 msgid "trial ends"

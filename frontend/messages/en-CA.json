@@ -335,6 +335,10 @@
       "bodyPackages": "It's part of the {product} product, included in {packages}. Everything you already have stays here and keeps working.",
       "bodyUnknown": "Everything you already have stays here and keeps working.",
       "changePackage": "Change the package",
+      "choosePackage": "Choose a package",
+      "readOnlyOther": "You can still see and export everything; reactivate the subscription to make changes again.",
+      "readOnlyTitle": "This organisation is read-only",
+      "readOnlyTrial": "The free trial ended. You can still see and export everything; choose a package to make changes again.",
       "seePackages": "See what's in each package",
       "title": "{product} isn't in this organisation's package",
       "titleUnknown": "This isn't in this organisation's package"
@@ -662,13 +666,19 @@
   "entitlements": {
     "banner": {
       "askOwner": "Ask the organisation's owner to reactivate it.",
+      "askOwnerTrial": "Ask the organisation's owner to choose a package.",
       "cancelled": "This organisation has been read-only since {date}: the subscription was cancelled.",
+      "choosePackage": "Choose a package",
+      "export": "Export your data",
+      "exportFailed": "The export didn't start. Try again in a moment.",
+      "exportStarted": "The export has started. Its download link appears in Settings → Subscription when it's ready.",
       "label": "Organisation status",
       "other": "This organisation has been read-only since {date}.",
       "paymentFailed": "This organisation has been read-only since {date}: the payment failed and the grace period ended.",
       "platform": "This organisation has been read-only since {date}: Numo9 set it read-only.",
       "reactivate": "Reactivate the subscription",
       "readable": "You can still see and export everything.",
+      "trialData": "Everything you entered during the trial is kept.",
       "trialEnded": "This organisation has been read-only since {date}: the free trial ended."
     },
     "paymentDue": {
@@ -677,6 +687,19 @@
       "label": "Payment overdue",
       "text": "The subscription payment didn't go through. Everything works until {date}; after that the organisation becomes read-only.",
       "update": "Update payment method"
+    },
+    "trial": {
+      "askOwner": "The organisation's owner chooses the package.",
+      "chip": "{days, plural, =0 {Trial — last day} one {Trial — # day left} other {Trial — # days left}}",
+      "choose": "Choose a package",
+      "close": "Close",
+      "compare": "Compare packages",
+      "current": "Your trial",
+      "ends": "The trial ends on {date}. Choose a package before then to keep working without a break — everything you entered stays.",
+      "includes": "Includes {products}",
+      "loading": "Loading packages…",
+      "title": "Your free trial",
+      "trying": "You're trying {package}."
     }
   },
   "files": {
