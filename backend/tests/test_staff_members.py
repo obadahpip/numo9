@@ -51,15 +51,13 @@ def world() -> dict[str, Any]:
 
 
 def reaches(world: dict[str, Any], org: Any) -> int:
-    return world["sam_browser"].get(f"/api/v1/o/{org.public_id}/settings").status_code
+    browser: Client = world["sam_browser"]
+    return browser.get(f"/api/v1/o/{org.public_id}/settings").status_code
 
 
 def directory(world: dict[str, Any]) -> int:
-    return (
-        world["sam_browser"]
-        .get(f"/api/v1/practice/orgs?practice={world['firm'].public_id}")
-        .status_code
-    )
+    browser: Client = world["sam_browser"]
+    return browser.get(f"/api/v1/practice/orgs?practice={world['firm'].public_id}").status_code
 
 
 def test_last_admin_cannot_be_removed_or_suspended(world: dict[str, Any]) -> None:

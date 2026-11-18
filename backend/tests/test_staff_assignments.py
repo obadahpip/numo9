@@ -50,7 +50,8 @@ def url(world: dict[str, Any], tail: str) -> str:
 
 
 def opens(world: dict[str, Any], org: Any) -> int:
-    return world["sam_browser"].get(f"/api/v1/o/{org.public_id}/settings").status_code
+    browser: Client = world["sam_browser"]
+    return browser.get(f"/api/v1/o/{org.public_id}/settings").status_code
 
 
 def test_direct_assignment_grants_and_revokes_at_once(world: dict[str, Any]) -> None:
