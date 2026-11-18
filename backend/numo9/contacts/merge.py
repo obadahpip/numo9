@@ -60,6 +60,7 @@ register_reference("contacts.ExemptionCertificate", "contact", "move", _("exempt
 register_reference("contacts.CreditOverride", "contact", "move", _("credit limit overrides"))
 register_reference("contacts.StatementSend", "contact", "move", _("statements sent"))
 register_reference("contacts.SupplierStatement", "contact", "move", _("supplier statements"))
+register_reference("contacts.ActivityEvent", "contact", "move", _("activity"))
 # Posted journal lines are append-only (C-02-T04): they keep the merged contact (an alias).
 register_reference("ledger.JournalLine", "contact", "keep", _("journal lines"))
 

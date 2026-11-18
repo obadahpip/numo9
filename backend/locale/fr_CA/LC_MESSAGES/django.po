@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:29-0500\n"
+"POT-Creation-Date: 2026-11-18 15:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1202,6 +1202,16 @@ msgstr ""
 msgid "Clients answer their accountant's requests"
 msgstr ""
 
+msgid "Activity statement"
+msgstr ""
+
+msgid "Statement"
+msgstr "Relevé"
+
+#, python-format
+msgid "%(kind)s as at %(date)s sent to %(to)s"
+msgstr ""
+
 msgid "This account doesn't exist."
 msgstr ""
 
@@ -1491,6 +1501,9 @@ msgstr "relevés envoyés"
 
 msgid "supplier statements"
 msgstr "relevés des fournisseurs"
+
+msgid "activity"
+msgstr ""
 
 msgid "journal lines"
 msgstr ""
@@ -2092,6 +2105,38 @@ msgstr "ligne de relevé du fournisseur"
 msgid "supplier statement lines"
 msgstr "lignes de relevé du fournisseur"
 
+msgid "Invoice"
+msgstr "Facture"
+
+msgid "Credit note"
+msgstr "Note de crédit"
+
+msgid "Bill"
+msgstr "Facture fournisseur"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "Payment"
+msgstr "arguments"
+
+msgid "Statement sent"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Contact changed"
+msgstr ""
+
+msgid "what"
+msgstr ""
+
+msgid "when"
+msgstr ""
+
+msgid "contact activity"
+msgstr ""
+
 msgid "Approve sales over a customer's credit limit"
 msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
 
@@ -2140,9 +2185,6 @@ msgstr "Le fichier ne contient aucune ligne."
 #, python-format
 msgid "%(name)s isn't a supplier."
 msgstr "%(name)s n’est pas un fournisseur."
-
-msgid "Statement"
-msgstr "Relevé"
 
 msgid "Statement of activity"
 msgstr "Relevé des opérations"
@@ -3862,11 +3904,6 @@ msgid "Purchases"
 msgstr "Achats"
 
 #, fuzzy
-#| msgid "arguments"
-msgid "Payment"
-msgstr "arguments"
-
-#, fuzzy
 #| msgid "Documents"
 msgid "Adjustment"
 msgstr "Documents"
@@ -4694,12 +4731,6 @@ msgstr "Reculer une date de verrouillage rouvre le %(date)s et les dates antéri
 msgid "The lock for everyone (%(everyone)s) can't be later than the lock for everyone except advisers (%(advisers)s)."
 msgstr "Le verrouillage pour tout le monde (%(everyone)s) ne peut pas être postérieur au verrouillage pour tout le monde sauf les conseillers (%(advisers)s)."
 
-msgid "Invoice"
-msgstr "Facture"
-
-msgid "Credit note"
-msgstr "Note de crédit"
-
 msgid "Quote"
 msgstr "Soumission"
 
@@ -5209,9 +5240,6 @@ msgstr "Un rôle de plateforme s’attribue sans organisation ni cabinet."
 
 msgid "This custom role belongs to another organisation or practice."
 msgstr "Ce rôle personnalisé appartient à une autre organisation ou à un autre cabinet."
-
-msgid "Bill"
-msgstr "Facture fournisseur"
 
 msgid "Pay run"
 msgstr "Paie"

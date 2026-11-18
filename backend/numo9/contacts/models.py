@@ -1775,3 +1775,63 @@ class SupplierStatementLine(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.invoice_number or self.reference} {self.amount}"
+
+
+# ---- contact activity timeline (B-02-T02) --------------------------------------------------------
+
+
+class ActivityType(models.TextChoices):
+    INVOICE = "invoice", _("Invoice")
+    CREDIT_NOTE = "credit_note", _("Credit note")
+    BILL = "bill", _("Bill")
+    PAYMENT = "payment", _("Payment")
+    STATEMENT = "statement", _("Statement sent")
+    EMAIL = "email", _("Email")
+    NOTE = "note", _("Note")
+    CHANGE = "change", _("Contact changed")
+
+
+class ActivityEvent(OrgOwnedModel):
+    """One thing that happened with a contact, for its Activity tab (B-02-T02).
+
+    Written by modules through ``numo9.contacts.activity.emit`` (documents and payments from
+    Phase 1, statements sent, notes); read newest first. ``ref_type``/``ref_id`` point at the record
+    (an invoice, a statement send), ``amount`` is in the contact's currency (empty for notes and
+    changes). Kept on merge: a merged contact's events move to the surviving contact (B-01-T12).
+    """
+
+    contact = models.ForeignKey(
+        Contact, on_delete=models.PROTECT, related_name="activity", verbose_name=_("contact")
+    )
+    type = models.CharField(_("type"), max_length=20, choices=ActivityType.choices)
+    title = models.CharField(_("what"), max_length=300)
+    ref_type = models.CharField(_("record type"), max_length=60, blank=True)
+    ref_id = models.CharField(_("record"), max_length=64, blank=True)
+    amount = models.DecimalField(
+        _("amount"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    currency = models.CharField(_("currency"), max_length=3, blank=True)
+    occurred_at = models.DateTimeField(_("when"))
+    actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("by"),
+    )
+    actor_label = models.CharField(_("by"), max_length=300, blank=True)
+    meta = models.JSONField(_("details"), default=dict, blank=True)
+
+    class Meta:
+        ordering = ("-occurred_at", "-id")
+        verbose_name = _("contact activity")
+        verbose_name_plural = _("contact activity")
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=("organisation", "contact", "-occurred_at"), name="contacts_activity_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact_id} {self.type} {self.occurred_at:%Y-%m-%d}"
