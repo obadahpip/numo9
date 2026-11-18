@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:25-0500\n"
+"POT-Creation-Date: 2026-11-18 15:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1225,6 +1225,12 @@ msgstr ""
 msgid "%(field)s needs %(expected)s: %(value)s doesn't fit."
 msgstr ""
 
+msgid "People"
+msgstr ""
+
+msgid "Contacts"
+msgstr ""
+
 msgid "A new contact needs a name."
 msgstr ""
 
@@ -1293,9 +1299,6 @@ msgstr ""
 
 #, python-format
 msgid "People import: %(file)s"
-msgstr ""
-
-msgid "Contacts"
 msgstr ""
 
 msgid "External ID"
