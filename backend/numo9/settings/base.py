@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "numo9.staff",
     # Usage metering: meter(org, key, qty) through a Redis stream → daily aggregates (S-06-T07).
     "numo9.metering",
+    "numo9.scale",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
