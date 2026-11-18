@@ -24,6 +24,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from numo9.accounts.models import User
+from numo9.catalogue.drf import CORE
 from numo9.entitlements.trials import TrialAlreadyUsed
 from numo9.i18n import errors
 from numo9.i18n.errors import api_error
@@ -55,6 +56,7 @@ class ConvertSerializer(serializers.Serializer[Any]):
 
 
 class DemoConvertView(APIView):
+    required_feature = CORE  # the demo itself, not a product feature
     queryset = DemoOutbox._base_manager.none()  # tenant sweep: organisation-scoped
 
     @requires_permission(CLOSE)
@@ -89,6 +91,7 @@ class DemoConvertView(APIView):
 
 
 class DemoResetView(APIView):
+    required_feature = CORE  # the demo itself, not a product feature
     queryset = DemoOutbox._base_manager.none()  # tenant sweep: organisation-scoped
 
     @requires_permission(CLOSE)
@@ -116,6 +119,7 @@ class DemoOutboxItemSerializer(serializers.ModelSerializer[DemoOutbox]):
 
 
 class DemoOutboxView(APIView):
+    required_feature = CORE  # the demo itself, not a product feature
     queryset = DemoOutbox._base_manager.none()  # tenant sweep: rows of DemoOutbox
 
     @requires_permission(VIEW)
