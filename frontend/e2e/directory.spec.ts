@@ -508,7 +508,15 @@ test("select all matching sends the search as a query, previews, then applies", 
   );
 
   await page.goto(PAGE);
+  // Wait for the debounced search request: "all matching" made before it lands would be
+  // cleared by the new query.
+  const searched = page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/v1/practice/orgs?") &&
+      new URL(response.url()).searchParams.get("q") === "Maple",
+  );
   await page.locator("[data-directory] [data-grid-search]").fill("Maple");
+  await searched;
   await expect(rows(page).first()).toContainText("Maple");
   await rows(page).first().getByRole("checkbox").check();
   const bar = page.locator("[data-bulk-bar]");
