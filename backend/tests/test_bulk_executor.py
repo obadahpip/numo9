@@ -143,4 +143,4 @@ def test_cancel_keeps_done_rows_and_cancels_the_rest(world: dict[str, Any], sent
     assert counts["pending"] == 0
     job.refresh_from_db()
     assert job.status == "cancelled"
-    assert job.rows.filter(outcome="cancelled").first().message.startswith("The bulk action")
+    assert job.rows.filter(outcome="cancelled")[0].message.startswith("The bulk action")

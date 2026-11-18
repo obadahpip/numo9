@@ -142,7 +142,7 @@ def test_message_notifies_owners(world: dict[str, Any]) -> None:
     notes = Notification._base_manager.filter(title_key="notifications.practice.message")
     assert notes.count() == 3
     assert {n.recipient for n in notes} == set(world["owners"])
-    assert notes.first().body_params["subject"] == "Year-end checklist"
+    assert notes[0].body_params["subject"] == "Year-end checklist"
 
 
 @pytest.mark.parametrize("fmt", ["csv", "xlsx"])
