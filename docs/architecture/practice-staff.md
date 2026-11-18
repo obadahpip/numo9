@@ -30,3 +30,22 @@ Access changes on the **next request**: direct assignments bump the V-02 access 
 `staff.organisation_assigned` / `staff.organisation_unassigned` in the organisation's audit log.
 The editor (`src/staff/AssignmentEditor.tsx`, page `/p/:practice/staff/:member`) adds an
 organisation by search, a group with a role, and removes either at once.
+
+## Suspend, reinstate, remove (V-05-T05)
+
+`numo9.staff.members` and `POST …/staff/<user>/suspend`, `POST …/reinstate`,
+`DELETE …/staff/<user>` (`practice.staff.manage`):
+
+- **suspend** sets `PracticeMember.suspended_at`: history and assignments stay, but every access
+  path ignores a suspended member — A-01 `accessible_organisations` (practice-wide roles and
+  direct assignments), the RBAC resolver (organisation roles through the practice, practice
+  permissions), V-02 group access, the directory scope and the practice API (`resolve_practice`:
+  404). Effective on the next request (the access cache is bumped);
+- **reinstate** lifts it (`409 staff.not_suspended` when there is nothing to lift);
+- **remove** deletes the membership with its direct and group assignments: every organisation
+  reached through the practice answers 404 at once; the audit event lists the organisations;
+- **last-admin guard**: the practice's last active practice admin can't be suspended or removed
+  (`409 staff.last_admin`).
+
+Audited in the practice's log: `staff.member_suspended`, `staff.member_reinstated`,
+`staff.member_removed`.

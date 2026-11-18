@@ -65,8 +65,12 @@ def accessible_organisations(user: Any) -> QuerySet[Organisation]:
     via_practice = (
         PracticeAssignment.objects.filter(active=True)
         .filter(
-            Q(practice__members__user=user, practice__members__role__in=PRACTICE_WIDE_ROLES)
-            | Q(assigned_staff__user=user)
+            Q(
+                practice__members__user=user,
+                practice__members__role__in=PRACTICE_WIDE_ROLES,
+                practice__members__suspended_at__isnull=True,  # V-05-T05: suspended → nothing
+            )
+            | Q(assigned_staff__user=user, assigned_staff__suspended_at__isnull=True)
         )
         .values("organisation_id")
     )

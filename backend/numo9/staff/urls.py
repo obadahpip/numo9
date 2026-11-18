@@ -7,6 +7,19 @@ from . import api
 urlpatterns = [
     path("practice/staff", api.StaffListView.as_view(), name="practice-staff"),
     path(
+        "practice/staff/<uuid:user_id>", api.StaffMemberView.as_view(), name="practice-staff-member"
+    ),
+    path(
+        "practice/staff/<uuid:user_id>/suspend",
+        api.StaffSuspendView.as_view(),
+        name="practice-staff-suspend",
+    ),
+    path(
+        "practice/staff/<uuid:user_id>/reinstate",
+        api.StaffReinstateView.as_view(),
+        name="practice-staff-reinstate",
+    ),
+    path(
         "practice/staff/<uuid:user_id>/assignments",
         api.StaffAssignmentsView.as_view(),
         name="practice-staff-assignments",

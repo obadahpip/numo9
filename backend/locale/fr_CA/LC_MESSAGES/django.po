@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:57-0500\n"
+"POT-Creation-Date: 2026-11-17 19:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2872,6 +2872,14 @@ msgstr "Sélectionnez au plus %(limit)s organisations pour une action groupée."
 
 msgid "This bulk action was already applied or cancelled."
 msgstr "Cette action groupée a déjà été appliquée ou annulée."
+
+#, python-format
+msgid "%(name)s is the practice's only active practice admin. Make someone else a practice admin first."
+msgstr "%(name)s est le seul administrateur actif du cabinet. Nommez d’abord une autre personne administrateur du cabinet."
+
+#, python-format
+msgid "%(name)s isn't suspended."
+msgstr "%(name)s n’est pas suspendu."
 
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."

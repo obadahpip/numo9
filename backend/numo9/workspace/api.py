@@ -117,9 +117,10 @@ def resolve_practice(request: Request, given: str | None = None) -> Practice:
     Unknown practice and "not a member" answer the same 404. Omitted: the user's only practice.
     """
     value = given or request.query_params.get("practice") or request.headers.get(PRACTICE_HEADER)
-    memberships = PracticeMember.objects.filter(user=cast(User, request.user)).select_related(
-        "practice"
-    )
+    memberships = PracticeMember.objects.filter(
+        user=cast(User, request.user),
+        suspended_at__isnull=True,  # V-05-T05
+    ).select_related("practice")
     if value:
         member = memberships.filter(practice__public_id=_parse_uuid(str(value))).first()
         if member is None:

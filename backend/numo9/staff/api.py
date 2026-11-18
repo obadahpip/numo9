@@ -261,3 +261,71 @@ class StaffGroupView(APIView):
         member, group = self._resolve(request, user_id, group_id)
         groups.unassign_staff(group, member)
         return Response(assignments_of(member))
+
+
+# ---- suspend / reinstate / remove (V-05-T05) ---------------------------------------------------
+
+
+def _staff_manage() -> Any:
+    from numo9.rbac.catalogue import catalogue
+
+    return catalogue.get("practice.staff.manage")
+
+
+class StaffSuspendView(APIView):
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # practice.staff.manage (checked here)
+    @checks_practice_permission("practice.staff.manage")
+    @extend_schema(
+        operation_id="practice_staff_suspend",
+        summary="Suspend a staff member (history kept, access blocked)",
+        parameters=[PRACTICE_PARAM],
+        request=None,
+        responses=StaffLineSerializer,
+    )
+    def post(self, request: Request, user_id: Any) -> Response:
+        from .directory import member_line
+        from .members import suspend
+
+        member = _member(practice_for(request, _staff_manage()), user_id)
+        return Response(member_line(suspend(member, by=request.user)))
+
+
+class StaffReinstateView(APIView):
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # practice.staff.manage (checked here)
+    @checks_practice_permission("practice.staff.manage")
+    @extend_schema(
+        operation_id="practice_staff_reinstate",
+        summary="Lift a staff member's suspension",
+        parameters=[PRACTICE_PARAM],
+        request=None,
+        responses=StaffLineSerializer,
+    )
+    def post(self, request: Request, user_id: Any) -> Response:
+        from .directory import member_line
+        from .members import reinstate
+
+        member = _member(practice_for(request, _staff_manage()), user_id)
+        return Response(member_line(reinstate(member, by=request.user)))
+
+
+class StaffMemberView(APIView):
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # practice.staff.manage (checked here)
+    @checks_practice_permission("practice.staff.manage")
+    @extend_schema(
+        operation_id="practice_staff_remove",
+        summary="Remove a staff member from the practice (every access revoked)",
+        parameters=[PRACTICE_PARAM],
+        responses={204: None},
+    )
+    def delete(self, request: Request, user_id: Any) -> Response:
+        from .members import remove
+
+        member = _member(practice_for(request, _staff_manage()), user_id)
+        remove(member, by=request.user)
+        return Response(status=204)
