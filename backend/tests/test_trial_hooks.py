@@ -23,7 +23,8 @@ PASSWORD = "Correct-horse-battery-9"  # noqa: S105 (test account)
 
 def _subscription(org: Organisation) -> Subscription:
     with org_context(org):
-        return Subscription.objects.get(organisation=org)
+        subscription: Subscription = Subscription.objects.get(organisation=org)
+    return subscription
 
 
 def test_owner_signup_starts_a_trial() -> None:

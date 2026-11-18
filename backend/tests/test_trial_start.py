@@ -23,8 +23,10 @@ pytestmark = pytest.mark.django_db
 UTC = dt.UTC
 
 
-def at(*args: int) -> dt.datetime:
-    return dt.datetime(*args, tzinfo=UTC)
+def at(
+    year: int, month: int, day: int, hour: int = 0, minute: int = 0, second: int = 0
+) -> dt.datetime:
+    return dt.datetime(year, month, day, hour, minute, second, tzinfo=UTC)
 
 
 @pytest.mark.parametrize(
