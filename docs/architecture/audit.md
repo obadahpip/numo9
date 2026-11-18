@@ -65,6 +65,16 @@ and are refused there (`tests/test_audit_append_only.py`).
 test runner does between transactional tests). Retention (≥ 6 years, CRA) is handled by dropping
 whole monthly partitions once they are past retention (S-06), never by deleting rows.
 
+### Monthly partitions (S-06-T03, ADR-0005)
+
+`audit_event` is a parent `PARTITION BY RANGE (created_at)` (migration `audit.0003`, which moves
+existing rows and keeps the sequence, indexes, constraints, trigger and privileges). Children are
+`audit_event_pYYYYMMDD` (one per UTC month) and `audit_event_default`. pg_partman manages them when
+the extension is installed in the database; `numo9.audit.partitions` creates the same children with
+plain DDL otherwise. Every child is append-only: the row trigger is cloned from the parent and
+`UPDATE`, `DELETE`, `TRUNCATE` are revoked on each child as it is created
+(`tests/test_audit_partitions.py`). A daily job keeps three months ahead (S-06-T04).
+
 ## Writing events (A-04-T03)
 
 ### `record()`
