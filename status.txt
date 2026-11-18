@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 368   Remaining: 2419   Progress: 13.20%
+TOTAL ATOMIC TASKS: 2787   Completed: 369   Remaining: 2418   Progress: 13.24%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -494,7 +494,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ B-02-T02 — ActivityEvent model (contact, type, ref, amount, occurred_at, actor) + emitter API for modules
 ✅ B-02-T03 — SubLedgerSource interface (open items as at date, activity in range) + fixture implementation
 ✅ B-02-T04 — Statement engine (outstanding & activity types, opening balance, aging buckets)
-❌ B-02-T08 — Supplier reconciliation matcher (by invoice number, then amount+date ±3 d) + difference report
+✅ B-02-T08 — Supplier reconciliation matcher (by invoice number, then amount+date ±3 d) + difference report
 ❌ B-02-T09 — APIs timeline, statements, reconciliation
 ❌ B-02-T10 — Activity tab UI with filters
 ❌ B-02-T11 — Statements tab UI (generate, preview, send)

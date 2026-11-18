@@ -1762,6 +1762,10 @@ class SupplierStatementLine(OrgOwnedModel):
     amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
     source_row = models.PositiveIntegerField(_("file row"), null=True, blank=True)
     note = models.CharField(_("note"), max_length=500, blank=True)
+    # Reconciliation (B-02-T08/T12): a document of ours matched by hand ("" = automatic matching).
+    manual_ref = models.CharField(
+        _("matched by hand to"), max_length=100, blank=True, db_default="", default=""
+    )
 
     class Meta:
         ordering = ("statement", "position")
