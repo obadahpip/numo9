@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 14:22-0500\n"
+"POT-Creation-Date: 2026-11-18 14:40-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3183,6 +3183,28 @@ msgstr "Utilisez accounting (comptable) ou tax (fiscal)."
 msgid "There's no journal with this id in this organisation."
 msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
 
+#, fuzzy
+#| msgid "Accounting"
+msgid "accounting book"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax book"
+msgstr "code d’erreur"
+
+#, python-format
+msgid "%(account)s is the %(role)s account: system accounts can't be archived."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has a balance of %(balance)s in the %(book)s. Move the balance to another account first, then archive it."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has active sub-accounts, such as %(child)s: archive them first."
+msgstr ""
+
 msgid "Unknown system role."
 msgstr ""
 
@@ -3200,10 +3222,6 @@ msgstr ""
 
 #, python-format
 msgid "This is the %(role)s account: its type and sub-type can't change."
-msgstr ""
-
-#, python-format
-msgid "%(account)s is the %(role)s account: system accounts can't be archived."
 msgstr ""
 
 #, python-format
@@ -3798,16 +3816,6 @@ msgstr ""
 #, python-format
 msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
 msgstr ""
-
-#, fuzzy
-#| msgid "Accounting"
-msgid "accounting book"
-msgstr "Comptabilité"
-
-#, fuzzy
-#| msgid "error code"
-msgid "tax book"
-msgstr "code d’erreur"
 
 #, python-format
 msgid "Line %(line)d: the %(side)s must be an exact amount (Decimal), not %(value)r."
