@@ -103,7 +103,15 @@ def test_read_only_and_reviewer_change_nothing() -> None:
 
 def test_functional_roles_start_small() -> None:
     # Documents are read-only for the functional roles (A-06); their own modules arrive later.
-    for key in ("sales", "purchasing", "payroll", "hr"):
+    # Sales and purchasing keep contacts (B-01-T11): customers and suppliers are their work.
+    for key in ("sales", "purchasing"):
+        assert grants("organisation", key) == {
+            "organisation.profile.view",
+            "documents.file.view",
+            "contacts.contacts.view",
+            "contacts.contacts.manage",
+        }, key
+    for key in ("payroll", "hr"):
         assert grants("organisation", key) == {
             "organisation.profile.view",
             "documents.file.view",

@@ -819,7 +819,7 @@
       "email": "Email",
       "financial": "Financial",
       "firstName": "First name",
-      "fixErrors": "Check the highlighted fields: {message}",
+      "fixErrors": "Review the highlighted fields: {message}",
       "lastName": "Last name",
       "legalName": "Legal name",
       "line1": "Street address or PO box",

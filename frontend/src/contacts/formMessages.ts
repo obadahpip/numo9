@@ -124,7 +124,7 @@ export const fmsg = defineMessages({
   saved: { id: "contacts.form.saved", defaultMessage: "Contact saved", description: "Status" },
   fixErrors: {
     id: "contacts.form.fixErrors",
-    defaultMessage: "Check the highlighted fields: {message}",
+    defaultMessage: "Review the highlighted fields: {message}",
     description: "Error summary",
   },
   loadFailed: {
