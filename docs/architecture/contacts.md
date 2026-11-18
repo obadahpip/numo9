@@ -423,3 +423,16 @@ columns=None, their_balance=None)`:
 - only contacts with the supplier role; `create_manual_statement` / `add_line` type lines in.
 
 `backend/tests/test_contacts_supplier_statement_import.py`.
+
+## API (B-01-T11)
+
+Under `/api/v1/o/<org>/` (`numo9.contacts.api`), permissions `contacts.contacts.view` / `.manage`,
+features `accounting.contacts.read` / `.write`, tenant-sweep factory `contacts.Contact`:
+
+| Route | What |
+|---|---|
+| `GET contacts` | By name; `role` (one role — the list is titled per role), `status` (active, archived, all), `q` (name, number, email, BN), `limit`/`offset`; `role_counts` for the tabs |
+| `POST contacts` | A contact with its `people` and `addresses`, one transaction (a bad row rolls everything back; errors are keyed `addresses[0].postal_code`) |
+| `GET` / `PATCH contacts/<id>` | Every field, people, addresses, sales/purchase defaults, custom fields; `people` / `addresses` in a PATCH replace the lists (rows with an `id` updated, missing ones removed) |
+| `POST contacts/<id>/archive`, `…/restore` | Archive keeps the history |
+| `GET contacts/duplicates` | `q` (name, trigram), `email`, `bn`, `tax_id`, `exclude`: possible duplicates with their reasons |

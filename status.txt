@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 349   Remaining: 2438   Progress: 12.52%
+TOTAL ATOMIC TASKS: 2787   Completed: 350   Remaining: 2437   Progress: 12.56%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -471,7 +471,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [B-01]
 ✅ B-01-T06 — Sales/purchase defaults fields (account FKs to C-01, payment_term FK, amounts_are)
-❌ B-01-T11 — API /api/v1/orgs/{id}/contacts CRUD + /duplicates?q= + list filters by role + feature key + tenant sweep registration
+✅ B-01-T11 — API /api/v1/orgs/{id}/contacts CRUD + /duplicates?q= + list filters by role + feature key + tenant sweep registration
 ❌ B-01-T12 — Merge service: FK re-pointing via registry, history preserved, alias kept, single transaction, audit
 ❌ B-01-T14 — Contact list UI (role tabs with titles, search, column chooser, saved views, archive)
 ❌ B-01-T15 — Contact form UI with section anchors, address entry, province picker, defaults

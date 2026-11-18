@@ -24,6 +24,7 @@ urlpatterns = [
     path("api/v1/", include("numo9.workspace.urls")),  # organisation directory (V-01)
     path("api/v1/", include("numo9.notifications.urls")),  # notification centre (A-07)
     path("api/v1/", include("numo9.orgsettings.urls")),  # organisation settings, locks (A-05)
+    path("api/v1/", include("numo9.contacts.urls")),  # contacts (B-01-T11)
     path("api/v1/", include("numo9.ledger.urls")),  # journals read API (C-02-T15)
     path("api/v1/", include("numo9.billing.urls")),  # subscription billing (U-04)
     path("api/v1/", include("numo9.platform.urls")),  # platform console (U-06)

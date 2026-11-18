@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:04-0500\n"
+"POT-Creation-Date: 2026-11-18 15:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1172,6 +1172,24 @@ msgstr ""
 msgid "Clients answer their accountant's requests"
 msgstr ""
 
+msgid "This account doesn't exist."
+msgstr ""
+
+msgid "This payment term doesn't exist."
+msgstr ""
+
+msgid "This row doesn't belong to the contact."
+msgstr ""
+
+msgid "Use a whole number."
+msgstr ""
+
+msgid "Unknown role."
+msgstr ""
+
+msgid "Enter the contact's name."
+msgstr ""
+
 msgid "Custom fields must be a set of field names and values."
 msgstr ""
 
@@ -1855,6 +1873,12 @@ msgid "supplier statement lines"
 msgstr ""
 
 msgid "Approve sales over a customer's credit limit"
+msgstr ""
+
+msgid "See contacts: customers, suppliers and their people"
+msgstr ""
+
+msgid "Add, edit, archive and merge contacts"
 msgstr ""
 
 msgid "Supplier statement lines"
@@ -3054,9 +3078,6 @@ msgid "Not found."
 msgstr ""
 
 msgid "Use a date like 2026-03-31."
-msgstr ""
-
-msgid "Use a whole number."
 msgstr ""
 
 msgid "Unknown status."
