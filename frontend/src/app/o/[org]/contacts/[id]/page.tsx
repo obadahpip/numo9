@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { AppShell } from "@/components/AppShell";
-import { ContactForm } from "@/contacts/ContactForm";
+import { ContactPage as ContactScreen } from "@/contacts/ContactPage";
 import { ORG_SLUG } from "@/routing/routes";
 
 interface Params {
@@ -17,7 +17,7 @@ export default async function ContactPage({ params }: { params: Promise<Params> 
   if (!ORG_SLUG.test(org) || !ID.test(id)) notFound();
   return (
     <AppShell org={org} modulePath="contacts">
-      <ContactForm org={org} id={id} />
+      <ContactScreen org={org} id={id} />
     </AppShell>
   );
 }

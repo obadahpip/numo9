@@ -783,6 +783,15 @@
     }
   },
   "contacts": {
+    "activity": {
+      "addNote": "Save note",
+      "allTypes": "Everything",
+      "by": "by {name}",
+      "filter": "Show",
+      "line": "{when} · {title}",
+      "none": "Nothing has happened with this contact yet.",
+      "noteLabel": "Add a note"
+    },
     "duplicates": {
       "announce": "{count, plural, one {# possible duplicate found} other {# possible duplicates found}}",
       "archived": "Archived",
@@ -916,12 +925,56 @@
       "nothing": "No records to move.",
       "title": "Merge {merged} into {survivor}"
     },
+    "recon": {
+      "choose": "Choose…",
+      "column": "{side} — not matched",
+      "how": "{how, select, number {by number} amount_date {by amount and date} other {by hand}}",
+      "lineText": "{date} · {document} · {amount}",
+      "matchTo": "Match {line} to",
+      "matched": "Matched",
+      "none": "No supplier statement yet. Add one from the supplier's file to compare it with your bills.",
+      "note": "Note on {line}",
+      "ours": "Our bills and payments",
+      "pairLine": "{theirs} ↔ {ours} ({how}){difference, select, none {} other {, difference {difference}}}",
+      "saveNote": "Save note",
+      "statement": "Their statement",
+      "theirs": "Their statement",
+      "totals": "They say {theirs}, we have {ours}: difference {difference}."
+    },
     "role": {
       "agency": "Government agency",
       "contractor": "Contractor",
       "customer": "Customer",
       "employee": "Employee",
       "supplier": "Supplier"
+    },
+    "statement": {
+      "activity": "Activity (a date range)",
+      "amountDue": "Amount due {amount}",
+      "asAt": "As at",
+      "colAmount": "Amount",
+      "colBalance": "Balance",
+      "colDate": "Date",
+      "colDocument": "Document",
+      "colDue": "Due",
+      "from": "From",
+      "history": "Sent before",
+      "historyLine": "{date}: as at {as_at}, {amount} to {to}",
+      "kind": "Statement",
+      "opening": "Opening balance {amount}",
+      "outstanding": "Outstanding (open items)",
+      "pdf": "Open the PDF",
+      "preview": "Preview",
+      "send": "Email the statement",
+      "sent": "Statement sent to {to}."
+    },
+    "tabs": {
+      "activity": "Activity",
+      "details": "Details",
+      "failed": "We couldn't do that: {reason}",
+      "label": "Contact sections",
+      "reconciliation": "Supplier statements",
+      "statements": "Statements"
     }
   },
   "directory": {
