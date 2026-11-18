@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:44-0500\n"
+"POT-Creation-Date: 2026-11-18 16:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2280,6 +2280,41 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr "Limite inconnue : %(names)s."
 
+msgid "seed version"
+msgstr ""
+
+msgid "template organisation"
+msgstr ""
+
+msgid "pristine hash"
+msgstr ""
+
+msgid "built at"
+msgstr ""
+
+msgid "demo template"
+msgstr ""
+
+msgid "demo templates"
+msgstr ""
+
+msgid "to"
+msgstr "à"
+
+msgid "HTML"
+msgstr "HTML"
+
+#, fuzzy
+#| msgid "audit events"
+msgid "attachments"
+msgstr "événements du journal d’audit"
+
+msgid "demo outbox email"
+msgstr ""
+
+msgid "demo outbox emails"
+msgstr ""
+
 msgid "Documents"
 msgstr "Documents"
 
@@ -2656,11 +2691,6 @@ msgstr ""
 #, fuzzy
 #| msgid "audit events"
 msgid "attachment"
-msgstr "événements du journal d’audit"
-
-#, fuzzy
-#| msgid "audit events"
-msgid "attachments"
 msgstr "événements du journal d’audit"
 
 msgid "Message-ID"
@@ -3196,6 +3226,9 @@ msgstr "La facturation n’est pas disponible pour le moment. Réessayez plus ta
 
 msgid "This organisation has no subscription yet. Start a trial first."
 msgstr "Cette organisation n’a pas encore d’abonnement. Commencez d’abord un essai."
+
+msgid "A demo organisation has no billing. Start your free trial to choose a package."
+msgstr "Une organisation de démonstration n'a pas de facturation. Commencez votre essai gratuit pour choisir un forfait."
 
 #, python-format
 msgid "There's no package %(package)s for sale. Choose one of the packages offered."
@@ -4295,17 +4328,11 @@ msgstr "Signalé comme pourriel"
 msgid "message type"
 msgstr "type de message"
 
-msgid "to"
-msgstr "à"
-
 msgid "from"
 msgstr "de"
 
 msgid "reply to"
 msgstr "répondre à"
-
-msgid "HTML"
-msgstr "HTML"
 
 msgid "headers"
 msgstr "en-têtes"
@@ -5487,6 +5514,21 @@ msgid "practice member"
 msgstr ""
 
 msgid "practice members"
+msgstr ""
+
+msgid "demo organisation"
+msgstr ""
+
+msgid "demo seed version"
+msgstr ""
+
+msgid "Version of the sample data the demo was built from (numo9/demo)."
+msgstr ""
+
+msgid "last active at"
+msgstr ""
+
+msgid "Last signed-in request to the organisation (demo inactivity purge)."
 msgstr ""
 
 msgid "organisation member"

@@ -842,6 +842,11 @@ BILLING_NO_SUBSCRIPTION = define(
     _("This organisation has no subscription yet. Start a trial first."),
     status.HTTP_409_CONFLICT,
 )
+BILLING_DEMO = define(
+    "billing.demo",
+    _("A demo organisation has no billing. Start your free trial to choose a package."),
+    status.HTTP_409_CONFLICT,
+)
 BILLING_PACKAGE_UNKNOWN = define(
     "billing.package_unknown",
     _("There's no package %(package)s for sale. Choose one of the packages offered."),

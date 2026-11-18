@@ -13,7 +13,8 @@
 
 Phases 1–4 list their own user-data tables with ``register_reset_tables`` (seed contract,
 docs/specs/demo-seed-contract.md). Members, the subscription, the audit trail and the demo
-outbox are kept: the visitor stays signed in and sees what they did before the reset in the log.
+outbox (``DemoOutbox``) are kept: the visitor stays signed in and sees what they did before the
+reset in the log.
 """
 
 from __future__ import annotations

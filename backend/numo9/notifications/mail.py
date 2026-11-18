@@ -62,6 +62,26 @@ def _provider_name() -> str:
     return backend.rsplit(".", 2)[-2] if "." in backend else backend
 
 
+def _keep_in_demo_outbox(message: EmailMessage) -> EmailMessage:
+    """A demo organisation never sends mail (U-07-T07): the email goes to its demo outbox and the
+    log row records why it was not sent; no send task is queued."""
+    from numo9.demo.models import DemoOutbox
+
+    DemoOutbox(
+        organisation=message.organisation,
+        to_email=message.to_email,
+        subject=message.subject,
+        text_body=message.text_body,
+        html_body=message.html_body,
+        kind=message.kind,
+        attachments=message.attachments,
+    ).save()
+    message.status = EmailStatus.FAILED
+    message.error = "Demo organisation: kept in the demo outbox, not sent."
+    message.save()
+    return message
+
+
 def queue_email(
     to: str,
     subject: str,
@@ -114,6 +134,8 @@ def queue_email(
             for item in attachments or []
         ],
     )
+    if organisation is not None and organisation.is_demo:
+        return _keep_in_demo_outbox(message)
     from .bounces import suppressed_until
 
     until = suppressed_until(to)
