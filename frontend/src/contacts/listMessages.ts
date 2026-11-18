@@ -37,6 +37,11 @@ export const lm = defineMessages({
   tabAll: { id: "contacts.list.tabAll", defaultMessage: "All", description: "Tab" },
   tabArchived: { id: "contacts.list.tabArchived", defaultMessage: "Archived", description: "Tab" },
   tabs: { id: "contacts.list.tabs", defaultMessage: "Contact roles", description: "Tab list" },
+  importContacts: {
+    id: "contacts.list.import",
+    defaultMessage: "Import",
+    description: "Link to the import wizard",
+  },
   newContact: { id: "contacts.list.new", defaultMessage: "New contact", description: "Button" },
   grid: { id: "contacts.list.grid", defaultMessage: "Contacts", description: "Grid name" },
   search: {

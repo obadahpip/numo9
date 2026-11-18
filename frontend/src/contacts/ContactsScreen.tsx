@@ -255,12 +255,20 @@ export function ContactsScreen({ org, initialTab = "all" }: { org: string; initi
     <div className="flex flex-col gap-4" data-contacts-screen="">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <h1 className="text-2xl font-bold text-fg">{title}</h1>
-        <a
-          href={`${orgModuleUrl(org, "contacts")}/new`}
-          className="inline-flex min-h-touch-target items-center rounded-md bg-surface-accent px-4 text-sm font-semibold text-fg-on-accent hover:bg-surface-accent-hover"
-        >
-          {fm(lm.newContact)}
-        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          <a
+            href={`${orgModuleUrl(org, "contacts")}/import`}
+            className="inline-flex min-h-touch-target items-center px-2 text-sm font-semibold text-fg underline"
+          >
+            {fm(lm.importContacts)}
+          </a>
+          <a
+            href={`${orgModuleUrl(org, "contacts")}/new`}
+            className="inline-flex min-h-touch-target items-center rounded-md bg-surface-accent px-4 text-sm font-semibold text-fg-on-accent hover:bg-surface-accent-hover"
+          >
+            {fm(lm.newContact)}
+          </a>
+        </div>
       </header>
       <p role="status" className="min-h-5 text-sm text-fg-muted">
         {notice}
