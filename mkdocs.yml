@@ -92,6 +92,7 @@ nav:
       - "Documents and files": architecture/files.md
       - "Organisation directory": architecture/directory.md
       - "Subscription billing": architecture/billing.md
+      - "Usage metering": architecture/metering.md
   - Operations:
       - "Operations runbook": operations/runbook.md
       - "Connection pooling (PgBouncer)": operations/pgbouncer.md

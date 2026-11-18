@@ -49,6 +49,9 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 # NUMO9_TEST_CELERY_BROKER_URL points them (and only them) at it.
 CELERY_BROKER_URL = env_str("NUMO9_TEST_CELERY_BROKER_URL", "memory://")
 CELERY_RESULT_BACKEND = "cache+memory://"
+# Usage metering (S-06-T07): in-process stream; tests/test_metering.py also runs on Redis when
+# NUMO9_TEST_REDIS_URL is set.
+METERING_REDIS_URL = ""
 
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —
 # for local data only; never valid in staging/prod (they require NUMO9_FIELD_ENCRYPTION_KEYS).

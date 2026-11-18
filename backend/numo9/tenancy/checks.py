@@ -26,6 +26,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # A person's known sign-in devices (A-02-T07): a hash per browser/system, no business data.
         "accounts.KnownDevice",
         "tenancy.Practice",
+        # Usage metering (S-06-T07): the aggregator's position in the event stream (no tenant data).
+        "metering.StreamOffset",
         "tenancy.PracticeMember",
         "tenancy.Organisation",
         "tenancy.OrganisationMember",
