@@ -179,6 +179,8 @@ def detail(contact: Contact) -> dict[str, Any]:
     body["people"] = [_person(p) for p in _people(contact)]
     body["addresses"] = [_address(a) for a in _addresses(contact)]
     body["archived_at"] = contact.archived_at
+    alias_of = contact.merged_into
+    body["merged_into"] = _ref(alias_of, alias_of.display_name if alias_of else "")
     body["created_at"] = contact.created_at
     body["updated_at"] = contact.updated_at
     return body
@@ -194,7 +196,7 @@ def _queryset() -> QuerySet[Contact]:
 def _one(public_id: Any) -> Contact:
     found = (
         _queryset()
-        .select_related(*ACCOUNT_DEFAULTS, *TERM_DEFAULTS)
+        .select_related(*ACCOUNT_DEFAULTS, *TERM_DEFAULTS, "merged_into")
         .filter(public_id=public_id)
         .first()
     )
@@ -498,5 +500,88 @@ class ContactDuplicatesView(APIView):
                     }
                     for m in matches
                 ]
+            }
+        )
+
+
+# ---- merge (B-01-T12) ----------------------------------------------------------------------------
+
+
+class MergeSerializer(serializers.Serializer[Any]):
+    survivor = serializers.UUIDField()
+    merged = serializers.UUIDField()
+    field_sources = serializers.DictField(
+        child=serializers.ChoiceField(choices=[("survivor", "survivor"), ("merged", "merged")]),
+        required=False,
+    )
+
+
+def _pair(survivor: Any, merged: Any) -> tuple[Contact, Contact]:
+    return _one(survivor), _one(merged)
+
+
+def _refused(error: Any) -> ValidationError:
+    return ValidationError(
+        {"non_field_errors": [serializers.ErrorDetail(str(error), code=error.code)]}
+    )
+
+
+class ContactMergePreviewView(APIView):
+    @requires_permission(CONTACTS_MANAGE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="contacts_merge_preview",
+        summary="What merging two contacts would move (records per kind)",
+        parameters=[
+            OpenApiParameter("survivor", OpenApiTypes.UUID, required=True),
+            OpenApiParameter("merged", OpenApiTypes.UUID, required=True),
+        ],
+        responses={200: OpenApiTypes.OBJECT},
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        from .merge import MergeRefused, preview
+
+        incoming = MergeSerializer(data=request.query_params)
+        incoming.is_valid(raise_exception=True)
+        survivor, merged = _pair(
+            incoming.validated_data["survivor"], incoming.validated_data["merged"]
+        )
+        try:
+            rows = preview(survivor, merged)
+        except MergeRefused as error:
+            raise _refused(error) from None
+        return Response({"survivor": detail(survivor), "merged": detail(merged), "records": rows})
+
+
+class ContactMergeView(APIView):
+    @requires_permission(CONTACTS_MANAGE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="contacts_merge",
+        summary="Merge one contact into another (one transaction; the merged one stays an alias)",
+        request=MergeSerializer,
+        responses={200: OpenApiTypes.OBJECT},
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        from .merge import MergeRefused, merge_contacts
+
+        incoming = MergeSerializer(data=request.data)
+        incoming.is_valid(raise_exception=True)
+        survivor, merged = _pair(
+            incoming.validated_data["survivor"], incoming.validated_data["merged"]
+        )
+        try:
+            outcome = merge_contacts(
+                survivor, merged, fields=incoming.validated_data.get("field_sources") or {}
+            )
+        except MergeRefused as error:
+            raise _refused(error) from None
+        except DjangoValidationError as error:
+            raise drf_errors(error) from None
+        return Response(
+            {
+                "survivor": detail(_one(survivor.public_id)),
+                "moved": outcome["moved"],
+                "kept": outcome["kept"],
             }
         )

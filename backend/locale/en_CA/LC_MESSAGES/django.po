@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:08-0500\n"
+"POT-Creation-Date: 2026-11-18 15:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1327,6 +1327,42 @@ msgstr ""
 msgid "Include in emails"
 msgstr ""
 
+msgid "people"
+msgstr ""
+
+msgid "addresses"
+msgstr ""
+
+msgid "exemption certificates"
+msgstr ""
+
+msgid "credit limit overrides"
+msgstr ""
+
+msgid "statements sent"
+msgstr ""
+
+msgid "supplier statements"
+msgstr ""
+
+msgid "journal lines"
+msgstr ""
+
+msgid "Choose two different contacts."
+msgstr ""
+
+#, python-format
+msgid "%(contact)s was already merged into another contact."
+msgstr ""
+
+#, python-format
+msgid "%(a)s uses %(x)s and %(b)s uses %(y)s: contacts in different currencies can't be merged."
+msgstr ""
+
+#, python-format
+msgid "%(field)s can't be taken from the merged contact."
+msgstr ""
+
 msgid "Customer"
 msgstr ""
 
@@ -1427,6 +1463,12 @@ msgid "custom fields"
 msgstr ""
 
 msgid "Values of the organisation's custom fields, by field key (B-01-T09)."
+msgstr ""
+
+msgid "merged into"
+msgstr ""
+
+msgid "merged at"
 msgstr ""
 
 msgid "default sales account"
@@ -1541,9 +1583,6 @@ msgid "ISO 3166-1 two-letter code; CA for Canada."
 msgstr ""
 
 msgid "address"
-msgstr ""
-
-msgid "addresses"
 msgstr ""
 
 msgid "Use the two-letter country code, e.g. CA."
@@ -1711,9 +1750,6 @@ msgstr ""
 msgid "exemption certificate"
 msgstr ""
 
-msgid "exemption certificates"
-msgstr ""
-
 msgid "Enter the certificate number."
 msgstr ""
 
@@ -1779,9 +1815,6 @@ msgstr ""
 msgid "credit limit override"
 msgstr ""
 
-msgid "credit limit overrides"
-msgstr ""
-
 msgid "Outstanding"
 msgstr ""
 
@@ -1818,9 +1851,6 @@ msgstr ""
 msgid "statement sent"
 msgstr ""
 
-msgid "statements sent"
-msgstr ""
-
 msgid "Imported file"
 msgstr ""
 
@@ -1846,9 +1876,6 @@ msgid "File header → line field."
 msgstr ""
 
 msgid "supplier statement"
-msgstr ""
-
-msgid "supplier statements"
 msgstr ""
 
 msgid "date"
@@ -3567,9 +3594,6 @@ msgid "tax code"
 msgstr ""
 
 msgid "journal line"
-msgstr ""
-
-msgid "journal lines"
 msgstr ""
 
 msgid "next number"

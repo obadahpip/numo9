@@ -436,3 +436,15 @@ features `accounting.contacts.read` / `.write`, tenant-sweep factory `contacts.C
 | `GET` / `PATCH contacts/<id>` | Every field, people, addresses, sales/purchase defaults, custom fields; `people` / `addresses` in a PATCH replace the lists (rows with an `id` updated, missing ones removed) |
 | `POST contacts/<id>/archive`, `…/restore` | Archive keeps the history |
 | `GET contacts/duplicates` | `q` (name, trigram), `email`, `bn`, `tax_id`, `exclude`: possible duplicates with their reasons |
+
+## Merge (B-01-T12)
+
+`numo9.contacts.merge.merge_contacts(survivor, merged, fields=)` in one transaction: chosen fields
+copied from the merged contact, roles united, every reference re-pointed through the registry
+(`register_reference(model, field, "move" | "keep")`), the merged contact kept as an archived alias
+(`merged_into`, number and name kept; `resolve()` follows it), one audit event
+`contacts.contact.merged` listing what moved. Posted journal lines are append-only, so they are
+**kept** on the alias. Refused: same contact, already merged, different currencies.
+`tests/test_contacts_merge.py` fails when a foreign key to `Contact` isn't registered.
+API: `GET contacts/merge/preview?survivor=&merged=` (counts per kind of record) and
+`POST contacts/merge {survivor, merged, field_sources: {field: "survivor" | "merged"}}`.

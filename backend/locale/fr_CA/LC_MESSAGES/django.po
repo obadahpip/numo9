@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:08-0500\n"
+"POT-Creation-Date: 2026-11-18 15:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1397,6 +1397,44 @@ msgstr "personne connectée à sa place"
 msgid "Include in emails"
 msgstr ""
 
+msgid "people"
+msgstr ""
+
+#, fuzzy
+#| msgid "IP address"
+msgid "addresses"
+msgstr "Adresse IP"
+
+msgid "exemption certificates"
+msgstr ""
+
+msgid "credit limit overrides"
+msgstr "dérogations à la limite de crédit"
+
+msgid "statements sent"
+msgstr "relevés envoyés"
+
+msgid "supplier statements"
+msgstr "relevés des fournisseurs"
+
+msgid "journal lines"
+msgstr ""
+
+msgid "Choose two different contacts."
+msgstr ""
+
+#, python-format
+msgid "%(contact)s was already merged into another contact."
+msgstr ""
+
+#, python-format
+msgid "%(a)s uses %(x)s and %(b)s uses %(y)s: contacts in different currencies can't be merged."
+msgstr ""
+
+#, python-format
+msgid "%(field)s can't be taken from the merged contact."
+msgstr ""
+
 msgid "Customer"
 msgstr ""
 
@@ -1507,6 +1545,12 @@ msgid "custom fields"
 msgstr ""
 
 msgid "Values of the organisation's custom fields, by field key (B-01-T09)."
+msgstr ""
+
+msgid "merged into"
+msgstr ""
+
+msgid "merged at"
 msgstr ""
 
 msgid "default sales account"
@@ -1634,11 +1678,6 @@ msgstr "Code ISO 3166-1 à deux lettres; CA pour le Canada."
 #, fuzzy
 #| msgid "IP address"
 msgid "address"
-msgstr "Adresse IP"
-
-#, fuzzy
-#| msgid "IP address"
-msgid "addresses"
 msgstr "Adresse IP"
 
 msgid "Use the two-letter country code, e.g. CA."
@@ -1822,9 +1861,6 @@ msgstr ""
 msgid "exemption certificate"
 msgstr ""
 
-msgid "exemption certificates"
-msgstr ""
-
 #, fuzzy
 #| msgid "Enter the English text."
 msgid "Enter the certificate number."
@@ -1897,9 +1933,6 @@ msgstr "utilisée le"
 msgid "credit limit override"
 msgstr "dérogation à la limite de crédit"
 
-msgid "credit limit overrides"
-msgstr "dérogations à la limite de crédit"
-
 msgid "Outstanding"
 msgstr "Impayés"
 
@@ -1936,9 +1969,6 @@ msgstr "envoyé par"
 msgid "statement sent"
 msgstr "relevé envoyé"
 
-msgid "statements sent"
-msgstr "relevés envoyés"
-
 msgid "Imported file"
 msgstr "Fichier importé"
 
@@ -1965,9 +1995,6 @@ msgstr "En-tête du fichier → champ de la ligne."
 
 msgid "supplier statement"
 msgstr "relevé du fournisseur"
-
-msgid "supplier statements"
-msgstr "relevés des fournisseurs"
 
 #, fuzzy
 #| msgid "Due date"
@@ -3791,9 +3818,6 @@ msgid "tax code"
 msgstr "code d’erreur"
 
 msgid "journal line"
-msgstr ""
-
-msgid "journal lines"
 msgstr ""
 
 msgid "next number"

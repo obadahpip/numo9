@@ -201,6 +201,18 @@ class Contact(AuditedModel, OrgOwnedModel):
         help_text=_("Values of the organisation's custom fields, by field key (B-01-T09)."),
     )
 
+    # Merge (B-01-T12): a merged contact stays as an archived alias of the one it was merged into,
+    # so its number still resolves and records that can't move (posted journals) still show it.
+    merged_into = models.ForeignKey(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="aliases",
+        verbose_name=_("merged into"),
+    )
+    merged_at = models.DateTimeField(_("merged at"), null=True, blank=True)
+
     # Sales and purchase defaults (B-01-T06): suggested on this contact's invoices and bills.
     sales_account = models.ForeignKey(
         "ledger.Account",
