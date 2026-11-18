@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     "numo9.platform",
     # Bulk edit and bulk actions over a practice's organisations (V-03).
     "numo9.bulk",
+    # Practice staff management: list, assignments, suspend/remove, dormant, activity (V-05).
+    "numo9.staff",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
@@ -498,6 +500,16 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.entitlements.expire_trials": {
         "task": "numo9.entitlements.expire_trials",
         "schedule": crontab(minute="*/5"),
+    },
+    # Dormant practice staff (V-05-T06): admins alerted on day 60 without a sign-in.
+    "numo9.staff.dormant_alerts": {
+        "task": "numo9.staff.dormant_alerts",
+        "schedule": crontab(minute=23, hour=12),  # 12:23 UTC = 07:23 / 08:23 Toronto
+    },
+    # Staff activity heatmap (V-05-T07): yesterday and today recounted from the audit log.
+    "numo9.staff.aggregate_activity": {
+        "task": "numo9.staff.aggregate_activity",
+        "schedule": crontab(minute=37),  # hourly: today's squares fill in during the day
     },
     # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
     "numo9.platform.snapshot_metrics": {

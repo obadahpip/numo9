@@ -49,6 +49,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 30 | Directory — bulk selection and actions | V-03-T08 | Row and page checkboxes, bottom selection bar "27 selected · Select all 1,240 matching", action menu |
 | 31 | Bulk action — preview | V-03-T04, T09 | Counts (will change / no change / no access), diff table field current → new (first 50 + count), apply |
 | 32 | Bulk action — progress and results | V-03-T05, T10 | Drawer with live counters, cancel the rest, results filtered by outcome with the reason, results CSV |
+| 33 | Practice staff — list | V-05-T02, T06, T09 | Name, role, organisations count, last active, status (active / dormant / suspended / pending), dormant widget with Suspend |
+| 34 | Practice staff — detail with heatmap | V-05-T07, T08 | 12-month activity heatmap from the audit log, numbers in tooltips and a table alternative, Suspend / Remove |
+| 35 | Practice staff — assignments | V-05-T04 | Organisations (direct) and groups (with role) a person works on, search to add, remove; effective at once |
 
 ## 1. Application shell
 
@@ -451,3 +454,32 @@ old system with French headers, saved in Windows-1252.
 | 1 | Progress | Live counters (succeeded, skipped, failed, waiting); the job keeps running if the drawer is closed (job tray) |
 | 2 | Cancel | Stops before the next organisation: done rows stay done, the rest are *cancelled* — never a silent partial result |
 | 3 | Results | Every organisation has an outcome and a reason; filter by outcome; download the CSV |
+
+## 33. Practice staff — list (V-05-T01)
+
+![Staff list](wireframes/34-staff-list.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Dormant rule | A person who hasn't signed in for 60 days (configurable) is *dormant* — day 60, not 59 |
+| 2 | Staff table | Name, practice role, organisations they can open, last active, status: active, dormant, suspended, pending invitation |
+| 3 | Dormant widget | The practice admins' dashboard widget lists dormant staff with one-click *Suspend access* |
+
+## 34. Practice staff — detail with heatmap (V-05-T01)
+
+![Staff detail](wireframes/35-staff-detail.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Heatmap | One square per day for 12 months; colour scale **and** the number in the tooltip (never colour alone); counts = the audit log's changes by that person |
+| 2 | Table alternative | The same numbers as a table (screen readers, exact values) |
+| 3 | Suspend / Remove | Suspend keeps the history and blocks access; remove revokes every organisation; the last practice admin can't be removed or suspended |
+
+## 35. Practice staff — assignments (V-05-T01)
+
+![Staff assignments](wireframes/36-staff-assignments.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Organisations | Direct assignments: search to add, remove — effective on the next request |
+| 2 | Groups | Group assignments with their role (every organisation filed in the group or its sub-groups) |

@@ -125,8 +125,12 @@ def _organisation_roles(user: Any, organisation: Organisation) -> Q:
     serving = (
         PracticeAssignment.objects.filter(organisation=organisation, active=True)
         .filter(
-            Q(practice__members__user=user, practice__members__role__in=PRACTICE_WIDE_ROLES)
-            | Q(assigned_staff__user=user)
+            Q(
+                practice__members__user=user,
+                practice__members__role__in=PRACTICE_WIDE_ROLES,
+                practice__members__suspended_at__isnull=True,
+            )
+            | Q(assigned_staff__user=user, assigned_staff__suspended_at__isnull=True)
         )
         .values_list("practice_id", flat=True)
         .distinct()
@@ -134,9 +138,9 @@ def _organisation_roles(user: Any, organisation: Organisation) -> Q:
     practice_ids = list(serving)
     if practice_ids:
         practice_roles = set(
-            PracticeMember.objects.filter(user=user, practice_id__in=practice_ids).values_list(
-                "role", flat=True
-            )
+            PracticeMember.objects.filter(
+                user=user, practice_id__in=practice_ids, suspended_at__isnull=True
+            ).values_list("role", flat=True)
         )
         roles |= Q(is_system=True, scope=RoleScope.PRACTICE, key__in=practice_roles)
         roles |= Q(
@@ -182,7 +186,7 @@ def practice_permissions(user: Any, practice: Practice) -> frozenset[str]:
 
     def compute() -> frozenset[str]:
         role = (
-            PracticeMember.objects.filter(user=user, practice=practice)
+            PracticeMember.objects.filter(user=user, practice=practice, suspended_at__isnull=True)
             .values_list("role", flat=True)
             .first()
         )

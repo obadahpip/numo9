@@ -683,6 +683,21 @@ BULK_NOT_PREVIEW = define(
     status.HTTP_409_CONFLICT,
 )
 
+# ---- practice staff (V-05) ---------------------------------------------------------------------
+STAFF_LAST_ADMIN = define(
+    "staff.last_admin",
+    _(
+        "%(name)s is the practice's only active practice admin. Make someone else a practice "
+        "admin first."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+STAFF_NOT_SUSPENDED = define(
+    "staff.not_suspended",
+    _("%(name)s isn't suspended."),
+    status.HTTP_409_CONFLICT,
+)
+
 # ---- free trial (U-05) -------------------------------------------------------------------------
 TRIAL_ALREADY_USED = define(
     "entitlements.trial_already_used",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:53-0500\n"
+"POT-Creation-Date: 2026-11-17 19:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2708,6 +2708,14 @@ msgstr ""
 msgid "This bulk action was already applied or cancelled."
 msgstr ""
 
+#, python-format
+msgid "%(name)s is the practice's only active practice admin. Make someone else a practice admin first."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't suspended."
+msgstr ""
+
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr ""
 
@@ -4807,6 +4815,35 @@ msgstr ""
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr ""
 
+#, python-format
+msgid "%(name)s hasn't signed in for %(days)s days"
+msgstr ""
+
+#, python-format
+msgid "%(name)s (%(email)s) hasn't signed in to %(practice)s for %(days)s days but can still open the practice's clients. If they no longer need access, suspend it: %(link)s"
+msgstr ""
+
+msgid "staff member"
+msgstr ""
+
+msgid "inactive since"
+msgstr ""
+
+msgid "alerted at"
+msgstr ""
+
+msgid "admins alerted"
+msgstr ""
+
+msgid "dormant staff alert"
+msgstr ""
+
+msgid "dormant staff alerts"
+msgstr ""
+
+msgid "daily staff activity"
+msgstr ""
+
 msgid "Tenancy"
 msgstr ""
 
@@ -4841,6 +4878,12 @@ msgid "set-up pending"
 msgstr ""
 
 msgid "practice admins must use two-factor authentication"
+msgstr ""
+
+msgid "dormant after (days without signing in)"
+msgstr ""
+
+msgid "suspended at"
 msgstr ""
 
 msgid "practice member"
@@ -5134,9 +5177,6 @@ msgid "organisation tag"
 msgstr ""
 
 msgid "organisation tags"
-msgstr ""
-
-msgid "staff member"
 msgstr ""
 
 msgid "group staff assignment"

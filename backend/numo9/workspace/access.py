@@ -71,9 +71,9 @@ def bump() -> None:
 
 def _resolve(user: Any) -> frozenset[int]:
     assigned = list(
-        GroupStaffAssignment.objects.filter(practice_member__user=user).values_list(
-            "group__path", "group__practice_id"
-        )
+        GroupStaffAssignment.objects.filter(
+            practice_member__user=user, practice_member__suspended_at__isnull=True
+        ).values_list("group__path", "group__practice_id")
     )
     if not assigned:
         return frozenset()
@@ -118,9 +118,9 @@ def group_roles(user: Any, organisation: Any) -> frozenset[str]:
     if organisation.pk not in group_organisation_ids(user):
         return frozenset()
     assigned = list(
-        GroupStaffAssignment.objects.filter(practice_member__user=user).values_list(
-            "group__path", "group__practice_id", "role"
-        )
+        GroupStaffAssignment.objects.filter(
+            practice_member__user=user, practice_member__suspended_at__isnull=True
+        ).values_list("group__path", "group__practice_id", "role")
     )
     roles: set[str] = set()
     for path, practice, role in assigned:

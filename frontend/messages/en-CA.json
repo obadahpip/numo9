@@ -1823,5 +1823,53 @@
       "label": "Account menu",
       "orgSettings": "Organisation settings"
     }
+  },
+  "staff": {
+    "activity": {
+      "chart": "Activity, last 12 months: {total, plural, one {# change} other {# changes}} in the audit log",
+      "count": "Changes",
+      "date": "Day",
+      "day": "{count, plural, =0 {No changes} one {# change} other {# changes}} on {date}",
+      "empty": "No activity in the last 12 months.",
+      "less": "Less",
+      "more": "More",
+      "showChart": "Show as a chart",
+      "showTable": "Show as a table",
+      "title": "Activity — last 12 months"
+    },
+    "assignments": {
+      "add": "Add {name}",
+      "addGroup": "Assign to group",
+      "choose": "Choose…",
+      "failed": "We couldn't save the change. Try again.",
+      "group": "Group",
+      "groupLine": "{name} · {role}",
+      "groups": "Groups (every organisation in them)",
+      "immediate": "Changes apply at once: the next page they open already sees them.",
+      "none": "None yet.",
+      "organisations": "Organisations (direct)",
+      "remove": "Remove {name}",
+      "role": "Role in the group",
+      "saved": "Saved",
+      "searchOrganisations": "Add an organisation",
+      "title": "{name} works on"
+    },
+    "breadcrumb": "Staff",
+    "dormant": {
+      "intro": "No sign-in for {days} days or more, but they can still open your clients.",
+      "line": "{name} — {days, plural, one {# day} other {# days}} without signing in",
+      "suspend": "Suspend access for {name}",
+      "suspended": "{name}'s access is suspended.",
+      "title": "Dormant staff"
+    },
+    "loadFailed": "We couldn't load this staff member",
+    "personLine": "{role} · {email}",
+    "retry": "Try again",
+    "role": {
+      "accountant": "Accountant",
+      "payroll": "Payroll specialist",
+      "readOnly": "Read only",
+      "reviewer": "Reviewer"
+    }
   }
 }

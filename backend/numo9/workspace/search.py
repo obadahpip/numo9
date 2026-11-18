@@ -118,7 +118,9 @@ def directory_scope(user: Any, practice: Practice) -> QuerySet[OrgDirectorySumma
     none = OrgDirectorySummary.objects.none()
     if user is None or not user.is_authenticated or not user.is_active:
         return none
-    member = PracticeMember.objects.filter(practice=practice, user=user).first()
+    member = PracticeMember.objects.filter(
+        practice=practice, user=user, suspended_at__isnull=True
+    ).first()
     if member is None:
         return none
     assignments = PracticeAssignment.objects.filter(practice=practice, active=True)

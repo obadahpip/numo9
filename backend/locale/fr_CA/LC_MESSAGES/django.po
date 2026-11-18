@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:53-0500\n"
+"POT-Creation-Date: 2026-11-17 19:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2873,6 +2873,14 @@ msgstr "Sélectionnez au plus %(limit)s organisations pour une action groupée."
 msgid "This bulk action was already applied or cancelled."
 msgstr "Cette action groupée a déjà été appliquée ou annulée."
 
+#, python-format
+msgid "%(name)s is the practice's only active practice admin. Make someone else a practice admin first."
+msgstr "%(name)s est le seul administrateur actif du cabinet. Nommez d’abord une autre personne administrateur du cabinet."
+
+#, python-format
+msgid "%(name)s isn't suspended."
+msgstr "%(name)s n’est pas suspendu."
+
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
 
@@ -5068,6 +5076,35 @@ msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr "Afficher les valeurs masquées comme le NAS et les numéros de compte bancaire (mot de passe confirmé, journalisé)"
 
+#, python-format
+msgid "%(name)s hasn't signed in for %(days)s days"
+msgstr "%(name)s ne s’est pas connecté depuis %(days)s jours"
+
+#, python-format
+msgid "%(name)s (%(email)s) hasn't signed in to %(practice)s for %(days)s days but can still open the practice's clients. If they no longer need access, suspend it: %(link)s"
+msgstr "%(name)s (%(email)s) ne s’est pas connecté à %(practice)s depuis %(days)s jours, mais peut toujours ouvrir les clients du cabinet. S’il n’a plus besoin d’accès, suspendez-le : %(link)s"
+
+msgid "staff member"
+msgstr "membre du personnel"
+
+msgid "inactive since"
+msgstr "inactif depuis"
+
+msgid "alerted at"
+msgstr "alerté le"
+
+msgid "admins alerted"
+msgstr "administrateurs alertés"
+
+msgid "dormant staff alert"
+msgstr "alerte de personnel inactif"
+
+msgid "dormant staff alerts"
+msgstr "alertes de personnel inactif"
+
+msgid "daily staff activity"
+msgstr "activité quotidienne du personnel"
+
 msgid "Tenancy"
 msgstr ""
 
@@ -5109,6 +5146,12 @@ msgstr ""
 
 msgid "practice admins must use two-factor authentication"
 msgstr "les administrateurs du cabinet doivent utiliser l’authentification à deux facteurs"
+
+msgid "dormant after (days without signing in)"
+msgstr "inactif après (jours sans connexion)"
+
+msgid "suspended at"
+msgstr "suspendu le"
 
 msgid "practice member"
 msgstr ""
@@ -5402,9 +5445,6 @@ msgstr "étiquette d’organisation"
 
 msgid "organisation tags"
 msgstr "étiquettes d’organisation"
-
-msgid "staff member"
-msgstr "membre du personnel"
 
 msgid "group staff assignment"
 msgstr "affectation au groupe"
