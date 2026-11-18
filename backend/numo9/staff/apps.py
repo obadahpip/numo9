@@ -8,3 +8,8 @@ class StaffConfig(AppConfig):
     name = "numo9.staff"
     label = "staff"
     verbose_name = "Practice staff"
+
+    def ready(self) -> None:
+        from .assignments import connect
+
+        connect()

@@ -1823,5 +1823,34 @@
       "label": "Account menu",
       "orgSettings": "Organisation settings"
     }
+  },
+  "staff": {
+    "assignments": {
+      "add": "Add {name}",
+      "addGroup": "Assign to group",
+      "choose": "Choose…",
+      "failed": "We couldn't save the change. Try again.",
+      "group": "Group",
+      "groupLine": "{name} · {role}",
+      "groups": "Groups (every organisation in them)",
+      "immediate": "Changes apply at once: the next page they open already sees them.",
+      "none": "None yet.",
+      "organisations": "Organisations (direct)",
+      "remove": "Remove {name}",
+      "role": "Role in the group",
+      "saved": "Saved",
+      "searchOrganisations": "Add an organisation",
+      "title": "{name} works on"
+    },
+    "breadcrumb": "Staff",
+    "loadFailed": "We couldn't load this staff member",
+    "personLine": "{role} · {email}",
+    "retry": "Try again",
+    "role": {
+      "accountant": "Accountant",
+      "payroll": "Payroll specialist",
+      "readOnly": "Read only",
+      "reviewer": "Reviewer"
+    }
   }
 }
