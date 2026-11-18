@@ -93,6 +93,7 @@ nav:
       - "Subscription billing": architecture/billing.md
   - Operations:
       - "Operations runbook": operations/runbook.md
+      - "Connection pooling (PgBouncer)": operations/pgbouncer.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

@@ -4,10 +4,9 @@ import base64
 import hashlib
 import json
 
-import dj_database_url
-
 from .base import *  # noqa: F403
 from .base import FIELD_ENCRYPTION_KEYS, INSTALLED_APPS
+from .database import database
 from .env import env_list, env_str
 
 # Test/CI-only: `manage.py lintmigrations` (S-01-T08) and the test-only app with concrete
@@ -34,7 +33,8 @@ SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")
 DEBUG = False
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", ["testserver", "localhost"])
 
-DATABASES = {"default": dj_database_url.parse(env_str("DATABASE_URL", "sqlite://:memory:"))}
+# NUMO9_DB_POOL=pgbouncer runs the suite through PgBouncer in transaction mode (S-06-T01).
+DATABASES = {"default": database(env_str("DATABASE_URL", "sqlite://:memory:"), conn_max_age=0)}
 
 # Fast hashing in tests only (tests/test_auth_signup.py checks the Argon2id configuration of base).
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
