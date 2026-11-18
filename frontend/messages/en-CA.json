@@ -977,6 +977,40 @@
       "statements": "Statements"
     }
   },
+  "demo": {
+    "bar": {
+      "outbox": "Demo outbox",
+      "region": "Demo organisation",
+      "reset": "Reset demo",
+      "tag": "Demo",
+      "text": "You're exploring Maple & Pine Supply Co., a sample company. Nothing here is real and no email leaves Numo9.",
+      "tour": "Take the tour",
+      "trial": "Start my free trial"
+    },
+    "cancel": "Cancel",
+    "close": "Close",
+    "failed": "That didn't work: {reason}",
+    "outbox": {
+      "empty": "No email yet. Send a statement from a contact to see one here.",
+      "line": "To {to} · {when}",
+      "text": "Emails this demo would have sent. They were kept here, never sent.",
+      "title": "Demo outbox"
+    },
+    "reset": {
+      "confirm": "Reset",
+      "done": "The demo is back to its sample data.",
+      "progress": "Resetting the demo…",
+      "text": "Everything you added or changed goes away and the sample data comes back as it was.",
+      "title": "Reset the demo?"
+    },
+    "trial": {
+      "confirm": "Start the trial",
+      "name": "Your organisation's name",
+      "signUpFirst": "Create your free account first.",
+      "text": "We create a new, empty organisation with a 30-day free trial. The sample data stays behind and the demo is deleted.",
+      "title": "Start your free trial"
+    }
+  },
   "directory": {
     "breadcrumb": "Directory",
     "cancel": "Cancel",

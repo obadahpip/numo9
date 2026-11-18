@@ -91,3 +91,23 @@ def test_trial_already_used_keeps_the_demo() -> None:
     assert demo.status == OrganisationStatus.DEMO
     with org_context(demo):
         assert Contact.objects.count() == 25
+
+
+def test_reset_and_outbox_endpoints() -> None:
+    from numo9.demo.models import DemoOutbox
+
+    demo = create_demo()
+    user = User.objects.create_user("o2@maplepine.example", password="x" * 12)
+    browser = _owner(demo, user)
+    with org_context(demo):
+        Contact(organisation=demo, display_name="Visitor Co.", roles=["customer"]).save()
+        DemoOutbox(organisation=demo, to_email="a@b.example", subject="Statement").save()
+    reset = browser.post(f"/api/v1/o/{demo.public_id}/demo/reset")
+    assert reset.status_code == 200 and reset.json() == {"seed_version": 1}
+    with org_context(demo):
+        assert Contact.objects.count() == 25
+    outbox = browser.get(f"/api/v1/o/{demo.public_id}/demo/outbox").json()["results"]
+    assert [row["subject"] for row in outbox] == ["Statement"]
+    real = Organisation.objects.create(name="Real Ltd.")
+    owner = _owner(real, User.objects.create_user("r@real.example", password="x" * 12))
+    assert owner.post(f"/api/v1/o/{real.public_id}/demo/reset").status_code == 409

@@ -36,6 +36,7 @@ from .cloning import create_demo
 from .convert import NotADemo, SignUpFirst, convert_to_trial
 from .exclusions import is_demo
 from .models import DemoOutbox
+from .reset import reset_demo
 from .users import make_demo_user
 
 CLOSE = "organisation.close"
@@ -85,6 +86,52 @@ class DemoConvertView(APIView):
             {"id": str(organisation.public_id), "name": organisation.name},
             status=status.HTTP_201_CREATED,
         )
+
+
+class DemoResetView(APIView):
+    queryset = DemoOutbox._base_manager.none()  # tenant sweep: organisation-scoped
+
+    @requires_permission(CLOSE)
+    @extend_schema(
+        operation_id="demo_reset",
+        summary="Reset the demo to its sample data",
+        request=None,
+        responses={
+            200: inline_serializer("DemoReset", {"seed_version": serializers.IntegerField()})
+        },
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        demo = _demo()
+        reset_demo(demo)
+        demo.refresh_from_db()
+        return Response({"seed_version": demo.demo_seed_version})
+
+
+class DemoOutboxItemSerializer(serializers.ModelSerializer[DemoOutbox]):
+    id = serializers.IntegerField(source="pk")
+
+    class Meta:
+        model = DemoOutbox
+        fields = ("id", "to_email", "subject", "text_body", "kind", "created_at")
+
+
+class DemoOutboxView(APIView):
+    queryset = DemoOutbox._base_manager.none()  # tenant sweep: rows of DemoOutbox
+
+    @requires_permission(VIEW)
+    @extend_schema(
+        operation_id="demo_outbox",
+        summary="Emails the demo would have sent (never sent), newest first",
+        responses={
+            200: inline_serializer(
+                "DemoOutboxPage", {"results": DemoOutboxItemSerializer(many=True)}
+            )
+        },
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        demo = _demo()
+        rows = DemoOutbox.objects.filter(organisation=demo).order_by("-created_at", "-pk")[:100]
+        return Response({"results": DemoOutboxItemSerializer(rows, many=True).data})
 
 
 #: Anonymous demo sessions last a working day; the account can't sign in again (no password).

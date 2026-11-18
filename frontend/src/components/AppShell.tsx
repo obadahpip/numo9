@@ -8,6 +8,7 @@ import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
 import { ImpersonationBar } from "@/console/impersonation/ImpersonationBar";
+import { DemoBar } from "@/demo/DemoBar";
 import { TrialChip } from "@/entitlements/TrialChip";
 import { PaymentDueNotice } from "@/entitlements/PaymentDueNotice";
 import { ReadOnlyNotice } from "@/entitlements/ReadOnlyNotice";
@@ -165,6 +166,7 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
           <ImpersonationBar />
           {org ? (
             <>
+              <DemoBar org={org} />
               <ReadOnlyNotice />
               <PaymentDueNotice />
             </>
