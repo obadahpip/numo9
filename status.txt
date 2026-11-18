@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 338   Remaining: 2449   Progress: 12.13%
+TOTAL ATOMIC TASKS: 2787   Completed: 339   Remaining: 2448   Progress: 12.16%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -454,7 +454,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [S-06]
 ✅ S-06-T01 — PgBouncer transaction pooling configured; Django CONN_MAX_AGE tuned; server-side cursors disabled where incompatible
-❌ S-06-T02 — Partition strategy ADR (journal_line, audit_event: range by month + org_id index)
+✅ S-06-T02 — Partition strategy ADR (journal_line, audit_event: range by month + org_id index)
 ❌ S-06-T03 — pg_partman setup and migration creating partitioned ledger_journalline and audit_event parents
 ❌ S-06-T04 — Celery beat job pre-creating partitions 3 months ahead + alert if missing
 ❌ S-06-T07 — Usage-metering event API (meter(org, key, qty)) async via Redis stream → daily aggregates table
