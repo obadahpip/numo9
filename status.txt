@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 316   Remaining: 2471   Progress: 11.34%
+TOTAL ATOMIC TASKS: 2787   Completed: 328   Remaining: 2459   Progress: 11.77%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -428,18 +428,18 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-06-T14 — Security tests: RBAC on all /platform endpoints; impersonation limits
 
 [V-03]
-❌ V-03-T01 — Wireframes: selection bar, preview diff, progress, results
-❌ V-03-T02 — BulkJob + BulkJobRow models (action, params, status, outcome, message)
-❌ V-03-T03 — Safe-settings whitelist registry + validators
-❌ V-03-T04 — Preview service (computes diffs without writing)
-❌ V-03-T05 — Executor Celery task, per-row transaction, permission check per org, resumable
-❌ V-03-T06 — Actions: group, tags, staff, settings, message (A-07), export (CSV/XLSX)
-❌ V-03-T07 — APIs: create preview, confirm, cancel, status stream (SSE/polling), results CSV
-❌ V-03-T08 — Selection model in directory (page + "all matching" by query)
-❌ V-03-T09 — Preview diff UI + confirm
-❌ V-03-T10 — Progress drawer + results table
-❌ V-03-T11 — Audit per org (actor, bulk_job_id)
-❌ V-03-T12 — Load test: 200-org job completes, all rows have outcome
+✅ V-03-T01 — Wireframes: selection bar, preview diff, progress, results
+✅ V-03-T02 — BulkJob + BulkJobRow models (action, params, status, outcome, message)
+✅ V-03-T03 — Safe-settings whitelist registry + validators
+✅ V-03-T04 — Preview service (computes diffs without writing)
+✅ V-03-T05 — Executor Celery task, per-row transaction, permission check per org, resumable
+✅ V-03-T06 — Actions: group, tags, staff, settings, message (A-07), export (CSV/XLSX)
+✅ V-03-T07 — APIs: create preview, confirm, cancel, status stream (SSE/polling), results CSV
+✅ V-03-T08 — Selection model in directory (page + "all matching" by query)
+✅ V-03-T09 — Preview diff UI + confirm
+✅ V-03-T10 — Progress drawer + results table
+✅ V-03-T11 — Audit per org (actor, bulk_job_id)
+✅ V-03-T12 — Load test: 200-org job completes, all rows have outcome
 
 [V-05]
 ❌ V-05-T01 — Wireframes staff list, detail with heatmap, assignment editor

@@ -15,6 +15,11 @@ import { useLocale } from "next-intl";
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { apiRequest } from "@/auth/client";
+import type { BulkJob } from "@/bulk/api";
+import { BulkActionDialog } from "@/bulk/BulkActionDialog";
+import { BulkProgressDrawer } from "@/bulk/BulkProgressDrawer";
+import { SelectionBar, type BulkActionKey } from "@/bulk/SelectionBar";
+import { EMPTY_SELECTION, type BulkSelection } from "@/bulk/selection";
 import { useFormatMessage, type FormatMessage } from "@/i18n";
 import { orgModuleUrl, practiceGroupsUrl } from "@/routing/routes";
 
@@ -120,6 +125,8 @@ function typing(target: EventTarget | null): boolean {
 }
 
 export interface DirectoryScreenProps {
+  /** A bulk action chosen in the selection bar (V-03): the selection as the API takes it. */
+  onBulkAction?: (action: BulkActionKey, selection: BulkSelection) => void;
   /** Practice public id (`/p/:practice/directory`). */
   practice: string;
   /** Navigation (Next.js `router.push`); defaults to `window.location.assign`. */
@@ -141,7 +148,13 @@ export interface DirectoryScreenProps {
  * - keyboard: `↓` from search into the rows, `↑/↓` move, `Enter` opens, `Ctrl/⌘+Enter` new tab;
  * - first-run empty, no-results, loading skeleton and error-with-retry states.
  */
-export function DirectoryScreen({ practice, navigate, openTab, demoHref }: DirectoryScreenProps) {
+export function DirectoryScreen({
+  practice,
+  navigate,
+  openTab,
+  demoHref,
+  onBulkAction,
+}: DirectoryScreenProps) {
   const t = useFormatMessage();
   const locale = useLocale();
   const labels = useGridLabels(t);
@@ -158,6 +171,13 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
   const [announcement, setAnnouncement] = useState("");
   const [height, setHeight] = useState(560);
   const [groupBy, setGroupBy] = useState<"" | "group">("");
+  // V-03-T08: ticked rows, or every organisation matching (the server's query).
+  const [selection, setSelection] = useState<BulkSelection>(EMPTY_SELECTION);
+  // V-03-T09/T10: the bulk action being prepared, then the job it started.
+  const [bulk, setBulk] = useState<{ action: BulkActionKey; selection: BulkSelection } | null>(
+    null,
+  );
+  const [bulkJob, setBulkJob] = useState<BulkJob | null>(null);
   const groupById = useId();
   const gridBox = useRef<HTMLDivElement>(null);
 
@@ -204,6 +224,10 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
       string[],
     ];
     return { q: query, filters, archived, sort, columns: shown };
+  }, [requestKey]);
+  // "All matching" belongs to the search and filters it was made from: a new query clears it.
+  useEffect(() => {
+    setSelection((current) => (current.mode === "all" ? EMPTY_SELECTION : current));
   }, [requestKey]);
   useEffect(() => {
     if (!viewsLoaded) return; // the default view decides the first request
@@ -318,6 +342,13 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
 
   const view = useMemo(() => toView(state), [state]);
   const rows: DirectoryRow[] = page?.results ?? [];
+  const selectedIds = useMemo(
+    () =>
+      selection.mode === "all"
+        ? new Set((page?.results ?? []).map((row) => row.id))
+        : selection.ids,
+    [selection, page],
+  );
   const total = page?.total ?? 0;
   const chips = FILTER_KEYS.flatMap((key) =>
     (state.filters[key] ?? []).map((value) => ({ key, value })),
@@ -459,6 +490,27 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
             ) : (
               <DataGrid
                 manual
+                selectable
+                selectedIds={selectedIds}
+                onSelectionChange={(ids) => setSelection({ mode: "ids", ids })}
+                bulkActions={() => (
+                  <SelectionBar
+                    selection={selection}
+                    matching={page?.count ?? rows.length}
+                    onSelectAll={() =>
+                      setSelection({
+                        mode: "all",
+                        query: { q: state.q, filters: state.filters, archived: state.archived },
+                        count: page?.count ?? rows.length,
+                      })
+                    }
+                    onAction={(action) =>
+                      onBulkAction
+                        ? onBulkAction(action, selection)
+                        : setBulk({ action, selection })
+                    }
+                  />
+                )}
                 data={rows}
                 columns={columns}
                 getRowId={(row) => row.id}
@@ -544,6 +596,26 @@ export function DirectoryScreen({ practice, navigate, openTab, demoHref }: Direc
           practice={practice}
           onClose={() => setCreating(false)}
           onCreated={(id) => go(orgModuleUrl(id, "home"))}
+        />
+      ) : null}
+      {bulk ? (
+        <BulkActionDialog
+          practice={practice}
+          action={bulk.action}
+          selection={bulk.selection}
+          onClose={() => setBulk(null)}
+          onStarted={(job) => {
+            setBulk(null);
+            setSelection(EMPTY_SELECTION);
+            setBulkJob(job);
+          }}
+        />
+      ) : null}
+      {bulkJob ? (
+        <BulkProgressDrawer
+          job={bulkJob}
+          onClose={() => setBulkJob(null)}
+          onFinished={() => setAttempt((n) => n + 1)}
         />
       ) : null}
     </div>

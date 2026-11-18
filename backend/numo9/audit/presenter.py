@@ -63,6 +63,12 @@ ACTION_LABELS: dict[str, Promise] = {
     "files.document.downloaded": _("File opened"),
     "files.inbound.processed": _("Email received"),
     "platform.impersonation.started": _("Numo9 support signed in as this user"),
+    "bulk.group.applied": _("Groups changed in a bulk action"),
+    "bulk.tags.applied": _("Tags changed in a bulk action"),
+    "bulk.staff.applied": _("Assigned staff changed in a bulk action"),
+    "bulk.settings.applied": _("Settings changed in a bulk action"),
+    "bulk.message.applied": _("Message sent in a bulk action"),
+    "bulk.export.applied": _("Included in a bulk export"),
     "platform.impersonation.ended": _("Numo9 support session ended"),
 }
 

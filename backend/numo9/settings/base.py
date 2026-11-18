@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "numo9.billing",
     # Platform-owner console (U-06): console API, metrics, impersonation, feature flags.
     "numo9.platform",
+    # Bulk edit and bulk actions over a practice's organisations (V-03).
+    "numo9.bulk",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
@@ -162,6 +164,7 @@ SPECTACULAR_SETTINGS = {
     "ENUM_NAME_OVERRIDES": {
         "PracticeRoleEnum": "numo9.tenancy.models.PracticeRole",
         "FeatureFlagModeEnum": "numo9.platform.api.FLAG_MODES",  # U-06-T12
+        "BulkJobActionEnum": "numo9.bulk.models.BulkAction",  # V-03-T07
         "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",
         "OrganisationStatusEnum": "numo9.tenancy.models.OrganisationStatus",
         "AssignmentRoleEnum": "numo9.tenancy.models.AssignmentRole",

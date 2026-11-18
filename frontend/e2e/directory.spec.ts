@@ -433,3 +433,109 @@ test.describe("@visual directory states", () => {
     await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
   });
 });
+
+// ---- bulk actions (V-03-T08, T09) -----------------------------------------------------------
+
+test("select all matching sends the search as a query, previews, then applies", async ({
+  page,
+}) => {
+  await mockApi(page);
+  await mockCsrf(page);
+  const bodies: Record<string, unknown>[] = [];
+  const job = {
+    id: "job-1",
+    action: "export",
+    action_label: "Export the list",
+    params: { format: "csv" },
+    status: "preview",
+    total: 0,
+    done: 0,
+    percent: 0,
+    counts: { pending: 0, succeeded: 0, skipped: 0, failed: 0, cancelled: 0 },
+    created_by: { id: "u", name: "Sam" },
+    created_at: "2026-11-18T15:00:00Z",
+    started_at: null,
+    finished_at: null,
+    cancel_requested: false,
+    export_ready: false,
+  };
+  await page.route("**/api/v1/practice/bulk", (route) => {
+    const body = route.request().postDataJSON() as Record<string, unknown>;
+    bodies.push(body);
+    return route.fulfill({
+      status: 201,
+      json: {
+        job: { ...job, total: 250 },
+        preview: {
+          total: 250,
+          counts: { change: 250, no_change: 0, skipped: 0 },
+          lines: [
+            {
+              organisation: { id: "o", name: "Maple Supply" },
+              status: "change",
+              reason: "",
+              message: "",
+              before: {},
+              after: { name: "Maple Supply" },
+            },
+          ],
+        },
+      },
+    });
+  });
+  let confirmed = false;
+  await page.route("**/api/v1/practice/bulk/job-1/confirm", (route) => {
+    confirmed = true;
+    return route.fulfill({ status: 202, json: { ...job, status: "queued", total: 250 } });
+  });
+  let polls = 0;
+  await page.route("**/api/v1/practice/bulk/job-1", (route) => {
+    polls += 1;
+    const done = Math.min(250, polls * 100);
+    return route.fulfill({
+      json: {
+        ...job,
+        status: done === 250 ? "completed" : "running",
+        total: 250,
+        done,
+        percent: Math.floor((done * 100) / 250),
+        counts: { pending: 250 - done, succeeded: done, skipped: 0, failed: 0, cancelled: 0 },
+      },
+    });
+  });
+  await page.route("**/api/v1/practice/bulk/job-1/rows*", (route) =>
+    route.fulfill({ json: { count: 0, page: 1, pages: 1, results: [] } }),
+  );
+
+  await page.goto(PAGE);
+  // Wait for the debounced search request: "all matching" made before it lands would be
+  // cleared by the new query.
+  const searched = page.waitForResponse(
+    (response) =>
+      response.url().includes("/api/v1/practice/orgs?") &&
+      new URL(response.url()).searchParams.get("q") === "Maple",
+  );
+  await page.locator("[data-directory] [data-grid-search]").fill("Maple");
+  await searched;
+  await expect(rows(page).first()).toContainText("Maple");
+  await rows(page).first().getByRole("checkbox").check();
+  const bar = page.locator("[data-bulk-bar]");
+  await expect(bar).toContainText("1 selected");
+  await bar.getByRole("button", { name: /^Select all .* matching$/ }).click();
+  await expect(bar).toContainText(/organisations matching are selected/);
+  await bar.getByRole("button", { name: "Export" }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("button", { name: "Preview changes" }).click();
+  await expect(dialog.getByText("250 will change")).toBeVisible();
+  expect(bodies[0]?.selection).toEqual({ query: { q: "Maple" } });
+  expect(JSON.stringify(bodies[0])).not.toContain('"ids"');
+  await expectAccessible(page);
+  await dialog.getByRole("button", { name: "Apply to 250 organisations" }).click();
+  await expect.poll(() => confirmed).toBe(true);
+  // V-03-T10: the progress drawer's counters follow the job live
+  const drawer = page.getByRole("dialog", { name: "Export the list" });
+  await expect(drawer.locator('[data-counter="succeeded"] dd')).toHaveText("100");
+  await expect(drawer.locator('[data-counter="succeeded"] dd')).toHaveText("200");
+  await expect(drawer.locator('[data-counter="succeeded"] dd')).toHaveText("250");
+  await expect(drawer.getByRole("link", { name: "Download the results (CSV)" })).toBeVisible();
+});

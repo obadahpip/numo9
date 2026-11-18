@@ -15,6 +15,8 @@ import {
   type DirectoryRow,
   type SavedView,
 } from "./api";
+import { selectionBody, selectionSize } from "@/bulk/selection";
+
 import { DEFAULT_STATE, DirectoryScreen } from "./DirectoryScreen";
 
 /**
@@ -408,5 +410,35 @@ describe("DirectoryScreen", () => {
     expect(header).toHaveAttribute("aria-sort", "ascending");
     expect(screen.getByRole("navigation", { name: "Saved views" })).toBeInTheDocument();
     await expectNoAxeViolations(document.body);
+  });
+});
+
+describe("bulk selection (V-03-T08)", () => {
+  it("ticks rows, then selects all matching as the server's query, not ids", async () => {
+    mockApi({
+      list: () => json(page(ROWS, { count: 1240, total: 1300 })),
+    });
+    const onBulkAction = vi.fn();
+    const { user } = setup({ onBulkAction });
+    await screen.findByText("Maple Leaf Supply Ltd.");
+    await user.click(screen.getByRole("checkbox", { name: /Maple Leaf Supply Ltd\./ }));
+    const bar = await screen.findByText("1 selected").then((el) => el.closest("[data-bulk-bar]"));
+    expect(bar).not.toBeNull();
+    await user.click(within(bar as HTMLElement).getByRole("button", { name: "Tags" }));
+    const [action, picked] = onBulkAction.mock.calls[0] ?? [];
+    expect(action).toBe("tags");
+    expect(selectionBody(picked)).toEqual({ ids: [ROWS[0]?.id] });
+
+    await user.click(
+      within(bar as HTMLElement).getByRole("button", { name: "Select all 1,240 matching" }),
+    );
+    expect(
+      within(bar as HTMLElement).getByText("All 1,240 organisations matching are selected"),
+    ).toBeVisible();
+    await user.click(within(bar as HTMLElement).getByRole("button", { name: "Export" }));
+    const [, all] = onBulkAction.mock.calls[1] ?? [];
+    expect(selectionSize(all)).toBe(1240);
+    expect(selectionBody(all)).toEqual({ query: {} });
+    expect(JSON.stringify(selectionBody(all))).not.toContain(ROWS[0]?.id ?? "-");
   });
 });

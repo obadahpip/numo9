@@ -88,6 +88,10 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "workspace.OrgTag",
         # Group staff (V-02-T04): which practice member works on which group, with a role.
         "workspace.GroupStaffAssignment",
+        # Bulk actions (V-03-T02): a practice's jobs over its organisations, read through the
+        # practice's API only.
+        "bulk.BulkJob",
+        "bulk.BulkJobRow",
     }
 )
 

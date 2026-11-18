@@ -132,3 +132,6 @@ register_event(
     C.APPROVALS,
     title_key="notifications.contacts.credit_override_rejected",
 )
+
+# ---- practice messages (V-03-T06) --------------------------------------------------------------
+register_event("practice.message", C.SYSTEM, title_key="notifications.practice.message")

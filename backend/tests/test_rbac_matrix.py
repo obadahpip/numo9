@@ -195,6 +195,8 @@ def path_for(declaration: Declaration, world: World) -> str:
         "metric": "active",
         # Feature flags (U-06-T12): a flag that doesn't exist — allowed staff get its 404.
         "name": "matrix.flag",
+        # Bulk actions (V-03-T07): a job that doesn't exist — members get its 404.
+        "job_id": "00000000-0000-4000-8000-000000000000",
     }
     acting = Practice.objects.filter(name="Matrix Practice").first()
     if acting is not None:

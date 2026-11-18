@@ -46,6 +46,9 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 27 | Console — organisations and detail | U-06-T03, T04 | Filters (status, package, province, created), paged grid, detail with subscription timeline, users, practices, audit link, sign-in-as |
 | 28 | Console — audited sign-in as a user | U-06-T09, T11 | Reason and duration (≤ 2 h), what is blocked, red bar with countdown and End session |
 | 29 | Console — metrics and feature flags | U-06-T05, T06, T12 | KPI tiles with drill-down, MRR trend, flags per organisation / practice / % / everyone |
+| 30 | Directory — bulk selection and actions | V-03-T08 | Row and page checkboxes, bottom selection bar "27 selected · Select all 1,240 matching", action menu |
+| 31 | Bulk action — preview | V-03-T04, T09 | Counts (will change / no change / no access), diff table field current → new (first 50 + count), apply |
+| 32 | Bulk action — progress and results | V-03-T05, T10 | Drawer with live counters, cancel the rest, results filtered by outcome with the reason, results CSV |
 
 ## 1. Application shell
 
@@ -418,3 +421,33 @@ old system with French headers, saved in Windows-1252.
 |---|---|---|
 | 1 | KPI tiles | MRR (CAD, annual ÷ 12), active organisations, trials, conversion, churn, founding x / 1,000 — demo organisations never counted; each tile opens the organisations it counts (same number) |
 | 2 | Feature flags | Everyone on/off, rollout %, chosen organisations and practices; a change applies on the next request; `/api/v1/me/flags` answers a user's flags |
+
+## 30. Directory — bulk selection and actions (V-03-T01)
+
+![Bulk selection](wireframes/31-bulk-selection.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Row checkboxes | One per row and one for the page; the selection survives paging and sorting |
+| 2 | Selection bar | Appears at the bottom once something is selected: "27 selected on this page · Select all 1,240 matching" — *all matching* sends the directory query (search, filters), never a list of ids |
+| 3 | Actions | Move to group, tags (add/remove), assign staff, settings (safe settings only), message the organisations, export (CSV/XLSX) |
+
+## 31. Bulk action — preview (V-03-T01)
+
+![Bulk preview](wireframes/32-bulk-preview.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Nothing changed yet | The preview computes every change without writing anything |
+| 2 | Counts | Will change / no change / no access (skipped) — every selected organisation is in one of them |
+| 3 | Apply | Confirms and starts one background job; the first 50 changes are shown with the total |
+
+## 32. Bulk action — progress and results (V-03-T01)
+
+![Bulk progress](wireframes/33-bulk-progress.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Progress | Live counters (succeeded, skipped, failed, waiting); the job keeps running if the drawer is closed (job tray) |
+| 2 | Cancel | Stops before the next organisation: done rows stay done, the rest are *cancelled* — never a silent partial result |
+| 3 | Results | Every organisation has an outcome and a reason; filter by outcome; download the CSV |

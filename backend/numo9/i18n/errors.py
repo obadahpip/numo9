@@ -656,6 +656,33 @@ FLAG_UNKNOWN_TARGET = define(
     _("%(value)s isn't a known %(name)s. Choose one from the list."),
 )
 
+# ---- bulk actions (V-03) -----------------------------------------------------------------------
+BULK_UNSAFE_SETTING = define(
+    "bulk.unsafe_setting",
+    _(
+        "%(name)s can't be changed for many organisations at once. Change it in each "
+        "organisation's settings."
+    ),
+)
+BULK_BAD_VALUE = define("bulk.bad_value", _("%(message)s"))
+BULK_EMPTY_SELECTION = define(
+    "bulk.empty_selection",
+    _("Select at least one organisation."),
+)
+BULK_TOO_MANY = define(
+    "bulk.too_many",
+    _("Select at most %(limit)s organisations for one bulk action."),
+)
+BULK_BAD_ACTION = define(
+    "bulk.bad_action",
+    _("%(message)s"),
+)
+BULK_NOT_PREVIEW = define(
+    "bulk.not_preview",
+    _("This bulk action was already applied or cancelled."),
+    status.HTTP_409_CONFLICT,
+)
+
 # ---- free trial (U-05) -------------------------------------------------------------------------
 TRIAL_ALREADY_USED = define(
     "entitlements.trial_already_used",

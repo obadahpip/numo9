@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 18:20-0500\n"
+"POT-Creation-Date: 2026-11-17 18:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -428,6 +428,24 @@ msgstr "Courriel reçu"
 msgid "Numo9 support signed in as this user"
 msgstr "Le soutien Numo9 s’est connecté en tant que cet utilisateur"
 
+msgid "Groups changed in a bulk action"
+msgstr "Groupes modifiés par une action groupée"
+
+msgid "Tags changed in a bulk action"
+msgstr "Étiquettes modifiées par une action groupée"
+
+msgid "Assigned staff changed in a bulk action"
+msgstr "Personnel affecté modifié par une action groupée"
+
+msgid "Settings changed in a bulk action"
+msgstr "Paramètres modifiés par une action groupée"
+
+msgid "Message sent in a bulk action"
+msgstr "Message envoyé par une action groupée"
+
+msgid "Included in a bulk export"
+msgstr "Inclus dans une exportation groupée"
+
 msgid "Numo9 support session ended"
 msgstr "Session du soutien Numo9 terminée"
 
@@ -601,6 +619,247 @@ msgstr "Voir l’abonnement, le mode de paiement et les factures de Numo9"
 msgid "Subscribe, change the package or payment method, cancel the subscription"
 msgstr "S’abonner, changer de forfait ou de mode de paiement, annuler l’abonnement"
 
+msgid "Choose whether to add, move or remove."
+msgstr "Choisissez d’ajouter, de déplacer ou de retirer."
+
+msgid "Choose one of the practice's groups."
+msgstr "Choisissez l’un des groupes du cabinet."
+
+msgid "Choose tags of the practice."
+msgstr "Choisissez des étiquettes du cabinet."
+
+msgid "Choose at least one tag to add or remove."
+msgstr "Choisissez au moins une étiquette à ajouter ou à retirer."
+
+msgid "A tag can't be added and removed at once."
+msgstr "Une étiquette ne peut pas être ajoutée et retirée à la fois."
+
+msgid "Choose whether to assign or unassign."
+msgstr "Choisissez d’affecter ou de retirer."
+
+msgid "Choose a staff member of the practice."
+msgstr "Choisissez un membre du personnel du cabinet."
+
+msgid "Write a subject of up to 150 characters."
+msgstr "Écrivez un objet d’au plus 150 caractères."
+
+msgid "Write a message of up to 5,000 characters."
+msgstr "Écrivez un message d’au plus 5 000 caractères."
+
+msgid "Choose CSV or Excel."
+msgstr "Choisissez CSV ou Excel."
+
+msgid "Choose one of the bulk actions."
+msgstr "Choisissez l’une des actions groupées."
+
+msgid "see the practice's bulk actions"
+msgstr "voir les actions groupées du cabinet"
+
+msgid "Organisation"
+msgstr "Organisation"
+
+msgid "Business Number"
+msgstr "Numéro d’entreprise"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Groups"
+msgstr "Groupes"
+
+msgid "Tags"
+msgstr "Étiquettes"
+
+msgid "Assigned staff"
+msgstr "Personnel affecté"
+
+msgid "Organisations"
+msgstr "Organisations"
+
+msgid "Outcome"
+msgstr "Résultat"
+
+msgid "Reason"
+msgstr ""
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Before"
+msgstr "Avant"
+
+msgid "After"
+msgstr "Après"
+
+msgid "Move to a group"
+msgstr "Déplacer dans un groupe"
+
+msgid "Add or remove tags"
+msgstr "Ajouter ou retirer des étiquettes"
+
+msgid "Assign or unassign staff"
+msgstr "Affecter ou retirer du personnel"
+
+msgid "Change settings"
+msgstr "Modifier les paramètres"
+
+msgid "Send a message"
+msgstr "Envoyer un message"
+
+msgid "Export the list"
+msgstr "Exporter la liste"
+
+msgid "Preview"
+msgstr "Aperçu"
+
+msgid "Waiting to start"
+msgstr "En attente de démarrage"
+
+msgid "Running"
+msgstr "En cours"
+
+msgid "Completed"
+msgstr "Terminé"
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Waiting"
+msgstr "En attente"
+
+msgid "Succeeded"
+msgstr "Réussi"
+
+msgid "Skipped"
+msgstr "Ignoré"
+
+msgid "Failed"
+msgstr "Échec"
+
+msgid "started by"
+msgstr "lancé par"
+
+msgid "parameters"
+msgstr "paramètres"
+
+msgid "selection"
+msgstr "sélection"
+
+msgid "{\"ids\": [organisation ids]} or {\"query\": {directory search and filters}}"
+msgstr "{\"ids\": [identifiants d’organisations]} ou {\"query\": {recherche et filtres du répertoire}}"
+
+msgid "organisations"
+msgstr ""
+
+msgid "background job"
+msgstr "tâche en arrière-plan"
+
+msgid "result file"
+msgstr "fichier de résultats"
+
+msgid "created at"
+msgstr ""
+
+msgid "confirmed at"
+msgstr "confirmé le"
+
+msgid "started at"
+msgstr "commencée le"
+
+msgid "finished at"
+msgstr "terminée le"
+
+msgid "cancel requested at"
+msgstr "annulation demandée le"
+
+msgid "bulk job"
+msgstr "action groupée"
+
+msgid "bulk jobs"
+msgstr "actions groupées"
+
+#, fuzzy
+#| msgid "Action"
+msgid "position"
+msgstr "Action"
+
+msgid "outcome"
+msgstr "résultat"
+
+msgid "reason code"
+msgstr "code de motif"
+
+msgid "message"
+msgstr ""
+
+msgid "before"
+msgstr "avant"
+
+msgid "after"
+msgstr "après"
+
+msgid "bulk job row"
+msgstr "ligne d’action groupée"
+
+msgid "bulk job rows"
+msgstr "lignes d’action groupée"
+
+msgid "You don't have access to this organisation."
+msgstr "Vous n’avez pas accès à cette organisation."
+
+msgid "Your role in this organisation can't make this change."
+msgstr "Votre rôle dans cette organisation ne permet pas ce changement."
+
+msgid "The practice no longer serves this organisation."
+msgstr "Le cabinet ne sert plus cette organisation."
+
+msgid "It has posted transactions: change its fiscal year end in its own settings."
+msgstr "Elle a des opérations comptabilisées : modifiez sa fin d’exercice dans ses propres paramètres."
+
+msgid "It has no owner or admin to send the message to."
+msgstr "Elle n’a aucun propriétaire ni administrateur à qui envoyer le message."
+
+msgid "The bulk action was cancelled before this organisation."
+msgstr "L’action groupée a été annulée avant cette organisation."
+
+msgid "Something went wrong with this organisation. Nothing was changed."
+msgstr "Un problème est survenu avec cette organisation. Rien n’a été modifié."
+
+msgid "Choose how the due date is worked out."
+msgstr "Choisissez comment l’échéance est calculée."
+
+msgid "Enter the number of days."
+msgstr "Entrez le nombre de jours."
+
+msgid "Choose a day of the month from 1 to 31."
+msgstr "Choisissez un jour du mois de 1 à 31."
+
+#, python-format
+msgid "Enter 0 to %(max)s days."
+msgstr "Entrez de 0 à %(max)s jours."
+
+msgid "Choose 12-hour or 24-hour times."
+msgstr "Choisissez l’heure sur 12 ou 24 heures."
+
+msgid "Choose the month and day of the fiscal year end."
+msgstr "Choisissez le mois et le jour de fin d’exercice."
+
+msgid "Choose the month of the fiscal year end."
+msgstr "Choisissez le mois de fin d’exercice."
+
+msgid "Choose the day of the fiscal year end."
+msgstr "Choisissez le jour de fin d’exercice."
+
+#, python-format
+msgid "That month has no day %(day)d."
+msgstr "Ce mois n’a pas de jour %(day)d."
+
+msgid "Choose at least one setting to change."
+msgstr "Choisissez au moins un paramètre à modifier."
+
+msgid "Already as asked: nothing to change."
+msgstr "Déjà comme demandé : rien à modifier."
+
 msgid "Product"
 msgstr ""
 
@@ -661,9 +920,6 @@ msgid "kind"
 msgstr ""
 
 msgid "sort order"
-msgstr ""
-
-msgid "created at"
 msgstr ""
 
 msgid "updated at"
@@ -1372,11 +1628,6 @@ msgstr ""
 msgid "required"
 msgstr ""
 
-#, fuzzy
-#| msgid "Action"
-msgid "position"
-msgstr "Action"
-
 msgid "custom field"
 msgstr ""
 
@@ -1457,9 +1708,6 @@ msgstr "Entrez le texte anglais."
 #, python-format
 msgid "Another payment term is already called %(name)s."
 msgstr ""
-
-msgid "Choose a day of the month from 1 to 31."
-msgstr "Choisissez un jour du mois de 1 à 31."
 
 #, python-format
 msgid "A payment term is at most %(max)d days."
@@ -1846,9 +2094,6 @@ msgid "Trial"
 msgstr "Essai"
 
 msgid "Payment overdue (grace period)"
-msgstr ""
-
-msgid "Cancelled"
 msgstr ""
 
 msgid "Demo"
@@ -2610,6 +2855,24 @@ msgstr "Entrez un pourcentage de 0 à 99,9, avec au plus une décimale (par exem
 msgid "%(value)s isn't a known %(name)s. Choose one from the list."
 msgstr "%(value)s n’est pas un(e) %(name)s connu(e). Choisissez dans la liste."
 
+#, python-format
+msgid "%(name)s can't be changed for many organisations at once. Change it in each organisation's settings."
+msgstr "%(name)s ne peut pas être modifié pour plusieurs organisations à la fois. Modifiez-le dans les paramètres de chaque organisation."
+
+#, python-format
+msgid "%(message)s"
+msgstr "%(message)s"
+
+msgid "Select at least one organisation."
+msgstr "Sélectionnez au moins une organisation."
+
+#, python-format
+msgid "Select at most %(limit)s organisations for one bulk action."
+msgstr "Sélectionnez au plus %(limit)s organisations pour une action groupée."
+
+msgid "This bulk action was already applied or cancelled."
+msgstr "Cette action groupée a déjà été appliquée ou annulée."
+
 msgid "A free trial was already used with this Business Number or email address. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise ou cette adresse courriel. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."
 
@@ -2831,23 +3094,11 @@ msgstr ""
 msgid "Column"
 msgstr "colonnes"
 
-msgid "Reason"
-msgstr ""
-
-msgid "Waiting to start"
-msgstr "En attente de démarrage"
-
-msgid "Running"
-msgstr "En cours"
-
 msgid "Waiting to try again"
 msgstr "En attente d’un nouvel essai"
 
 msgid "Done"
 msgstr "Terminé"
-
-msgid "Failed"
-msgstr "Échec"
 
 msgid "Failed after several tries"
 msgstr "Échec après plusieurs essais"
@@ -2896,12 +3147,6 @@ msgstr "identifiant de tâche Celery"
 
 msgid "worker"
 msgstr "processus de travail"
-
-msgid "started at"
-msgstr "commencée le"
-
-msgid "finished at"
-msgstr "terminée le"
 
 msgid "next try at"
 msgstr "prochain essai le"
@@ -3630,9 +3875,6 @@ msgstr "Description"
 msgid "category"
 msgstr ""
 
-msgid "message"
-msgstr ""
-
 #, fuzzy
 #| msgid "details"
 msgid "message details"
@@ -3954,6 +4196,14 @@ msgstr "Dérogation à la limite de crédit refusée pour %(contact)s"
 msgid "%(person)s declined going %(over)s over the credit limit. %(note)s"
 msgstr "%(person)s a refusé un dépassement de %(over)s de la limite de crédit. %(note)s"
 
+#, python-format
+msgid "%(practice)s: %(subject)s"
+msgstr "%(practice)s : %(subject)s"
+
+#, python-format
+msgid "%(body)s"
+msgstr "%(body)s"
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"
 
@@ -4044,10 +4294,6 @@ msgstr "achats : jours ou jour"
 
 msgid "organisation settings"
 msgstr "paramètres de l’organisation"
-
-#, python-format
-msgid "That month has no day %(day)d."
-msgstr "Ce mois n’a pas de jour %(day)d."
 
 msgid "GST/HST program account (RT)"
 msgstr "Compte de programme de TPS/TVH (RT)"
@@ -4534,9 +4780,6 @@ msgstr "session d’emprunt d’identité"
 msgid "impersonation sessions"
 msgstr "sessions d’emprunt d’identité"
 
-msgid "organisations"
-msgstr ""
-
 msgid "On for these organisations."
 msgstr "Activé pour ces organisations."
 
@@ -4624,9 +4867,6 @@ msgstr "Risque élevé"
 
 msgid "Critical"
 msgstr "Critique"
-
-msgid "Organisation"
-msgstr "Organisation"
 
 msgid "scope"
 msgstr ""
@@ -5039,9 +5279,6 @@ msgstr "Compacte"
 
 msgid "Quarterly"
 msgstr "Trimestriel"
-
-msgid "Business Number"
-msgstr "Numéro d’entreprise"
 
 msgid "owner"
 msgstr "propriétaire"

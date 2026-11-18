@@ -85,6 +85,9 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "workspace.OrgTag",
                 # Group staff (V-02-T04): reviewed — practice member, group, role.
                 "workspace.GroupStaffAssignment",
+                # Bulk actions (V-03-T02): reviewed — practice jobs, one row per organisation.
+                "bulk.BulkJob",
+                "bulk.BulkJobRow",
             }
         )
         == PLATFORM_MODELS
