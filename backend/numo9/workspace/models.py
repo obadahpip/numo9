@@ -27,7 +27,7 @@ the organisations the user may access in that practice (isolation tests:
 from __future__ import annotations
 
 import uuid
-from typing import Any, ClassVar
+from typing import Any, ClassVar, TypeVar
 
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
@@ -201,6 +201,41 @@ class SavedView(models.Model):
 
 # ---- groups (V-02) ---------------------------------------------------------------------------
 
+
+_M = TypeVar("_M", bound=models.Model)
+
+
+class AccessQuerySet(models.QuerySet[_M, _M]):
+    """Bulk writes that bypass ``save()``/``delete()`` signals still invalidate the cached group
+    access (V-02-T06): ``update``, ``bulk_create`` and ``bulk_update`` bump the access generation
+    (``numo9.workspace.access.bump``), now and when the transaction commits."""
+
+    def _bump(self) -> None:
+        from .access import bump
+
+        bump()
+
+    def update(self, **kwargs: Any) -> int:
+        rows = super().update(**kwargs)
+        if rows:
+            self._bump()
+        return rows
+
+    def bulk_create(self, objs: Any, *args: Any, **kwargs: Any) -> list[_M]:
+        created = super().bulk_create(objs, *args, **kwargs)
+        if created:
+            self._bump()
+        return created
+
+    def bulk_update(self, objs: Any, fields: Any, *args: Any, **kwargs: Any) -> int:
+        rows = super().bulk_update(objs, fields, *args, **kwargs)
+        if rows:
+            self._bump()
+        return rows
+
+
+AccessManager = models.Manager.from_queryset(AccessQuerySet)
+
 #: Deepest level of the group tree: a top-level group is depth 1 (V-02 business rule).
 GROUP_MAX_DEPTH = 5
 
@@ -261,6 +296,8 @@ class OrgGroupMembership(models.Model):
         verbose_name=_("organisation"),
     )
     added_at = models.DateTimeField(_("added at"), auto_now_add=True)
+
+    objects = AccessManager()
 
     class Meta:
         verbose_name = _("organisation in a group")
@@ -403,6 +440,8 @@ class GroupStaffAssignment(models.Model):
     )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    objects = AccessManager()
 
     class Meta:
         verbose_name = _("group staff assignment")

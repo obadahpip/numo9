@@ -27,14 +27,14 @@ import secrets
 import uuid
 import zoneinfo
 from datetime import timedelta
-from typing import Any, ClassVar
+from typing import Any, ClassVar, TypeVar
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Lower
 from django.db.models.signals import m2m_changed
-from django.dispatch import receiver
+from django.dispatch import Signal, receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -122,6 +122,43 @@ class Practice(models.Model):
         return self.name
 
 
+#: Sent after a bulk ``update()`` / ``bulk_create()`` / ``bulk_update()`` of practice members or
+#: practice assignments — writes that send no ``post_save`` — so caches of who may access what
+#: (the practice-group access cache, V-02-T06) are invalidated too. ``sender`` is the model.
+access_rows_changed = Signal()
+
+
+_M = TypeVar("_M", bound=models.Model)
+
+
+class AccessRowsQuerySet(models.QuerySet[_M, _M]):
+    """Bulk writes of access rows announce themselves (``access_rows_changed``, V-02-T06)."""
+
+    def _changed(self) -> None:
+        access_rows_changed.send(sender=self.model)
+
+    def update(self, **kwargs: Any) -> int:
+        rows = super().update(**kwargs)
+        if rows:
+            self._changed()
+        return rows
+
+    def bulk_create(self, objs: Any, *args: Any, **kwargs: Any) -> list[_M]:
+        created = super().bulk_create(objs, *args, **kwargs)
+        if created:
+            self._changed()
+        return created
+
+    def bulk_update(self, objs: Any, fields: Any, *args: Any, **kwargs: Any) -> int:
+        rows = super().bulk_update(objs, fields, *args, **kwargs)
+        if rows:
+            self._changed()
+        return rows
+
+
+AccessRowsManager = models.Manager.from_queryset(AccessRowsQuerySet)
+
+
 class PracticeMember(models.Model):
     practice = models.ForeignKey(
         Practice, on_delete=models.PROTECT, related_name="members", verbose_name=_("practice")
@@ -134,6 +171,8 @@ class PracticeMember(models.Model):
     )
     role = models.CharField(_("role"), max_length=32, choices=PracticeRole.choices)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    objects = AccessRowsManager()
 
     class Meta:
         verbose_name = _("practice member")
@@ -256,6 +295,8 @@ class PracticeAssignment(models.Model):
     active = models.BooleanField(_("active"), default=True)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    objects = AccessRowsManager()
 
     class Meta:
         verbose_name = _("practice assignment")

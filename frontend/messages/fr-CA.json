@@ -475,6 +475,7 @@
       "actions": "Actions",
       "bn": "BN",
       "fye": "FYE",
+      "groups": "Groups",
       "gstCycle": "GST/HST cycle",
       "industry": "Industry",
       "legalName": "Legal name",
@@ -510,6 +511,7 @@
     },
     "facet": {
       "fye": "Fiscal year end",
+      "group": "Groups",
       "gstCycle": "GST/HST cycle",
       "none": "None in this list",
       "overdue": "Overdue items",
@@ -559,9 +561,18 @@
       "selectRow": "Select {row}",
       "selected": "{count, number} selected"
     },
+    "groupBy": {
+      "group": "Group",
+      "label": "Group by",
+      "none": "No grouping"
+    },
+    "groupHeader": "{name} — {count, plural, one {# organisation} other {# organisations}}",
+    "groupToggle": "Show or hide {name}",
     "loading": "Loading organisations",
+    "manageGroups": "Groups and tags",
     "newOrganisation": "New organisation",
     "no": "No",
+    "noGroup": "No group",
     "noResults": {
       "body": "Try another spelling or fewer filters. Archived organisations show only with “Show archived organisations”.",
       "title": "No organisations match"
@@ -804,6 +815,93 @@
     "saving": "Saving…",
     "stay": "Stay on this page",
     "unsavedChanges": "You have unsaved changes."
+  },
+  "groups": {
+    "addSub": {
+      "label": "Add sub-group to {name}",
+      "short": "Add sub-group"
+    },
+    "breadcrumb": "Groups",
+    "cancel": "Cancel",
+    "close": "Close",
+    "colour": {
+      "amber": "Amber",
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "green": "Green",
+      "indigo": "Indigo",
+      "magenta": "Magenta",
+      "olive": "Olive",
+      "orange": "Orange",
+      "red": "Red",
+      "slate": "Slate",
+      "teal": "Teal",
+      "violet": "Violet"
+    },
+    "counts": "{organisations, plural, one {# organisation} other {# organisations}} · {staff, plural, one {# staff member} other {# staff}}",
+    "create": {
+      "subTitle": "New sub-group of {name}",
+      "title": "New group"
+    },
+    "delete": {
+      "button": "Delete",
+      "confirm": "Delete group",
+      "for": "Delete {name}",
+      "title": "Delete {name}?"
+    },
+    "deleted": "{name} deleted.",
+    "dragHint": "Drag a group onto another to move it there, or onto “Top level”. With the keyboard, use “Move to…”.",
+    "dropTop": "Drop here to move to the top level",
+    "empty": "No groups yet. Create one to organise your clients.",
+    "failed": "That didn't work. Try again.",
+    "impact": {
+      "groups": "{count, plural, =0 {No sub-groups} one {# sub-group is deleted with it} other {# sub-groups are deleted with it}}",
+      "loading": "Checking what this affects…",
+      "losing": "{count, plural, =0 {Nobody loses access to a client.} one {# staff member loses access to at least one client.} other {# staff lose access to at least one client.}}",
+      "organisations": "{count, plural, =0 {No organisations are filed here} one {# organisation leaves the group (it stays your client)} other {# organisations leave the group (they stay your clients)}}",
+      "staff": "{count, plural, =0 {No staff are assigned here} one {# staff member loses this group ({assignments} assignments)} other {# staff lose this group ({assignments} assignments)}}"
+    },
+    "intro": "Groups organise your clients (up to 5 levels). Staff assigned to a group work on every client in it and in its sub-groups.",
+    "loadFailed": "The groups couldn't be loaded.",
+    "loading": "Loading groups…",
+    "move": {
+      "body": "Choose where {name} goes. Its sub-groups move with it; staff access follows the new place.",
+      "confirm": "Move",
+      "none": "There's nowhere else this group can go (5 levels at most).",
+      "title": "Move {name}",
+      "top": "Top level"
+    },
+    "moveTo": {
+      "button": "Move to…",
+      "for": "Move {name} to…"
+    },
+    "moved": "{name} moved.",
+    "name": {
+      "label": "Group name"
+    },
+    "new": "New group",
+    "rename": {
+      "button": "Rename",
+      "for": "Rename {name}",
+      "title": "Rename {name}"
+    },
+    "retry": "Try again",
+    "save": "Save",
+    "tags": {
+      "colour": "Colour of the new tag",
+      "colourName": "({colour})",
+      "create": "Create tag “{name}” ({colour})",
+      "created": "Tag {name} created.",
+      "empty": "No tags yet.",
+      "intro": "Tags mark clients across groups (“Year-end soon”). Type a new name to create one.",
+      "picker": "Find or create a tag",
+      "title": "Tags",
+      "usage": "{count, plural, one {# organisation} other {# organisations}}"
+    },
+    "title": "Groups and tags",
+    "tree": {
+      "label": "Practice groups"
+    }
   },
   "home": {
     "placeholder": "Application shell placeholder.",

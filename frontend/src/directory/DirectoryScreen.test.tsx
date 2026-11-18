@@ -92,6 +92,7 @@ function page(results: DirectoryRow[], overrides: Partial<DirectoryPage> = {}): 
         { value: "no", label: "No", count: 2 },
       ],
       tag: [],
+      group: [],
     },
     ...overrides,
   };

@@ -7,7 +7,11 @@ permissions of every role they hold there:
    given to them in that organisation (``RoleAssignment``, usually custom roles);
 2. **through a practice** that is actively assigned to the organisation and gives them access
    (A-01-T05: practice-wide role, or assigned staff) — the system role of their
-   ``PracticeMember.role`` plus the practice roles given to them in that practice.
+   ``PracticeMember.role`` plus the practice roles given to them in that practice;
+3. **through a practice group** (V-02) holding the organisation — the system practice role named
+   by the group assignment (``GroupStaffAssignment.role``: accountant, reviewer, payroll
+   specialist or read-only staff); registered as a role source by the workspace app
+   (``register_practice_role_source``).
 
 Nothing is granted without access: a user the access resolver refuses has no permissions,
 whatever roles they hold. Entitlements (U-03) will intersect this set (feature not in the
@@ -24,7 +28,7 @@ Outside a cache scope (scripts, jobs) every call reads the database.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Iterable, Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import Any
@@ -43,6 +47,18 @@ from numo9.tenancy.models import (
 
 from .catalogue import Scope, catalogue
 from .models import Role, RoleAssignment, RolePermission, RoleScope
+
+#: ``source(user, organisation) -> practice system role keys`` the user works with in the
+#: organisation through another access path (practice groups, V-02: the group assignment's role).
+PracticeRoleSource = Callable[[Any, Organisation], Iterable[str]]
+_role_sources: list[PracticeRoleSource] = []
+
+
+def register_practice_role_source(source: PracticeRoleSource) -> PracticeRoleSource:
+    if source not in _role_sources:
+        _role_sources.append(source)
+    return source
+
 
 _Cache = dict[tuple[str, int, int | None], frozenset[str]]
 _cache: ContextVar[_Cache | None] = ContextVar("numo9_permission_cache", default=None)
@@ -128,6 +144,10 @@ def _organisation_roles(user: Any, organisation: Organisation) -> Q:
                 "role"
             )
         )
+    # Roles through other access paths: a practice group's role (V-02).
+    extra = {key for source in _role_sources for key in source(user, organisation)}
+    if extra:
+        roles |= Q(is_system=True, scope=RoleScope.PRACTICE, key__in=extra)
     return roles
 
 

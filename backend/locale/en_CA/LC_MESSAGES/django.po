@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-16 14:49-0500\n"
+"POT-Creation-Date: 2026-11-17 16:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4419,6 +4419,10 @@ msgstr ""
 msgid "Choose a role for this group."
 msgstr ""
 
+#, python-format
+msgid "Choose 1 to %(max)d organisations."
+msgstr ""
+
 msgid "Comfortable"
 msgstr ""
 
@@ -4567,6 +4571,9 @@ msgid "group staff assignments"
 msgstr ""
 
 msgid "See the practice's client organisations in the directory"
+msgstr ""
+
+msgid "Organise the practice's clients into groups and tags, and assign staff to groups"
 msgstr ""
 
 msgid "Give the tag a name."

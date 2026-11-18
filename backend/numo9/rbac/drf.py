@@ -81,6 +81,32 @@ def requires_permission(key: str) -> Callable[[F], F]:
     return decorate
 
 
+#: Handler attribute naming the **practice** permission an ``AUTHENTICATED`` practice endpoint
+#: checks itself (the practice comes from the query, the body or the object, not from an active
+#: organisation, so ``RequiresPermission`` can't): ``practice/groups`` (V-02-T07) and the like.
+#: The permission matrix (A-03-T10) reads it to expect the refusal for practice roles without it.
+PRACTICE_ATTRIBUTE = "practice_permission"
+
+
+def checks_practice_permission(key: str) -> Callable[[F], F]:
+    """Document that an ``AUTHENTICATED`` view method checks practice permission ``key`` itself
+    (``has_practice_perm`` on the practice it resolves), refusing with ``permission.denied``."""
+
+    def decorate(handler: F) -> F:
+        if catalogue.get(key).scope != Scope.PRACTICE:
+            raise ValueError(f"{key} is not a practice permission.")
+        setattr(handler, PRACTICE_ATTRIBUTE, key)
+        return handler
+
+    return decorate
+
+
+def declared_practice_permission(view_class: type, method: str) -> str | None:
+    handler = getattr(view_class, method.lower(), None)
+    key = getattr(handler, PRACTICE_ATTRIBUTE, None)
+    return key if isinstance(key, str) else None
+
+
 def declared_permission(view_class: type, method: str) -> str | None:
     """The declaration for an HTTP method of a view class, or None when there is none."""
     method = method.upper()

@@ -75,22 +75,69 @@ def _save(tag: Tag, **kwargs: Any) -> Tag:
     return tag
 
 
+def _audit(
+    action: str,
+    tag: Tag,
+    *,
+    organisation: Organisation | None = None,
+    changes: dict[str, Any] | None = None,
+) -> None:
+    """One audit event (V-02-T13); tagging also writes it in the organisation's log."""
+    from numo9.audit.service import record
+
+    record(
+        f"workspace.tag.{action}",
+        obj=tag,
+        organisation=organisation,
+        practice=tag.practice,
+        changes=changes,
+        meta={"tag": tag.name, **({"organisation": organisation.name} if organisation else {})},
+    )
+
+
 def create_tag(practice: Practice, name: str, colour: str = TagColour.SLATE) -> Tag:
     name, colour = _name(name), _colour(colour)
     _taken(practice, name)
-    return _save(Tag(practice=practice, name=name, colour=colour))
+    tag = _save(Tag(practice=practice, name=name, colour=colour))
+    _audit("created", tag, changes={"name": [None, name], "colour": [None, colour]})
+    return tag
+
+
+def _directory_changed(tag: Tag, organisation_ids: Any = None) -> None:
+    """The directory rows show tag names (search, tag filter): refresh the affected rows."""
+    from .summary import tags_changed
+
+    if organisation_ids is None:
+        organisation_ids = list(
+            OrgTag.objects.filter(tag=tag).values_list("organisation_id", flat=True)
+        )
+    tags_changed(tag.practice, organisation_ids)
+
+
+def provide_tags(practice: Practice, organisation: Organisation) -> list[str]:
+    """The directory's tags provider (``summary.register_tags_provider``): tag names."""
+    return [tag.name for tag in tags_of(practice, organisation)]
 
 
 def rename_tag(tag: Tag, name: str) -> Tag:
     name = _name(name)
     _taken(tag.practice, name, exclude=tag)
+    before = tag.name
     tag.name = name
-    return _save(tag, update_fields=["name", "updated_at"])
+    saved = _save(tag, update_fields=["name", "updated_at"])
+    if before != saved.name:
+        _audit("renamed", saved, changes={"name": [before, saved.name]})
+    _directory_changed(saved)
+    return saved
 
 
 def recolour_tag(tag: Tag, colour: str) -> Tag:
+    before = tag.colour
     tag.colour = _colour(colour)
-    return _save(tag, update_fields=["colour", "updated_at"])
+    saved = _save(tag, update_fields=["colour", "updated_at"])
+    if before != saved.colour:
+        _audit("recoloured", saved, changes={"colour": [before, saved.colour]})
+    return saved
 
 
 def tag_organisation(tag: Tag, organisation: Organisation) -> OrgTag:
@@ -103,7 +150,10 @@ def tag_organisation(tag: Tag, organisation: Organisation) -> OrgTag:
             % {"organisation": organisation.name},
             code="workspace.tag.not_served",
         )
-    row, _created = OrgTag.objects.get_or_create(tag=tag, organisation=organisation)
+    row, created = OrgTag.objects.get_or_create(tag=tag, organisation=organisation)
+    if created:
+        _audit("organisation_tagged", tag, organisation=organisation)
+        _directory_changed(tag, [organisation.pk])
     return row
 
 
@@ -111,7 +161,19 @@ def untag_organisation(tag: Tag, organisation: Organisation) -> int:
     rows = OrgTag.objects.filter(tag=tag, organisation=organisation)
     count = rows.count()
     rows.delete()
+    if count:
+        _audit("organisation_untagged", tag, organisation=organisation)
+        _directory_changed(tag, [organisation.pk])
     return count
+
+
+def delete_tag(tag: Tag) -> int:
+    """Delete a tag; it comes off every organisation. Returns how many organisations had it."""
+    affected = list(OrgTag.objects.filter(tag=tag).values_list("organisation_id", flat=True))
+    _audit("deleted", tag, changes={"name": [tag.name, None]})
+    tag.delete()
+    _directory_changed(tag, affected)
+    return len(affected)
 
 
 def tags_of(practice: Practice, organisation: Organisation) -> list[Tag]:

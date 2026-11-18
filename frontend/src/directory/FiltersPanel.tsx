@@ -18,6 +18,7 @@ export const FACET_TITLES: Record<FilterKey, MessageDescriptor> = {
   overdue: m.facetOverdue,
   unfiled: m.facetUnfiled,
   tag: m.facetTag,
+  group: m.facetGroup,
 };
 
 export interface FiltersPanelProps {
@@ -67,6 +68,11 @@ export function FiltersPanel({ facets, state, onToggle, onArchived, onClose }: F
                   <div
                     key={option.value}
                     className="flex items-center justify-between gap-2"
+                    style={
+                      key === "group" && option.depth && option.depth > 1
+                        ? { paddingInlineStart: `${(option.depth - 1) * 0.75}rem` }
+                        : undefined
+                    }
                     data-option={option.value}
                     data-count={option.count}
                   >

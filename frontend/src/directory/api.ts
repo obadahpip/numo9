@@ -32,12 +32,23 @@ export interface DirectoryRow {
   overdue_count?: number;
   unfiled_count?: number;
   tags?: string[];
+  /** Groups the organisation is filed in directly (badges, V-02-T08). */
+  groups?: { id: string; name: string }[];
 }
 
 export interface FacetValue {
   value: string;
   label: string;
   count: number;
+  /** Group facet: the group's level in the tree (1 = top). */
+  depth?: number;
+}
+
+/** One group-by header (V-02-T08): a group (null = no group), its count and its rows' ids. */
+export interface DirectoryGrouping {
+  group: { id: string; name: string; depth: number; parent: string | null } | null;
+  count: number;
+  organisations: string[];
 }
 
 export const FILTER_KEYS = [
@@ -50,6 +61,7 @@ export const FILTER_KEYS = [
   "overdue",
   "unfiled",
   "tag",
+  "group",
 ] as const;
 export type FilterKey = (typeof FILTER_KEYS)[number];
 
@@ -63,6 +75,7 @@ export interface DirectoryPage {
   columns: string[];
   results: DirectoryRow[];
   facets?: Record<FilterKey, FacetValue[]>;
+  grouping?: DirectoryGrouping[];
 }
 
 /** Search, filters, sort, columns and density: what a saved view stores. */
@@ -98,6 +111,8 @@ export interface ListOptions {
   pageSize?: number;
   columns?: string[];
   facets?: boolean;
+  /** "group": ask for the group-by headers (V-02-T08). */
+  groupBy?: "group" | "";
   signal?: AbortSignal;
 }
 
@@ -114,6 +129,7 @@ export function directoryQuery(options: ListOptions): string {
   params.set("page_size", String(options.pageSize ?? 2000));
   if (options.columns?.length) params.set("columns", options.columns.join(","));
   if (options.facets === false) params.set("facets", "0");
+  if (options.groupBy) params.set("group_by", options.groupBy);
   return params.toString();
 }
 

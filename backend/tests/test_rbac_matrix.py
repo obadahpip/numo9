@@ -25,11 +25,12 @@ from typing import Any
 
 import pytest
 from django.test import Client
+from django.utils.module_loading import import_string
 
 from numo9.accounts.models import User
 from numo9.rbac.catalogue import Scope, catalogue
 from numo9.rbac.checks import Declaration, declarations
-from numo9.rbac.drf import AUTHENTICATED, PUBLIC
+from numo9.rbac.drf import AUTHENTICATED, PUBLIC, declared_practice_permission
 from numo9.rbac.models import ApprovalLimit, Role, RoleAssignment, RoleScope
 from numo9.rbac.system_roles import PROFILE_VIEW, SYSTEM_ROLES, SystemRole
 from numo9.tenancy.context import org_context
@@ -185,7 +186,18 @@ def path_for(declaration: Declaration, world: World) -> str:
         # Saved directory views (V-01-T08): a view that doesn't exist — signed-in users get past
         # the permission check to the view's own 404.
         "view_id": "00000000-0000-4000-8000-000000000000",
+        # Groups and tags (V-02-T07): the acting practice's own group and tag, so a practice role
+        # reaches its permission check; anyone else gets the 404 of an unknown one.
+        "group_id": "00000000-0000-4000-8000-000000000000",
+        "tag_id": "00000000-0000-4000-8000-000000000000",
+        "org_id": str(world.org.public_id),
     }
+    acting = Practice.objects.filter(name="Matrix Practice").first()
+    if acting is not None:
+        from numo9.workspace.models import OrgGroup, Tag
+
+        values["group_id"] = str(OrgGroup.add_root(practice=acting, name="Matrix group").public_id)
+        values["tag_id"] = str(Tag.objects.create(practice=acting, name="Matrix tag").public_id)
     path = build_path(endpoint, {k: v for k, v in values.items() if k in endpoint.groups})
     assert path is not None, f"cannot build a URL for /{declaration.route}: add its parameter"
     return path
@@ -224,6 +236,15 @@ def test_matrix(declaration: Declaration, subject: Subject) -> None:
     status = response.status_code
     code = _code(response)
     assert status < 500, f"{status}: {response.content[:300]!r}"
+    practice_key = declared_practice_permission(import_string(declaration.view), declaration.method)
+    if declaration.permission == AUTHENTICATED and practice_key and subject.kind == "practice":
+        # An AUTHENTICATED practice endpoint that checks a practice permission itself (V-02-T07):
+        # the acting practice role is allowed exactly when its permission set holds the key.
+        if practice_key in subject.permissions(practice_key):
+            assert code != "permission.denied", (status, code)
+        else:
+            assert (status, code) == (403, "permission.denied")
+        return
     if expected_allowed(subject, declaration.permission):
         assert code != "permission.denied" and status != 401, (status, code)
         if subject.kind != "anonymous":

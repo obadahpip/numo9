@@ -24,6 +24,7 @@ export const ALL_COLUMNS = [
   "legal_name",
   "industry",
   "tags",
+  "groups",
 ] as const;
 
 /** Shown when nothing else is chosen (wireframe 03: Organisation, BN, Province, Package, Status,
@@ -202,6 +203,25 @@ export function directoryColumns({
       header: t(m.colTags),
       accessor: (row) => (row.tags ?? []).join(", "),
       width: 160,
+    },
+    {
+      id: "groups",
+      header: t(m.colGroups),
+      accessor: (row) => (row.groups ?? []).map((group) => group.name).join(", "),
+      cell: (row) => (
+        <ul className="flex flex-wrap gap-1" aria-label={t(m.colGroups)}>
+          {(row.groups ?? []).map((group) => (
+            <li
+              key={group.id}
+              data-group-badge={group.id}
+              className="rounded-full border border-border bg-surface-subtle px-2 text-xs font-semibold text-fg"
+            >
+              {group.name}
+            </li>
+          ))}
+        </ul>
+      ),
+      width: 200,
     },
     {
       id: ACTIONS_COLUMN,

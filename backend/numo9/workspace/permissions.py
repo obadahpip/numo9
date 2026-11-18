@@ -15,3 +15,13 @@ DIRECTORY_VIEW = register(
         Scope.PRACTICE,
     )
 )
+
+GROUPS_MANAGE = register(
+    Permission(
+        "practice.groups.manage",
+        _("Organise the practice's clients into groups and tags, and assign staff to groups"),
+        "practice",
+        Risk.HIGH,
+        Scope.PRACTICE,
+    )
+)

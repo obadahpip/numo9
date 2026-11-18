@@ -226,3 +226,136 @@ integration tests per change).
 `backend/tests/test_workspace_group_access.py` — Hypothesis: random trees (depth ≤ 5), filings,
 group staff, direct staff, practice admins and assignments switched off; the resolver equals a
 brute-force model of the rule for every user and organisation.
+
+## Cache invalidation (V-02-T06)
+
+Every way the access rows change bumps the generation, so a revocation applies on the member's
+**next request** — in every web and worker process (the generation is in the shared cache):
+
+| Change | How it is noticed |
+|---|---|
+| save / delete of a group, membership, group staff assignment, practice assignment or practice member (also cascades: deleting a group removes its sub-groups, memberships and staff) | `post_save` / `post_delete` |
+| bulk `update()` / `bulk_create()` / `bulk_update()` of memberships and group staff | `workspace.models.AccessQuerySet` (their default manager) |
+| bulk `update()` / `bulk_create()` / `bulk_update()` of practice members and practice assignments | `tenancy.models.AccessRowsQuerySet` sends `access_rows_changed` |
+| group move (treebeard rewrites paths with raw SQL) | `groups.move_group` bumps |
+
+The bump happens at once and again when the transaction commits, so a request that read the old
+rows while the change was in flight can't keep them cached.
+
+**Permissions follow the group role.** Access alone answers 403 on everything; the RBAC resolver
+(A-03) also asks the registered *practice role sources* (`rbac.resolver.register_practice_role_
+source`). The workspace source, `workspace.access.group_roles(user, organisation)`, names the role
+of each group assignment that reaches the organisation (accountant, reviewer, payroll specialist,
+read-only staff — the practice system roles of the same name): a member assigned to "Toronto
+office" as *Read-only staff* reads those clients' books and changes nothing.
+
+`backend/tests/test_workspace_group_access_invalidation.py` — warm cache, one change, the next
+request answers 404: staff unassigned, organisation removed, membership deleted, group deleted
+(cascade), sub-group moved out, practice stops serving (save and bulk update), bulk moves of staff
+and memberships; grants (filing, bulk create) apply on the next request; access through a second
+group or a direct assignment survives; another user's warm cache is refreshed too; the group role
+decides read vs change.
+
+## Groups and tags API (V-02-T07)
+
+Under `/api/v1/practice/` (`numo9.workspace.groups_api`), practice-scoped like the directory:
+
+| Endpoint | What |
+|---|---|
+| `GET groups?practice=…` | the tree in order: parent, depth, organisations filed directly, distinct organisations in the subtree, staff assigned directly |
+| `POST groups` | create (`name`, optional `parent`) |
+| `GET groups/<id>` | one group, its organisations and its staff — assigned here or *inherited* from an ancestor (`inherited_from`) |
+| `PATCH groups/<id>` | rename (`name`) and/or move (`parent`: group id, `null` = top level) |
+| `GET groups/<id>/impact` | what deleting it affects: groups, organisations, staff assignments, staff, and staff who would lose access to at least one organisation (other groups and direct assignments counted) |
+| `DELETE groups/<id>` | delete with its sub-groups (organisations stay clients; access granted by its staff rows goes on the next request) |
+| `POST groups/<id>/organisations` / `DELETE groups/<id>/organisations/<org>` | file organisations (`organisations`: up to 500 ids) / take one out |
+| `PUT` / `DELETE groups/<id>/staff/<user>` | assign with a `role` (or change it) / unassign |
+| `GET tags`, `POST tags`, `PATCH tags/<id>`, `DELETE tags/<id>` | the practice's tags (`colour_label` names the colour) |
+| `POST tags/<id>/organisations` / `DELETE tags/<id>/organisations/<org>` | tag / untag |
+
+Reading needs `practice.directory.view` (every practice role). **Every change needs
+`practice.groups.manage`** — a practice permission only the Practice admin system role holds by
+default (custom practice roles may be given it). Another practice's group, tag or client, or a
+practice the user isn't a member of, answers 404. A group or tag rule refused answers 400 with the
+service's code and the field (`workspace.group.too_deep`, `.name_taken`, `.into_itself`,
+`workspace.tag.colour`…). `backend/tests/test_workspace_groups_api.py`.
+
+The views are declared `AUTHENTICATED` (the practice comes from the query, body or object, not
+from an active organisation) and name the practice permission they check with
+`rbac.drf.checks_practice_permission(key)`; the permission matrix (A-03-T10) reads it and expects
+`403 permission.denied` for every practice role without the key.
+
+## Directory: group filter, group by, tags (V-02-T08)
+
+`GET /api/v1/practice/orgs` gains:
+
+- **`group`** filter (repeatable, any of them): a group's public id; an organisation filed in that
+  group **or one of its sub-groups** matches. Its facet lists every group of the practice in tree
+  order with `depth` (1 = top) and the count with the other filters applied. An id that isn't a
+  UUID is a 400 (`field: "group"`); an unknown id matches nothing.
+- **`groups`** column: the groups the organisation is filed in directly, `[{"id", "name"}]` — the
+  badges of the row.
+- **`group_by=group`** adds `grouping`: per group in tree order, `count` (matching organisations
+  filed in it directly) and `organisations` (their ids, in the directory's order), then
+  `group: null` for the organisations in no group. An organisation in two groups is under both.
+- **Tags** reach the rows: the workspace registers its tags provider (`tags.provide_tags`) and
+  every tag change (tag, untag, rename, delete) refreshes the affected rows, so the `tag` filter,
+  its facet and the search see tag names.
+- Staff assigned to a group see its organisations (and its sub-groups') in the directory, as they
+  can open them (`search.group_scope`).
+
+The screen (`frontend/src/directory`): a **Groups** filter in the panel (indented by level), a
+**Groups** column with badges, and a **Group by** choice (*No grouping* / *Group*) that shows one
+section per group — header "Toronto office — 12 organisations", collapsible — then *No group*
+(`GroupedDirectory.tsx`). Tests: `backend/tests/test_workspace_directory_groups.py`,
+`frontend/src/directory/DirectoryGroups.test.tsx`.
+
+## Groups screen (V-02-T09…T11)
+
+`/p/<practice>/groups` (`frontend/src/groups`, linked from the directory header as *Groups and
+tags*):
+
+- **Group tree** (`GroupTree.tsx`, V-02-T09) — an ARIA `tree` (`treeitem` with `aria-level`, one
+  tab stop, ↑/↓/Home/End move the focus), each group with its organisations (sub-groups included)
+  and staff counts and *Add sub-group*, *Rename*, *Move to…*. **Drag and drop**: drag a group onto
+  another to move it under it, or onto the *Top level* zone that appears while dragging.
+  **Keyboard alternative**: *Move to…* opens a dialog with the valid targets only (not the group,
+  its sub-groups or its current parent; never deeper than 5 levels — `moveTargets`), chosen with
+  the radio group and confirmed with *Move*. A refusal from the API (rule or permission) is shown
+  as the server words it; a done move is announced (`role="status"`).
+- **Tags** (`TagsSection.tsx`, `TagPicker.tsx`, V-02-T10) — the practice's tags with their usage
+  counts, each shown as name + colour swatch + the colour's name for screen readers (colour is
+  never the only signal). The picker is a combobox: typing filters the tags (accents and case
+  ignored); when no tag has the typed name the last option is *Create tag “…” (colour)* — Enter
+  creates it inline (`POST /api/v1/practice/tags`) with the colour chosen from the 12 named
+  colours; a refusal (name taken, no permission) is shown.
+- **Delete** (`DeleteGroupDialog.tsx`, V-02-T11) — the dialog first asks `GET …/groups/<id>/impact`
+  and lists what goes: sub-groups deleted with it, organisations leaving the group (they stay
+  clients), staff and assignments, and how many staff lose access to at least one client (other
+  groups and direct assignments counted). *Delete group* stays disabled until the counts are in;
+  confirming sends `DELETE` and the tree reloads.
+
+## Isolation sweep: group revocation (V-02-T12)
+
+`backend/tests/test_workspace_group_revocation_sweep.py` (marker `tenant_isolation`, run by the CI
+tenant-sweep job) extends the A-01 router sweep to group access: a staff member reaching a client
+only through a practice group is swept over **every organisation-scoped endpoint** of the real
+URLconf (rows made by the sweep's factories). While assigned, the endpoints answer; after each
+revocation — unassigned, client removed from the group, sub-group moved out, group deleted —
+every verb of every endpoint answers 404 (405 where the view lacks the verb) on the next request.
+
+## Audit (V-02-T13)
+
+Every group, tag and assignment change writes one audit event (A-04, `numo9.audit.service.record`)
+with its actor, in the caller's transaction; `practice` is always set. A refused change or one that
+changes nothing (same name, already filed) writes nothing.
+
+| Action | Where | Changes / details |
+|---|---|---|
+| `workspace.group.created` / `.renamed` / `.moved` / `.deleted` | practice log | `name`, `parent` (names); deleted: the sub-groups that went |
+| `workspace.group.staff_assigned` / `.staff_role_changed` / `.staff_unassigned` | practice log | `role`; the staff member in details |
+| `workspace.group.organisation_added` / `.organisation_removed` | practice log **and the organisation's log** | group and organisation names |
+| `workspace.tag.created` / `.renamed` / `.recoloured` / `.deleted` | practice log | `name`, `colour` |
+| `workspace.tag.organisation_tagged` / `.organisation_untagged` | practice log **and the organisation's log** | tag and organisation names |
+
+`backend/tests/test_workspace_groups_audit.py`.

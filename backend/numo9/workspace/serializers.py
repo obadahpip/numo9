@@ -42,6 +42,11 @@ class DirectoryRowSerializer(serializers.Serializer[Any]):
     overdue_count = serializers.IntegerField(required=False)
     unfiled_count = serializers.IntegerField(required=False)
     tags = serializers.ListField(child=serializers.CharField(), required=False)
+    groups = serializers.ListField(
+        child=serializers.DictField(child=serializers.CharField()),
+        required=False,
+        help_text='Groups the organisation is filed in directly: [{"id", "name"}] (V-02-T08).',
+    )
 
 
 class FacetValueSerializer(serializers.Serializer[Any]):
@@ -49,6 +54,9 @@ class FacetValueSerializer(serializers.Serializer[Any]):
     label = serializers.CharField()  # type: ignore[assignment]  # popped by the metaclass
     count = serializers.IntegerField(
         help_text="Organisations shown with this value added (every other filter applied)."
+    )
+    depth = serializers.IntegerField(
+        required=False, help_text="Group facet only: the group's level (1 = top)."
     )
 
 
@@ -62,6 +70,22 @@ class DirectoryFacetsSerializer(serializers.Serializer[Any]):
     overdue = FacetValueSerializer(many=True)
     unfiled = FacetValueSerializer(many=True)
     tag = FacetValueSerializer(many=True)
+    group = FacetValueSerializer(many=True)
+
+
+class DirectoryGroupSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    depth = serializers.IntegerField()
+    parent = serializers.UUIDField(allow_null=True)  # type: ignore[assignment]  # DRF Field.parent
+
+
+class DirectoryGroupingSerializer(serializers.Serializer[Any]):
+    group = DirectoryGroupSerializer(allow_null=True, help_text="null: organisations in no group.")
+    count = serializers.IntegerField(help_text="Matching organisations filed in this group.")
+    organisations = serializers.ListField(
+        child=serializers.UUIDField(), help_text="Their ids, in the directory's order."
+    )
 
 
 class DirectoryPageSerializer(serializers.Serializer[Any]):
@@ -74,11 +98,24 @@ class DirectoryPageSerializer(serializers.Serializer[Any]):
     columns = serializers.ListField(child=serializers.CharField())
     results = DirectoryRowSerializer(many=True)
     facets = DirectoryFacetsSerializer(required=False)
+    grouping = DirectoryGroupingSerializer(
+        many=True, required=False, help_text="With group_by=group: the group headers (V-02-T08)."
+    )
 
 
 # ---- saved views (V-01-T08) --------------------------------------------------------------------
 
 VIEW_FILTER_KEYS = ("q", "archived")  # besides the directory filters (search.FILTERS)
+
+
+def _is_uuid(value: str) -> bool:
+    import uuid
+
+    try:
+        uuid.UUID(value)
+    except ValueError:
+        return False
+    return True
 
 
 class SavedViewSerializer(serializers.Serializer[Any]):
@@ -133,6 +170,8 @@ class SavedViewWriteSerializer(serializers.Serializer[Any]):
                 allowed = filter_choices(key)
                 for item in values:
                     if not isinstance(item, str) or len(item) > 100:
+                        raise bad(key, item)
+                    if key == "group" and not _is_uuid(item):
                         raise bad(key, item)
                     if allowed is not None and item not in allowed:
                         raise bad(key, item)

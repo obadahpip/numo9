@@ -166,6 +166,12 @@ export const m = defineMessages({
     description: "Column: unfiled returns",
   },
   colTags: { id: "directory.col.tags", defaultMessage: "Tags", description: "Column" },
+  manageGroups: {
+    id: "directory.manageGroups",
+    defaultMessage: "Groups and tags",
+    description: "Link from the directory to the practice's groups and tags screen",
+  },
+  colGroups: { id: "directory.col.groups", defaultMessage: "Groups", description: "Column" },
   colActions: {
     id: "directory.col.actions",
     defaultMessage: "Actions",
@@ -300,6 +306,41 @@ export const m = defineMessages({
     description: "Filter group",
   },
   facetTag: { id: "directory.facet.tag", defaultMessage: "Tags", description: "Filter group" },
+  facetGroup: {
+    id: "directory.facet.group",
+    defaultMessage: "Groups",
+    description: "Filter group: the practice's groups (a group includes its sub-groups)",
+  },
+  groupBy: {
+    id: "directory.groupBy.label",
+    defaultMessage: "Group by",
+    description: "Label of the directory's group-by choice",
+  },
+  groupByNone: {
+    id: "directory.groupBy.none",
+    defaultMessage: "No grouping",
+    description: "Group-by choice: a flat list",
+  },
+  groupByGroup: {
+    id: "directory.groupBy.group",
+    defaultMessage: "Group",
+    description: "Group-by choice: sections per practice group",
+  },
+  groupHeader: {
+    id: "directory.groupHeader",
+    defaultMessage: "{name} — {count, plural, one {# organisation} other {# organisations}}",
+    description: "Group-by section header: group name and how many organisations it shows",
+  },
+  noGroup: {
+    id: "directory.noGroup",
+    defaultMessage: "No group",
+    description: "Group-by section of organisations filed in no group",
+  },
+  groupToggle: {
+    id: "directory.groupToggle",
+    defaultMessage: "Show or hide {name}",
+    description: "Accessible name of a group-by section's expand/collapse button",
+  },
   facetNone: {
     id: "directory.facet.none",
     defaultMessage: "None in this list",
