@@ -444,22 +444,33 @@ class ContactDetailView(APIView):
 
 class ContactArchiveView(APIView):
     queryset = Contact._base_manager.none()
-    restore = False
 
     @requires_permission(CONTACTS_MANAGE.key)
     @requires_feature(WRITE)
     @extend_schema(
         operation_id="contacts_archive",
-        summary="Archive (history kept) or restore a contact",
+        summary="Archive a contact (history kept)",
         request=None,
         responses={200: OpenApiTypes.OBJECT},
     )
     def post(self, request: Request, org: Any, public_id: Any) -> Response:
-        contact = _one(public_id)
-        if self.restore:
-            contact.unarchive()
-        else:
-            contact.archive()
+        _one(public_id).archive()
+        return Response(detail(_one(public_id)))
+
+
+class ContactRestoreView(APIView):
+    queryset = Contact._base_manager.none()
+
+    @requires_permission(CONTACTS_MANAGE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="contacts_restore",
+        summary="Restore an archived contact",
+        request=None,
+        responses={200: OpenApiTypes.OBJECT},
+    )
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        _one(public_id).unarchive()
         return Response(detail(_one(public_id)))
 
 

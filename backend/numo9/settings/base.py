@@ -167,6 +167,7 @@ SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
     "ENUM_NAME_OVERRIDES": {
         "PracticeRoleEnum": "numo9.tenancy.models.PracticeRole",
+        "AmountsAreEnum": "numo9.contacts.models.AmountsAre",  # B-01-T06
         "FeatureFlagModeEnum": "numo9.platform.api.FLAG_MODES",  # U-06-T12
         "BulkJobActionEnum": "numo9.bulk.models.BulkAction",  # V-03-T07
         "OrganisationRoleEnum": "numo9.tenancy.models.OrganisationRole",

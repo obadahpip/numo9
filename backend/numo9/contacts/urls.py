@@ -25,7 +25,7 @@ urlpatterns = [
     ),
     path(
         f"{ORG}contacts/<uuid:public_id>/restore",
-        api.ContactArchiveView.as_view(restore=True),
+        api.ContactRestoreView.as_view(),
         name="contact-restore",
     ),
 ]
