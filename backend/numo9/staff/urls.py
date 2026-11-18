@@ -21,6 +21,11 @@ urlpatterns = [
         name="practice-staff-reinstate",
     ),
     path(
+        "practice/staff/<uuid:user_id>/activity",
+        api.StaffActivityView.as_view(),
+        name="practice-staff-activity",
+    ),
+    path(
         "practice/staff/<uuid:user_id>/assignments",
         api.StaffAssignmentsView.as_view(),
         name="practice-staff-assignments",

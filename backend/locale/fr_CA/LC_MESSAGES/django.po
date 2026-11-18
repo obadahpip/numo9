@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 19:11-0500\n"
+"POT-Creation-Date: 2026-11-17 19:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5101,6 +5101,9 @@ msgstr "alerte de personnel inactif"
 
 msgid "dormant staff alerts"
 msgstr "alertes de personnel inactif"
+
+msgid "daily staff activity"
+msgstr "activité quotidienne du personnel"
 
 msgid "Tenancy"
 msgstr ""

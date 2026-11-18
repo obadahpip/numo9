@@ -506,6 +506,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.staff.dormant_alerts",
         "schedule": crontab(minute=23, hour=12),  # 12:23 UTC = 07:23 / 08:23 Toronto
     },
+    # Staff activity heatmap (V-05-T07): yesterday and today recounted from the audit log.
+    "numo9.staff.aggregate_activity": {
+        "task": "numo9.staff.aggregate_activity",
+        "schedule": crontab(minute=37),  # hourly: today's squares fill in during the day
+    },
     # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
     "numo9.platform.snapshot_metrics": {
         "task": "numo9.platform.snapshot_metrics",

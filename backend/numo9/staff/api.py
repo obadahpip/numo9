@@ -364,3 +364,41 @@ class StaffDormantView(APIView):
 
         practice = practice_for(request, _staff_manage())
         return Response({"dormant_days": practice.dormant_days, "staff": dormant_staff(practice)})
+
+
+# ---- activity heatmap (V-05-T07) ---------------------------------------------------------------
+
+
+class ActivityDaySerializer(serializers.Serializer[Any]):
+    date = serializers.DateField()
+    count = serializers.IntegerField()
+
+
+class ActivitySerializer(serializers.Serializer[Any]):
+    from_ = serializers.DateField()
+    to = serializers.DateField()
+    total = serializers.IntegerField()
+    days = ActivityDaySerializer(many=True)
+
+    def get_fields(self) -> dict[str, Any]:
+        fields = super().get_fields()
+        fields["from"] = fields.pop("from_")
+        return fields
+
+
+class StaffActivityView(APIView):
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # practice.staff.manage (checked here)
+    @checks_practice_permission("practice.staff.manage")
+    @extend_schema(
+        operation_id="practice_staff_activity",
+        summary="A staff member's daily activity for the last 12 months (audit-log counts)",
+        parameters=[PRACTICE_PARAM],
+        responses=ActivitySerializer,
+    )
+    def get(self, request: Request, user_id: Any) -> Response:
+        from .activity import activity_of
+
+        member = _member(practice_for(request, _staff_manage()), user_id)
+        return Response(activity_of(member.user))

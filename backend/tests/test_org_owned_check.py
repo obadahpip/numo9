@@ -90,6 +90,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "bulk.BulkJobRow",
                 # Practice staff (V-05-T06): reviewed — practice-level alert log.
                 "staff.DormantAlert",
+                # Staff activity (V-05-T07): reviewed — per-user counts, no tenant data.
+                "staff.StaffActivityDaily",
             }
         )
         == PLATFORM_MODELS

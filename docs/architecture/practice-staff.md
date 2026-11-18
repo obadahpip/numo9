@@ -61,3 +61,16 @@ Audited in the practice's log: `staff.member_suspended`, `staff.member_reinstate
 - **Widget** — `GET /api/v1/practice/staff/dormant` (`practice.staff.manage`) answers the dormant
   members with their days; `DormantStaffWidget` on the practice home (`/p/:practice/directory`)
   lists them with one-click *Suspend access* (V-05-T05) and renders nothing for anyone else.
+
+## Activity from the audit log (V-05-T07)
+
+`StaffActivityDaily` (user, date, count) materialises how many audit events each person made per
+**Toronto calendar day** (an event at 23:30 counts on that day), across every organisation and
+practice — `actor_user` = the person (as themselves, or signed in by Numo9 support).
+`numo9.staff.activity.aggregate(since, until)` recomputes those days with one `GROUP BY` on
+`audit_event` and deletes days that fell to zero, so the table equals the audit log for the
+period (data-validation test: stored counts == `audit_counts`). The job
+`numo9.staff.aggregate_activity` runs hourly over yesterday and today.
+
+`GET /api/v1/practice/staff/<user>/activity` (`practice.staff.manage`) answers the last 365 days:
+`from`, `to`, `total` and the non-zero `days` — the heatmap's data.

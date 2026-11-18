@@ -94,6 +94,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "bulk.BulkJobRow",
         # Practice staff (V-05-T06): alerts about a practice's dormant members.
         "staff.DormantAlert",
+        # Staff activity (V-05-T07): a person's daily audit-event counts, across organisations.
+        "staff.StaffActivityDaily",
     }
 )
 
