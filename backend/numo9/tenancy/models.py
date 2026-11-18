@@ -221,6 +221,20 @@ class Organisation(models.Model):
         default=Locale.EN_CA,
         db_default=Locale.EN_CA,
     )
+    # Demo organisations (U-07): seeded sample data, isolated, resettable, purged when idle.
+    is_demo = models.BooleanField(_("demo organisation"), default=False, db_default=False)
+    demo_seed_version = models.PositiveSmallIntegerField(
+        _("demo seed version"),
+        null=True,
+        blank=True,
+        help_text=_("Version of the sample data the demo was built from (numo9/demo)."),
+    )
+    last_active_at = models.DateTimeField(
+        _("last active at"),
+        null=True,
+        blank=True,
+        help_text=_("Last signed-in request to the organisation (demo inactivity purge)."),
+    )
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
@@ -235,6 +249,18 @@ class Organisation(models.Model):
             models.CheckConstraint(
                 condition=_in_choices("locale", Locale),
                 name="tenancy_organisation_locale_valid",
+            ),
+            # A demo always records the seed it was built from; a real organisation never has one.
+            models.CheckConstraint(
+                condition=models.Q(is_demo=True) | models.Q(demo_seed_version__isnull=True),
+                name="tenancy_organisation_seed_only_demo",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=["last_active_at"],
+                name="tenancy_org_demo_idle_idx",
+                condition=models.Q(is_demo=True),
             ),
         ]
 
