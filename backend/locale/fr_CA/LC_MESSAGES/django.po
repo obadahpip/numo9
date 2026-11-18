@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:23-0500\n"
+"POT-Creation-Date: 2026-11-18 15:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1323,6 +1323,14 @@ msgid "Postal code should look like 'M5V 2T6'. '%(value)s' doesn't."
 msgstr ""
 
 msgid "Use a 2-letter country code like CA or US."
+msgstr ""
+
+#, python-format
+msgid "No contact has the external ID or number '%(ref)s'."
+msgstr ""
+
+#, python-format
+msgid "People import: %(file)s"
 msgstr ""
 
 msgid "Contacts"

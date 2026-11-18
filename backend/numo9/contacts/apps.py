@@ -28,6 +28,10 @@ class ContactsConfig(AppConfig):
         from .import_engine import import_contacts
 
         register_runner(CONTACT.key, import_contacts)
+
+        from .import_people import import_people
+
+        register_runner(PERSON.key, import_people)
         # Supplier statement lines (B-02-T07).
         register_entity(SUPPLIER_STATEMENT_LINE)
 
