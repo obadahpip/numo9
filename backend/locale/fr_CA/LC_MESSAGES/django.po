@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:11-0500\n"
+"POT-Creation-Date: 2026-11-18 15:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1259,6 +1259,47 @@ msgstr "Utilisez au plus %(max)s caractères."
 
 #, python-format
 msgid "%(field)s needs %(expected)s: %(value)s doesn't fit."
+msgstr ""
+
+msgid "This column can't be cleared."
+msgstr ""
+
+#, python-format
+msgid "'%(value)s' isn't an email address."
+msgstr ""
+
+msgid "Use a 3-letter currency code like CAD or USD."
+msgstr ""
+
+#, python-format
+msgid "Unknown role: %(words)s. Use Customer, Supplier, Employee, Contractor or Government agency."
+msgstr ""
+
+#, python-format
+msgid "'%(value)s' isn't an amount."
+msgstr ""
+
+msgid "Use Warn or Block."
+msgstr ""
+
+msgid "Use English or French."
+msgstr ""
+
+msgid "Unknown statement preference."
+msgstr ""
+
+msgid "Use Yes or No."
+msgstr ""
+
+#, python-format
+msgid "'%(value)s' isn't a province or territory. Use its code, like ON, or its name."
+msgstr ""
+
+#, python-format
+msgid "Postal code should look like 'M5V 2T6'. '%(value)s' doesn't."
+msgstr ""
+
+msgid "Use a 2-letter country code like CA or US."
 msgstr ""
 
 msgid "Contacts"
