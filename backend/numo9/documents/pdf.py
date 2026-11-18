@@ -8,6 +8,7 @@ every document shares it; nothing here may override it.
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 
 from django.template.loader import render_to_string
@@ -21,11 +22,35 @@ LETTER_INCHES = (8.5, 11.0)
 MARGIN_INCHES = 1.0
 
 
+#: Watermark hooks (U-07-T08): each returns the text to print across every page, or "" — the
+#: first non-empty one wins. ``numo9.demo`` registers the demo watermark.
+WatermarkHook = Callable[[dict[str, Any]], str]
+_watermark_hooks: list[WatermarkHook] = []
+
+
+def register_watermark(hook: WatermarkHook) -> WatermarkHook:
+    if hook not in _watermark_hooks:
+        _watermark_hooks.append(hook)
+    return hook
+
+
+def watermark_for(context: dict[str, Any]) -> str:
+    for hook in _watermark_hooks:
+        text = hook(context)
+        if text:
+            return str(text)
+    return ""
+
+
 def render_html(template_name: str, context: dict[str, Any], *, locale: str | None = None) -> str:
-    """The document's HTML in ``locale`` (en-CA when not given)."""
+    """The document's HTML in ``locale`` (en-CA when not given), watermarked when a hook says
+    so (in the document's language)."""
     language = normalise_locale(locale) or DEFAULT
     with translation.override(language):
-        return render_to_string(template_name, {**context, "document_locale": language})
+        return render_to_string(
+            template_name,
+            {**context, "document_locale": language, "document_watermark": watermark_for(context)},
+        )
 
 
 def render_pdf(template_name: str, context: dict[str, Any], *, locale: str | None = None) -> bytes:

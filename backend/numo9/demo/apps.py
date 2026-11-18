@@ -9,4 +9,9 @@ class DemoConfig(AppConfig):
     verbose_name = "Demo organisations"
 
     def ready(self) -> None:
+        from numo9.documents.pdf import register_watermark
+
         from . import phase0  # noqa: F401 — registers the Phase 0 seeders
+        from .watermark import demo_watermark
+
+        register_watermark(demo_watermark)
