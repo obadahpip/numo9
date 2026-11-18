@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 19:05-0500\n"
+"POT-Creation-Date: 2026-11-17 19:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4815,6 +4815,32 @@ msgstr ""
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr ""
 
+#, python-format
+msgid "%(name)s hasn't signed in for %(days)s days"
+msgstr ""
+
+#, python-format
+msgid "%(name)s (%(email)s) hasn't signed in to %(practice)s for %(days)s days but can still open the practice's clients. If they no longer need access, suspend it: %(link)s"
+msgstr ""
+
+msgid "staff member"
+msgstr ""
+
+msgid "inactive since"
+msgstr ""
+
+msgid "alerted at"
+msgstr ""
+
+msgid "admins alerted"
+msgstr ""
+
+msgid "dormant staff alert"
+msgstr ""
+
+msgid "dormant staff alerts"
+msgstr ""
+
 msgid "Tenancy"
 msgstr ""
 
@@ -5148,9 +5174,6 @@ msgid "organisation tag"
 msgstr ""
 
 msgid "organisation tags"
-msgstr ""
-
-msgid "staff member"
 msgstr ""
 
 msgid "group staff assignment"

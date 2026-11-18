@@ -92,6 +92,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # practice's API only.
         "bulk.BulkJob",
         "bulk.BulkJobRow",
+        # Practice staff (V-05-T06): alerts about a practice's dormant members.
+        "staff.DormantAlert",
     }
 )
 

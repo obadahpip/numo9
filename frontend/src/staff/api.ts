@@ -28,3 +28,19 @@ export const assignmentsApi = {
   unassignGroup: (practice: string, user: string, group: string) =>
     apiRequest<Assignments>(`${base(user)}/groups/${group}${q(practice)}`, { method: "DELETE" }),
 };
+
+export interface DormantMember {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  last_login: string | null;
+  days: number;
+}
+
+export const dormantApi = {
+  list: (practice: string): Promise<ApiResult<{ dormant_days: number; staff: DormantMember[] }>> =>
+    apiRequest(`/api/v1/practice/staff/dormant${q(practice)}`),
+  suspend: (practice: string, user: string) =>
+    apiRequest<unknown>(`${base(user)}/suspend${q(practice)}`, { method: "POST" }),
+};

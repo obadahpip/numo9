@@ -501,6 +501,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.entitlements.expire_trials",
         "schedule": crontab(minute="*/5"),
     },
+    # Dormant practice staff (V-05-T06): admins alerted on day 60 without a sign-in.
+    "numo9.staff.dormant_alerts": {
+        "task": "numo9.staff.dormant_alerts",
+        "schedule": crontab(minute=23, hour=12),  # 12:23 UTC = 07:23 / 08:23 Toronto
+    },
     # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
     "numo9.platform.snapshot_metrics": {
         "task": "numo9.platform.snapshot_metrics",

@@ -49,3 +49,15 @@ organisation by search, a group with a role, and removes either at once.
 
 Audited in the practice's log: `staff.member_suspended`, `staff.member_reinstated`,
 `staff.member_removed`.
+
+## Dormant staff: daily job and widget (V-05-T06)
+
+- **Rule** — dormant from day `Practice.dormant_days` (default 60) without a sign-in (never signed
+  in: from joining); tested with a frozen clock (freezegun): day 59 → nothing, day 60 → alert.
+- **Job** `numo9.staff.dormant_alerts` (Celery beat, daily 12:23 UTC): for every non-suspended
+  dormant member, once per period of inactivity (`DormantAlert`, unique per member and
+  `inactive_since`), an email to each **active** practice admin of the practice (in their
+  language) with a link to the member's page; signing in again restarts the count.
+- **Widget** — `GET /api/v1/practice/staff/dormant` (`practice.staff.manage`) answers the dormant
+  members with their days; `DormantStaffWidget` on the practice home (`/p/:practice/directory`)
+  lists them with one-click *Suspend access* (V-05-T05) and renders nothing for anyone else.

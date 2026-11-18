@@ -6,6 +6,7 @@ from . import api
 
 urlpatterns = [
     path("practice/staff", api.StaffListView.as_view(), name="practice-staff"),
+    path("practice/staff/dormant", api.StaffDormantView.as_view(), name="practice-staff-dormant"),
     path(
         "practice/staff/<uuid:user_id>", api.StaffMemberView.as_view(), name="practice-staff-member"
     ),

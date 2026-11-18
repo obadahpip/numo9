@@ -1843,6 +1843,13 @@
       "title": "{name} works on"
     },
     "breadcrumb": "Staff",
+    "dormant": {
+      "intro": "No sign-in for {days} days or more, but they can still open your clients.",
+      "line": "{name} — {days, plural, one {# day} other {# days}} without signing in",
+      "suspend": "Suspend access for {name}",
+      "suspended": "{name}'s access is suspended.",
+      "title": "Dormant staff"
+    },
     "loadFailed": "We couldn't load this staff member",
     "personLine": "{role} · {email}",
     "retry": "Try again",

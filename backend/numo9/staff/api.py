@@ -329,3 +329,38 @@ class StaffMemberView(APIView):
         member = _member(practice_for(request, _staff_manage()), user_id)
         remove(member, by=request.user)
         return Response(status=204)
+
+
+# ---- dormant staff widget (V-05-T06) -----------------------------------------------------------
+
+
+class DormantLineSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    email = serializers.CharField()
+    role = serializers.CharField()
+    last_login = serializers.DateTimeField(allow_null=True)
+    days = serializers.IntegerField()
+
+
+class DormantSerializer(serializers.Serializer[Any]):
+    dormant_days = serializers.IntegerField()
+    staff = DormantLineSerializer(many=True)
+
+
+class StaffDormantView(APIView):
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)  # practice.staff.manage (checked here)
+    @checks_practice_permission("practice.staff.manage")
+    @extend_schema(
+        operation_id="practice_staff_dormant",
+        summary="The practice's dormant staff (dashboard widget)",
+        parameters=[PRACTICE_PARAM],
+        responses=DormantSerializer,
+    )
+    def get(self, request: Request) -> Response:
+        from .dormant import dormant_staff
+
+        practice = practice_for(request, _staff_manage())
+        return Response({"dormant_days": practice.dormant_days, "staff": dormant_staff(practice)})

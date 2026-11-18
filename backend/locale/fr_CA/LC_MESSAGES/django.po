@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 19:05-0500\n"
+"POT-Creation-Date: 2026-11-17 19:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5076,6 +5076,32 @@ msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr "Afficher les valeurs masquées comme le NAS et les numéros de compte bancaire (mot de passe confirmé, journalisé)"
 
+#, python-format
+msgid "%(name)s hasn't signed in for %(days)s days"
+msgstr "%(name)s ne s’est pas connecté depuis %(days)s jours"
+
+#, python-format
+msgid "%(name)s (%(email)s) hasn't signed in to %(practice)s for %(days)s days but can still open the practice's clients. If they no longer need access, suspend it: %(link)s"
+msgstr "%(name)s (%(email)s) ne s’est pas connecté à %(practice)s depuis %(days)s jours, mais peut toujours ouvrir les clients du cabinet. S’il n’a plus besoin d’accès, suspendez-le : %(link)s"
+
+msgid "staff member"
+msgstr "membre du personnel"
+
+msgid "inactive since"
+msgstr "inactif depuis"
+
+msgid "alerted at"
+msgstr "alerté le"
+
+msgid "admins alerted"
+msgstr "administrateurs alertés"
+
+msgid "dormant staff alert"
+msgstr "alerte de personnel inactif"
+
+msgid "dormant staff alerts"
+msgstr "alertes de personnel inactif"
+
 msgid "Tenancy"
 msgstr ""
 
@@ -5416,9 +5442,6 @@ msgstr "étiquette d’organisation"
 
 msgid "organisation tags"
 msgstr "étiquettes d’organisation"
-
-msgid "staff member"
-msgstr "membre du personnel"
 
 msgid "group staff assignment"
 msgstr "affectation au groupe"

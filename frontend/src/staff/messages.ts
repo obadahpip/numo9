@@ -71,6 +71,31 @@ export const m = defineMessages({
     description: "Error",
   },
   retry: { id: "staff.retry", defaultMessage: "Try again", description: "Retry" },
+  dormantTitle: {
+    id: "staff.dormant.title",
+    defaultMessage: "Dormant staff",
+    description: "Dashboard widget heading",
+  },
+  dormantIntro: {
+    id: "staff.dormant.intro",
+    defaultMessage: "No sign-in for {days} days or more, but they can still open your clients.",
+    description: "Dashboard widget explanation",
+  },
+  dormantLine: {
+    id: "staff.dormant.line",
+    defaultMessage: "{name} — {days, plural, one {# day} other {# days}} without signing in",
+    description: "A dormant staff member",
+  },
+  suspend: {
+    id: "staff.dormant.suspend",
+    defaultMessage: "Suspend access for {name}",
+    description: "One-click suspend",
+  },
+  suspended: {
+    id: "staff.dormant.suspended",
+    defaultMessage: "{name}'s access is suspended.",
+    description: "After suspending",
+  },
   groupLine: {
     id: "staff.assignments.groupLine",
     defaultMessage: "{name} · {role}",
