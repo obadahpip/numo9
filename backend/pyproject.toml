@@ -111,4 +111,6 @@ contract_types = ["ledger_writes: tools.import_contracts.LedgerWritesContract"]
 name = "Only numo9.ledger.services writes JournalLine (ADR-0003)"
 type = "ledger_writes"
 models_module = "numo9.ledger.models"
-allowed_modules = ["numo9.ledger.services"]
+# numo9.scale.fixtures (S-06-T08): the scratch-only perf fixture inserts posted lines with
+# generate_series the way the engine writes them (drafts, lines, then Posted) — never real books.
+allowed_modules = ["numo9.ledger.services", "numo9.scale.fixtures"]
