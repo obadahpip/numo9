@@ -28,6 +28,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "tenancy.Practice",
         # Usage metering (S-06-T07): the aggregator's position in the event stream (no tenant data).
         "metering.StreamOffset",
+        # Demo templates (U-07-T05): which hidden template organisation serves a seed version.
+        "demo.DemoTemplate",
         "tenancy.PracticeMember",
         "tenancy.Organisation",
         "tenancy.OrganisationMember",
