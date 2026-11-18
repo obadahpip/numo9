@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:40-0500\n"
+"POT-Creation-Date: 2026-11-18 15:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1210,6 +1210,24 @@ msgstr "Relevé"
 
 #, python-format
 msgid "%(kind)s as at %(date)s sent to %(to)s"
+msgstr ""
+
+msgid "Use a date like 2026-03-31."
+msgstr "Utilisez une date comme 2026-03-31."
+
+msgid "Choose outstanding or activity."
+msgstr ""
+
+msgid "Choose receivables or payables."
+msgstr ""
+
+msgid "Write the note."
+msgstr ""
+
+msgid "Nobody at this contact receives emails: add an address to send to."
+msgstr ""
+
+msgid "Choose the statement file and its date."
 msgstr ""
 
 msgid "This account doesn't exist."
@@ -3464,9 +3482,6 @@ msgstr ""
 
 msgid "Not found."
 msgstr ""
-
-msgid "Use a date like 2026-03-31."
-msgstr "Utilisez une date comme 2026-03-31."
 
 msgid "Unknown status."
 msgstr "Statut inconnu."
