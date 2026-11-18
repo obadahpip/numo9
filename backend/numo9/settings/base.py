@@ -516,6 +516,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.platform.snapshot_metrics",
         "schedule": crontab(minute=51, hour=5),  # 05:51 UTC = 00:51 / 01:51 Toronto
     },
+    # Audit log partitions (S-06-T04, ADR-0005): current month through month + 3; alarm if missing.
+    "numo9.audit.ensure_partitions": {
+        "task": "numo9.audit.ensure_partitions",
+        "schedule": crontab(minute=3, hour=6),  # 06:03 UTC = 01:03 / 02:03 Toronto
+    },
     # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
     "numo9.billing.apply_changes": {
         "task": "numo9.billing.apply_changes",
