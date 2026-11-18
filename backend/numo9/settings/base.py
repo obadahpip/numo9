@@ -114,6 +114,8 @@ MIDDLEWARE = [
     "numo9.audit.context.AuditContextMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
     "numo9.tenancy.middleware.TenantContextMiddleware",
+    # Demo organisations (U-07-T09): a signed-in request keeps the demo alive (last_active_at).
+    "numo9.demo.purge.DemoActivityMiddleware",
     # Permission sets cached for one request only — never across requests (A-03-T04).
     "numo9.rbac.resolver.PermissionCacheMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -482,6 +484,11 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.jobs.purge_job_runs": {
         "task": "numo9.jobs.purge_job_runs",
         "schedule": crontab(minute=17, hour=7),  # 07:17 UTC = 02:17 / 03:17 Toronto
+    },
+    # Demo organisations idle for 30 days are purged (U-07-T09).
+    "numo9.demo.purge_inactive": {
+        "task": "numo9.demo.purge_inactive",
+        "schedule": crontab(minute=53, hour=7),  # 07:53 UTC = 02:53 / 03:53 Toronto
     },
     # Exemption certificate expiry reminders (B-01-T08): 30 days before and once expired.
     "numo9.contacts.exemption_reminders": {
