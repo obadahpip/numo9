@@ -26,7 +26,7 @@ from typing import Any
 
 from django.db import connection, transaction
 
-from numo9.partitioning import rebuild_as_partitioned
+from numo9.partitioning import name_child_indexes, rebuild_as_partitioned
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,9 @@ def partitions(cursor: Any, table: str = TABLE) -> list[str]:
 
 
 def lock_down(cursor: Any, child: str) -> None:
-    """Append-only privileges on one child (the trigger is cloned from the parent)."""
+    """Append-only privileges on one child (the trigger is cloned from the parent); its indexes
+    named after the parent's."""
+    name_child_indexes(cursor, TABLE, child)
     cursor.execute(f'REVOKE UPDATE, DELETE, TRUNCATE ON TABLE "{child}" FROM PUBLIC')
     cursor.execute(f'REVOKE UPDATE, DELETE, TRUNCATE ON TABLE "{child}" FROM CURRENT_USER')
 

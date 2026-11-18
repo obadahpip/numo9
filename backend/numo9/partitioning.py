@@ -11,7 +11,8 @@
 4. copies the rows (before triggers and forced RLS exist, so the copy itself is never refused),
    moves sequence ownership to the new columns and drops the old table;
 5. recreates the triggers (cloned by PostgreSQL on every partition) and RLS on the parent **and on
-   every partition** (a partition addressed directly is checked against its own policies).
+   every partition** (a partition addressed directly is checked against its own policies), and
+   names each partition's indexes after the parent's (``name_child_indexes``).
 
 Privileges are the caller's (``audit_event`` revokes UPDATE/DELETE/TRUNCATE).
 """
@@ -43,6 +44,24 @@ def children(cursor: Any, table: str) -> list[str]:
             [f"public.{table}"],
         )
     ]
+
+
+def name_child_indexes(cursor: Any, table: str, child: str) -> None:
+    """Name a partition's indexes after the parent's (``<parent index>_<partition suffix>``), so a
+    refusal names the constraint the code knows, e.g. ``ledger_line_no_unique_p06`` instead of
+    PostgreSQL's generated ``ledger_journalline_p06_organisation_id_entry_id_line_no_key``."""
+    suffix = child.removeprefix(f"{table}_")
+    for index, parent_index in _rows(
+        cursor,
+        "SELECT ci.relname, pi.relname FROM pg_inherits h "
+        "JOIN pg_class ci ON ci.oid = h.inhrelid JOIN pg_class pi ON pi.oid = h.inhparent "
+        "JOIN pg_index x ON x.indexrelid = ci.oid "
+        "WHERE x.indrelid = to_regclass(%s) AND pi.relkind = 'I'",
+        [f"public.{child}"],
+    ):
+        wanted = f"{parent_index[: 62 - len(suffix)]}_{suffix}"
+        if index != wanted:
+            cursor.execute(f'ALTER INDEX "{index}" RENAME TO "{wanted}"')
 
 
 def apply_rls(
@@ -149,4 +168,5 @@ def rebuild_as_partitioned(
     apply_rls(cursor, table, rls, policies)
     for child in children(cursor, table):
         apply_rls(cursor, child, rls, policies)
+        name_child_indexes(cursor, table, child)
     return True
