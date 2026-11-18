@@ -857,6 +857,11 @@ DEMO_SIGN_UP_FIRST = define(
     _("Create your free Numo9 account first, then start your trial from the demo."),
     status.HTTP_409_CONFLICT,
 )
+DEMO_TOO_MANY = define(
+    "demo.too_many",
+    _("Too many demos were opened from your connection. Try again in an hour."),
+    status.HTTP_429_TOO_MANY_REQUESTS,
+)
 BILLING_PACKAGE_UNKNOWN = define(
     "billing.package_unknown",
     _("There's no package %(package)s for sale. Choose one of the packages offered."),

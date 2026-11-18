@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 16:26-0500\n"
+"POT-Creation-Date: 2026-11-18 16:28-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3238,6 +3238,9 @@ msgstr "Cette organisation n'est pas une démo."
 
 msgid "Create your free Numo9 account first, then start your trial from the demo."
 msgstr "Créez d'abord votre compte Numo9 gratuit, puis commencez votre essai depuis la démo."
+
+msgid "Too many demos were opened from your connection. Try again in an hour."
+msgstr "Trop de démos ont été ouvertes depuis votre connexion. Réessayez dans une heure."
 
 #, python-format
 msgid "There's no package %(package)s for sale. Choose one of the packages offered."

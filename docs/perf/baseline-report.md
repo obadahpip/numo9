@@ -45,3 +45,13 @@ No request failed. Notes for the next run:
   Watch it as organisations grow — it is the first candidate for a cached response.
 - The baseline ran on one host with the load generator: staging (separate k6 runner, PgBouncer,
   the replica router) is the number the go-live gate compares against.
+
+## Demo creation — 2026-11-19 (U-07-T05 / U-07-T11)
+
+`tools/perf/k6/demo-open.js`: 10 anonymous visitors press "Try the demo" back to back for 30 s
+(CSRF token, `POST /api/v1/demo` — template clone, demo user, session — then the first contacts
+page), same host as above, `NUMO9_DEMO_OPEN_PER_HOUR` raised for the run.
+
+| Requests | p50 | p95 | p99 | max | Threshold |
+|---:|---:|---:|---:|---:|---|
+| 344 demos opened | 352 ms | 575 ms | 2,090 ms | 2,210 ms | ✅ p95 < 10 s, 344/344 opened |

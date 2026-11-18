@@ -7,5 +7,6 @@ from . import api
 ORG = "o/<uuid:org>/"
 
 urlpatterns = [
+    path("demo", api.DemoOpenView.as_view(), name="demo-open"),
     path(f"{ORG}demo/convert", api.DemoConvertView.as_view(), name="demo-convert"),
 ]
