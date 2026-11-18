@@ -114,3 +114,68 @@ class ImportMapping(AuditedModel, OrgOwnedModel):
         ):
             self.clean()
         super().save(*args, **kwargs)
+
+
+class ImportRunStatus(models.TextChoices):
+    UPLOADED = "uploaded", _("Uploaded")
+    REVIEWED = "reviewed", _("Checked (dry run)")
+    APPLYING = "applying", _("Importing")
+    APPLIED = "applied", _("Imported")
+    FAILED = "failed", _("Failed")
+
+
+class ImportRun(OrgOwnedModel):
+    """One import of a file (B-03-T07): its rows as read, the mapping, the options and the latest
+    report — a dry run (``reviewed``) or the applied outcome (``applied``). The rows are kept as
+    cells so the dry run and the import read exactly the same data."""
+
+    entity = models.CharField(_("record type"), max_length=40)
+    filename = models.CharField(_("file"), max_length=255, blank=True)
+    sheet = models.CharField(_("sheet"), max_length=100, blank=True)
+    headers = models.JSONField(_("column headers"), default=list)
+    cells = models.JSONField(_("rows"), default=list, help_text=_("[[row number, [cell, …]], …]"))
+    columns = models.JSONField(_("mapping"), default=dict)
+    options = models.JSONField(_("options"), default=dict, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=ImportRunStatus.choices,
+        default=ImportRunStatus.UPLOADED,
+    )
+    counts = models.JSONField(_("totals"), default=dict, blank=True)
+    job_id = models.UUIDField(_("background job"), null=True, blank=True)
+    applied_at = models.DateTimeField(_("imported at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+        verbose_name = _("import")
+        verbose_name_plural = _("imports")
+
+    def __str__(self) -> str:
+        return f"{self.entity} · {self.filename}"
+
+
+class ImportRunRow(OrgOwnedModel):
+    """One data row's outcome in the run's latest report: action, changes ``{field: [before,
+    after]}`` and errors ``[{field, code, message}]``."""
+
+    run = models.ForeignKey(
+        ImportRun, on_delete=models.CASCADE, related_name="rows", verbose_name=_("import")
+    )
+    row = models.PositiveIntegerField(_("row"))
+    key = models.CharField(_("match key"), max_length=255, blank=True)
+    label = models.CharField(_("record"), max_length=300, blank=True)
+    action = models.CharField(_("action"), max_length=10)
+    changes = models.JSONField(_("changes"), default=dict, blank=True)
+    errors = models.JSONField(_("errors"), default=list, blank=True)
+
+    class Meta:
+        ordering = ("run", "row")
+        verbose_name = _("import row")
+        verbose_name_plural = _("import rows")
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("run", "action"), name="imports_row_action_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.run_id} #{self.row} {self.action}"

@@ -21,6 +21,13 @@ class ContactsConfig(AppConfig):
         # What a contacts file can map to (B-03-T03).
         register_entity(CONTACT)
         register_entity(PERSON)
+
+        # Import runs (B-03-T07): the contacts importer behind the dry run and the apply job.
+        from numo9.imports.runs import register_runner
+
+        from .import_engine import import_contacts
+
+        register_runner(CONTACT.key, import_contacts)
         # Supplier statement lines (B-02-T07).
         register_entity(SUPPLIER_STATEMENT_LINE)
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:20-0500\n"
+"POT-Creation-Date: 2026-11-18 15:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1261,6 +1261,25 @@ msgstr "Utilisez au plus %(max)s caractères."
 msgid "%(field)s needs %(expected)s: %(value)s doesn't fit."
 msgstr ""
 
+msgid "A new contact needs a name."
+msgstr ""
+
+#, python-format
+msgid "Contacts import: %(file)s"
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s already has this %(what)s."
+msgstr ""
+
+msgid "external ID"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "contact number"
+msgstr "Numéro"
+
 #, python-format
 msgid "The external ID points to %(a)s but the contact number to %(b)s. Fix one of them in the file."
 msgstr ""
@@ -1521,15 +1540,7 @@ msgstr ""
 msgid "Archived"
 msgstr "Archivée"
 
-#, fuzzy
-#| msgid "Number"
-msgid "contact number"
-msgstr "Numéro"
-
 msgid "Unique in the organisation; the next number is used when left empty."
-msgstr ""
-
-msgid "external ID"
 msgstr ""
 
 msgid "The contact's ID in another system (an import's match key, B-03-T05); unique in the organisation when set."
@@ -3185,6 +3196,60 @@ msgstr "Utilisez au plus %(max)s caractères."
 #| msgid "There's already a role called %(name)s here. Choose another name."
 msgid "There is already a mapping named %(name)s. Choose another name or update that one."
 msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
+
+msgid "Checked (dry run)"
+msgstr ""
+
+msgid "Importing"
+msgstr ""
+
+msgid "Imported"
+msgstr ""
+
+msgid "sheet"
+msgstr ""
+
+msgid "column headers"
+msgstr ""
+
+msgid "rows"
+msgstr ""
+
+msgid "[[row number, [cell, …]], …]"
+msgstr ""
+
+msgid "mapping"
+msgstr ""
+
+msgid "options"
+msgstr ""
+
+msgid "totals"
+msgstr ""
+
+msgid "imported at"
+msgstr ""
+
+msgid "import"
+msgstr ""
+
+msgid "imports"
+msgstr ""
+
+msgid "row"
+msgstr ""
+
+msgid "match key"
+msgstr ""
+
+msgid "errors"
+msgstr ""
+
+msgid "import row"
+msgstr ""
+
+msgid "import rows"
+msgstr ""
 
 #, python-format
 msgid "The file is larger than %(max)d MB. Split it into smaller files."
