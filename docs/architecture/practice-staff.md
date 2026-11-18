@@ -74,3 +74,13 @@ period (data-validation test: stored counts == `audit_counts`). The job
 
 `GET /api/v1/practice/staff/<user>/activity` (`practice.staff.manage`) answers the last 365 days:
 `from`, `to`, `total` and the non-zero `days` — the heatmap's data.
+
+## Activity heatmap (V-05-T08)
+
+`ActivityHeatmap` (`@numo9/ui`, `packages/ui/src/charts`, story *Charts/ActivityHeatmap*) — pure
+SVG, one square per day (weeks as columns, weekdays as rows; `weekStart` 0 or 1), a 5-step
+colour scale relative to the busiest day (`heatmapStep`), and **never colour alone**: each square
+has its number in a `<title>` tooltip ("3 changes on 2 Nov 2026"), the legend names the scale,
+and *Show as a table* (`aria-pressed`) gives the same numbers as a table; axe passes in both
+views. The staff member's page (`StaffActivity`) feeds it the activity API (V-05-T07), so the
+squares are the audit log's counts; it is hidden for people without `practice.staff.manage`.

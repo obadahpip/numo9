@@ -96,6 +96,45 @@ export const m = defineMessages({
     defaultMessage: "{name}'s access is suspended.",
     description: "After suspending",
   },
+  activityTitle: {
+    id: "staff.activity.title",
+    defaultMessage: "Activity — last 12 months",
+    description: "Heatmap heading",
+  },
+  activityChart: {
+    id: "staff.activity.chart",
+    defaultMessage:
+      "Activity, last 12 months: {total, plural, one {# change} other {# changes}} in the audit log",
+    description: "Accessible name of the heatmap",
+  },
+  activityDay: {
+    id: "staff.activity.day",
+    defaultMessage: "{count, plural, =0 {No changes} one {# change} other {# changes}} on {date}",
+    description: "Heatmap tooltip of one day",
+  },
+  activityLess: { id: "staff.activity.less", defaultMessage: "Less", description: "Legend" },
+  activityMore: { id: "staff.activity.more", defaultMessage: "More", description: "Legend" },
+  activityTable: {
+    id: "staff.activity.showTable",
+    defaultMessage: "Show as a table",
+    description: "Heatmap toggle",
+  },
+  activityChartToggle: {
+    id: "staff.activity.showChart",
+    defaultMessage: "Show as a chart",
+    description: "Heatmap toggle",
+  },
+  activityDate: { id: "staff.activity.date", defaultMessage: "Day", description: "Table column" },
+  activityCount: {
+    id: "staff.activity.count",
+    defaultMessage: "Changes",
+    description: "Table column",
+  },
+  activityEmpty: {
+    id: "staff.activity.empty",
+    defaultMessage: "No activity in the last 12 months.",
+    description: "Empty table",
+  },
   groupLine: {
     id: "staff.assignments.groupLine",
     defaultMessage: "{name} · {role}",

@@ -2,7 +2,7 @@
 
 /**
  * A staff member's page (V-05): who they are (from the staff list) and their assignments
- * (V-05-T04); the activity heatmap joins with V-05-T08.
+ * (V-05-T04) and their 12-month activity heatmap (V-05-T08).
  */
 import { ErrorState } from "@numo9/ui";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import { useFormatMessage } from "@/i18n";
 import { staffApi, type StaffMember } from "./api";
 import { AssignmentEditor } from "./AssignmentEditor";
 import { m } from "./messages";
+import { StaffActivity } from "./StaffActivity";
 
 export function StaffMemberScreen({ practice, member }: { practice: string; member: string }) {
   const fm = useFormatMessage();
@@ -53,6 +54,7 @@ export function StaffMemberScreen({ practice, member }: { practice: string; memb
           {fm(m.personLine, { role: person.role_label, email: person.email })}
         </p>
       </div>
+      <StaffActivity practice={practice} user={person.id} />
       <AssignmentEditor
         practice={practice}
         user={{ id: person.id, name: person.name || person.email }}

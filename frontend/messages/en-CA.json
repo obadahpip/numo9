@@ -1825,6 +1825,18 @@
     }
   },
   "staff": {
+    "activity": {
+      "chart": "Activity, last 12 months: {total, plural, one {# change} other {# changes}} in the audit log",
+      "count": "Changes",
+      "date": "Day",
+      "day": "{count, plural, =0 {No changes} one {# change} other {# changes}} on {date}",
+      "empty": "No activity in the last 12 months.",
+      "less": "Less",
+      "more": "More",
+      "showChart": "Show as a chart",
+      "showTable": "Show as a table",
+      "title": "Activity — last 12 months"
+    },
     "assignments": {
       "add": "Add {name}",
       "addGroup": "Assign to group",

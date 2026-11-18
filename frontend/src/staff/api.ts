@@ -44,3 +44,15 @@ export const dormantApi = {
   suspend: (practice: string, user: string) =>
     apiRequest<unknown>(`${base(user)}/suspend${q(practice)}`, { method: "POST" }),
 };
+
+export interface Activity {
+  from: string;
+  to: string;
+  total: number;
+  days: { date: string; count: number }[];
+}
+
+export const activityApi = {
+  get: (practice: string, user: string): Promise<ApiResult<Activity>> =>
+    apiRequest<Activity>(`${base(user)}/activity${q(practice)}`),
+};

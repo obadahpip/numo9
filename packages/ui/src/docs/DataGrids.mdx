@@ -1,5 +1,6 @@
 import { Canvas, Meta } from "@storybook/blocks";
 
+import * as Heatmap from "../charts/ActivityHeatmap.stories";
 import * as DataGrid from "../data-grid/DataGrid.stories";
 import * as LineGrid from "../line-grid/LineGrid.stories";
 import { Do, DoDont, Dont } from "./DoDont";
@@ -54,5 +55,24 @@ footer.
   <Dont>
     <p>A separate grid for bills and another for invoices (Xero's two generations).</p>
     <p>Floating-point totals — amounts are decimal strings, summed exactly.</p>
+  </Dont>
+</DoDont>
+
+## ActivityHeatmap
+
+<Canvas of={Heatmap.TwelveMonths} />
+
+V-05-T08. A day-by-day count over a period (a staff member's audit-log changes for 12 months):
+one square per day, a 5-step scale relative to the busiest day.
+
+<DoDont>
+  <Do>
+    <p>
+      Put the number in every square's tooltip and offer **Show as a table** with the same numbers.
+    </p>
+    <p>Name the period and the total in the chart's accessible name.</p>
+  </Do>
+  <Dont>
+    <p>Rely on the colour alone, or on hover only, to tell a busy day from a quiet one.</p>
   </Dont>
 </DoDont>
