@@ -847,6 +847,16 @@ BILLING_DEMO = define(
     _("A demo organisation has no billing. Start your free trial to choose a package."),
     status.HTTP_409_CONFLICT,
 )
+DEMO_NOT_A_DEMO = define(
+    "demo.not_a_demo",
+    _("This organisation is not a demo."),
+    status.HTTP_409_CONFLICT,
+)
+DEMO_SIGN_UP_FIRST = define(
+    "demo.sign_up_first",
+    _("Create your free Numo9 account first, then start your trial from the demo."),
+    status.HTTP_409_CONFLICT,
+)
 BILLING_PACKAGE_UNKNOWN = define(
     "billing.package_unknown",
     _("There's no package %(package)s for sale. Choose one of the packages offered."),

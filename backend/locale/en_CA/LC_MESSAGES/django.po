@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 16:21-0500\n"
+"POT-Creation-Date: 2026-11-18 16:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3062,6 +3062,12 @@ msgid "This organisation has no subscription yet. Start a trial first."
 msgstr ""
 
 msgid "A demo organisation has no billing. Start your free trial to choose a package."
+msgstr ""
+
+msgid "This organisation is not a demo."
+msgstr ""
+
+msgid "Create your free Numo9 account first, then start your trial from the demo."
 msgstr ""
 
 #, python-format
