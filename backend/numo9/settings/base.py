@@ -269,6 +269,9 @@ TENANT_SWEEP_EXEMPT = [
 
 # Overridden per environment.
 DATABASES: dict[str, Any] = {}
+# Reporting reads go to the read replica inside numo9.replica.using_replica() (S-06-T10); without
+# a "replica" alias they stay on the primary. Writes and migrations: always "default".
+DATABASE_ROUTERS = ["numo9.replica.ReplicaRouter"]
 
 # ---- Security headers and cookies (S-03-T01) -------------------------------------------------
 # Same in every environment; the HTTPS-only flags (Secure cookies, HSTS, SSL redirect) are in

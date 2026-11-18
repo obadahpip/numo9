@@ -28,6 +28,9 @@ import dj_database_url
 
 from .env import env_int, env_str
 
+#: Read replica alias (S-06-T10, numo9.replica): configured by DATABASE_REPLICA_URL.
+REPLICA = "replica"
+
 #: PgBouncer in transaction pooling mode.
 PGBOUNCER = "pgbouncer"
 
@@ -47,3 +50,12 @@ def database(
         config["DISABLE_SERVER_SIDE_CURSORS"] = True
         config["OPTIONS"] = {**config.get("OPTIONS", {}), "prepare_threshold": None}
     return config
+
+
+def databases(url: str, replica_url: str = "") -> dict[str, dict[str, Any]]:
+    """``DATABASES``: ``default`` and, when ``replica_url`` is set, the read ``replica``
+    (reporting reads inside ``numo9.replica.using_replica()``; S-06-T10)."""
+    found = {"default": database(url)}
+    if replica_url:
+        found[REPLICA] = database(replica_url)
+    return found

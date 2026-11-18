@@ -35,6 +35,9 @@ ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", ["testserver", "localhost"])
 
 # NUMO9_DB_POOL=pgbouncer runs the suite through PgBouncer in transaction mode (S-06-T01).
 DATABASES = {"default": database(env_str("DATABASE_URL", "sqlite://:memory:"), conn_max_age=0)}
+# The read replica (S-06-T10) as a test mirror of the primary: its own connection to the same
+# test database (tests/test_replica_routing.py).
+DATABASES["replica"] = {**DATABASES["default"], "TEST": {"MIRROR": "default"}}
 
 # Fast hashing in tests only (tests/test_auth_signup.py checks the Argon2id configuration of base).
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]

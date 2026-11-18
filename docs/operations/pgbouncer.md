@@ -55,3 +55,11 @@ The backend suite runs through the pool with
 sequence and the posting storm passed that way; `test_settings_database.py` pins the settings.
 
 The production-scale check (500 organisations × 100k lines) is part of Phase 5.
+
+## Read replica (S-06-T10)
+
+`DATABASE_REPLICA_URL` adds the `replica` alias. Reporting code wraps its reads in
+`numo9.replica.using_replica()`; `ReplicaRouter` sends them to the replica when the alias exists
+and to the primary otherwise (the stub until the replica server exists, Phase 5). Writes and
+migrations always use the primary; reads inside an open transaction stay on the primary. A replica
+behind PgBouncer gets its own `[databases]` entry and the same `NUMO9_DB_POOL` settings.
