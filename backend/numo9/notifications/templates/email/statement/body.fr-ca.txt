@@ -1,0 +1,11 @@
+{% autoescape off %}Relevé de {{ contact }}
+
+{% if kind == "activity" %}Vous trouverez ci-joint votre relevé des opérations du {{ period_start }} au {{ as_at }}.{% else %}Vous trouverez ci-joint votre relevé des montants impayés au {{ as_at }}.{% endif %}
+
+Montant dû : {{ amount_due }}
+
+Des questions sur ce relevé? Répondez à ce courriel.
+
+--
+{{ organisation }}
+{% endautoescape %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 16:23-0500\n"
+"POT-Creation-Date: 2026-11-17 17:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1472,7 +1472,195 @@ msgstr ""
 msgid "credit limit overrides"
 msgstr ""
 
+msgid "Outstanding"
+msgstr ""
+
+msgid "Activity"
+msgstr ""
+
+msgid "as at"
+msgstr ""
+
+msgid "period start"
+msgstr ""
+
+msgid "amount due"
+msgstr ""
+
+msgid "sent to"
+msgstr ""
+
+msgid "subject"
+msgstr ""
+
+msgid "file"
+msgstr ""
+
+msgid "file name"
+msgstr ""
+
+msgid "email messages"
+msgstr ""
+
+msgid "sent by"
+msgstr ""
+
+msgid "statement sent"
+msgstr ""
+
+msgid "statements sent"
+msgstr ""
+
+msgid "Imported file"
+msgstr ""
+
+msgid "Typed in"
+msgstr ""
+
+msgid "supplier"
+msgstr ""
+
+msgid "statement date"
+msgstr ""
+
+msgid "their balance"
+msgstr ""
+
+msgid "source"
+msgstr ""
+
+msgid "column mapping"
+msgstr ""
+
+msgid "File header → line field."
+msgstr ""
+
+msgid "supplier statement"
+msgstr ""
+
+msgid "supplier statements"
+msgstr ""
+
+msgid "date"
+msgstr ""
+
+msgid "invoice number"
+msgstr ""
+
+msgid "reference"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "file row"
+msgstr ""
+
+msgid "supplier statement line"
+msgstr ""
+
+msgid "supplier statement lines"
+msgstr ""
+
 msgid "Approve sales over a customer's credit limit"
+msgstr ""
+
+msgid "Supplier statement lines"
+msgstr ""
+
+msgid "Invoice number"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "Debit"
+msgstr ""
+
+msgid "Credit"
+msgstr ""
+
+#, python-format
+msgid "The file has no column called %(header)s."
+msgstr ""
+
+#, python-format
+msgid "Two columns are mapped to %(field)s."
+msgstr ""
+
+msgid "Map a column to Date and one to Amount (or Debit and Credit)."
+msgstr ""
+
+#, python-format
+msgid "%(count)d rows can't be read: fix them in the file and import it again."
+msgstr ""
+
+msgid "The file has no lines."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't a supplier."
+msgstr ""
+
+msgid "Statement"
+msgstr ""
+
+msgid "Statement of activity"
+msgstr ""
+
+msgid "Statement of outstanding items"
+msgstr ""
+
+msgid "Statement for"
+msgstr ""
+
+msgid "Period"
+msgstr ""
+
+msgid "As at"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Document"
+msgstr ""
+
+msgid "Due date"
+msgstr ""
+
+msgid "Balance"
+msgstr ""
+
+msgid "Opening balance"
+msgstr ""
+
+msgid "Nothing outstanding."
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
+msgid "1–30 days past due"
+msgstr ""
+
+msgid "31–60 days"
+msgstr ""
+
+msgid "61–90 days"
+msgstr ""
+
+msgid "Over 90 days"
+msgstr ""
+
+#, python-format
+msgid "Amount due (%(currency)s)"
+msgstr ""
+
+msgid "Please quote your account number with your payment."
 msgstr ""
 
 msgid "Choose a currency by its three-letter code, e.g. CAD or USD."
@@ -1511,16 +1699,10 @@ msgstr ""
 msgid "Bill to"
 msgstr ""
 
-msgid "Due date"
-msgstr ""
-
 msgid "Quantity"
 msgstr ""
 
 msgid "Unit price"
-msgstr ""
-
-msgid "Amount"
 msgstr ""
 
 msgid "Subtotal"
@@ -1712,9 +1894,6 @@ msgstr ""
 msgid "storage key"
 msgstr ""
 
-msgid "file name"
-msgstr ""
-
 msgid "file type"
 msgstr ""
 
@@ -1722,9 +1901,6 @@ msgid "size (bytes)"
 msgstr ""
 
 msgid "SHA-256"
-msgstr ""
-
-msgid "source"
 msgstr ""
 
 msgid "sender"
@@ -1800,9 +1976,6 @@ msgid "attachments"
 msgstr ""
 
 msgid "Message-ID"
-msgstr ""
-
-msgid "subject"
 msgstr ""
 
 msgid "recipient"
@@ -2743,9 +2916,6 @@ msgstr ""
 msgid "Extraordinary items and income taxes"
 msgstr ""
 
-msgid "description"
-msgstr ""
-
 msgid "section"
 msgstr ""
 
@@ -2868,9 +3038,6 @@ msgstr ""
 msgid "Payment"
 msgstr ""
 
-msgid "Opening balance"
-msgstr ""
-
 msgid "Adjustment"
 msgstr ""
 
@@ -2882,9 +3049,6 @@ msgid "Journal %(number)s is posted: it can't be changed or deleted. Reverse it 
 msgstr ""
 
 msgid "journal number"
-msgstr ""
-
-msgid "date"
 msgstr ""
 
 msgid "journal type"
@@ -3198,6 +3362,9 @@ msgstr ""
 msgid "metadata"
 msgstr ""
 
+msgid "Files in object storage sent with the email: [{\"key\", \"filename\", \"content_type\"}]."
+msgstr ""
+
 msgid "provider"
 msgstr ""
 
@@ -3211,9 +3378,6 @@ msgid "delivery event at"
 msgstr ""
 
 msgid "email message"
-msgstr ""
-
-msgid "email messages"
 msgstr ""
 
 msgid "Enter the colour as # and six hexadecimal digits, e.g. #1F4E79."

@@ -1505,3 +1505,142 @@ class CreditOverride(AuditedModel, OrgOwnedModel):
         self.reason = " ".join((self.reason or "").split())
         self.decision_note = " ".join((self.decision_note or "").split())
         super().save(*args, **kwargs)
+
+
+# ---- statements sent (B-02-T06) ----------------------------------------------------------------
+
+
+class StatementSendKind(models.TextChoices):
+    OUTSTANDING = "outstanding", _("Outstanding")
+    ACTIVITY = "activity", _("Activity")
+
+
+class StatementSend(OrgOwnedModel):
+    """A statement sent to a contact by email (B-02-T06) — the contact's statement history.
+
+    What was sent stays as it was: kind and dates, the amount due and currency, the recipients,
+    the language, the PDF (``file_key``: the organisation's object storage, A-06) and the email
+    messages (A-07 message log, by public id). Never edited after sending.
+    """
+
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.PROTECT,
+        related_name="statements_sent",
+        verbose_name=_("contact"),
+    )
+    kind = models.CharField(_("type"), max_length=12, choices=StatementSendKind.choices)
+    as_at = models.DateField(_("as at"))
+    period_start = models.DateField(_("period start"), null=True, blank=True)
+    amount_due = models.DecimalField(_("amount due"), max_digits=18, decimal_places=2)
+    currency = models.CharField(_("currency"), max_length=3, default=DEFAULT_CURRENCY)
+    language = models.CharField(_("language"), max_length=5, choices=Locale.choices)
+    recipients = models.JSONField(_("sent to"), default=list)
+    subject = models.CharField(_("subject"), max_length=998)
+    file_key = models.CharField(_("file"), max_length=512)
+    file_name = models.CharField(_("file name"), max_length=255)
+    email_messages = models.JSONField(_("email messages"), default=list, blank=True)
+    sent_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("sent by"),
+    )
+    sent_at = models.DateTimeField(_("sent at"), default=timezone.now)
+
+    class Meta:
+        ordering = ("-sent_at", "-pk")
+        verbose_name = _("statement sent")
+        verbose_name_plural = _("statements sent")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=_in("kind", StatementSendKind), name="contacts_statement_send_kind_valid"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=("organisation", "contact", "-sent_at"), name="contacts_stmt_sent_idx"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} · {self.kind} {self.as_at:%Y-%m-%d}"
+
+
+# ---- supplier statements (B-02-T07) ------------------------------------------------------------
+
+
+class SupplierStatementSource(models.TextChoices):
+    FILE = "file", _("Imported file")
+    MANUAL = "manual", _("Typed in")
+
+
+class SupplierStatement(OrgOwnedModel):
+    """A statement a supplier sent us (B-02-T07): their lines, to reconcile against our bills
+    (B-02-T08). Imported from CSV/XLSX with a column mapping, or typed in."""
+
+    contact = models.ForeignKey(
+        Contact,
+        on_delete=models.PROTECT,
+        related_name="supplier_statements",
+        verbose_name=_("supplier"),
+    )
+    statement_date = models.DateField(_("statement date"))
+    their_balance = models.DecimalField(
+        _("their balance"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    currency = models.CharField(_("currency"), max_length=3, default=DEFAULT_CURRENCY)
+    source = models.CharField(_("source"), max_length=8, choices=SupplierStatementSource.choices)
+    file_name = models.CharField(_("file name"), max_length=255, blank=True)
+    columns = models.JSONField(
+        _("column mapping"), default=dict, blank=True, help_text=_("File header → line field.")
+    )
+
+    class Meta:
+        ordering = ("-statement_date", "-pk")
+        verbose_name = _("supplier statement")
+        verbose_name_plural = _("supplier statements")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=_in("source", SupplierStatementSource),
+                name="contacts_supplier_statement_source_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} · {self.statement_date:%Y-%m-%d}"
+
+
+class SupplierStatementLine(OrgOwnedModel):
+    """One line of a supplier's statement: their document, its date and amount (positive: we
+    owe it; negative: their credit or our payment)."""
+
+    statement = models.ForeignKey(
+        SupplierStatement,
+        on_delete=models.CASCADE,  # the lines are the statement's content
+        related_name="lines",
+        verbose_name=_("supplier statement"),
+    )
+    position = models.PositiveIntegerField(_("position"))
+    date = models.DateField(_("date"))
+    invoice_number = models.CharField(_("invoice number"), max_length=100, blank=True)
+    reference = models.CharField(_("reference"), max_length=200, blank=True)
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+    source_row = models.PositiveIntegerField(_("file row"), null=True, blank=True)
+    note = models.CharField(_("note"), max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("statement", "position")
+        verbose_name = _("supplier statement line")
+        verbose_name_plural = _("supplier statement lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("statement", "position"), name="contacts_supplier_line_position_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.invoice_number or self.reference} {self.amount}"

@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Contact statement preview and send (B-02)">
+<title>Numo9 wireframe — Contact statement preview and send (B-02)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Maple Leaf Supply Ltd.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="392" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Contacts</text>
+<rect x="392" y="52" width="64" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="516" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="656" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<text x="24" y="96" font-size="22" fill="#111111" font-weight="800" text-anchor="start">Statements</text>
+<text x="24" y="116" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Cedar Roofing Co.</text>
+<text x="24" y="146" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Type</text>
+<rect x="24" y="156" width="93" height="24" rx="12" fill="#111111" stroke="#D0D5DD" stroke-width="1"/>
+<text x="70.5" y="172" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">Outstanding</text>
+<rect x="130" y="156" width="72" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="166.0" y="172" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Activity</text>
+<text x="24" y="210" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">As at</text>
+<rect x="24" y="218" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="34" y="240" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Nov 30, 2026</text>
+<text x="24" y="278" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Language</text>
+<rect x="24" y="286" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="34" y="308" font-size="13" fill="#111111" font-weight="400" text-anchor="start">English (contact's)</text>
+<circle cx="230" cy="168" r="10" fill="#B42318"/>
+<text x="230" y="172" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">1</text>
+<rect x="24" y="350" width="220" height="34" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="134.0" y="372" font-size="13" fill="#FFFFFF" font-weight="700" text-anchor="middle">Preview</text>
+<rect x="24" y="394" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="134.0" y="416" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Download PDF</text>
+<rect x="24" y="438" width="220" height="34" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="134.0" y="460" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Send by email…</text>
+<circle cx="264" cy="456" r="10" fill="#B42318"/>
+<text x="264" y="460" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">3</text>
+<rect x="300" y="80" width="620" height="800" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="330" y="120" font-size="16" fill="#111111" font-weight="800" text-anchor="start">Maple Leaf Supply Ltd.</text>
+<text x="330" y="140" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">120 King St W, Toronto ON M5V 2T6 · BN 123456782 RT0001</text>
+<text x="890" y="120" font-size="16" fill="#111111" font-weight="800" text-anchor="end">STATEMENT</text>
+<text x="890" y="160" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">Outstanding as at Nov 30, 2026</text>
+<text x="330" y="184" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Cedar Roofing Co.</text>
+<text x="330" y="202" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">45 Elm Ave, Ottawa ON K1P 5G4</text>
+<rect x="330" y="230" width="560" height="136" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="330" y="230" width="560" height="34" rx="4" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="340" y="252" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Date</text>
+<text x="430" y="252" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Document</text>
+<text x="570" y="252" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Due</text>
+<text x="660" y="252" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Amount</text>
+<text x="780" y="252" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Balance</text>
+<line x1="330" y1="264" x2="890" y2="264" stroke="#EAECF0"/>
+<text x="340" y="286" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Oct 28</text>
+<text x="430" y="286" font-size="13" fill="#111111" font-weight="400" text-anchor="start">INV-1043</text>
+<text x="570" y="286" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Nov 27</text>
+<text x="660" y="286" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2,260.00</text>
+<text x="780" y="286" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2,260.00</text>
+<line x1="330" y1="298" x2="890" y2="298" stroke="#EAECF0"/>
+<text x="340" y="320" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Nov 05</text>
+<text x="430" y="320" font-size="13" fill="#111111" font-weight="400" text-anchor="start">INV-1051</text>
+<text x="570" y="320" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Dec 05</text>
+<text x="660" y="320" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2,260.00</text>
+<text x="780" y="320" font-size="13" fill="#111111" font-weight="400" text-anchor="start">4,520.00</text>
+<line x1="330" y1="332" x2="890" y2="332" stroke="#EAECF0"/>
+<text x="340" y="354" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Nov 14</text>
+<text x="430" y="354" font-size="13" fill="#111111" font-weight="400" text-anchor="start">PMT-0042</text>
+<text x="570" y="354" font-size="13" fill="#111111" font-weight="400" text-anchor="start"></text>
+<text x="660" y="354" font-size="13" fill="#111111" font-weight="400" text-anchor="start">-2,260.00</text>
+<text x="780" y="354" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2,260.00</text>
+<rect x="330" y="400" width="560" height="68" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="330" y="400" width="560" height="34" rx="4" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="340" y="422" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Current</text>
+<text x="452" y="422" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">1–30</text>
+<text x="564" y="422" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">31–60</text>
+<text x="676" y="422" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">61–90</text>
+<text x="788" y="422" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">90+</text>
+<line x1="330" y1="434" x2="890" y2="434" stroke="#EAECF0"/>
+<text x="340" y="456" font-size="13" fill="#111111" font-weight="400" text-anchor="start">2,260.00</text>
+<text x="452" y="456" font-size="13" fill="#111111" font-weight="400" text-anchor="start">0.00</text>
+<text x="564" y="456" font-size="13" fill="#111111" font-weight="400" text-anchor="start">0.00</text>
+<text x="676" y="456" font-size="13" fill="#111111" font-weight="400" text-anchor="start">0.00</text>
+<text x="788" y="456" font-size="13" fill="#111111" font-weight="400" text-anchor="start">0.00</text>
+<text x="890" y="500" font-size="15" fill="#111111" font-weight="800" text-anchor="end">Amount due  $2,260.00 CAD</text>
+<text x="330" y="860" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Letter 8.5 × 11 in, 1 in margins · page 1 of 1</text>
+<circle cx="934" cy="96" r="10" fill="#B42318"/>
+<text x="934" y="100" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">2</text>
+<rect x="960" y="80" width="456" height="330" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="984" y="112" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Send statement</text>
+<text x="984" y="146" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">To</text>
+<rect x="984" y="154" width="408" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="994" y="176" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ap@cedarroofing.ca (Billing contact)</text>
+<text x="984" y="206" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Subject</text>
+<rect x="984" y="214" width="408" height="34" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="994" y="236" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Statement from Maple Leaf Supply Ltd. — Nov 30, 2026</text>
+<text x="984" y="272" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">The PDF is attached; the email is in the contact's language.</text>
+<rect x="1166" y="360" width="110" height="34" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="1221.0" y="382" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Cancel</text>
+<rect x="1286" y="360" width="110" height="34" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1341.0" y="382" font-size="13" fill="#FFFFFF" font-weight="700" text-anchor="middle">Send</text>
+<text x="960" y="450" font-size="15" fill="#111111" font-weight="700" text-anchor="start">History</text>
+<circle cx="1050" cy="446" r="10" fill="#B42318"/>
+<text x="1050" y="450" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">4</text>
+<rect x="960" y="466" width="456" height="102" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="960" y="466" width="456" height="34" rx="4" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="970" y="488" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Sent</text>
+<text x="1060" y="488" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">Type</text>
+<text x="1210" y="488" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">To</text>
+<text x="1330" y="488" font-size="12" fill="#5B6472" font-weight="700" text-anchor="start">By</text>
+<line x1="960" y1="500" x2="1416" y2="500" stroke="#EAECF0"/>
+<text x="970" y="522" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Nov 03</text>
+<text x="1060" y="522" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Outstanding Oct 31</text>
+<text x="1210" y="522" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ap@cedar…</text>
+<text x="1330" y="522" font-size="13" fill="#111111" font-weight="400" text-anchor="start">O. Abuodeh</text>
+<line x1="960" y1="534" x2="1416" y2="534" stroke="#EAECF0"/>
+<text x="970" y="556" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Oct 01</text>
+<text x="1060" y="556" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Activity Sep</text>
+<text x="1210" y="556" font-size="13" fill="#111111" font-weight="400" text-anchor="start">ap@cedar…</text>
+<text x="1330" y="556" font-size="13" fill="#111111" font-weight="400" text-anchor="start">S. Patel</text>
+</svg>

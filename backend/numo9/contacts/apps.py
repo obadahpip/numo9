@@ -16,10 +16,13 @@ class ContactsConfig(AppConfig):
         from numo9.tenancy.models import Organisation
 
         from .importing import CONTACT, PERSON
+        from .supplier_statements import SUPPLIER_STATEMENT_LINE
 
         # What a contacts file can map to (B-03-T03).
         register_entity(CONTACT)
         register_entity(PERSON)
+        # Supplier statement lines (B-02-T07).
+        register_entity(SUPPLIER_STATEMENT_LINE)
 
         # Every new organisation starts with the default payment terms (B-01-T05).
         post_save.connect(

@@ -1,0 +1,88 @@
+{% extends "documents/base.html" %}
+{% load i18n documents %}
+{% comment %}
+  B-02-T05 — contact statement (outstanding or activity) on the A-10 baseline: Letter, 1 in
+  margins, brand header with the issuer. Amounts in the contact's currency.
+{% endcomment %}
+{% block title %}{% translate "Statement" %} {{ contact.legal_name }}{% endblock %}
+{% block style %}
+  .parties { display: flex; justify-content: space-between; margin-block-end: 18pt; }
+  .meta td { border: 0; padding: 1pt 0 1pt 12pt; }
+  .opening td, .closing td { font-weight: 700; border-block-end: 1pt solid #D9DCE1; }
+  .aging { margin-block-start: 18pt; }
+  .aging th, .aging td { text-align: end; }
+  .due { margin-block-start: 12pt; text-align: end; font-size: 13pt; font-weight: 700; }
+  .due .muted { font-size: 9pt; font-weight: 400; }
+{% endblock %}
+{% block content %}
+  <h1>{% if is_activity %}{% translate "Statement of activity" %}{% else %}{% translate "Statement of outstanding items" %}{% endif %}</h1>
+  <div class="parties">
+    <div>
+      <div class="muted">{% translate "Statement for" %}</div>
+      <strong>{{ contact.legal_name }}</strong><br>
+      {% if contact.address_line %}{{ contact.address_line }}<br>{% endif %}
+      {{ contact.city }} {{ contact.province }}&nbsp;&nbsp;{{ contact.postal_code }}
+    </div>
+    <table class="meta" style="width:auto">
+      <tr><td class="muted">{% translate "Date" %}</td><td>{{ statement.issue_date|docdate:document_locale }}</td></tr>
+      {% if is_activity %}
+      <tr><td class="muted">{% translate "Period" %}</td><td>{{ statement.period_start|docdate:document_locale }} – {{ statement.as_at|docdate:document_locale }}</td></tr>
+      {% else %}
+      <tr><td class="muted">{% translate "As at" %}</td><td>{{ statement.as_at|docdate:document_locale }}</td></tr>
+      {% endif %}
+      <tr><td class="muted">{% translate "Account" %}</td><td>{{ statement.contact_number }}</td></tr>
+      <tr><td class="muted">{% translate "Currency" %}</td><td>{{ statement.currency }}</td></tr>
+    </table>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>{% translate "Date" %}</th>
+        <th>{% translate "Document" %}</th>
+        {% if is_activity %}<th>{% translate "Description" %}</th>{% else %}<th>{% translate "Due date" %}</th>{% endif %}
+        <th class="num">{% translate "Amount" %}</th>
+        <th class="num">{% translate "Balance" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if is_activity %}
+      <tr class="opening">
+        <td>{{ statement.period_start|docdate:document_locale }}</td>
+        <td colspan="3">{% translate "Opening balance" %}</td>
+        <td class="num">{{ statement.opening_balance|money:document_locale }}</td>
+      </tr>
+      {% endif %}
+      {% for line in lines %}
+      <tr>
+        <td>{{ line.date|docdate:document_locale }}</td>
+        <td>{{ line.document }}</td>
+        {% if is_activity %}<td>{{ line.description }}</td>{% else %}<td>{% if line.due_date %}{{ line.due_date|docdate:document_locale }}{% endif %}</td>{% endif %}
+        <td class="num">{{ line.amount|money:document_locale }}</td>
+        <td class="num">{{ line.balance|money:document_locale }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="muted">{% translate "Nothing outstanding." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if not is_activity %}
+  <table class="aging">
+    <thead>
+      <tr>
+        <th>{% translate "Current" %}</th>
+        <th>{% translate "1–30 days past due" %}</th>
+        <th>{% translate "31–60 days" %}</th>
+        <th>{% translate "61–90 days" %}</th>
+        <th>{% translate "Over 90 days" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>{% for key, amount in aging %}<td class="num" data-bucket="{{ key }}">{{ amount|money:document_locale }}</td>{% endfor %}</tr>
+    </tbody>
+  </table>
+  {% endif %}
+  <div class="due">
+    {% blocktranslate with currency=statement.currency %}Amount due ({{ currency }}){% endblocktranslate %}&nbsp;&nbsp;{{ amount_due|money:document_locale }}
+    <div class="muted">{% translate "Please quote your account number with your payment." %}</div>
+  </div>
+{% endblock %}

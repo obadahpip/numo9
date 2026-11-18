@@ -360,3 +360,66 @@ customer, Érable Distribution inc., defaults to GST + QST (deliverable acceptan
 | T13 | `tests/test_contacts_credit.py` |
 | T16 | `frontend/src/contacts/DuplicatePanel.test.tsx` |
 | T19 | `tests/test_contacts_gaps.py` (+ `tests/fixtures/contacts_ca/contacts.json`) |
+
+## Statements — the PDF (B-02-T05)
+
+`numo9.contacts.statements` — `StatementDocument` is what the statement engine (B-02-T04)
+produces: issuer and contact (`Party`), kind, issue date, *as at* (or the period end), the lines
+with running balances, the aging buckets and the amount due, in the **contact's currency**.
+`render_statement_pdf(document, locale=…)` renders `contacts/statement.html` on the A-10 document
+baseline (`documents/base.html`): Letter 8.5 × 11 in, 1 in margins, brand header with the issuer,
+page counter; English or French (`en-ca` / `fr-ca` keys in the backend catalogues).
+
+| Kind | Shows |
+|---|---|
+| `outstanding` | the open items as at a date: date, document, due date, amount, running balance; aging buckets Current / 1–30 / 31–60 / 61–90 / over 90 days past due (`aging_of`: days past due at the as-at date; no due date = current); amount due |
+| `activity` | a period: opening balance, then every document and payment with its description and running balance; closing balance = amount due |
+
+`sample_statement(kind)` is the Canadian fixture in the engine's shape. Tests:
+`backend/tests/test_contacts_statement_pdf.py` — text snapshots of the four renderings
+(`tests/snapshots/statements/<kind>.<locale>.txt`, `NUMO9_UPDATE_SNAPSHOTS=1` to rewrite), Letter
+page with content inside the margins, aging totals = amount due, activity opening + lines = closing.
+
+## Statements — sending and history (B-02-T06)
+
+`statements.send_statement(contact, document, to=None, language=None, user=None)`:
+
+1. recipients — `to`, or the contact's people marked *include in emails* that have an address
+   (primary first); nobody → `StatementError`;
+2. the PDF is rendered in the contact's language (or `language`) and stored in the
+   organisation's object storage (A-06 key `org/<id>/…/statement-<number>-<date>.pdf`);
+3. one email per recipient through the A-07 message log (`queue_email`, kind
+   `contacts.statement`, template `email/statement` EN/FR) with the PDF as an **attachment** —
+   `EmailMessage.attachments` holds `{"key", "filename", "content_type"}` and the worker reads
+   the file when it sends; a key outside the message's organisation is a permanent failure,
+   never sent;
+4. `contacts.StatementSend` — the history row: kind, as-at / period start, amount due, currency,
+   language, recipients, subject, the stored file, the email messages' ids, who and when;
+5. audit `contacts.statement.sent`, and the signal `statement_sent(send=row)` — the activity
+   timeline (B-02-T02) records the statement from it.
+
+All in the caller's transaction: the emails leave only when it commits.
+`backend/tests/test_contacts_statement_send.py`.
+
+## Supplier statements — import (B-02-T07)
+
+`contacts.SupplierStatement` (supplier, statement date, their balance, currency, source *file* or
+*typed in*, file name, the column mapping used) and its `SupplierStatementLine` rows (position,
+date, invoice number, reference, description, amount — positive: we owe it, negative: their
+credit or our payment —, the file row, a note). Reconciled against our bills by B-02-T08.
+
+`supplier_statements.import_supplier_statement(contact, data, filename, statement_date,
+columns=None, their_balance=None)`:
+
+- the file goes through the B-03 parser (CSV in any Canadian encoding and delimiter, XLSX values);
+- columns: given, the organisation's saved mapping for the same headers, or auto-suggested — the
+  import entity `supplier_statement_line` (`date`, `amount` *or* `debit`/`credit`,
+  `invoice_number`, `reference`, `description`, English and French header names);
+- dates `2026-10-02`, `2026/10/02`, `Oct 2, 2026`, `2 oct. 2026`; amounts `$1,234.56`,
+  `1 234,56 $`, `(860.00)` and `125.00 CR` (negative);
+- any unreadable row refuses the whole file (`contacts.supplier_statement.bad_rows`, every
+  problem by row and field) — nothing half-imported; otherwise **one line per data row**, in file
+  order;
+- only contacts with the supplier role; `create_manual_statement` / `add_line` type lines in.
+
+`backend/tests/test_contacts_supplier_statement_import.py`.

@@ -67,7 +67,7 @@
       {{ issuer.address_line }}<br>
       {{ issuer.city }} {{ issuer.province }}&nbsp;&nbsp;{{ issuer.postal_code }}<br>
       {% if issuer.business_number %}{% blocktranslate with bn=issuer.business_number %}GST/HST registration: {{ bn }}{% endblocktranslate %}<br>{% endif %}
-      {% if issuer.phone %}{{ issuer.phone }}{% endif %}{% if issuer.email %} · {{ issuer.email }}{% endif %}
+      {% if issuer.phone %}{{ issuer.phone }}{% endif %}{% if issuer.email %}{% if issuer.phone %} · {% endif %}{{ issuer.email }}{% endif %}
     </div>
   </header>
   <main>{% block content %}{% endblock %}</main>
