@@ -93,6 +93,14 @@ class StatementPreference(models.TextChoices):
     PORTAL = "portal", _("Client portal")
 
 
+class AmountsAre(models.TextChoices):
+    """How amounts are entered on this contact's documents (B-01-T06)."""
+
+    TAX_EXCLUSIVE = "tax_exclusive", _("Tax exclusive")
+    TAX_INCLUSIVE = "tax_inclusive", _("Tax inclusive")
+    NO_TAX = "no_tax", _("No tax")
+
+
 class ContactStatus(models.TextChoices):
     ACTIVE = "active", _("Active")
     ARCHIVED = "archived", _("Archived")
@@ -191,6 +199,54 @@ class Contact(AuditedModel, OrgOwnedModel):
         default=dict,
         blank=True,
         help_text=_("Values of the organisation's custom fields, by field key (B-01-T09)."),
+    )
+
+    # Sales and purchase defaults (B-01-T06): suggested on this contact's invoices and bills.
+    sales_account = models.ForeignKey(
+        "ledger.Account",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("default sales account"),
+    )
+    sales_payment_term = models.ForeignKey(
+        "contacts.PaymentTerm",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("default invoice terms"),
+    )
+    sales_amounts_are = models.CharField(
+        _("invoice amounts are"),
+        max_length=16,
+        choices=AmountsAre.choices,
+        default=AmountsAre.TAX_EXCLUSIVE,
+        db_default=AmountsAre.TAX_EXCLUSIVE,
+    )
+    purchase_account = models.ForeignKey(
+        "ledger.Account",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("default purchase account"),
+    )
+    purchase_payment_term = models.ForeignKey(
+        "contacts.PaymentTerm",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("default bill terms"),
+    )
+    purchase_amounts_are = models.CharField(
+        _("bill amounts are"),
+        max_length=16,
+        choices=AmountsAre.choices,
+        default=AmountsAre.TAX_EXCLUSIVE,
+        db_default=AmountsAre.TAX_EXCLUSIVE,
     )
 
     audit_exclude: ClassVar[frozenset[str]] = frozenset({"archived_at", "name_key"})
@@ -307,6 +363,7 @@ class Contact(AuditedModel, OrgOwnedModel):
         except ValidationError as error:
             errors.setdefault("roles", []).append(error)
         self._clean_custom_fields(errors)
+        self._clean_defaults(errors)
         if self.number and self._number_taken():
             errors.setdefault("number", []).append(
                 ValidationError(
@@ -317,6 +374,52 @@ class Contact(AuditedModel, OrgOwnedModel):
             )
         if errors:
             raise ValidationError(errors)
+
+    def _clean_defaults(self, errors: dict[str, list[ValidationError]]) -> None:
+        """Default accounts fit their side (sales: revenue…; purchase: expense or asset) and,
+        like the payment terms, belong to this organisation (B-01-T06)."""
+        from numo9.ledger.contexts import allowed_in_context
+
+        for field, context, message in (
+            (
+                "sales_account",
+                "sales",
+                _(
+                    "%(account)s can't be a sales account: choose a revenue or other income "
+                    "account."
+                ),
+            ),
+            (
+                "purchase_account",
+                "purchase",
+                _(
+                    "%(account)s can't be a purchase account: choose an expense or an asset "
+                    "account."
+                ),
+            ),
+        ):
+            account = getattr(self, field)
+            if account is None:
+                continue
+            if account.organisation_id != self.organisation_id or not allowed_in_context(
+                account, context
+            ):
+                errors.setdefault(field, []).append(
+                    ValidationError(
+                        message, code=f"contacts.defaults.{field}", params={"account": str(account)}
+                    )
+                )
+        for field in ("sales_payment_term", "purchase_payment_term"):
+            term = getattr(self, field)
+            if term is not None and (
+                term.organisation_id != self.organisation_id or term.status != ContactStatus.ACTIVE
+            ):
+                errors.setdefault(field, []).append(
+                    ValidationError(
+                        _("Choose an active payment term of this organisation."),
+                        code="contacts.defaults.payment_term",
+                    )
+                )
 
     def _clean_custom_fields(self, errors: dict[str, list[ValidationError]]) -> None:
         from .custom_fields import clean_custom_values

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 14:47-0500\n"
+"POT-Creation-Date: 2026-11-18 15:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1336,6 +1336,15 @@ msgstr ""
 msgid "Print and mail"
 msgstr ""
 
+msgid "Tax exclusive"
+msgstr ""
+
+msgid "Tax inclusive"
+msgstr ""
+
+msgid "No tax"
+msgstr ""
+
 msgid "Archived"
 msgstr ""
 
@@ -1402,6 +1411,24 @@ msgstr ""
 msgid "Values of the organisation's custom fields, by field key (B-01-T09)."
 msgstr ""
 
+msgid "default sales account"
+msgstr ""
+
+msgid "default invoice terms"
+msgstr ""
+
+msgid "invoice amounts are"
+msgstr ""
+
+msgid "default purchase account"
+msgstr ""
+
+msgid "default bill terms"
+msgstr ""
+
+msgid "bill amounts are"
+msgstr ""
+
 msgid "contact"
 msgstr ""
 
@@ -1410,6 +1437,17 @@ msgstr ""
 
 #, python-format
 msgid "Contact number %(number)s is already used in this organisation."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be a sales account: choose a revenue or other income account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be a purchase account: choose an expense or an asset account."
+msgstr ""
+
+msgid "Choose an active payment term of this organisation."
 msgstr ""
 
 msgid "No free contact number: check the contact numbering settings."
