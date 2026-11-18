@@ -46,7 +46,8 @@ def begin(world: dict[str, Any], minutes: int = 30) -> dict[str, Any]:
         content_type="application/json",
     )
     assert response.status_code == 201, response.content
-    return response.json()
+    body: dict[str, Any] = response.json()
+    return body
 
 
 def owner_log(world: dict[str, Any]) -> list[dict[str, Any]]:
@@ -54,7 +55,8 @@ def owner_log(world: dict[str, Any]) -> list[dict[str, Any]]:
     owner.force_login(world["owner"])
     response = owner.get(f"/api/v1/o/{world['org'].public_id}/audit/events?page_size=100")
     assert response.status_code == 200, response.content
-    return response.json()["results"]
+    rows: list[dict[str, Any]] = response.json()["results"]
+    return rows
 
 
 def test_owner_sees_start_writes_and_end(world: dict[str, Any]) -> None:

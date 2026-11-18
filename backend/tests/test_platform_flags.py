@@ -42,10 +42,11 @@ def world() -> dict[str, Any]:
 
 
 def flags(browser: Client, org: Organisation | None = None) -> dict[str, bool]:
-    headers = {"HTTP_X_NUMO9_ORG": str(org.public_id)} if org else {}
-    response = browser.get(ME, **headers)
+    headers = {"X-Numo9-Org": str(org.public_id)} if org else {}
+    response = browser.get(ME, headers=headers)
     assert response.status_code == 200, response.content
-    return response.json()["flags"]
+    answer: dict[str, bool] = response.json()["flags"]
+    return answer
 
 
 def patch(admin: Client, name: str, **body: Any) -> Any:

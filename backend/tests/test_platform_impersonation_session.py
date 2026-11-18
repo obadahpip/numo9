@@ -9,6 +9,7 @@ organisation, never oneself or other platform staff; expiry closes the session.
 from __future__ import annotations
 
 import datetime as dt
+from typing import Any
 
 import pytest
 from django.db import IntegrityError, transaction
@@ -25,7 +26,7 @@ NOW = dt.datetime(2026, 11, 18, 15, tzinfo=dt.UTC)
 
 
 @pytest.fixture
-def cast() -> dict[str, object]:
+def cast() -> dict[str, Any]:
     staff = user("support@numo9.ca")
     RoleAssignment.objects.create(
         user=staff, role=Role.objects.get(scope=RoleScope.PLATFORM, key="platform_support")
@@ -38,7 +39,7 @@ def cast() -> dict[str, object]:
     return {"staff": staff, "org": org, "other": other, "owner": owner}
 
 
-def test_a_row_per_session_with_default_time_box(cast: dict[str, object]) -> None:
+def test_a_row_per_session_with_default_time_box(cast: dict[str, Any]) -> None:
     session = impersonation.start(
         cast["staff"], cast["owner"], cast["org"], "  Ticket #42: bank feed  ", now=NOW
     )
@@ -71,7 +72,7 @@ def test_a_row_per_session_with_default_time_box(cast: dict[str, object]) -> Non
     ],
 )
 def test_reason_and_duration_rules(
-    cast: dict[str, object], reason: str, minutes: int, code: str
+    cast: dict[str, Any], reason: str, minutes: int, code: str
 ) -> None:
     with pytest.raises(ImpersonationRefused) as refused:
         impersonation.start(cast["staff"], cast["owner"], cast["org"], reason, minutes, NOW)
@@ -79,7 +80,7 @@ def test_reason_and_duration_rules(
     assert not ImpersonationSession.objects.exists()
 
 
-def test_only_a_member_of_that_organisation_never_self_or_staff(cast: dict[str, object]) -> None:
+def test_only_a_member_of_that_organisation_never_self_or_staff(cast: dict[str, Any]) -> None:
     stranger = user("someone@else.ca")
     for target, code in ((stranger, "not_a_member"), (cast["staff"], "not_self")):
         with pytest.raises(ImpersonationRefused) as refused:
@@ -95,7 +96,7 @@ def test_only_a_member_of_that_organisation_never_self_or_staff(cast: dict[str, 
     assert refused.value.code == "platform_user"
 
 
-def test_one_open_session_per_staff_member(cast: dict[str, object]) -> None:
+def test_one_open_session_per_staff_member(cast: dict[str, Any]) -> None:
     impersonation.start(cast["staff"], cast["owner"], cast["org"], "one", now=NOW)
     with pytest.raises(ImpersonationRefused) as refused:
         impersonation.start(cast["staff"], cast["owner"], cast["other"], "two", now=NOW)
@@ -106,7 +107,7 @@ def test_one_open_session_per_staff_member(cast: dict[str, object]) -> None:
     assert first.end_reason == "expired" and first.ended_at == first.expires_at
 
 
-def test_expiry_closes_the_session(cast: dict[str, object]) -> None:
+def test_expiry_closes_the_session(cast: dict[str, Any]) -> None:
     session = impersonation.start(cast["staff"], cast["owner"], cast["org"], "why", 10, NOW)
     assert impersonation.current(cast["staff"], NOW + dt.timedelta(minutes=10)) is None
     session.refresh_from_db()
@@ -114,7 +115,7 @@ def test_expiry_closes_the_session(cast: dict[str, object]) -> None:
     assert not session.end("ended")  # once only
 
 
-def test_database_enforces_the_time_box(cast: dict[str, object]) -> None:
+def test_database_enforces_the_time_box(cast: dict[str, Any]) -> None:
     with pytest.raises(IntegrityError), transaction.atomic():
         ImpersonationSession.objects.create(
             actor=cast["staff"],

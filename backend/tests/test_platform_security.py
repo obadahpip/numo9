@@ -45,7 +45,7 @@ pytestmark = pytest.mark.django_db
 PLATFORM = [d for d in declarations() if d.route.startswith("api/v1/platform/")]
 OWN_SESSION = {"api/v1/platform/impersonation/current", "api/v1/platform/impersonation/end"}
 _ENDPOINTS = {e.display or e.route: e for e in iter_endpoints()}
-PLATFORM_ROLES = [role for role in SYSTEM_ROLES if role.scope == RoleScope.PLATFORM]
+PLATFORM_ROLES = [role for role in SYSTEM_ROLES if role.scope == Scope.PLATFORM]
 UNKNOWN = "00000000-0000-4000-8000-000000000000"
 
 
