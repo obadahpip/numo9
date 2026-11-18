@@ -26,7 +26,9 @@ MIGRATION_LINTER_OPTIONS = {
     # Reviewed (U-04-T02): the billing columns of entitlements_subscription are new and empty for
     # every row, so the partial unique index on stripe_subscription_id (non-empty values only) and
     # the customer index build on an index of blanks; the table has one row per organisation.
-    "ignore_name": ["0002_user_public_id", "0004_subscription_billing"],
+    # Reviewed (B-03-T05): contacts.external_id is new and "" on every existing row, and the
+    # unique constraint is partial (non-empty values only), so adding it can't fail or rewrite.
+    "ignore_name": ["0002_user_public_id", "0004_subscription_billing", "0013_external_id"],
 }
 
 SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")

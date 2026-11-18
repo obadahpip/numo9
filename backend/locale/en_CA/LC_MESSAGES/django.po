@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:19-0500\n"
+"POT-Creation-Date: 2026-11-18 15:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1225,6 +1225,10 @@ msgstr ""
 msgid "%(field)s needs %(expected)s: %(value)s doesn't fit."
 msgstr ""
 
+#, python-format
+msgid "The external ID points to %(a)s but the contact number to %(b)s. Fix one of them in the file."
+msgstr ""
+
 msgid "This column can't be cleared."
 msgstr ""
 
@@ -1447,6 +1451,12 @@ msgid "contact number"
 msgstr ""
 
 msgid "Unique in the organisation; the next number is used when left empty."
+msgstr ""
+
+msgid "external ID"
+msgstr ""
+
+msgid "The contact's ID in another system (an import's match key, B-03-T05); unique in the organisation when set."
 msgstr ""
 
 msgid "display name"

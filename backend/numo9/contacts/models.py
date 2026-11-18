@@ -127,6 +127,17 @@ class Contact(AuditedModel, OrgOwnedModel):
         blank=True,
         help_text=_("Unique in the organisation; the next number is used when left empty."),
     )
+    external_id = models.CharField(
+        _("external ID"),
+        max_length=64,
+        blank=True,
+        db_default="",
+        default="",
+        help_text=_(
+            "The contact's ID in another system (an import's match key, B-03-T05); unique in the "
+            "organisation when set."
+        ),
+    )
     display_name = models.CharField(_("display name"), max_length=NAME_MAX)
     legal_name = models.CharField(
         _("legal name"),
@@ -297,6 +308,11 @@ class Contact(AuditedModel, OrgOwnedModel):
             ),
             models.CheckConstraint(
                 condition=_in("status", ContactStatus), name="contacts_contact_status_valid"
+            ),
+            models.UniqueConstraint(
+                fields=("organisation", "external_id"),
+                condition=~models.Q(external_id=""),
+                name="contacts_contact_external_id_unique",
             ),
         ]
         indexes: ClassVar[list[models.Index]] = [
