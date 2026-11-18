@@ -159,6 +159,7 @@ def summary(contact: Contact) -> dict[str, Any]:
         "currency": contact.currency,
         "bn": contact.bn,
         "status": contact.status,
+        "archived": contact.status == ContactStatus.ARCHIVED,
     }
 
 
