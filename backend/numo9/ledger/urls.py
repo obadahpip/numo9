@@ -28,7 +28,7 @@ urlpatterns = [
     ),
     path(
         f"{ORG}accounts/<uuid:public_id>/restore",
-        accounts_api.AccountArchiveView.as_view(restore=True),
+        accounts_api.AccountRestoreView.as_view(),
         name="account-restore",
     ),
     path(f"{ORG}gifi", accounts_api.GifiSearchView.as_view(), name="gifi-search"),

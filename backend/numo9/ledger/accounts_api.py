@@ -420,25 +420,42 @@ class AccountRenumberView(APIView):
         return Response(_rows([_one(public_id)])[0])
 
 
+def _archive_or_restore(request: Request, public_id: Any, service: Any) -> Response:
+    try:
+        service(_one(public_id), actor=request.user)
+    except DjangoValidationError as error:
+        raise refused(error) from None
+    return Response(_rows([_one(public_id)])[0])
+
+
 class AccountArchiveView(APIView):
     queryset = Account._base_manager.none()
-    restore = False
 
     @requires_permission(ACCOUNTS_MANAGE.key)
     @requires_feature(WRITE)
     @extend_schema(
         operation_id="accounts_archive",
-        summary="Archive (zero balance, not a system account) or restore an account",
+        summary="Archive an account (zero balance, not a system account)",
         request=None,
         responses={200: OpenApiTypes.OBJECT},
     )
     def post(self, request: Request, org: Any, public_id: Any) -> Response:
-        service = restore_account if self.restore else archive_account
-        try:
-            service(_one(public_id), actor=request.user)
-        except DjangoValidationError as error:
-            raise refused(error) from None
-        return Response(_rows([_one(public_id)])[0])
+        return _archive_or_restore(request, public_id, archive_account)
+
+
+class AccountRestoreView(APIView):
+    queryset = Account._base_manager.none()
+
+    @requires_permission(ACCOUNTS_MANAGE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="accounts_restore",
+        summary="Bring an archived account back to the chart",
+        request=None,
+        responses={200: OpenApiTypes.OBJECT},
+    )
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        return _archive_or_restore(request, public_id, restore_account)
 
 
 class BulkSerializer(serializers.Serializer[Any]):
