@@ -26,6 +26,9 @@ class Command(BaseCommand):
         parser.add_argument("--practice", default="Fixture Practice LLP")
         parser.add_argument("--admin-email", default="fixture-admin@example.com")
         parser.add_argument(
+            "--password", default="", help="Let the admin sign in (k6 baselines); verified email."
+        )
+        parser.add_argument(
             "--scratch", action="store_true", help="Confirm this is a scratch/staging database."
         )
 
@@ -48,6 +51,7 @@ class Command(BaseCommand):
                 seed=options["seed"],
                 practice_name=options["practice"],
                 admin_email=options["admin_email"],
+                password=options["password"],
                 progress=progress,
             )
         except FixtureRefused as error:

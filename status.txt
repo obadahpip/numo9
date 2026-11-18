@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 375   Remaining: 2412   Progress: 13.46%
+TOTAL ATOMIC TASKS: 2787   Completed: 376   Remaining: 2411   Progress: 13.49%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -503,7 +503,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [S-06]
 ✅ S-06-T08 — make_fixture_practice --orgs N --lines M generator
-❌ S-06-T09 — Baseline k6 scripts (directory search, post journal, list contacts) + results stored
+✅ S-06-T09 — Baseline k6 scripts (directory search, post journal, list contacts) + results stored
 
 [U-07]
 ❌ U-07-T01 — Demo dataset specification (company, 25 contacts across 6 provinces, CoA, opening TB) signed off by client

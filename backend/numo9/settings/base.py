@@ -228,6 +228,8 @@ NUMO9_TRIAL_PACKAGE = env_str("NUMO9_TRIAL_PACKAGE", "")
 NUMO9_DEMO_PACKAGE = env_str("NUMO9_DEMO_PACKAGE", "")
 # Exemption certificate expiry reminders (B-01-T08): called once per reminder; a log line until
 # notifications (A-07) take over.
+# Perf-only endpoints (S-06-T09 k6 baselines, numo9/scale/api.py): staging/scratch only.
+NUMO9_PERF_ENDPOINTS = env_bool("NUMO9_PERF_ENDPOINTS", False)
 NUMO9_EXEMPTION_REMINDER_HOOK = "numo9.contacts.exemptions.log_reminder"
 
 # Third-party DRF views without a permission declaration (rbac.E004): dotted path -> why safe.

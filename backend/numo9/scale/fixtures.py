@@ -25,6 +25,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
+from allauth.account.models import EmailAddress
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import connection, transaction
@@ -163,11 +164,19 @@ def _contacts(organisation: Organisation, rng: random.Random, count: int) -> int
     return count
 
 
-def _admin(practice: Practice, email: str) -> None:
+def _admin(practice: Practice, email: str, password: str = "") -> None:
+    """The practice admin; with a password it can sign in at once (verified address) — k6."""
     user_model = get_user_model()
     user = user_model.objects.filter(email=email).first()
     if user is None:
-        user = user_model.objects.create_user(email=email, password=None)
+        user = user_model.objects.create_user(email=email, password=password or None)
+    elif password:
+        user.set_password(password)
+        user.save(update_fields=["password"])
+    if password:
+        EmailAddress.objects.update_or_create(
+            user=user, email=user.email, defaults={"verified": True, "primary": True}
+        )
     PracticeMember.objects.get_or_create(
         practice=practice, user=user, defaults={"role": PracticeRole.PRACTICE_ADMIN}
     )
@@ -181,6 +190,7 @@ def make_practice_fixture(
     seed: int = 1,
     practice_name: str = f"{PREFIX} Practice LLP",
     admin_email: str = "fixture-admin@example.com",
+    password: str = "",
     progress: Callable[[int, int], None] | None = None,
 ) -> FixtureReport:
     """Build (or extend) the fixture practice with ``orgs`` new organisations."""
@@ -190,7 +200,7 @@ def make_practice_fixture(
     report = FixtureReport()
     practice, _ = Practice.objects.get_or_create(name=practice_name)
     report.practice = practice
-    _admin(practice, admin_email)
+    _admin(practice, admin_email, password)
     first = PracticeAssignment.objects.filter(practice=practice).count() + 1
     for n in range(first, first + orgs):
         with transaction.atomic():
