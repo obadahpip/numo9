@@ -24,3 +24,11 @@
 # owner = "obadahpip"
 # expires = 2027-01-31
 # ticket = "https://github.com/obadahpip/numo9/issues/123"
+
+[[finding]]
+scanner = "npm"
+package = "picomatch"
+id = "GHSA-fc5q-39xc-vjpf"
+justification = "No patched release exists yet (2.3.2 and 4.0.7 are the latest of each line). picomatch is only reached through build and dev tooling (vite, tinyglobby, fast-glob in eslint-config-next) and @parcel/watcher's file watching under next-intl; every glob it compiles is written by the developers, never taken from a request, so the extglob ReDoS can't be triggered by users. Upgrade as soon as a fixed version ships."
+owner = "obadahpip"
+expires = 2027-02-15

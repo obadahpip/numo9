@@ -48,6 +48,8 @@ regexes = [
   '''ENC\[AES256_GCM,data:''',
   '''dev-insecure-secret-key-do-not-use-in-production''',
   '''test-insecure-secret-key''',
+  # Browser-session key names (U-06-T09 impersonation), not secrets: SESSION_KEY = "numo9_…"
+  '''^numo9_[a-z_]+$''',
 ]
 paths = [
   '''(^|/)infra/secrets/[^/]+\.sops\.env$''',
