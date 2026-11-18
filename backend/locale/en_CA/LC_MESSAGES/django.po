@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 14:40-0500\n"
+"POT-Creation-Date: 2026-11-18 14:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2995,6 +2995,26 @@ msgstr ""
 msgid "Background job"
 msgstr ""
 
+msgid "The parent account doesn't exist."
+msgstr ""
+
+#, python-format
+msgid "GIFI %(code)s isn't in the CRA list."
+msgstr ""
+
+#, python-format
+msgid "%(account)s already has the code %(code)s."
+msgstr ""
+
+msgid "An account needs a code and a name."
+msgstr ""
+
+msgid "Choose the account's type."
+msgstr ""
+
+msgid "Not found."
+msgstr ""
+
 msgid "Use a date like 2026-03-31."
 msgstr ""
 
@@ -3513,6 +3533,12 @@ msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it.
 msgstr ""
 
 msgid "See journals and every posted entry"
+msgstr ""
+
+msgid "See the chart of accounts and account balances"
+msgstr ""
+
+msgid "Add, edit, renumber, archive and restore accounts"
 msgstr ""
 
 #, python-format

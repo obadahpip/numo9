@@ -33,6 +33,7 @@ class LedgerConfig(AppConfig):
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
         SWEEP_FACTORIES["ledger.JournalEntry"] = _sweep_journal
+        SWEEP_FACTORIES["ledger.Account"] = _sweep_account
 
 
 def _seed_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
@@ -92,3 +93,24 @@ def _sweep_journal(organisation: Any) -> Any:
             ),
             user=None,
         )
+
+
+def _sweep_account(organisation: Any) -> Any:
+    """An account of the organisation (the chart of accounts API, C-01-T09)."""
+    from numo9.tenancy.context import org_context
+
+    from .models import Account
+
+    with org_context(organisation):
+        found = Account._base_manager.filter(organisation=organisation, code="6999").first()
+        if found is not None:
+            return found
+        account = Account(
+            organisation=organisation,
+            code="6999",
+            name_i18n={"en-ca": "Sweep expense"},
+            type="expense",
+            subtype="operating_expense",
+        )
+        account.save()
+        return account
