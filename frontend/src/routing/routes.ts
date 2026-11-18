@@ -377,3 +377,13 @@ export function practiceDirectoryUrl(practice: string): string {
 export function practiceGroupsUrl(practice: string): string {
   return `/p/${practice}/groups`;
 }
+
+/** Practice staff (V-05-T09): the staff list. */
+export function practiceStaffUrl(practice: string): string {
+  return `/p/${practice}/staff`;
+}
+
+/** A practice staff member (V-05-T09): activity, assignments, suspend / remove. */
+export function practiceStaffMemberUrl(practice: string, member: string): string {
+  return `/p/${practice}/staff/${member}`;
+}

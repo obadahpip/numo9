@@ -34,6 +34,11 @@ export const m = defineMessages({
       "{organisations, plural, one {# organisation} other {# organisations}} · {staff, plural, one {# staff member} other {# staff}}",
     description: "Counts next to a group in the tree (organisations in the group and sub-groups)",
   },
+  staffLink: {
+    id: "groups.staffLink",
+    defaultMessage: "Staff",
+    description: "Link to the practice's staff list (V-05-T09)",
+  },
   newGroup: {
     id: "groups.new",
     defaultMessage: "New group",
