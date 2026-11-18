@@ -3158,7 +3158,7 @@ msgstr ""
 msgid "This file was already imported."
 msgstr ""
 
-msgid "Check the file first (dry run), then import it."
+msgid "Review the file first (dry run), then import it."
 msgstr ""
 
 msgid "Unknown record type."

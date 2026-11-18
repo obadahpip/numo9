@@ -246,7 +246,7 @@ class ImportApplyView(APIView):
         run = _run(public_id)
         if run.status != ImportRunStatus.REVIEWED:
             raise ValidationError(
-                {"non_field_errors": [_("Check the file first (dry run), then import it.")]}
+                {"non_field_errors": [_("Review the file first (dry run), then import it.")]}
             )
         ImportRun.objects.filter(pk=run.pk).update(status=ImportRunStatus.APPLYING)
         job = start_job(

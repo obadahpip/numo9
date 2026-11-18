@@ -1391,7 +1391,7 @@
     "actionUpdate": "Update",
     "back": "Back",
     "change": "{field}: {before} → {after}",
-    "check": "Check the file",
+    "check": "Review the file",
     "columnFor": "Field for the column {header}",
     "done": "Import finished.",
     "entityContacts": "Contacts (one row per contact)",

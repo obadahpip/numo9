@@ -80,7 +80,7 @@ export const m = defineMessages({
     defaultMessage: "Save this mapping as (optional)",
     description: "Field",
   },
-  check: { id: "imports.check", defaultMessage: "Check the file", description: "Button" },
+  check: { id: "imports.check", defaultMessage: "Review the file", description: "Button" },
   totals: {
     id: "imports.totals",
     defaultMessage:

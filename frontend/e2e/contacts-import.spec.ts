@@ -99,7 +99,7 @@ test("upload, map, review and import", async ({ page }) => {
   await page.getByRole("combobox", { name: "Field for the column Notes" }).click();
   await page.getByRole("option", { name: "Email" }).click();
   await page.getByLabel("Save this mapping as (optional)").fill("From Xero");
-  await page.getByRole("button", { name: "Check the file" }).click();
+  await page.getByRole("button", { name: "Review the file" }).click();
 
   await expect(page.getByRole("heading", { name: "Step 3 of 4: Review" })).toBeVisible();
   await expect(page.getByText("1 new, 0 to update, 0 unchanged, 1 with errors.")).toBeVisible();
