@@ -133,3 +133,20 @@ describe("answer helpers", () => {
     expect(Object.keys(fieldErrors(body))).toEqual(["code", ""]);
   });
 });
+
+describe("apiRequest with a FormData body (B-03-T12 file upload)", () => {
+  it("sends the form as is, without a JSON content type", async () => {
+    const { fetcher, calls } = fakeFetch(json(200, { csrfToken: "t" }), json(201, { id: "r" }));
+    const form = new FormData();
+    form.set("entity", "contacts.contact");
+    const result = await apiRequest("/api/v1/o/acme/imports", {
+      method: "POST",
+      body: form,
+      fetcher,
+    });
+    expect(result.status).toBe(201);
+    const upload = calls[calls.length - 1]!;
+    expect(upload.init.body).toBe(form);
+    expect((upload.init.headers as Record<string, string>)["Content-Type"]).toBeUndefined();
+  });
+});

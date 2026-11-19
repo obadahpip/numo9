@@ -98,3 +98,16 @@ with BOM: Row, Column, Reason). `CLEAR_TOKEN = "__CLEAR__"` is the cell value th
 a blank cell never does. A dry run is the same work as applying inside a transaction that is rolled
 back. B-03-T07 persists reports as `ImportRun` / `ImportRunRow`; the chart-of-accounts importer
 (C-01-T13) is the first user.
+
+## Contacts import engine and runs (B-03-T04…T11)
+
+| Step | Module | What |
+|---|---|---|
+| Normalise (T04) | `contacts.import_normalise` | Typed values per cell; blank = absent, `__CLEAR__` = clear; province by code or EN/FR name, postal code, email, currency, roles EN/FR, credit mode, language, yes/no, amounts; every problem with its column and code |
+| Match (T05) | `contacts.import_match` | External ID → contact number (a merged alias leads to the survivor) → BN only when opted in; never the name |
+| Diff (T06) | `contacts.import_diff` | `{field: [before, after]}` incl. primary person and addresses; a blank cell never changes anything (Hypothesis) |
+| Run (T07) | `imports.runs`, `ImportRun`, `ImportRunRow` | The file's cells kept once; dry run stores every row's action/changes/errors and writes nothing |
+| Apply (T08) | job `numo9.imports.apply` | Same cells, mapping and options; each row in a savepoint; one audit batch; re-import → unchanged |
+| People (T09) | `contacts.import_people` | Long format, unlimited people, matched by email then name within the contact |
+| Export (T10) | `contacts.export` | Import labels as headers; CSV (BOM) and XLSX (text cells); export → import = 0 changes |
+| API (T11) | `imports.api` | `POST imports` (upload), `POST imports/<id>/dry-run`, `GET …/rows?action=`, `POST …/apply` (202 + job), `GET …/errors.csv`, `GET imports/template`, `GET contacts/export?file_type=` |

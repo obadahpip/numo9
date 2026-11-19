@@ -87,13 +87,15 @@ export async function apiRequest<Body = AuthBody>(
 ): Promise<ApiResult<Body>> {
   const send = async (): Promise<Response> => {
     const all: Record<string, string> = { Accept: "application/json", ...headers };
-    if (body !== undefined) all["Content-Type"] = "application/json";
+    const form = typeof FormData !== "undefined" && body instanceof FormData;
+    // A FormData body (file upload, B-03-T12) sets its own multipart boundary.
+    if (body !== undefined && !form) all["Content-Type"] = "application/json";
     if (UNSAFE.has(method)) all["X-CSRFToken"] = await csrfToken(fetcher);
     return fetcher(url, {
       method,
       credentials: "same-origin",
       headers: all,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: body === undefined ? undefined : form ? (body as FormData) : JSON.stringify(body),
     });
   };
   let response: Response;
