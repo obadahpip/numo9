@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     "numo9.bulk",
     # Practice staff management: list, assignments, suspend/remove, dormant, activity (V-05).
     "numo9.staff",
+    # Usage metering: meter(org, key, qty) through a Redis stream → daily aggregates (S-06-T07).
+    "numo9.metering",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
@@ -267,6 +269,9 @@ TENANT_SWEEP_EXEMPT = [
 
 # Overridden per environment.
 DATABASES: dict[str, Any] = {}
+# Reporting reads go to the read replica inside numo9.replica.using_replica() (S-06-T10); without
+# a "replica" alias they stay on the primary. Writes and migrations: always "default".
+DATABASE_ROUTERS = ["numo9.replica.ReplicaRouter"]
 
 # ---- Security headers and cookies (S-03-T01) -------------------------------------------------
 # Same in every environment; the HTTPS-only flags (Secure cookies, HSTS, SSL redirect) are in
@@ -418,6 +423,11 @@ CELERY_BROKER_URL = env_str(
 CELERY_RESULT_BACKEND = env_str(
     "CELERY_RESULT_BACKEND", redis_database(env_str("REDIS_URL", "redis://localhost:6379/0"), 3)
 )
+# Usage metering stream (S-06-T07, numo9/metering): Redis database 4 of REDIS_URL; empty =
+# in-process (tests, a dev server without Redis).
+METERING_REDIS_URL = env_str(
+    "METERING_REDIS_URL", redis_database(env_str("REDIS_URL", "redis://localhost:6379/0"), 4)
+)
 CELERY_RESULT_EXPIRES = timedelta(days=1)  # job outcomes users see are kept in JobRun (A-08-T02)
 CELERY_RESULT_EXTENDED = True  # task name, args and queue stored with the result (job dashboard)
 # Only JSON crosses the broker: no pickle, so a message can never run code in a worker.
@@ -515,6 +525,16 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.platform.snapshot_metrics": {
         "task": "numo9.platform.snapshot_metrics",
         "schedule": crontab(minute=51, hour=5),  # 05:51 UTC = 00:51 / 01:51 Toronto
+    },
+    # Audit log partitions (S-06-T04, ADR-0005): current month through month + 3; alarm if missing.
+    "numo9.audit.ensure_partitions": {
+        "task": "numo9.audit.ensure_partitions",
+        "schedule": crontab(minute=3, hour=6),  # 06:03 UTC = 01:03 / 02:03 Toronto
+    },
+    # Usage metering (S-06-T07): the stream summed into daily aggregates.
+    "numo9.metering.aggregate": {
+        "task": "numo9.metering.aggregate",
+        "schedule": crontab(minute="*"),
     },
     # Downgrades (U-04-T10): moved to the new price in the last hour of the paid period.
     "numo9.billing.apply_changes": {

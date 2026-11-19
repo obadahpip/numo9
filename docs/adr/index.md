@@ -25,3 +25,4 @@ consequences. ADRs follow [MADR](https://adr.github.io/madr/) and live in `docs/
 | [ADR-0002](0002-hetzner-helsinki-hosting.md) | Host Numo9 on Hetzner Cloud in Helsinki (supersedes ADR-0001) | accepted (2026-11-08) |
 | [ADR-0003](0003-posting-engine-and-book-dimension.md) | Journal posting engine with a book dimension: append-only lines, gap-free numbers, hash-partitioned by organisation (C-02-T01, plan "ADR-006") | accepted (2026-11-14, on merge) |
 | [ADR-0004](0004-entitlement-resolution-and-caching.md) | Entitlement resolution and caching: one engine, versioned cache keys, read retention, read-only guard after access checks (U-03-T01, plan "ADR-005") | accepted (2026-11-15, on merge) |
+| [ADR-0005](0005-partitioning-strategy.md) | Partitioning strategy: audit events by month (pg_partman when installed, native otherwise), journal lines by organisation hash; partitions 3 months ahead with an alarm (S-06-T02) | accepted (2026-11-18, on merge) |

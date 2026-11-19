@@ -4,10 +4,9 @@ import base64
 import hashlib
 import json
 
-import dj_database_url
-
 from .base import *  # noqa: F403
 from .base import FIELD_ENCRYPTION_KEYS, INSTALLED_APPS
+from .database import database
 from .env import env_list, env_str
 
 # Test/CI-only: `manage.py lintmigrations` (S-01-T08) and the test-only app with concrete
@@ -34,7 +33,11 @@ SECRET_KEY = env_str("DJANGO_SECRET_KEY", "test-insecure-secret-key")
 DEBUG = False
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", ["testserver", "localhost"])
 
-DATABASES = {"default": dj_database_url.parse(env_str("DATABASE_URL", "sqlite://:memory:"))}
+# NUMO9_DB_POOL=pgbouncer runs the suite through PgBouncer in transaction mode (S-06-T01).
+DATABASES = {"default": database(env_str("DATABASE_URL", "sqlite://:memory:"), conn_max_age=0)}
+# The read replica (S-06-T10) as a test mirror of the primary: its own connection to the same
+# test database (tests/test_replica_routing.py).
+DATABASES["replica"] = {**DATABASES["default"], "TEST": {"MIRROR": "default"}}
 
 # Fast hashing in tests only (tests/test_auth_signup.py checks the Argon2id configuration of base).
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
@@ -49,6 +52,9 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 # NUMO9_TEST_CELERY_BROKER_URL points them (and only them) at it.
 CELERY_BROKER_URL = env_str("NUMO9_TEST_CELERY_BROKER_URL", "memory://")
 CELERY_RESULT_BACKEND = "cache+memory://"
+# Usage metering (S-06-T07): in-process stream; tests/test_metering.py also runs on Redis when
+# NUMO9_TEST_REDIS_URL is set.
+METERING_REDIS_URL = ""
 
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —
 # for local data only; never valid in staging/prod (they require NUMO9_FIELD_ENCRYPTION_KEYS).

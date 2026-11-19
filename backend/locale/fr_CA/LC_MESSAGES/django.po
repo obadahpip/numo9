@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-17 19:13-0500\n"
+"POT-Creation-Date: 2026-11-18 14:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3852,6 +3852,30 @@ msgstr ""
 
 #, python-format
 msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
+msgstr ""
+
+msgid "meter"
+msgstr ""
+
+msgid "day (UTC)"
+msgstr ""
+
+msgid "quantity"
+msgstr ""
+
+msgid "daily usage"
+msgstr ""
+
+msgid "stream"
+msgstr ""
+
+msgid "last entry"
+msgstr ""
+
+msgid "metering stream offset"
+msgstr ""
+
+msgid "metering stream offsets"
 msgstr ""
 
 #, fuzzy

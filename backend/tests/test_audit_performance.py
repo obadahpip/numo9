@@ -7,12 +7,16 @@ scan of the table).
 
 One million events of one organisation spread over two years, plus 200,000 of a second one, are
 inserted with ``generate_series`` (hashes are not computed: the chain is not under test here).
+The table is partitioned by month (S-06-T03): the fixture creates the two years of monthly
+partitions first, as the daily job would have, and the plan must use the partitions' copies of
+the viewer's index.
 """
 
 from __future__ import annotations
 
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime
 from typing import Any
 
 import pytest
@@ -20,6 +24,7 @@ from django.db import connection
 from rest_framework.test import APIClient
 
 from numo9.accounts.models import User
+from numo9.audit import partitions
 from numo9.tenancy.models import Organisation, OrganisationMember
 
 pytestmark = pytest.mark.django_db
@@ -60,6 +65,9 @@ def big() -> dict[str, Any]:
     owner, user_a, user_b = _user("owner@big.ca"), _user("a@big.ca"), _user("b@big.ca")
     OrganisationMember.objects.create(organisation=org, user=owner, role="owner")
     with connection.cursor() as cursor:
+        now = partitions.month_start(datetime.now(UTC))
+        for back in range(26):  # 1M events × 63 s ≈ two years
+            partitions.create_month(cursor, partitions.add_months(now, -back))
         common = {"user_a": user_a.pk, "user_b": user_b.pk}
         cursor.execute(INSERT, {**common, "seed": "big", "org": org.pk, "rows": ROWS})
         cursor.execute(INSERT, {**common, "seed": "other", "org": other.pk, "rows": OTHER_ROWS})
@@ -132,5 +140,13 @@ def test_listing_one_million_rows_is_under_a_second_with_the_indexes(big: dict[s
             [org.pk],
         )
         plan = "\n".join(row[0] for row in cursor.fetchall())
-    assert "audit_org_time_idx" in plan, plan
+        cursor.execute(
+            "SELECT c.relname FROM pg_inherits i JOIN pg_class c ON c.oid = i.inhrelid "
+            "WHERE i.inhparent = 'audit_org_time_idx'::regclass"
+        )
+        time_indexes = {row[0] for row in cursor.fetchall()}  # the index on every partition
+    assert any(f"using {name} " in plan.lower() for name in time_indexes), plan
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT count(*) FROM audit_event_default")
+        assert cursor.fetchone()[0] == 0  # every event sits in its month's partition
     assert "Seq Scan" not in plan, plan

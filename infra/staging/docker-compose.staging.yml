@@ -11,6 +11,8 @@ services:
   postgres:
     image: postgres:16.15-alpine
     restart: unless-stopped
+    # Server connections are PgBouncer's pool (60 at most) plus maintenance and migrations.
+    command: ["postgres", "-c", "max_connections=100"]
     environment:
       POSTGRES_DB: numo9
       POSTGRES_USER: numo9
@@ -19,6 +21,38 @@ services:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U numo9 -d numo9"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # S-06-T01: PgBouncer in transaction pooling mode between Django and PostgreSQL — hundreds of
+  # client connections (gunicorn and Celery workers) share a small pool of server connections.
+  # Django's settings for it: NUMO9_DB_POOL=pgbouncer (numo9/settings/database.py,
+  # docs/operations/pgbouncer.md).
+  pgbouncer:
+    image: edoburu/pgbouncer:v1.24.1-p1
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: numo9
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?set in .env}
+      DB_NAME: numo9
+      LISTEN_PORT: "6432"
+      AUTH_TYPE: scram-sha-256
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: "1000"
+      DEFAULT_POOL_SIZE: "40"
+      MIN_POOL_SIZE: "5"
+      RESERVE_POOL_SIZE: "10"
+      MAX_DB_CONNECTIONS: "60"
+      SERVER_RESET_QUERY: ""
+      IGNORE_STARTUP_PARAMETERS: extra_float_digits,options
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 6432 -U numo9 -d numo9"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -50,12 +84,16 @@ services:
       # S-03-T06: scrubbed JSON logs; Sentry only when a DSN is set.
       SENTRY_DSN: ${SENTRY_DSN:-}
       NUMO9_RELEASE: ${NUMO9_TAG}
-      DATABASE_URL: postgres://numo9:${POSTGRES_PASSWORD}@postgres:5432/numo9
+      # Through PgBouncer (transaction pooling, S-06-T01); migrations run through it too (each
+      # migration is one transaction).
+      DATABASE_URL: postgres://numo9:${POSTGRES_PASSWORD}@pgbouncer:6432/numo9
+      NUMO9_DB_POOL: pgbouncer
+      DJANGO_CONN_MAX_AGE: ${DJANGO_CONN_MAX_AGE:-300}
       REDIS_URL: redis://redis:6379/0
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
-      postgres:
+      pgbouncer:
         condition: service_healthy
       redis:
         condition: service_healthy

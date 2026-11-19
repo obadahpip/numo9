@@ -67,6 +67,7 @@ nav:
       - "ADR-0002 — Hetzner Helsinki hosting": adr/0002-hetzner-helsinki-hosting.md
       - "ADR-0003 — Posting engine and book dimension": adr/0003-posting-engine-and-book-dimension.md
       - "ADR-0004 — Entitlement resolution and caching": adr/0004-entitlement-resolution-and-caching.md
+      - "ADR-0005 — Partitioning strategy": adr/0005-partitioning-strategy.md
       - ADR template: adr/template.md
   - Architecture:
       - "Tenancy model": architecture/tenancy.md
@@ -91,8 +92,10 @@ nav:
       - "Documents and files": architecture/files.md
       - "Organisation directory": architecture/directory.md
       - "Subscription billing": architecture/billing.md
+      - "Usage metering": architecture/metering.md
   - Operations:
       - "Operations runbook": operations/runbook.md
+      - "Connection pooling (PgBouncer)": operations/pgbouncer.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:
