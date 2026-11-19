@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 16:28-0500\n"
+"POT-Creation-Date: 2026-11-19 04:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2748,6 +2748,36 @@ msgstr ""
 #, python-format
 msgid "%(name)s, added to %(organisation)s, contains a virus (%(signature)s). It was moved to quarantine and can't be opened or downloaded. If you expected this file, ask the sender for a clean copy."
 msgstr ""
+
+msgid "founding slots"
+msgstr "places de membre fondateur"
+
+msgid "allocated"
+msgstr "attribuées"
+
+msgid "founding counter"
+msgstr "compteur des membres fondateurs"
+
+msgid "slot number"
+msgstr "numéro de place"
+
+msgid "allocated at"
+msgstr "attribuée le"
+
+msgid "first payment"
+msgstr "premier paiement"
+
+msgid "Stripe invoice or payment id."
+msgstr "Identifiant de la facture ou du paiement Stripe."
+
+msgid "released at"
+msgstr "libérée le"
+
+msgid "release reason"
+msgstr "motif de libération"
+
+msgid "founding slot"
+msgstr "place de membre fondateur"
 
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
 msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l’un de vos cabinets."
