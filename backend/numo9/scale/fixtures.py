@@ -164,7 +164,7 @@ def _contacts(organisation: Organisation, rng: random.Random, count: int) -> int
     return count
 
 
-def _admin(practice: Practice, email: str, password: str = "") -> None:
+def _admin(practice: Practice, email: str, password: str | None = None) -> None:
     """The practice admin; with a password it can sign in at once (verified address) — k6."""
     user_model = get_user_model()
     user = user_model.objects.filter(email=email).first()
@@ -190,7 +190,7 @@ def make_practice_fixture(
     seed: int = 1,
     practice_name: str = f"{PREFIX} Practice LLP",
     admin_email: str = "fixture-admin@example.com",
-    password: str = "",
+    password: str | None = None,
     progress: Callable[[int, int], None] | None = None,
 ) -> FixtureReport:
     """Build (or extend) the fixture practice with ``orgs`` new organisations."""
