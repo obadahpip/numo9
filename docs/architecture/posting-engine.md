@@ -27,7 +27,7 @@ in each book, numbered without gaps, impossible to change once posted.
 | Journal number unique per organisation; posted/reversed entries have a number and a posting time, drafts none | `ledger_journal_number_unique_per_org`, `ledger_journal_number_when_posted` |
 | An entry is reversed at most once, never by itself | One-to-one `reversal_of`, `ledger_journal_not_own_reversal` |
 | Tenant isolation | Scoped manager + row-level security on both tables |
-| Partition-ready lines | Primary key `(organisation_id, id)`, `id` from `ledger_journalline_id_seq`; the line's organisation is copied from its entry |
+| Partitioned lines (C-02-T03) | `ledger_journalline` is `PARTITION BY HASH (organisation_id)` into 16 partitions `ledger_journalline_p00`…`p15` (migration `ledger.0006`, `numo9.partitioning` keeps constraints, indexes, the sequence, the trigger and RLS — on the parent and on every partition). Primary key `(organisation_id, id)`, `id` from `ledger_journalline_id_seq`; the line's organisation is copied from its entry. A per-organisation query reads one partition (`tests/test_ledger_partitions.py`) |
 
 Accounts with lines on posted (or reversed) entries "have transactions" for the chart rules: the
 ledger registers that probe (`numo9.ledger.postings`), so such an account can't become a parent

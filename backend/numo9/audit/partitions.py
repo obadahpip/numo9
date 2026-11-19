@@ -26,6 +26,8 @@ from typing import Any
 
 from django.db import connection, transaction
 
+from numo9.partitioning import name_child_indexes, rebuild_as_partitioned
+
 logger = logging.getLogger(__name__)
 
 TABLE = "audit_event"
@@ -86,7 +88,9 @@ def partitions(cursor: Any, table: str = TABLE) -> list[str]:
 
 
 def lock_down(cursor: Any, child: str) -> None:
-    """Append-only privileges on one child (the trigger is cloned from the parent)."""
+    """Append-only privileges on one child (the trigger is cloned from the parent); its indexes
+    named after the parent's."""
+    name_child_indexes(cursor, TABLE, child)
     cursor.execute(f'REVOKE UPDATE, DELETE, TRUNCATE ON TABLE "{child}" FROM PUBLIC')
     cursor.execute(f'REVOKE UPDATE, DELETE, TRUNCATE ON TABLE "{child}" FROM CURRENT_USER')
 
@@ -127,79 +131,33 @@ def register_with_partman(cursor: Any, first_month: dt.date) -> None:
 # ---- migration (S-06-T03) -----------------------------------------------------------------------
 
 
-def _index_definitions(cursor: Any, table: str) -> list[tuple[str, str]]:
-    cursor.execute(
-        "SELECT i.relname, pg_get_indexdef(i.oid) FROM pg_index x "
-        "JOIN pg_class i ON i.oid = x.indexrelid "
-        "WHERE x.indrelid = to_regclass(%s) AND NOT x.indisprimary ORDER BY i.relname",
-        [f"public.{table}"],
-    )
-    return [(row[0], row[1]) for row in cursor.fetchall()]
-
-
-def _constraints(cursor: Any, table: str, kinds: str) -> list[tuple[str, str, str]]:
-    cursor.execute(
-        "SELECT conname, contype, pg_get_constraintdef(oid) FROM pg_constraint "
-        "WHERE conrelid = to_regclass(%s) AND contype = ANY(%s) ORDER BY conname",
-        [f"public.{table}", list(kinds)],
-    )
-    return [(row[0], row[1], row[2]) for row in cursor.fetchall()]
-
-
 def convert_to_partitioned(cursor: Any, now: dt.datetime | None = None) -> None:
     """Turn a plain ``audit_event`` into the monthly-partitioned parent, keeping its rows.
 
     Same columns, defaults, constraint and index names (Django's state is unchanged), same
-    sequence for ``id``, append-only trigger and privileges on the parent and every child.
+    sequence for ``id`` and the append-only trigger (``numo9.partitioning``); UPDATE, DELETE and
+    TRUNCATE revoked on the parent and every child.
     """
     if is_partitioned(cursor):
         return
     now = now or dt.datetime.now(dt.UTC)
-    old = f"{TABLE}_unpartitioned"
-    indexes = _index_definitions(cursor, TABLE)
-    constraints = _constraints(cursor, TABLE, "pfu")  # primary key, foreign keys, unique
-    cursor.execute(f'ALTER TABLE "{TABLE}" RENAME TO "{old}"')
-    # Free the names for the new parent (the old table is dropped below).
-    for name, _kind, _definition in constraints:
-        cursor.execute(f'ALTER TABLE "{old}" DROP CONSTRAINT "{name}"')
-    for name, _definition in indexes:
-        cursor.execute(f'DROP INDEX "{name}"')
-
-    # Columns, defaults (nextval of the sequence), NOT NULL and CHECK constraints.
-    cursor.execute(
-        f'CREATE TABLE "{TABLE}" (LIKE "{old}" INCLUDING DEFAULTS INCLUDING CONSTRAINTS '
-        "INCLUDING STORAGE INCLUDING COMMENTS) PARTITION BY RANGE (created_at)"
-    )
-    for name, _kind, definition in constraints:
-        cursor.execute(f'ALTER TABLE "{TABLE}" ADD CONSTRAINT "{name}" {definition}')
-    for _name, definition in indexes:
-        cursor.execute(definition.replace(f"ON public.{old} ", f"ON public.{TABLE} "))
-
-    cursor.execute(
-        f'SELECT min(created_at) FROM "{old}"'  # noqa: S608 — fixed table name
-    )
+    cursor.execute(f"SELECT min(created_at) FROM {TABLE}")  # noqa: S608 — fixed table name
     oldest = cursor.fetchone()[0]
     first = month_start(oldest if oldest is not None and oldest < now else now)
-    if has_partman(cursor):
-        register_with_partman(cursor, first)
-    else:
+
+    def make_children(cursor: Any) -> None:
+        if has_partman(cursor):
+            register_with_partman(cursor, first)
+            return
         create_default(cursor)
         month = first
         while month <= add_months(month_start(now), MONTHS_AHEAD):
             create_month(cursor, month)
             month = add_months(month, 1)
 
-    cursor.execute(f'INSERT INTO "{TABLE}" SELECT * FROM "{old}"')  # noqa: S608
-    cursor.execute(f'ALTER SEQUENCE {TABLE}_id_seq OWNED BY "{TABLE}".id')
-    cursor.execute(f'DROP TABLE "{old}"')
-
-    # Append-only on the parent (the row trigger is cloned on every present and future child).
+    rebuild_as_partitioned(cursor, TABLE, "RANGE (created_at)", make_children)
     cursor.execute(f"REVOKE UPDATE, DELETE, TRUNCATE ON TABLE {TABLE} FROM PUBLIC")
     cursor.execute(f"REVOKE UPDATE, DELETE, TRUNCATE ON TABLE {TABLE} FROM CURRENT_USER")
-    cursor.execute(
-        f"CREATE TRIGGER audit_event_append_only BEFORE UPDATE OR DELETE ON {TABLE} "
-        "FOR EACH ROW EXECUTE FUNCTION audit_event_refuse_change()"
-    )
 
 
 # ---- maintenance (S-06-T04) ---------------------------------------------------------------------
