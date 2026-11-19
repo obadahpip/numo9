@@ -1,0 +1,151 @@
+import { defineMessages } from "@/i18n";
+
+/** Contacts list, form and merge dialog (B-01-T14, T15, T17). */
+export const lm = defineMessages({
+  // list — the heading is the tab's title (gap-19: "Customers", not "Contacts" for every list)
+  titleAll: { id: "contacts.list.titleAll", defaultMessage: "Contacts", description: "Heading" },
+  titleCustomer: {
+    id: "contacts.list.titleCustomer",
+    defaultMessage: "Customers",
+    description: "Heading and tab",
+  },
+  titleSupplier: {
+    id: "contacts.list.titleSupplier",
+    defaultMessage: "Suppliers",
+    description: "Heading and tab",
+  },
+  titleContractor: {
+    id: "contacts.list.titleContractor",
+    defaultMessage: "Contractors",
+    description: "Heading and tab",
+  },
+  titleAgency: {
+    id: "contacts.list.titleAgency",
+    defaultMessage: "Government agencies",
+    description: "Heading and tab",
+  },
+  titleEmployee: {
+    id: "contacts.list.titleEmployee",
+    defaultMessage: "Employees",
+    description: "Heading and tab",
+  },
+  titleArchived: {
+    id: "contacts.list.titleArchived",
+    defaultMessage: "Archived contacts",
+    description: "Heading",
+  },
+  tabAll: { id: "contacts.list.tabAll", defaultMessage: "All", description: "Tab" },
+  tabArchived: { id: "contacts.list.tabArchived", defaultMessage: "Archived", description: "Tab" },
+  tabs: { id: "contacts.list.tabs", defaultMessage: "Contact roles", description: "Tab list" },
+  newContact: { id: "contacts.list.new", defaultMessage: "New contact", description: "Button" },
+  grid: { id: "contacts.list.grid", defaultMessage: "Contacts", description: "Grid name" },
+  search: {
+    id: "contacts.list.search",
+    defaultMessage: "Search name, number, email or BN",
+    description: "Grid",
+  },
+  columns: { id: "contacts.list.columns", defaultMessage: "Columns", description: "Grid" },
+  density: { id: "contacts.list.density", defaultMessage: "Density", description: "Grid" },
+  comfortable: {
+    id: "contacts.list.comfortable",
+    defaultMessage: "Comfortable",
+    description: "Grid",
+  },
+  compact: { id: "contacts.list.compact", defaultMessage: "Compact", description: "Grid" },
+  all: { id: "contacts.list.filterAll", defaultMessage: "All", description: "Filter" },
+  chip: { id: "contacts.list.chip", defaultMessage: "{column}: {value}", description: "Chip" },
+  clear: { id: "contacts.list.clear", defaultMessage: "Clear filters", description: "Grid" },
+  selectAll: { id: "contacts.list.selectAll", defaultMessage: "Select all", description: "Grid" },
+  selectRow: { id: "contacts.list.selectRow", defaultMessage: "Select {row}", description: "Grid" },
+  selected: {
+    id: "contacts.list.selected",
+    defaultMessage: "{count} selected",
+    description: "Grid",
+  },
+  clearSelection: {
+    id: "contacts.list.clearSelection",
+    defaultMessage: "Clear selection",
+    description: "Grid",
+  },
+  results: {
+    id: "contacts.list.results",
+    defaultMessage: "{shown, plural, one {# contact} other {# contacts}} of {total}",
+    description: "Live region",
+  },
+  loading: {
+    id: "contacts.list.loading",
+    defaultMessage: "Loading contacts…",
+    description: "Grid",
+  },
+  colName: { id: "contacts.list.colName", defaultMessage: "Name", description: "Column" },
+  colNumber: { id: "contacts.list.colNumber", defaultMessage: "Number", description: "Column" },
+  colRoles: { id: "contacts.list.colRoles", defaultMessage: "Roles", description: "Column" },
+  colPerson: {
+    id: "contacts.list.colPerson",
+    defaultMessage: "Contact person",
+    description: "Column",
+  },
+  colEmail: { id: "contacts.list.colEmail", defaultMessage: "Email", description: "Column" },
+  colPhone: { id: "contacts.list.colPhone", defaultMessage: "Telephone", description: "Column" },
+  colProvince: {
+    id: "contacts.list.colProvince",
+    defaultMessage: "Province",
+    description: "Column",
+  },
+  colCurrency: {
+    id: "contacts.list.colCurrency",
+    defaultMessage: "Currency",
+    description: "Column",
+  },
+  roleCustomer: { id: "contacts.role.customer", defaultMessage: "Customer", description: "Role" },
+  roleSupplier: { id: "contacts.role.supplier", defaultMessage: "Supplier", description: "Role" },
+  roleEmployee: { id: "contacts.role.employee", defaultMessage: "Employee", description: "Role" },
+  roleContractor: {
+    id: "contacts.role.contractor",
+    defaultMessage: "Contractor",
+    description: "Role",
+  },
+  roleAgency: {
+    id: "contacts.role.agency",
+    defaultMessage: "Government agency",
+    description: "Role",
+  },
+  views: { id: "contacts.list.views", defaultMessage: "Saved views", description: "Select" },
+  noView: { id: "contacts.list.noView", defaultMessage: "All contacts", description: "No view" },
+  saveView: { id: "contacts.list.saveView", defaultMessage: "Save view", description: "Button" },
+  viewName: { id: "contacts.list.viewName", defaultMessage: "View name", description: "Field" },
+  archiveSelected: { id: "contacts.list.archive", defaultMessage: "Archive", description: "Bulk" },
+  restoreSelected: { id: "contacts.list.restore", defaultMessage: "Restore", description: "Bulk" },
+  archivedCount: {
+    id: "contacts.list.archivedCount",
+    defaultMessage: "{count, plural, one {# contact archived} other {# contacts archived}}.",
+    description: "After archiving",
+  },
+  restoredCount: {
+    id: "contacts.list.restoredCount",
+    defaultMessage: "{count, plural, one {# contact restored} other {# contacts restored}}.",
+    description: "After restoring",
+  },
+  empty: { id: "contacts.list.empty", defaultMessage: "No contacts yet", description: "Empty" },
+  emptyBody: {
+    id: "contacts.list.emptyBody",
+    defaultMessage: "Add your first customer or supplier, or import a spreadsheet.",
+    description: "Empty",
+  },
+  noResults: {
+    id: "contacts.list.noResults",
+    defaultMessage: "No contact matches your search",
+    description: "No results",
+  },
+  failed: {
+    id: "contacts.list.failed",
+    defaultMessage: "We couldn't load your contacts",
+    description: "Error",
+  },
+  retry: { id: "contacts.list.retry", defaultMessage: "Try again", description: "Retry" },
+  actionFailed: {
+    id: "contacts.list.actionFailed",
+    defaultMessage: "We couldn't make the change. Try again.",
+    description: "Error",
+  },
+});

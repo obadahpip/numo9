@@ -14,3 +14,21 @@ CREDIT_OVERRIDE = register(
         Risk.CRITICAL,
     )
 )
+
+CONTACTS_VIEW = register(
+    Permission(
+        "contacts.contacts.view",
+        _("See contacts: customers, suppliers and their people"),
+        "contacts",
+        Risk.LOW,
+    )
+)
+
+CONTACTS_MANAGE = register(
+    Permission(
+        "contacts.contacts.manage",
+        _("Add, edit, archive and merge contacts"),
+        "contacts",
+        Risk.MEDIUM,
+    )
+)

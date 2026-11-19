@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 14:47-0500\n"
+"POT-Creation-Date: 2026-11-18 15:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1172,6 +1172,24 @@ msgstr ""
 msgid "Clients answer their accountant's requests"
 msgstr ""
 
+msgid "This account doesn't exist."
+msgstr ""
+
+msgid "This payment term doesn't exist."
+msgstr ""
+
+msgid "This row doesn't belong to the contact."
+msgstr ""
+
+msgid "Use a whole number."
+msgstr ""
+
+msgid "Unknown role."
+msgstr ""
+
+msgid "Enter the contact's name."
+msgstr ""
+
 msgid "Custom fields must be a set of field names and values."
 msgstr ""
 
@@ -1309,6 +1327,42 @@ msgstr ""
 msgid "Include in emails"
 msgstr ""
 
+msgid "people"
+msgstr ""
+
+msgid "addresses"
+msgstr ""
+
+msgid "exemption certificates"
+msgstr ""
+
+msgid "credit limit overrides"
+msgstr ""
+
+msgid "statements sent"
+msgstr ""
+
+msgid "supplier statements"
+msgstr ""
+
+msgid "journal lines"
+msgstr ""
+
+msgid "Choose two different contacts."
+msgstr ""
+
+#, python-format
+msgid "%(contact)s was already merged into another contact."
+msgstr ""
+
+#, python-format
+msgid "%(a)s uses %(x)s and %(b)s uses %(y)s: contacts in different currencies can't be merged."
+msgstr ""
+
+#, python-format
+msgid "%(field)s can't be taken from the merged contact."
+msgstr ""
+
 msgid "Customer"
 msgstr ""
 
@@ -1334,6 +1388,15 @@ msgid "Don't send statements"
 msgstr ""
 
 msgid "Print and mail"
+msgstr ""
+
+msgid "Tax exclusive"
+msgstr ""
+
+msgid "Tax inclusive"
+msgstr ""
+
+msgid "No tax"
 msgstr ""
 
 msgid "Archived"
@@ -1402,6 +1465,30 @@ msgstr ""
 msgid "Values of the organisation's custom fields, by field key (B-01-T09)."
 msgstr ""
 
+msgid "merged into"
+msgstr ""
+
+msgid "merged at"
+msgstr ""
+
+msgid "default sales account"
+msgstr ""
+
+msgid "default invoice terms"
+msgstr ""
+
+msgid "invoice amounts are"
+msgstr ""
+
+msgid "default purchase account"
+msgstr ""
+
+msgid "default bill terms"
+msgstr ""
+
+msgid "bill amounts are"
+msgstr ""
+
 msgid "contact"
 msgstr ""
 
@@ -1410,6 +1497,17 @@ msgstr ""
 
 #, python-format
 msgid "Contact number %(number)s is already used in this organisation."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be a sales account: choose a revenue or other income account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be a purchase account: choose an expense or an asset account."
+msgstr ""
+
+msgid "Choose an active payment term of this organisation."
 msgstr ""
 
 msgid "No free contact number: check the contact numbering settings."
@@ -1485,9 +1583,6 @@ msgid "ISO 3166-1 two-letter code; CA for Canada."
 msgstr ""
 
 msgid "address"
-msgstr ""
-
-msgid "addresses"
 msgstr ""
 
 msgid "Use the two-letter country code, e.g. CA."
@@ -1655,9 +1750,6 @@ msgstr ""
 msgid "exemption certificate"
 msgstr ""
 
-msgid "exemption certificates"
-msgstr ""
-
 msgid "Enter the certificate number."
 msgstr ""
 
@@ -1723,9 +1815,6 @@ msgstr ""
 msgid "credit limit override"
 msgstr ""
 
-msgid "credit limit overrides"
-msgstr ""
-
 msgid "Outstanding"
 msgstr ""
 
@@ -1762,9 +1851,6 @@ msgstr ""
 msgid "statement sent"
 msgstr ""
 
-msgid "statements sent"
-msgstr ""
-
 msgid "Imported file"
 msgstr ""
 
@@ -1792,9 +1878,6 @@ msgstr ""
 msgid "supplier statement"
 msgstr ""
 
-msgid "supplier statements"
-msgstr ""
-
 msgid "date"
 msgstr ""
 
@@ -1817,6 +1900,12 @@ msgid "supplier statement lines"
 msgstr ""
 
 msgid "Approve sales over a customer's credit limit"
+msgstr ""
+
+msgid "See contacts: customers, suppliers and their people"
+msgstr ""
+
+msgid "Add, edit, archive and merge contacts"
 msgstr ""
 
 msgid "Supplier statement lines"
@@ -3018,9 +3107,6 @@ msgstr ""
 msgid "Use a date like 2026-03-31."
 msgstr ""
 
-msgid "Use a whole number."
-msgstr ""
-
 msgid "Unknown status."
 msgstr ""
 
@@ -3508,9 +3594,6 @@ msgid "tax code"
 msgstr ""
 
 msgid "journal line"
-msgstr ""
-
-msgid "journal lines"
 msgstr ""
 
 msgid "next number"

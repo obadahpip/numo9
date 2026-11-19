@@ -602,7 +602,12 @@ def test_my_permissions(org: Organisation, owner: User) -> None:
     assert "organisation.close" in mine and mine == sorted(mine)
     sales = client_for(member(org, "sales", "sam@refined.ca", "Sam Patel"))
     assert sales.get(url(org, "my-permissions")).json() == {
-        "permissions": ["documents.file.view", "organisation.profile.view"]
+        "permissions": [
+            "contacts.contacts.manage",
+            "contacts.contacts.view",
+            "documents.file.view",
+            "organisation.profile.view",
+        ]
     }
     other = Organisation.objects.create(name="Elsewhere Ltd.")
     outsider = client_for(member(other, "owner", "x@elsewhere.ca", "Out Sider"))
