@@ -97,6 +97,7 @@ testpaths = ["tests"]
 addopts = "-ra --strict-markers"
 markers = [
   "gap(*ids): gap-closure test for xero_teardown gap(s), e.g. @pytest.mark.gap('gap-06'); run by the CI gap-tests job",
+  "data_validation: cross-report data validation (one figure, two reports); B-02-T13 statement = AR aging",
   "tenant_isolation: cross-tenant isolation test; run by the CI tenant-sweep job (A-01 adds manage.py tenant_sweep)",
 ]
 

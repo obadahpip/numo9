@@ -35,6 +35,11 @@ class ContactsConfig(AppConfig):
         # Supplier statement lines (B-02-T07).
         register_entity(SUPPLIER_STATEMENT_LINE)
 
+        # Activity timeline (B-02-T02): statements sent appear on the contact.
+        from .activity import connect as connect_activity
+
+        connect_activity()
+
         # Tenant sweep (A-01-T09): the contacts API needs a contact (B-01-T11).
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:29-0500\n"
+"POT-Creation-Date: 2026-11-18 15:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1172,6 +1172,34 @@ msgstr ""
 msgid "Clients answer their accountant's requests"
 msgstr ""
 
+msgid "Activity statement"
+msgstr ""
+
+msgid "Statement"
+msgstr ""
+
+#, python-format
+msgid "%(kind)s as at %(date)s sent to %(to)s"
+msgstr ""
+
+msgid "Use a date like 2026-03-31."
+msgstr ""
+
+msgid "Choose outstanding or activity."
+msgstr ""
+
+msgid "Choose receivables or payables."
+msgstr ""
+
+msgid "Write the note."
+msgstr ""
+
+msgid "Nobody at this contact receives emails: add an address to send to."
+msgstr ""
+
+msgid "Choose the statement file and its date."
+msgstr ""
+
 msgid "This account doesn't exist."
 msgstr ""
 
@@ -1416,6 +1444,9 @@ msgid "statements sent"
 msgstr ""
 
 msgid "supplier statements"
+msgstr ""
+
+msgid "activity"
 msgstr ""
 
 msgid "journal lines"
@@ -1966,10 +1997,43 @@ msgstr ""
 msgid "file row"
 msgstr ""
 
+msgid "matched by hand to"
+msgstr ""
+
 msgid "supplier statement line"
 msgstr ""
 
 msgid "supplier statement lines"
+msgstr ""
+
+msgid "Invoice"
+msgstr ""
+
+msgid "Credit note"
+msgstr ""
+
+msgid "Bill"
+msgstr ""
+
+msgid "Payment"
+msgstr ""
+
+msgid "Statement sent"
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Contact changed"
+msgstr ""
+
+msgid "what"
+msgstr ""
+
+msgid "when"
+msgstr ""
+
+msgid "contact activity"
 msgstr ""
 
 msgid "Approve sales over a customer's credit limit"
@@ -2019,9 +2083,6 @@ msgstr ""
 
 #, python-format
 msgid "%(name)s isn't a supplier."
-msgstr ""
-
-msgid "Statement"
 msgstr ""
 
 msgid "Statement of activity"
@@ -3247,9 +3308,6 @@ msgstr ""
 msgid "Not found."
 msgstr ""
 
-msgid "Use a date like 2026-03-31."
-msgstr ""
-
 msgid "Unknown status."
 msgstr ""
 
@@ -3660,9 +3718,6 @@ msgid "Sales"
 msgstr ""
 
 msgid "Purchases"
-msgstr ""
-
-msgid "Payment"
 msgstr ""
 
 msgid "Adjustment"
@@ -4441,12 +4496,6 @@ msgstr ""
 msgid "The lock for everyone (%(everyone)s) can't be later than the lock for everyone except advisers (%(advisers)s)."
 msgstr ""
 
-msgid "Invoice"
-msgstr ""
-
-msgid "Credit note"
-msgstr ""
-
 msgid "Quote"
 msgstr ""
 
@@ -4947,9 +4996,6 @@ msgid "A platform role is given without an organisation or practice."
 msgstr ""
 
 msgid "This custom role belongs to another organisation or practice."
-msgstr ""
-
-msgid "Bill"
 msgstr ""
 
 msgid "Pay run"

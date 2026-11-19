@@ -197,6 +197,10 @@ def path_for(declaration: Declaration, world: World) -> str:
         "name": "matrix.flag",
         # Bulk actions (V-03-T07): a job that doesn't exist — members get its 404.
         "job_id": "00000000-0000-4000-8000-000000000000",
+        # Supplier statement reconciliation (B-02-T09): a statement and line that don't exist —
+        # allowed members get past the permission check to their 404.
+        "statement_id": "00000000-0000-4000-8000-000000000000",
+        "line_id": "00000000-0000-4000-8000-000000000000",
     }
     acting = Practice.objects.filter(name="Matrix Practice").first()
     if acting is not None:
