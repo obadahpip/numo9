@@ -1163,6 +1163,7 @@
     },
     "retry": "Try again",
     "save": "Save",
+    "staffLink": "Staff",
     "tags": {
       "colour": "Colour of the new tag",
       "colourName": "({colour})",
@@ -1862,7 +1863,50 @@
       "suspended": "{name}'s access is suspended.",
       "title": "Dormant staff"
     },
+    "list": {
+      "all": "All",
+      "chip": "{column}: {value}",
+      "clear": "Clear filters",
+      "clearSelection": "Clear selection",
+      "colLastActive": "Last active",
+      "colName": "Name",
+      "colOrganisations": "Organisations",
+      "colRole": "Practice role",
+      "colStatus": "Status",
+      "columns": "Columns",
+      "comfortable": "Comfortable",
+      "compact": "Compact",
+      "density": "Density",
+      "empty": "Nobody here yet",
+      "emptyBody": "Invite accountants from the practice settings to see them here.",
+      "expires": "Expires {date}",
+      "failed": "We couldn't load your staff",
+      "grid": "Staff",
+      "intro": "Everyone in your practice, the organisations they can open and when they last signed in.",
+      "loading": "Loading staff…",
+      "never": "Never signed in",
+      "noResults": "Nobody matches your search",
+      "results": "{shown, plural, one {# person} other {# people}} of {total}",
+      "search": "Search",
+      "selectAll": "Select all",
+      "selectRow": "Select {row}",
+      "selected": "{count} selected",
+      "title": "Staff"
+    },
     "loadFailed": "We couldn't load this staff member",
+    "member": {
+      "actionFailed": "We couldn't make the change. Try again.",
+      "back": "All staff",
+      "cancel": "Cancel",
+      "close": "Close",
+      "reinstate": "Lift suspension",
+      "reinstated": "{name} can sign in to your clients again.",
+      "remove": "Remove from practice",
+      "removeBody": "They lose access to every organisation at once. Their history in the audit log stays.",
+      "removeTitle": "Remove {name} from the practice?",
+      "statusLine": "Status",
+      "suspend": "Suspend access"
+    },
     "personLine": "{role} · {email}",
     "retry": "Try again",
     "role": {
@@ -1870,6 +1914,12 @@
       "payroll": "Payroll specialist",
       "readOnly": "Read only",
       "reviewer": "Reviewer"
+    },
+    "status": {
+      "active": "Active",
+      "dormant": "Dormant",
+      "pending": "Invitation pending",
+      "suspended": "Suspended"
     }
   }
 }

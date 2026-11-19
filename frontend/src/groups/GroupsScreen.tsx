@@ -4,6 +4,7 @@ import { Button, Dialog, ErrorState, Input, RadioGroup } from "@numo9/ui";
 import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 
 import { useFormatMessage } from "@/i18n";
+import { practiceStaffUrl } from "@/routing/routes";
 
 import { groupsApi, moveTargets, refusal, type Group } from "./api";
 import { DeleteGroupDialog } from "./DeleteGroupDialog";
@@ -63,9 +64,17 @@ export function GroupsScreen({ practice }: { practice: string }) {
           <h1 className="text-2xl font-bold text-fg">{t(m.title)}</h1>
           <p className="max-w-prose text-sm text-fg-muted">{t(m.intro)}</p>
         </div>
-        <Button variant="primary" onClick={() => setEditing({ kind: "create", parent: null })}>
-          {t(m.newGroup)}
-        </Button>
+        <div className="flex flex-wrap items-center gap-2">
+          <a
+            href={practiceStaffUrl(practice)}
+            className="inline-flex min-h-touch-target items-center px-2 text-sm font-semibold text-fg underline"
+          >
+            {t(m.staffLink)}
+          </a>
+          <Button variant="primary" onClick={() => setEditing({ kind: "create", parent: null })}>
+            {t(m.newGroup)}
+          </Button>
+        </div>
       </header>
       {error ? (
         <p role="alert" className="text-sm font-medium text-fg-danger">

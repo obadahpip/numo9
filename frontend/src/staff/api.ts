@@ -1,5 +1,6 @@
 /** Practice staff API (V-05): list, assignments. */
 import { apiRequest, type ApiResult } from "@/auth/client";
+import type { StaffMember } from "@/bulk/staff";
 
 export { staffApi, STAFF_URL, type StaffMember } from "@/bulk/staff";
 
@@ -55,4 +56,14 @@ export interface Activity {
 export const activityApi = {
   get: (practice: string, user: string): Promise<ApiResult<Activity>> =>
     apiRequest<Activity>(`${base(user)}/activity${q(practice)}`),
+};
+
+/** Suspend, lift the suspension or remove a member (V-05-T05; the last admin is refused). */
+export const memberApi = {
+  suspend: (practice: string, user: string): Promise<ApiResult<StaffMember>> =>
+    apiRequest<StaffMember>(`${base(user)}/suspend${q(practice)}`, { method: "POST" }),
+  reinstate: (practice: string, user: string): Promise<ApiResult<StaffMember>> =>
+    apiRequest<StaffMember>(`${base(user)}/reinstate${q(practice)}`, { method: "POST" }),
+  remove: (practice: string, user: string): Promise<ApiResult<unknown>> =>
+    apiRequest<unknown>(`${base(user)}${q(practice)}`, { method: "DELETE" }),
 };

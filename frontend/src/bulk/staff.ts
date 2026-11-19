@@ -8,6 +8,9 @@ export interface StaffMember {
   role: string;
   role_label: string;
   status: "active" | "suspended" | "pending";
+  joined_at?: string | null;
+  suspended_at?: string | null;
+  invitation_expires_at?: string | null;
   organisation_count: number;
   last_login: string | null;
   dormant: boolean;
