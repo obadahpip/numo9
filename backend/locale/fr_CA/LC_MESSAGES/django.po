@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 14:22-0500\n"
+"POT-Creation-Date: 2026-11-18 14:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3168,6 +3168,26 @@ msgstr "exécutions de tâches"
 msgid "Background job"
 msgstr "Tâche en arrière-plan"
 
+msgid "The parent account doesn't exist."
+msgstr ""
+
+#, python-format
+msgid "GIFI %(code)s isn't in the CRA list."
+msgstr ""
+
+#, python-format
+msgid "%(account)s already has the code %(code)s."
+msgstr ""
+
+msgid "An account needs a code and a name."
+msgstr ""
+
+msgid "Choose the account's type."
+msgstr ""
+
+msgid "Not found."
+msgstr ""
+
 msgid "Use a date like 2026-03-31."
 msgstr "Utilisez une date comme 2026-03-31."
 
@@ -3182,6 +3202,28 @@ msgstr "Utilisez accounting (comptable) ou tax (fiscal)."
 
 msgid "There's no journal with this id in this organisation."
 msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "accounting book"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax book"
+msgstr "code d’erreur"
+
+#, python-format
+msgid "%(account)s is the %(role)s account: system accounts can't be archived."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has a balance of %(balance)s in the %(book)s. Move the balance to another account first, then archive it."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has active sub-accounts, such as %(child)s: archive them first."
+msgstr ""
 
 msgid "Unknown system role."
 msgstr ""
@@ -3200,10 +3242,6 @@ msgstr ""
 
 #, python-format
 msgid "This is the %(role)s account: its type and sub-type can't change."
-msgstr ""
-
-#, python-format
-msgid "%(account)s is the %(role)s account: system accounts can't be archived."
 msgstr ""
 
 #, python-format
@@ -3725,6 +3763,12 @@ msgstr "La période %(period)s (du %(start)s au %(end)s) est fermée : rien ne p
 msgid "See journals and every posted entry"
 msgstr "Voir les écritures de journal et toutes les écritures comptabilisées"
 
+msgid "See the chart of accounts and account balances"
+msgstr ""
+
+msgid "Add, edit, renumber, archive and restore accounts"
+msgstr ""
+
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
@@ -3798,16 +3842,6 @@ msgstr ""
 #, python-format
 msgid "%(account)s has sub-accounts: post to one of its sub-accounts instead."
 msgstr ""
-
-#, fuzzy
-#| msgid "Accounting"
-msgid "accounting book"
-msgstr "Comptabilité"
-
-#, fuzzy
-#| msgid "error code"
-msgid "tax book"
-msgstr "code d’erreur"
 
 #, python-format
 msgid "Line %(line)d: the %(side)s must be an exact amount (Decimal), not %(value)r."

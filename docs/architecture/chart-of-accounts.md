@@ -221,6 +221,32 @@ update with `[before, after]` per changed column, unchanged, or error with reaso
 The API endpoints (export download, upload/dry run/apply) come with the accounts API (C-01-T09),
 and the screens with the import wizard (B-03-T12) mounted on the chart page (C-01-T11).
 
+## Archive (C-01-T08)
+
+`numo9.ledger.archive.archive_account(account, actor=)` archives an account; refused for a system
+account (names the role), a balance ≠ 0 in the accounting or the tax book (names the amount and
+the book; `both` lines count in both) and a parent with active sub-accounts. Archived accounts take
+no postings; `restore_account` brings one back. Audited; the chart cache is busted.
+
+## API (C-01-T09)
+
+Under `/api/v1/o/<org>/` (`numo9.ledger.accounts_api`), permissions `accounting.accounts.view` /
+`.manage`, features `accounting.chart_of_accounts.read` / `.write`, every route in the tenant sweep
+(factory `ledger.Account`):
+
+| Route | What |
+|---|---|
+| `GET accounts` | The chart by code with depth, `has_children`, GIFI, balances per book; `status` (active, archived, all), `type`, `q` |
+| `GET accounts/tree` | The same rows nested under their parents |
+| `POST accounts` | Add (code, name, sub-type; the model's rules apply) |
+| `GET` / `PATCH` / `DELETE accounts/<id>` | Read, edit (a new `code` is a renumber), delete (refused with transactions or for a system account) |
+| `POST accounts/<id>/renumber` | `{code}`; a taken code is refused naming its holder |
+| `POST accounts/<id>/archive`, `…/restore` | C-01-T08 rules |
+| `POST accounts/bulk` | `{accounts, action: archive \| restore \| set_gifi \| set_tax_default, value}`; every account succeeds or fails on its own, with the reason |
+| `GET gifi` | GIFI codes by number or description for the picker, `type` limits to fitting sections |
+
+Refusals are `400 {"detail", "code"}` with the rule's code.
+
 ## Errors
 
 Every refusal is a `LedgerError` (a `ValidationError`) with a stable `code`, e.g.
@@ -232,8 +258,6 @@ message is translated and names the account or role concerned.
 
 | Task | What |
 |---|---|
-| C-01-T08 | Archive service (balance must be 0, not system) — needs C-02 balances |
-| C-01-T09 | API `/api/v1/orgs/{id}/accounts` (CRUD, tree, renumber, archive, bulk, import/export endpoints), feature key, sweep |
 | C-01-T11 / T12 | Chart tree table and account drawer (GIFI picker, flags, tax default, balance) |
 | Phase 6 | French account names (`name_i18n["fr-ca"]`) and GIFI descriptions |
 
@@ -248,6 +272,8 @@ message is translated and names the account or role concerned.
 | T05 | `tests/test_ledger_template.py` |
 | T06 | `tests/test_ledger_guards.py` |
 | T07 | `tests/test_ledger_renumber.py` |
+| T08 | `tests/test_ledger_archive.py` |
+| T09 | `tests/test_ledger_accounts_api.py` |
 | T13 | `tests/test_ledger_import_export.py` |
 | T10 | `packages/ui/src/pickers/AccountPicker.test.tsx`, story *Forms/Pickers › Account Picker Contexts*, `tests/test_ledger_contexts.py` |
 | T14 | `tests/test_ledger_gaps.py` (+ `tests/fixtures/coa_ca_v1/expected.json`) |

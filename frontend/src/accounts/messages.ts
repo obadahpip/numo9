@@ -1,0 +1,198 @@
+import { defineMessages } from "@/i18n";
+
+/** Chart of accounts screens (C-01-T11, T12). */
+export const m = defineMessages({
+  title: { id: "accounts.title", defaultMessage: "Chart of accounts", description: "Heading" },
+  intro: {
+    id: "accounts.intro",
+    defaultMessage:
+      "Codes, types and GIFI mapping of every account. Select a code to renumber it, or a name to open the account.",
+    description: "Under the heading",
+  },
+  tabs: { id: "accounts.tabs", defaultMessage: "Account types", description: "Tab list name" },
+  tabAll: { id: "accounts.tab.all", defaultMessage: "All", description: "Tab" },
+  tabAsset: { id: "accounts.tab.asset", defaultMessage: "Assets", description: "Tab" },
+  tabLiability: { id: "accounts.tab.liability", defaultMessage: "Liabilities", description: "Tab" },
+  tabEquity: { id: "accounts.tab.equity", defaultMessage: "Equity", description: "Tab" },
+  tabRevenue: { id: "accounts.tab.revenue", defaultMessage: "Revenue", description: "Tab" },
+  tabExpense: { id: "accounts.tab.expense", defaultMessage: "Expenses", description: "Tab" },
+  tabArchived: { id: "accounts.tab.archived", defaultMessage: "Archived", description: "Tab" },
+  grid: { id: "accounts.grid", defaultMessage: "Accounts", description: "Grid name" },
+  search: { id: "accounts.search", defaultMessage: "Search code or name", description: "Grid" },
+  columns: { id: "accounts.columns", defaultMessage: "Columns", description: "Grid" },
+  density: { id: "accounts.density", defaultMessage: "Density", description: "Grid" },
+  comfortable: { id: "accounts.comfortable", defaultMessage: "Comfortable", description: "Grid" },
+  compact: { id: "accounts.compact", defaultMessage: "Compact", description: "Grid" },
+  all: { id: "accounts.filterAll", defaultMessage: "All", description: "Filter: any value" },
+  chip: { id: "accounts.chip", defaultMessage: "{column}: {value}", description: "Filter chip" },
+  clear: { id: "accounts.clear", defaultMessage: "Clear filters", description: "Grid" },
+  selectAll: { id: "accounts.selectAll", defaultMessage: "Select all", description: "Grid" },
+  selectRow: { id: "accounts.selectRow", defaultMessage: "Select {row}", description: "Grid" },
+  selected: { id: "accounts.selected", defaultMessage: "{count} selected", description: "Grid" },
+  clearSelection: {
+    id: "accounts.clearSelection",
+    defaultMessage: "Clear selection",
+    description: "Grid",
+  },
+  results: {
+    id: "accounts.results",
+    defaultMessage: "{shown, plural, one {# account} other {# accounts}} of {total}",
+    description: "Live region",
+  },
+  loading: { id: "accounts.loading", defaultMessage: "Loading accounts…", description: "Loading" },
+  colCode: { id: "accounts.col.code", defaultMessage: "Code", description: "Column" },
+  colName: { id: "accounts.col.name", defaultMessage: "Name", description: "Column" },
+  colType: { id: "accounts.col.type", defaultMessage: "Type", description: "Column" },
+  colGifi: { id: "accounts.col.gifi", defaultMessage: "GIFI", description: "Column" },
+  colBalance: { id: "accounts.col.balance", defaultMessage: "Balance", description: "Column" },
+  system: { id: "accounts.system", defaultMessage: "System: {role}", description: "Badge" },
+  expand: {
+    id: "accounts.expand",
+    defaultMessage: "Show sub-accounts of {name}",
+    description: "Button",
+  },
+  collapse: {
+    id: "accounts.collapse",
+    defaultMessage: "Hide sub-accounts of {name}",
+    description: "Button",
+  },
+  renumberOpen: {
+    id: "accounts.renumberOpen",
+    defaultMessage: "Change code {code}",
+    description: "Code cell button",
+  },
+  newCode: { id: "accounts.newCode", defaultMessage: "New code for {name}", description: "Field" },
+  renumbered: {
+    id: "accounts.renumbered",
+    defaultMessage: "{name} is now {code}. Every transaction keeps pointing to it.",
+    description: "After renumbering",
+  },
+  archiveSelected: {
+    id: "accounts.archiveSelected",
+    defaultMessage: "Archive",
+    description: "Bulk action",
+  },
+  restoreSelected: {
+    id: "accounts.restoreSelected",
+    defaultMessage: "Restore",
+    description: "Bulk action",
+  },
+  bulkDone: {
+    id: "accounts.bulkDone",
+    defaultMessage:
+      "{done, plural, one {# account} other {# accounts}} done, {failed, plural, =0 {none failed} one {# failed} other {# failed}}.",
+    description: "Bulk result",
+  },
+  bulkFailedLine: {
+    id: "accounts.bulkFailedLine",
+    defaultMessage: "{code}: {reason}",
+    description: "A bulk failure",
+  },
+  empty: { id: "accounts.empty", defaultMessage: "No accounts here", description: "Empty" },
+  emptyBody: {
+    id: "accounts.emptyBody",
+    defaultMessage: "Load the Canadian template or import your chart to start.",
+    description: "Empty",
+  },
+  noResults: {
+    id: "accounts.noResults",
+    defaultMessage: "No account matches your search",
+    description: "No results",
+  },
+  failed: {
+    id: "accounts.failed",
+    defaultMessage: "We couldn't load the chart of accounts",
+    description: "Error",
+  },
+  retry: { id: "accounts.retry", defaultMessage: "Try again", description: "Retry" },
+  saveFailed: {
+    id: "accounts.saveFailed",
+    defaultMessage: "We couldn't save the change. Try again.",
+    description: "Error without explanation",
+  },
+  // Drawer (C-01-T12)
+  drawerTitle: {
+    id: "accounts.drawer.title",
+    defaultMessage: "{code} {name}",
+    description: "Title",
+  },
+  close: { id: "accounts.drawer.close", defaultMessage: "Close", description: "× button" },
+  details: { id: "accounts.drawer.details", defaultMessage: "Details", description: "Section" },
+  name: { id: "accounts.drawer.name", defaultMessage: "Name", description: "Field" },
+  description: {
+    id: "accounts.drawer.description",
+    defaultMessage: "Description",
+    description: "Field",
+  },
+  typeLine: {
+    id: "accounts.drawer.typeLine",
+    defaultMessage: "{type} · {subtype}",
+    description: "Type and sub-type",
+  },
+  balances: { id: "accounts.drawer.balances", defaultMessage: "Balance", description: "Section" },
+  accountingBook: {
+    id: "accounts.drawer.accountingBook",
+    defaultMessage: "Accounting book",
+    description: "Balance label",
+  },
+  taxBook: { id: "accounts.drawer.taxBook", defaultMessage: "Tax book", description: "Balance" },
+  rules: { id: "accounts.drawer.rules", defaultMessage: "Posting rules", description: "Section" },
+  requireContact: {
+    id: "accounts.drawer.requireContact",
+    defaultMessage: "Every line needs a contact",
+    description: "Flag",
+  },
+  requireTracking: {
+    id: "accounts.drawer.requireTracking",
+    defaultMessage: "Every line needs tracking (class or location)",
+    description: "Flag",
+  },
+  requireAttachment: {
+    id: "accounts.drawer.requireAttachment",
+    defaultMessage: "Every transaction needs an attachment",
+    description: "Flag",
+  },
+  gifi: { id: "accounts.drawer.gifi", defaultMessage: "GIFI code", description: "Section" },
+  gifiCurrent: {
+    id: "accounts.drawer.gifiCurrent",
+    defaultMessage: "{code} — {description}",
+    description: "Mapped GIFI",
+  },
+  gifiNone: {
+    id: "accounts.drawer.gifiNone",
+    defaultMessage: "Not mapped: this account won't appear on the T2 schedules.",
+    description: "No GIFI",
+  },
+  gifiSearch: {
+    id: "accounts.drawer.gifiSearch",
+    defaultMessage: "Search GIFI by number or description",
+    description: "Field",
+  },
+  gifiPick: {
+    id: "accounts.drawer.gifiPick",
+    defaultMessage: "Use {code} — {description}",
+    description: "Result button",
+  },
+  taxDefault: {
+    id: "accounts.drawer.taxDefault",
+    defaultMessage: "Default tax",
+    description: "Field",
+  },
+  taxDefaultHint: {
+    id: "accounts.drawer.taxDefaultHint",
+    defaultMessage: "Suggested on new lines, e.g. purchases in your home province.",
+    description: "Hint",
+  },
+  save: { id: "accounts.drawer.save", defaultMessage: "Save account", description: "Button" },
+  saved: { id: "accounts.drawer.saved", defaultMessage: "Saved", description: "Status" },
+  archive: {
+    id: "accounts.drawer.archive",
+    defaultMessage: "Archive account",
+    description: "Button",
+  },
+  restore: {
+    id: "accounts.drawer.restore",
+    defaultMessage: "Restore account",
+    description: "Button",
+  },
+});

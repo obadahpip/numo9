@@ -14,3 +14,21 @@ JOURNALS_VIEW = register(
         Risk.LOW,
     )
 )
+
+ACCOUNTS_VIEW = register(
+    Permission(
+        "accounting.accounts.view",
+        _("See the chart of accounts and account balances"),
+        "accounting",
+        Risk.LOW,
+    )
+)
+
+ACCOUNTS_MANAGE = register(
+    Permission(
+        "accounting.accounts.manage",
+        _("Add, edit, renumber, archive and restore accounts"),
+        "accounting",
+        Risk.MEDIUM,
+    )
+)
