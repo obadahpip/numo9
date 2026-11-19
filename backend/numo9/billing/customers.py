@@ -49,7 +49,9 @@ def locked_subscription(organisation: Organisation) -> Subscription:
 
 
 def ensure_customer(organisation: Organisation, gateway: BillingGateway | None = None) -> str:
-    """The organisation's Stripe customer id, created once."""
+    """The organisation's Stripe customer id, created once. Never for a demo (U-07-T07)."""
+    if organisation.is_demo:
+        raise api_error(errors.BILLING_DEMO)
     with org_context(organisation), transaction.atomic():
         subscription = locked_subscription(organisation)
         if subscription.stripe_customer_id:

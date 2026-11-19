@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     # Usage metering: meter(org, key, qty) through a Redis stream → daily aggregates (S-06-T07).
     "numo9.metering",
     "numo9.scale",
+    "numo9.demo",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
@@ -113,6 +114,8 @@ MIDDLEWARE = [
     "numo9.audit.context.AuditContextMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
     "numo9.tenancy.middleware.TenantContextMiddleware",
+    # Demo organisations (U-07-T09): a signed-in request keeps the demo alive (last_active_at).
+    "numo9.demo.purge.DemoActivityMiddleware",
     # Permission sets cached for one request only — never across requests (A-03-T04).
     "numo9.rbac.resolver.PermissionCacheMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -228,6 +231,8 @@ NUMO9_TRIAL_PACKAGE = env_str("NUMO9_TRIAL_PACKAGE", "")
 NUMO9_DEMO_PACKAGE = env_str("NUMO9_DEMO_PACKAGE", "")
 # Exemption certificate expiry reminders (B-01-T08): called once per reminder; a log line until
 # notifications (A-07) take over.
+# Demos one address may open anonymously per hour (U-07-T11); raise it for the k6 creation run.
+NUMO9_DEMO_OPEN_PER_HOUR = int(env_str("NUMO9_DEMO_OPEN_PER_HOUR", "10"))
 # Perf-only endpoints (S-06-T09 k6 baselines, numo9/scale/api.py): staging/scratch only.
 NUMO9_PERF_ENDPOINTS = env_bool("NUMO9_PERF_ENDPOINTS", False)
 NUMO9_EXEMPTION_REMINDER_HOOK = "numo9.contacts.exemptions.log_reminder"
@@ -269,6 +274,9 @@ TENANT_SWEEP_EXEMPT = [
     # are limited to the organisations the user may access in that practice (numo9.workspace.
     # search.directory_scope), proven by tests/test_workspace_isolation.py.
     r"^api/v1/practice/",
+    # Open a demo (U-07-T11): creates a new demo organisation for the caller; no organisation in
+    # the URL, nothing of another organisation read.
+    r"^api/v1/demo$",
 ]
 
 # Overridden per environment.
@@ -481,6 +489,11 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.jobs.purge_job_runs": {
         "task": "numo9.jobs.purge_job_runs",
         "schedule": crontab(minute=17, hour=7),  # 07:17 UTC = 02:17 / 03:17 Toronto
+    },
+    # Demo organisations idle for 30 days are purged (U-07-T09).
+    "numo9.demo.purge_inactive": {
+        "task": "numo9.demo.purge_inactive",
+        "schedule": crontab(minute=53, hour=7),  # 07:53 UTC = 02:53 / 03:53 Toronto
     },
     # Exemption certificate expiry reminders (B-01-T08): 30 days before and once expired.
     "numo9.contacts.exemption_reminders": {

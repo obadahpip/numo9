@@ -31,6 +31,7 @@ urlpatterns = [
     path("api/v1/", include("numo9.platform.urls")),  # platform console (U-06)
     path("api/v1/", include("numo9.bulk.urls")),  # bulk actions over organisations (V-03)
     path("api/v1/", include("numo9.staff.urls")),  # practice staff management (V-05)
+    path("api/v1/", include("numo9.demo.urls")),  # demo organisations (U-07)
     path("api/v1/", include("numo9.scale.urls")),  # perf-only endpoints, off by default (S-06)
     # Sign-up, email verification, login, logout, password reset (A-02): django-allauth headless,
     # browser client only (/_allauth/browser/v1/…). OpenAPI: /_allauth/openapi.html in dev.

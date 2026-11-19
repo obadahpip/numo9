@@ -53,10 +53,25 @@
        border-block-end: 1pt solid #D9DCE1; padding: 4pt 0; }
   td { padding: 4pt 0; border-block-end: 0.5pt solid #EEF0F3; vertical-align: top; }
   .num { text-align: end; font-variant-numeric: tabular-nums; }
+  /* U-07-T08: watermark of a demo (or other flagged) document — repeated on every page. */
+  .document-watermark {
+    position: fixed;
+    top: 45%;
+    left: -0.5in;
+    width: 8.5in;
+    text-align: center;
+    transform: rotate(-35deg);
+    font-size: 34pt;
+    font-weight: 700;
+    letter-spacing: 2pt;
+    color: rgba(17, 17, 17, 0.12);
+    z-index: 10;
+  }
   {% block style %}{% endblock %}
 </style>
 </head>
 <body>
+  {% if document_watermark %}<div class="document-watermark" aria-hidden="true">{{ document_watermark }}</div>{% endif %}
   <header class="brand-header">
     <div>
       <div class="brand-mark">NUMO9</div>

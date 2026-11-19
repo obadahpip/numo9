@@ -842,6 +842,26 @@ BILLING_NO_SUBSCRIPTION = define(
     _("This organisation has no subscription yet. Start a trial first."),
     status.HTTP_409_CONFLICT,
 )
+BILLING_DEMO = define(
+    "billing.demo",
+    _("A demo organisation has no billing. Start your free trial to choose a package."),
+    status.HTTP_409_CONFLICT,
+)
+DEMO_NOT_A_DEMO = define(
+    "demo.not_a_demo",
+    _("This organisation is not a demo."),
+    status.HTTP_409_CONFLICT,
+)
+DEMO_SIGN_UP_FIRST = define(
+    "demo.sign_up_first",
+    _("Create your free Numo9 account first, then start your trial from the demo."),
+    status.HTTP_409_CONFLICT,
+)
+DEMO_TOO_MANY = define(
+    "demo.too_many",
+    _("Too many demos were opened from your connection. Try again in an hour."),
+    status.HTTP_429_TOO_MANY_REQUESTS,
+)
 BILLING_PACKAGE_UNKNOWN = define(
     "billing.package_unknown",
     _("There's no package %(package)s for sale. Choose one of the packages offered."),

@@ -977,6 +977,72 @@
       "statements": "Statements"
     }
   },
+  "demo": {
+    "bar": {
+      "outbox": "Demo outbox",
+      "region": "Demo organisation",
+      "reset": "Reset demo",
+      "tag": "Demo",
+      "text": "You're exploring Maple & Pine Supply Co., a sample company. Nothing here is real and no email leaves Numo9.",
+      "tour": "Take the tour",
+      "trial": "Start my free trial"
+    },
+    "cancel": "Cancel",
+    "close": "Close",
+    "failed": "That didn't work: {reason}",
+    "outbox": {
+      "empty": "No email yet. Send a statement from a contact to see one here.",
+      "line": "To {to} · {when}",
+      "text": "Emails this demo would have sent. They were kept here, never sent.",
+      "title": "Demo outbox"
+    },
+    "reset": {
+      "confirm": "Reset",
+      "done": "The demo is back to its sample data.",
+      "progress": "Resetting the demo…",
+      "text": "Everything you added or changed goes away and the sample data comes back as it was.",
+      "title": "Reset the demo?"
+    },
+    "tour": {
+      "back": "Back",
+      "close": "Close the tour",
+      "done": "Finish",
+      "next": "Next",
+      "s1": {
+        "text": "This is Maple & Pine Supply Co., a sample Ontario retailer. Try anything — you can reset it at any time.",
+        "title": "Welcome"
+      },
+      "s2": {
+        "text": "25 customers and suppliers across six provinces, with people, addresses and Business Numbers.",
+        "title": "Contacts"
+      },
+      "s3": {
+        "text": "The Canadian chart a new Ontario organisation gets, with GIFI codes and the opening balances already posted.",
+        "title": "Chart of accounts"
+      },
+      "s4": {
+        "text": "Open a customer, preview their statement and email it. In the demo, emails land in the Demo outbox instead.",
+        "title": "Statements"
+      },
+      "s5": {
+        "text": "Reset demo brings the sample data back exactly as it was.",
+        "title": "Reset"
+      },
+      "s6": {
+        "text": "Ready? Start my free trial creates your own empty organisation with 30 days free.",
+        "title": "Your own books"
+      },
+      "skip": "Skip the tour",
+      "title": "{title} ({step} of {total})"
+    },
+    "trial": {
+      "confirm": "Start the trial",
+      "name": "Your organisation's name",
+      "signUpFirst": "Create your free account first.",
+      "text": "We create a new, empty organisation with a 30-day free trial. The sample data stays behind and the demo is deleted.",
+      "title": "Start your free trial"
+    }
+  },
   "directory": {
     "breadcrumb": "Directory",
     "cancel": "Cancel",

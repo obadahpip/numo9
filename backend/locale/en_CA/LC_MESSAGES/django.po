@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 15:44-0500\n"
+"POT-Creation-Date: 2026-11-18 16:28-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2157,6 +2157,42 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr ""
 
+msgid "seed version"
+msgstr ""
+
+msgid "template organisation"
+msgstr ""
+
+msgid "pristine hash"
+msgstr ""
+
+msgid "built at"
+msgstr ""
+
+msgid "demo template"
+msgstr ""
+
+msgid "demo templates"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "HTML"
+msgstr ""
+
+msgid "attachments"
+msgstr ""
+
+msgid "demo outbox email"
+msgstr ""
+
+msgid "demo outbox emails"
+msgstr ""
+
+msgid "DEMO — NOT A REAL DOCUMENT"
+msgstr ""
+
 msgid "Documents"
 msgstr ""
 
@@ -2499,9 +2535,6 @@ msgid "Files are limited to 25 MB."
 msgstr ""
 
 msgid "attachment"
-msgstr ""
-
-msgid "attachments"
 msgstr ""
 
 msgid "Message-ID"
@@ -3026,6 +3059,18 @@ msgid "Billing isn't available right now. Try again later, or contact Numo9 supp
 msgstr ""
 
 msgid "This organisation has no subscription yet. Start a trial first."
+msgstr ""
+
+msgid "A demo organisation has no billing. Start your free trial to choose a package."
+msgstr ""
+
+msgid "This organisation is not a demo."
+msgstr ""
+
+msgid "Create your free Numo9 account first, then start your trial from the demo."
+msgstr ""
+
+msgid "Too many demos were opened from your connection. Try again in an hour."
 msgstr ""
 
 #, python-format
@@ -4044,16 +4089,10 @@ msgstr ""
 msgid "message type"
 msgstr ""
 
-msgid "to"
-msgstr ""
-
 msgid "from"
 msgstr ""
 
 msgid "reply to"
-msgstr ""
-
-msgid "HTML"
 msgstr ""
 
 msgid "headers"
@@ -5220,6 +5259,21 @@ msgid "practice member"
 msgstr ""
 
 msgid "practice members"
+msgstr ""
+
+msgid "demo organisation"
+msgstr ""
+
+msgid "demo seed version"
+msgstr ""
+
+msgid "Version of the sample data the demo was built from (numo9/demo)."
+msgstr ""
+
+msgid "last active at"
+msgstr ""
+
+msgid "Last signed-in request to the organisation (demo inactivity purge)."
 msgstr ""
 
 msgid "organisation member"

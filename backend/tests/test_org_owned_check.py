@@ -38,6 +38,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "tenancy.Practice",
                 # Usage metering (S-06-T07): reviewed — the aggregator's stream position.
                 "metering.StreamOffset",
+                # Demo templates (U-07-T05): reviewed — which template serves a seed version.
+                "demo.DemoTemplate",
                 "tenancy.PracticeMember",
                 "tenancy.Organisation",
                 "tenancy.OrganisationMember",

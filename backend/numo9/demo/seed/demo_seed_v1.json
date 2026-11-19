@@ -1,0 +1,677 @@
+{
+ "version": 1,
+ "company": {
+  "name": "Maple & Pine Supply Co.",
+  "legal_name": "Maple & Pine Supply Co. Ltd.",
+  "industry": "Building supplies retail",
+  "structure": "corporation",
+  "province": "ON",
+  "city": "Toronto",
+  "line1": "77 Front St E",
+  "postal_code": "M5E 1B8",
+  "phone": "416-555-0123",
+  "email": "hello@mapleandpine.example",
+  "website": "https://mapleandpine.example",
+  "fye_month": 12,
+  "fye_day": 31,
+  "bn": "680342474",
+  "time_zone": "America/Toronto"
+ },
+ "chart": {
+  "template": "ca_v1",
+  "province": "ON"
+ },
+ "contacts": [
+  {
+   "key": "c01",
+   "display_name": "Lakeshore Hardware Ltd.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "151743408",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "1450 Lake Shore Blvd W",
+    "city": "Toronto",
+    "province": "ON",
+    "postal_code": "M6K 3C1",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Priya",
+    "last_name": "Raman",
+    "email": "priya@lakeshorehw.example",
+    "phone": "416-555-0142"
+   }
+  },
+  {
+   "key": "c02",
+   "display_name": "Rideau Home & Garden Inc.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "483975686",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "220 Rideau St",
+    "city": "Ottawa",
+    "province": "ON",
+    "postal_code": "K1N 5Y1",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Marc",
+    "last_name": "Bélanger",
+    "email": "marc@rideauhome.example",
+    "phone": "613-555-0187"
+   }
+  },
+  {
+   "key": "c03",
+   "display_name": "Niagara Patio Supply Co.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "88 Ontario St",
+    "city": "St. Catharines",
+    "province": "ON",
+    "postal_code": "L2R 5J3",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Hannah",
+    "last_name": "Ward",
+    "email": "hannah@niagarapatio.example",
+    "phone": "905-555-0110"
+   }
+  },
+  {
+   "key": "c04",
+   "display_name": "Huron Builders Co-operative",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "510 Dundas St",
+    "city": "London",
+    "province": "ON",
+    "postal_code": "N6B 1W7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Tom",
+    "last_name": "Kowalski",
+    "email": "tom@huronbuilders.example",
+    "phone": "519-555-0163"
+   }
+  },
+  {
+   "key": "c05",
+   "display_name": "Sudbury Paint & Décor",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "95 Elm St",
+    "city": "Sudbury",
+    "province": "ON",
+    "postal_code": "P3C 1T3",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Aline",
+    "last_name": "Gagnon",
+    "email": "aline@sudburypaint.example",
+    "phone": "705-555-0124"
+   }
+  },
+  {
+   "key": "c06",
+   "display_name": "Quincaillerie Saint-Denis inc.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "293183893",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "4120 rue Saint-Denis",
+    "city": "Montréal",
+    "province": "QC",
+    "postal_code": "H2W 2M5",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Élodie",
+    "last_name": "Tremblay",
+    "email": "elodie@stdenis.example",
+    "phone": "514-555-0199"
+   }
+  },
+  {
+   "key": "c07",
+   "display_name": "Les Entreprises Beauport ltée",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "3333 boul. Sainte-Anne",
+    "city": "Québec",
+    "province": "QC",
+    "postal_code": "G1E 3L1",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Jean-François",
+    "last_name": "Côté",
+    "email": "jf@beauport.example",
+    "phone": "418-555-0171"
+   }
+  },
+  {
+   "key": "c08",
+   "display_name": "Gatineau Rénovation",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "180 boul. Maloney O",
+    "city": "Gatineau",
+    "province": "QC",
+    "postal_code": "J8P 3K5",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Sophie",
+    "last_name": "Lavoie",
+    "email": "sophie@gatineaureno.example",
+    "phone": "819-555-0135"
+   }
+  },
+  {
+   "key": "c09",
+   "display_name": "Coastal Timber Homes Ltd.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "720800283",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "1200 W Georgia St",
+    "city": "Vancouver",
+    "province": "BC",
+    "postal_code": "V6E 4R2",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Daniel",
+    "last_name": "Cho",
+    "email": "daniel@coastaltimber.example",
+    "phone": "604-555-0158"
+   }
+  },
+  {
+   "key": "c10",
+   "display_name": "Okanagan Outdoor Living",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "1585 Ellis St",
+    "city": "Kelowna",
+    "province": "BC",
+    "postal_code": "V1Y 2A7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Megan",
+    "last_name": "Fraser",
+    "email": "megan@okanaganoutdoor.example",
+    "phone": "250-555-0146"
+   }
+  },
+  {
+   "key": "c11",
+   "display_name": "Island Cedar Works",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "720 Douglas St",
+    "city": "Victoria",
+    "province": "BC",
+    "postal_code": "V8W 3M6",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Ravi",
+    "last_name": "Sandhu",
+    "email": "ravi@islandcedar.example",
+    "phone": "250-555-0117"
+   }
+  },
+  {
+   "key": "c12",
+   "display_name": "Prairie Fence & Deck Inc.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "596440735",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "805 8 Ave SW",
+    "city": "Calgary",
+    "province": "AB",
+    "postal_code": "T2P 1H7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Kyle",
+    "last_name": "Anderson",
+    "email": "kyle@prairiefence.example",
+    "phone": "403-555-0182"
+   }
+  },
+  {
+   "key": "c13",
+   "display_name": "Edmonton Builders Supply",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "10235 101 St NW",
+    "city": "Edmonton",
+    "province": "AB",
+    "postal_code": "T5J 3G1",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Grace",
+    "last_name": "Okafor",
+    "email": "grace@edmontonbs.example",
+    "phone": "780-555-0129"
+   }
+  },
+  {
+   "key": "c14",
+   "display_name": "Harbourview Contracting Ltd.",
+   "roles": [
+    "customer"
+   ],
+   "bn": "229230750",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "1888 Brunswick St",
+    "city": "Halifax",
+    "province": "NS",
+    "postal_code": "B3J 3J8",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Liam",
+    "last_name": "MacDonald",
+    "email": "liam@harbourview.example",
+    "phone": "902-555-0153"
+   }
+  },
+  {
+   "key": "c15",
+   "display_name": "Annapolis Valley Gardens",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "42 Webster St",
+    "city": "Kentville",
+    "province": "NS",
+    "postal_code": "B4N 1H7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Fiona",
+    "last_name": "Crowell",
+    "email": "fiona@avgardens.example",
+    "phone": "902-555-0108"
+   }
+  },
+  {
+   "key": "c16",
+   "display_name": "Red River Renovations",
+   "roles": [
+    "customer"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "330 Portage Ave",
+    "city": "Winnipeg",
+    "province": "MB",
+    "postal_code": "R3C 0C4",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Noah",
+    "last_name": "Friesen",
+    "email": "noah@redriverreno.example",
+    "phone": "204-555-0177"
+   }
+  },
+  {
+   "key": "c17",
+   "display_name": "Great Lakes Lumber Ltd.",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "708260286",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "400 Burlington St E",
+    "city": "Hamilton",
+    "province": "ON",
+    "postal_code": "L8L 4H7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Sandra",
+    "last_name": "Pereira",
+    "email": "ap@greatlakeslumber.example",
+    "phone": "905-555-0190"
+   }
+  },
+  {
+   "key": "c18",
+   "display_name": "Canadian Fastener Distributors Inc.",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "903706422",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "2750 Argentia Rd",
+    "city": "Mississauga",
+    "province": "ON",
+    "postal_code": "L5N 6A7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Wei",
+    "last_name": "Zhang",
+    "email": "orders@cdnfastener.example",
+    "phone": "905-555-0134"
+   }
+  },
+  {
+   "key": "c19",
+   "display_name": "Laurentian Paint Co.",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "768769663",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "2500 boul. Daniel-Johnson",
+    "city": "Laval",
+    "province": "QC",
+    "postal_code": "H7T 2P6",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Isabelle",
+    "last_name": "Roy",
+    "email": "comptes@laurentianpaint.example",
+    "phone": "450-555-0165"
+   }
+  },
+  {
+   "key": "c20",
+   "display_name": "Pacific Tool Imports Ltd.",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "917370314",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "13511 Crestwood Pl",
+    "city": "Richmond",
+    "province": "BC",
+    "postal_code": "V6V 2E9",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Kenji",
+    "last_name": "Watanabe",
+    "email": "billing@pacifictool.example",
+    "phone": "604-555-0121"
+   }
+  },
+  {
+   "key": "c21",
+   "display_name": "Prairie Freight Lines",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "4920 51 St",
+    "city": "Red Deer",
+    "province": "AB",
+    "postal_code": "T4N 2A5",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Brooke",
+    "last_name": "Larsen",
+    "email": "billing@prairiefreight.example",
+    "phone": "403-555-0138"
+   }
+  },
+  {
+   "key": "c22",
+   "display_name": "Maritime Garden Wholesale",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "125712232",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "130 Eileen Stubbs Ave",
+    "city": "Dartmouth",
+    "province": "NS",
+    "postal_code": "B3B 2C4",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Owen",
+    "last_name": "Doucette",
+    "email": "sales@maritimegarden.example",
+    "phone": "902-555-0186"
+   }
+  },
+  {
+   "key": "c23",
+   "display_name": "Manitoba Hydro-Style Lighting",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "1035 Rosser Ave",
+    "city": "Brandon",
+    "province": "MB",
+    "postal_code": "R7A 0L5",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Tara",
+    "last_name": "Nguyen",
+    "email": "ar@mblighting.example",
+    "phone": "204-555-0119"
+   }
+  },
+  {
+   "key": "c24",
+   "display_name": "Toronto Hydro Services (sample)",
+   "roles": [
+    "supplier"
+   ],
+   "bn": "",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "14 Carlton St",
+    "city": "Toronto",
+    "province": "ON",
+    "postal_code": "M5B 1K5",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "",
+    "last_name": "",
+    "email": "billing@utility.example",
+    "phone": "416-555-0100"
+   }
+  },
+  {
+   "key": "c25",
+   "display_name": "Northern Insurance Brokers Inc.",
+   "roles": [
+    "supplier",
+    "customer"
+   ],
+   "bn": "789984531",
+   "currency": "CAD",
+   "address": {
+    "kind": "billing",
+    "line1": "55 Cedar Pointe Dr",
+    "city": "Barrie",
+    "province": "ON",
+    "postal_code": "L4N 5R7",
+    "country": "CA"
+   },
+   "person": {
+    "first_name": "Rachel",
+    "last_name": "Stewart",
+    "email": "rachel@northernins.example",
+    "phone": "705-555-0150"
+   }
+  }
+ ],
+ "opening_balances": {
+  "date": "2026-01-01",
+  "narration": "Opening balances at 1 January 2026",
+  "lines": [
+   {
+    "account": "1010",
+    "debit": "48250.00"
+   },
+   {
+    "account": "1100",
+    "debit": "8640.00",
+    "contact": "c01"
+   },
+   {
+    "account": "1100",
+    "debit": "6200.00",
+    "contact": "c06"
+   },
+   {
+    "account": "1100",
+    "debit": "3800.00",
+    "contact": "c12"
+   },
+   {
+    "account": "1200",
+    "debit": "62300.00"
+   },
+   {
+    "account": "1300",
+    "debit": "2400.00"
+   },
+   {
+    "account": "1620",
+    "debit": "15000.00"
+   },
+   {
+    "account": "1621",
+    "credit": "3000.00"
+   },
+   {
+    "account": "1630",
+    "debit": "6800.00"
+   },
+   {
+    "account": "1631",
+    "credit": "2720.00"
+   },
+   {
+    "account": "2000",
+    "credit": "7480.00",
+    "contact": "c17"
+   },
+   {
+    "account": "2000",
+    "credit": "5000.00",
+    "contact": "c19"
+   },
+   {
+    "account": "2100",
+    "credit": "3215.00"
+   },
+   {
+    "account": "2700",
+    "credit": "40000.00"
+   },
+   {
+    "account": "3000",
+    "credit": "100.00"
+   },
+   {
+    "account": "3200",
+    "credit": "91875.00"
+   }
+  ]
+ }
+}
