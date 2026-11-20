@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:13-0500\n"
+"POT-Creation-Date: 2026-11-20 17:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4303,6 +4303,27 @@ msgid "Add, edit, renumber, archive and restore accounts"
 msgstr ""
 
 #, python-format
+msgid "Line %(line)d (%(account)s): a tax adjustment posts to the tax book only — set the line's book to Tax."
+msgstr "Ligne %(line)d (%(account)s) : un ajustement fiscal se comptabilise dans le livre fiscal seulement — choisissez le livre Fiscal pour cette ligne."
+
+#, python-format
+msgid "Line %(line)d (%(account)s): a tax adjustment can't touch a bank account."
+msgstr "Ligne %(line)d (%(account)s) : un ajustement fiscal ne peut pas toucher un compte bancaire."
+
+#, python-format
+msgid "%(type)s journals are posted by Numo9 itself (the %(process)s process), not by hand. Choose General, Adjusting, Reclass or Tax adjustment."
+msgstr "Les écritures de type %(type)s sont passées par Numo9 (processus de %(process)s), pas à la main. Choisissez Général, Ajustement, Reclassement ou Ajustement fiscal."
+
+msgid "year-end close"
+msgstr "clôture de fin d'exercice"
+
+msgid "payroll"
+msgstr "paie"
+
+msgid "depreciation"
+msgstr "amortissement"
+
+#, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
 
@@ -6142,9 +6163,6 @@ msgstr "fin de l’essai"
 
 msgid "GST/HST cycle"
 msgstr "Périodicité TPS/TVH"
-
-msgid "payroll"
-msgstr "paie"
 
 msgid "overdue items"
 msgstr "éléments en retard"

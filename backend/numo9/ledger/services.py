@@ -5,6 +5,8 @@
 1. **validate** — ``validate_journal`` (C-02-T06): every rule, every problem listed;
 2. **period** — ``assert_can_post`` (C-02-T07): lock dates (the module's and the GL's) and
    closed periods, for the entry's date and the person;
+2b. **rules** — ``check_policy`` (C-03): journal types, account flags, expense-journal rules,
+   the cash-balance guard;
 3. **insert** — the entry as a draft, then its lines (``bulk_create``; the append-only trigger
    allows lines only while the entry is a draft, C-02-T04);
 4. **sequence** — the organisation's next journal number (``allocate_journal_number``,
@@ -55,6 +57,7 @@ from numo9.tenancy.models import Organisation
 
 from .models import JournalEntry, JournalLine, JournalStatus, JournalType, LedgerError
 from .periods import assert_can_post
+from .policy import check_policy
 from .sequence import allocate_journal_number, format_journal_number
 from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journal
 
@@ -168,6 +171,7 @@ def post_journal(
     user: Any = ACTING,
     module: str = LockModule.GL,
     reversal_of: JournalEntry | None = None,
+    caller: str | None = None,
 ) -> JournalEntry:
     """Validate, check the period, insert, number and post ``spec`` — all or nothing.
 
@@ -180,6 +184,8 @@ def post_journal(
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, spec.date, person, module)
+        if reversal_of is None:  # a reversal mirrors an entry that passed the rules
+            check_policy(checked, caller=caller)
         entry = JournalEntry(
             organisation=organisation,
             date=spec.date,
@@ -320,7 +326,11 @@ def return_to_draft(entry: JournalEntry) -> JournalEntry:
 
 
 def post_entry(
-    entry: JournalEntry, *, user: Any = ACTING, module: str = LockModule.GL
+    entry: JournalEntry,
+    *,
+    user: Any = ACTING,
+    module: str = LockModule.GL,
+    caller: str | None = None,
 ) -> JournalEntry:
     """Draft or Awaiting approval → Posted: steps 1–6 of ``post_journal`` on its stored lines."""
     person = acting_user() if user is ACTING else user
@@ -331,6 +341,7 @@ def post_entry(
         spec = _spec_of(entry)
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, entry.date, person, module)
+        check_policy(checked, caller=caller)
         if entry.book_scope != checked.book_scope:
             JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
             entry.book_scope = checked.book_scope

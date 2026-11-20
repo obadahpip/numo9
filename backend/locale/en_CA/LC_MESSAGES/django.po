@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:13-0500\n"
+"POT-Creation-Date: 2026-11-20 17:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4043,6 +4043,27 @@ msgid "Add, edit, renumber, archive and restore accounts"
 msgstr ""
 
 #, python-format
+msgid "Line %(line)d (%(account)s): a tax adjustment posts to the tax book only — set the line's book to Tax."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d (%(account)s): a tax adjustment can't touch a bank account."
+msgstr ""
+
+#, python-format
+msgid "%(type)s journals are posted by Numo9 itself (the %(process)s process), not by hand. Choose General, Adjusting, Reclass or Tax adjustment."
+msgstr ""
+
+msgid "year-end close"
+msgstr ""
+
+msgid "payroll"
+msgstr ""
+
+msgid "depreciation"
+msgstr ""
+
+#, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
 
@@ -5768,9 +5789,6 @@ msgid "trial ends"
 msgstr ""
 
 msgid "GST/HST cycle"
-msgstr ""
-
-msgid "payroll"
 msgstr ""
 
 msgid "overdue items"
