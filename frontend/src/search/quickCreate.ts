@@ -112,9 +112,8 @@ export const QUICK_CREATE: readonly QuickCreate[] = [
     key: "J",
     label: m.journal,
     path: "accounting/journals/new",
-    permission: "accounting.journals.manage",
+    permission: "accounting.journals.post",
     feature: "accounting.journals.write",
-    availableIn: "Phase 1",
   },
   {
     id: "spend",

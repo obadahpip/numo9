@@ -1709,6 +1709,18 @@
     }
   },
   "journals": {
+    "type": {
+      "adjusting": "Adjusting",
+      "general": "General",
+      "reclass": "Reclass",
+      "taxAdjustment": "Tax adjustment"
+    },
+    "typeHelp": {
+      "adjusting": "Accruals, prepayments and other period-end adjustments.",
+      "general": "An everyday entry: anything that isn't one of the other types.",
+      "reclass": "Moves an amount from one account to another; the total doesn't change.",
+      "taxAdjustment": "Tax book only (CCA, book-to-tax differences); never a bank account."
+    },
     "viewer": {
       "action": "{action, select, ledger_journalentry_posted {Posted} ledger_journalentry_reversed {Reversed} ledger_journalentry_created {Created} ledger_journalentry_updated {Edited} other {{action}}}",
       "activity": "Activity",
@@ -1750,6 +1762,33 @@
       "totalIn": "Total, {book}",
       "type": "Type",
       "typeName": "{type, select, manual {Manual journal} sales {Sales} purchase {Purchases} payment {Payment} payroll {Payroll} opening {Opening balance} adjustment {Adjustment} reversal {Reversal} other {{type}}}"
+    },
+    "write": {
+      "account": "Account",
+      "accountOfLine": "Account, line {line, number}",
+      "accountOption": "{code} · {name}",
+      "addLine": "Add a line",
+      "autoReverse": "Reverse automatically on (optional)",
+      "chooseAccount": "Choose an account",
+      "credit": "Credit",
+      "creditOfLine": "Credit, line {line, number}",
+      "date": "Date",
+      "debit": "Debit",
+      "debitOfLine": "Debit, line {line, number}",
+      "description": "Description",
+      "descriptionOfLine": "Description, line {line, number}",
+      "failed": "The journal couldn't be saved. Make sure you're online, then try again.",
+      "lines": "Lines",
+      "loading": "Loading accounts…",
+      "narration": "Narration",
+      "post": "Post journal",
+      "posting": "Posting…",
+      "problems": "Fix these before posting",
+      "retry": "Try again",
+      "saveDraft": "Save as draft",
+      "title": "New manual journal",
+      "totals": "Debits {debit} · Credits {credit}",
+      "type": "Journal type"
     }
   },
   "notFound": {

@@ -30,7 +30,7 @@ describe("quick-create registry (A-09-T06)", () => {
 
   it("offers what is available and permitted, locked when the package lacks it", () => {
     const all = offeredQuickCreates(null, () => null).map((o) => o.entry.id);
-    expect(all).toEqual(["contact", "user"]);
+    expect(all).toEqual(["contact", "journal", "user"]);
     const none = offeredQuickCreates(new Set(["contacts.contacts.view"]), () => null);
     expect(none).toEqual([]);
     const locked = offeredQuickCreates(new Set(["contacts.contacts.manage"]), (f) =>
