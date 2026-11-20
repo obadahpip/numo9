@@ -27,7 +27,7 @@ from typing import Any
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.core.exceptions import ValidationError as DjangoValidationError
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiParameter, extend_schema
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_field
 from rest_framework import serializers, status
 from rest_framework.exceptions import ErrorDetail, NotFound
 from rest_framework.request import Request
@@ -135,11 +135,33 @@ def _save(row: Any) -> None:
 
 class OrganisationSettingsSerializer(serializers.ModelSerializer[OrganisationSettings]):
     printed_name = serializers.CharField(read_only=True)
+    founding_slot = serializers.SerializerMethodField(
+        help_text="Founding organisation number (U-08-T09); null when not a founding organisation"
+    )
 
     class Meta:
         model = OrganisationSettings
         exclude = ("id", "organisation", "created_by", "deleted_at", "public_id")
-        read_only_fields = ("base_currency", "created_at", "updated_at", "printed_name")
+        read_only_fields = (
+            "base_currency",
+            "created_at",
+            "updated_at",
+            "printed_name",
+            "founding_slot",
+        )
+
+    @extend_schema_field(serializers.IntegerField(allow_null=True))
+    def get_founding_slot(self, row: OrganisationSettings) -> int | None:
+        from numo9.founding.models import FoundingSlot
+
+        number: int | None = (
+            FoundingSlot.objects.filter(
+                organisation_id=row.organisation_id, released_at__isnull=True
+            )
+            .values_list("slot_no", flat=True)
+            .first()
+        )
+        return number
 
     def run_validators(self, value: Any) -> None:  # model rules run on save (all errors at once)
         return None

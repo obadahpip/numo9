@@ -1918,6 +1918,8 @@
       "displayName": "Display name",
       "email": "Email",
       "emailInvalid": "Enter an email address like books@refined.ca.",
+      "founding": "Founding organisation #{number}",
+      "foundingHint": "One of the first 1,000 organisations: every Numo9 product is included.",
       "fyeDay": "Fiscal year end: day",
       "fyeDayInvalid": "Enter a day from 1 to 31.",
       "fyeMonth": "Fiscal year end: month",

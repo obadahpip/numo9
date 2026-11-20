@@ -1918,6 +1918,8 @@
       "displayName": "Nom affiché",
       "email": "Courriel",
       "emailInvalid": "Entrez une adresse courriel comme comptes@refined.ca.",
+      "founding": "Founding organisation #{number}",
+      "foundingHint": "One of the first 1,000 organisations: every Numo9 product is included.",
       "fyeDay": "Fin d’exercice : jour",
       "fyeDayInvalid": "Entrez un jour de 1 à 31.",
       "fyeMonth": "Fin d’exercice : mois",

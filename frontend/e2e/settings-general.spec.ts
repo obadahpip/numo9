@@ -97,3 +97,23 @@ test("fill the address, validate inline, save", async ({ page }) => {
   });
   expect(last).not.toHaveProperty("base_currency");
 });
+
+test("founding organisation: the badge shows its number (U-08-T09)", async ({ page }) => {
+  await mockCsrf(page);
+  await page.route(API, (route) => route.fulfill({ json: { ...SETTINGS, founding_slot: 427 } }));
+  await page.goto(`/o/${ORG}/settings/general`);
+  const badge = page.getByText("Founding organisation #0427");
+  await expect(badge).toBeVisible();
+  await expect(page.locator('[data-founding-slot="427"]')).toHaveAttribute(
+    "title",
+    "One of the first 1,000 organisations: every Numo9 product is included.",
+  );
+  await expectAccessible(page);
+});
+
+test("not a founding organisation: no badge", async ({ page }) => {
+  await mock(page);
+  await page.goto(`/o/${ORG}/settings/general`);
+  await expect(page.getByRole("heading", { level: 1, name: "General" })).toBeVisible();
+  await expect(page.locator("[data-founding-slot]")).toHaveCount(0);
+});
