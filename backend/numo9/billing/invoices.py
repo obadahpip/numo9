@@ -9,6 +9,9 @@ applied to the invoice changes nothing (Stripe's ``created``; out of order, U-04
 - ``invoice.paid`` — the organisation's owner gets a **receipt** (notification
   ``billing.receipt``, category Billing: in the app and by email), once per invoice; a renewal
   paid after a failure brings the subscription back to active (the dunning stops).
+- ``invoice.paid`` with money paid (not a trial's $0 invoice) is also the organisation's **first
+  successful payment** for the founding offer (U-08-T03): the slot is allocated in this event's
+  transaction, so a rolled-back event takes it back and a replayed one finds the slot held.
 - ``invoice.payment_failed`` — the subscription goes past due with its 7-day grace (if the
   subscription event hasn't done it yet) and the dunning starts (U-04-T09).
 """
@@ -23,6 +26,7 @@ from django.utils import timezone
 
 from numo9.documents.formatting import format_money
 from numo9.entitlements.models import Subscription, SubscriptionStatus
+from numo9.founding.services import allocate_founding_slot
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import OrganisationMember
 
@@ -119,6 +123,8 @@ def on_invoice_paid(event: StripeEvent) -> PlatformInvoice:
     from numo9.notifications.services import notify
 
     invoice, subscription = mirror(event)
+    if invoice.status == PlatformInvoiceStatus.PAID and invoice.amount_paid_cents > 0:
+        allocate_founding_slot(subscription.organisation, payment_ref=invoice.stripe_invoice_id)
     if is_newer(subscription, event.stripe_created, SubscriptionStatus.ACTIVE):
         # A paid invoice says "active" at that moment, even when nothing changes now.
         if subscription.status in (
