@@ -94,6 +94,7 @@ nav:
       - "Subscription billing": architecture/billing.md
       - "Usage metering": architecture/metering.md
       - "Rate limit per organisation": architecture/rate-limit.md
+      - "Search and command palette": architecture/search.md
   - Operations:
       - "Operations runbook": operations/runbook.md
       - "Connection pooling (PgBouncer)": operations/pgbouncer.md

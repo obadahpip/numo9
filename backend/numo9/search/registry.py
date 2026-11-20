@@ -111,7 +111,7 @@ def provider_for(model: type[models.Model]) -> Provider | None:
     return _providers.get(model)
 
 
-def _identity(provider: Provider, instance: Any, doc: Doc | None) -> tuple[int | None, str, str]:
+def identity(provider: Provider, instance: Any, doc: Doc | None) -> tuple[int | None, str, str]:
     organisation_id = (doc.organisation_id if doc else None) or getattr(
         instance, "organisation_id", None
     )
@@ -129,7 +129,7 @@ def _write_vector(row_id: int) -> None:
         cursor.execute(_VECTOR_SQL, [row_id])
 
 
-def _build(provider: Provider, instance: Any) -> Doc | None:
+def build_document(provider: Provider, instance: Any) -> Doc | None:
     """The provider's document, built inside the instance's organisation (its related rows are
     tenant-scoped, and a save may happen outside any request context)."""
     if getattr(instance, "deleted_at", None):
@@ -147,8 +147,8 @@ def index(instance: Any) -> SearchDocument | None:
     provider = _providers.get(type(instance))
     if provider is None:
         return None
-    doc = _build(provider, instance)
-    organisation_id, object_type, object_id = _identity(provider, instance, doc)
+    doc = build_document(provider, instance)
+    organisation_id, object_type, object_id = identity(provider, instance, doc)
     if organisation_id is None:
         return None
     organisation = Organisation.objects.filter(pk=organisation_id).first()
@@ -184,10 +184,10 @@ def unindex(instance: Any) -> None:
     if provider is None:
         return
     try:
-        doc = _build(provider, instance)  # its identity overrides (a membership → its user)
+        doc = build_document(provider, instance)  # its identity overrides (a membership → its user)
     except Exception:  # the record may be half gone: fall back to the model's identity
         doc = None
-    organisation_id, object_type, object_id = _identity(provider, instance, doc)
+    organisation_id, object_type, object_id = identity(provider, instance, doc)
     if organisation_id is None:
         return
     organisation = Organisation.objects.filter(pk=organisation_id).first()
