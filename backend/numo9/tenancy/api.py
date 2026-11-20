@@ -177,7 +177,13 @@ class OrganisationCreateView(APIView):
                     organisation=organisation, user=_user(request), role=OrganisationRole.OWNER
                 )
             from numo9.entitlements.trials import TrialAlreadyUsed, start_trial
+            from numo9.founding.attribution import record_attribution
+            from numo9.founding.models import AcquisitionSource
 
+            record_attribution(
+                organisation=organisation,
+                source=AcquisitionSource.PRACTICE if member else AcquisitionSource.IN_APP,
+            )
             # Every new organisation starts its free trial (U-05-T05) — an accountant-created
             # one too (its owner is invited later). One trial per BN and owner email (T06): a
             # refused trial creates nothing.

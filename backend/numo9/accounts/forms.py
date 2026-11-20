@@ -51,6 +51,15 @@ class SignupForm(forms.Form):
         label=_("Business name"), max_length=200, strip=True, required=False
     )
     locale = forms.ChoiceField(label=_("Language"), choices=Locale.choices, required=False)
+    # Acquisition attribution (U-08-T07): optional, sent by the sign-up page from its link.
+    referral_source = forms.CharField(max_length=100, required=False)
+    utm_source = forms.CharField(max_length=100, required=False)
+    utm_medium = forms.CharField(max_length=100, required=False)
+    utm_campaign = forms.CharField(max_length=100, required=False)
+    utm_term = forms.CharField(max_length=100, required=False)
+    utm_content = forms.CharField(max_length=100, required=False)
+    promo_code = forms.CharField(max_length=64, required=False)
+    referrer = forms.CharField(max_length=500, required=False)
 
     def clean(self) -> dict[str, Any]:
         data = super().clean() or {}
@@ -94,6 +103,9 @@ class SignupForm(forms.Form):
 
     def signup(self, request: HttpRequest, user: User) -> None:
         """Called by allauth inside the sign-up transaction, after the user is saved."""
+        from numo9.founding.attribution import record_attribution
+        from numo9.founding.models import AcquisitionSource
+
         data = self.cleaned_data
         user.name = data["name"]
         user.locale = data.get("locale") or Locale.EN_CA
@@ -104,6 +116,9 @@ class SignupForm(forms.Form):
             PracticeMember.objects.create(
                 practice=practice, user=user, role=PracticeRole.PRACTICE_ADMIN
             )
+            record_attribution(
+                practice=practice, source=AcquisitionSource.ACCOUNTANT_SIGNUP, data=data
+            )
         else:
             organisation = Organisation.objects.create(
                 name=data["organisation_name"],
@@ -112,6 +127,9 @@ class SignupForm(forms.Form):
             )
             OrganisationMember.objects.create(
                 organisation=organisation, user=user, role=OrganisationRole.OWNER
+            )
+            record_attribution(
+                organisation=organisation, source=AcquisitionSource.SELF_SIGNUP, data=data
             )
             from numo9.entitlements.trials import start_trial
 

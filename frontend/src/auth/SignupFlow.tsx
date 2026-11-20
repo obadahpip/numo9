@@ -10,6 +10,7 @@ import { z } from "zod";
 import { useFormLabels } from "@/components/useFormLabels";
 import { defineMessages, useFormatMessage, type FormatMessage } from "@/i18n";
 
+import { currentAttribution } from "./attribution";
 import { authRequest, fieldErrors, isAuthenticated, pendingFlow } from "./client";
 import { authMessages, requestFailureMessage } from "./messages";
 import { Notice } from "./Notice";
@@ -322,6 +323,7 @@ function SignupForm({
           ? { practice_name: values.practiceName }
           : { organisation_name: values.organisationName }),
         locale: apiLocale(locale),
+        ...currentAttribution(),
       },
     });
     if (result.status === 401 && pendingFlow(result.body) === "verify_email") {

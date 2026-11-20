@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 14:08-0500\n"
+"POT-Creation-Date: 2026-11-20 14:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2641,6 +2641,54 @@ msgstr ""
 msgid "founding slot"
 msgstr ""
 
+msgid "Self sign-up"
+msgstr ""
+
+msgid "Accountant sign-up"
+msgstr ""
+
+msgid "Created in the app"
+msgstr ""
+
+msgid "Created by a practice"
+msgstr ""
+
+msgid "Converted from a demo"
+msgstr ""
+
+msgid "referral source"
+msgstr ""
+
+msgid "UTM source"
+msgstr ""
+
+msgid "UTM medium"
+msgstr ""
+
+msgid "UTM campaign"
+msgstr ""
+
+msgid "UTM term"
+msgstr ""
+
+msgid "UTM content"
+msgstr ""
+
+msgid "promo code"
+msgstr ""
+
+msgid "referring page"
+msgstr ""
+
+msgid "captured at"
+msgstr ""
+
+msgid "acquisition attribution"
+msgstr ""
+
+msgid "acquisition attributions"
+msgstr ""
+
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
 msgstr ""
 
@@ -4870,9 +4918,6 @@ msgid "uses"
 msgstr ""
 
 msgid "The packages the code applies to; none = every package."
-msgstr ""
-
-msgid "promo code"
 msgstr ""
 
 msgid "promo codes"

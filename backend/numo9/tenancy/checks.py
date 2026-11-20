@@ -32,6 +32,7 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "demo.DemoTemplate",
         # Founding offer (U-08-T01): the platform counter and which organisation holds which slot
         # (a platform record about the organisation, no business data).
+        "founding.AcquisitionAttribution",
         "founding.FoundingCounter",
         "founding.FoundingSlot",
         "tenancy.PracticeMember",

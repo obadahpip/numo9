@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 14:08-0500\n"
+"POT-Creation-Date: 2026-11-20 14:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2806,6 +2806,66 @@ msgstr "motif de libération"
 msgid "founding slot"
 msgstr "place de membre fondateur"
 
+msgid "Self sign-up"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Accountant sign-up"
+msgstr "Comptable"
+
+#, fuzzy
+#| msgid "in the app"
+msgid "Created in the app"
+msgstr "dans l’application"
+
+#, fuzzy
+#| msgid "View the practice"
+msgid "Created by a practice"
+msgstr "Voir le cabinet"
+
+#, fuzzy
+#| msgid "converted at"
+msgid "Converted from a demo"
+msgstr "converti le"
+
+msgid "referral source"
+msgstr ""
+
+msgid "UTM source"
+msgstr ""
+
+msgid "UTM medium"
+msgstr ""
+
+msgid "UTM campaign"
+msgstr ""
+
+msgid "UTM term"
+msgstr ""
+
+msgid "UTM content"
+msgstr ""
+
+msgid "promo code"
+msgstr "code promotionnel"
+
+#, fuzzy
+#| msgid "reference"
+msgid "referring page"
+msgstr "référence"
+
+#, fuzzy
+#| msgid "computed at"
+msgid "captured at"
+msgstr "calculé le"
+
+msgid "acquisition attribution"
+msgstr ""
+
+msgid "acquisition attributions"
+msgstr ""
+
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
 msgstr "Ce cabinet n’existe pas ou vous n’en êtes pas membre. Choisissez l’un de vos cabinets."
 
@@ -5124,9 +5184,6 @@ msgstr "utilisations"
 
 msgid "The packages the code applies to; none = every package."
 msgstr "Les forfaits auxquels le code s’applique; aucun = tous les forfaits."
-
-msgid "promo code"
-msgstr "code promotionnel"
 
 msgid "promo codes"
 msgstr "codes promotionnels"

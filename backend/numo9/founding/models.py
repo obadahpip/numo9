@@ -116,3 +116,63 @@ class FoundingSlot(models.Model):
 
     def __str__(self) -> str:
         return f"Founding organisation #{self.slot_no:04d}"
+
+
+class AcquisitionSource(models.TextChoices):
+    """How the organisation (or practice) came to Numo9 (U-08-T07)."""
+
+    SELF_SIGNUP = "self_signup", _("Self sign-up")
+    ACCOUNTANT_SIGNUP = "accountant_signup", _("Accountant sign-up")
+    IN_APP = "in_app", _("Created in the app")
+    PRACTICE = "practice", _("Created by a practice")
+    DEMO_CONVERSION = "demo_conversion", _("Converted from a demo")
+
+
+class AcquisitionAttribution(models.Model):
+    """Marketing hooks stored at sign-up (U-08-T07): where a new organisation (or the practice of
+    an accountant signing up) came from — the referral source it gave, the UTM parameters of the
+    link it arrived by, the promo code it entered and the referring page. One row per
+    organisation (or practice), written in the transaction that creates it."""
+
+    organisation = models.OneToOneField(
+        Organisation,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="acquisition",
+        verbose_name=_("organisation"),
+    )
+    practice = models.OneToOneField(
+        "tenancy.Practice",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="acquisition",
+        verbose_name=_("practice"),
+    )
+    source = models.CharField(_("source"), max_length=32, choices=AcquisitionSource.choices)
+    referral_source = models.CharField(_("referral source"), max_length=100, blank=True)
+    utm_source = models.CharField(_("UTM source"), max_length=100, blank=True)
+    utm_medium = models.CharField(_("UTM medium"), max_length=100, blank=True)
+    utm_campaign = models.CharField(_("UTM campaign"), max_length=100, blank=True)
+    utm_term = models.CharField(_("UTM term"), max_length=100, blank=True)
+    utm_content = models.CharField(_("UTM content"), max_length=100, blank=True)
+    promo_code = models.CharField(_("promo code"), max_length=64, blank=True)
+    referrer = models.CharField(_("referring page"), max_length=500, blank=True)
+    captured_at = models.DateTimeField(_("captured at"), auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("acquisition attribution")
+        verbose_name_plural = _("acquisition attributions")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(organisation__isnull=False, practice__isnull=True)
+                    | models.Q(organisation__isnull=True, practice__isnull=False)
+                ),
+                name="acquisition_one_subject",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.source} · {self.utm_source or self.referral_source or '-'}"
