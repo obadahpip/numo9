@@ -49,7 +49,7 @@ def test_one_document_per_record_and_organisation_scoped() -> None:
             permission_key="contacts.contact.view",
             feature_key="accounting.contacts.read",
         )
-        assert SearchDocument.objects.count() == 1
+        assert SearchDocument.objects.filter(object_type="contacts.contact").count() == 1
         with pytest.raises(IntegrityError), transaction.atomic():
             SearchDocument.objects.create(
                 organisation=maple,
@@ -60,5 +60,5 @@ def test_one_document_per_record_and_organisation_scoped() -> None:
             )
     birch = Organisation.objects.create(name="Birch")
     with org_context(birch):
-        assert SearchDocument.objects.count() == 0
+        assert SearchDocument.objects.exclude(object_type="tenancy.organisation").count() == 0
     assert str(doc) == "contacts.contact · Cedar Roofing Co."

@@ -81,6 +81,21 @@ def register_provider(model: type[models.Model], to_document: ToDocument) -> Pro
     return provider
 
 
+def register_dependent(model: type[models.Model], parent: Callable[[Any], Any]) -> None:
+    """A child record (a contact's person) re-indexes its parent's document when it changes."""
+
+    def changed(sender: Any, instance: Any, raw: bool = False, **kwargs: Any) -> None:
+        if raw:
+            return
+        owner = parent(instance)
+        if owner is not None:
+            index(owner)
+
+    uid = f"numo9.search.dependent.{model._meta.label_lower}"
+    post_save.connect(changed, sender=model, dispatch_uid=f"{uid}.save", weak=False)
+    post_delete.connect(changed, sender=model, dispatch_uid=f"{uid}.delete", weak=False)
+
+
 def unregister_provider(model: type[models.Model]) -> None:
     _providers.pop(model, None)
     uid = f"numo9.search.{model._meta.label_lower}"
@@ -114,12 +129,25 @@ def _write_vector(row_id: int) -> None:
         cursor.execute(_VECTOR_SQL, [row_id])
 
 
+def _build(provider: Provider, instance: Any) -> Doc | None:
+    """The provider's document, built inside the instance's organisation (its related rows are
+    tenant-scoped, and a save may happen outside any request context)."""
+    if getattr(instance, "deleted_at", None):
+        return None
+    own = getattr(instance, "organisation_id", None)
+    organisation = Organisation.objects.filter(pk=own).first() if own else None
+    if organisation is None:
+        return provider.to_document(instance)
+    with org_context(organisation):
+        return provider.to_document(instance)
+
+
 def index(instance: Any) -> SearchDocument | None:
     """Write (or remove) the instance's document now, in the current transaction."""
     provider = _providers.get(type(instance))
     if provider is None:
         return None
-    doc = None if getattr(instance, "deleted_at", None) else provider.to_document(instance)
+    doc = _build(provider, instance)
     organisation_id, object_type, object_id = _identity(provider, instance, doc)
     if organisation_id is None:
         return None
@@ -155,7 +183,11 @@ def unindex(instance: Any) -> None:
     provider = _providers.get(type(instance))
     if provider is None:
         return
-    organisation_id, object_type, object_id = _identity(provider, instance, None)
+    try:
+        doc = _build(provider, instance)  # its identity overrides (a membership → its user)
+    except Exception:  # the record may be half gone: fall back to the model's identity
+        doc = None
+    organisation_id, object_type, object_id = _identity(provider, instance, doc)
     if organisation_id is None:
         return
     organisation = Organisation.objects.filter(pk=organisation_id).first()

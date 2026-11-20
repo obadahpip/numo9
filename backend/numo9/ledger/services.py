@@ -62,6 +62,18 @@ from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journa
 ACTING: Any = object()
 
 
+#: Called with a journal entry after its header and lines are written (draft saved, posted,
+#: reversed), in the same transaction: entries and lines are written with bulk inserts and
+#: updates that send no model signals. The global search registers its indexer here (A-09-T03).
+ENTRY_WRITTEN: list[Any] = []
+
+
+def _written(entry: JournalEntry) -> JournalEntry:
+    for hook in list(ENTRY_WRITTEN):
+        hook(entry)
+    return entry
+
+
 def _organisation(organisation: Organisation | None) -> Organisation:
     active = current_org()
     organisation = organisation or active
@@ -145,7 +157,7 @@ def _number_and_post(
         },
         actor=posted_by,
     )
-    return entry
+    return _written(entry)
 
 
 def post_journal(
@@ -281,7 +293,7 @@ def save_draft(
         entry.save()
         JournalLine.objects.filter(entry=entry).delete()
         JournalLine.objects.bulk_create(_lines(entry, checked))
-        return entry
+        return _written(entry)
 
 
 def _move(entry: JournalEntry, to: str) -> JournalEntry:
@@ -395,4 +407,5 @@ def reverse(
             },
             actor=person if getattr(person, "is_authenticated", False) else None,
         )
+        _written(original)
         return reversal

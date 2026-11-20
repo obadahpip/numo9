@@ -12,6 +12,7 @@ from collections.abc import Iterator
 
 import pytest
 from django.db import connection, transaction
+from django.db.models import QuerySet
 
 from numo9.search.models import SearchDocument
 from numo9.search.registry import Doc, register_provider, unregister_provider
@@ -34,13 +35,18 @@ def org() -> Iterator[Organisation]:
     unregister_provider(Widget)
 
 
+def widgets() -> QuerySet[SearchDocument]:
+    """The widget documents (the organisation itself is indexed too, by its own provider)."""
+    return SearchDocument.objects.filter(object_type="testapp.widget")
+
+
 def docs() -> list[str]:
-    return list(SearchDocument.objects.values_list("title", flat=True))
+    return list(widgets().values_list("title", flat=True))
 
 
 def test_saved_record_is_indexed_and_follows_changes(org: Organisation) -> None:
     widget = Widget.objects.create(organisation=org, label="Blue sprocket")
-    (doc,) = SearchDocument.objects.all()
+    (doc,) = widgets()
     assert (doc.object_type, doc.object_id, doc.title) == (
         "testapp.widget",
         str(widget.public_id),

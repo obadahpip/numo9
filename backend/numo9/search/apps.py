@@ -7,3 +7,8 @@ class SearchConfig(AppConfig):
     name = "numo9.search"
     label = "search"
     verbose_name = "Global search"
+
+    def ready(self) -> None:
+        from .providers import register_phase0_providers
+
+        register_phase0_providers()
