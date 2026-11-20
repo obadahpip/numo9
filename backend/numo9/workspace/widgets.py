@@ -24,7 +24,15 @@ from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
-from .dashboard import COUNT, DashboardContext, Widget, WidgetAnswer, register_widget
+from .dashboard import (
+    COUNT,
+    WORKLOAD,
+    DashboardContext,
+    Widget,
+    WidgetAnswer,
+    member_organisations,
+    register_widget,
+)
 from .models import DirectoryStatus
 
 TRIAL_ENDING_DAYS = 7
@@ -63,6 +71,37 @@ def _dormant(ctx: DashboardContext) -> WidgetAnswer:
         href=f"/p/{ctx.practice.public_id}/staff",
         items=[{"name": s["name"], "email": s["email"], "days": s["days"]} for s in staff],
     )
+
+
+# ---- workload (T04) ------------------------------------------------------------------------
+
+
+def workload(ctx: DashboardContext) -> WidgetAnswer:
+    from numo9.tenancy.models import PracticeMember
+
+    visible = set(ctx.rows.values_list("organisation_id", flat=True))
+    members = PracticeMember.objects.filter(
+        practice=ctx.practice, suspended_at__isnull=True
+    ).select_related("user")
+    items: list[dict[str, Any]] = []
+    for member in members:
+        count = len(member_organisations(member) & visible)
+        items.append(
+            {
+                "id": str(member.user.public_id),
+                "name": member.user.name or member.user.email,
+                "role": member.role,
+                "organisations": count,
+                "open_tasks": open_tasks(member),
+            }
+        )
+    items.sort(key=lambda item: (-item["organisations"], item["name"].lower()))
+    return WidgetAnswer(count=len(items), items=items)
+
+
+def open_tasks(member: Any) -> int:
+    """Open tasks of the member: none until tasks exist (practice management, Phase 4)."""
+    return 0
 
 
 def register_phase0_widgets() -> None:
@@ -114,5 +153,15 @@ def register_phase0_widgets() -> None:
             description=_("No sign-in for the practice's dormant threshold (60 days)."),
             visible=_manages_staff,
             order=50,
+        )
+    )
+    register_widget(
+        Widget(
+            "workload",
+            _("Workload"),
+            WORKLOAD,
+            workload,
+            description=_("Organisations per staff member and their open tasks."),
+            order=70,
         )
     )
