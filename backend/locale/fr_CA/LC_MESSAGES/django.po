@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:34-0500\n"
+"POT-Creation-Date: 2026-11-20 17:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3842,6 +3842,22 @@ msgstr ""
 msgid "No account has the code %(code)s (parent code)."
 msgstr "Un forfait portant le code %(code)s existe déjà. Choisissez un autre code."
 
+msgid "There's no account with this id in this organisation."
+msgstr "Aucun compte ne porte cet identifiant dans cette organisation."
+
+msgid "There's no contact with this id in this organisation."
+msgstr "Aucun contact ne porte cet identifiant dans cette organisation."
+
+msgid "One of the documents isn't in this organisation."
+msgstr "Un des documents n'appartient pas à cette organisation."
+
+#, python-format
+msgid "This journal can't be posted: %(count)d problem(s)."
+msgstr "Cette écriture ne peut pas être passée : %(count)d problème(s)."
+
+msgid "Only a draft can be posted."
+msgstr "Seul un brouillon peut être passé."
+
 msgid "Asset"
 msgstr ""
 
@@ -4314,6 +4330,9 @@ msgstr "La période %(period)s (du %(start)s au %(end)s) est fermée : rien ne p
 
 msgid "See journals and every posted entry"
 msgstr "Voir les écritures de journal et toutes les écritures comptabilisées"
+
+msgid "Write and post manual journals"
+msgstr "Rédiger et passer des écritures manuelles"
 
 msgid "See the chart of accounts and account balances"
 msgstr ""

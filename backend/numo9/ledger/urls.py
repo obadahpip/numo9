@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import accounts_api, api
+from . import accounts_api, api, journals_api
 
 ORG = "o/<uuid:org>/"
 
@@ -32,6 +32,12 @@ urlpatterns = [
         name="account-restore",
     ),
     path(f"{ORG}gifi", accounts_api.GifiSearchView.as_view(), name="gifi-search"),
-    path(f"{ORG}journals", api.JournalListView.as_view(), name="journals"),
+    path(f"{ORG}journals", journals_api.JournalsView.as_view(), name="journals"),
+    path(f"{ORG}journals/check", journals_api.JournalCheckView.as_view(), name="journals-check"),
+    path(
+        f"{ORG}journals/<uuid:public_id>/post",
+        journals_api.JournalPostView.as_view(),
+        name="journal-post",
+    ),
     path(f"{ORG}journals/<uuid:public_id>", api.JournalDetailView.as_view(), name="journal"),
 ]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:34-0500\n"
+"POT-Creation-Date: 2026-11-20 17:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3627,6 +3627,22 @@ msgstr ""
 msgid "No account has the code %(code)s (parent code)."
 msgstr ""
 
+msgid "There's no account with this id in this organisation."
+msgstr ""
+
+msgid "There's no contact with this id in this organisation."
+msgstr ""
+
+msgid "One of the documents isn't in this organisation."
+msgstr ""
+
+#, python-format
+msgid "This journal can't be posted: %(count)d problem(s)."
+msgstr ""
+
+msgid "Only a draft can be posted."
+msgstr ""
+
 msgid "Asset"
 msgstr ""
 
@@ -4053,6 +4069,9 @@ msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it.
 msgstr ""
 
 msgid "See journals and every posted entry"
+msgstr ""
+
+msgid "Write and post manual journals"
 msgstr ""
 
 msgid "See the chart of accounts and account balances"
