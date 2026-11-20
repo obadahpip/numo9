@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 18:03-0500\n"
+"POT-Creation-Date: 2026-11-20 18:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -542,6 +542,21 @@ msgstr "compte bancaire"
 
 msgid "bank accounts"
 msgstr "comptes bancaires"
+
+#, python-format
+msgid "“%(type)s” isn't a bank account type."
+msgstr "« %(type)s » n'est pas un type de compte bancaire."
+
+#, python-format
+msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
+msgstr "Tous les codes de %(first)d à %(last)d sont utilisés : renumérotez ou archivez un compte de cette plage, puis réessayez."
+
+msgid "Give the account a name."
+msgstr "Donnez un nom au compte."
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
 
 msgid "Stripe event"
 msgstr "Événement Stripe"
@@ -4179,9 +4194,6 @@ msgid "accounts"
 msgstr "Comptabilité"
 
 msgid "An account code is 1 to 10 letters, digits, dots or dashes, starting with a letter or a digit (e.g. 6100)."
-msgstr ""
-
-msgid "Give the account a name."
 msgstr ""
 
 #, python-format
