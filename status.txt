@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 428   Remaining: 2359   Progress: 15.36%
+TOTAL ATOMIC TASKS: 2787   Completed: 429   Remaining: 2358   Progress: 15.39%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -576,7 +576,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-09-T08 — Shortcut sheet (?) and inline shortcut hints on buttons
 ✅ A-09-T09 — Backfill command reindex_search --org
 ✅ A-09-T10 — Perf: 1M documents, p95 < 150 ms
-❌ A-09-T11 — Isolation test: search never returns other-org records
+✅ A-09-T11 — Isolation test: search never returns other-org records
 
 ================================================================================
 Phase 1 Core Books  (572 atomic tasks)
