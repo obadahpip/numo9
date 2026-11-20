@@ -1,7 +1,7 @@
 import { testFormatMessage } from "@/test/intl";
 
 import { findOrgModule } from "./routes";
-import { navEntryFor, PRIMARY_NAV, primaryNav } from "./navigation";
+import { navEntryFor, practiceNav, PRIMARY_NAV, primaryNav } from "./navigation";
 
 describe("primary navigation (A-10-T05)", () => {
   it("lists the Phase 0 modules in task order", () => {
@@ -67,5 +67,20 @@ describe("primary navigation (A-10-T05)", () => {
       ["accounting", "Not in this organisation's package"],
       ["documents", "Not in this organisation's package"],
     ]);
+  });
+});
+
+describe("practiceNav (V-04)", () => {
+  const fm = testFormatMessage();
+
+  it("links the practice pages and marks the current one", () => {
+    const links = practiceNav(fm, "firm", "/p/firm/staff/u1");
+    expect(links.map((l) => [l.label, l.href, l.current])).toEqual([
+      ["Dashboard", "/p/firm", false],
+      ["Directory", "/p/firm/directory", false],
+      ["Groups & tags", "/p/firm/groups", false],
+      ["Staff", "/p/firm/staff", true],
+    ]);
+    expect(practiceNav(fm, "firm", "/p/firm").find((l) => l.current)?.label).toBe("Dashboard");
   });
 });

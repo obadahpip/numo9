@@ -28,6 +28,7 @@ import {
   FILTER_KEYS,
   sameState,
   stateToView,
+  stateFromSearch,
   viewToState,
   type DirectoryPage,
   type DirectoryRow,
@@ -190,6 +191,16 @@ export function DirectoryScreen({
     [openTab],
   );
 
+  // ---- a drill-down address (V-04-T08): its filters win over the default view --------------
+  const fromAddress = useRef(false);
+  useEffect(() => {
+    const drilled = stateFromSearch(window.location.search, DEFAULT_STATE);
+    if (drilled) {
+      fromAddress.current = true;
+      setState(drilled);
+    }
+  }, []);
+
   // ---- saved views: load once, open the default view first ---------------------------------
   useEffect(() => {
     let cancelled = false;
@@ -198,7 +209,7 @@ export function DirectoryScreen({
       if (result.status === 200 && Array.isArray(result.body)) {
         setViews(result.body);
         const preferred = result.body.find((view) => view.is_default);
-        if (preferred) {
+        if (preferred && !fromAddress.current) {
           setActiveId(preferred.id);
           setState(viewToState(preferred, DEFAULT_COLUMNS));
         }

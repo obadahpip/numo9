@@ -1086,6 +1086,27 @@
       "statements": "Statements"
     }
   },
+  "dashboard": {
+    "crumb": "Dashboard",
+    "deadlinesEmpty": "No deadline in the next 30 days.",
+    "intro": "Every number opens the directory with the same filter — the list shows exactly that many organisations.",
+    "loadFailed": "The practice home didn't load",
+    "loadFailedBody": "Your connection may have dropped: try again. The directory still works.",
+    "loading": "Loading the dashboard…",
+    "openDirectory": "Open in directory",
+    "openDirectoryLabel": "Open in directory: {title}",
+    "openStaff": "Open staff",
+    "openStaffLabel": "Open staff: {title}",
+    "retry": "Try again",
+    "retryLabel": "Try again: {title}",
+    "scope": "Show",
+    "scopeAll": "All practice",
+    "scopeMine": "My organisations",
+    "title": "Practice home",
+    "widgetFailed": "Couldn't load this figure.",
+    "workloadEmpty": "No active staff member.",
+    "workloadLine": "{organisations, plural, one {# organisation} other {# organisations}} · {tasks, plural, one {# open task} other {# open tasks}}"
+  },
   "demo": {
     "bar": {
       "outbox": "Demo outbox",
@@ -1195,9 +1216,12 @@
       "title": "The directory didn't load"
     },
     "facet": {
+      "bnMissing": "No Business Number",
       "fye": "Fiscal year end",
       "group": "Groups",
       "gstCycle": "GST/HST cycle",
+      "lockMissing": "No lock date",
+      "mine": "Assigned to me",
       "none": "None in this list",
       "overdue": "Overdue items",
       "package": "Package",
@@ -1205,6 +1229,7 @@
       "province": "Province",
       "status": "Status",
       "tag": "Tags",
+      "trialEnding": "Trial ending in 7 days",
       "unfiled": "Unfiled returns"
     },
     "filters": {
@@ -2290,6 +2315,12 @@
       "settings": "Settings"
     },
     "notifications": "Notifications",
+    "practiceNav": {
+      "directory": "Directory",
+      "groups": "Groups & tags",
+      "home": "Dashboard",
+      "staff": "Staff"
+    },
     "skipToContent": "Skip to content",
     "userMenu": {
       "label": "Account menu",

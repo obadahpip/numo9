@@ -368,6 +368,27 @@ export function equivalentOrgUrl(targetOrg: string, currentPath?: string): strin
   return orgModuleUrl(targetOrg, best?.path ?? "home");
 }
 
+/** Practice home (V-04): the cross-organisation dashboard. */
+export function practiceHomeUrl(practice: string): string {
+  return `/p/${practice}`;
+}
+
+/**
+ * The directory with filters in its address (V-04-T07 drill-downs, shareable):
+ * `/p/x/directory?status=trial&trial_ending=yes`.
+ */
+export function practiceDirectoryFilteredUrl(
+  practice: string,
+  filters: Record<string, string[]>,
+): string {
+  const params = new URLSearchParams();
+  for (const [key, values] of Object.entries(filters)) {
+    for (const value of values) params.append(key, value);
+  }
+  const query = params.toString();
+  return query ? `${practiceDirectoryUrl(practice)}?${query}` : practiceDirectoryUrl(practice);
+}
+
 /** Practice directory (V-01): the accountant's list of client organisations. */
 export function practiceDirectoryUrl(practice: string): string {
   return `/p/${practice}/directory`;

@@ -2,6 +2,7 @@
 
 import { AppShell as Shell, type ShellCrumb, type ShellLinkComponent } from "@numo9/ui";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
 import { CORE } from "@/catalogue/features";
@@ -23,12 +24,12 @@ import {
   UnreadAnnouncer,
 } from "@/notifications/NotificationCentre";
 import { useUnreadCount } from "@/notifications/useUnreadCount";
-import { primaryNav } from "@/routing/navigation";
+import { practiceNav, primaryNav } from "@/routing/navigation";
 import {
   findOrgModule,
   isSettingsSection,
   orgModuleUrl,
-  practiceDirectoryUrl,
+  practiceHomeUrl,
   SETTINGS_LABEL,
 } from "@/routing/routes";
 import { ModuleSettingsLink } from "@/settings/ModuleSettingsLink";
@@ -131,13 +132,10 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
   const fm = useFormatMessage();
   const entitlements = useEntitlements();
   const unread = useUnreadCount(org);
+  const pathname = usePathname();
   const [centreOpen, setCentreOpen] = useState(false);
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
-  const homeHref = org
-    ? orgModuleUrl(org, "home")
-    : practice
-      ? practiceDirectoryUrl(practice)
-      : "/";
+  const homeHref = org ? orgModuleUrl(org, "home") : practice ? practiceHomeUrl(practice) : "/";
 
   const breadcrumbs: ShellCrumb[] = [];
   if (org) breadcrumbs.push({ label: org, href: homeHref });
@@ -160,7 +158,13 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
         mobileNav: fm(messages.mobileNav),
       }}
       brand={{ label: fm(messages.brandHome), href: homeHref }}
-      nav={org ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key)) : []}
+      nav={
+        org
+          ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key))
+          : practice
+            ? practiceNav(fm, practice, pathname ?? "")
+            : []
+      }
       banner={
         <>
           {/* U-06-T11: the red support-session bar, on every page while impersonating. */}

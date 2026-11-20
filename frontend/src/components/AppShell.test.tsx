@@ -8,7 +8,10 @@ import { appQueryClient } from "@/entitlements/store";
 import { ACCOUNTING_FEATURES, entitlementsBody, entitlementsFetch } from "@/test/entitlements";
 import { renderWithIntl } from "@/test/intl";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/p/firm/staff",
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
 beforeEach(() => {
   // The org switcher loads the user's organisations; these tests don't need the list.

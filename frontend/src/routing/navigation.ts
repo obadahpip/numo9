@@ -13,10 +13,37 @@ import type { FeatureDecision } from "@numo9/ui";
 
 import { CORE } from "@/catalogue/features";
 import { defineMessages, type FormatMessage, type MessageDescriptor } from "@/i18n";
-import { findOrgModule, orgModuleUrl } from "@/routing/routes";
+import {
+  findOrgModule,
+  orgModuleUrl,
+  practiceDirectoryUrl,
+  practiceGroupsUrl,
+  practiceHomeUrl,
+  practiceStaffUrl,
+} from "@/routing/routes";
 
 const labels = defineMessages({
   home: { id: "shell.nav.home", defaultMessage: "Home", description: "Top navigation item" },
+  practiceHome: {
+    id: "shell.practiceNav.home",
+    defaultMessage: "Dashboard",
+    description: "Practice navigation: the practice home (V-04)",
+  },
+  practiceDirectory: {
+    id: "shell.practiceNav.directory",
+    defaultMessage: "Directory",
+    description: "Practice navigation: organisation directory",
+  },
+  practiceGroups: {
+    id: "shell.practiceNav.groups",
+    defaultMessage: "Groups & tags",
+    description: "Practice navigation",
+  },
+  practiceStaff: {
+    id: "shell.practiceNav.staff",
+    defaultMessage: "Staff",
+    description: "Practice navigation",
+  },
   contacts: {
     id: "shell.nav.contacts",
     defaultMessage: "Contacts",
@@ -118,4 +145,29 @@ export function primaryNav(
     }
     return link;
   });
+}
+
+/** Practice navigation (V-04): dashboard, directory, groups & tags, staff; the item owning
+ * `currentPath` (`/p/x/staff/…` → Staff) marked. */
+export function practiceNav(fm: FormatMessage, practice: string, currentPath = ""): NavLink[] {
+  const entries = [
+    { id: "practice-home", label: labels.practiceHome, href: practiceHomeUrl(practice) },
+    {
+      id: "practice-directory",
+      label: labels.practiceDirectory,
+      href: practiceDirectoryUrl(practice),
+    },
+    { id: "practice-groups", label: labels.practiceGroups, href: practiceGroupsUrl(practice) },
+    { id: "practice-staff", label: labels.practiceStaff, href: practiceStaffUrl(practice) },
+  ];
+  const path = currentPath.replace(/\/+$/, "");
+  return entries.map((entry) => ({
+    id: entry.id,
+    label: fm(entry.label),
+    href: entry.href,
+    current:
+      entry.id === "practice-home"
+        ? path === entry.href
+        : path === entry.href || path.startsWith(`${entry.href}/`),
+  }));
 }

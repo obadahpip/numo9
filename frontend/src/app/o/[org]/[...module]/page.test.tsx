@@ -16,7 +16,11 @@ const notFound = vi.hoisted(() =>
     throw new Error("NEXT_NOT_FOUND");
   }),
 );
-vi.mock("next/navigation", () => ({ notFound, useRouter: () => ({ push: vi.fn() }) }));
+vi.mock("next/navigation", () => ({
+  notFound,
+  usePathname: () => "/",
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
 beforeEach(() => vi.stubGlobal("fetch", entitlementsFetch()));
 afterEach(() => {

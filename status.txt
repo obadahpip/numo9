@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 415   Remaining: 2372   Progress: 14.89%
+TOTAL ATOMIC TASKS: 2787   Completed: 416   Remaining: 2371   Progress: 14.93%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -561,7 +561,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ V-04-T05 — Deadline provider interface + stub (filled by G-03a/N-07 later)
 ✅ V-04-T06 — API GET /api/v1/practice/dashboard with per-widget status (ok/error)
 ✅ V-04-T07 — Drill-down: each widget returns directory filter params
-❌ V-04-T08 — Cards UI + drill links + error/retry state
+✅ V-04-T08 — Cards UI + drill links + error/retry state
 ❌ V-04-T09 — Customise dashboard (reorder/hide) persisted
 ❌ V-04-T10 — Performance budget dashboard < 1.5 s on 2,000 orgs
 
