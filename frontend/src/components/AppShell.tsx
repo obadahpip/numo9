@@ -32,6 +32,7 @@ import {
   practiceHomeUrl,
   SETTINGS_LABEL,
 } from "@/routing/routes";
+import { SearchSlot } from "@/search/SearchSlot";
 import { ModuleSettingsLink } from "@/settings/ModuleSettingsLink";
 
 const messages = defineMessages({
@@ -109,7 +110,8 @@ interface AppShellProps {
 /**
  * Numo9 application shell (A-10-T05): the `@numo9/ui` shell with i18n labels, the organisation's
  * primary navigation, breadcrumbs, the org switcher (A-01-T14), the job tray (A-08-T07) and the
- * notification bell + centre (A-07-T09). The command palette (A-09), practice navigation (V-01) and the
+ * notification bell + centre (A-07-T09). Inside an organisation the search slot is the command palette (A-09-T07); on practice pages
+ * it is "Go to organisation" (V-01-T13). Practice navigation (V-01) and the
  * signed-in user (A-02) plug into the shell's slots as those deliverables land. A module with its
  * own settings section shows its gear at the end of the breadcrumb bar (A-05-T10, gap-03);
  * settings pages read Organisation / Settings / <section>.
@@ -186,7 +188,13 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
         ) : undefined
       }
       jobTray={org ? <JobTray org={org} /> : undefined}
-      search={org || practice ? <GoToOrganisationSlot practice={practice} org={org} /> : undefined}
+      search={
+        org ? (
+          <SearchSlot org={org} />
+        ) : practice ? (
+          <GoToOrganisationSlot practice={practice} />
+        ) : undefined
+      }
       status={
         org ? (
           <>
