@@ -69,6 +69,11 @@ class DirectoryFacetsSerializer(serializers.Serializer[Any]):
     payroll = FacetValueSerializer(many=True)
     overdue = FacetValueSerializer(many=True)
     unfiled = FacetValueSerializer(many=True)
+    # Practice dashboard drill-downs (V-04-T07).
+    bn_missing = FacetValueSerializer(many=True)
+    lock_missing = FacetValueSerializer(many=True)
+    trial_ending = FacetValueSerializer(many=True)
+    mine = FacetValueSerializer(many=True)
     tag = FacetValueSerializer(many=True)
     group = FacetValueSerializer(many=True)
 

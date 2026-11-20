@@ -36,8 +36,8 @@ from .dashboard import (
     register_widget,
 )
 from .models import DirectoryStatus
+from .search import TRIAL_ENDING_DAYS  # the directory's trial_ending filter: the same window
 
-TRIAL_ENDING_DAYS = 7
 DEADLINE_DAYS = 30
 
 

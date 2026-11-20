@@ -128,6 +128,10 @@ def test_lists_the_practice_directory(world: dict[str, Any], schema: dict[str, A
         "payroll",
         "overdue",
         "unfiled",
+        "bn_missing",  # V-04-T07 dashboard drill-downs
+        "lock_missing",
+        "trial_ending",
+        "mine",
         "tag",
         "group",  # V-02-T08
     }
