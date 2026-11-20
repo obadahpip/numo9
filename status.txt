@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 397   Remaining: 2390   Progress: 14.24%
+TOTAL ATOMIC TASKS: 2787   Completed: 398   Remaining: 2389   Progress: 14.28%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -529,7 +529,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-08-T05 — Entitlement: founding flag grants all products (incl. future products as they ship)
 ✅ U-08-T06 — Churn rule config + evaluation on cancel/return
 ✅ U-08-T07 — AcquisitionAttribution (referral source, utm, promo) captured at sign-up
-❌ U-08-T08 — Public API remaining counter (cached)
+✅ U-08-T08 — Public API remaining counter (cached)
 ❌ U-08-T09 — Badge component + org profile display
 ❌ U-08-T10 — Audit entries for each allocation/release
 ❌ U-08-T11 — Founding admin panel (list slots, export, release with reason)

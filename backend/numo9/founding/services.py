@@ -71,6 +71,9 @@ def allocate_founding_slot(
                 organisation=organisation, slot_no=int(row[0]), payment_ref=payment_ref[:255]
             )
             sync_founding_flag(organisation)
+            from .public import clear_cache
+
+            clear_cache()
             return slot
     except IntegrityError:
         # A concurrent transaction gave this organisation its slot first; our increment is undone.
