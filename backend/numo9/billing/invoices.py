@@ -12,6 +12,8 @@ applied to the invoice changes nothing (Stripe's ``created``; out of order, U-04
 - ``invoice.paid`` with money paid (not a trial's $0 invoice) is also the organisation's **first
   successful payment** for the founding offer (U-08-T03): the slot is allocated in this event's
   transaction, so a rolled-back event takes it back and a replayed one finds the slot held.
+- ``charge.refunded`` — a refunded first payment releases the founding slot when the refund came
+  within the configured window (``FoundingCounter.refund_release_hours``, U-08-T06).
 - ``invoice.payment_failed`` — the subscription goes past due with its 7-day grace (if the
   subscription event hasn't done it yet) and the dunning starts (U-04-T09).
 """
@@ -168,3 +170,18 @@ def on_invoice_payment_failed(event: StripeEvent) -> PlatformInvoice:
         subscription.save()
     start_dunning(subscription, invoice)
     return invoice
+
+
+@register_handler("charge.refunded")
+def on_charge_refunded(event: StripeEvent) -> Any:
+    """A refunded first payment releases the founding slot within the release window (U-08)."""
+    from numo9.founding.services import on_refund
+
+    from .customers import organisation_of_customer
+
+    obj = event.data_object
+    organisation = organisation_of_customer(str(obj.get("customer") or ""))
+    if organisation is None or not obj.get("refunded"):
+        return None
+    StripeEvent.objects.filter(pk=event.pk).update(organisation_id=organisation.pk)
+    return on_refund(organisation, str(obj.get("invoice") or ""), event.stripe_created)

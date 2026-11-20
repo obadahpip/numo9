@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 04:04-0500\n"
+"POT-Creation-Date: 2026-11-20 14:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2749,11 +2749,35 @@ msgstr ""
 msgid "%(name)s, added to %(organisation)s, contains a virus (%(signature)s). It was moved to quarantine and can't be opened or downloaded. If you expected this file, ask the sender for a clean copy."
 msgstr ""
 
+msgid "Keep founding status whenever the organisation returns"
+msgstr ""
+
+msgid "Lose founding status on cancellation"
+msgstr ""
+
+msgid "Keep founding status if the organisation returns within N days"
+msgstr ""
+
 msgid "founding slots"
 msgstr "places de membre fondateur"
 
 msgid "allocated"
 msgstr "attribuées"
+
+msgid "churn rule"
+msgstr ""
+
+msgid "return window (days)"
+msgstr ""
+
+msgid "For the keep-if-returns-within-days rule."
+msgstr ""
+
+msgid "refund release window (hours)"
+msgstr ""
+
+msgid "A first payment refunded within this window releases the slot; 0 = never."
+msgstr ""
 
 msgid "founding counter"
 msgstr "compteur des membres fondateurs"
@@ -2769,6 +2793,9 @@ msgstr "premier paiement"
 
 msgid "Stripe invoice or payment id."
 msgstr "Identifiant de la facture ou du paiement Stripe."
+
+msgid "When the organisation cancelled; cleared when it returns (churn rules)."
+msgstr ""
 
 msgid "released at"
 msgstr "libérée le"

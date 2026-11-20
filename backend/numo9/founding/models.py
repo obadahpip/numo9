@@ -22,12 +22,41 @@ from django.utils.translation import gettext_lazy as _
 from numo9.tenancy.models import Organisation
 
 DEFAULT_CAP = 1000
+DEFAULT_RETURN_WINDOW_DAYS = 90
+DEFAULT_REFUND_RELEASE_HOURS = 24
+
+
+class ChurnRule(models.TextChoices):
+    """What happens to a founding slot when its organisation cancels (U-08-T06)."""
+
+    KEEP_ON_RETURN = "keep_on_return", _("Keep founding status whenever the organisation returns")
+    LOSE_ON_CANCEL = "lose_on_cancel", _("Lose founding status on cancellation")
+    KEEP_IF_RETURNS_WITHIN_DAYS = (
+        "keep_if_returns_within_days",
+        _("Keep founding status if the organisation returns within N days"),
+    )
 
 
 class FoundingCounter(models.Model):
     id = models.PositiveSmallIntegerField(primary_key=True, default=1, editable=False)
     cap = models.PositiveIntegerField(_("founding slots"), default=DEFAULT_CAP)
     allocated = models.PositiveIntegerField(_("allocated"), default=0)
+    churn_rule = models.CharField(
+        _("churn rule"),
+        max_length=32,
+        choices=ChurnRule.choices,
+        default=ChurnRule.KEEP_IF_RETURNS_WITHIN_DAYS,
+    )
+    return_window_days = models.PositiveIntegerField(
+        _("return window (days)"),
+        default=DEFAULT_RETURN_WINDOW_DAYS,
+        help_text=_("For the keep-if-returns-within-days rule."),
+    )
+    refund_release_hours = models.PositiveIntegerField(
+        _("refund release window (hours)"),
+        default=DEFAULT_REFUND_RELEASE_HOURS,
+        help_text=_("A first payment refunded within this window releases the slot; 0 = never."),
+    )
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
     class Meta:
@@ -65,6 +94,12 @@ class FoundingSlot(models.Model):
     allocated_at = models.DateTimeField(_("allocated at"), auto_now_add=True)
     payment_ref = models.CharField(
         _("first payment"), max_length=255, blank=True, help_text=_("Stripe invoice or payment id.")
+    )
+    lapsed_at = models.DateTimeField(
+        _("cancelled at"),
+        null=True,
+        blank=True,
+        help_text=_("When the organisation cancelled; cleared when it returns (churn rules)."),
     )
     released_at = models.DateTimeField(_("released at"), null=True, blank=True)
     release_reason = models.CharField(_("release reason"), max_length=64, blank=True)

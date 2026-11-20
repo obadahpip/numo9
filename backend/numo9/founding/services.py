@@ -21,11 +21,14 @@ rolled back takes its slot with it.
 
 from __future__ import annotations
 
+import datetime as dt
+
 from django.db import IntegrityError, connection, transaction
+from django.utils import timezone
 
 from numo9.tenancy.models import Organisation
 
-from .models import FoundingCounter, FoundingSlot
+from .models import ChurnRule, FoundingCounter, FoundingSlot
 
 _ALLOCATE_SQL = (
     f"UPDATE {FoundingCounter._meta.db_table} "  # noqa: S608 — table name from the model, no input
@@ -52,7 +55,10 @@ def allocate_founding_slot(
         return None
     existing = FoundingSlot.objects.filter(organisation=organisation).first()
     if existing is not None:
-        return existing if existing.released_at is None else None
+        if existing.released_at is not None:
+            return None
+        sync_founding_flag(organisation)  # e.g. a returning organisation's new subscription
+        return existing
     FoundingCounter.current()  # the migration seeds the row; recreate it if it was ever removed
     try:
         with transaction.atomic():
@@ -93,3 +99,66 @@ def sync_founding_flag(organisation: Organisation) -> bool:
 def founding_slot_of(organisation: Organisation) -> FoundingSlot | None:
     """The organisation's active (not released) founding slot."""
     return FoundingSlot.objects.filter(organisation=organisation, released_at__isnull=True).first()
+
+
+# ---- churn rules (U-08-T06) --------------------------------------------------------------------
+
+
+class ReleaseReason:
+    CANCELLED = "cancelled"
+    NOT_RETURNED_IN_TIME = "not_returned_in_time"
+    REFUNDED = "refunded"
+    ADMIN = "admin"
+
+
+def release_slot(slot: FoundingSlot, reason: str, at: dt.datetime | None = None) -> FoundingSlot:
+    """Release the slot (its number is never handed out again) and drop the founding flag."""
+    if slot.released_at is not None:
+        return slot
+    slot.released_at = at or timezone.now()
+    slot.release_reason = reason[:64]
+    slot.save(update_fields=["released_at", "release_reason"])
+    sync_founding_flag(slot.organisation)
+    return slot
+
+
+def on_cancel(organisation: Organisation, at: dt.datetime) -> FoundingSlot | None:
+    """The organisation's subscription was cancelled: apply the configured churn rule."""
+    slot = founding_slot_of(organisation)
+    if slot is None:
+        return None
+    rule = FoundingCounter.current().churn_rule
+    if rule == ChurnRule.LOSE_ON_CANCEL:
+        return release_slot(slot, ReleaseReason.CANCELLED, at)
+    if slot.lapsed_at is None:
+        slot.lapsed_at = at
+        slot.save(update_fields=["lapsed_at"])
+    return slot
+
+
+def on_return(organisation: Organisation, at: dt.datetime) -> FoundingSlot | None:
+    """A cancelled organisation is active again: keep its slot, or release it when it came back
+    after the return window (``keep_if_returns_within_days``)."""
+    slot = founding_slot_of(organisation)
+    if slot is None:
+        return None
+    if slot.lapsed_at is not None:
+        counter = FoundingCounter.current()
+        late = at - slot.lapsed_at > dt.timedelta(days=counter.return_window_days)
+        if counter.churn_rule == ChurnRule.KEEP_IF_RETURNS_WITHIN_DAYS and late:
+            return release_slot(slot, ReleaseReason.NOT_RETURNED_IN_TIME, at)
+        slot.lapsed_at = None
+        slot.save(update_fields=["lapsed_at"])
+    sync_founding_flag(organisation)  # a new subscription row gets the flag too
+    return slot
+
+
+def on_refund(organisation: Organisation, payment_ref: str, at: dt.datetime) -> FoundingSlot | None:
+    """The first payment was refunded: release the slot when within the release window."""
+    slot = founding_slot_of(organisation)
+    hours = FoundingCounter.current().refund_release_hours
+    if slot is None or not hours or not payment_ref or slot.payment_ref != payment_ref:
+        return slot
+    if at - slot.allocated_at <= dt.timedelta(hours=hours):
+        return release_slot(slot, ReleaseReason.REFUNDED, at)
+    return slot
