@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:18-0500\n"
+"POT-Creation-Date: 2026-11-20 17:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4325,6 +4325,14 @@ msgstr "Ligne %(line)d : %(account)s exige une catégorie de suivi — choisisse
 #, python-format
 msgid "%(account)s requires an attachment: attach the supporting document to the journal."
 msgstr "%(account)s exige une pièce jointe : joignez le document justificatif à l'écriture."
+
+#, python-format
+msgid "This journal posts to an expense account (%(account)s): this organisation asks for a supporting document — attach one to the journal."
+msgstr "Cette écriture touche un compte de dépenses (%(account)s) : cette organisation exige un document justificatif — joignez-en un à l'écriture."
+
+#, python-format
+msgid "Line %(line)d: expense lines need a contact in this organisation — choose one for %(account)s."
+msgstr "Ligne %(line)d : les lignes de dépenses exigent un contact dans cette organisation — choisissez-en un pour %(account)s."
 
 msgid "year-end close"
 msgstr "clôture de fin d'exercice"

@@ -188,7 +188,9 @@ def post_journal(
         assert_can_post(organisation, spec.date, person, module)
         documents = list({document.pk: document for document in attachments}.values())
         if reversal_of is None:  # a reversal mirrors an entry that passed the rules
-            check_policy(checked, caller=caller, attachments=len(documents))
+            check_policy(
+                checked, caller=caller, attachments=len(documents), organisation=organisation
+            )
         entry = JournalEntry(
             organisation=organisation,
             date=spec.date,
@@ -379,7 +381,12 @@ def post_entry(
         spec = _spec_of(entry)
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, entry.date, person, module)
-        check_policy(checked, caller=caller, attachments=attachment_count(entry))
+        check_policy(
+            checked,
+            caller=caller,
+            attachments=attachment_count(entry),
+            organisation=organisation,
+        )
         if entry.book_scope != checked.book_scope:
             JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
             entry.book_scope = checked.book_scope

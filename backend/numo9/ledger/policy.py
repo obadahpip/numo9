@@ -26,6 +26,19 @@ code                                       when
 ``ledger.journal.attachment_required``     a line on an account that requires an attachment, on
                                            a journal with no document attached
 =========================================  =====================================================
+
+**Expense journals** (C-03-T06) — manual journals with a line on an expense account, when the
+organisation's settings ask for it (C-03-T05):
+
+==============================================  ================================================
+``ledger.journal.expense_attachment_required``  ``journal_expense_requires_attachment`` on and no
+                                                document attached
+``ledger.journal.expense_contact_required``     ``journal_expense_requires_contact`` on and an
+                                                expense line without a contact
+==============================================  ================================================
+
+Documents posted by modules (invoices, bills, payroll) carry their own documents and contacts:
+the expense-journal rules apply to manual journals (``JournalType.MANUAL``).
 """
 
 from __future__ import annotations
@@ -37,7 +50,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
-from .models import AccountSubtype, Book, JournalCategory, LedgerError
+from .models import AccountSubtype, AccountType, Book, JournalCategory, JournalType, LedgerError
 from .validation import ValidatedJournal
 
 #: The process allowed to post each system journal type.
@@ -135,6 +148,46 @@ def account_flag_rules(checked: ValidatedJournal, problems: Problems, attachment
         )
 
 
+def expense_rules(
+    checked: ValidatedJournal, problems: Problems, attachments: int, organisation: Any
+) -> None:
+    """C-03-T06: the organisation's expense-journal toggles, on manual journals."""
+    if checked.spec.type != JournalType.MANUAL:
+        return
+    expense = [line for line in checked.lines if line.account.type == AccountType.EXPENSE]
+    if not expense:
+        return
+    from numo9.orgsettings.models import OrganisationSettings
+
+    flags = (
+        OrganisationSettings._base_manager.filter(organisation=organisation)
+        .values_list("journal_expense_requires_attachment", "journal_expense_requires_contact")
+        .first()
+    ) or (False, False)
+    needs_attachment, needs_contact = flags
+    if needs_attachment and not attachments:
+        problems.add(
+            _(
+                "This journal posts to an expense account (%(account)s): this organisation asks "
+                "for a supporting document — attach one to the journal."
+            ),
+            "ledger.journal.expense_attachment_required",
+            account=_account_label(expense[0].account),
+        )
+    if needs_contact:
+        for line in expense:
+            if not line.spec.contact:
+                problems.add(
+                    _(
+                        "Line %(line)d: expense lines need a contact in this organisation — "
+                        "choose one for %(account)s."
+                    ),
+                    "ledger.journal.expense_contact_required",
+                    line=line.line_no,
+                    account=_account_label(line.account),
+                )
+
+
 PROCESS_LABELS: dict[str, Any] = {
     "year_end": gettext_lazy("year-end close"),
     "payroll": gettext_lazy("payroll"),
@@ -147,6 +200,7 @@ def check_policy(
     *,
     caller: str | None = None,
     attachments: int = 0,
+    organisation: Any = None,
 ) -> None:
     """Every business rule of C-03 for a journal about to be posted (module docstring).
 
@@ -154,5 +208,7 @@ def check_policy(
     problems = Problems()
     type_rules(checked, problems, caller)
     account_flag_rules(checked, problems, attachments)
+    if organisation is not None:
+        expense_rules(checked, problems, attachments, organisation)
     if problems.errors:
         raise JournalRuleError(problems.errors)
