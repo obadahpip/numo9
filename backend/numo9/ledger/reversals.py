@@ -18,6 +18,7 @@ import logging
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from numo9.audit import service as audit
 from numo9.jobs.queues import DEFAULT
 from numo9.jobs.runtime import platform_job
 from numo9.orgsettings.locks import local_date
@@ -55,7 +56,7 @@ def post_due_reversals(now: dt.datetime | None = None) -> int:
             for entry in due(organisation, local_date(organisation, now)):
                 number = format_journal_number(organisation, entry.number)
                 try:
-                    reverse(
+                    reversal = reverse(
                         entry,
                         date=entry.auto_reverse_on,
                         narration=_("Automatic reversal of %(number)s") % {"number": number},
@@ -67,6 +68,19 @@ def post_due_reversals(now: dt.datetime | None = None) -> int:
                 except Exception as error:  # a lock or closed period (409s are APIExceptions)
                     logger.warning("auto-reversal of %s skipped: %s", number, error)
                     continue
+                audit.record(
+                    "ledger.journalentry.auto_reversed",
+                    obj=entry,
+                    changes={"status": [JournalStatus.POSTED, JournalStatus.REVERSED]},
+                    meta={
+                        "number": number,
+                        "reversed_by": format_journal_number(organisation, reversal.number),
+                        "date": entry.auto_reverse_on.isoformat()
+                        if entry.auto_reverse_on
+                        else None,
+                    },
+                    actor=None,
+                )
                 posted += 1
     return posted
 

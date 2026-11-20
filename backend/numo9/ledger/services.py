@@ -382,6 +382,7 @@ def save_draft(
                     code="ledger.journal.not_draft",
                     params={"journal": str(entry), "status": _status_label(entry.status)},
                 )
+        previous_type = entry.journal_type if entry.pk is not None else None
         entry.date, entry.type, entry.narration = spec.date, spec.type, spec.narration
         entry.journal_type = spec.journal_type
         entry.auto_reverse_on = spec.auto_reverse_on
@@ -390,6 +391,14 @@ def save_draft(
         entry.save()
         JournalLine.objects.filter(entry=entry).delete()
         JournalLine.objects.bulk_create(_lines(entry, checked))
+        if previous_type is not None and previous_type != entry.journal_type:
+            audit.record(
+                "ledger.journalentry.type_changed",
+                obj=entry,
+                changes={"journal_type": [previous_type, entry.journal_type]},
+                meta={},
+                actor=person if getattr(person, "is_authenticated", False) else None,
+            )
         return _written(entry)
 
 
