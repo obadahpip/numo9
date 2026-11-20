@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 423   Remaining: 2364   Progress: 15.18%
+TOTAL ATOMIC TASKS: 2787   Completed: 424   Remaining: 2363   Progress: 15.21%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -571,7 +571,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-09-T03 — Providers for contacts, accounts, journals (narration + line descriptions), organisations, users, documents
 ✅ A-09-T04 — Static providers: settings pages (incl. synonyms "lock date", "BN", "fiscal year"), reports catalogue, navigation entries — i18n aware
 ✅ A-09-T05 — Search API with permission/entitlement filtering, amount/number parsing, ranking (exact code > prefix > fts > trigram)
-❌ A-09-T06 — Quick-create registry (shortcut, permission, feature key, route) with documented shortcuts (N I, N B, N C, N Q, N P, N J, N S, N R, N T, N U)
+✅ A-09-T06 — Quick-create registry (shortcut, permission, feature key, route) with documented shortcuts (N I, N B, N C, N Q, N P, N J, N S, N R, N T, N U)
 ❌ A-09-T07 — Command palette UI (cmdk) with groups, recents, gated items explained
 ❌ A-09-T08 — Shortcut sheet (?) and inline shortcut hints on buttons
 ❌ A-09-T09 — Backfill command reindex_search --org

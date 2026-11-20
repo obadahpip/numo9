@@ -1989,6 +1989,18 @@
       "title": "You can't do this here yet"
     }
   },
+  "quickCreate": {
+    "bill": "New bill",
+    "contact": "New contact",
+    "invoice": "New invoice",
+    "journal": "New manual journal",
+    "purchaseOrder": "New purchase order",
+    "quote": "New quote",
+    "receive": "Receive money",
+    "spend": "Spend money",
+    "transfer": "Transfer money",
+    "user": "Invite a user"
+  },
   "routes": {
     "chartOfAccounts": "Chart of accounts",
     "contacts": "Contacts",
