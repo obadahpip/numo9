@@ -122,4 +122,33 @@ export const wm = defineMessages({
     defaultMessage: "Loading accounts…",
     description: "While the chart of accounts loads",
   },
+  blocked: {
+    id: "journals.write.blocked",
+    defaultMessage:
+      "A journal can't take a bank or cash account below zero. Record the money coming in first, or ask your adviser.",
+    description: "Shown to people who aren't advisers when the journal would overdraw cash",
+  },
+  overrideTitle: {
+    id: "journals.write.overrideTitle",
+    defaultMessage: "Post below zero?",
+    description: "Title of the adviser override dialog",
+  },
+  overrideBody: {
+    id: "journals.write.overrideBody",
+    defaultMessage:
+      "As an adviser you may post it anyway. The reason is kept with the journal and in the audit log.",
+    description: "Explanation in the adviser override dialog",
+  },
+  overrideReason: {
+    id: "journals.write.overrideReason",
+    defaultMessage: "Reason (at least {min, number} characters)",
+    description: "Label of the override reason field",
+  },
+  overrideConfirm: {
+    id: "journals.write.overrideConfirm",
+    defaultMessage: "Post with this reason",
+    description: "Button: post past the cash guard",
+  },
+  cancel: { id: "journals.write.cancel", defaultMessage: "Cancel", description: "Button" },
+  close: { id: "journals.write.close", defaultMessage: "Close", description: "Close the dialog" },
 });

@@ -6,7 +6,7 @@
  * description) and Post / Save as draft. As the journal is typed, the server is asked what it
  * would say (`journals/check`): problems are listed before posting.
  */
-import { Button, ErrorState, Input } from "@numo9/ui";
+import { Button, Dialog, ErrorState, Input } from "@numo9/ui";
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 
 import { accountsApi, type Account } from "@/accounts/api";
@@ -26,6 +26,8 @@ import { JournalTypePicker } from "./JournalTypePicker";
 import { wm } from "./messages";
 
 export const CHECK_DEBOUNCE_MS = 400;
+/** The shortest reason an adviser may give to post below zero (server rule, C-03-T08). */
+export const MIN_OVERRIDE_REASON = 10;
 
 const emptyLine = (): LineInput => ({
   account: "",
@@ -63,6 +65,9 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
   const [refusal, setRefusal] = useState<Refusal | null>(null);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [overrideOpen, setOverrideOpen] = useState(false);
+  const [reason, setReason] = useState("");
+  const reasonId = useId();
 
   useEffect(() => {
     accountsApi
@@ -107,11 +112,14 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
   const setLine = (index: number, changes: Partial<LineInput>) =>
     setLines((rows) => rows.map((row, i) => (i === index ? { ...row, ...changes } : row)));
 
-  const submit = async (post: boolean) => {
+  const submit = async (post: boolean, overrideReason = "") => {
     setBusy(true);
     setFailed(false);
     setRefusal(null);
-    const result = await writeApi.create(org, { ...input, post });
+    const body = overrideReason
+      ? { ...input, post, override_reason: overrideReason }
+      : { ...input, post };
+    const result = await writeApi.create(org, body);
     setBusy(false);
     if (result.status === 201) {
       const href = `/o/${org}/accounting/journals/${result.body.id}`;
@@ -119,12 +127,28 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       else window.location.assign(href);
       return;
     }
+    if (result.status === 409 && result.body.code === "ledger.journal.override_reason_required") {
+      setOverrideOpen(true);
+      setCheck((c) =>
+        c ? { ...c, adviser: true, shortfalls: result.body.shortfalls ?? c.shortfalls } : c,
+      );
+      return;
+    }
     if (result.status === 400 || result.status === 409) setRefusal(result.body);
     else setFailed(true);
   };
 
+  const shortfalls = refusal?.shortfalls ?? check?.shortfalls ?? [];
+  const adviser = refusal?.adviser ?? check?.adviser ?? false;
+  const blocked = shortfalls.length > 0 && !adviser;
+
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
+    if (blocked) return;
+    if (shortfalls.length > 0 && adviser) {
+      setOverrideOpen(true);
+      return;
+    }
     void submit(true);
   };
 
@@ -137,6 +161,8 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       />
     );
   const problems = refusal?.errors ?? check?.errors ?? [];
+  const chipFor = (accountId: string) =>
+    shortfalls.find((shortfall) => shortfall.account.id === accountId)?.message;
 
   return (
     <form
@@ -201,6 +227,14 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
                       </option>
                     ))}
                   </select>
+                  {line.account && chipFor(line.account) ? (
+                    <p
+                      data-chip="negative-cash"
+                      className="mt-1 inline-flex rounded-full bg-surface-danger-subtle px-2 py-0.5 text-xs font-medium text-fg-danger"
+                    >
+                      {chipFor(line.account)}
+                    </p>
+                  ) : null}
                 </td>
                 <td className="py-2 pe-2">
                   <Input
@@ -262,6 +296,11 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
           </ul>
         </section>
       ) : null}
+      {blocked ? (
+        <p role="alert" className="text-sm font-medium text-fg-danger" data-blocked="">
+          {fm(wm.blocked)}
+        </p>
+      ) : null}
       {failed ? (
         <p role="alert" className="text-sm text-fg-danger">
           {fm(wm.failed)}
@@ -269,7 +308,7 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       ) : null}
 
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" disabled={busy || !accounts}>
+        <Button type="submit" disabled={busy || !accounts || blocked}>
           {busy ? fm(wm.posting) : fm(wm.post)}
         </Button>
         <Button
@@ -281,6 +320,48 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
           {fm(wm.saveDraft)}
         </Button>
       </div>
+      <Dialog
+        open={overrideOpen}
+        onOpenChange={setOverrideOpen}
+        title={fm(wm.overrideTitle)}
+        description={fm(wm.overrideBody)}
+        closeLabel={fm(wm.close)}
+        footer={
+          <>
+            <Button variant="secondary" type="button" onClick={() => setOverrideOpen(false)}>
+              {fm(wm.cancel)}
+            </Button>
+            <Button
+              type="button"
+              disabled={busy || reason.trim().length < MIN_OVERRIDE_REASON}
+              onClick={() => {
+                setOverrideOpen(false);
+                void submit(true, reason.trim());
+              }}
+            >
+              {fm(wm.overrideConfirm)}
+            </Button>
+          </>
+        }
+      >
+        <ul className="mb-3 list-disc ps-5 text-sm text-fg-danger">
+          {shortfalls.map((shortfall) => (
+            <li key={shortfall.account.id}>{shortfall.message}</li>
+          ))}
+        </ul>
+        <label htmlFor={reasonId} className="text-sm font-medium text-fg">
+          {fm(wm.overrideReason, { min: MIN_OVERRIDE_REASON })}
+        </label>
+        <textarea
+          id={reasonId}
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+          rows={3}
+          minLength={MIN_OVERRIDE_REASON}
+          required
+          className="mt-1 w-full rounded-md border border-border bg-surface p-2 text-sm text-fg"
+        />
+      </Dialog>
     </form>
   );
 }
