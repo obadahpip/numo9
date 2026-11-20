@@ -20,12 +20,14 @@ from __future__ import annotations
 
 import datetime as dt
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
 from django.utils.translation import gettext_lazy as _
 
 from .dashboard import (
     COUNT,
+    LIST,
     WORKLOAD,
     DashboardContext,
     Widget,
@@ -36,6 +38,7 @@ from .dashboard import (
 from .models import DirectoryStatus
 
 TRIAL_ENDING_DAYS = 7
+DEADLINE_DAYS = 30
 
 
 def _count(filters: dict[str, list[str]], rows: Callable[[DashboardContext], Any]) -> Any:
@@ -104,6 +107,64 @@ def open_tasks(member: Any) -> int:
     return 0
 
 
+# ---- deadlines (T05) ------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Deadline:
+    """A filing or remittance due date of one organisation."""
+
+    date: dt.date
+    kind: str  # "gst_hst", "payroll_remittance", "t2", "t4" …
+    label: str
+    organisation_id: int
+
+
+#: ``provider(organisation_ids, start, end) -> list[Deadline]``.
+DeadlineProvider = Callable[[set[int], dt.date, dt.date], list[Deadline]]
+_deadline_providers: dict[str, DeadlineProvider] = {}
+
+
+def register_deadline_provider(name: str, provider: DeadlineProvider) -> None:
+    _deadline_providers[name] = provider
+
+
+def unregister_deadline_provider(name: str) -> None:
+    _deadline_providers.pop(name, None)
+
+
+def no_deadlines_yet(organisations: set[int], start: dt.date, end: dt.date) -> list[Deadline]:
+    """The Phase 0 stub: no tax or payroll module yet, so no deadline."""
+    return []
+
+
+def deadlines(ctx: DashboardContext) -> WidgetAnswer:
+    from django.utils import timezone
+
+    start = timezone.localdate(ctx.now)
+    end = start + dt.timedelta(days=DEADLINE_DAYS)
+    names = dict(ctx.rows.values_list("organisation_id", "name"))
+    public = dict(ctx.rows.values_list("organisation_id", "organisation__public_id"))
+    found: list[Deadline] = []
+    for provider in list(_deadline_providers.values()):
+        found.extend(provider(set(names), start, end))
+    found = [d for d in found if d.organisation_id in names and start <= d.date <= end]
+    found.sort(key=lambda d: (d.date, names[d.organisation_id].lower()))
+    return WidgetAnswer(
+        count=len(found),
+        items=[
+            {
+                "date": d.date.isoformat(),
+                "kind": d.kind,
+                "label": d.label,
+                "organisation_id": str(public[d.organisation_id]),
+                "organisation_name": names[d.organisation_id],
+            }
+            for d in found
+        ],
+    )
+
+
 def register_phase0_widgets() -> None:
     register_widget(
         Widget(
@@ -157,6 +218,18 @@ def register_phase0_widgets() -> None:
     )
     register_widget(
         Widget(
+            "deadlines",
+            _("Deadlines in the next 30 days"),
+            LIST,
+            deadlines,
+            description=_(
+                "GST/HST, payroll remittances, T2 and T4 — from the tax and payroll modules."
+            ),
+            order=60,
+        )
+    )
+    register_widget(
+        Widget(
             "workload",
             _("Workload"),
             WORKLOAD,
@@ -165,3 +238,4 @@ def register_phase0_widgets() -> None:
             order=70,
         )
     )
+    register_deadline_provider("phase0", no_deadlines_yet)
