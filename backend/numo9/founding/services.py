@@ -51,6 +51,7 @@ def allocate_founding_slot(
     existing = FoundingSlot.objects.filter(organisation=organisation).first()
     if existing is not None:
         return existing if existing.released_at is None else None
+    FoundingCounter.current()  # the migration seeds the row; recreate it if it was ever removed
     try:
         with transaction.atomic():
             with connection.cursor() as cursor:
