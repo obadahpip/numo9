@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 14:12-0500\n"
+"POT-Creation-Date: 2026-11-20 14:27-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -448,6 +448,14 @@ msgstr "Inclus dans une exportation groupée"
 
 msgid "Numo9 support session ended"
 msgstr "Session du soutien Numo9 terminée"
+
+#, fuzzy
+#| msgid "Role given"
+msgid "Founding place given"
+msgstr "Rôle attribué"
+
+msgid "Founding place released"
+msgstr ""
 
 #, python-format
 msgid "%(start)s to %(end)s · times in %(zone)s"

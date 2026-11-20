@@ -22,6 +22,7 @@ rolled back takes its slot with it.
 from __future__ import annotations
 
 import datetime as dt
+from typing import Any
 
 from django.db import IntegrityError, connection, transaction
 from django.utils import timezone
@@ -71,6 +72,7 @@ def allocate_founding_slot(
                 organisation=organisation, slot_no=int(row[0]), payment_ref=payment_ref[:255]
             )
             sync_founding_flag(organisation)
+            _audit(slot, "founding.slot.allocated", {"payment_ref": slot.payment_ref})
             from .public import clear_cache
 
             clear_cache()
@@ -79,6 +81,22 @@ def allocate_founding_slot(
         # A concurrent transaction gave this organisation its slot first; our increment is undone.
         held = FoundingSlot.objects.filter(organisation=organisation).first()
         return held if held is not None and held.released_at is None else None
+
+
+def _audit(slot: FoundingSlot, action: str, extra: dict[str, Any], actor: Any = None) -> None:
+    """Audit entry (U-08-T10) in the organisation's log, in the caller's transaction."""
+    from numo9.audit.service import record
+    from numo9.tenancy.context import org_context
+
+    with org_context(slot.organisation):
+        record(
+            action,
+            obj=slot,
+            organisation=slot.organisation,
+            object_label=str(slot),
+            meta={"slot_no": slot.slot_no, **extra},
+            actor=actor,
+        )
 
 
 def sync_founding_flag(organisation: Organisation) -> bool:
@@ -114,14 +132,26 @@ class ReleaseReason:
     ADMIN = "admin"
 
 
-def release_slot(slot: FoundingSlot, reason: str, at: dt.datetime | None = None) -> FoundingSlot:
-    """Release the slot (its number is never handed out again) and drop the founding flag."""
+def release_slot(
+    slot: FoundingSlot,
+    reason: str,
+    at: dt.datetime | None = None,
+    *,
+    actor: Any = None,
+    note: str = "",
+) -> FoundingSlot:
+    """Release the slot (its number is never handed out again) and drop the founding flag.
+    ``note`` is the free-text reason of a manual release (U-08-T11), kept in the audit entry."""
     if slot.released_at is not None:
         return slot
     slot.released_at = at or timezone.now()
     slot.release_reason = reason[:64]
     slot.save(update_fields=["released_at", "release_reason"])
     sync_founding_flag(slot.organisation)
+    meta: dict[str, Any] = {"reason": slot.release_reason}
+    if note:
+        meta["note"] = note[:500]
+    _audit(slot, "founding.slot.released", meta, actor=actor)
     return slot
 
 
