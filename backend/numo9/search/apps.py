@@ -9,6 +9,13 @@ class SearchConfig(AppConfig):
     verbose_name = "Global search"
 
     def ready(self) -> None:
+        from django.contrib.postgres.lookups import TrigramStrictWordSimilar
+        from django.db import models
+
         from .providers import register_phase0_providers
+
+        # ``title__trigram_strict_word_similar`` (``<<%``, served by the trigram GIN index)
+        # without installing the whole django.contrib.postgres app.
+        models.CharField.register_lookup(TrigramStrictWordSimilar)
 
         register_phase0_providers()

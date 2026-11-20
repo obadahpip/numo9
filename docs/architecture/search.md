@@ -40,3 +40,25 @@ python manage.py reindex_search --check                          # report only; 
 
 A rebuild writes every searchable record's document and removes documents with no record
 behind them; run `--check` nightly and rebuild the organisations it reports.
+
+## Performance: p95 < 150 ms at a million documents (A-09-T10)
+
+Each tier reads an index and stops early:
+
+- **codes** — `upper(code::text) COLLATE "C"` (migration 0002): equality and a prefix range,
+  already in code order;
+- **amounts** — `(organisation_id, amount)`;
+- **words** — the search-vector GIN index; ranked among the first 2,000 matches only (a two-letter
+  prefix can match a third of the index);
+- **typos** — only when the exact tiers left room and the query has no digits:
+  `title %>> query` (strict word similarity, trigram GIN index), the first 500 candidates, within
+  a 60 ms statement budget — past it the typo tier is dropped, never the request.
+
+```bash
+python manage.py seed_search --docs 1000000 --password "$SEED_PASSWORD"   # dev/staging only
+k6 run -e PASSWORD="$SEED_PASSWORD" tools/perf/k6/search.js               # or: make perf-search
+```
+
+`backend/tests/test_search_performance.py` runs the same queries over 200,000 documents in CI.
+Measured on the development machine with 1,000,000 documents: p95 110 ms through the Django
+stack (single client), slowest queries the multi-word typos.

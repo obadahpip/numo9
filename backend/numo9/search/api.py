@@ -17,12 +17,19 @@ trigram (by similarity).
 
 from __future__ import annotations
 
+import logging
 import re
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
-from django.contrib.postgres.search import SearchQuery, SearchRank, TrigramSimilarity
-from django.db.models import F, Q
+from django.contrib.postgres.search import (
+    SearchQuery,
+    SearchRank,
+    TrigramStrictWordSimilarity,
+)
+from django.db import OperationalError, connection, transaction
+from django.db.models import F, Q, TextField
+from django.db.models.functions import Cast, Collate, Upper
 from django.utils.translation import gettext as _
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
@@ -39,9 +46,13 @@ from numo9.workspace.search import query_words
 from .models import SearchDocument
 from .static import NAVIGATION, REPORTS, SETTINGS, match_static
 
+logger = logging.getLogger(__name__)
+
 EVERYONE_HERE = "organisation.profile.view"  # every organisation and practice role has it
 MAX_RESULTS = 20
-TRIGRAM_MIN = 0.3
+TEXT_CANDIDATES = 2000
+TRIGRAM_CANDIDATES = 500
+TRIGRAM_BUDGET_MS = 60
 _AMOUNT = re.compile(r"^\$?\s*-?\d{1,3}(?:[,\s]\d{3})*(?:\.\d{1,2})?$|^\$?\s*-?\d+(?:\.\d{1,2})?$")
 _CODE = re.compile(r"^[A-Za-z]{0,6}-?\d[\w-]*$")
 
@@ -75,9 +86,12 @@ def ranked_documents(query: str, limit: int = MAX_RESULTS) -> list[tuple[int, fl
 
     text = query.strip()
     if looks_like_code(text):
-        for document in rows.filter(code__iexact=text)[:limit]:
+        # ``upper(code::text) COLLATE "C"`` is indexed (migration 0002): equality and a prefix
+        # range, already in code order.
+        coded = rows.annotate(ucode=Collate(Upper(Cast("code", TextField())), "C"))
+        for document in coded.filter(ucode=text.upper())[:limit]:
             keep(TIER_EXACT_CODE, 1.0, document)
-        for document in rows.filter(code__istartswith=text).order_by("code")[:limit]:
+        for document in coded.filter(ucode__startswith=text.upper()).order_by("ucode")[:limit]:
             keep(TIER_CODE_PREFIX, 1.0 / (1 + len(document.code)), document)
     amount = parse_amount(text)
     if amount is not None:
@@ -88,23 +102,51 @@ def ranked_documents(query: str, limit: int = MAX_RESULTS) -> list[tuple[int, fl
         search = SearchQuery(
             " & ".join(f"{w}:*" for w in words), search_type="raw", config="simple"
         )
+        # Ranked among the first TEXT_CANDIDATES matches: a short prefix ("ma") can match a large
+        # share of a million documents, and ranking them all would blow the 150 ms budget.
+        candidates = rows.filter(search_vector=search).values("pk")[:TEXT_CANDIDATES]
         matched = (
-            rows.filter(search_vector=search)
+            rows.filter(pk__in=candidates)
             .annotate(rank=SearchRank(F("search_vector"), search))
             .order_by("-rank")[:limit]
         )
         for document in matched:
             keep(TIER_TEXT, float(document.rank), document)
-        if len(text) >= 3:
+        # Typo tolerance is the fallback: only when the exact tiers left room, and for names
+        # (a query with digits is a code, number or amount — its trigrams match half the index).
+        if len(text) >= 3 and len(found) < limit and not any(ch.isdigit() for ch in text):
+            # ``text <<% title``: the query is close to a run of whole words of the title
+            # ("pinecrst" → "Pinecrest Rénovations"), served by the trigram GIN index; threshold
+            # 0.5 (pg_trgm.strict_word_similarity_threshold's default).
+            close = rows.filter(title__trigram_strict_word_similar=text).values("pk")
             similar = (
-                rows.annotate(similarity=TrigramSimilarity("title", text))
-                .filter(similarity__gte=TRIGRAM_MIN)
+                rows.filter(pk__in=close[:TRIGRAM_CANDIDATES])
+                .annotate(similarity=TrigramStrictWordSimilarity(text, "title"))
                 .order_by("-similarity")[:limit]
             )
-            for document in similar:
+            for document in _within_budget(similar):
                 keep(TIER_TRIGRAM, float(document.similarity), document)
     ordered = sorted(found.values(), key=lambda item: (-item[0], -item[1], item[2].title))
     return ordered[:limit]
+
+
+def _within_budget(queryset: Any) -> list[Any]:
+    """The typo tier is best effort: when a query's trigrams are common (".pdf" over a million
+    file names) the recheck could take seconds, so it gets TRIGRAM_BUDGET_MS and is dropped past
+    that — the exact tiers already answered. (``SET LOCAL`` in a savepoint: undone with it.)"""
+    if connection.vendor != "postgresql":
+        return list(queryset)
+    try:
+        with transaction.atomic():
+            with connection.cursor() as cursor:
+                cursor.execute("SET LOCAL statement_timeout = %s", [TRIGRAM_BUDGET_MS])
+            rows = list(queryset)
+            with connection.cursor() as cursor:
+                cursor.execute("SET LOCAL statement_timeout TO DEFAULT")
+            return rows
+    except OperationalError:  # canceled by the timeout; the savepoint is rolled back
+        logger.info("search: typo tier over budget, skipped")
+        return []
 
 
 class _Gate:
