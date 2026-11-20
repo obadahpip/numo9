@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 405   Remaining: 2382   Progress: 14.53%
+TOTAL ATOMIC TASKS: 2787   Completed: 406   Remaining: 2381   Progress: 14.57%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -547,7 +547,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-05-T13 — Funnel events (trial_started, reminder_sent, converted, expired) for U-06 metrics
 
 [V-05]
-❌ V-05-T03 — Invite flow reuse (A-02) with practice role selection + pending state/expiry
+✅ V-05-T03 — Invite flow reuse (A-02) with practice role selection + pending state/expiry
 
 [S-06]
 ❌ S-06-T05 — Per-org rate limiter (Redis token bucket) middleware with package-based limits

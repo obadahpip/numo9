@@ -442,6 +442,13 @@ class OrgOwnedModel(models.Model):
 # ---- Invitations (A-02-T08) ---------------------------------------------------------------------
 
 INVITATION_TTL = timedelta(days=7)
+#: A practice's staff invitation waits longer (V-05-T03): 14 days, shown "Pending" until then.
+STAFF_INVITATION_TTL = timedelta(days=14)
+
+
+def invitation_ttl(kind: str) -> timedelta:
+    """How long an invitation of ``kind`` stays usable."""
+    return STAFF_INVITATION_TTL if kind == "practice_staff" else INVITATION_TTL
 
 
 class InvitationKind(models.TextChoices):
@@ -492,7 +499,8 @@ class Invitation(models.Model):
 
     The link token is never stored — only ``token_hash``. At most one *pending* invitation exists
     per email address and target (database constraint); accepting or revoking it frees the slot.
-    Expiry (7 days) is checked by the service (A-02-T09), not by the constraint.
+    Expiry (7 days; 14 for ``practice_staff``, V-05-T03 — ``invitation_ttl``) is checked by the
+    service (A-02-T09), not by the constraint.
     """
 
     public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)

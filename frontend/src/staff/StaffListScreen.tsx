@@ -4,7 +4,8 @@
  * Practice staff list (V-05-T09, wireframe 33): name, practice role, organisations they can open,
  * last active and status (active, dormant, suspended, pending invitation), with the dormant-staff
  * widget above. Opening a row goes to the person's page (activity, assignments, suspend, remove);
- * a pending invitation has no page yet.
+ * a pending invitation has no page yet: it can be resent or withdrawn in place. "Invite staff"
+ * sends a practice invitation with a role, valid 14 days (V-05-T03).
  */
 import {
   DataGrid,
@@ -24,6 +25,13 @@ import { practiceStaffMemberUrl } from "@/routing/routes";
 
 import { staffApi, type StaffMember } from "./api";
 import { DormantStaffWidget } from "./DormantStaffWidget";
+import {
+  InviteStaffDialog,
+  PendingInvitationActions,
+  practiceRoleLabel,
+} from "./InviteStaffDialog";
+import type { StaffInvitation } from "./invitations";
+import { im } from "./inviteMessages";
 import { m } from "./messages";
 import { StaffStatusBadge } from "./StaffStatusBadge";
 import { staffStatus, staffStatusLabel, type StaffStatus } from "./status";
@@ -58,6 +66,20 @@ export function StaffListScreen({ practice }: { practice: string }) {
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [status, setStatus] = useState<DataGridStatus>("loading");
   const [attempt, setAttempt] = useState(0);
+  const [notice, setNotice] = useState("");
+
+  const asRow = (invitation: StaffInvitation, roleLabel: string): StaffMember => ({
+    id: invitation.id,
+    name: "",
+    email: invitation.email,
+    role: invitation.role,
+    role_label: roleLabel,
+    status: "pending",
+    invitation_expires_at: invitation.expires_at,
+    organisation_count: 0,
+    last_login: null,
+    dormant: false,
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -141,6 +163,26 @@ export function StaffListScreen({ practice }: { practice: string }) {
                   })}
                 </span>
               ) : null}
+              {row.status === "pending" ? (
+                <PendingInvitationActions
+                  row={row}
+                  onResent={(invitation) => {
+                    setStaff((rows) =>
+                      rows.map((r) =>
+                        r.id === row.id
+                          ? { ...r, invitation_expires_at: invitation.expires_at }
+                          : r,
+                      ),
+                    );
+                    setNotice(fm(im.resent, { email: row.email }));
+                  }}
+                  onRevoked={() => {
+                    setStaff((rows) => rows.filter((r) => r.id !== row.id));
+                    setNotice(fm(im.revoked, { email: row.email }));
+                  }}
+                  onError={setNotice}
+                />
+              ) : null}
             </span>
           );
         },
@@ -150,10 +192,25 @@ export function StaffListScreen({ practice }: { practice: string }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-fg">{fm(m.listTitle)}</h1>
-        <p className="text-sm text-fg-muted">{fm(m.listIntro)}</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-fg">{fm(m.listTitle)}</h1>
+          <p className="text-sm text-fg-muted">{fm(m.listIntro)}</p>
+        </div>
+        <InviteStaffDialog
+          practice={practice}
+          onInvited={(invitation) => {
+            setStaff((rows) => [
+              ...rows,
+              asRow(invitation, practiceRoleLabel(invitation.role, fm)),
+            ]);
+            setNotice(fm(im.sent, { email: invitation.email }));
+          }}
+        />
       </div>
+      <p role="status" className="text-sm text-fg">
+        {notice}
+      </p>
       <DormantStaffWidget practice={practice} />
       <DataGrid
         data={staff}

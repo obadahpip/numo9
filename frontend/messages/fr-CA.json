@@ -2331,6 +2331,27 @@
       "suspended": "{name}'s access is suspended.",
       "title": "Dormant staff"
     },
+    "invite": {
+      "body": "We email them a link to join your practice. It works once and for 14 days; until then they show as Pending.",
+      "cancel": "Cancel",
+      "close": "Close",
+      "email": "Email",
+      "emailInvalid": "Enter an email address, e.g. sam@yourpractice.ca.",
+      "failed": "The invitation wasn't sent. Try again.",
+      "open": "Invite staff",
+      "resend": "Resend",
+      "resendLabel": "Resend the invitation to {email}",
+      "resent": "Sent again to {email}: a new link for 14 days.",
+      "revoke": "Withdraw",
+      "revokeLabel": "Withdraw the invitation to {email}",
+      "revoked": "Invitation to {email} withdrawn.",
+      "role": "Practice role",
+      "roleAdmin": "Practice admin",
+      "roleHint": "You can change it later on their page.",
+      "send": "Send invitation",
+      "sent": "Invitation sent to {email}.",
+      "title": "Invite a staff member"
+    },
     "list": {
       "all": "All",
       "chip": "{column}: {value}",
