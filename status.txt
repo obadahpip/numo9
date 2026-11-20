@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 443   Remaining: 2344   Progress: 15.90%
+TOTAL ATOMIC TASKS: 2787   Completed: 444   Remaining: 2343   Progress: 15.93%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -597,7 +597,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-03-T13 — UI: negative-balance inline chip + adviser override dialog; block message for non-advisers
 ✅ C-03-T14 — UI: attachment-required state (red outline + message) and posting disabled until satisfied
 ✅ C-03-T15 — Audit hooks: type change, override, auto-reversal posted
-❌ C-03-T16 — Fixtures: REFINED teardown journals (417.22, 576.95) + negative-cash scenarios
+✅ C-03-T16 — Fixtures: REFINED teardown journals (417.22, 576.95) + negative-cash scenarios
 
 [F-01]
 ❌ F-01-T01 — Wireframes in Figma: banking home, add-account sheet, account detail, spend/receive money form, no-bank prompt
