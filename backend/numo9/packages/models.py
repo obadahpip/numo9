@@ -54,7 +54,14 @@ DEFAULT_LOCALE = "en-CA"
 NAME_MAX = 60
 DESCRIPTION_MAX = 300
 #: Known per-package limits: value a positive whole number, or null = unlimited.
-LIMIT_KEYS: frozenset[str] = frozenset({"max_org_users"})
+LIMIT_KEYS: frozenset[str] = frozenset(
+    {
+        "max_org_users",
+        # Per-organisation API rate limit (S-06-T05): requests a minute and burst.
+        "api_requests_per_minute",
+        "api_burst",
+    }
+)
 LIMIT_MAX = 100_000
 
 

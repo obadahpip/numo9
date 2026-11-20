@@ -119,6 +119,8 @@ MIDDLEWARE = [
     "numo9.audit.context.AuditContextMiddleware",
     # Active organisation + acting practice into contextvars (A-01-T03); needs request.user.
     "numo9.tenancy.middleware.TenantContextMiddleware",
+    # Per-organisation rate limit (S-06-T05): token bucket per organisation (needs the tenant).
+    "numo9.scale.ratelimit.OrgRateLimitMiddleware",
     # Demo organisations (U-07-T09): a signed-in request keeps the demo alive (last_active_at).
     "numo9.demo.purge.DemoActivityMiddleware",
     # Permission sets cached for one request only — never across requests (A-03-T04).
@@ -473,6 +475,15 @@ CELERY_RESULT_BACKEND = env_str(
 # in-process (tests, a dev server without Redis).
 METERING_REDIS_URL = env_str(
     "METERING_REDIS_URL", redis_database(env_str("REDIS_URL", "redis://localhost:6379/0"), 4)
+)
+# Per-organisation rate limit (S-06-T05, numo9/scale/ratelimit.py): 600 requests a minute,
+# burst 100, unless the package sets its own; buckets in Redis database 5 of REDIS_URL.
+NUMO9_ORG_RATE_LIMIT_ENABLED = env_bool("NUMO9_ORG_RATE_LIMIT_ENABLED", True)
+NUMO9_ORG_RATE_PER_MINUTE = env_int("NUMO9_ORG_RATE_PER_MINUTE", 600)
+NUMO9_ORG_RATE_BURST = env_int("NUMO9_ORG_RATE_BURST", 100)
+NUMO9_RATE_LIMIT_REDIS_URL = env_str(
+    "NUMO9_RATE_LIMIT_REDIS_URL",
+    redis_database(env_str("REDIS_URL", "redis://localhost:6379/0"), 5),
 )
 CELERY_RESULT_EXPIRES = timedelta(days=1)  # job outcomes users see are kept in JobRun (A-08-T02)
 CELERY_RESULT_EXTENDED = True  # task name, args and queue stored with the result (job dashboard)
