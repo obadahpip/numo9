@@ -915,6 +915,12 @@ class JournalLine(OrgOwnedModel):
                 fields=("organisation", "account", "book"), name="ledger_line_account_book_idx"
             ),
             models.Index(fields=("organisation", "entry"), name="ledger_line_entry_idx"),
+            # A contact's lines (AR/AP sub-ledger views, C-03-T02).
+            models.Index(
+                fields=("organisation", "contact"),
+                name="ledger_line_contact_idx",
+                condition=models.Q(contact__isnull=False),
+            ),
         ]
 
     def __str__(self) -> str:

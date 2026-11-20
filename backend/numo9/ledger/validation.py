@@ -19,6 +19,8 @@ code                               when
 ``ledger.journal.line_one_side``   both debit and credit, or neither
 ``ledger.journal.book_invalid``    a book other than both / accounting / tax
 ``ledger.journal.account_missing`` an account that isn't one of the organisation's
+``ledger.journal.contact_missing`` a line contact that isn't one of the organisation's contacts
+                                   (another organisation's, or deleted) — C-03-T02
 ``ledger.account.archived``        an archived account (C-01 ``assert_postable``)
 ``ledger.account.not_leaf``        a parent account (post to a sub-account)
 ``ledger.journal.unbalanced``      debits ≠ credits in a book the entry touches —
@@ -228,6 +230,29 @@ def _accounts(organisation: Organisation, lines: Sequence[LineSpec]) -> dict[int
     }
 
 
+def _contact_key(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    pk = getattr(value, "pk", value)
+    try:
+        return int(pk)
+    except (TypeError, ValueError):
+        return -1  # not an id at all: reported as missing
+
+
+def _contacts(organisation: Organisation, lines: Sequence[LineSpec]) -> set[int]:
+    from numo9.contacts.models import Contact
+
+    keys = {key for line in lines if (key := _contact_key(line.contact)) and key > 0}
+    if not keys:
+        return set()
+    return set(
+        Contact._base_manager.filter(
+            organisation=organisation, pk__in=keys, deleted_at__isnull=True
+        ).values_list("pk", flat=True)
+    )
+
+
 def validate_journal(
     spec: JournalSpec, organisation: Organisation | None = None
 ) -> ValidatedJournal:
@@ -244,6 +269,7 @@ def validate_journal(
             count=len(lines),
         )
     accounts = _accounts(organisation, lines)
+    contacts = _contacts(organisation, lines)
     validated: list[ValidatedLine] = []
     # (debit, credit, book) of every line; balancing needs them all to be valid amounts.
     amounts: list[tuple[Decimal, Decimal, str]] = []
@@ -267,6 +293,13 @@ def validate_journal(
                 "ledger.journal.book_invalid",
                 line=line_no,
                 book=line.book,
+            )
+        contact = _contact_key(line.contact)
+        if contact is not None and contact not in contacts:
+            problems.add(
+                _("Line %(line)d: the contact isn't one of this organisation's contacts."),
+                "ledger.journal.contact_missing",
+                line=line_no,
             )
         key = line.account.pk if isinstance(line.account, Account) else line.account
         account = accounts.get(key) if isinstance(key, int) else None

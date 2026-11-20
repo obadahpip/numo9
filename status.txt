@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 430   Remaining: 2357   Progress: 15.43%
+TOTAL ATOMIC TASKS: 2787   Completed: 431   Remaining: 2356   Progress: 15.46%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -584,7 +584,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [C-03]
 ✅ C-03-T01 — Add JournalType enum + journal_type field on JournalEntry (default General), migration; system types flagged non-selectable
-❌ C-03-T02 — Add nullable contact FK on JournalLine (org-scoped), index (org, contact)
+✅ C-03-T02 — Add nullable contact FK on JournalLine (org-scoped), index (org, contact)
 ❌ C-03-T03 — JournalPolicy service: validate type rules (tax-adjustment ⇒ all lines book=tax, no bank accounts; closing only from C-06 caller)
 ❌ C-03-T04 — Account-flag enforcement in JournalPolicy: require_contact, require_tracking, require_attachment per line
 ❌ C-03-T05 — Org settings: journal_expense_requires_attachment, journal_expense_requires_contact toggles (A-05 settings page section)

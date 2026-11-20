@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:06-0500\n"
+"POT-Creation-Date: 2026-11-20 17:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4142,6 +4142,10 @@ msgstr ""
 
 #, python-format
 msgid "Line %(line)d: “%(book)s” isn't a book (both, accounting or tax)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the contact isn't one of this organisation's contacts."
 msgstr ""
 
 #, python-format
