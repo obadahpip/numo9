@@ -151,4 +151,39 @@ export const wm = defineMessages({
   },
   cancel: { id: "journals.write.cancel", defaultMessage: "Cancel", description: "Button" },
   close: { id: "journals.write.close", defaultMessage: "Close", description: "Close the dialog" },
+  attachments: {
+    id: "journals.write.attachments",
+    defaultMessage: "Supporting documents",
+    description: "Heading of the journal's attachment drop zone",
+  },
+  attachHint: {
+    id: "journals.write.attachHint",
+    defaultMessage: "Drop a receipt or invoice here, or choose a file.",
+    description: "Text in the attachment drop zone",
+  },
+  attachButton: {
+    id: "journals.write.attachButton",
+    defaultMessage: "Attach a document",
+    description: "File picker of the journal's drop zone",
+  },
+  attachmentRequired: {
+    id: "journals.write.attachmentRequired",
+    defaultMessage: "This journal needs a supporting document before it can be posted.",
+    description: "Drop zone message when an attachment is required",
+  },
+  postNeedsAttachment: {
+    id: "journals.write.postNeedsAttachment",
+    defaultMessage: "Attach the supporting document first.",
+    description: "Why Post is disabled: an attachment is required",
+  },
+  uploading: {
+    id: "journals.write.uploading",
+    defaultMessage: "Uploading {name}…",
+    description: "While a document uploads",
+  },
+  uploadFailed: {
+    id: "journals.write.uploadFailed",
+    defaultMessage: "{name} couldn't be uploaded. Try again.",
+    description: "A document upload failed",
+  },
 });

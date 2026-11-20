@@ -6,11 +6,13 @@
  * description) and Post / Save as draft. As the journal is typed, the server is asked what it
  * would say (`journals/check`): problems are listed before posting.
  */
-import { Button, Dialog, ErrorState, Input } from "@numo9/ui";
+import { Button, Dialog, ErrorState, Input, Tooltip } from "@numo9/ui";
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 
 import { accountsApi, type Account } from "@/accounts/api";
 import { useDebounced } from "@/directory/useDebounced";
+import type { FileDocument } from "@/files/api";
+import { uploadFile } from "@/files/upload";
 import { useFormatMessage } from "@/i18n";
 
 import {
@@ -68,6 +70,10 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
   const [overrideOpen, setOverrideOpen] = useState(false);
   const [reason, setReason] = useState("");
   const reasonId = useId();
+  const postReasonId = useId();
+  const attachId = useId();
+  const [documents, setDocuments] = useState<FileDocument[]>([]);
+  const [upload, setUpload] = useState<{ name: string; failed: boolean } | null>(null);
 
   useEffect(() => {
     accountsApi
@@ -86,9 +92,9 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       narration,
       auto_reverse_on: autoReverse || null,
       lines: filledLines(lines),
-      attachments: [],
+      attachments: documents.map((document) => document.id),
     }),
-    [date, journalType, narration, autoReverse, lines],
+    [date, journalType, narration, autoReverse, lines, documents],
   );
   const asked = useDebounced(input, CHECK_DEBOUNCE_MS);
 
@@ -138,13 +144,30 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
     else setFailed(true);
   };
 
+  const attach = async (files: FileList | null) => {
+    for (const file of Array.from(files ?? [])) {
+      setUpload({ name: file.name, failed: false });
+      const state = await uploadFile(org, file, () => undefined);
+      if (state.kind === "done") {
+        setDocuments((items) => [...items, state.document]);
+        setUpload(null);
+      } else {
+        setUpload({ name: file.name, failed: true });
+      }
+    }
+  };
+
   const shortfalls = refusal?.shortfalls ?? check?.shortfalls ?? [];
   const adviser = refusal?.adviser ?? check?.adviser ?? false;
   const blocked = shortfalls.length > 0 && !adviser;
+  const flagged = lines.some(
+    (line) => (accounts ?? []).find((a) => a.id === line.account)?.require_attachment,
+  );
+  const needsAttachment = documents.length === 0 && (Boolean(check?.needs.attachment) || flagged);
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (blocked) return;
+    if (blocked || needsAttachment) return;
     if (shortfalls.length > 0 && adviser) {
       setOverrideOpen(true);
       return;
@@ -189,6 +212,52 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
         </label>
       </div>
       <JournalTypePicker value={journalType} onChange={setJournalType} />
+
+      <section
+        aria-labelledby={`${attachId}-title`}
+        data-attachments=""
+        data-required={needsAttachment ? "true" : undefined}
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={(event) => {
+          event.preventDefault();
+          void attach(event.dataTransfer.files);
+        }}
+        className={`flex flex-col gap-2 rounded-md border-2 border-dashed p-4 ${
+          needsAttachment ? "border-border-danger bg-surface-danger-subtle" : "border-border"
+        }`}
+      >
+        <h2 id={`${attachId}-title`} className="text-sm font-semibold text-fg">
+          {fm(wm.attachments)}
+        </h2>
+        <p className="text-sm text-fg-muted">{fm(wm.attachHint)}</p>
+        {needsAttachment ? (
+          <p className="text-sm font-medium text-fg-danger" data-attachment-required="">
+            {fm(wm.attachmentRequired)}
+          </p>
+        ) : null}
+        <label className="w-fit cursor-pointer rounded-md border border-border px-3 py-2 text-sm font-medium text-fg">
+          {fm(wm.attachButton)}
+          <input
+            type="file"
+            className="sr-only"
+            onChange={(event) => void attach(event.target.files)}
+          />
+        </label>
+        {documents.length ? (
+          <ul className="text-sm text-fg">
+            {documents.map((document) => (
+              <li key={document.id}>{document.name}</li>
+            ))}
+          </ul>
+        ) : null}
+        {upload ? (
+          <p role="status" className="text-sm text-fg-muted">
+            {upload.failed
+              ? fm(wm.uploadFailed, { name: upload.name })
+              : fm(wm.uploading, { name: upload.name })}
+          </p>
+        ) : null}
+      </section>
 
       <table className="w-full text-sm">
         <caption className="pb-2 text-start text-lg font-semibold text-fg">{fm(wm.lines)}</caption>
@@ -308,9 +377,22 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       ) : null}
 
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" disabled={busy || !accounts || blocked}>
-          {busy ? fm(wm.posting) : fm(wm.post)}
-        </Button>
+        {needsAttachment ? (
+          <Tooltip content={fm(wm.postNeedsAttachment)}>
+            <span tabIndex={0} className="inline-flex rounded-md" data-post-reason="">
+              <Button type="submit" disabled aria-describedby={postReasonId}>
+                {fm(wm.post)}
+              </Button>
+              <span id={postReasonId} className="sr-only">
+                {fm(wm.postNeedsAttachment)}
+              </span>
+            </span>
+          </Tooltip>
+        ) : (
+          <Button type="submit" disabled={busy || !accounts || blocked}>
+            {busy ? fm(wm.posting) : fm(wm.post)}
+          </Button>
+        )}
         <Button
           variant="secondary"
           type="button"

@@ -3,7 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { expectAccessible, mockCsrf } from "./auth-helpers";
 
 /**
- * C-03-T13 / T14 — manual journal controls. The teardown scenario (REFINED): Petty Cash at zero,
+ * C-03-T13 / T14 — manual journal controls (T14: an attachment-required journal can't be posted until a document is attached). The teardown scenario (REFINED): Petty Cash at zero,
  * a 994.17 journal crediting it. Someone who isn't an adviser sees the chip on the Petty Cash line
  * ("Petty Cash would be −994.17 on 15 Jun 2026"), the block message, and Post disabled; an adviser
  * posts through a dialog that needs a reason of at least 10 characters (sent with the journal).
@@ -140,4 +140,85 @@ test("adviser: the override dialog needs a reason, sent with the journal", async
       { account: PETTY, credit: "994.17" },
     ],
   });
+});
+
+const DOC = "dddddddd-0000-4000-8000-00000000000d";
+const receipt = {
+  id: DOC,
+  name: "staples-receipt.pdf",
+  mime: "application/pdf",
+  size: 1024,
+  sha256: "",
+  status: "clean",
+  status_label: "Clean",
+  source: "upload",
+};
+
+test("attachment required: red drop zone, Post disabled with the reason, enabled once attached", async ({
+  page,
+}) => {
+  await mockCsrf(page);
+  const checks: Record<string, unknown>[] = [];
+  await mockJournalApi(page, {});
+  await page.route(`**/api/v1/o/${ORG}/journals/check`, (route) => {
+    const body = route.request().postDataJSON() as { attachments: string[] };
+    checks.push(body);
+    const attached = body.attachments.length > 0;
+    return route.fulfill({
+      json: {
+        ok: attached,
+        errors: attached
+          ? []
+          : [
+              {
+                code: "ledger.journal.expense_attachment_required",
+                message: "This journal posts to an expense account (6100 · Office supplies).",
+              },
+            ],
+        shortfalls: [],
+        adviser: false,
+        needs: { attachment: !attached, contact_lines: [] },
+      },
+    });
+  });
+  await page.route(`**/api/v1/o/${ORG}/files/uploads`, (route) =>
+    route.fulfill({
+      status: 201,
+      json: {
+        document: { ...receipt, status: "pending" },
+        upload: { url: "/bucket-upload", fields: { key: "org/acme/x" } },
+        max_size: 26214400,
+      },
+    }),
+  );
+  await page.route("**/bucket-upload", (route) => route.fulfill({ status: 204, body: "" }));
+  await page.route(`**/api/v1/o/${ORG}/files/${DOC}/finalize`, (route) =>
+    route.fulfill({ json: { ...receipt, duplicate: false } }),
+  );
+  await fillTeardownJournal(page);
+
+  const zone = page.locator("[data-attachments]");
+  await expect(zone).toHaveAttribute("data-required", "true");
+  await expect(zone).toContainText(
+    "This journal needs a supporting document before it can be posted.",
+  );
+  const post = page.getByRole("button", { name: "Post journal" });
+  await expect(post).toBeDisabled();
+  await expect(post).toHaveAccessibleDescription("Attach the supporting document first.");
+  await page.locator("[data-post-reason]").hover();
+  await expect(page.getByRole("tooltip")).toHaveText("Attach the supporting document first.");
+  await expectAccessible(page);
+
+  await zone
+    .getByText("Attach a document")
+    .locator("input[type=file]")
+    .setInputFiles({
+      name: "staples-receipt.pdf",
+      mimeType: "application/pdf",
+      buffer: Buffer.from("%PDF-1.4 receipt"),
+    });
+  await expect(zone).toContainText("staples-receipt.pdf");
+  await expect(zone).not.toHaveAttribute("data-required", "true");
+  await expect(page.getByRole("button", { name: "Post journal" })).toBeEnabled();
+  await expect.poll(() => checks.at(-1)?.attachments).toEqual([DOC]);
 });

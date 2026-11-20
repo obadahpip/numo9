@@ -1768,6 +1768,10 @@
       "accountOfLine": "Account, line {line, number}",
       "accountOption": "{code} · {name}",
       "addLine": "Add a line",
+      "attachButton": "Attach a document",
+      "attachHint": "Drop a receipt or invoice here, or choose a file.",
+      "attachmentRequired": "This journal needs a supporting document before it can be posted.",
+      "attachments": "Supporting documents",
       "autoReverse": "Reverse automatically on (optional)",
       "blocked": "A journal can't take a bank or cash account below zero. Record the money coming in first, or ask your adviser.",
       "cancel": "Cancel",
@@ -1789,13 +1793,16 @@
       "overrideReason": "Reason (at least {min, number} characters)",
       "overrideTitle": "Post below zero?",
       "post": "Post journal",
+      "postNeedsAttachment": "Attach the supporting document first.",
       "posting": "Posting…",
       "problems": "Fix these before posting",
       "retry": "Try again",
       "saveDraft": "Save as draft",
       "title": "New manual journal",
       "totals": "Debits {debit} · Credits {credit}",
-      "type": "Journal type"
+      "type": "Journal type",
+      "uploadFailed": "{name} couldn't be uploaded. Try again.",
+      "uploading": "Uploading {name}…"
     }
   },
   "notFound": {
