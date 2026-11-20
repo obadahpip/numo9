@@ -38,6 +38,11 @@ const messages = defineMessages({
     defaultMessage: "Packages and prices",
     description: "Console nav",
   },
+  founding: {
+    id: "console.shell.founding",
+    defaultMessage: "Founding offer",
+    description: "Console nav",
+  },
   flags: { id: "console.shell.flags", defaultMessage: "Feature flags", description: "Console nav" },
   jobs: { id: "console.shell.jobs", defaultMessage: "Jobs", description: "Console nav" },
   loading: {
@@ -88,6 +93,7 @@ export const CONSOLE_AREAS: Area[] = [
     label: messages.organisations,
     permission: "platform.console.view",
   },
+  { href: "/console/founding", label: messages.founding, permission: "platform.console.view" },
   { href: "/console/packages", label: messages.packages, permission: "platform.catalogue.manage" },
   { href: "/console/flags", label: messages.flags, permission: "platform.flags.manage" },
   { href: "/console/jobs", label: messages.jobs, permission: "platform.jobs.view" },

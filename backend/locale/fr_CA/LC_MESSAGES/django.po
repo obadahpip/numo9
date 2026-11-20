@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 14:27-0500\n"
+"POT-Creation-Date: 2026-11-20 14:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2756,6 +2756,14 @@ msgstr ""
 #, python-format
 msgid "%(name)s, added to %(organisation)s, contains a virus (%(signature)s). It was moved to quarantine and can't be opened or downloaded. If you expected this file, ask the sender for a clean copy."
 msgstr ""
+
+msgid "No founding slot with this number."
+msgstr ""
+
+#, fuzzy
+#| msgid "%(name)s is already uploaded."
+msgid "This slot is already released."
+msgstr "%(name)s est déjà téléversé."
 
 msgid "Keep founding status whenever the organisation returns"
 msgstr ""
