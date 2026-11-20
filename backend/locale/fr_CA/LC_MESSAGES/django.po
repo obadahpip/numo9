@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 16:18-0500\n"
+"POT-Creation-Date: 2026-11-20 16:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5627,6 +5627,15 @@ msgstr "Employés, congés et dossiers RH."
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
+
+#, python-format
+msgid "Part of %(product)s, which isn't in this organisation's package."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your role in this organisation can't make this change."
+msgid "Not in this organisation's package."
+msgstr "Votre rôle dans cette organisation ne permet pas ce changement."
 
 #, fuzzy
 #| msgid "record"
