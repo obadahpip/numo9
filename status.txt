@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 409   Remaining: 2378   Progress: 14.68%
+TOTAL ATOMIC TASKS: 2787   Completed: 410   Remaining: 2377   Progress: 14.71%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -555,7 +555,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 
 [V-04]
 ✅ V-04-T01 — Wireframes practice home (cards, deadline timeline, workload)
-❌ V-04-T02 — Widget provider registry + interface
+✅ V-04-T02 — Widget provider registry + interface
 ❌ V-04-T03 — Phase 0 providers: trials expiring ≤7 d, orgs missing BN, orgs missing lock date, read-only orgs, dormant staff
 ❌ V-04-T04 — Workload provider (orgs per staff, open tasks placeholder)
 ❌ V-04-T05 — Deadline provider interface + stub (filled by G-03a/N-07 later)
