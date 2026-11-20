@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 14:43-0500\n"
+"POT-Creation-Date: 2026-11-20 15:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2540,6 +2540,9 @@ msgstr "rappel d’essai"
 
 msgid "trial reminders"
 msgstr "rappels d’essai"
+
+msgid "Choose an active product (free products are always included)."
+msgstr ""
 
 msgid "A free trial was already used with this Business Number. Choose a package to start using Numo9 with this organisation."
 msgstr "Un essai gratuit a déjà été utilisé avec ce numéro d’entreprise. Choisissez un forfait pour commencer à utiliser Numo9 avec cette organisation."

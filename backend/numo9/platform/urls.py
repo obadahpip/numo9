@@ -2,6 +2,8 @@
 
 from django.urls import path
 
+from numo9.entitlements import overrides
+
 from . import api
 
 urlpatterns = [
@@ -15,6 +17,17 @@ urlpatterns = [
         "platform/organisations/<uuid:org_id>",
         api.PlatformOrganisationDetailView.as_view(),
         name="platform-organisation",
+    ),
+    # Product grants for N days (U-03-T14).
+    path(
+        "platform/organisations/<uuid:org_id>/overrides",
+        overrides.OverrideListView.as_view(),
+        name="platform-organisation-overrides",
+    ),
+    path(
+        "platform/organisations/<uuid:org_id>/overrides/<uuid:public_id>",
+        overrides.OverrideDetailView.as_view(),
+        name="platform-organisation-override",
     ),
     path("platform/metrics", api.PlatformMetricsView.as_view(), name="platform-metrics"),
     path(
