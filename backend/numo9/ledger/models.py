@@ -677,6 +677,7 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
     - ``narration`` — what the entry is for;
     - ``book_scope`` — the books its lines touch (``both`` when lines touch both books);
     - ``reversal_of`` — the entry this one reverses (a reversal has its own number);
+    - ``auto_reverse_on`` — the date its reversal is posted by itself (C-03-T09);
     - ``posted_by`` / ``posted_at`` — set when posted (with ``created_by`` from ``OrgOwnedModel``).
 
     Lock dates (A-05-T06): posting an entry dated on or before the GL lock is refused
@@ -726,6 +727,12 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
         verbose_name=_("posted by"),
     )
     posted_at = models.DateTimeField(_("posted at"), null=True, blank=True)
+    auto_reverse_on = models.DateField(
+        _("reverse automatically on"),
+        null=True,
+        blank=True,
+        help_text=_("An accrual's reversal is posted by itself on this date."),
+    )
 
     class Meta:
         ordering = ("-date", "-number", "-pk")
@@ -777,6 +784,11 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
             models.Index(
                 fields=("organisation", "source_type", "source_id"),
                 name="ledger_journal_source_idx",
+            ),
+            models.Index(
+                fields=("organisation", "auto_reverse_on"),
+                name="ledger_journal_autorev_idx",
+                condition=models.Q(auto_reverse_on__isnull=False, status="posted"),
             ),
         ]
 

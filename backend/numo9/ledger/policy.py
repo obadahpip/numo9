@@ -279,3 +279,36 @@ def cash_rule(
             adviser=True,
         )
     return found
+
+
+def auto_reverse_rule(spec: Any, organisation: Any, person: Any) -> None:
+    """C-03-T09: an automatic reversal is dated after the journal, in an open period (checked
+    when the journal is saved and when it is posted)."""
+    when = getattr(spec, "auto_reverse_on", None)
+    if when is None:
+        return
+    problems = Problems()
+    if when <= spec.date:
+        problems.add(
+            _("The automatic reversal (%(reverse)s) must be dated after the journal (%(date)s)."),
+            "ledger.journal.auto_reverse_before",
+            reverse=when.isoformat(),
+            date=spec.date.isoformat(),
+        )
+    else:
+        from numo9.orgsettings.locks import check_lock
+        from numo9.orgsettings.models import LockModule
+
+        violation = check_lock(organisation, LockModule.GL, when, person)
+        if violation is not None:
+            problems.add(
+                _(
+                    "The automatic reversal date %(reverse)s is in a locked period (%(lock)s). "
+                    "Choose a date after the lock."
+                ),
+                "ledger.journal.auto_reverse_locked",
+                reverse=when.isoformat(),
+                lock=violation.date.isoformat(),
+            )
+    if problems.errors:
+        raise JournalRuleError(problems.errors)

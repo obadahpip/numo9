@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:31-0500\n"
+"POT-Creation-Date: 2026-11-20 17:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4228,6 +4228,12 @@ msgstr ""
 msgid "posted at"
 msgstr "commencée le"
 
+msgid "reverse automatically on"
+msgstr "contrepasser automatiquement le"
+
+msgid "An accrual's reversal is posted by itself on this date."
+msgstr "La contrepassation d'une régularisation est passée d'elle-même à cette date."
+
 #, fuzzy
 #| msgid "Accounting"
 msgid "journal entry"
@@ -4365,8 +4371,20 @@ msgid "%(shortfalls)s. As an adviser you may post it anyway: give the reason (at
 msgstr "%(shortfalls)s. En tant que conseiller, vous pouvez la passer quand même : indiquez la raison (au moins %(min)d caractères)."
 
 #, python-format
+msgid "The automatic reversal (%(reverse)s) must be dated after the journal (%(date)s)."
+msgstr "La contrepassation automatique (%(reverse)s) doit être datée après l'écriture (%(date)s)."
+
+#, python-format
+msgid "The automatic reversal date %(reverse)s is in a locked period (%(lock)s). Choose a date after the lock."
+msgstr "La date de contrepassation automatique %(reverse)s tombe dans une période verrouillée (%(lock)s). Choisissez une date après le verrouillage."
+
+#, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
 msgstr ""
+
+#, python-format
+msgid "Automatic reversal of %(number)s"
+msgstr "Contrepassation automatique de %(number)s"
 
 #, python-format
 msgid "%(journal)s is %(from)s: it can't become %(to)s."

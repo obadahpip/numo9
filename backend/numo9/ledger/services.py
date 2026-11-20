@@ -65,7 +65,7 @@ from .models import (
     LedgerError,
 )
 from .periods import assert_can_post
-from .policy import cash_rule, check_policy
+from .policy import auto_reverse_rule, cash_rule, check_policy
 from .sequence import allocate_journal_number, format_journal_number
 from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journal
 
@@ -199,6 +199,8 @@ def post_journal(
             check_policy(
                 checked, caller=caller, attachments=len(documents), organisation=organisation
             )
+        if reversal_of is None:
+            auto_reverse_rule(spec, organisation, person)
         overridden = (
             cash_rule(checked, organisation, person, override_reason)
             if reversal_of is None and caller is None
@@ -214,6 +216,7 @@ def post_journal(
             source_id=str(spec.source_id or ""),
             book_scope=checked.book_scope,
             reversal_of=reversal_of,
+            auto_reverse_on=spec.auto_reverse_on if reversal_of is None else None,
             status=JournalStatus.DRAFT,
             created_by=person if getattr(person, "is_authenticated", False) else None,
         )
@@ -333,6 +336,7 @@ def _spec_of(entry: JournalEntry) -> JournalSpec:
         date=entry.date,
         type=entry.type,
         journal_type=entry.journal_type,
+        auto_reverse_on=entry.auto_reverse_on,
         narration=entry.narration,
         source_type=entry.source_type,
         source_id=entry.source_id,
@@ -364,6 +368,7 @@ def save_draft(
     person = acting_user() if user is ACTING else user
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
+        auto_reverse_rule(spec, organisation, person)
         if entry is None:
             entry = JournalEntry(
                 organisation=organisation,
@@ -379,6 +384,7 @@ def save_draft(
                 )
         entry.date, entry.type, entry.narration = spec.date, spec.type, spec.narration
         entry.journal_type = spec.journal_type
+        entry.auto_reverse_on = spec.auto_reverse_on
         entry.source_type, entry.source_id = spec.source_type, str(spec.source_id or "")
         entry.book_scope = checked.book_scope
         entry.save()
@@ -429,6 +435,7 @@ def post_entry(
             attachments=attachment_count(entry),
             organisation=organisation,
         )
+        auto_reverse_rule(spec, organisation, person)
         overridden = (
             cash_rule(checked, organisation, person, override_reason) if caller is None else []
         )

@@ -101,6 +101,8 @@ class JournalSpec:
     source_id: str = ""
     #: General / Adjusting / Reclass / Tax adjustment, or a system type (C-03-T01).
     journal_type: str = JournalCategory.GENERAL
+    #: Post the reversal by itself on this date (C-03-T09).
+    auto_reverse_on: dt.date | None = None
 
 
 @dataclass(frozen=True)
