@@ -201,6 +201,23 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         ),
     )
 
+    # ---- journal rules (C-03-T05) -----------------------------------------------------------
+    journal_expense_requires_attachment = models.BooleanField(
+        _("expense journals need an attachment"),
+        default=False,
+        db_default=False,
+        help_text=_(
+            "A journal with a line on an expense account can be posted only with a supporting "
+            "document attached."
+        ),
+    )
+    journal_expense_requires_contact = models.BooleanField(
+        _("expense journal lines need a contact"),
+        default=False,
+        db_default=False,
+        help_text=_("Every line of a journal on an expense account must name a contact."),
+    )
+
     # ---- default payment terms -------------------------------------------------------------
     sales_terms_type = models.CharField(
         _("sales: default due date"),

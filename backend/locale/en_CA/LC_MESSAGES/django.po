@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:17-0500\n"
+"POT-Creation-Date: 2026-11-20 17:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4623,6 +4623,18 @@ msgid "time zone"
 msgstr ""
 
 msgid "Times on the organisation's documents and emails; each person sees their own preference in the app."
+msgstr ""
+
+msgid "expense journals need an attachment"
+msgstr ""
+
+msgid "A journal with a line on an expense account can be posted only with a supporting document attached."
+msgstr ""
+
+msgid "expense journal lines need a contact"
+msgstr ""
+
+msgid "Every line of a journal on an expense account must name a contact."
 msgstr ""
 
 msgid "sales: default due date"

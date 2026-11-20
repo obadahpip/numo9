@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 433   Remaining: 2354   Progress: 15.54%
+TOTAL ATOMIC TASKS: 2787   Completed: 434   Remaining: 2353   Progress: 15.57%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -587,7 +587,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-03-T02 — Add nullable contact FK on JournalLine (org-scoped), index (org, contact)
 ✅ C-03-T03 — JournalPolicy service: validate type rules (tax-adjustment ⇒ all lines book=tax, no bank accounts; closing only from C-06 caller)
 ✅ C-03-T04 — Account-flag enforcement in JournalPolicy: require_contact, require_tracking, require_attachment per line
-❌ C-03-T05 — Org settings: journal_expense_requires_attachment, journal_expense_requires_contact toggles (A-05 settings page section)
+✅ C-03-T05 — Org settings: journal_expense_requires_attachment, journal_expense_requires_contact toggles (A-05 settings page section)
 ❌ C-03-T06 — Expense-journal rule: if any line hits an Expense-class account and toggle on → attachment/contact required
 ❌ C-03-T07 — CashBalanceGuard: compute projected balance of each cash/bank account at journal date and at today including the journal
 ❌ C-03-T08 — Guard outcome by role: non-adviser → block; adviser → warn with mandatory reason stored in JournalOverride(reason, user, at)

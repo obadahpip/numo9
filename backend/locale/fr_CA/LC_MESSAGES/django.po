@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:17-0500\n"
+"POT-Creation-Date: 2026-11-20 17:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4909,6 +4909,18 @@ msgstr "fuseau horaire"
 
 msgid "Times on the organisation's documents and emails; each person sees their own preference in the app."
 msgstr "Heures sur les documents et courriels de l’organisation; chaque personne voit sa propre préférence dans l’application."
+
+msgid "expense journals need an attachment"
+msgstr "pièce jointe exigée sur les écritures de dépenses"
+
+msgid "A journal with a line on an expense account can be posted only with a supporting document attached."
+msgstr "Une écriture comportant une ligne sur un compte de dépenses ne peut être passée qu'avec un document justificatif joint."
+
+msgid "expense journal lines need a contact"
+msgstr "contact exigé sur les lignes de dépenses"
+
+msgid "Every line of a journal on an expense account must name a contact."
+msgstr "Chaque ligne d'une écriture sur un compte de dépenses doit indiquer un contact."
 
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"
