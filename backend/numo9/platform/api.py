@@ -8,6 +8,7 @@ authentication gets ``403 auth.two_factor_required`` (the console needs 2FA, wha
 
 from __future__ import annotations
 
+import datetime as dt
 from typing import Any, cast
 
 from drf_spectacular.types import OpenApiTypes
@@ -208,9 +209,20 @@ class PlatformMetricPointSerializer(serializers.Serializer[Any]):
     churn_rate = serializers.DecimalField(max_digits=6, decimal_places=4, allow_null=True)
 
 
+class PlatformFunnelSerializer(serializers.Serializer[Any]):
+    """Trial funnel of the window (U-05-T13): each step counted once per organisation."""
+
+    window_days = serializers.IntegerField()
+    trial_started = serializers.IntegerField()
+    reminder_sent = serializers.IntegerField(help_text="Reminders sent (every milestone)")
+    converted = serializers.IntegerField()
+    expired = serializers.IntegerField()
+
+
 class PlatformMetricsSerializer(serializers.Serializer[Any]):
     current = PlatformMetricsCurrentSerializer()
     history = PlatformMetricPointSerializer(many=True)
+    funnel = PlatformFunnelSerializer()
 
 
 class PlatformMetricsView(APIView):
@@ -233,8 +245,23 @@ class PlatformMetricsView(APIView):
             error = api_error(errors.PLATFORM_BAD_FILTER, name="days", value=raw[:100])
             error.extra = {"field": "days"}
             raise error
+        from django.utils import timezone
+
+        from numo9.entitlements.funnel import funnel_counts
+
+        from .metrics import WINDOW_DAYS
+
         current = compute()
-        data = {"current": current.as_dict(), "history": history(current, int(raw))}
+        now = timezone.now()
+        funnel = {
+            "window_days": WINDOW_DAYS,
+            **funnel_counts(now - dt.timedelta(days=WINDOW_DAYS), now + dt.timedelta(seconds=1)),
+        }
+        data = {
+            "current": current.as_dict(),
+            "history": history(current, int(raw)),
+            "funnel": funnel,
+        }
         return Response(PlatformMetricsSerializer(data).data)
 
 

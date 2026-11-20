@@ -60,6 +60,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 # Free trial (U-05-T01/T02): reviewed — platform settings and the trial registry.
                 "entitlements.TrialConfig",
                 "entitlements.TrialRegistry",
+                # Trial funnel (U-05-T13): reviewed — platform metrics, never shown to tenants.
+                "entitlements.TrialFunnelEvent",
                 # Platform console (U-06-T05): reviewed — daily platform-wide metrics.
                 "platform.PlatformMetricDaily",
                 # Impersonation (U-06-T08): reviewed — staff sessions, read by the platform only.

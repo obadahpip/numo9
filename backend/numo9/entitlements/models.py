@@ -559,3 +559,47 @@ class TrialReminder(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.subscription} · {self.milestone} d"
+
+
+class FunnelStep(models.TextChoices):
+    """The trial funnel (U-05-T13): what the platform metrics (U-06) count."""
+
+    TRIAL_STARTED = "trial_started", _("Trial started")
+    REMINDER_SENT = "reminder_sent", _("Trial reminder sent")
+    CONVERTED = "converted", _("Trial converted")
+    EXPIRED = "expired", _("Trial expired")
+
+
+class TrialFunnelEvent(models.Model):
+    """One step of an organisation's trial funnel (U-05-T13), recorded where it happens: the trial
+    starts, a reminder (7, 3, 1 days; 0 = the expiry notice) is sent, the first payment converts
+    it, the time runs out. Each step once per organisation (and per reminder milestone), so a
+    re-run job or a re-delivered event never counts twice. Demo organisations are never recorded
+    (they are left out of every metric). Platform data, never shown to tenants."""
+
+    organisation = models.ForeignKey(
+        Organisation, on_delete=models.PROTECT, related_name="+", verbose_name=_("organisation")
+    )
+    step = models.CharField(_("step"), max_length=20, choices=FunnelStep.choices)
+    milestone = models.SmallIntegerField(
+        _("reminder milestone"),
+        default=-1,
+        help_text=_("Days left for a reminder (7, 3, 1; 0 = expiry notice); -1 for other steps."),
+    )
+    package = models.CharField(_("package"), max_length=64, blank=True)
+    at = models.DateTimeField(_("at"), default=timezone.now)
+
+    class Meta:
+        verbose_name = _("trial funnel event")
+        verbose_name_plural = _("trial funnel events")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("organisation", "step", "milestone"), name="entitlements_funnel_once"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("step", "at"), name="entitlements_funnel_step_at"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.step} · {self.organisation_id} · {self.at:%Y-%m-%d}"
