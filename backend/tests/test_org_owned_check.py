@@ -40,6 +40,9 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "metering.StreamOffset",
                 # Demo templates (U-07-T05): reviewed — which template serves a seed version.
                 "demo.DemoTemplate",
+                # Founding offer (U-08-T01): reviewed — the counter and slot holders.
+                "founding.FoundingCounter",
+                "founding.FoundingSlot",
                 "tenancy.PracticeMember",
                 "tenancy.Organisation",
                 "tenancy.OrganisationMember",

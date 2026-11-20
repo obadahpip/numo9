@@ -30,6 +30,10 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "metering.StreamOffset",
         # Demo templates (U-07-T05): which hidden template organisation serves a seed version.
         "demo.DemoTemplate",
+        # Founding offer (U-08-T01): the platform counter and which organisation holds which slot
+        # (a platform record about the organisation, no business data).
+        "founding.FoundingCounter",
+        "founding.FoundingSlot",
         "tenancy.PracticeMember",
         "tenancy.Organisation",
         "tenancy.OrganisationMember",

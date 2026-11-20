@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "numo9.metering",
     "numo9.scale",
     "numo9.demo",
+    "numo9.founding",
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",

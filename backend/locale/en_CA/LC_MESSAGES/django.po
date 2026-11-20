@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 16:28-0500\n"
+"POT-Creation-Date: 2026-11-19 04:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2582,6 +2582,36 @@ msgstr ""
 
 #, python-format
 msgid "%(name)s, added to %(organisation)s, contains a virus (%(signature)s). It was moved to quarantine and can't be opened or downloaded. If you expected this file, ask the sender for a clean copy."
+msgstr ""
+
+msgid "founding slots"
+msgstr ""
+
+msgid "allocated"
+msgstr ""
+
+msgid "founding counter"
+msgstr ""
+
+msgid "slot number"
+msgstr ""
+
+msgid "allocated at"
+msgstr ""
+
+msgid "first payment"
+msgstr ""
+
+msgid "Stripe invoice or payment id."
+msgstr ""
+
+msgid "released at"
+msgstr ""
+
+msgid "release reason"
+msgstr ""
+
+msgid "founding slot"
 msgstr ""
 
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
