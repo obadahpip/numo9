@@ -13,6 +13,8 @@ insert run in one savepoint: when the insert fails because the organisation alre
 (a replayed webhook racing the first one), the increment is rolled back with it and the
 organisation's existing slot is returned — a number is never consumed without a slot.
 
+The organisation's subscriptions are flagged ``founding`` with the slot (U-08-T05).
+
 Callers run it inside the transaction that records the first payment (U-08-T03), so a payment
 rolled back takes its slot with it.
 """
@@ -59,13 +61,33 @@ def allocate_founding_slot(
                 row = cursor.fetchone()
             if row is None:
                 return None  # offer complete
-            return FoundingSlot.objects.create(
+            slot = FoundingSlot.objects.create(
                 organisation=organisation, slot_no=int(row[0]), payment_ref=payment_ref[:255]
             )
+            sync_founding_flag(organisation)
+            return slot
     except IntegrityError:
         # A concurrent transaction gave this organisation its slot first; our increment is undone.
         held = FoundingSlot.objects.filter(organisation=organisation).first()
         return held if held is not None and held.released_at is None else None
+
+
+def sync_founding_flag(organisation: Organisation) -> bool:
+    """Entitlement (U-08-T05): the organisation's subscriptions carry ``founding`` exactly while it
+    holds an active slot. The engine gives a founding subscription every active product — those
+    that ship later included — whatever its package. Returns the flag."""
+    from numo9.entitlements.cache import bump_organisation
+    from numo9.entitlements.models import Subscription
+
+    founding = founding_slot_of(organisation) is not None
+    changed = (
+        Subscription._base_manager.filter(organisation_id=organisation.pk, deleted_at__isnull=True)
+        .exclude(founding=founding)
+        .update(founding=founding)
+    )
+    if changed:
+        bump_organisation(str(organisation.public_id))
+    return founding
 
 
 def founding_slot_of(organisation: Organisation) -> FoundingSlot | None:

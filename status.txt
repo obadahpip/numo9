@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 394   Remaining: 2393   Progress: 14.14%
+TOTAL ATOMIC TASKS: 2787   Completed: 395   Remaining: 2392   Progress: 14.17%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -526,7 +526,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ U-08-T02 — allocate_founding_slot(org) atomic SQL UPDATE … WHERE allocated < cap RETURNING allocated
 ✅ U-08-T03 — Hook into first-payment handler (U-04-T08) inside same transaction
 ✅ U-08-T04 — Concurrency test: 1,500 parallel allocations (pytest-xdist / threads on real Postgres)
-❌ U-08-T05 — Entitlement: founding flag grants all products (incl. future products as they ship)
+✅ U-08-T05 — Entitlement: founding flag grants all products (incl. future products as they ship)
 ❌ U-08-T06 — Churn rule config + evaluation on cancel/return
 ❌ U-08-T07 — AcquisitionAttribution (referral source, utm, promo) captured at sign-up
 ❌ U-08-T08 — Public API remaining counter (cached)
