@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:19-0500\n"
+"POT-Creation-Date: 2026-11-20 17:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3747,6 +3747,10 @@ msgstr ""
 #, python-format
 msgid "%(account)s has active sub-accounts, such as %(child)s: archive them first."
 msgstr ""
+
+#, python-format
+msgid "%(account)s would be %(amount)s on %(date)s"
+msgstr "%(account)s serait à %(amount)s le %(date)s"
 
 msgid "Unknown system role."
 msgstr ""
