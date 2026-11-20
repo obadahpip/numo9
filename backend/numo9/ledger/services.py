@@ -42,6 +42,7 @@ contract, C-02-T14).
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Any
 
 from django.db import transaction
@@ -172,6 +173,7 @@ def post_journal(
     module: str = LockModule.GL,
     reversal_of: JournalEntry | None = None,
     caller: str | None = None,
+    attachments: Sequence[Any] = (),
 ) -> JournalEntry:
     """Validate, check the period, insert, number and post ``spec`` — all or nothing.
 
@@ -184,8 +186,9 @@ def post_journal(
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, spec.date, person, module)
+        documents = list({document.pk: document for document in attachments}.values())
         if reversal_of is None:  # a reversal mirrors an entry that passed the rules
-            check_policy(checked, caller=caller)
+            check_policy(checked, caller=caller, attachments=len(documents))
         entry = JournalEntry(
             organisation=organisation,
             date=spec.date,
@@ -204,7 +207,42 @@ def post_journal(
         JournalEntry.objects.bulk_create([entry])
         lines = _lines(entry, checked)
         JournalLine.objects.bulk_create(lines)
+        _attach(entry, documents, person)
         return _number_and_post(entry, lines, person, JournalStatus.DRAFT)
+
+
+def _attach(entry: JournalEntry, documents: Sequence[Any], person: Any) -> None:
+    """The supporting documents of a journal posted in one go (A-06 attachments)."""
+    if not documents:
+        return
+    from numo9.files.attachments import attach
+
+    for document in documents:
+        attach(
+            document,
+            "ledger.JournalEntry",
+            entry.public_id,
+            user=person if getattr(person, "is_authenticated", False) else None,
+        )
+
+
+def attachment_count(entry: JournalEntry) -> int:
+    """Documents attached to the journal (detached ones and deleted documents don't count)."""
+    from django.contrib.contenttypes.models import ContentType
+
+    from numo9.files.models import Attachment
+
+    return (
+        Attachment.objects.filter(
+            content_type=ContentType.objects.get_for_model(JournalEntry),
+            object_public_id=entry.public_id,
+            deleted_at__isnull=True,
+            document__deleted_at__isnull=True,
+        )
+        .values("document")
+        .distinct()
+        .count()
+    )
 
 
 # ---- states (C-02-T09) ---------------------------------------------------------------------
@@ -341,7 +379,7 @@ def post_entry(
         spec = _spec_of(entry)
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, entry.date, person, module)
-        check_policy(checked, caller=caller)
+        check_policy(checked, caller=caller, attachments=attachment_count(entry))
         if entry.book_scope != checked.book_scope:
             JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
             entry.book_scope = checked.book_scope

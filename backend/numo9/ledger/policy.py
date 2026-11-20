@@ -16,6 +16,16 @@ code                                       when
                                            by anyone but its process (``caller``: ``year_end``,
                                            ``payroll``, ``depreciation``)
 =========================================  =====================================================
+
+**Account flags** (C-03-T04, set on the account in C-01):
+
+=========================================  =====================================================
+``ledger.journal.contact_required``        a line on an account that requires a contact, without
+``ledger.journal.tracking_required``       a line on an account that requires a tracking
+                                           category, without one
+``ledger.journal.attachment_required``     a line on an account that requires an attachment, on
+                                           a journal with no document attached
+=========================================  =====================================================
 """
 
 from __future__ import annotations
@@ -90,6 +100,41 @@ def type_rules(checked: ValidatedJournal, problems: Problems, caller: str | None
         )
 
 
+def account_flag_rules(checked: ValidatedJournal, problems: Problems, attachments: int) -> None:
+    """C-03-T04: each line honours its account's ``require_contact`` / ``require_tracking`` /
+    ``require_attachment`` flags (an attachment is on the journal, so it is named once per
+    account)."""
+    wanting_attachment: list[str] = []
+    for line in checked.lines:
+        account = line.account
+        label = _account_label(account)
+        if account.require_contact and not line.spec.contact:
+            problems.add(
+                _("Line %(line)d: %(account)s requires a contact — choose one for the line."),
+                "ledger.journal.contact_required",
+                line=line.line_no,
+                account=label,
+            )
+        if account.require_tracking and not any((line.spec.tracking or {}).values()):
+            problems.add(
+                _(
+                    "Line %(line)d: %(account)s requires a tracking category — choose one for "
+                    "the line."
+                ),
+                "ledger.journal.tracking_required",
+                line=line.line_no,
+                account=label,
+            )
+        if account.require_attachment and not attachments and label not in wanting_attachment:
+            wanting_attachment.append(label)
+    for label in wanting_attachment:
+        problems.add(
+            _("%(account)s requires an attachment: attach the supporting document to the journal."),
+            "ledger.journal.attachment_required",
+            account=label,
+        )
+
+
 PROCESS_LABELS: dict[str, Any] = {
     "year_end": gettext_lazy("year-end close"),
     "payroll": gettext_lazy("payroll"),
@@ -101,9 +146,13 @@ def check_policy(
     checked: ValidatedJournal,
     *,
     caller: str | None = None,
+    attachments: int = 0,
 ) -> None:
-    """Every business rule of C-03 for a journal about to be posted (module docstring)."""
+    """Every business rule of C-03 for a journal about to be posted (module docstring).
+
+    ``attachments`` — how many documents the journal carries (A-06 attachments)."""
     problems = Problems()
     type_rules(checked, problems, caller)
+    account_flag_rules(checked, problems, attachments)
     if problems.errors:
         raise JournalRuleError(problems.errors)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:15-0500\n"
+"POT-Creation-Date: 2026-11-20 17:17-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4052,6 +4052,18 @@ msgstr ""
 
 #, python-format
 msgid "%(type)s journals are posted by Numo9 itself (the %(process)s process), not by hand. Choose General, Adjusting, Reclass or Tax adjustment."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(account)s requires a contact — choose one for the line."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(account)s requires a tracking category — choose one for the line."
+msgstr ""
+
+#, python-format
+msgid "%(account)s requires an attachment: attach the supporting document to the journal."
 msgstr ""
 
 msgid "year-end close"

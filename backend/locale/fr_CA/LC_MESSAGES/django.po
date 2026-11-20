@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:15-0500\n"
+"POT-Creation-Date: 2026-11-20 17:17-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4313,6 +4313,18 @@ msgstr "Ligne %(line)d (%(account)s) : un ajustement fiscal ne peut pas toucher 
 #, python-format
 msgid "%(type)s journals are posted by Numo9 itself (the %(process)s process), not by hand. Choose General, Adjusting, Reclass or Tax adjustment."
 msgstr "Les écritures de type %(type)s sont passées par Numo9 (processus de %(process)s), pas à la main. Choisissez Général, Ajustement, Reclassement ou Ajustement fiscal."
+
+#, python-format
+msgid "Line %(line)d: %(account)s requires a contact — choose one for the line."
+msgstr "Ligne %(line)d : %(account)s exige un contact — choisissez-en un pour la ligne."
+
+#, python-format
+msgid "Line %(line)d: %(account)s requires a tracking category — choose one for the line."
+msgstr "Ligne %(line)d : %(account)s exige une catégorie de suivi — choisissez-en une pour la ligne."
+
+#, python-format
+msgid "%(account)s requires an attachment: attach the supporting document to the journal."
+msgstr "%(account)s exige une pièce jointe : joignez le document justificatif à l'écriture."
 
 msgid "year-end close"
 msgstr "clôture de fin d'exercice"
