@@ -6,6 +6,7 @@
  * "0") — then the next 30 days' deadlines and the workload per staff member. A card whose
  * provider failed shows its own error with **Try again**; the rest of the page still loads.
  * Practice-wide roles switch between their own organisations and the whole practice.
+ * "Customise dashboard" (V-04-T09) reorders and hides cards, saved per person and practice.
  */
 import { Button, ErrorState, formatDate, SkeletonText, type AppLocale } from "@numo9/ui";
 import Link from "next/link";
@@ -32,6 +33,8 @@ export function PracticeHomeScreen({ practice }: { practice: string }) {
   const [scope, setScope] = useState<DashboardScope | undefined>(undefined);
   const [attempt, setAttempt] = useState(0);
   const [retrying, setRetrying] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -71,9 +74,16 @@ export function PracticeHomeScreen({ practice }: { practice: string }) {
         <h1 className="text-2xl font-bold text-fg">{fm(m.title)}</h1>
         <p className="text-sm text-fg-muted">{fm(m.intro)}</p>
       </div>
-      {data && data.scopes.length > 1 ? (
-        <ScopeSwitch value={data.scope} onChange={setScope} />
-      ) : null}
+      <div className="flex flex-wrap items-center gap-3">
+        {data && data.scopes.length > 1 ? (
+          <ScopeSwitch value={data.scope} onChange={setScope} />
+        ) : null}
+        {data && !editing ? (
+          <Button variant="secondary" onClick={() => setEditing(true)}>
+            {fm(m.customise)}
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 
@@ -101,11 +111,36 @@ export function PracticeHomeScreen({ practice }: { practice: string }) {
     );
   }
 
-  const counts = data.widgets.filter((w) => w.kind === "count");
-  const lists = data.widgets.filter((w) => w.kind !== "count");
+  const shown = data.widgets.filter((w) => !w.hidden);
+  const counts = shown.filter((w) => w.kind === "count");
+  const lists = shown.filter((w) => w.kind !== "count");
   return (
     <div className="flex flex-col gap-6" data-practice-home="">
       {header}
+      <p role="status" className="sr-only">
+        {status}
+      </p>
+      {editing ? (
+        <CustomisePanel
+          widgets={data.widgets}
+          onCancel={() => setEditing(false)}
+          onSave={async (order, hidden) => {
+            const result = await dashboardApi.saveLayout(practice, { order, hidden });
+            if (result.status !== 200) return false;
+            const rank = new Map(order.map((key, index) => [key, index]));
+            setData({
+              ...data,
+              layout: { order, hidden },
+              widgets: [...data.widgets]
+                .sort((a, b) => (rank.get(a.key) ?? 99) - (rank.get(b.key) ?? 99))
+                .map((w) => ({ ...w, hidden: hidden.includes(w.key) })),
+            });
+            setEditing(false);
+            setStatus(fm(m.saved));
+            return true;
+          }}
+        />
+      ) : null}
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5" data-cards="">
         {counts.map((widget) => (
           <li key={widget.key}>
@@ -129,6 +164,109 @@ export function PracticeHomeScreen({ practice }: { practice: string }) {
         ))}
       </div>
     </div>
+  );
+}
+
+function CustomisePanel({
+  widgets,
+  onSave,
+  onCancel,
+}: {
+  widgets: DashboardWidget[];
+  onSave: (order: string[], hidden: string[]) => Promise<boolean>;
+  onCancel: () => void;
+}) {
+  const fm = useFormatMessage();
+  const heading = useId();
+  const [order, setOrder] = useState(widgets.map((w) => w.key));
+  const [hidden, setHidden] = useState(new Set(widgets.filter((w) => w.hidden).map((w) => w.key)));
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const title = new Map(widgets.map((w) => [w.key, w.title]));
+  const move = (index: number, by: number) =>
+    setOrder((keys) => {
+      const next = [...keys];
+      const [item] = next.splice(index, 1);
+      next.splice(index + by, 0, item as string);
+      return next;
+    });
+  return (
+    <section
+      aria-labelledby={heading}
+      className="flex flex-col gap-3 rounded-lg border border-border-accent p-4"
+      data-customise=""
+    >
+      <h2 id={heading} className="text-lg font-semibold text-fg">
+        {fm(m.customiseTitle)}
+      </h2>
+      <p className="text-sm text-fg-muted">{fm(m.customiseIntro)}</p>
+      <ol className="flex flex-col gap-2">
+        {order.map((key, index) => {
+          const name = title.get(key) ?? key;
+          return (
+            <li key={key} className="flex flex-wrap items-center gap-2" data-layout-item={key}>
+              <label className="flex flex-1 items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={!hidden.has(key)}
+                  aria-label={fm(m.show, { title: name })}
+                  onChange={(event) =>
+                    setHidden((current) => {
+                      const next = new Set(current);
+                      if (event.target.checked) next.delete(key);
+                      else next.add(key);
+                      return next;
+                    })
+                  }
+                />
+                <span>{name}</span>
+              </label>
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={index === 0}
+                aria-label={fm(m.moveUp, { title: name })}
+                onClick={() => move(index, -1)}
+              >
+                {fm(m.up)}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                disabled={index === order.length - 1}
+                aria-label={fm(m.moveDown, { title: name })}
+                onClick={() => move(index, 1)}
+              >
+                {fm(m.down)}
+              </Button>
+            </li>
+          );
+        })}
+      </ol>
+      {error ? (
+        <p role="alert" className="text-sm text-fg-danger">
+          {error}
+        </p>
+      ) : null}
+      <div className="flex gap-2">
+        <Button
+          variant="primary"
+          loading={busy}
+          onClick={() => {
+            setBusy(true);
+            void onSave(order, [...hidden]).then((ok) => {
+              setBusy(false);
+              if (!ok) setError(fm(m.saveFailed));
+            });
+          }}
+        >
+          {fm(m.save)}
+        </Button>
+        <Button variant="secondary" onClick={onCancel}>
+          {fm(m.cancel)}
+        </Button>
+      </div>
+    </section>
   );
 }
 
@@ -262,7 +400,6 @@ function ListPanel({
   busy: boolean;
   onRetry: () => void;
 }) {
-  const fm = useFormatMessage();
   const locale = useLocale() as AppLocale;
   const heading = useId();
   return (

@@ -42,14 +42,48 @@ class WidgetSerializer(serializers.Serializer[Any]):
         help_text="Directory filter parameters listing exactly the organisations counted",
     )
     href = serializers.CharField(allow_blank=True, help_text="Another drill-down page")
+    hidden = serializers.BooleanField(help_text="Hidden by the user (shown when customising)")
     items = serializers.ListField(child=serializers.DictField(), help_text="List/workload rows")
+
+
+class LayoutSerializer(serializers.Serializer[Any]):
+    order = serializers.ListField(
+        child=serializers.CharField(max_length=64), max_length=50, help_text="Widget keys, in order"
+    )
+    hidden = serializers.ListField(
+        child=serializers.CharField(max_length=64), max_length=50, help_text="Hidden widget keys"
+    )
 
 
 class DashboardSerializer(serializers.Serializer[Any]):
     practice = serializers.DictField()
     scope = serializers.ChoiceField(choices=[(MINE, MINE), (ALL, ALL)])
     scopes = serializers.ListField(child=serializers.CharField(), help_text="Scopes offered")
-    widgets = WidgetSerializer(many=True)
+    layout = LayoutSerializer(help_text="The user's own order and hidden widgets (V-04-T09)")
+    widgets = WidgetSerializer(
+        many=True, help_text="In the user's order; hidden ones last, with hidden=true"
+    )
+
+
+def apply_layout(
+    widgets: list[dict[str, Any]], order: list[str], hidden: list[str]
+) -> list[dict[str, Any]]:
+    """The widgets in the user's order (unknown keys ignored, new widgets after the ordered ones,
+    in their default order), each marked ``hidden``; hidden ones are kept for the customise view."""
+    rank = {key: index for index, key in enumerate(order)}
+    ordered = sorted(
+        enumerate(widgets), key=lambda pair: (rank.get(pair[1]["key"], len(rank)), pair[0])
+    )
+    return [{**widget, "hidden": widget["key"] in set(hidden)} for _i, widget in ordered]
+
+
+def layout_of(ctx: DashboardContext) -> dict[str, list[str]]:
+    from .models import DashboardLayout
+
+    row = DashboardLayout.objects.filter(user=ctx.user, practice=ctx.practice).first()
+    if row is None:
+        return {"order": [], "hidden": []}
+    return {"order": list(row.order or []), "hidden": list(row.hidden or [])}
 
 
 def dashboard_context(request: Request) -> DashboardContext:
@@ -87,10 +121,42 @@ class PracticeDashboardView(APIView):
     def get(self, request: Request) -> Response:
         ctx = dashboard_context(request)
         wide = ctx.practice_wide
+        layout = layout_of(ctx)
         body = {
             "practice": {"id": str(ctx.practice.public_id), "name": ctx.practice.name},
             "scope": ctx.scope,
             "scopes": [MINE, ALL] if wide else [MINE],
-            "widgets": answer_all(ctx),
+            "layout": layout,
+            "widgets": apply_layout(answer_all(ctx), layout["order"], layout["hidden"]),
         }
         return Response(DashboardSerializer(body).data)
+
+
+class DashboardLayoutView(APIView):
+    """``PUT practice/dashboard/layout?practice=…`` (V-04-T09): save the user's own order and
+    hidden widgets for this practice (only the widgets they can see are kept)."""
+
+    required_feature = CORE
+
+    @requires_permission(AUTHENTICATED)
+    @extend_schema(
+        operation_id="practice_dashboard_layout",
+        summary="Save my practice home layout: widget order and hidden widgets",
+        parameters=[OpenApiParameter("practice", OpenApiTypes.UUID, description="The practice")],
+        request=LayoutSerializer,
+        responses=LayoutSerializer,
+    )
+    def put(self, request: Request) -> Response:
+        from .dashboard import widgets
+        from .models import DashboardLayout
+
+        ctx = dashboard_context(request)
+        payload = LayoutSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        known = [w.key for w in widgets() if w.shown_to(ctx)]
+        order = list(dict.fromkeys(k for k in payload.validated_data["order"] if k in known))
+        hidden = sorted({k for k in payload.validated_data["hidden"] if k in known})
+        DashboardLayout.objects.update_or_create(
+            user=ctx.user, practice=ctx.practice, defaults={"order": order, "hidden": hidden}
+        )
+        return Response(LayoutSerializer({"order": order, "hidden": hidden}).data)

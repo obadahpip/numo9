@@ -463,3 +463,39 @@ class GroupStaffAssignment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.practice_member} → {self.group} ({self.role})"
+
+
+class DashboardLayout(models.Model):
+    """A user's own practice home layout (V-04-T09): the widgets' order and the hidden ones.
+
+    Personal, per practice, stored on the server (follows the user to another device). Widget keys
+    the dashboard doesn't know any more are ignored; new widgets show after the ordered ones.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="dashboard_layouts",
+        verbose_name=_("user"),
+    )
+    practice = models.ForeignKey(
+        Practice,
+        on_delete=models.CASCADE,
+        related_name="dashboard_layouts",
+        verbose_name=_("practice"),
+    )
+    order = models.JSONField(_("widget order"), default=list, blank=True)
+    hidden = models.JSONField(_("hidden widgets"), default=list, blank=True)
+    updated_at = models.DateTimeField(_("updated at"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("dashboard layout")
+        verbose_name_plural = _("dashboard layouts")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("user", "practice"), name="workspace_dashboard_layout_once"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user} · {self.practice} · dashboard"

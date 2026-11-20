@@ -12,6 +12,11 @@ urlpatterns = [
         dashboard_api.PracticeDashboardView.as_view(),
         name="practice-dashboard",
     ),
+    path(
+        "practice/dashboard/layout",
+        dashboard_api.DashboardLayoutView.as_view(),
+        name="practice-dashboard-layout",
+    ),
     path("practice/views", views_api.SavedViewListView.as_view(), name="practice-views"),
     path(
         "practice/views/<uuid:view_id>",

@@ -82,6 +82,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 "workspace.OrgDirectorySummary",
                 # Saved directory views (V-01-T08): reviewed — a user's filter state, no records.
                 "workspace.SavedView",
+                # Practice home layout (V-04-T09): reviewed — widget order per user and practice.
+                "workspace.DashboardLayout",
                 # Practice email branding (A-07-T04): reviewed — name, logo address, colour.
                 "notifications.PracticeBranding",
                 # Email suppression list (A-07-T08): reviewed — an address and a reason.

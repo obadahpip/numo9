@@ -102,3 +102,48 @@ test("cards, zero, a failing card with retry, and a drill-down to the directory"
     .toEqual(["yes"]);
   expect(directoryRequests.at(-1)?.searchParams.getAll("status")).toEqual(["trial"]);
 });
+
+test("customise the dashboard: the layout persists after a reload (V-04-T09)", async ({ page }) => {
+  await mockCsrf(page);
+  const layout = { order: [] as string[], hidden: [] as string[] };
+  const all = [
+    card("trials_ending", "Trials ending in 7 days", 3, { filters: { status: ["trial"] } }),
+    card("read_only", "Read-only organisations", 0, { filters: { status: ["read_only"] } }),
+    card("missing_bn", "Organisations without a BN", 2, { filters: { bn_missing: ["yes"] } }),
+  ];
+  await page.route("**/api/v1/practice/dashboard?*", (route) => {
+    const rank = new Map(layout.order.map((key, index) => [key, index]));
+    const widgets = [...all]
+      .sort((a, b) => (rank.get(a.key) ?? 99) - (rank.get(b.key) ?? 99))
+      .map((w) => ({ ...w, hidden: layout.hidden.includes(w.key) }));
+    return route.fulfill({
+      json: {
+        practice: { id: PRACTICE, name: "Abuodeh CPA" },
+        scope: "all",
+        scopes: ["mine", "all"],
+        layout,
+        widgets,
+      },
+    });
+  });
+  await page.route("**/api/v1/practice/dashboard/layout?*", (route) => {
+    Object.assign(layout, route.request().postDataJSON());
+    return route.fulfill({ json: layout });
+  });
+  await page.goto(`/p/${PRACTICE}`);
+  await page.getByRole("button", { name: "Customise dashboard" }).click();
+  await page.getByRole("button", { name: "Move up: Organisations without a BN" }).click();
+  await page.getByRole("button", { name: "Move up: Organisations without a BN" }).click();
+  await page.getByRole("checkbox", { name: "Show Read-only organisations" }).uncheck();
+  await expectAccessible(page);
+  await page.getByRole("button", { name: "Save layout" }).click();
+  await expect(page.getByText("Your dashboard layout is saved.")).toBeAttached();
+  await page.reload();
+  const cards = page.locator("[data-cards] [data-widget]");
+  await expect(cards).toHaveCount(2);
+  await expect(cards.first()).toHaveAttribute("data-widget", "missing_bn");
+  expect(layout).toEqual({
+    order: ["missing_bn", "trials_ending", "read_only"],
+    hidden: ["read_only"],
+  });
+});

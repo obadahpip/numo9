@@ -90,4 +90,45 @@ export const m = defineMessages({
     defaultMessage: "No active staff member.",
     description: "Empty workload",
   },
+  customise: {
+    id: "dashboard.customise",
+    defaultMessage: "Customise dashboard",
+    description: "Button: reorder and hide cards (V-04-T09)",
+  },
+  customiseTitle: {
+    id: "dashboard.customiseTitle",
+    defaultMessage: "Customise your dashboard",
+    description: "Heading of the customise panel",
+  },
+  customiseIntro: {
+    id: "dashboard.customiseIntro",
+    defaultMessage:
+      "Move cards up or down and choose which ones you see. Only your dashboard changes.",
+    description: "Text of the customise panel",
+  },
+  show: {
+    id: "dashboard.show",
+    defaultMessage: "Show {title}",
+    description: "Checkbox: show this card",
+  },
+  moveUp: { id: "dashboard.moveUp", defaultMessage: "Move up: {title}", description: "Button" },
+  moveDown: {
+    id: "dashboard.moveDown",
+    defaultMessage: "Move down: {title}",
+    description: "Button",
+  },
+  up: { id: "dashboard.up", defaultMessage: "Up", description: "Button text" },
+  down: { id: "dashboard.down", defaultMessage: "Down", description: "Button text" },
+  save: { id: "dashboard.save", defaultMessage: "Save layout", description: "Button" },
+  cancel: { id: "dashboard.cancel", defaultMessage: "Cancel", description: "Button" },
+  saved: {
+    id: "dashboard.saved",
+    defaultMessage: "Your dashboard layout is saved.",
+    description: "Status after saving",
+  },
+  saveFailed: {
+    id: "dashboard.saveFailed",
+    defaultMessage: "The layout wasn't saved. Try again.",
+    description: "Error",
+  },
 });

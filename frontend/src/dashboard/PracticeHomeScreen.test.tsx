@@ -156,3 +156,42 @@ it("staff with one scope see no switch", async () => {
   await screen.findByRole("region", { name: "Trials ending in 7 days" });
   expect(screen.queryByRole("button", { name: "All practice" })).toBeNull();
 });
+
+it("customise: move a card up, hide one, save — the page follows (V-04-T09)", async () => {
+  serve(dashboard());
+  const puts: { url: string; body: unknown }[] = [];
+  const base = globalThis.fetch;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (init?.method === "PUT") {
+        const body = JSON.parse(String(init.body)) as unknown;
+        puts.push({ url: String(input), body });
+        return new Response(JSON.stringify(body), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      if (String(input).includes("auth/csrf"))
+        return new Response(JSON.stringify({ csrfToken: "t" }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      return base(input, init);
+    }),
+  );
+  const user = userEvent.setup();
+  renderWithIntl(<PracticeHomeScreen practice={PRACTICE} />);
+  await user.click(await screen.findByRole("button", { name: "Customise dashboard" }));
+  await user.click(screen.getByRole("button", { name: "Move up: Read-only organisations" }));
+  await user.click(screen.getByRole("checkbox", { name: "Show Dormant staff" }));
+  await user.click(screen.getByRole("button", { name: "Save layout" }));
+  expect(await screen.findByText("Your dashboard layout is saved.")).toBeInTheDocument();
+  expect(puts[0]?.url).toContain(`/api/v1/practice/dashboard/layout?practice=${PRACTICE}`);
+  expect(puts[0]?.body).toEqual({
+    order: ["read_only", "trials_ending", "missing_bn", "dormant_staff", "deadlines", "workload"],
+    hidden: ["dormant_staff"],
+  });
+  const cards = screen.getAllByRole("region").map((r) => r.getAttribute("data-widget"));
+  expect(cards.slice(0, 2)).toEqual(["read_only", "trials_ending"]);
+  expect(screen.queryByRole("region", { name: "Dormant staff" })).toBeNull();
+});
