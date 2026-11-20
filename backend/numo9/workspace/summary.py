@@ -19,6 +19,7 @@ name, legal_name,      ``OrganisationSettings`` (A-05): display name (else ``Org
 industry, province,    legal name, industry, physical province (else mailing), fiscal year end
 fye_month, fye_day
 bn                     ``TaxRegistration`` (A-05) of type BN, status registered (latest start)
+lock_date              the latest ``LockDate`` (A-05) date of any module and level (V-04)
 owner_name/email       the organisation's ``owner`` membership (earliest)
 package, status,       the entitlement engine (U-03): package code; Organisation.status mapped to
 trial_ends_at,         the directory status (active/grace → paid, cancelled → archived); a
@@ -150,6 +151,17 @@ def _business_number(organisation: Organisation) -> str:
     return registration.number[:9] if registration else ""
 
 
+def _lock_date(organisation: Organisation) -> Any:
+    from django.db.models import Max
+
+    from numo9.orgsettings.models import LockDate
+
+    latest = LockDate._base_manager.filter(
+        organisation_id=organisation.pk, deleted_at__isnull=True, date__isnull=False
+    ).aggregate(latest=Max("date"))
+    return latest["latest"]
+
+
 def _owner(organisation: Organisation) -> dict[str, str]:
     owner = (
         OrganisationMember.objects.filter(organisation=organisation, role=OrganisationRole.OWNER)
@@ -203,6 +215,7 @@ def organisation_facts(organisation: Organisation) -> _Facts:
     }
     values.update(_settings_facts(organisation))
     values["bn"] = _business_number(organisation)
+    values["lock_date"] = _lock_date(organisation)
     values.update(_owner(organisation))
     values.update(_commercial(organisation))
     values.update(_provided(organisation))

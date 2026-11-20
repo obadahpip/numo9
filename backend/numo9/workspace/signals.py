@@ -5,8 +5,8 @@ Every change to a record the directory shows schedules a refresh of that organis
 
 - the organisation itself (name, status) and its practice assignments (a new client appears, a
   switched-off assignment disappears);
-- organisation settings (display/legal name, industry, province, fiscal year end) and tax
-  registrations (the BN);
+- organisation settings (display/legal name, industry, province, fiscal year end), tax
+  registrations (the BN) and lock dates (V-04);
 - the subscription and entitlement overrides (package, status, trial end, Payroll);
 - owner memberships, and the owner's own name or email address;
 - the practice's tags (V-02 calls ``summary.tags_changed``).
@@ -20,7 +20,7 @@ from django.conf import settings
 from django.db.models.signals import post_delete, post_save
 
 from numo9.entitlements.models import EntitlementOverride, Subscription
-from numo9.orgsettings.models import OrganisationSettings, TaxRegistration
+from numo9.orgsettings.models import LockDate, OrganisationSettings, TaxRegistration
 from numo9.tenancy.models import (
     Organisation,
     OrganisationMember,
@@ -64,6 +64,7 @@ def connect() -> None:
         PracticeAssignment,
         OrganisationSettings,
         TaxRegistration,
+        LockDate,
         Subscription,
         EntitlementOverride,
     ):

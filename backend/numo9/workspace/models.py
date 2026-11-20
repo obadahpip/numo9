@@ -100,6 +100,12 @@ class OrgDirectorySummary(models.Model):
     payroll_enabled = models.BooleanField(_("payroll"), default=False)
     overdue_count = models.PositiveIntegerField(_("overdue items"), default=0)
     unfiled_count = models.PositiveIntegerField(_("unfiled returns"), default=0)
+    lock_date = models.DateField(
+        _("latest lock date"),
+        null=True,
+        blank=True,
+        help_text=_("The latest lock date set on any module (A-05); empty = no lock date (V-04)."),
+    )
     tags = models.JSONField(_("tags"), default=list, blank=True)
     search_vector = SearchVectorField(_("search vector"), null=True, editable=False)
     refreshed_at = models.DateTimeField(_("refreshed at"))

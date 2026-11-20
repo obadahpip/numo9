@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 15:26-0500\n"
+"POT-Creation-Date: 2026-11-20 15:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5911,6 +5911,14 @@ msgstr "éléments en retard"
 msgid "unfiled returns"
 msgstr "déclarations non produites"
 
+#, fuzzy
+#| msgid "lock date"
+msgid "latest lock date"
+msgstr "date de verrouillage"
+
+msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
+msgstr ""
+
 msgid "search vector"
 msgstr "vecteur de recherche"
 
@@ -6041,6 +6049,34 @@ msgstr "Choisissez l’une des 12 couleurs."
 #, python-format
 msgid "There's already a tag called %(name)s."
 msgstr "Il y a déjà une étiquette nommée %(name)s."
+
+#, fuzzy
+#| msgid "trial length (days)"
+msgid "Trials ending in 7 days"
+msgstr "durée de l’essai (jours)"
+
+#, fuzzy
+#| msgid "Organisations"
+msgid "Organisations without a BN"
+msgstr "Organisations"
+
+#, fuzzy
+#| msgid "lock dates"
+msgid "No lock date set"
+msgstr "dates de verrouillage"
+
+#, fuzzy
+#| msgid "active organisations"
+msgid "Read-only organisations"
+msgstr "organisations actives"
+
+#, fuzzy
+#| msgid "dormant staff alert"
+msgid "Dormant staff"
+msgstr "alerte de personnel inactif"
+
+msgid "No sign-in for the practice's dormant threshold (60 days)."
+msgstr ""
 
 #~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
 #~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."
