@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Banking home — account cards, states (F-01)">
+<title>Numo9 wireframe — Banking home — account cards, states (F-01)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">REFINED Interiors Inc.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="50" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="96" font-size="22" fill="#111111" font-weight="800" text-anchor="start">Banking</text>
+<text x="24" y="116" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Every account works the moment it exists: no feed, import or reconciliation needed.</text>
+<rect x="1196" y="80" width="124" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1258.0" y="103" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Add account</text>
+<circle cx="1336" cy="98" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1336" y="102" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="1040" y="80" width="140" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1110.0" y="103" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Spend money</text>
+<rect x="24" y="140" width="444" height="196" rx="10" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="40" y="156" width="36" height="36" rx="18" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="58" y="179" font-size="14" fill="#344054" font-weight="700" text-anchor="middle">$</text>
+<text x="88" y="172" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Chequing</text>
+<text x="88" y="190" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">TD Canada Trust · CAD</text>
+<text x="40" y="236" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Ledger balance</text>
+<text x="40" y="264" font-size="26" fill="#111111" font-weight="800" text-anchor="start">4,005.83</text>
+<text x="40" y="288" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Statement 4,120.00 on 30 Sep</text>
+<rect x="40" y="300" width="180" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="130" y="316" font-size="11" fill="#344054" font-weight="500" text-anchor="middle">Not reconciled — optional</text>
+<text x="452" y="316" font-size="11" fill="#5B6472" font-weight="400" text-anchor="end">Last activity 26 Oct</text>
+<rect x="488" y="140" width="444" height="196" rx="10" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="504" y="156" width="36" height="36" rx="18" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="522" y="179" font-size="14" fill="#344054" font-weight="700" text-anchor="middle">¢</text>
+<text x="552" y="172" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Petty Cash</text>
+<text x="552" y="190" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Cash · CAD</text>
+<text x="504" y="236" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Ledger balance</text>
+<text x="504" y="264" font-size="26" fill="#B42318" font-weight="800" text-anchor="start">−994.17</text>
+<text x="504" y="288" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">No statement balance</text>
+<rect x="504" y="300" width="180" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="594" y="316" font-size="11" fill="#344054" font-weight="500" text-anchor="middle">Not reconciled — optional</text>
+<text x="916" y="316" font-size="11" fill="#5B6472" font-weight="400" text-anchor="end">Last activity 15 Jun</text>
+<rect x="952" y="140" width="444" height="196" rx="10" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="968" y="156" width="36" height="36" rx="18" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="986" y="179" font-size="14" fill="#344054" font-weight="700" text-anchor="middle">▭</text>
+<text x="1016" y="172" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Visa Business</text>
+<text x="1016" y="190" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Credit card · RBC · CAD</text>
+<text x="968" y="236" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Ledger balance</text>
+<text x="968" y="264" font-size="26" fill="#111111" font-weight="800" text-anchor="start">1,230.40 owed</text>
+<text x="968" y="288" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Statement 1,105.12 on 20 Oct</text>
+<rect x="968" y="300" width="180" height="24" rx="12" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1058" y="316" font-size="11" fill="#344054" font-weight="500" text-anchor="middle">Not reconciled — optional</text>
+<text x="1380" y="316" font-size="11" fill="#5B6472" font-weight="400" text-anchor="end">Last activity 24 Oct</text>
+<circle cx="36" cy="150" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="36" y="154" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<circle cx="500" cy="300" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="500" y="304" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<text x="24" y="380" font-size="16" fill="#111111" font-weight="700" text-anchor="start">States</text>
+<rect x="24" y="400" width="330" height="180" rx="10" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="189" y="450" font-size="15" fill="#111111" font-weight="700" text-anchor="middle">No bank account yet</text>
+<text x="189" y="474" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">You don't need a feed: add an account and</text>
+<text x="189" y="492" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">record spend and receive money right away.</text>
+<rect x="129" y="512" width="120" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="189.0" y="535" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Add account</text>
+<circle cx="36" cy="410" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="36" y="414" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<rect x="370" y="400" width="330" height="180" rx="10" fill="#F9FAFB" stroke="#EAECF0" stroke-width="1"/>
+<rect x="390" y="424" width="290" height="18" rx="4" fill="#EAECF0" stroke="#EAECF0" stroke-width="1"/>
+<rect x="390" y="464" width="230" height="18" rx="4" fill="#EAECF0" stroke="#EAECF0" stroke-width="1"/>
+<rect x="390" y="504" width="170" height="18" rx="4" fill="#EAECF0" stroke="#EAECF0" stroke-width="1"/>
+<text x="535" y="560" font-size="11" fill="#5B6472" font-weight="400" text-anchor="middle">Loading (skeleton cards)</text>
+<circle cx="382" cy="410" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="382" y="414" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">5</text>
+<rect x="716" y="400" width="330" height="180" rx="10" fill="#FEF3F2" stroke="#FDA29B" stroke-width="1"/>
+<text x="881" y="456" font-size="15" fill="#B42318" font-weight="700" text-anchor="middle">Balances couldn't be loaded</text>
+<text x="881" y="480" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">Make sure you're online, then try again.</text>
+<rect x="831" y="504" width="100" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="881.0" y="527" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Try again</text>
+<circle cx="728" cy="410" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="728" y="414" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">6</text>
+<rect x="1062" y="400" width="354" height="180" rx="10" fill="#F9FAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1080" y="432" font-size="15" fill="#667085" font-weight="700" text-anchor="start">Old savings (archived)</text>
+<text x="1080" y="452" font-size="12" fill="#667085" font-weight="400" text-anchor="start">Hidden from pickers; kept in reports</text>
+<text x="1080" y="494" font-size="24" fill="#667085" font-weight="800" text-anchor="start">0.00</text>
+<rect x="1080" y="520" width="90" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1125.0" y="543" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Restore</text>
+<circle cx="1074" cy="410" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1074" y="414" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">7</text>
+<text x="24" y="620" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">1 Add account opens the side-sheet (wireframe 39)   2 Card opens the account (40)   3 Reconciliation is optional and never blocks</text>
+</svg>
