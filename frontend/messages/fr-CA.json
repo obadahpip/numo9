@@ -584,6 +584,9 @@
   },
   "common": {
     "brand": "Numo9",
+    "rateLimit": {
+      "retrying": "You're going a little fast — retrying in {seconds, number} s"
+    },
     "tagline": "Numbers build a brighter tomorrow"
   },
   "console": {

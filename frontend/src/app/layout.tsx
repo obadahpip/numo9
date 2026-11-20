@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { RateLimitToast } from "@/components/RateLimitToast";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
 
@@ -22,7 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: fm(messages.title), description: fm(messages.description) };
 }
 
-/** Root layout: the request's locale (A-10-T13) on `<html lang>` and in the i18n provider. */
+/**
+ * Root layout: the request's locale (A-10-T13) on `<html lang>` and in the i18n provider; the
+ * rate-limit toast (S-06-T06) on every page.
+ */
 export default async function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   const [locale, catalogue] = await Promise.all([getLocale(), getMessages()]);
   return (
@@ -30,6 +34,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className="min-h-screen antialiased">
         <NextIntlClientProvider locale={locale} messages={catalogue} timeZone="America/Toronto">
           {children}
+          <RateLimitToast />
         </NextIntlClientProvider>
       </body>
     </html>

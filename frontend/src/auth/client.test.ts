@@ -7,6 +7,8 @@ import {
   fieldErrors,
   isAuthenticated,
   pendingFlow,
+  RATE_LIMIT_EVENT,
+  RATE_LIMIT_RETRIES,
   resetCsrfToken,
 } from "./client";
 
@@ -148,5 +150,79 @@ describe("apiRequest with a FormData body (B-03-T12 file upload)", () => {
     const upload = calls[calls.length - 1]!;
     expect(upload.init.body).toBe(form);
     expect((upload.init.headers as Record<string, string>)["Content-Type"]).toBeUndefined();
+  });
+});
+
+describe("rate limit (S-06-T06): backoff and retry", () => {
+  const limited = (seconds: string) =>
+    json(
+      429,
+      { code: "request.rate_limited", detail: "You're going a little fast." },
+      {
+        "Retry-After": seconds,
+      },
+    );
+
+  it("waits Retry-After, doubling, announces each wait and sends again", async () => {
+    const { fetcher, calls } = fakeFetch(limited("2"), limited("2"), json(200, { ok: true }));
+    const waits: number[] = [];
+    const seen: number[] = [];
+    const listener = (event: Event) =>
+      seen.push((event as CustomEvent<{ seconds: number }>).detail.seconds);
+    window.addEventListener(RATE_LIMIT_EVENT, listener);
+    const result = await apiRequest("/api/v1/o/acme/contacts", {
+      fetcher,
+      wait: async (ms) => {
+        waits.push(ms);
+      },
+    });
+    window.removeEventListener(RATE_LIMIT_EVENT, listener);
+    expect(result.status).toBe(200);
+    expect(calls).toHaveLength(3);
+    expect(waits).toEqual([2000, 4000]);
+    expect(seen).toEqual([2, 4]);
+  });
+
+  it("gives up after three retries and returns the 429", async () => {
+    const { fetcher, calls } = fakeFetch(limited("1"), limited("1"), limited("1"), limited("1"));
+    const result = await apiRequest("/x", { fetcher, wait: async () => {} });
+    expect(result.status).toBe(429);
+    expect(result.retryAfter).toBe(1);
+    expect(calls).toHaveLength(1 + RATE_LIMIT_RETRIES);
+  });
+
+  it("retries an unsafe request too (the server refused it before doing anything)", async () => {
+    const { fetcher, calls } = fakeFetch(
+      json(200, { csrfToken: "tok" }),
+      limited("1"),
+      json(201, { id: "c1" }),
+    );
+    const result = await apiRequest("/api/v1/o/acme/contacts", {
+      method: "POST",
+      body: { name: "Maple" },
+      fetcher,
+      wait: async () => {},
+    });
+    expect(result.status).toBe(201);
+    expect(calls.filter((c) => c.init.method === "POST")).toHaveLength(2);
+  });
+
+  it("never retries another 429 (a locked sign-in) or a long wait", async () => {
+    const lockout = json(
+      429,
+      { errors: [{ code: "too_many_login_attempts" }] },
+      {
+        "Retry-After": "900",
+      },
+    );
+    const { fetcher, calls } = fakeFetch(lockout);
+    const result = await apiRequest("/login", { fetcher, wait: async () => {} });
+    expect(result.status).toBe(429);
+    expect(calls).toHaveLength(1);
+    const slow = fakeFetch(limited("120"));
+    expect((await apiRequest("/x", { fetcher: slow.fetcher, wait: async () => {} })).status).toBe(
+      429,
+    );
+    expect(slow.calls).toHaveLength(1);
   });
 });
