@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 418   Remaining: 2369   Progress: 15.00%
+TOTAL ATOMIC TASKS: 2787   Completed: 419   Remaining: 2368   Progress: 15.03%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -566,7 +566,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ V-04-T10 — Performance budget dashboard < 1.5 s on 2,000 orgs
 
 [A-09]
-❌ A-09-T01 — SearchDocument table (org, type, object id, title, subtitle, body tsvector, amount, date, permission key, feature key) with GIN + trigram indexes
+✅ A-09-T01 — SearchDocument table (org, type, object id, title, subtitle, body tsvector, amount, date, permission key, feature key) with GIN + trigram indexes
 ❌ A-09-T02 — Provider registry: each model registers to_search_document(); signals update on save/delete (same transaction)
 ❌ A-09-T03 — Providers for contacts, accounts, journals (narration + line descriptions), organisations, users, documents
 ❌ A-09-T04 — Static providers: settings pages (incl. synonyms "lock date", "BN", "fiscal year"), reports catalogue, navigation entries — i18n aware

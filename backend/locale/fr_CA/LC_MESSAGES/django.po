@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 16:07-0500\n"
+"POT-Creation-Date: 2026-11-20 16:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5628,6 +5628,44 @@ msgstr "Employés, congés et dossiers RH."
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 
+#, fuzzy
+#| msgid "record"
+msgid "record id"
+msgstr "fiche"
+
+#, fuzzy
+#| msgid "job type"
+msgid "title"
+msgstr "type de tâche"
+
+#, fuzzy
+#| msgid "subtotal"
+msgid "subtitle"
+msgstr "sous-total"
+
+#, fuzzy
+#| msgid "Number"
+msgid "code or number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "feature flag"
+msgid "feature"
+msgstr "indicateur de fonctionnalité"
+
+msgid "search vector"
+msgstr "vecteur de recherche"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "search document"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "search documents"
+msgstr "Documents"
+
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr "Afficher les valeurs masquées comme le NAS et les numéros de compte bancaire (mot de passe confirmé, journalisé)"
 
@@ -5918,9 +5956,6 @@ msgstr "date de verrouillage"
 
 msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
 msgstr ""
-
-msgid "search vector"
-msgstr "vecteur de recherche"
 
 msgid "refreshed at"
 msgstr "actualisé le"

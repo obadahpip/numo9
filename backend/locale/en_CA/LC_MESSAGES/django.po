@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 16:07-0500\n"
+"POT-Creation-Date: 2026-11-20 16:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5335,6 +5335,30 @@ msgstr ""
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr ""
 
+msgid "record id"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "subtitle"
+msgstr ""
+
+msgid "code or number"
+msgstr ""
+
+msgid "feature"
+msgstr ""
+
+msgid "search vector"
+msgstr ""
+
+msgid "search document"
+msgstr ""
+
+msgid "search documents"
+msgstr ""
+
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr ""
 
@@ -5616,9 +5640,6 @@ msgid "latest lock date"
 msgstr ""
 
 msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
-msgstr ""
-
-msgid "search vector"
 msgstr ""
 
 msgid "refreshed at"
