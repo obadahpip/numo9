@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:21-0500\n"
+"POT-Creation-Date: 2026-11-20 17:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4293,6 +4293,15 @@ msgstr "Numéro"
 msgid "journal number sequences"
 msgstr "Numéro"
 
+msgid "shortfalls"
+msgstr "découverts"
+
+msgid "journal override"
+msgstr "dérogation d'écriture"
+
+msgid "journal overrides"
+msgstr "dérogations d'écriture"
+
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
 msgstr "La période %(period)s (du %(start)s au %(end)s) est fermée : rien ne peut y être comptabilisé. Datez l'écriture après le %(end)s ou demandez à un conseiller de rouvrir la période."
@@ -4346,6 +4355,14 @@ msgstr "paie"
 
 msgid "depreciation"
 msgstr "amortissement"
+
+#, python-format
+msgid "%(shortfalls)s. A journal can't take a bank or cash account below zero — record the money coming in first, or ask your adviser."
+msgstr "%(shortfalls)s. Une écriture ne peut pas rendre un compte bancaire ou de caisse négatif — enregistrez d'abord l'argent reçu, ou demandez à votre conseiller."
+
+#, python-format
+msgid "%(shortfalls)s. As an adviser you may post it anyway: give the reason (at least %(min)d characters)."
+msgstr "%(shortfalls)s. En tant que conseiller, vous pouvez la passer quand même : indiquez la raison (au moins %(min)d caractères)."
 
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."

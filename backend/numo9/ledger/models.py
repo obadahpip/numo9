@@ -1001,3 +1001,35 @@ class JournalSequence(OrgOwnedModel):
 
     def format(self, number: int) -> str:
         return f"{self.prefix}{str(number).zfill(self.padding)}"
+
+
+class JournalOverride(OrgOwnedModel):
+    """An adviser's reason for posting a journal that drives a bank or cash account below zero
+    (C-03-T08): the journal, who, when, why, and the shortfalls they were warned about
+    (``[{account, lowest, lowest_on, message}…]``). Written by the posting service only."""
+
+    entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        related_name="overrides",
+        verbose_name=_("journal entry"),
+    )
+    reason = models.TextField(_("reason"))
+    user = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("by"),
+    )
+    at = models.DateTimeField(_("at"), default=timezone.now)
+    shortfalls = models.JSONField(_("shortfalls"), default=list)
+
+    class Meta:
+        ordering = ("-at", "-pk")
+        verbose_name = _("journal override")
+        verbose_name_plural = _("journal overrides")
+
+    def __str__(self) -> str:
+        return f"{self.entry} · {self.reason[:40]}"

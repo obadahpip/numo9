@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:21-0500\n"
+"POT-Creation-Date: 2026-11-20 17:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4033,6 +4033,15 @@ msgstr ""
 msgid "journal number sequences"
 msgstr ""
 
+msgid "shortfalls"
+msgstr ""
+
+msgid "journal override"
+msgstr ""
+
+msgid "journal overrides"
+msgstr ""
+
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
 msgstr ""
@@ -4085,6 +4094,14 @@ msgid "payroll"
 msgstr ""
 
 msgid "depreciation"
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. A journal can't take a bank or cash account below zero — record the money coming in first, or ask your adviser."
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. As an adviser you may post it anyway: give the reason (at least %(min)d characters)."
 msgstr ""
 
 #, python-format

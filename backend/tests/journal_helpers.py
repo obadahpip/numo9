@@ -50,3 +50,23 @@ def pay(
         ),
         **fields,
     )
+
+
+def people(org: Organisation) -> dict[str, Any]:
+    """The organisation's owner (not an adviser) and an assigned practice accountant (adviser)."""
+    from numo9.accounts.models import User
+    from numo9.tenancy.models import (
+        OrganisationMember,
+        Practice,
+        PracticeAssignment,
+        PracticeMember,
+    )
+
+    practice = Practice.objects.create(name="North Star CPA")
+    assignment = PracticeAssignment.objects.create(practice=practice, organisation=org)
+    adviser = User.objects.create_user("sam@northstar.ca", name="Sam Patel")
+    member = PracticeMember.objects.create(practice=practice, user=adviser, role="accountant")
+    assignment.assigned_staff.add(member)
+    owner = User.objects.create_user("dana@refined.ca", name="Dana Lee")
+    OrganisationMember.objects.create(organisation=org, user=owner, role="owner")
+    return {"owner": owner, "adviser": adviser}

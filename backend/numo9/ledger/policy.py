@@ -37,6 +37,17 @@ organisation's settings ask for it (C-03-T05):
                                                 expense line without a contact
 ==============================================  ================================================
 
+**Cash below zero** (C-03-T08) — a journal posted by a person (not a system job) that drives a
+bank or cash account below zero (``cash_guard``, C-03-T07):
+
+==============================================  ================================================
+``ledger.journal.negative_cash``                someone who isn't an adviser: blocked (409),
+                                                naming each account, amount and day
+``ledger.journal.override_reason_required``     an adviser: posted only with a reason of at
+                                                least 10 characters, stored as a
+                                                ``JournalOverride`` and audited
+==============================================  ================================================
+
 Documents posted by modules (invoices, bills, payroll) carry their own documents and contacts:
 the expense-journal rules apply to manual journals (``JournalType.MANUAL``).
 """
@@ -47,6 +58,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy
 
@@ -212,3 +224,58 @@ def check_policy(
         expense_rules(checked, problems, attachments, organisation)
     if problems.errors:
         raise JournalRuleError(problems.errors)
+
+
+MIN_OVERRIDE_REASON = 10
+
+
+class NegativeCash(JournalRuleError):
+    """The journal would drive a bank or cash account below zero (C-03-T08)."""
+
+    def __init__(self, message: Any, *, code: str, projections: list[Any], adviser: bool) -> None:
+        super().__init__(message, code=code)
+        self.projections = projections
+        self.adviser = adviser
+
+
+def cash_rule(
+    checked: ValidatedJournal,
+    organisation: Any,
+    person: Any,
+    override_reason: str = "",
+) -> list[Any]:
+    """C-03-T08: the shortfalls an adviser overrides (``[]`` when cash stays at zero or more);
+    raises ``NegativeCash`` for anyone else, or for an adviser without a reason."""
+    from numo9.orgsettings.locks import is_adviser, local_date
+
+    from .cash_guard import shortfalls
+
+    if not getattr(person, "is_authenticated", False):
+        return []  # a system job (imports, scheduled postings) answers to its own process
+    found = shortfalls(checked, organisation, today=local_date(organisation, timezone.now()))
+    if not found:
+        return []
+    named = "; ".join(p.message() for p in found)
+    if not is_adviser(person, organisation):
+        raise NegativeCash(
+            _(
+                "%(shortfalls)s. A journal can't take a bank or cash account below zero — "
+                "record the money coming in first, or ask your adviser."
+            )
+            % {"shortfalls": named},
+            code="ledger.journal.negative_cash",
+            projections=found,
+            adviser=False,
+        )
+    if len((override_reason or "").strip()) < MIN_OVERRIDE_REASON:
+        raise NegativeCash(
+            _(
+                "%(shortfalls)s. As an adviser you may post it anyway: give the reason (at least "
+                "%(min)d characters)."
+            )
+            % {"shortfalls": named, "min": MIN_OVERRIDE_REASON},
+            code="ledger.journal.override_reason_required",
+            projections=found,
+            adviser=True,
+        )
+    return found

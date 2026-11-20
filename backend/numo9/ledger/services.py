@@ -56,9 +56,16 @@ from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import acting_practice, current_org, org_context
 from numo9.tenancy.models import Organisation
 
-from .models import JournalEntry, JournalLine, JournalStatus, JournalType, LedgerError
+from .models import (
+    JournalEntry,
+    JournalLine,
+    JournalOverride,
+    JournalStatus,
+    JournalType,
+    LedgerError,
+)
 from .periods import assert_can_post
-from .policy import check_policy
+from .policy import cash_rule, check_policy
 from .sequence import allocate_journal_number, format_journal_number
 from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journal
 
@@ -174,6 +181,7 @@ def post_journal(
     reversal_of: JournalEntry | None = None,
     caller: str | None = None,
     attachments: Sequence[Any] = (),
+    override_reason: str = "",
 ) -> JournalEntry:
     """Validate, check the period, insert, number and post ``spec`` — all or nothing.
 
@@ -191,6 +199,11 @@ def post_journal(
             check_policy(
                 checked, caller=caller, attachments=len(documents), organisation=organisation
             )
+        overridden = (
+            cash_rule(checked, organisation, person, override_reason)
+            if reversal_of is None and caller is None
+            else []
+        )
         entry = JournalEntry(
             organisation=organisation,
             date=spec.date,
@@ -210,7 +223,35 @@ def post_journal(
         lines = _lines(entry, checked)
         JournalLine.objects.bulk_create(lines)
         _attach(entry, documents, person)
-        return _number_and_post(entry, lines, person, JournalStatus.DRAFT)
+        posted = _number_and_post(entry, lines, person, JournalStatus.DRAFT)
+        _record_override(posted, overridden, override_reason, person)
+        return posted
+
+
+def _record_override(entry: JournalEntry, shortfalls: list[Any], reason: str, person: Any) -> None:
+    """An adviser posted past the cash guard (C-03-T08): keep who, when, why and what."""
+    if not shortfalls:
+        return
+    by = person if getattr(person, "is_authenticated", False) else None
+    details = [p.as_dict() for p in shortfalls]
+    override = JournalOverride.objects.create(
+        organisation=entry.organisation,
+        entry=entry,
+        reason=reason.strip(),
+        user=by,
+        shortfalls=details,
+    )
+    audit.record(
+        "ledger.journalentry.override",
+        obj=entry,
+        changes={},
+        meta={
+            "number": format_journal_number(entry.organisation, entry.number),
+            "reason": override.reason,
+            "shortfalls": [d["message"] for d in details],
+        },
+        actor=by,
+    )
 
 
 def _attach(entry: JournalEntry, documents: Sequence[Any], person: Any) -> None:
@@ -371,6 +412,7 @@ def post_entry(
     user: Any = ACTING,
     module: str = LockModule.GL,
     caller: str | None = None,
+    override_reason: str = "",
 ) -> JournalEntry:
     """Draft or Awaiting approval → Posted: steps 1–6 of ``post_journal`` on its stored lines."""
     person = acting_user() if user is ACTING else user
@@ -387,11 +429,16 @@ def post_entry(
             attachments=attachment_count(entry),
             organisation=organisation,
         )
+        overridden = (
+            cash_rule(checked, organisation, person, override_reason) if caller is None else []
+        )
         if entry.book_scope != checked.book_scope:
             JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
             entry.book_scope = checked.book_scope
         lines = list(entry.lines.order_by("line_no").select_related("account"))
-        return _number_and_post(entry, lines, person, entry.status)
+        posted = _number_and_post(entry, lines, person, entry.status)
+        _record_override(posted, overridden, override_reason, person)
+        return posted
 
 
 # ---- reversal (C-02-T10) ----------------------------------------------------------------------
