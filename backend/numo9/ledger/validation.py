@@ -54,6 +54,7 @@ from .models import (
     MONEY_PLACES,
     Account,
     Book,
+    JournalCategory,
     JournalType,
     LedgerError,
 )
@@ -96,6 +97,8 @@ class JournalSpec:
     narration: str = ""
     source_type: str = ""
     source_id: str = ""
+    #: General / Adjusting / Reclass / Tax adjustment, or a system type (C-03-T01).
+    journal_type: str = JournalCategory.GENERAL
 
 
 @dataclass(frozen=True)

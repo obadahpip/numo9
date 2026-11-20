@@ -612,6 +612,34 @@ class JournalType(models.TextChoices):
     REVERSAL = "reversal", _("Reversal")
 
 
+class JournalCategory(models.TextChoices):
+    """The plan's journal type (C-03-T01): what kind of accounting entry a journal is.
+
+    (``JournalType`` above says what *posted* it — manual, sales, payroll…; this classifies the
+    entry itself, for people and reports.) General, Adjusting, Reclass and Tax adjustment are
+    chosen by people; Closing (the year-end process, C-06), Payroll and Depreciation are given by
+    the modules that post them and are never offered in a picker (``SELECTABLE_CATEGORIES``).
+    """
+
+    GENERAL = "general", _("General")
+    ADJUSTING = "adjusting", _("Adjusting")
+    RECLASS = "reclass", _("Reclass")
+    TAX_ADJUSTMENT = "tax_adjustment", _("Tax adjustment")
+    CLOSING = "closing", _("Closing")
+    PAYROLL = "payroll", _("Payroll")
+    DEPRECIATION = "depreciation", _("Depreciation")
+
+
+#: Journal types a person may choose; the others are set by the system (C-03-T01).
+SELECTABLE_CATEGORIES: tuple[str, ...] = (
+    JournalCategory.GENERAL,
+    JournalCategory.ADJUSTING,
+    JournalCategory.RECLASS,
+    JournalCategory.TAX_ADJUSTMENT,
+)
+SYSTEM_CATEGORIES: frozenset[str] = frozenset(JournalCategory.values) - set(SELECTABLE_CATEGORIES)
+
+
 #: numeric(18, 2): 16 digits before the decimal point, two after.
 MONEY_DIGITS = 18
 MONEY_PLACES = 2
@@ -641,6 +669,8 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
       ``JournalSequence``, C-02-T05); empty for drafts; unique per organisation;
     - ``date`` — the accounting date of every line;
     - ``type`` — manual, sales, purchase, payment… (``JournalType``; modules may add types);
+    - ``journal_type`` — General, Adjusting, Reclass, Tax adjustment, or a system type (Closing,
+      Payroll, Depreciation) — ``JournalCategory`` (C-03-T01);
     - ``status`` — draft, awaiting approval, posted, reversed; posted and reversed entries can't
       change (C-02-T04) except Posted → Reversed;
     - ``source_type`` / ``source_id`` — the document that posted it (``sales.Invoice`` + public id);
@@ -662,6 +692,13 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
     date = models.DateField(_("date"))
     type = models.CharField(
         _("journal type"), max_length=32, choices=JournalType.choices, default=JournalType.MANUAL
+    )
+    journal_type = models.CharField(
+        _("journal type"),
+        max_length=20,
+        choices=JournalCategory.choices,
+        default=JournalCategory.GENERAL,
+        db_default=JournalCategory.GENERAL,
     )
     status = models.CharField(
         _("status"), max_length=20, choices=JournalStatus.choices, default=JournalStatus.DRAFT
@@ -710,6 +747,10 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
             ),
             models.CheckConstraint(
                 condition=~models.Q(type=""), name="ledger_journal_type_required"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(journal_type__in=JournalCategory.values),
+                name="ledger_journal_category_valid",
             ),
             # Posted and reversed entries have their number and posting time; drafts have neither.
             models.CheckConstraint(

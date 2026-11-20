@@ -149,6 +149,7 @@ def _number_and_post(
             "number": format_journal_number(entry.organisation, number),
             "date": entry.date.isoformat(),
             "type": entry.type,
+            "journal_type": entry.journal_type,
             "source": {"type": entry.source_type, "id": entry.source_id}
             if entry.source_type
             else None,
@@ -183,6 +184,7 @@ def post_journal(
             organisation=organisation,
             date=spec.date,
             type=spec.type,
+            journal_type=spec.journal_type,
             narration=spec.narration,
             source_type=spec.source_type,
             source_id=str(spec.source_id or ""),
@@ -243,6 +245,7 @@ def _spec_of(entry: JournalEntry) -> JournalSpec:
     return JournalSpec(
         date=entry.date,
         type=entry.type,
+        journal_type=entry.journal_type,
         narration=entry.narration,
         source_type=entry.source_type,
         source_id=entry.source_id,
@@ -288,6 +291,7 @@ def save_draft(
                     params={"journal": str(entry), "status": _status_label(entry.status)},
                 )
         entry.date, entry.type, entry.narration = spec.date, spec.type, spec.narration
+        entry.journal_type = spec.journal_type
         entry.source_type, entry.source_id = spec.source_type, str(spec.source_id or "")
         entry.book_scope = checked.book_scope
         entry.save()
@@ -373,6 +377,7 @@ def reverse(
         spec = JournalSpec(
             date=date or original.date,
             type=JournalType.REVERSAL,
+            journal_type=original.journal_type,
             narration=narration or _("Reversal of %(number)s") % {"number": number},
             source_type=original.source_type,
             source_id=original.source_id,
