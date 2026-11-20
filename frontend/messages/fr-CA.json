@@ -1993,6 +1993,15 @@
     "lockedPrefix": "Locked:",
     "retry": "Try again",
     "searching": "Searching…",
+    "sheet": {
+      "action": "Action",
+      "create": "Create (press N, then the letter)",
+      "general": "Everywhere",
+      "help": "Single-key shortcuts don't work while you're typing in a field.",
+      "keys": "Keys",
+      "later": "Coming soon",
+      "title": "Keyboard shortcuts"
+    },
     "shortcut": "Shortcut {keys}",
     "start": "Type a name, an account code or an amount.",
     "title": "Search"

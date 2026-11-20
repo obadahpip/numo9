@@ -73,4 +73,31 @@ export const m = defineMessages({
     defaultMessage: "Shortcut {keys}",
     description: "Screen-reader text of an item's keyboard shortcut, e.g. Shortcut N C",
   },
+  sheetTitle: {
+    id: "palette.sheet.title",
+    defaultMessage: "Keyboard shortcuts",
+    description: "Title of the shortcut sheet opened with ?",
+  },
+  sheetGeneral: {
+    id: "palette.sheet.general",
+    defaultMessage: "Everywhere",
+    description: "Shortcut sheet section: shortcuts that work on every page",
+  },
+  sheetCreate: {
+    id: "palette.sheet.create",
+    defaultMessage: "Create (press N, then the letter)",
+    description: "Shortcut sheet section: quick-create shortcuts",
+  },
+  sheetKeys: { id: "palette.sheet.keys", defaultMessage: "Keys", description: "Column" },
+  sheetAction: { id: "palette.sheet.action", defaultMessage: "Action", description: "Column" },
+  sheetLater: {
+    id: "palette.sheet.later",
+    defaultMessage: "Coming soon",
+    description: "Next to a shortcut whose screen isn't available yet",
+  },
+  sheetHelp: {
+    id: "palette.sheet.help",
+    defaultMessage: "Single-key shortcuts don't work while you're typing in a field.",
+    description: "Note under the shortcut sheet",
+  },
 });

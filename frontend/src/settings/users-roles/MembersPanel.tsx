@@ -20,6 +20,7 @@ import { useCallback, useEffect, useId, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
 import type { AppLocale } from "@/i18n/locales";
+import { ShortcutHint } from "@/search/ShortcutHint";
 
 import {
   errorText,
@@ -439,6 +440,10 @@ function InviteDialog({
   const errorId = useId();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
+  // Quick-create "Invite a user" (N U, A-09-T06/T08) lands on …/users-roles?invite=1.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("invite") === "1") setOpen(true);
+  }, []);
   const [role, setRole] = useState("employee");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -469,7 +474,12 @@ function InviteDialog({
         setOpen(next);
         setError(null);
       }}
-      trigger={<Button>{fm(m.invite)}</Button>}
+      trigger={
+        <Button>
+          {fm(m.invite)}
+          <ShortcutHint id="user" />
+        </Button>
+      }
       title={fm(m.invite)}
       description={fm(m.inviteHelp)}
       closeLabel={fm(m.close)}
