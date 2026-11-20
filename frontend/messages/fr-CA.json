@@ -302,6 +302,12 @@
       "sentTitle": "Ouvrez le lien que nous vous avons envoyé",
       "submit": "Créer le compte"
     },
+    "social": {
+      "error": "Signing in with that account didn't work. Sign in with your email and password, or sign up first if you're new to Numo9.",
+      "google": "Continue with Google",
+      "microsoft": "Continue with Microsoft",
+      "or": "or use your email"
+    },
     "twoFactor": {
       "checking": "Vérification de votre connexion…",
       "codeIncomplete": "Entrez les 6 chiffres du code.",

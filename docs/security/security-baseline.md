@@ -255,6 +255,24 @@ Tests: `backend/tests/test_bruteforce.py` — the 11th attempt is locked, the lo
 15 minutes, applies from every IP and only to that address, unknown addresses behave the same,
 casing does not dodge it, success resets the count, CAPTCHA required after 5 failures.
 
+### Social sign-in (A-02-T16)
+
+Google and Microsoft sign-in is **off by default**, behind the feature flag `auth.social_signin`
+(created off by a migration; switched in the console → Feature flags). While it is off no
+provider is listed (the sign-in page shows no button) and the provider redirect is refused. A
+provider also needs its OAuth client in the environment: `NUMO9_GOOGLE_CLIENT_ID` /
+`NUMO9_GOOGLE_CLIENT_SECRET`, `NUMO9_MICROSOFT_CLIENT_ID` / `NUMO9_MICROSOFT_CLIENT_SECRET`
+(Microsoft: tenant `common`). Redirect URIs to register:
+`https://<app host>/_allauth/providers/google/login/callback/` and
+`…/_allauth/providers/microsoft/login/callback/`.
+
+- It signs in an **existing** account whose verified email the provider returns; it never
+  creates an account (sign-up stays the 4-field form with its path). Provider tokens aren't stored.
+- Two-factor authentication still applies after the provider (allauth's MFA stage).
+- A failure lands on `/login?social=error` with an explanation.
+
+Tests: `backend/tests/test_auth_social_signin.py`, `frontend/e2e/auth-social.spec.ts`.
+
 !!! note "Key rotation and 2FA secrets"
     TOTP secrets (A-02-T05) are encrypted with the same key ring but live in allauth's
     `Authenticator.data` JSON, which `rotate_field_encryption` does not walk. Keep an old key in

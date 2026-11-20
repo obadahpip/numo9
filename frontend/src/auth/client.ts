@@ -66,6 +66,11 @@ async function csrfToken(fetcher: typeof fetch): Promise<string> {
   return csrf;
 }
 
+/** The CSRF token for a plain HTML form post (social sign-in redirect, A-02-T16). */
+export function formCsrfToken(): Promise<string> {
+  return csrfToken(fetch);
+}
+
 /** Forget the cached CSRF token (tests; after login/logout, which rotate it). */
 export function resetCsrfToken(): void {
   csrf = undefined;

@@ -88,6 +88,10 @@ INSTALLED_APPS = [
     "allauth.mfa",
     # Session registry: every signed-in browser with IP, user agent, last seen; revoke (A-02-T07).
     "allauth.usersessions",
+    # Optional social sign-in, Google and Microsoft, behind the auth.social_signin flag (A-02-T16).
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.microsoft",
 ]
 
 MIDDLEWARE = [
@@ -357,6 +361,7 @@ HEADLESS_FRONTEND_URLS = {
     "account_reset_password": f"{FRONTEND_URL}/reset",
     "account_reset_password_from_key": f"{FRONTEND_URL}/reset/{{key}}",
     "account_signup": f"{FRONTEND_URL}/signup",
+    "socialaccount_login_error": f"{FRONTEND_URL}/login?social=error",
 }
 ACCOUNT_ADAPTER = "numo9.accounts.adapter.AccountAdapter"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -390,6 +395,34 @@ NUMO9_LOGIN_LOCKOUT_SECONDS = 15 * 60
 NUMO9_LOGIN_CAPTCHA_AFTER = 5
 NUMO9_CAPTCHA_VERIFIER = env_str("NUMO9_CAPTCHA_VERIFIER", "")
 ACCOUNT_EMAIL_NOTIFICATIONS = True
+
+# ---- Social sign-in (A-02-T16, numo9/accounts/social.py) ----------------------------------------
+# Off unless the auth.social_signin flag is on and the provider's credentials are set. Signs in an
+# existing account by its verified email; never creates one (sign-up is the 4-field form).
+SOCIALACCOUNT_ADAPTER = "numo9.accounts.social.SocialAccountAdapter"
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_STORE_TOKENS = False
+
+
+def _social_app(prefix: str) -> list[dict[str, str]]:
+    client_id = env_str(f"NUMO9_{prefix}_CLIENT_ID", "")
+    secret = env_str(f"NUMO9_{prefix}_CLIENT_SECRET", "")
+    return [{"client_id": client_id, "secret": secret}] if client_id and secret else []
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APPS": _social_app("GOOGLE"),
+        "SCOPE": ["openid", "email", "profile"],
+        "AUTH_PARAMS": {"prompt": "select_account"},
+        "OAUTH_PKCE_ENABLED": True,
+    },
+    "microsoft": {
+        "APPS": [{**app, "settings": {"tenant": "common"}} for app in _social_app("MICROSOFT")],
+        "SCOPE": ["openid", "email", "profile", "User.Read"],
+    },
+}
 
 # ---- Two-factor authentication: allauth.mfa (A-02-T05, numo9/accounts/mfa.py) -----------------
 MFA_ADAPTER = "numo9.accounts.mfa.MFAAdapter"  # TOTP secrets encrypted with the key ring
