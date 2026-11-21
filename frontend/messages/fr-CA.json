@@ -1973,6 +1973,39 @@
       "usageNoLimit": "{used} · no limit"
     }
   },
+  "palette": {
+    "button": "Search or jump to…",
+    "close": "Close",
+    "empty": "Nothing matches “{query}”. Try a name, a code or an amount.",
+    "error": "Search isn't available right now. Make sure you're online, then try again.",
+    "group": {
+      "create": "Create",
+      "navigation": "Go to",
+      "recents": "Recent",
+      "records": "Records",
+      "reports": "Reports",
+      "settings": "Settings"
+    },
+    "hint": "↑ ↓ to move, Enter to open, Esc to close",
+    "input": "Search contacts, accounts, journals, settings and reports",
+    "keys": "Ctrl+K",
+    "locked": "{product} isn't in this organisation's package",
+    "lockedPrefix": "Locked:",
+    "retry": "Try again",
+    "searching": "Searching…",
+    "sheet": {
+      "action": "Action",
+      "create": "Create (press N, then the letter)",
+      "general": "Everywhere",
+      "help": "Single-key shortcuts don't work while you're typing in a field.",
+      "keys": "Keys",
+      "later": "Coming soon",
+      "title": "Keyboard shortcuts"
+    },
+    "shortcut": "Shortcut {keys}",
+    "start": "Type a name, an account code or an amount.",
+    "title": "Search"
+  },
   "permissions": {
     "explain": {
       "alreadyOpen": "You already asked for this. It's waiting for an answer.",
@@ -1988,6 +2021,18 @@
       "sent": "Request sent. {count, plural, one {# person was} other {# people were}} emailed; you'll get access when one of them gives you a role.",
       "title": "You can't do this here yet"
     }
+  },
+  "quickCreate": {
+    "bill": "New bill",
+    "contact": "New contact",
+    "invoice": "New invoice",
+    "journal": "New manual journal",
+    "purchaseOrder": "New purchase order",
+    "quote": "New quote",
+    "receive": "Receive money",
+    "spend": "Spend money",
+    "transfer": "Transfer money",
+    "user": "Invite a user"
   },
   "routes": {
     "chartOfAccounts": "Chart of accounts",

@@ -6,7 +6,7 @@ WAIT_TIMEOUT ?= 900
 PYTHON ?= python
 MAKEMESSAGES := python manage.py makemessages -l en_CA -l fr_CA --no-location --no-wrap
 
-.PHONY: help up down restart ps logs build clean images i18n i18n-check docs docs-serve perf-directory perf-dashboard
+.PHONY: help up down restart ps logs build clean images i18n i18n-check docs docs-serve perf-directory perf-dashboard perf-search
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-10s %s\n", $$1, $$2}'
@@ -61,3 +61,7 @@ perf-directory: ## k6: organisation directory p95 < 300 ms over 2,000 orgs (V-01
 perf-dashboard: ## k6: practice home p95 < 1.5 s over 2,000 orgs (V-04-T10; needs k6)
 	$(COMPOSE_DEV) exec -T backend python manage.py seed_practice --orgs 2000 --password "$${SEED_PASSWORD:?set SEED_PASSWORD}"
 	k6 run -e BASE_URL=$${BASE_URL:-http://127.0.0.1:8000} -e PASSWORD="$$SEED_PASSWORD" tools/perf/k6/practice-dashboard.js
+
+perf-search: ## k6: search p95 < 150 ms over 1,000,000 documents (A-09-T10; needs k6)
+	$(COMPOSE_DEV) exec -T backend python manage.py seed_search --docs 1000000 --password "$${SEED_PASSWORD:?set SEED_PASSWORD}"
+	k6 run -e BASE_URL=$${BASE_URL:-http://127.0.0.1:8000} -e PASSWORD="$$SEED_PASSWORD" tools/perf/k6/search.js

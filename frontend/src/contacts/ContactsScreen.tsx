@@ -24,6 +24,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
 import { orgModuleUrl } from "@/routing/routes";
+import { ShortcutHint } from "@/search/ShortcutHint";
 
 import { contactsApi, firstError, type ContactRoleKey, type ContactSummary } from "./api";
 import { lm } from "./listMessages";
@@ -267,6 +268,7 @@ export function ContactsScreen({ org, initialTab = "all" }: { org: string; initi
             className="inline-flex min-h-touch-target items-center rounded-md bg-surface-accent px-4 text-sm font-semibold text-fg-on-accent hover:bg-surface-accent-hover"
           >
             {fm(lm.newContact)}
+            <ShortcutHint id="contact" />
           </a>
         </div>
       </header>

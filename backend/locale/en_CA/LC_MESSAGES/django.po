@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 16:07-0500\n"
+"POT-Creation-Date: 2026-11-20 16:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5335,6 +5335,151 @@ msgstr ""
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr ""
 
+#, python-format
+msgid "Part of %(product)s, which isn't in this organisation's package."
+msgstr ""
+
+msgid "Not in this organisation's package."
+msgstr ""
+
+msgid "record id"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "subtitle"
+msgstr ""
+
+msgid "code or number"
+msgstr ""
+
+msgid "feature"
+msgstr ""
+
+msgid "search vector"
+msgstr ""
+
+msgid "search document"
+msgstr ""
+
+msgid "search documents"
+msgstr ""
+
+msgid "General settings"
+msgstr ""
+
+msgid "organisation profile"
+msgstr ""
+
+msgid "fiscal year"
+msgstr ""
+
+msgid "fiscal year end"
+msgstr ""
+
+msgid "year end"
+msgstr ""
+
+msgid "Tax registrations"
+msgstr ""
+
+msgid "BN"
+msgstr ""
+
+msgid "GST/HST number"
+msgstr ""
+
+msgid "QST number"
+msgstr ""
+
+msgid "Lock dates"
+msgstr ""
+
+msgid "close the period"
+msgstr ""
+
+msgid "period lock"
+msgstr ""
+
+msgid "invite"
+msgstr ""
+
+msgid "permissions"
+msgstr ""
+
+msgid "Notification settings"
+msgstr ""
+
+msgid "email alerts"
+msgstr ""
+
+msgid "Subscription and billing"
+msgstr ""
+
+msgid "invoice"
+msgstr ""
+
+msgid "trial"
+msgstr ""
+
+msgid "history"
+msgstr ""
+
+msgid "who changed"
+msgstr ""
+
+msgid "Email sending domain"
+msgstr ""
+
+msgid "Package features"
+msgstr ""
+
+msgid "what's included"
+msgstr ""
+
+msgid "feature matrix"
+msgstr ""
+
+msgid "Customer statements"
+msgstr ""
+
+msgid "statement"
+msgstr ""
+
+msgid "aging"
+msgstr ""
+
+msgid "dashboard"
+msgstr ""
+
+msgid "customers"
+msgstr ""
+
+msgid "suppliers"
+msgstr ""
+
+msgid "GIFI"
+msgstr ""
+
+msgid "Journals"
+msgstr ""
+
+msgid "manual journal"
+msgstr ""
+
+msgid "general ledger"
+msgstr ""
+
+msgid "files"
+msgstr ""
+
+msgid "receipts"
+msgstr ""
+
+msgid "inbox"
+msgstr ""
+
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr ""
 
@@ -5616,9 +5761,6 @@ msgid "latest lock date"
 msgstr ""
 
 msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
-msgstr ""
-
-msgid "search vector"
 msgstr ""
 
 msgid "refreshed at"

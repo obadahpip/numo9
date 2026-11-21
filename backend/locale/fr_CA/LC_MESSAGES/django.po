@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 16:07-0500\n"
+"POT-Creation-Date: 2026-11-20 16:22-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5628,6 +5628,225 @@ msgstr "Employés, congés et dossiers RH."
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 
+#, python-format
+msgid "Part of %(product)s, which isn't in this organisation's package."
+msgstr ""
+
+#, fuzzy
+#| msgid "Your role in this organisation can't make this change."
+msgid "Not in this organisation's package."
+msgstr "Votre rôle dans cette organisation ne permet pas ce changement."
+
+#, fuzzy
+#| msgid "record"
+msgid "record id"
+msgstr "fiche"
+
+#, fuzzy
+#| msgid "job type"
+msgid "title"
+msgstr "type de tâche"
+
+#, fuzzy
+#| msgid "subtotal"
+msgid "subtitle"
+msgstr "sous-total"
+
+#, fuzzy
+#| msgid "Number"
+msgid "code or number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "feature flag"
+msgid "feature"
+msgstr "indicateur de fonctionnalité"
+
+msgid "search vector"
+msgstr "vecteur de recherche"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "search document"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "search documents"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "trial settings"
+msgid "General settings"
+msgstr "paramètres de l’essai"
+
+#, fuzzy
+#| msgid "organisation group"
+msgid "organisation profile"
+msgstr "groupe d’organisations"
+
+#, fuzzy
+#| msgid "fiscal year end day"
+msgid "fiscal year"
+msgstr "jour de fin d’exercice"
+
+#, fuzzy
+#| msgid "fiscal year end day"
+msgid "fiscal year end"
+msgstr "jour de fin d’exercice"
+
+msgid "year end"
+msgstr ""
+
+#, fuzzy
+#| msgid "tax registrations"
+msgid "Tax registrations"
+msgstr "inscriptions fiscales"
+
+msgid "BN"
+msgstr ""
+
+#, fuzzy
+#| msgid "GST/HST cycle"
+msgid "GST/HST number"
+msgstr "Périodicité TPS/TVH"
+
+#, fuzzy
+#| msgid "Number"
+msgid "QST number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "lock dates"
+msgid "Lock dates"
+msgstr "dates de verrouillage"
+
+#, fuzzy
+#| msgid "Close the organisation"
+msgid "close the period"
+msgstr "Fermer l’organisation"
+
+#, fuzzy
+#| msgid "period to"
+msgid "period lock"
+msgstr "période au"
+
+msgid "invite"
+msgstr ""
+
+#, fuzzy
+#| msgid "Permissions"
+msgid "permissions"
+msgstr "Autorisations"
+
+#, fuzzy
+#| msgid "organisation settings"
+msgid "Notification settings"
+msgstr "paramètres de l’organisation"
+
+#, fuzzy
+#| msgid "email address"
+msgid "email alerts"
+msgstr "adresse courriel"
+
+#, fuzzy
+#| msgid "subscription"
+msgid "Subscription and billing"
+msgstr "abonnement"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "trials"
+msgid "trial"
+msgstr "essais"
+
+msgid "history"
+msgstr ""
+
+#, fuzzy
+#| msgid "changes"
+msgid "who changed"
+msgstr "modifications"
+
+#, fuzzy
+#| msgid "sending domain"
+msgid "Email sending domain"
+msgstr "domaine d’envoi"
+
+#, fuzzy
+#| msgid "package prices"
+msgid "Package features"
+msgstr "prix de forfaits"
+
+msgid "what's included"
+msgstr ""
+
+#, fuzzy
+#| msgid "feature flag"
+msgid "feature matrix"
+msgstr "indicateur de fonctionnalité"
+
+#, fuzzy
+#| msgid "supplier statements"
+msgid "Customer statements"
+msgstr "relevés des fournisseurs"
+
+#, fuzzy
+#| msgid "audit events"
+msgid "statement"
+msgstr "événements du journal d’audit"
+
+msgid "aging"
+msgstr ""
+
+msgid "dashboard"
+msgstr ""
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customers"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "suppliers"
+msgstr "fournisseur"
+
+msgid "GIFI"
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "Journals"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "manual journals"
+msgid "manual journal"
+msgstr "écritures de journal manuelles"
+
+#, fuzzy
+#| msgid "General ledger"
+msgid "general ledger"
+msgstr "Grand livre"
+
+#, fuzzy
+#| msgid "file"
+msgid "files"
+msgstr "fichier"
+
+#, fuzzy
+#| msgid "receipt sent at"
+msgid "receipts"
+msgstr "reçu envoyé le"
+
+msgid "inbox"
+msgstr ""
+
 msgid "Reveal hidden values such as SIN and bank account numbers (password confirmed, logged)"
 msgstr "Afficher les valeurs masquées comme le NAS et les numéros de compte bancaire (mot de passe confirmé, journalisé)"
 
@@ -5918,9 +6137,6 @@ msgstr "date de verrouillage"
 
 msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
 msgstr ""
-
-msgid "search vector"
-msgstr "vecteur de recherche"
 
 msgid "refreshed at"
 msgstr "actualisé le"
