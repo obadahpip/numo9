@@ -20,6 +20,7 @@ import { usePlatformMe } from "../shell/ConsoleFrame";
 
 import { getOrganisation, type PlatformOrganisationDetail, type TimelineItem } from "./api";
 import { m } from "./messages";
+import { ProductGrants } from "./ProductGrants";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -121,6 +122,12 @@ export function OrganisationDetailScreen({ id, extra }: { id: string; extra?: Re
           <p className="text-sm text-fg-muted">{fm(m.noSubscription)}</p>
         )}
       </Section>
+      <ProductGrants
+        organisationId={data.id}
+        canGrant={canEditPackages}
+        timeZone={zone}
+        onChanged={() => setAttempt((n) => n + 1)}
+      />
       <Section title={fm(m.timeline)}>
         <ol className="flex flex-col gap-1 text-sm" data-timeline="">
           {data.timeline.map((item, index) => (

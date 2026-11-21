@@ -58,14 +58,18 @@ const DETAIL: PlatformOrganisationDetail = {
   ],
 };
 
+const GRANTS = { overrides: [], products: [{ code: "payroll", name: "Payroll" }], max_days: 365 };
+
 afterEach(() => vi.unstubAllGlobals());
 
 it("shows the subscription history, users, practices and audit events", async () => {
   vi.stubGlobal(
     "fetch",
     vi.fn(
-      async () =>
-        new Response(JSON.stringify(DETAIL), { headers: { "Content-Type": "application/json" } }),
+      async (input: RequestInfo | URL) =>
+        new Response(JSON.stringify(String(input).includes("/overrides") ? GRANTS : DETAIL), {
+          headers: { "Content-Type": "application/json" },
+        }),
     ),
   );
   const { container } = renderWithIntl(<OrganisationDetailScreen id="org-1" />);
@@ -103,7 +107,12 @@ it("links the subscription's package to the console's package editor (U-06-T07)"
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: RequestInfo | URL) => {
-        const body = String(input).includes("/platform/me") ? me([...permissions]) : DETAIL;
+        const url = String(input);
+        const body = url.includes("/platform/me")
+          ? me([...permissions])
+          : url.includes("/overrides")
+            ? GRANTS
+            : DETAIL;
         return new Response(JSON.stringify(body), {
           headers: { "Content-Type": "application/json" },
         });

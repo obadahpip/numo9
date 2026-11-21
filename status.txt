@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 403   Remaining: 2384   Progress: 14.46%
+TOTAL ATOMIC TASKS: 2787   Completed: 404   Remaining: 2383   Progress: 14.50%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -541,7 +541,7 @@ Phase 0 Foundation and SaaS Core  (443 atomic tasks)  — 10 server tasks moved 
 ✅ A-02-T16 — Optional social sign-in behind feature flag (Google/Microsoft) — disabled by default
 
 [U-03]
-❌ U-03-T14 — Platform-owner override UI (grant product for N days with reason)
+✅ U-03-T14 — Platform-owner override UI (grant product for N days with reason)
 
 [U-05]
 ❌ U-05-T13 — Funnel events (trial_started, reminder_sent, converted, expired) for U-06 metrics
