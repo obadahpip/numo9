@@ -6,8 +6,8 @@ description in the request's language, its products (chosen ones plus the free s
 package includes), its limits, the founding-offer flag, and the price in force today per
 interval (whole cents, CAD, before GST/HST) with the next scheduled change, if any.
 
-``founding_offer`` names the eligible packages; the counter (``total``/``remaining``) arrives with
-U-08 and is null until then.
+``founding_offer`` names the eligible packages and carries the founding counter (``total`` and
+``remaining``, U-08-T08; the live value is ``GET /api/v1/public/founding``, cached 30 s).
 
 The answer is the same for everyone, so it is cached for 60 seconds per language (server cache
 and ``Cache-Control: public, max-age=60``): a change shows within a minute.
@@ -88,6 +88,9 @@ def pricing(today: date | None = None) -> dict[str, Any]:
                 "prices": {i: _price(prices, i, today) for i in BillingInterval.values},
             }
         )
+    from numo9.founding.public import public_counter
+
+    counter = public_counter()
     return {
         "currency": "CAD",
         "tax_behaviour": "exclusive",
@@ -95,8 +98,8 @@ def pricing(today: date | None = None) -> dict[str, Any]:
         "packages": packages,
         "founding_offer": {
             "eligible_packages": [p["code"] for p in packages if p["founding_eligible"]],
-            "total": None,
-            "remaining": None,
+            "total": counter["total"],
+            "remaining": counter["remaining"],
         },
     }
 
@@ -143,8 +146,8 @@ class PublicPackageSerializer(serializers.Serializer[Any]):
 
 class FoundingOfferSerializer(serializers.Serializer[Any]):
     eligible_packages = serializers.ListField(child=serializers.CharField())
-    total = serializers.IntegerField(allow_null=True, help_text="U-08; null until then")
-    remaining = serializers.IntegerField(allow_null=True, help_text="U-08; null until then")
+    total = serializers.IntegerField(allow_null=True, help_text="Founding places (U-08)")
+    remaining = serializers.IntegerField(allow_null=True, help_text="Places left (U-08)")
 
 
 class PublicPricingSerializer(serializers.Serializer[Any]):

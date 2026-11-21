@@ -10,3 +10,4 @@ export {
   type FeatureState,
   type GatedProps,
 } from "./Gated";
+export { FoundingBadge, formatFoundingNumber, type FoundingBadgeProps } from "./FoundingBadge";

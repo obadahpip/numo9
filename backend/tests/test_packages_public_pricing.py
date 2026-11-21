@@ -103,8 +103,8 @@ def test_active_packages_and_current_prices(catalogue: None) -> None:
     assert starter["limits"] == {"max_org_users": None}
     assert body["founding_offer"] == {
         "eligible_packages": ["growth"],
-        "total": None,
-        "remaining": None,
+        "total": 1000,
+        "remaining": 1000,
     }
 
 
@@ -129,8 +129,8 @@ def test_response_is_cached_60_seconds(catalogue: None) -> None:
         cache.clear()  # what 60 s of expiry does
         fresh = client.get(URL).json()
     assert [p["code"] for p in fresh["packages"]] == ["growth"]
-    [(args, _kwargs)] = setter.call_args_list
-    assert args[2] == 60
+    timeouts = {args[0]: args[2] for args, _kwargs in setter.call_args_list}
+    assert [t for key, t in timeouts.items() if key.startswith("packages:")] == [60]
 
 
 def test_cached_per_language(catalogue: None) -> None:

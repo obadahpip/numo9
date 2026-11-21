@@ -52,6 +52,10 @@ def convert_to_trial(
         OrganisationMember.objects.create(
             organisation=organisation, user=user, role=OrganisationRole.OWNER
         )
+        from numo9.founding.attribution import record_attribution
+        from numo9.founding.models import AcquisitionSource
+
+        record_attribution(organisation=organisation, source=AcquisitionSource.DEMO_CONVERSION)
         start_trial(organisation)  # TrialAlreadyUsed rolls everything back
         purge_demo(demo)
     return organisation

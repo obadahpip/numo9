@@ -59,6 +59,7 @@ def _path(declaration: Declaration) -> str:
         "metric": "active",
         "name": "matrix.flag",
         "kind": "csv",
+        "slot_no": "1",
     }
     path = build_path(endpoint, values)
     assert path is not None, f"fill the parameters of {declaration.route}"

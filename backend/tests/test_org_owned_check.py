@@ -43,6 +43,8 @@ def test_platform_allow_list_is_exactly_the_tenancy_and_user_models() -> None:
                 # Founding offer (U-08-T01): reviewed — the counter and slot holders.
                 "founding.FoundingCounter",
                 "founding.FoundingSlot",
+                # Acquisition attribution (U-08-T07): reviewed — one row per new org/practice.
+                "founding.AcquisitionAttribution",
                 "tenancy.PracticeMember",
                 "tenancy.Organisation",
                 "tenancy.OrganisationMember",

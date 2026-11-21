@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 04:04-0500\n"
+"POT-Creation-Date: 2026-11-20 14:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -443,6 +443,12 @@ msgid "Included in a bulk export"
 msgstr ""
 
 msgid "Numo9 support session ended"
+msgstr ""
+
+msgid "Founding place given"
+msgstr ""
+
+msgid "Founding place released"
 msgstr ""
 
 #, python-format
@@ -2584,10 +2590,40 @@ msgstr ""
 msgid "%(name)s, added to %(organisation)s, contains a virus (%(signature)s). It was moved to quarantine and can't be opened or downloaded. If you expected this file, ask the sender for a clean copy."
 msgstr ""
 
+msgid "No founding slot with this number."
+msgstr ""
+
+msgid "This slot is already released."
+msgstr ""
+
+msgid "Keep founding status whenever the organisation returns"
+msgstr ""
+
+msgid "Lose founding status on cancellation"
+msgstr ""
+
+msgid "Keep founding status if the organisation returns within N days"
+msgstr ""
+
 msgid "founding slots"
 msgstr ""
 
 msgid "allocated"
+msgstr ""
+
+msgid "churn rule"
+msgstr ""
+
+msgid "return window (days)"
+msgstr ""
+
+msgid "For the keep-if-returns-within-days rule."
+msgstr ""
+
+msgid "refund release window (hours)"
+msgstr ""
+
+msgid "A first payment refunded within this window releases the slot; 0 = never."
 msgstr ""
 
 msgid "founding counter"
@@ -2605,6 +2641,9 @@ msgstr ""
 msgid "Stripe invoice or payment id."
 msgstr ""
 
+msgid "When the organisation cancelled; cleared when it returns (churn rules)."
+msgstr ""
+
 msgid "released at"
 msgstr ""
 
@@ -2612,6 +2651,54 @@ msgid "release reason"
 msgstr ""
 
 msgid "founding slot"
+msgstr ""
+
+msgid "Self sign-up"
+msgstr ""
+
+msgid "Accountant sign-up"
+msgstr ""
+
+msgid "Created in the app"
+msgstr ""
+
+msgid "Created by a practice"
+msgstr ""
+
+msgid "Converted from a demo"
+msgstr ""
+
+msgid "referral source"
+msgstr ""
+
+msgid "UTM source"
+msgstr ""
+
+msgid "UTM medium"
+msgstr ""
+
+msgid "UTM campaign"
+msgstr ""
+
+msgid "UTM term"
+msgstr ""
+
+msgid "UTM content"
+msgstr ""
+
+msgid "promo code"
+msgstr ""
+
+msgid "referring page"
+msgstr ""
+
+msgid "captured at"
+msgstr ""
+
+msgid "acquisition attribution"
+msgstr ""
+
+msgid "acquisition attributions"
 msgstr ""
 
 msgid "This practice doesn't exist or you're not a member. Choose one of your practices."
@@ -4843,9 +4930,6 @@ msgid "uses"
 msgstr ""
 
 msgid "The packages the code applies to; none = every package."
-msgstr ""
-
-msgid "promo code"
 msgstr ""
 
 msgid "promo codes"

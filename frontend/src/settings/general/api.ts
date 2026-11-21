@@ -18,6 +18,8 @@ export interface OrganisationSettings {
   fye_day: number;
   base_currency: string;
   time_zone: string;
+  /** Founding organisation number (U-08-T09), read-only; null when not founding. */
+  founding_slot?: number | null;
   [field: string]: unknown;
 }
 

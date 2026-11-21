@@ -161,8 +161,13 @@ def apply_status(subscription: Subscription, stripe_status: str, at: dt.datetime
     if target is None or target == subscription.status:
         return
     from numo9.entitlements.trials import is_trial, trial_converted
+    from numo9.founding import services as founding
 
     converting = target == SubscriptionStatus.ACTIVE and is_trial(subscription)
+    returning = target == SubscriptionStatus.ACTIVE and (
+        subscription.status == SubscriptionStatus.CANCELLED
+        or subscription.status_reason == StatusReason.CANCELLED
+    )
     subscription.status = target
     if target == SubscriptionStatus.ACTIVE:
         subscription.grace_until, subscription.status_reason = None, ""
@@ -177,6 +182,14 @@ def apply_status(subscription: Subscription, stripe_status: str, at: dt.datetime
         subscription.grace_until = None
     if converting:
         trial_converted(subscription, at)
+    # Founding churn rules (U-08-T06).
+    if target == SubscriptionStatus.CANCELLED:
+        founding.on_cancel(subscription.organisation, at)
+    elif returning:
+        founding.on_return(subscription.organisation, at)
+    if target == SubscriptionStatus.CANCELLED or returning:
+        # The caller saves this instance: carry the flag the rules just set.
+        subscription.founding = founding.founding_slot_of(subscription.organisation) is not None
 
 
 def _save(subscription: Subscription, event: StripeEvent) -> Subscription:

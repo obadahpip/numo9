@@ -70,6 +70,8 @@ ACTION_LABELS: dict[str, Promise] = {
     "bulk.message.applied": _("Message sent in a bulk action"),
     "bulk.export.applied": _("Included in a bulk export"),
     "platform.impersonation.ended": _("Numo9 support session ended"),
+    "founding.slot.allocated": _("Founding place given"),
+    "founding.slot.released": _("Founding place released"),
 }
 
 TYPE_LABELS: dict[str, Promise] = {

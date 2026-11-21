@@ -45,6 +45,7 @@ def test_convert_creates_an_empty_trial_and_deletes_the_demo() -> None:
     new = Organisation.objects.get(public_id=response.json()["id"])
     assert new.status == OrganisationStatus.TRIAL and not new.is_demo
     assert OrganisationMember.objects.filter(organisation=new, user=user, role="owner").exists()
+    assert new.acquisition.source == "demo_conversion"  # U-08-T07
     with org_context(new):
         assert Contact.objects.count() == 0
         assert Account.objects.count() == 0

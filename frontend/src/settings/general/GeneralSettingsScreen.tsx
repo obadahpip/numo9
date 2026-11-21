@@ -4,6 +4,8 @@ import {
   ErrorState,
   Field,
   Form,
+  FoundingBadge,
+  formatFoundingNumber,
   LoadingRegion,
   PostalCodeInput,
   ProvincePicker,
@@ -27,6 +29,17 @@ const m = defineMessages({
     defaultMessage:
       "Your organisation's names, address and fiscal year, as they appear on documents and in Numo9.",
     description: "Text under the heading",
+  },
+  founding: {
+    id: "settings.general.founding",
+    defaultMessage: "Founding organisation #{number}",
+    description:
+      "Badge on the organisation profile: one of the first 1,000 (U-08); number is 4 digits",
+  },
+  foundingHint: {
+    id: "settings.general.foundingHint",
+    defaultMessage: "One of the first 1,000 organisations: every Numo9 product is included.",
+    description: "Hover text of the founding badge",
   },
   identity: {
     id: "settings.general.identity",
@@ -281,7 +294,16 @@ export function GeneralSettingsScreen({ org }: Readonly<{ org: string }>) {
 
   const header = (
     <header className="flex flex-col gap-2">
-      <h1 className="text-2xl font-semibold">{fm(m.title)}</h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-2xl font-semibold">{fm(m.title)}</h1>
+        {data?.founding_slot ? (
+          <FoundingBadge
+            slot={data.founding_slot}
+            label={fm(m.founding, { number: formatFoundingNumber(data.founding_slot) })}
+            description={fm(m.foundingHint)}
+          />
+        ) : null}
+      </div>
       <p className="text-fg-muted">{fm(m.intro)}</p>
     </header>
   );

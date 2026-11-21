@@ -1,5 +1,6 @@
 import { Canvas, Meta } from "@storybook/blocks";
 
+import * as FoundingBadge from "../entitlements/FoundingBadge.stories";
 import * as Gated from "../entitlements/Gated.stories";
 import * as States from "../states/States.stories";
 import { Do, DoDont, Dont } from "./DoDont";
@@ -87,5 +88,24 @@ nearest `FeatureProvider` (the U-03 entitlement store); without one every featur
   </Do>
   <Dont>
     <p>Hide a gated menu item or button, or render the children while the decision is loading.</p>
+  </Dont>
+</DoDont>
+
+## FoundingBadge
+
+<Canvas of={FoundingBadge.SlotNumber} />
+
+U-08-T09. "Founding #0042": the organisation's founding-offer place, beside its name in Settings →
+General and in the platform console. Shown only while the place is held; a released place shows
+nothing.
+
+<Canvas of={FoundingBadge.FirstAndLast} />
+
+<DoDont>
+  <Do>
+    <p>Show the number with its label, padded to four digits, where the organisation is named.</p>
+  </Do>
+  <Dont>
+    <p>Use the badge as a price or plan label, or keep showing it after the place is released.</p>
   </Dont>
 </DoDont>

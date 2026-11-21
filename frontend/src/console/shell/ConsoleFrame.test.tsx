@@ -67,7 +67,7 @@ it("shows the console navigation by permission, current area marked", async () =
   const links = within(nav)
     .getAllByRole("link")
     .map((link) => link.textContent);
-  expect(links).toEqual(["Metrics", "Practices", "Organisations", "Jobs"]);
+  expect(links).toEqual(["Metrics", "Practices", "Organisations", "Founding offer", "Jobs"]);
   expect(within(nav).getByRole("link", { name: "Organisations" })).toHaveAttribute(
     "aria-current",
     "page",
