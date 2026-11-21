@@ -885,3 +885,11 @@ BILLING_NO_CHANGE = define(
     "billing.no_change",
     _("That's already your package and billing interval."),
 )
+
+
+# ---- per-organisation rate limit (S-06-T05) ------------------------------------------------
+RATE_LIMITED = define(
+    "request.rate_limited",
+    _("You're going a little fast. Try again in %(seconds)s seconds."),
+    status.HTTP_429_TOO_MANY_REQUESTS,
+)

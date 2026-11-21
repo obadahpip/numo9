@@ -57,6 +57,11 @@ CELERY_RESULT_BACKEND = "cache+memory://"
 # Usage metering (S-06-T07): in-process stream; tests/test_metering.py also runs on Redis when
 # NUMO9_TEST_REDIS_URL is set.
 METERING_REDIS_URL = ""
+# Per-organisation rate limit (S-06-T05): off for the suite (tests make bursts of requests per
+# organisation); tests/test_rate_limit.py turns it on, in-process and on Redis when
+# NUMO9_TEST_REDIS_URL is set.
+NUMO9_ORG_RATE_LIMIT_ENABLED = False
+NUMO9_RATE_LIMIT_REDIS_URL = ""
 
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —
 # for local data only; never valid in staging/prod (they require NUMO9_FIELD_ENCRYPTION_KEYS).

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 15:04-0500\n"
+"POT-Creation-Date: 2026-11-20 15:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3443,6 +3443,10 @@ msgstr "Cette organisation ne paie pas encore de forfait. Choisissez-en un d’a
 
 msgid "That's already your package and billing interval."
 msgstr "C’est déjà votre forfait et votre fréquence de facturation."
+
+#, python-format
+msgid "You're going a little fast. Try again in %(seconds)s seconds."
+msgstr "Vous allez un peu vite. Réessayez dans %(seconds)s secondes."
 
 #, python-format
 msgid "'%(name)s' is %(size)s MB. The limit is 25 MB per file."
