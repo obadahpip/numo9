@@ -53,6 +53,7 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         # Free trial (U-05): the platform's trial settings (one row) and the registry of trials
         # started (normalised BN / owner email → organisation) that prevents a second trial.
         "entitlements.TrialConfig",
+        "entitlements.TrialFunnelEvent",
         "entitlements.TrialRegistry",
         # Platform console (U-06): daily platform metrics (no organisation's data).
         "platform.PlatformMetricDaily",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 15:00-0500\n"
+"POT-Creation-Date: 2026-11-20 15:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2540,6 +2540,50 @@ msgstr "rappel d’essai"
 
 msgid "trial reminders"
 msgstr "rappels d’essai"
+
+#, fuzzy
+#| msgid "trial started"
+msgid "Trial started"
+msgstr "essai commencé"
+
+#, fuzzy
+#| msgid "trial reminders"
+msgid "Trial reminder sent"
+msgstr "rappels d’essai"
+
+#, fuzzy
+#| msgid "converted at"
+msgid "Trial converted"
+msgstr "converti le"
+
+#, fuzzy
+#| msgid "trial started"
+msgid "Trial expired"
+msgstr "essai commencé"
+
+msgid "step"
+msgstr ""
+
+msgid "reminder milestone"
+msgstr ""
+
+msgid "Days left for a reminder (7, 3, 1; 0 = expiry notice); -1 for other steps."
+msgstr ""
+
+#, fuzzy
+#| msgid "Date"
+msgid "at"
+msgstr "Date"
+
+#, fuzzy
+#| msgid "Stripe event"
+msgid "trial funnel event"
+msgstr "Événement Stripe"
+
+#, fuzzy
+#| msgid "Stripe events"
+msgid "trial funnel events"
+msgstr "Événements Stripe"
 
 msgid "Choose an active product (free products are always included)."
 msgstr ""

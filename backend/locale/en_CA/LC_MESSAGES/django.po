@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 15:00-0500\n"
+"POT-Creation-Date: 2026-11-20 15:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2397,6 +2397,36 @@ msgid "trial reminder"
 msgstr ""
 
 msgid "trial reminders"
+msgstr ""
+
+msgid "Trial started"
+msgstr ""
+
+msgid "Trial reminder sent"
+msgstr ""
+
+msgid "Trial converted"
+msgstr ""
+
+msgid "Trial expired"
+msgstr ""
+
+msgid "step"
+msgstr ""
+
+msgid "reminder milestone"
+msgstr ""
+
+msgid "Days left for a reminder (7, 3, 1; 0 = expiry notice); -1 for other steps."
+msgstr ""
+
+msgid "at"
+msgstr ""
+
+msgid "trial funnel event"
+msgstr ""
+
+msgid "trial funnel events"
 msgstr ""
 
 msgid "Choose an active product (free products are always included)."

@@ -38,7 +38,9 @@ from numo9.tenancy.models import (
     OrganisationRole,
 )
 
+from .funnel import record_step
 from .models import (
+    FunnelStep,
     StatusReason,
     Subscription,
     SubscriptionStatus,
@@ -118,6 +120,12 @@ def start_trial(
             status=SubscriptionStatus.TRIALING,
             current_period_end=trial_end(now, config.days, organisation.time_zone),
             status_changed_at=now,
+        )
+        record_step(
+            organisation,
+            FunnelStep.TRIAL_STARTED,
+            at=now,
+            package=config.package.code if config.package else "",
         )
     return subscription
 
@@ -336,6 +344,12 @@ def send_reminder(
             )
             row.recipients = _send_reminder(subscription, milestone)
             row.save(update_fields=["recipients"])
+            record_step(
+                subscription.organisation,
+                FunnelStep.REMINDER_SENT,
+                at=row.sent_at,
+                milestone=milestone,
+            )
     except IntegrityError:
         return False
     return True
@@ -391,6 +405,12 @@ def expire_trial(subscription_id: int, now: dt.datetime) -> bool:
             locked.status = SubscriptionStatus.READ_ONLY
             locked.status_reason = StatusReason.TRIAL_ENDED
             locked.save()
+            record_step(
+                locked.organisation,
+                FunnelStep.EXPIRED,
+                at=now,
+                package=locked.package.code if locked.package else "",
+            )
     send_reminder(locked, 0, now=now)
     return True
 
@@ -453,5 +473,11 @@ def trial_converted(subscription: Subscription, at: dt.datetime) -> None:
             organisation=subscription.organisation,
             meta={"package": subscription.package.code if subscription.package else ""},
         )
+    record_step(
+        subscription.organisation,
+        FunnelStep.CONVERTED,
+        at=at,
+        package=subscription.package.code if subscription.package else "",
+    )
     for check in list(_conversion_checks):
         check(subscription)
