@@ -163,7 +163,7 @@ class InvitationResendView(_ManageView):
     @requires_permission(AUTHENTICATED)  # 404 unless the user may manage the invitation
     @extend_schema(
         operation_id="invitations_resend",
-        summary="Send again with a new link and a fresh 7-day expiry",
+        summary="Send again with a new link and a fresh expiry (7 days; 14 for practice staff)",
         request=None,
         responses=InvitationSerializer,
     )

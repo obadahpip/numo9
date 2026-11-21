@@ -12,7 +12,8 @@
   accountant as assigned staff. An accountant without a practice gets a **pending practice**
   (``setup_pending``) they finish in practice onboarding.
 
-Rules: links are single use and expire after 7 days; accepting is **bound to the invited email**
+Rules: links are single use and expire after 7 days (a practice's staff invitation after 14,
+V-05-T03); accepting is **bound to the invited email**
 (signed in as another account → ``invitation.wrong_account``); an invitee who already has an
 account is attached, never duplicated; one pending invitation per email and target — sending
 again while one is waiting is refused (resend it instead); an expired one is replaced. The link
@@ -41,7 +42,6 @@ from numo9.i18n.errors import CatalogueError, api_error
 
 from .access import PRACTICE_WIDE_ROLES
 from .models import (
-    INVITATION_TTL,
     Invitation,
     InvitationKind,
     InvitationStatus,
@@ -53,6 +53,7 @@ from .models import (
     PracticeMember,
     PracticeRole,
     hash_token,
+    invitation_ttl,
     new_token,
 )
 
@@ -198,7 +199,7 @@ def create(
                     role=role,
                     email=email,
                     token_hash=token_hash,
-                    expires_at=timezone.now() + INVITATION_TTL,
+                    expires_at=timezone.now() + invitation_ttl(kind),
                     **target_kwargs,
                 )
         except IntegrityError as error:  # a concurrent request created the same one
@@ -248,7 +249,7 @@ def deliver(issued: Issued) -> None:
 
 def resend(invitation: Invitation, *, by: User) -> Issued:
     """Send a pending invitation again with a new link (the old link stops working) and a
-    fresh 7-day expiry; an expired invitation can be resent too."""
+    fresh expiry (7 days; 14 for staff); an expired invitation can be resent too."""
     if not can_manage(by, invitation):
         raise api_error(errors.INVITATION_NOT_ALLOWED)
     with transaction.atomic():
@@ -259,7 +260,7 @@ def resend(invitation: Invitation, *, by: User) -> Issued:
             raise api_error(errors.INVITATION_RESEND_TOO_SOON)
         token, invitation.token_hash = new_token()
         old_expiry = invitation.expires_at
-        invitation.expires_at = timezone.now() + INVITATION_TTL
+        invitation.expires_at = timezone.now() + invitation_ttl(invitation.kind)
         invitation.save(update_fields=["token_hash", "expires_at", "updated_at"])
         invitation_event(
             "resent", invitation, by=by, changes={"expires_at": [old_expiry, invitation.expires_at]}
