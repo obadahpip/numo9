@@ -62,7 +62,9 @@ def test_toggles_reflect_in_me_flags(world: dict[str, Any]) -> None:
     )
     assert created.status_code == 201 and created.json()["mode"] == "off"
     dana, maple, birch = world["dana"], world["maple"], world["birch"]
-    assert flags(dana, maple) == {"payroll.t4_screen": False}
+    # other flags may exist (auth.social_signin, created off by a migration, A-02-T16)
+    assert flags(dana, maple)["payroll.t4_screen"] is False
+    assert not any(flags(dana, maple).values())
 
     patch(admin, "payroll.t4_screen", mode="on")
     assert flags(dana, maple)["payroll.t4_screen"] is True

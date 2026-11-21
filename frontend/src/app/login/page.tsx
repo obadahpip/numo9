@@ -18,18 +18,21 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: fm(messages.title) };
 }
 
-/** `/login` (A-02-T11). `?next=/o/acme/contacts` returns there after signing in. */
+/**
+ * `/login` (A-02-T11). `?next=/o/acme/contacts` returns there after signing in; `?social=error`
+ * is where a failed social sign-in lands (A-02-T16).
+ */
 export default async function LoginPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { next, reset } = await searchParams;
+  const { next, reset, social } = await searchParams;
   return (
     <AuthLayout>
       <LoginFlow
         next={typeof next === "string" ? next : undefined}
-        notice={reset === "done" ? "resetDone" : undefined}
+        notice={reset === "done" ? "resetDone" : social === "error" ? "socialError" : undefined}
       />
     </AuthLayout>
   );

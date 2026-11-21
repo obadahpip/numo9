@@ -13,6 +13,7 @@ import { authMessages, requestFailureMessage } from "./messages";
 import { safeNextUrl } from "./nextUrl";
 import { Notice } from "./Notice";
 import { PasswordField } from "./PasswordField";
+import { SocialSignIn, useSocialErrorMessage } from "./SocialSignIn";
 import { SubmitButton } from "./SubmitButton";
 import { TwoFactorStep } from "./TwoFactorStep";
 
@@ -97,7 +98,13 @@ function loginSchema(fm: FormatMessage) {
  * reset, which unlocks it (S-03-T07). After signing in the browser goes to `next` (same-site
  * paths only) or Home.
  */
-export function LoginFlow({ next, notice }: { next?: string; notice?: "resetDone" }) {
+export function LoginFlow({
+  next,
+  notice,
+}: {
+  next?: string;
+  notice?: "resetDone" | "socialError";
+}) {
   const fm = useFormatMessage();
   const labels = useFormLabels();
   const schema = useMemo(() => loginSchema(fm), [fm]);
@@ -106,6 +113,7 @@ export function LoginFlow({ next, notice }: { next?: string; notice?: "resetDone
     { kind: "text"; text: string } | { kind: "signedIn" } | { kind: "verify"; email: string } | null
   >(null);
   const destination = safeNextUrl(next);
+  const socialError = useSocialErrorMessage();
 
   const signedIn = () => {
     resetCsrfToken(); // login rotates the CSRF token
@@ -157,10 +165,12 @@ export function LoginFlow({ next, notice }: { next?: string; notice?: "resetDone
   return (
     <>
       <h1 className="text-2xl font-semibold">{fm(messages.title)}</h1>
+      <SocialSignIn next={destination} />
       <div className="mt-6">
         {notice === "resetDone" && !problem ? (
           <Notice tone="success">{fm(messages.resetDone)}</Notice>
         ) : null}
+        {notice === "socialError" && !problem ? <Notice tone="danger">{socialError}</Notice> : null}
         {problem?.kind === "text" ? <Notice tone="danger">{problem.text}</Notice> : null}
         {problem?.kind === "verify" ? (
           <Notice tone="warning">{fm(messages.verifyFirst, { email: problem.email })}</Notice>
