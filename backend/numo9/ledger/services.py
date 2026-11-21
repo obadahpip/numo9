@@ -5,6 +5,8 @@
 1. **validate** — ``validate_journal`` (C-02-T06): every rule, every problem listed;
 2. **period** — ``assert_can_post`` (C-02-T07): lock dates (the module's and the GL's) and
    closed periods, for the entry's date and the person;
+2b. **rules** — ``check_policy`` (C-03): journal types, account flags, expense-journal rules,
+   the cash-balance guard;
 3. **insert** — the entry as a draft, then its lines (``bulk_create``; the append-only trigger
    allows lines only while the entry is a draft, C-02-T04);
 4. **sequence** — the organisation's next journal number (``allocate_journal_number``,
@@ -40,6 +42,7 @@ contract, C-02-T14).
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Any
 
 from django.db import transaction
@@ -53,8 +56,16 @@ from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import acting_practice, current_org, org_context
 from numo9.tenancy.models import Organisation
 
-from .models import JournalEntry, JournalLine, JournalStatus, JournalType, LedgerError
+from .models import (
+    JournalEntry,
+    JournalLine,
+    JournalOverride,
+    JournalStatus,
+    JournalType,
+    LedgerError,
+)
 from .periods import assert_can_post
+from .policy import auto_reverse_rule, cash_rule, check_policy
 from .sequence import allocate_journal_number, format_journal_number
 from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journal
 
@@ -149,6 +160,7 @@ def _number_and_post(
             "number": format_journal_number(entry.organisation, number),
             "date": entry.date.isoformat(),
             "type": entry.type,
+            "journal_type": entry.journal_type,
             "source": {"type": entry.source_type, "id": entry.source_id}
             if entry.source_type
             else None,
@@ -167,6 +179,9 @@ def post_journal(
     user: Any = ACTING,
     module: str = LockModule.GL,
     reversal_of: JournalEntry | None = None,
+    caller: str | None = None,
+    attachments: Sequence[Any] = (),
+    override_reason: str = "",
 ) -> JournalEntry:
     """Validate, check the period, insert, number and post ``spec`` — all or nothing.
 
@@ -179,15 +194,29 @@ def post_journal(
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, spec.date, person, module)
+        documents = list({document.pk: document for document in attachments}.values())
+        if reversal_of is None:  # a reversal mirrors an entry that passed the rules
+            check_policy(
+                checked, caller=caller, attachments=len(documents), organisation=organisation
+            )
+        if reversal_of is None:
+            auto_reverse_rule(spec, organisation, person)
+        overridden = (
+            cash_rule(checked, organisation, person, override_reason)
+            if reversal_of is None and caller is None
+            else []
+        )
         entry = JournalEntry(
             organisation=organisation,
             date=spec.date,
             type=spec.type,
+            journal_type=spec.journal_type,
             narration=spec.narration,
             source_type=spec.source_type,
             source_id=str(spec.source_id or ""),
             book_scope=checked.book_scope,
             reversal_of=reversal_of,
+            auto_reverse_on=spec.auto_reverse_on if reversal_of is None else None,
             status=JournalStatus.DRAFT,
             created_by=person if getattr(person, "is_authenticated", False) else None,
         )
@@ -196,7 +225,70 @@ def post_journal(
         JournalEntry.objects.bulk_create([entry])
         lines = _lines(entry, checked)
         JournalLine.objects.bulk_create(lines)
-        return _number_and_post(entry, lines, person, JournalStatus.DRAFT)
+        _attach(entry, documents, person)
+        posted = _number_and_post(entry, lines, person, JournalStatus.DRAFT)
+        _record_override(posted, overridden, override_reason, person)
+        return posted
+
+
+def _record_override(entry: JournalEntry, shortfalls: list[Any], reason: str, person: Any) -> None:
+    """An adviser posted past the cash guard (C-03-T08): keep who, when, why and what."""
+    if not shortfalls:
+        return
+    by = person if getattr(person, "is_authenticated", False) else None
+    details = [p.as_dict() for p in shortfalls]
+    override = JournalOverride.objects.create(
+        organisation=entry.organisation,
+        entry=entry,
+        reason=reason.strip(),
+        user=by,
+        shortfalls=details,
+    )
+    audit.record(
+        "ledger.journalentry.override",
+        obj=entry,
+        changes={},
+        meta={
+            "number": format_journal_number(entry.organisation, entry.number),
+            "reason": override.reason,
+            "shortfalls": [d["message"] for d in details],
+        },
+        actor=by,
+    )
+
+
+def _attach(entry: JournalEntry, documents: Sequence[Any], person: Any) -> None:
+    """The supporting documents of a journal posted in one go (A-06 attachments)."""
+    if not documents:
+        return
+    from numo9.files.attachments import attach
+
+    for document in documents:
+        attach(
+            document,
+            "ledger.JournalEntry",
+            entry.public_id,
+            user=person if getattr(person, "is_authenticated", False) else None,
+        )
+
+
+def attachment_count(entry: JournalEntry) -> int:
+    """Documents attached to the journal (detached ones and deleted documents don't count)."""
+    from django.contrib.contenttypes.models import ContentType
+
+    from numo9.files.models import Attachment
+
+    return (
+        Attachment.objects.filter(
+            content_type=ContentType.objects.get_for_model(JournalEntry),
+            object_public_id=entry.public_id,
+            deleted_at__isnull=True,
+            document__deleted_at__isnull=True,
+        )
+        .values("document")
+        .distinct()
+        .count()
+    )
 
 
 # ---- states (C-02-T09) ---------------------------------------------------------------------
@@ -243,6 +335,8 @@ def _spec_of(entry: JournalEntry) -> JournalSpec:
     return JournalSpec(
         date=entry.date,
         type=entry.type,
+        journal_type=entry.journal_type,
+        auto_reverse_on=entry.auto_reverse_on,
         narration=entry.narration,
         source_type=entry.source_type,
         source_id=entry.source_id,
@@ -274,6 +368,7 @@ def save_draft(
     person = acting_user() if user is ACTING else user
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
+        auto_reverse_rule(spec, organisation, person)
         if entry is None:
             entry = JournalEntry(
                 organisation=organisation,
@@ -287,12 +382,23 @@ def save_draft(
                     code="ledger.journal.not_draft",
                     params={"journal": str(entry), "status": _status_label(entry.status)},
                 )
+        previous_type = entry.journal_type if entry.pk is not None else None
         entry.date, entry.type, entry.narration = spec.date, spec.type, spec.narration
+        entry.journal_type = spec.journal_type
+        entry.auto_reverse_on = spec.auto_reverse_on
         entry.source_type, entry.source_id = spec.source_type, str(spec.source_id or "")
         entry.book_scope = checked.book_scope
         entry.save()
         JournalLine.objects.filter(entry=entry).delete()
         JournalLine.objects.bulk_create(_lines(entry, checked))
+        if previous_type is not None and previous_type != entry.journal_type:
+            audit.record(
+                "ledger.journalentry.type_changed",
+                obj=entry,
+                changes={"journal_type": [previous_type, entry.journal_type]},
+                meta={},
+                actor=person if getattr(person, "is_authenticated", False) else None,
+            )
         return _written(entry)
 
 
@@ -316,7 +422,12 @@ def return_to_draft(entry: JournalEntry) -> JournalEntry:
 
 
 def post_entry(
-    entry: JournalEntry, *, user: Any = ACTING, module: str = LockModule.GL
+    entry: JournalEntry,
+    *,
+    user: Any = ACTING,
+    module: str = LockModule.GL,
+    caller: str | None = None,
+    override_reason: str = "",
 ) -> JournalEntry:
     """Draft or Awaiting approval → Posted: steps 1–6 of ``post_journal`` on its stored lines."""
     person = acting_user() if user is ACTING else user
@@ -327,11 +438,23 @@ def post_entry(
         spec = _spec_of(entry)
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, entry.date, person, module)
+        check_policy(
+            checked,
+            caller=caller,
+            attachments=attachment_count(entry),
+            organisation=organisation,
+        )
+        auto_reverse_rule(spec, organisation, person)
+        overridden = (
+            cash_rule(checked, organisation, person, override_reason) if caller is None else []
+        )
         if entry.book_scope != checked.book_scope:
             JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
             entry.book_scope = checked.book_scope
         lines = list(entry.lines.order_by("line_no").select_related("account"))
-        return _number_and_post(entry, lines, person, entry.status)
+        posted = _number_and_post(entry, lines, person, entry.status)
+        _record_override(posted, overridden, override_reason, person)
+        return posted
 
 
 # ---- reversal (C-02-T10) ----------------------------------------------------------------------
@@ -373,6 +496,7 @@ def reverse(
         spec = JournalSpec(
             date=date or original.date,
             type=JournalType.REVERSAL,
+            journal_type=original.journal_type,
             narration=narration or _("Reversal of %(number)s") % {"number": number},
             source_type=original.source_type,
             source_id=original.source_id,

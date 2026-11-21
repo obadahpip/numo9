@@ -1,4 +1,4 @@
-"""Journals read API (C-02-T15), under ``/api/v1/o/<org>/``.
+"""Journals read API (C-02-T15), under ``/api/v1/o/<org>/`` (writing: ``journals_api``, C-03).
 
 - ``GET journals`` — the organisation's journal entries, newest first: number, date, type,
   status, narration, source, books, totals. Filters ``status`` (several, comma-separated;
@@ -35,7 +35,7 @@ from numo9.catalogue.drf import requires_feature
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
-from .models import Book, JournalEntry, JournalLine, JournalStatus
+from .models import Book, JournalCategory, JournalEntry, JournalLine, JournalStatus
 from .permissions import JOURNALS_VIEW
 from .sequence import format_journal_number
 from .validation import BOOKS_OF_LINE
@@ -50,6 +50,9 @@ class JournalSummarySerializer(serializers.Serializer[Any]):
     number = serializers.CharField(allow_blank=True)
     date = serializers.DateField()
     type = serializers.CharField()
+    journal_type = serializers.CharField(help_text="general, adjusting, reclass, tax_adjustment…")
+    journal_type_label = serializers.CharField()
+    auto_reverse_on = serializers.DateField(allow_null=True)
     status = serializers.CharField()
     narration = serializers.CharField(allow_blank=True)
     source = serializers.DictField(allow_null=True)  # type: ignore[assignment]
@@ -83,6 +86,9 @@ class JournalDetailSerializer(JournalSummarySerializer):
     books = serializers.DictField()
     posted_by = serializers.DictField(allow_null=True)
     posted_at = serializers.DateTimeField(allow_null=True)
+    overrides = serializers.ListField(
+        child=serializers.DictField(), help_text="Advisers' reasons for posting past the cash guard"
+    )
     audit = serializers.ListField(child=serializers.DictField())
 
 
@@ -106,6 +112,9 @@ def _summary(entry: JournalEntry) -> dict[str, Any]:
         "number": format_journal_number(entry.organisation, entry.number),
         "date": entry.date,
         "type": entry.type,
+        "journal_type": entry.journal_type,
+        "journal_type_label": str(JournalCategory(entry.journal_type).label),
+        "auto_reverse_on": entry.auto_reverse_on,
         "status": entry.status,
         "narration": entry.narration,
         "source": {"type": entry.source_type, "id": entry.source_id} if entry.source_type else None,
@@ -150,6 +159,8 @@ def _filtered(params: Any) -> QuerySet[JournalEntry]:
         rows = rows.filter(date__lte=end)
     if journal_type := params.get("type"):
         rows = rows.filter(type=journal_type)
+    if category := params.get("journal_type"):
+        rows = rows.filter(journal_type=category)
     if source_type := params.get("source_type"):
         rows = rows.filter(source_type=source_type)
         if source_id := params.get("source_id"):
@@ -175,7 +186,8 @@ LIST_PARAMETERS = [
     OpenApiParameter("status", OpenApiTypes.STR, description="Statuses (default posted,reversed)"),
     OpenApiParameter("from", OpenApiTypes.DATE, description="First date"),
     OpenApiParameter("to", OpenApiTypes.DATE, description="Last date"),
-    OpenApiParameter("type", OpenApiTypes.STR, description="Journal type"),
+    OpenApiParameter("type", OpenApiTypes.STR, description="What posted it (manual, sales…)"),
+    OpenApiParameter("journal_type", OpenApiTypes.STR, description="General, adjusting…"),
     OpenApiParameter("source_type", OpenApiTypes.STR, description="Source document type"),
     OpenApiParameter("source_id", OpenApiTypes.STR, description="Source document id"),
     OpenApiParameter("account", OpenApiTypes.UUID, description="Entries with a line on it"),
@@ -284,6 +296,15 @@ class JournalDetailView(APIView):
             if entry.posted_by is not None
             else None,
             posted_at=entry.posted_at,
+            overrides=[
+                {
+                    "reason": o.reason,
+                    "by": o.user.name if o.user is not None else "",
+                    "at": o.at.isoformat(),
+                    "shortfalls": o.shortfalls,
+                }
+                for o in entry.overrides.select_related("user")
+            ],
             audit=_audit(entry),
         )
         assert current_org() is not None  # noqa: S101 - RequiresPermission answered 404 otherwise

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 16:22-0500\n"
+"POT-Creation-Date: 2026-11-20 17:58-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,6 +407,21 @@ msgid "Access request closed"
 msgstr ""
 
 msgid "Account renumbered"
+msgstr ""
+
+msgid "Journal posted"
+msgstr ""
+
+msgid "Journal reversed"
+msgstr ""
+
+msgid "Journal type changed"
+msgstr ""
+
+msgid "Posted below zero by an adviser, with a reason"
+msgstr ""
+
+msgid "Reversed automatically on its reversal date"
 msgstr ""
 
 msgid "File quarantined: a virus was found"
@@ -3537,6 +3552,10 @@ msgstr ""
 msgid "%(account)s has active sub-accounts, such as %(child)s: archive them first."
 msgstr ""
 
+#, python-format
+msgid "%(account)s would be %(amount)s on %(date)s"
+msgstr ""
+
 msgid "Unknown system role."
 msgstr ""
 
@@ -3621,6 +3640,22 @@ msgstr ""
 
 #, python-format
 msgid "No account has the code %(code)s (parent code)."
+msgstr ""
+
+msgid "There's no account with this id in this organisation."
+msgstr ""
+
+msgid "There's no contact with this id in this organisation."
+msgstr ""
+
+msgid "One of the documents isn't in this organisation."
+msgstr ""
+
+#, python-format
+msgid "This journal can't be posted: %(count)d problem(s)."
+msgstr ""
+
+msgid "Only a draft can be posted."
 msgstr ""
 
 msgid "Asset"
@@ -3928,6 +3963,24 @@ msgstr ""
 msgid "Reversal"
 msgstr ""
 
+msgid "General"
+msgstr ""
+
+msgid "Adjusting"
+msgstr ""
+
+msgid "Reclass"
+msgstr ""
+
+msgid "Tax adjustment"
+msgstr ""
+
+msgid "Closing"
+msgstr ""
+
+msgid "Depreciation"
+msgstr ""
+
 #, python-format
 msgid "Journal %(number)s is posted: it can't be changed or deleted. Reverse it instead."
 msgstr ""
@@ -3957,6 +4010,12 @@ msgid "posted by"
 msgstr ""
 
 msgid "posted at"
+msgstr ""
+
+msgid "reverse automatically on"
+msgstr ""
+
+msgid "An accrual's reversal is posted by itself on this date."
 msgstr ""
 
 msgid "journal entry"
@@ -4011,11 +4070,23 @@ msgstr ""
 msgid "journal number sequences"
 msgstr ""
 
+msgid "shortfalls"
+msgstr ""
+
+msgid "journal override"
+msgstr ""
+
+msgid "journal overrides"
+msgstr ""
+
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
 msgstr ""
 
 msgid "See journals and every posted entry"
+msgstr ""
+
+msgid "Write and post manual journals"
 msgstr ""
 
 msgid "See the chart of accounts and account balances"
@@ -4025,7 +4096,68 @@ msgid "Add, edit, renumber, archive and restore accounts"
 msgstr ""
 
 #, python-format
+msgid "Line %(line)d (%(account)s): a tax adjustment posts to the tax book only — set the line's book to Tax."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d (%(account)s): a tax adjustment can't touch a bank account."
+msgstr ""
+
+#, python-format
+msgid "%(type)s journals are posted by Numo9 itself (the %(process)s process), not by hand. Choose General, Adjusting, Reclass or Tax adjustment."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(account)s requires a contact — choose one for the line."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(account)s requires a tracking category — choose one for the line."
+msgstr ""
+
+#, python-format
+msgid "%(account)s requires an attachment: attach the supporting document to the journal."
+msgstr ""
+
+#, python-format
+msgid "This journal posts to an expense account (%(account)s): this organisation asks for a supporting document — attach one to the journal."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: expense lines need a contact in this organisation — choose one for %(account)s."
+msgstr ""
+
+msgid "year-end close"
+msgstr ""
+
+msgid "payroll"
+msgstr ""
+
+msgid "depreciation"
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. A journal can't take a bank or cash account below zero — record the money coming in first, or ask your adviser."
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. As an adviser you may post it anyway: give the reason (at least %(min)d characters)."
+msgstr ""
+
+#, python-format
+msgid "The automatic reversal (%(reverse)s) must be dated after the journal (%(date)s)."
+msgstr ""
+
+#, python-format
+msgid "The automatic reversal date %(reverse)s is in a locked period (%(lock)s). Choose a date after the lock."
+msgstr ""
+
+#, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
+msgstr ""
+
+#, python-format
+msgid "Automatic reversal of %(number)s"
 msgstr ""
 
 #, python-format
@@ -4124,6 +4256,10 @@ msgstr ""
 
 #, python-format
 msgid "Line %(line)d: “%(book)s” isn't a book (both, accounting or tax)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the contact isn't one of this organisation's contacts."
 msgstr ""
 
 #, python-format
@@ -4568,6 +4704,18 @@ msgid "time zone"
 msgstr ""
 
 msgid "Times on the organisation's documents and emails; each person sees their own preference in the app."
+msgstr ""
+
+msgid "expense journals need an attachment"
+msgstr ""
+
+msgid "A journal with a line on an expense account can be posted only with a supporting document attached."
+msgstr ""
+
+msgid "expense journal lines need a contact"
+msgstr ""
+
+msgid "Every line of a journal on an expense account must name a contact."
 msgstr ""
 
 msgid "sales: default due date"
@@ -5746,9 +5894,6 @@ msgid "trial ends"
 msgstr ""
 
 msgid "GST/HST cycle"
-msgstr ""
-
-msgid "payroll"
 msgstr ""
 
 msgid "overdue items"

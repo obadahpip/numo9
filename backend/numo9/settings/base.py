@@ -584,6 +584,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.staff.aggregate_activity",
         "schedule": crontab(minute=37),  # hourly: today's squares fill in during the day
     },
+    # Automatic reversals (C-03-T09): hourly — organisations' days start at different UTC hours.
+    "numo9.ledger.auto_reversals": {
+        "task": "numo9.ledger.auto_reversals",
+        "schedule": crontab(minute=29),
+    },
     # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
     "numo9.platform.snapshot_metrics": {
         "task": "numo9.platform.snapshot_metrics",

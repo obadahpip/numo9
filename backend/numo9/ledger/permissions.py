@@ -15,6 +15,15 @@ JOURNALS_VIEW = register(
     )
 )
 
+JOURNALS_POST = register(
+    Permission(
+        "accounting.journals.post",
+        _("Write and post manual journals"),
+        "accounting",
+        Risk.MEDIUM,
+    )
+)
+
 ACCOUNTS_VIEW = register(
     Permission(
         "accounting.accounts.view",
