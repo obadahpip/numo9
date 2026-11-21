@@ -2,10 +2,21 @@
 
 from django.urls import path
 
-from . import api, groups_api, views_api
+from . import api, dashboard_api, groups_api, views_api
 
 urlpatterns = [
     path("practice/orgs", api.DirectoryView.as_view(), name="practice-orgs"),
+    # Practice home (V-04-T06).
+    path(
+        "practice/dashboard",
+        dashboard_api.PracticeDashboardView.as_view(),
+        name="practice-dashboard",
+    ),
+    path(
+        "practice/dashboard/layout",
+        dashboard_api.DashboardLayoutView.as_view(),
+        name="practice-dashboard-layout",
+    ),
     path("practice/views", views_api.SavedViewListView.as_view(), name="practice-views"),
     path(
         "practice/views/<uuid:view_id>",

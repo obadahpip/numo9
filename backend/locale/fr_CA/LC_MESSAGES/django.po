@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 15:26-0500\n"
+"POT-Creation-Date: 2026-11-20 16:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5911,6 +5911,14 @@ msgstr "éléments en retard"
 msgid "unfiled returns"
 msgstr "déclarations non produites"
 
+#, fuzzy
+#| msgid "lock date"
+msgid "latest lock date"
+msgstr "date de verrouillage"
+
+msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
+msgstr ""
+
 msgid "search vector"
 msgstr "vecteur de recherche"
 
@@ -6022,6 +6030,18 @@ msgstr "affectation au groupe"
 msgid "group staff assignments"
 msgstr "affectations aux groupes"
 
+msgid "widget order"
+msgstr ""
+
+msgid "hidden widgets"
+msgstr ""
+
+msgid "dashboard layout"
+msgstr ""
+
+msgid "dashboard layouts"
+msgstr ""
+
 msgid "See the practice's client organisations in the directory"
 msgstr "Voir les organisations clientes du cabinet dans le répertoire"
 
@@ -6041,6 +6061,46 @@ msgstr "Choisissez l’une des 12 couleurs."
 #, python-format
 msgid "There's already a tag called %(name)s."
 msgstr "Il y a déjà une étiquette nommée %(name)s."
+
+#, fuzzy
+#| msgid "trial length (days)"
+msgid "Trials ending in 7 days"
+msgstr "durée de l’essai (jours)"
+
+#, fuzzy
+#| msgid "Organisations"
+msgid "Organisations without a BN"
+msgstr "Organisations"
+
+#, fuzzy
+#| msgid "lock dates"
+msgid "No lock date set"
+msgstr "dates de verrouillage"
+
+#, fuzzy
+#| msgid "active organisations"
+msgid "Read-only organisations"
+msgstr "organisations actives"
+
+#, fuzzy
+#| msgid "dormant staff alert"
+msgid "Dormant staff"
+msgstr "alerte de personnel inactif"
+
+msgid "No sign-in for the practice's dormant threshold (60 days)."
+msgstr ""
+
+msgid "Deadlines in the next 30 days"
+msgstr ""
+
+msgid "GST/HST, payroll remittances, T2 and T4 — from the tax and payroll modules."
+msgstr ""
+
+msgid "Workload"
+msgstr ""
+
+msgid "Organisations per staff member and their open tasks."
+msgstr ""
 
 #~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
 #~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."

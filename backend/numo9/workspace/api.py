@@ -58,11 +58,11 @@ from numo9.tenancy.models import Practice, PracticeMember
 from .models import DirectoryStatus, GstCycle, OrgDirectorySummary
 from .permissions import DIRECTORY_VIEW
 from .search import (
-    BOOLEAN_FILTERS,
     FILTERS,
     NO,
     SORTS,
     YES,
+    YES_NO_FILTERS,
     DirectoryParams,
     DirectoryQuery,
     GroupInfo,
@@ -164,7 +164,7 @@ def filter_choices(name: str) -> set[str] | None:
         return {str(month) for month in range(1, 13)}
     if name == "gst_cycle":
         return set(GstCycle.values)
-    if name in BOOLEAN_FILTERS:
+    if name in YES_NO_FILTERS:
         return {YES, NO}
     return None
 
@@ -276,7 +276,7 @@ def _labels(
         return {k: str(v) for k, v in GstCycle.choices}
     if name == "fye":
         return {str(month): str(label) for month, label in dates.MONTHS.items()}
-    if name in BOOLEAN_FILTERS:
+    if name in YES_NO_FILTERS:
         return {YES: str(translation.gettext("Yes")), NO: str(translation.gettext("No"))}
     if name == "package":
         return package_names

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 15:26-0500\n"
+"POT-Creation-Date: 2026-11-20 16:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5612,6 +5612,12 @@ msgstr ""
 msgid "unfiled returns"
 msgstr ""
 
+msgid "latest lock date"
+msgstr ""
+
+msgid "The latest lock date set on any module (A-05); empty = no lock date (V-04)."
+msgstr ""
+
 msgid "search vector"
 msgstr ""
 
@@ -5723,6 +5729,18 @@ msgstr ""
 msgid "group staff assignments"
 msgstr ""
 
+msgid "widget order"
+msgstr ""
+
+msgid "hidden widgets"
+msgstr ""
+
+msgid "dashboard layout"
+msgstr ""
+
+msgid "dashboard layouts"
+msgstr ""
+
 msgid "See the practice's client organisations in the directory"
 msgstr ""
 
@@ -5741,4 +5759,34 @@ msgstr ""
 
 #, python-format
 msgid "There's already a tag called %(name)s."
+msgstr ""
+
+msgid "Trials ending in 7 days"
+msgstr ""
+
+msgid "Organisations without a BN"
+msgstr ""
+
+msgid "No lock date set"
+msgstr ""
+
+msgid "Read-only organisations"
+msgstr ""
+
+msgid "Dormant staff"
+msgstr ""
+
+msgid "No sign-in for the practice's dormant threshold (60 days)."
+msgstr ""
+
+msgid "Deadlines in the next 30 days"
+msgstr ""
+
+msgid "GST/HST, payroll remittances, T2 and T4 — from the tax and payroll modules."
+msgstr ""
+
+msgid "Workload"
+msgstr ""
+
+msgid "Organisations per staff member and their open tasks."
 msgstr ""

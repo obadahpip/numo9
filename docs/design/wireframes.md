@@ -52,6 +52,7 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 33 | Practice staff — list | V-05-T02, T06, T09 | Name, role, organisations count, last active, status (active / dormant / suspended / pending), dormant widget with Suspend |
 | 34 | Practice staff — detail with heatmap | V-05-T07, T08 | 12-month activity heatmap from the audit log, numbers in tooltips and a table alternative, Suspend / Remove |
 | 35 | Practice staff — assignments | V-05-T04 | Organisations (direct) and groups (with role) a person works on, search to add, remove; effective at once |
+| 36 | Practice home — dashboard | V-04-T06 … T09 | Cards (large number, label, drill link to the pre-filtered directory), my organisations / all practice, per-card error with retry, 30-day deadlines, workload per staff, customise (reorder, hide) |
 
 ## 1. Application shell
 
@@ -483,3 +484,17 @@ old system with French headers, saved in Windows-1252.
 |---|---|---|
 | 1 | Organisations | Direct assignments: search to add, remove — effective on the next request |
 | 2 | Groups | Group assignments with their role (every organisation filed in the group or its sub-groups) |
+
+## 36. Practice home — cross-organisation dashboard (V-04-T01)
+
+![Practice home](wireframes/37-practice-home.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | My organisations / All practice | Practice-wide roles choose; other staff always see their own organisations. The choice is part of every drill link |
+| 2 | Cards | Large number, label, link. Phase 0: trials ending within 7 days, organisations without a BN, without a lock date, read-only, dormant staff (admins). The link opens the directory with the same filters (shareable URL): its count equals the card's number. Zero renders "0" |
+| 3 | Card error | A provider that fails shows its own error with **Try again**; the other cards and the page still load (Xero gap #5, "Unable to load") |
+| 4 | Deadlines (next 30 days) | Date, what, organisation (link). Filled by later phases (GST/HST G-03a, payroll N-07); until then "No deadline in the next 30 days" |
+| 5 | Workload | Organisations per staff member (direct and through groups, as the directory counts them) and open tasks (0 until tasks exist), as bars with the number written |
+| 6 | Customise | Move cards up/down and hide/show them; saved per person and practice |
+

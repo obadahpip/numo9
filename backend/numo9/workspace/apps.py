@@ -19,3 +19,6 @@ class WorkspaceConfig(AppConfig):
         from .tags import provide_tags
 
         register_tags_provider(provide_tags)  # tag names in the directory rows (V-02-T08)
+        from .widgets import register_phase0_widgets
+
+        register_phase0_widgets()  # practice home widgets (V-04-T03…T05)

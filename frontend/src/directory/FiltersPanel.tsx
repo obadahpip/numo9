@@ -17,6 +17,10 @@ export const FACET_TITLES: Record<FilterKey, MessageDescriptor> = {
   payroll: m.facetPayroll,
   overdue: m.facetOverdue,
   unfiled: m.facetUnfiled,
+  bn_missing: m.facetBnMissing,
+  lock_missing: m.facetLockMissing,
+  trial_ending: m.facetTrialEnding,
+  mine: m.facetMine,
   tag: m.facetTag,
   group: m.facetGroup,
 };

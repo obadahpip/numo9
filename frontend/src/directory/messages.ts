@@ -305,6 +305,26 @@ export const m = defineMessages({
     defaultMessage: "Unfiled returns",
     description: "Filter group",
   },
+  facetBnMissing: {
+    id: "directory.facet.bnMissing",
+    defaultMessage: "No Business Number",
+    description: "Filter group (practice home drill-down, V-04)",
+  },
+  facetLockMissing: {
+    id: "directory.facet.lockMissing",
+    defaultMessage: "No lock date",
+    description: "Filter group (practice home drill-down, V-04)",
+  },
+  facetTrialEnding: {
+    id: "directory.facet.trialEnding",
+    defaultMessage: "Trial ending in 7 days",
+    description: "Filter group (practice home drill-down, V-04)",
+  },
+  facetMine: {
+    id: "directory.facet.mine",
+    defaultMessage: "Assigned to me",
+    description: "Filter group: organisations I'm assigned to (V-04)",
+  },
   facetTag: { id: "directory.facet.tag", defaultMessage: "Tags", description: "Filter group" },
   facetGroup: {
     id: "directory.facet.group",

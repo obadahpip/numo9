@@ -60,6 +60,11 @@ export const FILTER_KEYS = [
   "payroll",
   "overdue",
   "unfiled",
+  // Practice home drill-downs (V-04-T07).
+  "bn_missing",
+  "lock_missing",
+  "trial_ending",
+  "mine",
   "tag",
   "group",
 ] as const;
@@ -74,7 +79,7 @@ export interface DirectoryPage {
   pages: number;
   columns: string[];
   results: DirectoryRow[];
-  facets?: Record<FilterKey, FacetValue[]>;
+  facets?: Partial<Record<FilterKey, FacetValue[]>>;
   grouping?: DirectoryGrouping[];
 }
 
@@ -150,6 +155,27 @@ export const directoryApi = {
     apiRequest<SavedView>(`${VIEWS_URL}/${id}`, { method: "PATCH", body }),
   deleteView: (id: string) => apiRequest<unknown>(`${VIEWS_URL}/${id}`, { method: "DELETE" }),
 };
+
+/**
+ * The filters and search of a directory address (`?status=trial&trial_ending=yes&q=maple`) — a
+ * practice home card's drill-down (V-04-T08), shareable. `null` when the address has none.
+ */
+export function stateFromSearch(search: string, base: DirectoryState): DirectoryState | null {
+  const params = new URLSearchParams(search);
+  const filters: DirectoryState["filters"] = {};
+  let found = false;
+  for (const key of FILTER_KEYS) {
+    const values = params.getAll(key).filter((value) => value.trim() !== "");
+    if (values.length) {
+      filters[key] = values;
+      found = true;
+    }
+  }
+  const q = params.get("q")?.trim() ?? "";
+  const archived = params.get("archived") === "include";
+  if (!found && !q && !archived) return null;
+  return { ...base, q, filters, archived };
+}
 
 /** A saved view's state, in the screen's shape. */
 export function viewToState(view: SavedView, fallbackColumns: string[]): DirectoryState {

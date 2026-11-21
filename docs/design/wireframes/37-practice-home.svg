@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Practice home — cards, deadlines, workload (V-04)">
+<title>Numo9 wireframe — Practice home — cards, deadlines, workload (V-04)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Abuodeh CPA (practice)</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Directory</text>
+<text x="432" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Dashboard</text>
+<rect x="432" y="52" width="40" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="564" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Groups &amp; tags</text>
+<text x="728" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Staff</text>
+<text x="24" y="96" font-size="22" fill="#111111" font-weight="800" text-anchor="start">Practice home</text>
+<text x="24" y="116" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Every number opens the directory with the same filter — the list shows exactly that many organisations</text>
+<rect x="1000" y="80" width="200" height="32" rx="16" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="1002" y="82" width="96" height="28" rx="14" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1050" y="101" font-size="12" fill="#FFFFFF" font-weight="700" text-anchor="middle">My organisations</text>
+<text x="1150" y="101" font-size="12" fill="#111111" font-weight="500" text-anchor="middle">All practice</text>
+<circle cx="990" cy="96" r="10" fill="#B42318"/>
+<text x="990" y="100" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">1</text>
+<rect x="1216" y="80" width="200" height="32" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1316" y="101" font-size="13" fill="#111111" font-weight="600" text-anchor="middle">Customise dashboard</text>
+<circle cx="1426" cy="96" r="10" fill="#B42318"/>
+<text x="1426" y="100" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">6</text>
+<rect x="24" y="140" width="266" height="132" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="196" font-size="36" fill="#111111" font-weight="800" text-anchor="start">3</text>
+<text x="40" y="222" font-size="13" fill="#344054" font-weight="600" text-anchor="start">Trials ending in 7 days</text>
+<text x="40" y="252" font-size="12" fill="#175CD3" font-weight="600" text-anchor="start">Open in directory →</text>
+<rect x="306" y="140" width="266" height="132" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="322" y="196" font-size="36" fill="#111111" font-weight="800" text-anchor="start">12</text>
+<text x="322" y="222" font-size="13" fill="#344054" font-weight="600" text-anchor="start">Organisations without a BN</text>
+<text x="322" y="252" font-size="12" fill="#175CD3" font-weight="600" text-anchor="start">Open in directory →</text>
+<rect x="588" y="140" width="266" height="132" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="604" y="196" font-size="36" fill="#111111" font-weight="800" text-anchor="start">27</text>
+<text x="604" y="222" font-size="13" fill="#344054" font-weight="600" text-anchor="start">No lock date set</text>
+<text x="604" y="252" font-size="12" fill="#175CD3" font-weight="600" text-anchor="start">Open in directory →</text>
+<rect x="870" y="140" width="266" height="132" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="886" y="196" font-size="36" fill="#111111" font-weight="800" text-anchor="start">0</text>
+<text x="886" y="222" font-size="13" fill="#344054" font-weight="600" text-anchor="start">Read-only organisations</text>
+<text x="886" y="252" font-size="12" fill="#175CD3" font-weight="600" text-anchor="start">Open in directory →</text>
+<rect x="1152" y="140" width="266" height="132" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1168" y="196" font-size="36" fill="#111111" font-weight="800" text-anchor="start">2</text>
+<text x="1168" y="222" font-size="13" fill="#344054" font-weight="600" text-anchor="start">Dormant staff (60 days)</text>
+<text x="1168" y="252" font-size="12" fill="#175CD3" font-weight="600" text-anchor="start">Open staff →</text>
+<circle cx="24" cy="140" r="10" fill="#B42318"/>
+<text x="24" y="144" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">2</text>
+<rect x="24" y="288" width="266" height="96" rx="4" fill="#FEF3F2" stroke="#FDA29B" stroke-width="1"/>
+<text x="40" y="318" font-size="13" fill="#344054" font-weight="600" text-anchor="start">Unreconciled bank lines</text>
+<text x="40" y="342" font-size="12" fill="#B42318" font-weight="500" text-anchor="start">Couldn't load this figure.</text>
+<rect x="40" y="352" width="90" height="24" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="85" y="369" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Try again</text>
+<circle cx="290" cy="288" r="10" fill="#B42318"/>
+<text x="290" y="292" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">3</text>
+<rect x="24" y="400" width="700" height="300" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="428" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Deadlines — next 30 days</text>
+<text x="40" y="460" font-size="13" fill="#5B6472" font-weight="600" text-anchor="start">Dec 31</text>
+<text x="130" y="460" font-size="13" fill="#111111" font-weight="400" text-anchor="start">GST/HST return (quarterly)</text>
+<text x="430" y="460" font-size="13" fill="#175CD3" font-weight="400" text-anchor="start">Maple Leaf Supply Ltd.</text>
+<line x1="40" y1="474" x2="708" y2="474" stroke="#EAECF0"/>
+<text x="40" y="500" font-size="13" fill="#5B6472" font-weight="600" text-anchor="start">Jan 15</text>
+<text x="130" y="500" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Payroll remittance</text>
+<text x="430" y="500" font-size="13" fill="#175CD3" font-weight="400" text-anchor="start">Refined Interiors Inc.</text>
+<line x1="40" y1="514" x2="708" y2="514" stroke="#EAECF0"/>
+<text x="40" y="540" font-size="13" fill="#5B6472" font-weight="600" text-anchor="start">Feb 28</text>
+<text x="130" y="540" font-size="13" fill="#111111" font-weight="400" text-anchor="start">T4 slips and summary</text>
+<text x="430" y="540" font-size="13" fill="#175CD3" font-weight="400" text-anchor="start">Birch Ltd.</text>
+<line x1="40" y1="554" x2="708" y2="554" stroke="#EAECF0"/>
+<text x="40" y="590" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Filled by tax (G-03a) and payroll (N-07); empty until then: “No deadline in the next 30 days”.</text>
+<circle cx="24" cy="400" r="10" fill="#B42318"/>
+<text x="24" y="404" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">4</text>
+<rect x="740" y="400" width="676" height="300" rx="4" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="756" y="428" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Workload — organisations per staff member</text>
+<text x="756" y="466" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Ada Admin</text>
+<rect x="900" y="453" width="420" height="16" rx="2" fill="#FFD100" stroke="#E0B800" stroke-width="1"/>
+<text x="1340" y="466" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">412 organisations · 0 open tasks</text>
+<text x="756" y="506" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Sam Patel</text>
+<rect x="900" y="493" width="38" height="16" rx="2" fill="#FFD100" stroke="#E0B800" stroke-width="1"/>
+<text x="1340" y="506" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">38 organisations · 0 open tasks</text>
+<text x="756" y="546" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Lina Roy</text>
+<rect x="900" y="533" width="12" height="16" rx="2" fill="#FFD100" stroke="#E0B800" stroke-width="1"/>
+<text x="1340" y="546" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">12 organisations · 0 open tasks</text>
+<text x="756" y="586" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Nina New</text>
+<rect x="900" y="573" width="2" height="16" rx="2" fill="#FFD100" stroke="#E0B800" stroke-width="1"/>
+<text x="1340" y="586" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">0 organisations · 0 open tasks</text>
+<circle cx="740" cy="400" r="10" fill="#B42318"/>
+<text x="740" y="404" font-size="12" fill="#FFFFFF" font-weight="800" text-anchor="middle">5</text>
+<text x="24" y="740" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Zero shows “0”, never a blank; a failing figure shows its own error with Try again — the rest of the page still loads.</text>
+<text x="24" y="760" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Customise: move cards up/down, hide/show them; saved per person and practice.</text>
+</svg>

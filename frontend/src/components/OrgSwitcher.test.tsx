@@ -9,7 +9,7 @@ import { OrgSwitcher } from "./OrgSwitcher";
 import { renderWithIntl } from "@/test/intl";
 
 const push = vi.fn();
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/", useRouter: () => ({ push }) }));
 
 const MAPLE = "7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6";
 const NORTH = "0b1c2d3e-4f50-4617-8899-aabbccddeeff";

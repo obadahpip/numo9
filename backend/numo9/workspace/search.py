@@ -15,8 +15,12 @@ BN first) unless a sort is chosen.
 **Filters** — any of several values within a filter (OR), every filter together (AND):
 ``package``, ``status``, ``province``, ``fye`` (month), ``gst_cycle``, ``payroll``, ``overdue``,
 ``unfiled`` (``yes`` / ``no``), ``tag`` and ``group`` (V-02-T08: a group's public id; an
-organisation in the group **or any of its sub-groups** matches). Archived organisations
-(cancelled) are left out unless ``include_archived`` (or the status filter names ``archived``).
+organisation in the group **or any of its sub-groups** matches). The practice dashboard's
+drill-downs (V-04-T07) add ``trial_ending`` (a trial ending within 7 days), ``bn_missing``,
+``lock_missing`` (no lock date on any module) and ``mine`` (the organisations the user is assigned
+to — directly or through a group — as opposed to the whole practice), ``yes`` / ``no`` each.
+Archived organisations (cancelled) are left out unless ``include_archived`` (or the status
+filter names ``archived``).
 
 **Facets** — for each filter, how many organisations each value would show **with every other
 filter applied** (the usual faceted-search rule): choosing a value in a filter that had none
@@ -50,7 +54,14 @@ BOOLEAN_FILTERS: dict[str, Q] = {
     "payroll": Q(payroll_enabled=True),
     "overdue": Q(overdue_count__gt=0),
     "unfiled": Q(unfiled_count__gt=0),
+    # Practice dashboard drill-downs (V-04-T07).
+    "bn_missing": Q(bn=""),
+    "lock_missing": Q(lock_date__isnull=True),
 }
+#: Yes/no filters computed per request: a trial ending within ``TRIAL_ENDING_DAYS`` (time), the
+#: organisations the user is assigned to (the user).
+DYNAMIC_FILTERS: tuple[str, ...] = ("trial_ending", "mine")
+TRIAL_ENDING_DAYS = 7  # also the dashboard's trials_ending widget (V-04)
 VALUE_FILTERS: dict[str, str] = {
     "package": "package",
     "status": "status",
@@ -58,7 +69,9 @@ VALUE_FILTERS: dict[str, str] = {
     "fye": "fye_month",
     "gst_cycle": "gst_cycle",
 }
-FILTERS: tuple[str, ...] = (*VALUE_FILTERS, *BOOLEAN_FILTERS, "tag", "group")
+FILTERS: tuple[str, ...] = (*VALUE_FILTERS, *BOOLEAN_FILTERS, *DYNAMIC_FILTERS, "tag", "group")
+#: Every yes/no filter (static and per request).
+YES_NO_FILTERS: frozenset[str] = frozenset({*BOOLEAN_FILTERS, *DYNAMIC_FILTERS})
 
 #: Sort keys of the API → model fields (``-key`` sorts descending).
 SORTS: dict[str, tuple[str, ...]] = {
@@ -209,9 +222,15 @@ def organisation_groups(practice: Practice) -> tuple[dict[int, set[str]], dict[i
 class DirectoryQuery:
     """One directory request: ``page()`` for the rows, ``facets()`` for the counts."""
 
-    def __init__(self, user: Any, practice: Practice, params: DirectoryParams) -> None:
+    def __init__(
+        self, user: Any, practice: Practice, params: DirectoryParams, now: Any = None
+    ) -> None:
+        from django.utils import timezone
+
         self.params = params
         self.practice = practice
+        self.user = user
+        self.now = now or timezone.now()
         self.scope = directory_scope(user, practice)
         words = query_words(params.q)
         self.search: SearchQuery | None = (
@@ -250,12 +269,13 @@ class DirectoryQuery:
         if name in VALUE_FILTERS:
             column = VALUE_FILTERS[name]
             return Q(**{f"{column}__in": [int(v) for v in values] if name == "fye" else values})
-        if name in BOOLEAN_FILTERS:
+        if name in YES_NO_FILTERS:
+            test = self._dynamic_q(name) if name in DYNAMIC_FILTERS else BOOLEAN_FILTERS[name]
             condition = Q()
             if YES in values:
-                condition |= BOOLEAN_FILTERS[name]
+                condition |= test
             if NO in values:
-                condition |= ~BOOLEAN_FILTERS[name]
+                condition |= ~test
             return condition
         condition = Q()
         if name == "group":  # any of the chosen groups, sub-groups included
@@ -274,6 +294,28 @@ class DirectoryQuery:
         for tag in values:  # tag: any of the chosen tags
             condition |= Q(tags__contains=[tag])
         return condition
+
+    def trial_window(self) -> tuple[Any, Any]:
+        import datetime as dt
+
+        return self.now, self.now + dt.timedelta(days=TRIAL_ENDING_DAYS)
+
+    def mine(self) -> set[int]:
+        """The organisations the user is assigned to in this practice (direct and groups)."""
+        if not hasattr(self, "_mine"):
+            from .dashboard import member_organisations
+
+            member = PracticeMember.objects.filter(
+                practice=self.practice, user=self.user, suspended_at__isnull=True
+            ).first()
+            self._mine: set[int] = member_organisations(member) if member else set()
+        return self._mine
+
+    def _dynamic_q(self, name: str) -> Q:
+        if name == "trial_ending":
+            start, end = self.trial_window()
+            return Q(status=DirectoryStatus.TRIAL, trial_ends_at__gte=start, trial_ends_at__lte=end)
+        return Q(organisation_id__in=sorted(self.mine()))
 
     def filtered(self, *, skip: str | None = None) -> QuerySet[OrgDirectorySummary]:
         rows = self._searched()
@@ -323,6 +365,9 @@ class DirectoryQuery:
         "unfiled_count",
         "tags",
         "organisation_id",
+        "bn",
+        "lock_date",
+        "trial_ends_at",
     )
 
     def groups_of(self) -> tuple[dict[int, set[str]], dict[int, list[str]]]:
@@ -333,6 +378,8 @@ class DirectoryQuery:
     def _slim(self) -> list[dict[str, Any]]:
         if not hasattr(self, "_slim_rows"):
             within, _direct = self.groups_of()
+            start, end = self.trial_window()
+            mine = self.mine() if "mine" in self.params.filters else set()
             self._slim_rows = [
                 {
                     "status": status,
@@ -346,6 +393,12 @@ class DirectoryQuery:
                     "tag": set(tags or []),
                     "group": within.get(organisation_id, set()),
                     "organisation_id": organisation_id,
+                    "bn_missing": not bn,
+                    "lock_missing": lock_date is None,
+                    "trial_ending": status == DirectoryStatus.TRIAL
+                    and trial_ends is not None
+                    and start <= trial_ends <= end,
+                    "mine": organisation_id in mine,
                 }
                 for (
                     status,
@@ -358,6 +411,9 @@ class DirectoryQuery:
                     unfiled,
                     tags,
                     organisation_id,
+                    bn,
+                    lock_date,
+                    trial_ends,
                 ) in self._searched().values_list(*self._SLIM)
             ]
         return self._slim_rows
@@ -370,7 +426,7 @@ class DirectoryQuery:
             if name in ("tag", "group"):
                 if not value & set(values):
                     return False
-            elif name in BOOLEAN_FILTERS:
+            elif name in YES_NO_FILTERS:
                 if (YES if value else NO) not in values:
                     return False
             elif value not in values:
@@ -404,11 +460,11 @@ class DirectoryQuery:
                 value = row[name]
                 if name in ("tag", "group"):
                     counts.update(value)
-                elif name in BOOLEAN_FILTERS:
+                elif name in YES_NO_FILTERS:
                     counts[YES if value else NO] += 1
                 elif value not in ("", None):
                     counts[value] += 1
-            if name in BOOLEAN_FILTERS:
+            if name in YES_NO_FILTERS:
                 counts.setdefault(YES, 0)
                 counts.setdefault(NO, 0)
             if name == "status":  # every status is always offered (zero ones dimmed)
@@ -465,13 +521,14 @@ def _ordered(name: str, counts: dict[str, int]) -> list[tuple[str, int]]:
         return sorted(counts.items(), key=lambda item: _STATUS_ORDER.get(item[0], 99))
     if name == "fye":
         return sorted(counts.items(), key=lambda item: int(item[0]))
-    if name in BOOLEAN_FILTERS:
+    if name in YES_NO_FILTERS:
         return [(YES, counts.get(YES, 0)), (NO, counts.get(NO, 0))]
     return sorted(counts.items(), key=lambda item: (-item[1], item[0]))
 
 
 __all__ = [
     "FILTERS",
+    "YES_NO_FILTERS",
     "SORTS",
     "DirectoryParams",
     "DirectoryQuery",
