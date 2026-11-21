@@ -498,3 +498,63 @@ old system with French headers, saved in Windows-1252.
 | 5 | Workload | Organisations per staff member (direct and through groups, as the directory counts them) and open tasks (0 until tasks exist), as bars with the number written |
 | 6 | Customise | Move cards up/down and hide/show them; saved per person and practice |
 
+
+## 37. Banking home — account cards and states (F-01-T01)
+
+![Banking home](wireframes/38-banking-home.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Add account | Opens the add-account side-sheet (wireframe 38). Spend money opens the form (40) for the first account |
+| 2 | Account card | Type icon, name, institution and currency; **ledger balance** (always the ledger, never edited); the statement balance and its date when one was entered; last activity. Opens the account (39). A credit card or line of credit reads "owed" |
+| 3 | Reconciliation chip | "Not reconciled — optional": reconciliation never blocks anything (Xero gap #27) |
+| 4 | Empty state | No account yet: explains that no feed is needed; **Add account** |
+| 5 | Loading | Skeleton cards while balances load |
+| 6 | Error | Balances couldn't be loaded — **Try again**; nothing else on the page is blocked |
+| 7 | Archived account | Shown under "Archived", greyed: hidden from pickers, kept in reports; **Restore** |
+
+## 38. Add bank account — side-sheet (F-01-T01)
+
+![Add account](wireframes/39-bank-add-account.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Type | Segmented control: Chequing, Savings, Credit card, Line of credit, Loan, Cash, Clearing — with a plain-language line under it ("Money you keep at the bank and pay from: a current asset"). The type decides the ledger account it creates (F-01-T03) |
+| 2 | Name | Required, unique in the organisation |
+| 3 | Institution | Canadian bank list with search; free text allowed |
+| 4 | Currency | CAD by default; fixed once the account has transactions |
+| 5 | Add account | Creates the account and its ledger account in one step (< 30 s); last 4 digits optional, stored encrypted, shown masked |
+| 6 | Success toast | "… is ready." with the next action **Record a transaction** |
+
+## 39. Bank account — detail (F-01-T01)
+
+![Bank account](wireframes/40-bank-account-detail.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Ledger balance | The ledger account's balance (posted lines); red below zero |
+| 2 | Statement balance | Optional, with its date; never changes the ledger |
+| 3 | Actions | Spend money, Receive money, Transfer (a credit card paid from chequing is a transfer, not a spend) |
+| 4 | Transactions | Date, contact or narration, reference, spent, received, running balance; opens the journal |
+| 5 | Settings | Rename, institution, last 4 digits; archive; delete only while it has no transactions ("has 1 transaction — archive instead") |
+
+## 40. Spend money / Receive money (F-01-T01)
+
+![Spend money](wireframes/41-spend-receive-money.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Spend / Receive | One form, two directions; quick-create N S / N R |
+| 2 | Tax inclusive / exclusive | Changes how the line amounts are read; totals recalculate |
+| 3 | Lines | Description, account, tax code (purchase codes for a spend, sales codes for a receipt — the others are filtered out), amount |
+| 4 | Cash guard | The C-03 chip when the account would go below zero; blocked / adviser reason as on journals |
+| 5 | Attachment | Drop the receipt; the C-03 attachment rules apply |
+
+## 41. No bank account — dashboard prompt (F-01-T01)
+
+![No bank prompt](wireframes/42-no-bank-prompt.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Prompt | "Add your first bank account": on the dashboard and on Banking only, while the organisation has none; nothing is blocked |
+| 2 | Dismiss | Hides it for this person (persistent but dismissible) |

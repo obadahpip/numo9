@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:58-0500\n"
+"POT-Creation-Date: 2026-11-20 18:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -477,6 +477,81 @@ msgstr ""
 msgid "No events match these filters."
 msgstr ""
 
+msgid "Chequing"
+msgstr ""
+
+msgid "Savings"
+msgstr ""
+
+msgid "Credit card"
+msgstr ""
+
+msgid "Line of credit"
+msgstr ""
+
+msgid "Loan"
+msgstr ""
+
+msgid "Cash / petty cash"
+msgstr ""
+
+msgid "Clearing"
+msgstr ""
+
+msgid "ledger account"
+msgstr ""
+
+msgid "account type"
+msgstr ""
+
+msgid "institution"
+msgstr ""
+
+msgid "currency"
+msgstr ""
+
+msgid "last 4 digits of the account number"
+msgstr ""
+
+msgid "transit number"
+msgstr ""
+
+msgid "institution number"
+msgstr ""
+
+msgid "statement balance"
+msgstr ""
+
+msgid "statement balance date"
+msgstr ""
+
+msgid "reconciliation tracked"
+msgstr ""
+
+msgid "archived at"
+msgstr ""
+
+msgid "bank account"
+msgstr ""
+
+msgid "bank accounts"
+msgstr ""
+
+#, python-format
+msgid "“%(type)s” isn't a bank account type."
+msgstr ""
+
+#, python-format
+msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
+msgstr ""
+
+msgid "Give the account a name."
+msgstr ""
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr ""
+
 msgid "Stripe event"
 msgstr ""
 
@@ -529,9 +604,6 @@ msgid "number"
 msgstr ""
 
 msgid "status"
-msgstr ""
-
-msgid "currency"
 msgstr ""
 
 msgid "subtotal"
@@ -1573,9 +1645,6 @@ msgid "client portal access"
 msgstr ""
 
 msgid "statements"
-msgstr ""
-
-msgid "archived at"
 msgstr ""
 
 msgid "name key"
@@ -3874,9 +3943,6 @@ msgstr ""
 msgid "system role"
 msgstr ""
 
-msgid "bank account"
-msgstr ""
-
 msgid "require a contact"
 msgstr ""
 
@@ -3899,9 +3965,6 @@ msgid "accounts"
 msgstr ""
 
 msgid "An account code is 1 to 10 letters, digits, dots or dashes, starting with a letter or a digit (e.g. 6100)."
-msgstr ""
-
-msgid "Give the account a name."
 msgstr ""
 
 #, python-format

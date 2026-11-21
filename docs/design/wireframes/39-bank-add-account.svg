@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Add bank account side-sheet (F-01)">
+<title>Numo9 wireframe — Add bank account side-sheet (F-01)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">REFINED Interiors Inc.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="50" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+
+<rect x="0" y="56" width="1440" height="844" fill="#101828" opacity="0.45"/>
+<rect x="960" y="56" width="480" height="844" rx="0" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="984" y="100" font-size="20" fill="#111111" font-weight="800" text-anchor="start">Add account</text>
+<text x="1416" y="100" font-size="22" fill="#344054" font-weight="500" text-anchor="end">×</text>
+<text x="984" y="140" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Type</text>
+<circle cx="1060" cy="136" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1060" y="140" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="984" y="152" width="80" height="32" rx="6" fill="#111111" stroke="#98A2B3" stroke-width="1"/>
+<text x="1024.0" y="173" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">Chequing</text>
+<rect x="1072" y="152" width="73" height="32" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1108.5" y="173" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Savings</text>
+<rect x="1153" y="152" width="101" height="32" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1203.5" y="173" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Credit card</text>
+<rect x="1262" y="152" width="122" height="32" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1323.0" y="173" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Line of credit</text>
+<rect x="984" y="192" width="52" height="32" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1010.0" y="213" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Loan</text>
+<rect x="1044" y="192" width="52" height="32" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1070.0" y="213" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Cash</text>
+<rect x="1104" y="192" width="80" height="32" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1144.0" y="213" font-size="12" fill="#111111" font-weight="600" text-anchor="middle">Clearing</text>
+<text x="984" y="250" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Money you keep at the bank and pay from: a current asset.</text>
+<text x="984" y="276" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Name</text>
+<rect x="984" y="284" width="432" height="40" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="996" y="309" font-size="13" fill="#344054" font-weight="400" text-anchor="start">TD Business Chequing</text>
+<circle cx="1404" cy="272" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1404" y="276" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<text x="984" y="360" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Institution</text>
+<rect x="984" y="368" width="432" height="40" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="996" y="393" font-size="13" fill="#344054" font-weight="400" text-anchor="start">TD Canada Trust ▾</text>
+<circle cx="1404" cy="356" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1404" y="360" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<text x="984" y="444" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Currency</text>
+<rect x="984" y="452" width="432" height="40" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="996" y="477" font-size="13" fill="#344054" font-weight="400" text-anchor="start">CAD — Canadian dollar ▾</text>
+<circle cx="1404" cy="440" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1404" y="444" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<text x="984" y="528" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Last 4 digits (optional) — stored encrypted, shown •••• 4821</text>
+<rect x="1196" y="820" width="90" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1241.0" y="843" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Cancel</text>
+<rect x="1296" y="820" width="120" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1356.0" y="843" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Add account</text>
+<circle cx="1428" cy="838" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1428" y="842" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">5</text>
+<rect x="24" y="760" width="520" height="64" rx="8" fill="#ECFDF3" stroke="#6CE9A6" stroke-width="1"/>
+<text x="40" y="788" font-size="13" fill="#054F31" font-weight="700" text-anchor="start">TD Business Chequing is ready.</text>
+<text x="40" y="808" font-size="12" fill="#054F31" font-weight="600" text-anchor="start">Record a transaction →</text>
+<circle cx="556" cy="770" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="556" y="774" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">6</text>
+</svg>

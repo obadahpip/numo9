@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 17:58-0500\n"
+"POT-Creation-Date: 2026-11-20 18:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -483,6 +483,81 @@ msgstr "%(count)s événements · exporté le %(when)s"
 msgid "No events match these filters."
 msgstr "Aucun événement ne correspond à ces filtres."
 
+msgid "Chequing"
+msgstr "Compte chèques"
+
+msgid "Savings"
+msgstr "Épargne"
+
+msgid "Credit card"
+msgstr "Carte de crédit"
+
+msgid "Line of credit"
+msgstr "Marge de crédit"
+
+msgid "Loan"
+msgstr "Prêt"
+
+msgid "Cash / petty cash"
+msgstr "Encaisse / petite caisse"
+
+msgid "Clearing"
+msgstr "Compte d'attente"
+
+msgid "ledger account"
+msgstr "compte du grand livre"
+
+msgid "account type"
+msgstr "type de compte"
+
+msgid "institution"
+msgstr "institution"
+
+msgid "currency"
+msgstr "devise"
+
+msgid "last 4 digits of the account number"
+msgstr "4 derniers chiffres du numéro de compte"
+
+msgid "transit number"
+msgstr "numéro de transit"
+
+msgid "institution number"
+msgstr "numéro d'institution"
+
+msgid "statement balance"
+msgstr "solde du relevé"
+
+msgid "statement balance date"
+msgstr "date du solde du relevé"
+
+msgid "reconciliation tracked"
+msgstr "rapprochement suivi"
+
+msgid "archived at"
+msgstr "archivé le"
+
+msgid "bank account"
+msgstr "compte bancaire"
+
+msgid "bank accounts"
+msgstr "comptes bancaires"
+
+#, python-format
+msgid "“%(type)s” isn't a bank account type."
+msgstr "« %(type)s » n'est pas un type de compte bancaire."
+
+#, python-format
+msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
+msgstr "Tous les codes de %(first)d à %(last)d sont utilisés : renumérotez ou archivez un compte de cette plage, puis réessayez."
+
+msgid "Give the account a name."
+msgstr "Donnez un nom au compte."
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
+
 msgid "Stripe event"
 msgstr "Événement Stripe"
 
@@ -536,9 +611,6 @@ msgstr "numéro"
 
 msgid "status"
 msgstr "statut"
-
-msgid "currency"
-msgstr "devise"
 
 msgid "subtotal"
 msgstr "sous-total"
@@ -1656,11 +1728,6 @@ msgstr ""
 #| msgid "audit events"
 msgid "statements"
 msgstr "événements du journal d’audit"
-
-#, fuzzy
-#| msgid "started at"
-msgid "archived at"
-msgstr "commencée le"
 
 msgid "name key"
 msgstr "clé du nom"
@@ -4101,9 +4168,6 @@ msgstr ""
 msgid "system role"
 msgstr ""
 
-msgid "bank account"
-msgstr ""
-
 msgid "require a contact"
 msgstr ""
 
@@ -4130,9 +4194,6 @@ msgid "accounts"
 msgstr "Comptabilité"
 
 msgid "An account code is 1 to 10 letters, digits, dots or dashes, starting with a letter or a digit (e.g. 6100)."
-msgstr ""
-
-msgid "Give the account a name."
 msgstr ""
 
 #, python-format
