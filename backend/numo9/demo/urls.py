@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import api
+from . import api, console
 
 ORG = "o/<uuid:org>/"
 
@@ -11,4 +11,11 @@ urlpatterns = [
     path(f"{ORG}demo/convert", api.DemoConvertView.as_view(), name="demo-convert"),
     path(f"{ORG}demo/reset", api.DemoResetView.as_view(), name="demo-reset"),
     path(f"{ORG}demo/outbox", api.DemoOutboxView.as_view(), name="demo-outbox"),
+    # Platform console demo manager (U-06-T13).
+    path("platform/demos", console.DemoOverviewView.as_view(), name="platform-demos"),
+    path(
+        "platform/demos/<uuid:demo_id>/purge",
+        console.DemoPurgeView.as_view(),
+        name="platform-demo-purge",
+    ),
 ]
