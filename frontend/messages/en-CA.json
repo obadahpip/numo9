@@ -423,7 +423,7 @@
     "lastActivity": "Last activity {date}",
     "ledgerBalance": "Balance in Numo9",
     "loadFailed": "Bank accounts couldn't be loaded",
-    "loadFailedBody": "Check your connection and try again. Nothing else on this page is blocked.",
+    "loadFailedBody": "Verify your connection and try again. Nothing else on this page is blocked.",
     "loading": "Loading bank accounts…",
     "noActivity": "No transactions yet",
     "noStatement": "No statement balance entered",

@@ -22,9 +22,9 @@ Risk: low · medium · high · critical (what misuse could do). Scope: where it 
 |---|---|---|---|---|---|
 | `accounting.accounts.manage` | Add, edit, renumber, archive and restore accounts | Add, edit, renumber, archive and restore accounts | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
 | `accounting.accounts.view` | See the chart of accounts and account balances | See the chart of accounts and account balances | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate |
-| `accounting.banking.manage` | Add, rename, archive, restore and delete bank accounts | Add, rename, archive, restore and delete bank accounts | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
-| `accounting.banking.transact` | Record and void spend money and receive money | Record and void spend money and receive money | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
-| `accounting.banking.view` | See bank, credit card and cash accounts, their balances and transactions | See bank, credit card and cash accounts, their balances and transactions | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate |
+| `accounting.banking.manage` | Add, rename, archive, restore and delete bank accounts | Ajouter, renommer, archiver, restaurer et supprimer des comptes bancaires | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
+| `accounting.banking.transact` | Record and void spend money and receive money | Enregistrer et annuler des dépenses et des encaissements | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
+| `accounting.banking.view` | See bank, credit card and cash accounts, their balances and transactions | Voir les comptes bancaires, de carte de crédit et de caisse, leurs soldes et leurs opérations | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate |
 | `accounting.journals.post` | Write and post manual journals | Rédiger et passer des écritures manuelles | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate |
 | `accounting.journals.view` | See journals and every posted entry | Voir les écritures de journal et toutes les écritures comptabilisées | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate |
 
