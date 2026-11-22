@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:30-0500\n"
+"POT-Creation-Date: 2026-11-22 08:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5866,6 +5866,13 @@ msgid "Use the date format YYYY-MM-DD."
 msgstr ""
 
 msgid "That tax code doesn't exist."
+msgstr ""
+
+msgid "That tax component doesn't exist."
+msgstr ""
+
+#, python-format
+msgid "%(component)s is used on %(count)d posted lines: add a new version from a date instead of changing its rate."
 msgstr ""
 
 msgid "Unknown tax authority."

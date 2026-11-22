@@ -8,6 +8,11 @@ ORG = "o/<uuid:org>/"
 
 urlpatterns = [
     path(f"{ORG}tax/components", api.TaxComponentListView.as_view(), name="tax-components"),
+    path(
+        f"{ORG}tax/components/<uuid:public_id>",
+        api.TaxComponentDetailView.as_view(),
+        name="tax-component",
+    ),
     path(f"{ORG}tax/codes", api.TaxCodeListView.as_view(), name="tax-codes"),
     path(f"{ORG}tax/codes/<uuid:public_id>", api.TaxCodeDetailView.as_view(), name="tax-code"),
     path(

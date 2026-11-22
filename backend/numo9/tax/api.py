@@ -2,14 +2,17 @@
 
 - ``GET tax/components`` ``?key=&date=&expired=1`` — component versions (rate, range, kind,
   authority, recoverable, side, control accounts).
-- ``POST tax/components`` — add a component version (a new key or the next version of one).
+- ``POST tax/components`` — add a component version (a new key or the next version of one);
+  ``PATCH tax/components/<id>`` — rename (en / fr), end it, or correct the rate while no posted
+  line used it (409 otherwise). Every change is audited, attributed to the person (G-01-T16).
 - ``GET tax/codes`` ``?side=sales|purchase&date=YYYY-MM-DD&expired=1&q=`` — the code versions
   **in force on the date** (today by default) for the side: what a picker offers — a sales list
   never holds purchase codes; ``expired=1`` adds ended versions (the "Show expired" toggle);
   archived codes only with ``archived=1``. Each row: type and badge label, components with
   rates, range, version, claimable %, and how many posted journal lines used the code.
 - ``POST tax/codes`` — define a code (version 1) with its components.
-- ``GET tax/codes/<id>`` — one version with every version of its code (the timeline).
+- ``GET tax/codes/<id>`` — one version with every version of its code (the timeline);
+  ``PATCH`` renames it (en / fr).
 - ``POST tax/codes/<id>/versions`` ``{effective_from, components, name}`` — revise (G-01-T10).
 - ``POST tax/codes/<id>/archive`` / ``…/restore`` — every version of the code; ``DELETE`` only
   while no posted line used it (409 otherwise: archive it).
@@ -190,6 +193,72 @@ class ComponentInputSerializer(serializers.Serializer[Any]):
     )
 
 
+class ComponentPatchSerializer(serializers.Serializer[Any]):
+    name = serializers.CharField(max_length=120, required=False)
+    name_fr = serializers.CharField(max_length=120, required=False, allow_blank=True)
+    rate = serializers.DecimalField(
+        max_digits=7, decimal_places=4, min_value=0, max_value=100, required=False
+    )
+    effective_to = serializers.DateField(required=False, allow_null=True)
+
+
+def _component_used(component: TaxComponent) -> int:
+    keys = set(component.codes.values_list("tax_code__code", flat=True))
+    return sum(_usage(keys).values()) if keys else 0
+
+
+class TaxComponentDetailView(APIView):
+    """``PATCH tax/components/<id>`` — rename (en / fr), correct the rate of a component no
+    posted line used yet, or end it (``effective_to``); every change is audited, attributed to
+    the person (old and new values)."""
+
+    queryset = TaxComponent._base_manager.none()
+
+    @requires_permission(TAX_MANAGE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="tax_components_update",
+        request=ComponentPatchSerializer,
+        responses={200: dict},
+    )
+    def patch(self, request: Request, org: Any, public_id: Any) -> Response:
+        component: TaxComponent | None = TaxComponent.objects.filter(public_id=public_id).first()
+        if component is None:
+            raise NotFound(_("That tax component doesn't exist."))
+        data = ComponentPatchSerializer(data=request.data, partial=True)
+        data.is_valid(raise_exception=True)
+        values = dict(data.validated_data)
+        if "rate" in values and values["rate"] != component.rate:
+            used = _component_used(component)
+            if used:
+                return Response(
+                    {
+                        "code": "tax.component.in_use",
+                        "detail": _(
+                            "%(component)s is used on %(count)d posted lines: add a new version "
+                            "from a date instead of changing its rate."
+                        )
+                        % {"component": component.key, "count": used},
+                        "count": used,
+                    },
+                    status=status.HTTP_409_CONFLICT,
+                )
+            component.rate = values["rate"]
+        names = dict(component.name_i18n or {})
+        if values.get("name"):
+            names["en-ca"] = values["name"]
+        if "name_fr" in values:
+            names["fr-ca"] = values["name_fr"]
+        component.name_i18n = names
+        if "effective_to" in values:
+            component.effective_to = values["effective_to"]
+        try:
+            component.save()
+        except DjangoValidationError as error:
+            return _refused(error)
+        return Response(component_row(component))
+
+
 class TaxComponentListView(APIView):
     queryset = TaxComponent._base_manager.none()
 
@@ -334,8 +403,32 @@ class TaxCodeListView(APIView):
         return Response(code_row(code, {}, _today()), status=status.HTTP_201_CREATED)
 
 
+class CodePatchSerializer(serializers.Serializer[Any]):
+    name = serializers.CharField(max_length=150, required=False)
+    name_fr = serializers.CharField(max_length=150, required=False, allow_blank=True)
+
+
 class TaxCodeDetailView(APIView):
     queryset = TaxCode._base_manager.none()
+
+    @requires_permission(TAX_MANAGE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="tax_codes_update", request=CodePatchSerializer, responses={200: dict}
+    )
+    def patch(self, request: Request, org: Any, public_id: Any) -> Response:
+        """Rename a version (English / French): names never change a calculation."""
+        code = _code(public_id)
+        data = CodePatchSerializer(data=request.data, partial=True)
+        data.is_valid(raise_exception=True)
+        names = dict(code.name_i18n or {})
+        if data.validated_data.get("name"):
+            names["en-ca"] = data.validated_data["name"]
+        if "name_fr" in data.validated_data:
+            names["fr-ca"] = data.validated_data["name_fr"]
+        code.name_i18n = names
+        code.save(update_fields=["name_i18n", "updated_at"])
+        return Response(code_row(code, _usage({code.code}), _today()))
 
     @requires_permission(TAX_VIEW.key)
     @requires_feature(CORE)
