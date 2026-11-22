@@ -107,3 +107,37 @@ test("the column choice persists across sessions", async ({ page }) => {
   await expect(fresh.getByRole("columnheader", { name: "Discount" })).toBeVisible();
   await expect(fresh.getByRole("columnheader", { name: "Item" })).toHaveCount(0);
 });
+
+test("paste 20 rows from Excel: 20 lines, invalid cells flagged", async ({ page }) => {
+  await page.goto(EMPTY);
+  const rows = Array.from({ length: 20 }, (_, i) =>
+    [
+      `Row ${i + 1}`,
+      String(i + 1),
+      i === 4 ? "abc" : `${i + 1}0.00`,
+      i === 9 ? "Fuel" : "4001",
+      "sales.ON.standard",
+    ].join("\t"),
+  ).join("\r\n");
+  const cell = page.getByRole("textbox", { name: "Description, line 1" });
+  await cell.focus();
+  await cell.evaluate((element, text) => {
+    const data = new DataTransfer();
+    data.setData("text/plain", `${text}\r\n`);
+    element.dispatchEvent(
+      new ClipboardEvent("paste", { clipboardData: data, bubbles: true, cancelable: true }),
+    );
+  }, rows);
+  await expect(page.locator("tr[data-line]")).toHaveCount(20);
+  await expect(page.getByRole("textbox", { name: "Description, line 20" })).toHaveValue("Row 20");
+  await expect(page.locator("td[data-invalid]")).toHaveCount(2);
+  await expect(page.getByRole("textbox", { name: "Unit price, line 5" })).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  await expect(page.getByRole("combobox", { name: "Account, line 10" })).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  await expect(page.getByRole("status", { name: /^Amount, line 3$/ })).toHaveText("$90.00");
+});

@@ -36,6 +36,8 @@ export interface LineCellProps {
   onKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => void;
   line: DocumentLine;
   index: number;
+  /** The cell's value didn't fit (e.g. a pasted value, D-01-T15): flag it. */
+  invalid: boolean;
 }
 
 export interface LineColumn {
@@ -143,6 +145,20 @@ export interface LineGridProps {
   onLineRemoved?: (line: DocumentLine, index: number, restore: () => void) => void;
   /** Keeps the person's column choice (D-01-T13); without it the choice lasts for the page. */
   columnStore?: ColumnStore;
+  /**
+   * Paste from a spreadsheet (D-01-T15): a paste holding tabs or line breaks into a cell hands
+   * the rows (cells split on tabs) to this, with the line and the visible columns from the
+   * pasted cell on. Without it the browser pastes into the one cell.
+   */
+  onPasteRows?: (rows: string[][], line: number, columns: string[]) => void;
+  /** Cells to flag as not valid, per line id: column ids (D-01-T15). */
+  invalidCells?: Readonly<Record<string, readonly string[]>>;
+}
+
+/** Spreadsheet clipboard text → rows of cells (tabs, CRLF/LF; a trailing line break ignored). */
+export function parseTsv(text: string): string[][] {
+  const rows = text.replace(/\r\n?/g, "\n").replace(/\n$/, "").split("\n");
+  return rows.map((row) => row.split("\t"));
 }
 
 /**
@@ -172,6 +188,8 @@ export function LineGrid({
   duplicateLine,
   onLineRemoved,
   columnStore,
+  onPasteRows,
+  invalidCells = {},
 }: LineGridProps) {
   const baseId = useId();
   const table = useRef<HTMLTableElement>(null);
@@ -303,8 +321,12 @@ export function LineGrid({
   const totals: Record<string, string> = {};
   for (const column of columns) {
     if (column.kind === "money" && column.total) {
+      // A value that isn't a decimal (a half-typed cell) doesn't break the totals.
       totals[column.id] = sumDecimals(
-        lines.map((line) => (line[column.id] as string | null) ?? null),
+        lines.map((line) => {
+          const value = (line[column.id] as string | null) ?? null;
+          return value !== null && /^-?\d+(\.\d+)?$/.test(value) ? value : null;
+        }),
       );
     }
   }
@@ -444,8 +466,28 @@ export function LineGrid({
                   const value = line[column.id];
                   const onKeyDown = (event: ReactKeyboardEvent<HTMLElement>) =>
                     onCellKey(event, index, column.id);
+                  const invalid = invalidCells[line.id]?.includes(column.id) ?? false;
                   return (
-                    <td key={column.id} className="border-b border-border p-1 align-top">
+                    <td
+                      key={column.id}
+                      data-invalid={invalid || undefined}
+                      onPasteCapture={(event) => {
+                        if (!onPasteRows || readOnly || column.readOnly) return;
+                        const text = event.clipboardData.getData("text/plain");
+                        if (!/[\t\n]/.test(text.replace(/\r?\n$/, ""))) return;
+                        event.preventDefault();
+                        const from = visible.findIndex((c) => c.id === column.id);
+                        onPasteRows(
+                          parseTsv(text),
+                          index,
+                          visible.slice(from).map((c) => c.id),
+                        );
+                      }}
+                      className={cn(
+                        "border-b border-border p-1 align-top",
+                        invalid && "bg-surface-danger-subtle",
+                      )}
+                    >
                       {column.readOnly ? (
                         <output
                           id={id}
@@ -471,6 +513,7 @@ export function LineGrid({
                           onKeyDown,
                           line,
                           index,
+                          invalid,
                         })
                       ) : column.kind === "money" ? (
                         <MoneyCell
@@ -479,6 +522,7 @@ export function LineGrid({
                           value={(value as string | null) ?? null}
                           locale={locale}
                           readOnly={readOnly}
+                          invalid={invalid}
                           placeholder={column.placeholder}
                           onChange={(v) => update(index, column.id, v)}
                           onKeyDown={onKeyDown}
@@ -487,6 +531,7 @@ export function LineGrid({
                         <input
                           id={id}
                           aria-label={label}
+                          aria-invalid={invalid || undefined}
                           value={(value as string | undefined) ?? ""}
                           readOnly={readOnly}
                           placeholder={column.placeholder}
@@ -584,6 +629,7 @@ function MoneyCell({
   value,
   locale,
   readOnly,
+  invalid = false,
   placeholder,
   onChange,
   onKeyDown,
@@ -593,6 +639,7 @@ function MoneyCell({
   value: string | null;
   locale: AppLocale;
   readOnly: boolean;
+  invalid?: boolean;
   placeholder?: string;
   onChange: (value: string | null) => void;
   onKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => void;
@@ -632,7 +679,7 @@ function MoneyCell({
     <input
       id={id}
       aria-label={label}
-      aria-invalid={unreadable || undefined}
+      aria-invalid={unreadable || invalid || undefined}
       inputMode="decimal"
       autoComplete="off"
       readOnly={readOnly}

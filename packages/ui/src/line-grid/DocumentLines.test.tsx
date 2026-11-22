@@ -1,11 +1,16 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 
 import { chartAccounts, sampleTaxCodes } from "../pickers/fixtures";
 import { ToastProvider } from "../primitives/Toast";
 import { expectNoAxeViolations } from "../test/axe";
-import { DocumentLines, parseLineDiscount, type DocumentGridLine } from "./DocumentLines";
+import {
+  DocumentLines,
+  parseLineDiscount,
+  pasteRows,
+  type DocumentGridLine,
+} from "./DocumentLines";
 import { documentLabels, roughAmounts, sampleDocumentLines } from "./fixtures";
 import { localColumnStore, type ColumnStore } from "./LineGrid";
 
@@ -205,5 +210,92 @@ describe("parseLineDiscount", () => {
 
   it.each(["abc", "101%", "-5", "1.23456"])("refuses %s", (text) => {
     expect(parseLineDiscount(text)).toBeNull();
+  });
+});
+
+describe("paste from a spreadsheet (D-01-T15)", () => {
+  const rows = (n: number) =>
+    Array.from({ length: n }, (_, i) =>
+      [
+        `Item ${i + 1}`,
+        String(i + 1),
+        `$${(i + 1) * 10}.50`,
+        "4001",
+        "HST 13 % (Ontario) on sales",
+      ].join("\t"),
+    ).join("\r\n");
+
+  it("20 rows pasted into Description become 20 lines", () => {
+    render(<Editor initial={[{ ...sampleDocumentLines[0]!, id: "only", description: "" }]} />);
+    const cell = screen.getByRole("textbox", { name: "Description, line 1" });
+    fireEvent.paste(cell, { clipboardData: { getData: () => `${rows(20)}\r\n` } });
+    const lines = state();
+    expect(lines).toHaveLength(20);
+    expect(lines[19]).toEqual([expect.any(String), "Item 20", "20"]);
+    expect(screen.getByRole("textbox", { name: "Unit price, line 20" })).toHaveValue("200.50");
+    expect(document.querySelectorAll("td[data-invalid]")).toHaveLength(0);
+  });
+
+  it("flags the cells that don't fit, and unflags one once edited", async () => {
+    const user = userEvent.setup();
+    render(<Editor initial={[{ ...sampleDocumentLines[0]!, id: "only", description: "" }]} />);
+    const text = [
+      "Good\t2\t10.00\t4001\tsales.ON.standard",
+      "Bad qty\tlots\t10.00\tOffice supplies\tHST 13 % (Ontario) on purchases",
+      "Bad price\t1\tten\t9999\tExempt on sales",
+    ].join("\n");
+    fireEvent.paste(screen.getByRole("textbox", { name: "Description, line 1" }), {
+      clipboardData: { getData: () => text },
+    });
+    expect(state()).toHaveLength(3);
+    const flagged = [...document.querySelectorAll("tr[data-line]")].map(
+      (row) => [...row.querySelectorAll("td[data-invalid]")].length,
+    );
+    // line 2: quantity, account (expense on a sales line), tax code (purchase); line 3: price, account
+    expect(flagged).toEqual([0, 3, 2]);
+    expect(screen.getByRole("textbox", { name: "Qty, line 2" })).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    await user.clear(screen.getByRole("textbox", { name: "Qty, line 2" }));
+    await user.type(screen.getByRole("textbox", { name: "Qty, line 2" }), "3");
+    expect(screen.getByRole("textbox", { name: "Qty, line 2" })).not.toHaveAttribute(
+      "aria-invalid",
+    );
+  });
+
+  it("a plain paste into one cell is left to the browser", () => {
+    render(<Editor initial={sampleDocumentLines} />);
+    fireEvent.paste(screen.getByRole("textbox", { name: "Description, line 1" }), {
+      clipboardData: { getData: () => "just text\n" },
+    });
+    expect(state()).toHaveLength(2);
+  });
+});
+
+describe("pasteRows", () => {
+  it("starts at the pasted line and column, overwriting then adding", () => {
+    const pasted = pasteRows(
+      [
+        ["7", "12"],
+        ["8", "x"],
+      ],
+      1,
+      ["quantity", "unitPrice"],
+      sampleDocumentLines,
+      {
+        side: "sales",
+        date: "2026-07-15",
+        accounts: chartAccounts,
+        taxCodes: sampleTaxCodes,
+        locale: "en-CA",
+      },
+    );
+    expect(pasted.lines.map((l) => [l.quantity, l.unitPrice])).toEqual([
+      ["1", "4800.00"],
+      ["7", "12.0000"],
+      ["8", null],
+    ]);
+    expect(Object.values(pasted.invalid)).toEqual([["unitPrice"]]);
   });
 });

@@ -3,7 +3,9 @@ export {
   DocumentLines,
   newDocumentLine,
   parseLineDiscount,
+  pasteRows,
   type DocumentGridLine,
+  type PastedLines,
   type DocumentLineAmounts,
   type DocumentLinesLabels,
   type DocumentLinesProps,
@@ -27,6 +29,7 @@ export {
 export {
   LineGrid,
   localColumnStore,
+  parseTsv,
   type ColumnStore,
   type DocumentLine,
   type LineCellProps,

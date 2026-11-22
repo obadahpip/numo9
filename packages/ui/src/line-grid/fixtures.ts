@@ -96,7 +96,8 @@ export function roughAmounts(
 ): Record<string, DocumentLineAmounts> {
   const out: Record<string, DocumentLineAmounts> = {};
   for (const line of lines) {
-    const gross = Math.round(Number(line.quantity || "0") * Number(line.unitPrice || "0") * 100);
+    const gross =
+      Math.round(Number(line.quantity || "0") * Number(line.unitPrice || "0") * 100) || 0;
     const discount = line.discount.endsWith("%")
       ? Math.round((gross * Number(line.discount.slice(0, -1))) / 100)
       : Math.round(Number(line.discount || "0") * 100);
