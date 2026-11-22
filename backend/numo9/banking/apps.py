@@ -19,9 +19,15 @@ class BankingConfig(AppConfig):
         if entry_written not in ENTRY_WRITTEN:
             ENTRY_WRITTEN.append(entry_written)  # bust cached balances on every post (F-01-T06)
 
+        from django.utils.translation import gettext_lazy as _
+
+        from numo9.contacts.merge import register_reference
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
         from . import demo_seed  # noqa: F401 — registers the banking demo seeder (F-01-T15)
+
+        # A posted spend / receive keeps its contact, like its journal lines (C-02-T04).
+        register_reference("banking.BankTransaction", "contact", "keep", _("bank transactions"))
 
         SWEEP_FACTORIES["banking.BankAccount"] = _sweep_bank_account
         SWEEP_FACTORIES["banking.BankTransaction"] = _sweep_bank_transaction
