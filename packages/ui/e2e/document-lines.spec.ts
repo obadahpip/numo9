@@ -153,9 +153,7 @@ test("tablet: lines become labelled cards at 768 px @visual", async ({ page }) =
   await expect(page.getByRole("textbox", { name: "Description, line 1" })).toBeVisible();
   const width = await grid.evaluate((element) => element.getBoundingClientRect().width);
   expect(width).toBeLessThanOrEqual(768);
-  await expect(page.locator("#storybook-root")).toHaveScreenshot("document-lines-768.png", {
-    fullPage: true,
-  });
+  await expect(page.locator("#storybook-root")).toHaveScreenshot("document-lines-768.png");
 });
 
 test("desktop keeps the table layout", async ({ page }) => {

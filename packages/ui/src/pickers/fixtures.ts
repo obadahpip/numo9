@@ -2,6 +2,8 @@ import type { PickerTaxCode } from "./TaxCodePicker";
 import type { AccountType, PickerAccount } from "./AccountPicker";
 import type { PickerContact } from "./ContactPicker";
 import type { DatePickerLabels } from "./DatePicker";
+import type { DueDateFieldLabels } from "./DueDateField";
+import type { PaymentTermOption } from "./dueDates";
 
 /** Sample picker data (Canadian chart of accounts, contacts) for stories and tests. */
 export const dateLabels: DatePickerLabels = {
@@ -271,3 +273,22 @@ export const taxTypeLabels = {
   exempt: "Exempt",
   out_of_scope: "Out of scope",
 } as const;
+
+/** The default terms master (B-01-T05) for the due date field (D-01-T17). */
+export const sampleTerms: PaymentTermOption[] = [
+  { id: "t0", name: "Due on receipt", terms_type: "days_after_document", days: 0 },
+  { id: "t15", name: "Net 15", terms_type: "days_after_document", days: 15 },
+  { id: "t30", name: "Net 30", terms_type: "days_after_document", days: 30 },
+  { id: "t60", name: "Net 60", terms_type: "days_after_document", days: 60 },
+  { id: "teom", name: "EOM", terms_type: "days_after_month_end", days: 0 },
+  { id: "t20", name: "20th of next month", terms_type: "day_of_following_month", days: 20 },
+];
+
+export const dueDateLabels: DueDateFieldLabels = {
+  label: "Due date",
+  terms: "Payment terms",
+  dueIn: (days) => (days === 0 ? "Due on the invoice date" : `Due in ${days} days`),
+  required: "Enter a due date.",
+  beforeDate: "The due date is before the invoice date.",
+  date: dateLabels,
+};
