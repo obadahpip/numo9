@@ -7,7 +7,6 @@ import django.contrib.postgres.constraints
 import django.core.validators
 import django.db.models.deletion
 from django.conf import settings
-from django.contrib.postgres.operations import BtreeGistExtension
 from django.db import migrations, models
 
 import numo9.tax.models
@@ -19,13 +18,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        # btree_gist (the exclusion constraints) is created by the packages app (U-02-T03).
+        ("packages", "0002_package_price"),
         ("ledger", "0012_bank_transaction"),
         ("tenancy", "0007_organisation_demo_fields"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
-        BtreeGistExtension(),
         migrations.CreateModel(
             name="TaxAuthority",
             fields=[
