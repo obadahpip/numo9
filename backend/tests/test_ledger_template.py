@@ -154,7 +154,8 @@ def test_one_audit_batch_attributed_to_the_loader(org: Organisation, owner: User
     assert events.count() == len(created)
     assert set(events.values_list("actor_user", flat=True)) == {owner.pk}
     assert len(set(events.values_list("batch_id", flat=True))) == 1
-    summary = AuditEvent.objects.get(action=SUMMARY_ACTION)
+    # The chart's batch (the tax table installs in its own batch after it, G-01-T04).
+    summary = AuditEvent.objects.get(action=SUMMARY_ACTION, meta__template="ca_v1")
     assert summary.meta["template"] == "ca_v1" and summary.meta["province"] == "ON"
     assert summary.meta["events"] == len(created)
     assert {a.created_by_id for a in created} == {owner.pk}

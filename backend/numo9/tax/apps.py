@@ -8,3 +8,11 @@ class TaxConfig(AppConfig):
     name = "numo9.tax"
     label = "tax"
     verbose_name = "Sales tax"
+
+    def ready(self) -> None:
+        from numo9.ledger.template import CHART_LOADED
+
+        from .seed import on_chart_loaded
+
+        if on_chart_loaded not in CHART_LOADED:
+            CHART_LOADED.append(on_chart_loaded)  # install the tax table with the chart (G-01-T04)

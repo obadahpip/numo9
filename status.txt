@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 459   Remaining: 2328   Progress: 16.47%
+TOTAL ATOMIC TASKS: 2787   Completed: 460   Remaining: 2327   Progress: 16.51%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -617,7 +617,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-01-T01 — Wireframes: tax code list with tabs/badges/timeline, code editor with live example
 ✅ G-01-T02 — TaxAuthority (CRA, RQ, BC, MB, SK) and TaxComponent (authority, name, rate numeric(7,4), effective_from, effective_to, recoverable, control_account_sales FK, control_account_purchase FK) models
 ✅ G-01-T03 — TaxCode (name, code, side, type, province, active range) and TaxCodeComponent (component, recoverable_pct override) models
-❌ G-01-T04 — Seed migration with all 2026 provinces/territories plus historical rows (NS 15 % to 31 Mar 2025, MB RST 8 % to 30 Jun 2019), both sides, ZERO_RATED / EXEMPT / OUT_OF_SCOPE codes
+✅ G-01-T04 — Seed migration with all 2026 provinces/territories plus historical rows (NS 15 % to 31 Mar 2025, MB RST 8 % to 30 Jun 2019), both sides, ZERO_RATED / EXEMPT / OUT_OF_SCOPE codes
 ❌ G-01-T05 — Partial-recovery setting: itc_restriction_pct on Account and on TaxCode; resolution order line > account > code
 ❌ G-01-T06 — TaxCalculator service (Decimal, ROUND_HALF_UP): exclusive/inclusive, per-component amounts, recoverable vs non-recoverable split, residual-cent rule
 ❌ G-01-T07 — Posting mapper: tax lines to the right control accounts (GST/HST payable, ITC receivable, PST payable, QST payable, QST ITR); non-recoverable added to the expense line
