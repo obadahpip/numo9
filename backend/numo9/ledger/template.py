@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from decimal import Decimal
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -184,6 +185,8 @@ def _account_from_row(
         gifi_id=row.gifi,
         require_contact=row.require_contact,
         default_tax_key=tax_key(row.tax, province),
+        # Meals and entertainment: half of the ITC/ITR is claimable (G-01-T05).
+        itc_restriction_pct=Decimal("50") if row.tax == "purchase_itc50" else None,
         template_ref=f"{template.key}:{row.code}",
     )
 

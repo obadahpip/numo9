@@ -119,7 +119,13 @@ def install_tax_table(organisation: Any, *, models: Any = None) -> bool:
             )
             item.save()
             components[(row["key"], row["from"])] = item
+        code_fields = {f.name for f in models.TaxCode._meta.get_fields()}
         for row in seed["codes"]:
+            restriction = row.get("itc_restriction_pct")
+            # The code's claimable ITC % (G-01-T05); a table installed before that field existed
+            # (migration tax.0003) carries it on the components instead — same result.
+            on_code = restriction is not None and "itc_restriction_pct" in code_fields
+            extra = {"itc_restriction_pct": Decimal(restriction)} if on_code else {}
             code = models.TaxCode(
                 organisation_id=org_id,
                 code=row["code"],
@@ -130,9 +136,9 @@ def install_tax_table(organisation: Any, *, models: Any = None) -> bool:
                 effective_from=_day(row["from"]),
                 effective_to=_day(row["to"]),
                 name_i18n=row["name"],
+                **extra,
             )
             code.save()
-            restriction = row.get("itc_restriction_pct")
             for position, part in enumerate(row["components"], start=1):
                 component = components[(part["key"], part["from"])]
                 models.TaxCodeComponent(
@@ -141,7 +147,7 @@ def install_tax_table(organisation: Any, *, models: Any = None) -> bool:
                     component=component,
                     position=position,
                     recoverable_pct=Decimal(restriction)
-                    if restriction and component.recoverable
+                    if restriction and component.recoverable and not on_code
                     else None,
                 ).save()
     return True

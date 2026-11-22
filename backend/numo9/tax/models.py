@@ -256,6 +256,16 @@ class TaxCode(NamedMixin, AuditedModel, OrgOwnedModel):
     province = models.CharField(_("province"), max_length=2, blank=True)
     effective_from = models.DateField(_("effective from"))
     effective_to = models.DateField(_("effective to"), null=True, blank=True)
+    #: Share of the ITC/ITR claimable on purchases with this code (50 = half; G-01-T05);
+    #: null = each component's own rule. An account's or a line's own % wins.
+    itc_restriction_pct = models.DecimalField(
+        _("claimable ITC %"),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0")), MaxValueValidator(Decimal("100"))],
+    )
     archived_at = models.DateTimeField(_("archived at"), null=True, blank=True)
 
     class Meta:
@@ -412,7 +422,7 @@ class TaxCodeComponent(OrgOwnedModel):
 
     @property
     def effective_recoverable_pct(self) -> Decimal:
-        """The code's recoverable % for this component (override, else the component's rule)."""
-        if self.recoverable_pct is not None:
-            return Decimal(self.recoverable_pct)
-        return Decimal("100") if self.component.recoverable else Decimal("0")
+        """The claimable % for this component with no line or account rule (G-01-T05)."""
+        from .recovery import claimable_pct
+
+        return claimable_pct(self)
