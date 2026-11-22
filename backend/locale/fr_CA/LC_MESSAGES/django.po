@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:15-0500\n"
+"POT-Creation-Date: 2026-11-22 08:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6350,6 +6350,10 @@ msgstr "Un code exonéré ou hors champ n'a aucune composante de taxe."
 
 msgid "A zero-rated code only holds components with a rate of zero."
 msgstr "Un code détaxé ne contient que des composantes au taux zéro."
+
+#, python-format
+msgid "%(component)s has no control account: add the %(role)s account first."
+msgstr "%(component)s n'a pas de compte de contrôle : ajoutez d'abord le compte %(role)s."
 
 msgid "Tenancy"
 msgstr ""
