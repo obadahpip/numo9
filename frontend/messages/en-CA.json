@@ -2214,6 +2214,7 @@
     "settingsPackageFeatures": "Settings: Package and features",
     "settingsRegistrations": "Settings: Tax registrations",
     "settingsSubscription": "Settings: Subscription",
+    "settingsTaxCodes": "Settings: Tax codes",
     "settingsUsersRoles": "Settings: Users and roles"
   },
   "security": {
@@ -2349,6 +2350,7 @@
       "registrations": "Tax registrations",
       "settings": "Settings",
       "subscription": "Subscription",
+      "taxCodes": "Tax codes",
       "usersRoles": "Users and roles"
     },
     "registrations": {
@@ -2664,6 +2666,45 @@
       "dormant": "Dormant",
       "pending": "Invitation pending",
       "suspended": "Suspended"
+    }
+  },
+  "tax": {
+    "codes": {
+      "archived": "Archived",
+      "claimable": "{pct} % claimable",
+      "colCode": "Code",
+      "colComponents": "Components",
+      "colEffective": "In force",
+      "colName": "Name",
+      "colType": "Type",
+      "colUsage": "Used on",
+      "edit": "Edit {name}",
+      "empty": "No code matches",
+      "expired": "Expired",
+      "from": "From {start}",
+      "intro": "Every rate is effective-dated: an ended rate can't be picked on a document dated after it.",
+      "loadFailed": "Tax codes couldn't be loaded",
+      "loadFailedBody": "Verify your connection and try again.",
+      "loading": "Loading tax codes…",
+      "newCode": "New tax code",
+      "noComponents": "No tax",
+      "purchases": "Purchases",
+      "range": "{start} – {end}",
+      "retry": "Try again",
+      "sales": "Sales",
+      "search": "Search codes",
+      "showExpired": "Show expired rates",
+      "table": "{side} tax codes",
+      "tabs": "Side",
+      "title": "Tax codes",
+      "usage": "{count, plural, =0 {Not used} one {# line} other {# lines}}",
+      "version": "version {version}"
+    },
+    "type": {
+      "exempt": "Exempt",
+      "outOfScope": "Out of scope",
+      "taxable": "Taxable",
+      "zeroRated": "Zero-rated"
     }
   }
 }
