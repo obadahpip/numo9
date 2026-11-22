@@ -44,6 +44,12 @@ by the server's result) and totalled in the footer. The table has `role="grid"`.
 | Ctrl+D | Duplicate the line under it (announced: "Line 3 duplicated"); focus stays in the column. |
 | Ctrl+Backspace | Delete the line; a toast offers Undo (`onLineRemoved` → restore at the same place). The last line stays. |
 
+**Column choice (D-01-T13).** `columnStore` keeps the hidden columns per user and grid —
+`localColumnStore("numo9.lines.<user>.<grid>")` in the browser, so the choice survives sign-out
+and sign-in on the device (a server store, as the directory's saved views, can replace it without
+changing the grid). When a hidden column holds values, a note under the grid says so
+(`labels.hiddenWithValues`) with a Show button.
+
 Planned extensions (later D-01 tasks): paste from a spreadsheet (TSV), document-level discount and the
 tax-per-component totals panel, server-authoritative calculation (`DocumentCalculator`) with the
 frontend mirror wiring, per-user column-chooser persistence, and the stacked line-card layout at ≤ 1024 px.

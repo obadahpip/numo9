@@ -7,10 +7,17 @@ import { ToastProvider } from "../primitives/Toast";
 import { expectNoAxeViolations } from "../test/axe";
 import { DocumentLines, parseLineDiscount, type DocumentGridLine } from "./DocumentLines";
 import { documentLabels, roughAmounts, sampleDocumentLines } from "./fixtures";
+import { localColumnStore, type ColumnStore } from "./LineGrid";
 
 const RATES = Object.fromEntries(sampleTaxCodes.map((c) => [c.id, c.rate ?? "0"]));
 
-function Editor({ initial }: { initial: DocumentGridLine[] }) {
+function Editor({
+  initial,
+  columnStore,
+}: {
+  initial: DocumentGridLine[];
+  columnStore?: ColumnStore;
+}) {
   const [lines, setLines] = useState(initial);
   return (
     <ToastProvider labels={{ region: "Notifications", close: "Close" }}>
@@ -23,6 +30,7 @@ function Editor({ initial }: { initial: DocumentGridLine[] }) {
         taxCodes={sampleTaxCodes}
         amounts={roughAmounts(lines, RATES)}
         taxWhy={{ d1: "Ontario customer → HST 13 %" }}
+        columnStore={columnStore}
         labels={documentLabels}
         locale="en-CA"
       />
@@ -136,6 +144,51 @@ describe("DocumentLines (D-01-T11)", () => {
   it("is axe-clean", async () => {
     const { container } = render(<Editor initial={sampleDocumentLines} />);
     await expectNoAxeViolations(container);
+  });
+});
+
+describe("column choice (D-01-T13)", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("persists per user and grid, and survives a new session", async () => {
+    const user = userEvent.setup();
+    const store = localColumnStore("numo9.lines.u1.sales");
+    const { unmount } = render(<Editor initial={sampleDocumentLines} columnStore={store} />);
+    await user.click(screen.getByRole("button", { name: "Columns" }));
+    await user.click(screen.getByRole("checkbox", { name: "Discount" }));
+    await user.keyboard("{Escape}");
+    expect(screen.getByRole("columnheader", { name: "Discount" })).toBeInTheDocument();
+    expect(JSON.parse(localStorage.getItem("numo9.lines.u1.sales")!)).toEqual(["item"]);
+    unmount();
+    render(
+      <Editor
+        initial={sampleDocumentLines}
+        columnStore={localColumnStore("numo9.lines.u1.sales")}
+      />,
+    );
+    expect(screen.getByRole("columnheader", { name: "Discount" })).toBeInTheDocument();
+    expect(screen.queryByRole("columnheader", { name: "Item" })).toBeNull();
+  });
+
+  it("another user keeps the defaults; unreadable storage falls back to them", () => {
+    localStorage.setItem("numo9.lines.u1.sales", JSON.stringify([]));
+    localStorage.setItem("numo9.lines.u2.sales", "{oops");
+    render(
+      <Editor
+        initial={sampleDocumentLines}
+        columnStore={localColumnStore("numo9.lines.u2.sales")}
+      />,
+    );
+    expect(screen.queryByRole("columnheader", { name: "Discount" })).toBeNull();
+  });
+
+  it("notes hidden columns that hold values and shows them on request", async () => {
+    const user = userEvent.setup();
+    render(<Editor initial={sampleDocumentLines} />);
+    expect(screen.getByText("Hidden columns with values: Item, Discount.")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Show" }));
+    expect(screen.getByRole("columnheader", { name: "Discount" })).toBeInTheDocument();
+    expect(screen.queryByText(/Hidden columns with values/)).toBeNull();
   });
 });
 

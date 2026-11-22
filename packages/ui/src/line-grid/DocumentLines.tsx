@@ -10,7 +10,13 @@ import {
 } from "../pickers/TaxCodePicker";
 import { useOptionalToast } from "../primitives/Toast";
 import { Tooltip } from "../primitives/Tooltip";
-import { LineGrid, type DocumentLine, type LineColumn, type LineGridLabels } from "./LineGrid";
+import {
+  LineGrid,
+  type ColumnStore,
+  type DocumentLine,
+  type LineColumn,
+  type LineGridLabels,
+} from "./LineGrid";
 
 /** A line of a sales or purchase document (D-01): what the person types. */
 export interface DocumentGridLine extends DocumentLine {
@@ -77,6 +83,8 @@ export interface DocumentLinesProps {
   currency?: string;
   readOnly?: boolean;
   defaultHiddenColumns?: string[];
+  /** Keeps the person's column choice (`localColumnStore("numo9.lines.<user>.sales")`). */
+  columnStore?: ColumnStore;
 }
 
 let counter = 0;
@@ -128,6 +136,7 @@ export function DocumentLines({
   currency = "CAD",
   readOnly = false,
   defaultHiddenColumns = ["item", "discount"],
+  columnStore,
 }: DocumentLinesProps) {
   const toast = useOptionalToast();
   const columns: LineColumn[] = [
@@ -281,6 +290,7 @@ export function DocumentLines({
       currency={currency}
       readOnly={readOnly}
       defaultHiddenColumns={defaultHiddenColumns}
+      columnStore={columnStore}
       onLineRemoved={(_line, index, restore) =>
         toast?.toast({
           title: labels.lineRemoved(index + 1),

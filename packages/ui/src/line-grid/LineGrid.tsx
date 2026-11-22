@@ -55,6 +55,38 @@ export interface LineColumn {
   readOnly?: boolean;
 }
 
+/** Where a person's column choice is kept (D-01-T13): per user and grid. */
+export interface ColumnStore {
+  /** The hidden column ids, or null when the person never chose (defaults apply). */
+  load: () => string[] | null;
+  save: (hidden: string[]) => void;
+}
+
+/**
+ * Column choice in the browser, keyed per user and grid (`numo9.lines.<user>.<grid>`): it
+ * survives sign-out and sign-in on the same device; blocked storage keeps it for the page only.
+ */
+export function localColumnStore(key: string): ColumnStore {
+  return {
+    load: () => {
+      try {
+        const raw = window.localStorage.getItem(key);
+        const parsed: unknown = raw ? JSON.parse(raw) : null;
+        return Array.isArray(parsed) ? parsed.filter((id) => typeof id === "string") : null;
+      } catch {
+        return null;
+      }
+    },
+    save: (hidden) => {
+      try {
+        window.localStorage.setItem(key, JSON.stringify(hidden));
+      } catch {
+        // Storage blocked or full: the choice lasts for this page.
+      }
+    },
+  };
+}
+
 export interface LineGridLabels {
   /** Accessible name of the table, e.g. "Journal lines". */
   grid: string;
@@ -73,6 +105,13 @@ export interface LineGridLabels {
   moved: (from: number, to: number) => string;
   /** Announced after Ctrl+D (D-01-T11): (line) → "Line 3 duplicated". */
   duplicated?: (line: number) => string;
+  /**
+   * Note when hidden columns hold values (D-01-T13): (columns) → "Discount is hidden but has
+   * values." Without it no note is shown.
+   */
+  hiddenWithValues?: (columns: string) => string;
+  /** Button of that note, e.g. "Show". */
+  showHidden?: string;
 }
 
 export interface LineGridProps {
@@ -102,6 +141,8 @@ export interface LineGridProps {
    * line back where it was (D-01-T11).
    */
   onLineRemoved?: (line: DocumentLine, index: number, restore: () => void) => void;
+  /** Keeps the person's column choice (D-01-T13); without it the choice lasts for the page. */
+  columnStore?: ColumnStore;
 }
 
 /**
@@ -130,10 +171,22 @@ export function LineGrid({
   className,
   duplicateLine,
   onLineRemoved,
+  columnStore,
 }: LineGridProps) {
   const baseId = useId();
   const table = useRef<HTMLTableElement>(null);
-  const [hidden, setHidden] = useState<string[]>(defaultHiddenColumns);
+  const [hidden, setHiddenState] = useState<string[]>(defaultHiddenColumns);
+  // The saved choice is read after mounting (the server render has no storage).
+  useEffect(() => {
+    const saved = columnStore?.load();
+    if (saved) setHiddenState(saved.filter((id) => columns.some((c) => c.id === id && c.optional)));
+    // Only on mount / store change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnStore]);
+  const setHidden = (next: string[]) => {
+    setHiddenState(next);
+    columnStore?.save(next);
+  };
   const [announcement, setAnnouncement] = useState("");
   const [dragging, setDragging] = useState<number | null>(null);
   const [dropAt, setDropAt] = useState<number | null>(null);
@@ -256,6 +309,15 @@ export function LineGrid({
     }
   }
   const hasTotals = visible.some((column) => column.total);
+  // Hidden columns that hold values: say so, so nothing is invisible by surprise.
+  const hiddenWithValues = columns.filter(
+    (column) =>
+      hidden.includes(column.id) &&
+      lines.some((line) => {
+        const value = line[column.id];
+        return value !== null && value !== undefined && String(value).trim() !== "";
+      }),
+  );
 
   const onDragOver = (event: ReactDragEvent, index: number) => {
     if (dragging === null) return;
@@ -487,6 +549,22 @@ export function LineGrid({
             {labels.addLine}
           </button>
         )}
+        {labels.hiddenWithValues && hiddenWithValues.length ? (
+          <p data-hidden-note="" className="flex items-center gap-2 text-sm text-fg-muted">
+            {labels.hiddenWithValues(hiddenWithValues.map((column) => column.header).join(", "))}
+            {labels.showHidden ? (
+              <button
+                type="button"
+                onClick={() =>
+                  setHidden(hidden.filter((id) => !hiddenWithValues.some((c) => c.id === id)))
+                }
+                className="inline-flex min-h-touch-target items-center rounded-md px-2 font-semibold text-fg-link hover:bg-surface-muted"
+              >
+                {labels.showHidden}
+              </button>
+            ) : null}
+          </p>
+        ) : null}
         {footer ? <div className="ms-auto">{footer(totals)}</div> : null}
       </div>
       <p role="status" className="sr-only">

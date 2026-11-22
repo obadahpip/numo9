@@ -58,6 +58,8 @@ export const documentLabels: DocumentLinesLabels = {
   taxExpired: "Not in force on this date",
   taxWhy: (n) => `Why this tax code, line ${n}`,
   duplicated: (n) => `Line ${n} duplicated`,
+  hiddenWithValues: (columns) => `Hidden columns with values: ${columns}.`,
+  showHidden: "Show",
   lineRemoved: (n) => `Line ${n} deleted`,
   undo: "Undo",
   undoAlt: "Add the line again",

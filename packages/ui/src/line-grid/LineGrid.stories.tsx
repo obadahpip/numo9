@@ -12,7 +12,7 @@ import {
   sampleJournal,
 } from "./fixtures";
 import { JournalLines } from "./JournalLines";
-import { LineGrid, type DocumentLine } from "./LineGrid";
+import { LineGrid, localColumnStore, type DocumentLine } from "./LineGrid";
 
 /**
  * LineGrid (A-10-T11): the one document line editor. Keys: ↑/↓ between lines, Enter down (adds a
@@ -66,6 +66,8 @@ export const InvoiceShapeStory: Story = {
   render: () => <InvoiceShape />,
 };
 
+const STORE = localColumnStore("numo9.lines.story-user.sales");
+
 function DocumentDemo({ initial }: { initial: DocumentGridLine[] }) {
   const [lines, setLines] = useState(initial);
   const rates = Object.fromEntries(sampleTaxCodes.map((code) => [code.id, code.rate ?? "0"]));
@@ -85,6 +87,7 @@ function DocumentDemo({ initial }: { initial: DocumentGridLine[] }) {
             .map((l) => [l.id, "Ontario customer → HST 13 %"]),
         )}
         accountDefaults={{ c4001: "sales.ON.standard", c4002: "sales.ON.standard" }}
+        columnStore={STORE}
         labels={documentLabels}
         locale="en-CA"
       />

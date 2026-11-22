@@ -19,6 +19,8 @@ export {
 } from "./JournalLines";
 export {
   LineGrid,
+  localColumnStore,
+  type ColumnStore,
   type DocumentLine,
   type LineCellProps,
   type LineColumn,

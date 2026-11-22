@@ -88,3 +88,22 @@ test("gap-07: a sales line offers no expense accounts and no purchase codes", as
     page.getByRole("button", { name: "Why this tax code, line 1" }),
   ).toHaveAccessibleDescription("Ontario customer → HST 13 %");
 });
+
+test("the column choice persists across sessions", async ({ page }) => {
+  const story = "/iframe.html?id=data-linegrid--document-lines-story&viewMode=story";
+  await page.goto(story);
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await expect(page.getByRole("columnheader", { name: "Discount" })).toHaveCount(0);
+  await expect(page.locator("[data-hidden-note]")).toContainText("Discount");
+  await page.getByRole("button", { name: "Columns" }).click();
+  await page.getByRole("checkbox", { name: "Discount" }).click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("columnheader", { name: "Discount" })).toBeVisible();
+  // A new session: the page is closed and opened again.
+  const fresh = await page.context().newPage();
+  await page.close();
+  await fresh.goto(story);
+  await expect(fresh.getByRole("columnheader", { name: "Discount" })).toBeVisible();
+  await expect(fresh.getByRole("columnheader", { name: "Item" })).toHaveCount(0);
+});
