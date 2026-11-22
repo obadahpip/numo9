@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 491   Remaining: 2296   Progress: 17.62%
+TOTAL ATOMIC TASKS: 2787   Completed: 492   Remaining: 2295   Progress: 17.65%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -659,7 +659,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-01-T04 — Calculator — inclusive and no-tax modes
 ✅ D-01-T05 — Calculator — document discount pro-rata allocation (amount and %) with remainder cent on largest line
 ✅ D-01-T06 — Side validator: account type and tax code side per document type; effective-date check
-❌ D-01-T07 — Due-date resolver from terms master (Net N, EOM, day-of-next-month, 2/10 net 30)
+✅ D-01-T07 — Due-date resolver from terms master (Net N, EOM, day-of-next-month, 2/10 net 30)
 ❌ D-01-T08 — Posting-preview service (lines → proposed JE incl. tax control accounts)
 ❌ D-01-T09 — API: /api/v1/documents/calculate (stateless) and /posting-preview
 ❌ D-01-T10 — Frontend calculator mirror (TS) sharing fixture JSON with backend tests
