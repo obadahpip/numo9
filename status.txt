@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 477   Remaining: 2310   Progress: 17.12%
+TOTAL ATOMIC TASKS: 2787   Completed: 478   Remaining: 2309   Progress: 17.15%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -637,7 +637,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-04-T02 — Approval service: submit(), approve(user), reject(user, reason); checks approver ≠ creator and ApprovalLimit
 ✅ C-04-T03 — Posting gate: post() refuses if approval required and not approved
 ✅ C-04-T13 — Notifications: submit → approvers notified; approve/reject → creator notified (A-07)
-❌ C-04-T14 — Global search & quick-create registration for journals (N J) incl. narration indexing
+✅ C-04-T14 — Global search & quick-create registration for journals (N J) incl. narration indexing
 
 [F-02]
 ❌ F-02-T01 — Wireframes: 4-step import wizard, mapping grid, preview with grouped statuses, import history list

@@ -416,7 +416,7 @@ def _move(entry: JournalEntry, to: str) -> JournalEntry:
         assert_transition(entry, to)
         entry.status = to
         entry.save()
-        return entry
+        return _written(entry)  # the search index shows the new state (C-04-T14)
 
 
 def submit(entry: JournalEntry) -> JournalEntry:
