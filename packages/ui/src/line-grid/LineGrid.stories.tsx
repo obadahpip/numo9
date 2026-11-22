@@ -4,12 +4,15 @@ import { useState } from "react";
 import { chartAccounts, sampleAccounts, sampleTaxCodes } from "../pickers/fixtures";
 import { ToastProvider } from "../primitives/Toast";
 import { DocumentLines, newDocumentLine, type DocumentGridLine } from "./DocumentLines";
+import { DocumentTotals, type DocumentDiscountType } from "./DocumentTotals";
 import {
   documentLabels,
   journalLabels,
   roughAmounts,
   sampleDocumentLines,
   sampleJournal,
+  sampleTotals,
+  totalsLabels,
 } from "./fixtures";
 import { JournalLines } from "./JournalLines";
 import { LineGrid, localColumnStore, type DocumentLine } from "./LineGrid";
@@ -109,3 +112,20 @@ export const DocumentLinesEmpty: Story = {
   name: "Document lines — empty",
   render: () => <DocumentDemo initial={[{ ...newDocumentLine(), id: "first" }]} />,
 };
+
+function TotalsDemo() {
+  const [discount, setDiscount] = useState<[DocumentDiscountType, string]>(["none", ""]);
+  return (
+    <DocumentTotals
+      value={sampleTotals}
+      discountType={discount[0]}
+      discountValue={discount[1]}
+      onDiscountChange={(type, value) => setDiscount([type, value])}
+      labels={totalsLabels}
+      locale="en-CA"
+    />
+  );
+}
+
+/** Totals panel (D-01-T14): document discount, tax per component, total in a live region. */
+export const DocumentTotalsStory: Story = { name: "Document totals", render: () => <TotalsDemo /> };

@@ -9,6 +9,13 @@ export {
   type DocumentLinesProps,
 } from "./DocumentLines";
 export {
+  DocumentTotals,
+  type DocumentDiscountType,
+  type DocumentTotalsLabels,
+  type DocumentTotalsProps,
+  type DocumentTotalsValue,
+} from "./DocumentTotals";
+export {
   journalBalance,
   JournalLines,
   newJournalLine,

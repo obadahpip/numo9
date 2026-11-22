@@ -1,5 +1,6 @@
 import { typeLabels } from "../pickers/fixtures";
 import type { DocumentGridLine, DocumentLineAmounts, DocumentLinesLabels } from "./DocumentLines";
+import type { DocumentTotalsLabels, DocumentTotalsValue } from "./DocumentTotals";
 import type { JournalLine, JournalLinesLabels } from "./JournalLines";
 
 /** Sample labels and lines for the LineGrid / JournalLines stories and tests. */
@@ -105,3 +106,27 @@ export function roughAmounts(
   }
   return out;
 }
+
+export const totalsLabels: DocumentTotalsLabels = {
+  region: "Totals",
+  subtotal: "Subtotal",
+  discount: "Discount",
+  discountType: "Discount type",
+  discountNone: "None",
+  discountAmount: "Amount",
+  discountPercent: "Percent",
+  discountValue: "Discount value",
+  total: "Total",
+  includes: (name, amount) => `Includes ${name} ${amount}`,
+  announce: (total) => `Total ${total}`,
+  pending: "Updating…",
+};
+
+export const sampleTotals: DocumentTotalsValue = {
+  subtotal: "5080.80",
+  discountTotal: "0.00",
+  taxes: [{ key: "hst_on", name: "HST (ON) 13 %", amount: "660.50" }],
+  taxTotal: "660.50",
+  total: "5741.30",
+  taxIncluded: false,
+};
