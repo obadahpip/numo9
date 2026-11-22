@@ -54,6 +54,31 @@ changing the grid). When a hidden column holds values, a note under the grid say
 with its field labels (two columns, one below 768 px); the table keeps explicit grid, row and cell
 roles so screen readers still hear rows and cells, and the column headers stay for them only.
 
+## Spec parity (D-01-T18)
+
+Every state of the document grid has a Storybook story (`Data/LineGrid`, `Forms/Pickers`); axe and
+visual regression run on all of them (A-10-T18/T19), keyboard and paste flows in
+`packages/ui/e2e/document-lines.spec.ts` and `due-date.spec.ts`.
+
+| Spec item (this page, D-01 plan) | Story | Checked by |
+|---|---|---|
+| Columns Item · Description · Qty · Unit price · Discount · Account · Tax code · Tax amount · Amount | Document lines (D-01) | Vitest column order |
+| Empty document, keyboard-only entry | Document lines — empty | Playwright: 5 lines by keyboard |
+| Sales pickers: no expense accounts, no purchase codes, no ended rates (gap-07) | Document lines (D-01) | Vitest + Playwright |
+| Purchase side (E-02): expense accounts, purchase codes | Document lines — purchases | axe, visual |
+| "Why this tax" tooltip | Document lines (D-01) | Vitest, Playwright |
+| Ctrl+D / Ctrl+Backspace with Undo toast | Document lines (D-01) | Vitest, Playwright |
+| Column chooser saved per user, hidden-column note | Document lines (D-01) | Vitest, Playwright |
+| Paste from a spreadsheet, flagged cells | Document lines — empty | Playwright: 20 rows |
+| Server problems flagged per cell (D-01-T06) | Document lines — server problems | Vitest |
+| Read-only (sent document) | Document lines — read-only | Vitest |
+| Tablet line cards ≤ 1024 px | Document lines (D-01) at 768 px | Playwright screenshot |
+| Totals: discount, tax per component, live total | Document totals; — tax inclusive | Vitest |
+| Required due date, term chips, "due in N days" | Forms/Pickers › Due Date | Vitest, Playwright |
+
+Design review: the stories are the reference until the Figma frames for the invoice editor
+(D-03a) exist; a change to a story is reviewed in its visual-regression diff.
+
 Planned extensions (later D-01 tasks): paste from a spreadsheet (TSV), document-level discount and the
 tax-per-component totals panel, server-authoritative calculation (`DocumentCalculator`) with the
 frontend mirror wiring, per-user column-chooser persistence, and the stacked line-card layout at ≤ 1024 px.

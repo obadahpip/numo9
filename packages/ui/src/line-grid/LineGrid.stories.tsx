@@ -3,7 +3,12 @@ import { useState } from "react";
 
 import { chartAccounts, sampleAccounts, sampleTaxCodes } from "../pickers/fixtures";
 import { ToastProvider } from "../primitives/Toast";
-import { DocumentLines, newDocumentLine, type DocumentGridLine } from "./DocumentLines";
+import {
+  DocumentLines,
+  newDocumentLine,
+  problemCells,
+  type DocumentGridLine,
+} from "./DocumentLines";
 import { DocumentTotals, type DocumentDiscountType } from "./DocumentTotals";
 import {
   documentLabels,
@@ -71,7 +76,17 @@ export const InvoiceShapeStory: Story = {
 
 const STORE = localColumnStore("numo9.lines.story-user.sales");
 
-function DocumentDemo({ initial }: { initial: DocumentGridLine[] }) {
+function DocumentDemo({
+  initial,
+  side = "sales",
+  readOnly = false,
+  problems,
+}: {
+  initial: DocumentGridLine[];
+  side?: "sales" | "purchase";
+  readOnly?: boolean;
+  problems?: Record<string, string[]>;
+}) {
   const [lines, setLines] = useState(initial);
   const rates = Object.fromEntries(sampleTaxCodes.map((code) => [code.id, code.rate ?? "0"]));
   return (
@@ -79,8 +94,10 @@ function DocumentDemo({ initial }: { initial: DocumentGridLine[] }) {
       <DocumentLines
         lines={lines}
         onChange={setLines}
-        side="sales"
+        side={side}
         date="2026-07-15"
+        readOnly={readOnly}
+        problems={problems}
         accounts={chartAccounts}
         taxCodes={sampleTaxCodes}
         amounts={roughAmounts(lines, rates)}
@@ -129,3 +146,55 @@ function TotalsDemo() {
 
 /** Totals panel (D-01-T14): document discount, tax per component, total in a live region. */
 export const DocumentTotalsStory: Story = { name: "Document totals", render: () => <TotalsDemo /> };
+
+/** Read-only (a sent invoice): no controls to change lines, totals still shown. */
+export const DocumentLinesReadOnly: Story = {
+  name: "Document lines — read-only",
+  render: () => <DocumentDemo initial={sampleDocumentLines} readOnly />,
+};
+
+/** Cells the server refused (D-01-T06): flagged until fixed. */
+export const DocumentLinesProblems: Story = {
+  name: "Document lines — server problems",
+  render: () => (
+    <DocumentDemo
+      initial={sampleDocumentLines}
+      problems={problemCells(sampleDocumentLines, [
+        { line: 2, field: "tax_code" },
+        { line: 2, field: "account" },
+      ])}
+    />
+  ),
+};
+
+/** A bill (E-02 uses the same grid): expense accounts and purchase codes only. */
+export const DocumentLinesPurchase: Story = {
+  name: "Document lines — purchases",
+  render: () => (
+    <DocumentDemo
+      side="purchase"
+      initial={[
+        {
+          ...sampleDocumentLines[0]!,
+          description: "Printer paper",
+          account: "c6080",
+          taxCode: "p-on",
+        },
+      ]}
+    />
+  ),
+};
+
+/** Inclusive document: the total includes the tax (D-01-T14). */
+export const DocumentTotalsInclusive: Story = {
+  name: "Document totals — tax inclusive",
+  render: () => (
+    <DocumentTotals
+      value={{ ...sampleTotals, total: "5741.30", taxIncluded: true }}
+      discountType="percent"
+      discountValue="5"
+      labels={totalsLabels}
+      locale="en-CA"
+    />
+  ),
+};

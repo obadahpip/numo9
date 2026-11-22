@@ -4,6 +4,7 @@ export {
   newDocumentLine,
   parseLineDiscount,
   pasteRows,
+  problemCells,
   type DocumentGridLine,
   type PastedLines,
   type DocumentLineAmounts,

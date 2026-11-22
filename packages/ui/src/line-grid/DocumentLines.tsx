@@ -94,6 +94,11 @@ export interface DocumentLinesProps {
   defaultHiddenColumns?: string[];
   /** Keeps the person's column choice (`localColumnStore("numo9.lines.<user>.sales")`). */
   columnStore?: ColumnStore;
+  /**
+   * Cells the server refused (D-01-T06 `problems`), per line id: grid column ids (`account`,
+   * `taxCode`…). Flagged until the next calculation.
+   */
+  problems?: Readonly<Record<string, readonly string[]>>;
 }
 
 let counter = 0;
@@ -235,6 +240,35 @@ export function pasteRows(
   return { lines, invalid };
 }
 
+function mergeFlags(
+  a: Readonly<Record<string, readonly string[]>>,
+  b: Readonly<Record<string, readonly string[]>>,
+): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const source of [a, b]) {
+    for (const [id, columns] of Object.entries(source)) {
+      out[id] = [...new Set([...(out[id] ?? []), ...columns])];
+    }
+  }
+  return out;
+}
+
+/** The server's line problems (`{line, field}`, lines from 1) as flagged grid cells. */
+export function problemCells(
+  lines: readonly DocumentGridLine[],
+  found: readonly { line: number; field: string }[],
+): Record<string, string[]> {
+  const columns: Record<string, string> = { tax_code: "taxCode", unit_price: "unitPrice" };
+  const out: Record<string, string[]> = {};
+  for (const problem of found) {
+    const line = lines[problem.line - 1];
+    if (!line) continue;
+    const column = columns[problem.field] ?? problem.field;
+    out[line.id] = [...(out[line.id] ?? []), column];
+  }
+  return out;
+}
+
 /**
  * Document line editor (D-01-T11): `LineGrid` configured for invoices, quotes, credit notes and
  * (E-02) bills — Item · Description · Qty · Unit price · Discount · Account · Tax code · Tax amount
@@ -257,6 +291,7 @@ export function DocumentLines({
   readOnly = false,
   defaultHiddenColumns = ["item", "discount"],
   columnStore,
+  problems = {},
 }: DocumentLinesProps) {
   const toast = useOptionalToast();
   const [invalid, setInvalid] = useState<Record<string, string[]>>({});
@@ -424,7 +459,7 @@ export function DocumentLines({
     <LineGrid
       lines={shown}
       onChange={change}
-      invalidCells={invalid}
+      invalidCells={mergeFlags(invalid, problems)}
       onPasteRows={
         readOnly
           ? undefined
