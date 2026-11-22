@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:24-0500\n"
+"POT-Creation-Date: 2026-11-22 08:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5862,6 +5862,29 @@ msgstr ""
 msgid "daily staff activity"
 msgstr ""
 
+msgid "Use the date format YYYY-MM-DD."
+msgstr ""
+
+msgid "That tax code doesn't exist."
+msgstr ""
+
+msgid "Unknown tax authority."
+msgstr ""
+
+msgid "Unknown tax component."
+msgstr ""
+
+msgid "Use sales or purchase."
+msgstr ""
+
+#, python-format
+msgid "%(code)s already exists: add a version to it instead."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is used on %(count)d posted lines: archive it instead."
+msgstr ""
+
 msgid "A taxable code needs at least one tax component."
 msgstr ""
 
@@ -5992,6 +6015,12 @@ msgid "An exempt or out-of-scope code has no tax component."
 msgstr ""
 
 msgid "A zero-rated code only holds components with a rate of zero."
+msgstr ""
+
+msgid "See tax codes, rates and their history"
+msgstr ""
+
+msgid "Add, version, archive and restore tax codes and rates"
 msgstr ""
 
 #, python-format

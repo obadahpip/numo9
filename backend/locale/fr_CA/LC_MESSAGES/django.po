@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:24-0500\n"
+"POT-Creation-Date: 2026-11-22 08:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6227,6 +6227,29 @@ msgstr "alertes de personnel inactif"
 msgid "daily staff activity"
 msgstr "activité quotidienne du personnel"
 
+msgid "Use the date format YYYY-MM-DD."
+msgstr "Utilisez le format de date AAAA-MM-JJ."
+
+msgid "That tax code doesn't exist."
+msgstr "Ce code de taxe n'existe pas."
+
+msgid "Unknown tax authority."
+msgstr "Autorité fiscale inconnue."
+
+msgid "Unknown tax component."
+msgstr "Composante de taxe inconnue."
+
+msgid "Use sales or purchase."
+msgstr "Utilisez ventes ou achats."
+
+#, python-format
+msgid "%(code)s already exists: add a version to it instead."
+msgstr "%(code)s existe déjà : ajoutez-lui plutôt une version."
+
+#, python-format
+msgid "%(code)s is used on %(count)d posted lines: archive it instead."
+msgstr "%(code)s est utilisé sur %(count)d lignes comptabilisées : archivez-le plutôt."
+
 msgid "A taxable code needs at least one tax component."
 msgstr "Un code taxable doit avoir au moins une composante de taxe."
 
@@ -6358,6 +6381,12 @@ msgstr "Un code exonéré ou hors champ n'a aucune composante de taxe."
 
 msgid "A zero-rated code only holds components with a rate of zero."
 msgstr "Un code détaxé ne contient que des composantes au taux zéro."
+
+msgid "See tax codes, rates and their history"
+msgstr "Voir les codes de taxe, les taux et leur historique"
+
+msgid "Add, version, archive and restore tax codes and rates"
+msgstr "Ajouter, versionner, archiver et restaurer des codes de taxe et des taux"
 
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."

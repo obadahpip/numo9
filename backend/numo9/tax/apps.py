@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.apps import AppConfig
 
 
@@ -16,3 +18,24 @@ class TaxConfig(AppConfig):
 
         if on_chart_loaded not in CHART_LOADED:
             CHART_LOADED.append(on_chart_loaded)  # install the tax table with the chart (G-01-T04)
+
+        from numo9.tenancy.sweep import SWEEP_FACTORIES
+
+        SWEEP_FACTORIES["tax.TaxCode"] = _sweep_code
+        SWEEP_FACTORIES["tax.TaxComponent"] = _sweep_component
+
+
+def _sweep_code(organisation: Any) -> Any:
+    from .models import TaxCode
+    from .seed import ensure_tax_table
+
+    ensure_tax_table(organisation)
+    return TaxCode._base_manager.filter(organisation=organisation, code="sales.ON.standard").first()
+
+
+def _sweep_component(organisation: Any) -> Any:
+    from .models import TaxComponent
+    from .seed import ensure_tax_table
+
+    ensure_tax_table(organisation)
+    return TaxComponent._base_manager.filter(organisation=organisation, key="gst").first()
