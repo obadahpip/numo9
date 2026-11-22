@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:59-0500\n"
+"POT-Creation-Date: 2026-11-22 08:01-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6224,6 +6224,9 @@ msgstr "alertes de personnel inactif"
 msgid "daily staff activity"
 msgstr "activité quotidienne du personnel"
 
+msgid "A taxable code needs at least one tax component."
+msgstr "Un code taxable doit avoir au moins une composante de taxe."
+
 msgid "tax authority"
 msgstr "autorité fiscale"
 
@@ -6284,6 +6287,66 @@ msgstr "Une composante ne peut pas se terminer avant de commencer."
 #, python-format
 msgid "%(component)s already has a version in force from %(start)s: versions of a component can't overlap."
 msgstr "%(component)s a déjà une version en vigueur depuis le %(start)s : les versions d'une composante ne peuvent pas se chevaucher."
+
+msgid "Taxable"
+msgstr "Taxable"
+
+msgid "Zero-rated"
+msgstr "Détaxé"
+
+msgid "Exempt"
+msgstr "Exonéré"
+
+msgid "Out of scope"
+msgstr "Hors champ"
+
+msgid "version"
+msgstr "version"
+
+msgid "side"
+msgstr "côté"
+
+msgid "province"
+msgstr "province"
+
+msgid "tax codes"
+msgstr "codes de taxe"
+
+msgid "Another version of this tax code is already in force on some of these days."
+msgstr "Une autre version de ce code de taxe est déjà en vigueur certains de ces jours."
+
+msgid "A tax code can't end before it starts."
+msgstr "Un code de taxe ne peut pas se terminer avant de commencer."
+
+#, python-format
+msgid "%(code)s already has version %(version)d in force from %(start)s: versions of a tax code can't overlap."
+msgstr "%(code)s a déjà la version %(version)d en vigueur depuis le %(start)s : les versions d'un code de taxe ne peuvent pas se chevaucher."
+
+msgid "component"
+msgstr "composante"
+
+msgid "recoverable %"
+msgstr "% récupérable"
+
+msgid "tax code component"
+msgstr "composante de code de taxe"
+
+msgid "tax code components"
+msgstr "composantes de code de taxe"
+
+#, python-format
+msgid "%(component)s is used on %(side)s only: it can't be part of %(code)s."
+msgstr "%(component)s s'utilise seulement sur les %(side)s : elle ne peut pas faire partie de %(code)s."
+
+#, python-format
+msgid "%(component)s isn't in force over the whole of %(code)s version %(version)d."
+msgstr "%(component)s n'est pas en vigueur pendant toute la version %(version)d de %(code)s."
+
+msgid "An exempt or out-of-scope code has no tax component."
+msgstr "Un code exonéré ou hors champ n'a aucune composante de taxe."
+
+msgid "A zero-rated code only holds components with a rate of zero."
+msgstr "Un code détaxé ne contient que des composantes au taux zéro."
 
 msgid "Tenancy"
 msgstr ""
