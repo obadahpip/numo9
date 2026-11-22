@@ -7,7 +7,7 @@ ARG PNPM_VERSION=10.30.0
 
 # ---- base: node + pnpm via corepack ------------------------------------------
 # Base images pinned in the FROM lines so Dependabot can update them (S-01-T16).
-FROM node:22.23.4-alpine AS base
+FROM node:22.23.5-alpine AS base
 ARG PNPM_VERSION
 ENV NEXT_TELEMETRY_DISABLED=1 \
     PNPM_HOME=/pnpm \
@@ -41,7 +41,7 @@ ENV NEXT_OUTPUT=standalone
 RUN pnpm --filter @numo9/frontend run build
 
 # ---- runtime: minimal production image, non-root ------------------------------
-FROM node:22.23.4-alpine AS runtime
+FROM node:22.23.5-alpine AS runtime
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     HOSTNAME=0.0.0.0 \
