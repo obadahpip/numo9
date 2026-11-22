@@ -1,0 +1,4097 @@
+[
+ {
+  "name": "Ontario single line",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "100.00",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "100.00",
+     "line_discount": "0.00",
+     "net": "100.00",
+     "taxable": "100.00",
+     "taxes": {
+      "hst_on": "13.00"
+     }
+    }
+   ],
+   "subtotal": "100.00",
+   "tax_total": "13.00",
+   "total": "113.00",
+   "tax_by_component": {
+    "hst_on": "13.00"
+   }
+  }
+ },
+ {
+  "name": "Quebec GST+QST not compounded",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "100.00",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "100.00",
+     "line_discount": "0.00",
+     "net": "100.00",
+     "taxable": "100.00",
+     "taxes": {
+      "gst": "5.00",
+      "qst": "9.98"
+     }
+    }
+   ],
+   "subtotal": "100.00",
+   "tax_total": "14.98",
+   "total": "114.98",
+   "tax_by_component": {
+    "gst": "5.00",
+    "qst": "9.98"
+   }
+  }
+ },
+ {
+  "name": "One third quantity",
+  "lines": [
+   {
+    "quantity": "0.3333",
+    "unit_price": "30.00",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "10.00",
+     "line_discount": "0.00",
+     "net": "10.00",
+     "taxable": "10.00",
+     "taxes": {
+      "hst_on": "1.30"
+     }
+    }
+   ],
+   "subtotal": "10.00",
+   "tax_total": "1.30",
+   "total": "11.30",
+   "tax_by_component": {
+    "hst_on": "1.30"
+   }
+  }
+ },
+ {
+  "name": "Three thirds",
+  "lines": [
+   {
+    "quantity": "0.3333",
+    "unit_price": "10.00",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "10.00",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "10.00",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "3.33",
+     "line_discount": "0.00",
+     "net": "3.33",
+     "taxable": "3.33",
+     "taxes": {
+      "gst": "0.17"
+     }
+    },
+    {
+     "gross": "3.33",
+     "line_discount": "0.00",
+     "net": "3.33",
+     "taxable": "3.33",
+     "taxes": {
+      "gst": "0.17"
+     }
+    },
+    {
+     "gross": "3.33",
+     "line_discount": "0.00",
+     "net": "3.33",
+     "taxable": "3.33",
+     "taxes": {
+      "gst": "0.17"
+     }
+    }
+   ],
+   "subtotal": "9.99",
+   "tax_total": "0.51",
+   "total": "10.50",
+   "tax_by_component": {
+    "gst": "0.51"
+   }
+  }
+ },
+ {
+  "name": "100 % line discount",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "45.00",
+    "discount_type": "percent",
+    "discount_value": "100",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "90.00",
+     "line_discount": "90.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst": "0.00",
+      "pst_bc": "0.00"
+     }
+    }
+   ],
+   "subtotal": "0.00",
+   "tax_total": "0.00",
+   "total": "0.00",
+   "tax_by_component": {
+    "gst": "0.00",
+    "pst_bc": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Zero quantity",
+  "lines": [
+   {
+    "quantity": "0",
+    "unit_price": "99.99",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_on": "0.00"
+     }
+    }
+   ],
+   "subtotal": "0.00",
+   "tax_total": "0.00",
+   "total": "0.00",
+   "tax_by_component": {
+    "hst_on": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Half-cent tie rounds up",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "0.10",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "0.10",
+     "line_discount": "0.00",
+     "net": "0.10",
+     "taxable": "0.10",
+     "taxes": {
+      "gst": "0.01"
+     }
+    }
+   ],
+   "subtotal": "0.10",
+   "tax_total": "0.01",
+   "total": "0.11",
+   "tax_by_component": {
+    "gst": "0.01"
+   }
+  }
+ },
+ {
+  "name": "Amount discount larger than line",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "20.00",
+    "discount_type": "amount",
+    "discount_value": "25.00",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "20.00",
+     "line_discount": "20.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_on": "0.00"
+     }
+    }
+   ],
+   "subtotal": "0.00",
+   "tax_total": "0.00",
+   "total": "0.00",
+   "tax_by_component": {
+    "hst_on": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Exempt and zero-rated",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "50.00",
+    "components": []
+   },
+   {
+    "quantity": "3",
+    "unit_price": "4.99",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "50.00",
+     "line_discount": "0.00",
+     "net": "50.00",
+     "taxable": "50.00",
+     "taxes": {}
+    },
+    {
+     "gross": "14.97",
+     "line_discount": "0.00",
+     "net": "14.97",
+     "taxable": "14.97",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    }
+   ],
+   "subtotal": "64.97",
+   "tax_total": "0.00",
+   "total": "64.97",
+   "tax_by_component": {
+    "gst_zero": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Mixed provinces",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "10.00",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "10.00",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "10.00",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "10.00",
+     "line_discount": "0.00",
+     "net": "10.00",
+     "taxable": "10.00",
+     "taxes": {
+      "hst_on": "1.30"
+     }
+    },
+    {
+     "gross": "10.00",
+     "line_discount": "0.00",
+     "net": "10.00",
+     "taxable": "10.00",
+     "taxes": {
+      "gst": "0.50",
+      "qst": "1.00"
+     }
+    },
+    {
+     "gross": "10.00",
+     "line_discount": "0.00",
+     "net": "10.00",
+     "taxable": "10.00",
+     "taxes": {
+      "gst": "0.50",
+      "pst_sk": "0.60"
+     }
+    }
+   ],
+   "subtotal": "30.00",
+   "tax_total": "3.90",
+   "total": "33.90",
+   "tax_by_component": {
+    "gst": "1.00",
+    "hst_on": "1.30",
+    "pst_sk": "0.60",
+    "qst": "1.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 11",
+  "lines": [
+   {
+    "quantity": "0.5",
+    "unit_price": "2284.46",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "2194.94",
+    "components": []
+   },
+   {
+    "quantity": "100",
+    "unit_price": "605.77",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "232.8283",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "1142.23",
+     "line_discount": "0.00",
+     "net": "1142.23",
+     "taxable": "1142.23",
+     "taxes": {
+      "hst_ns": "159.91"
+     }
+    },
+    {
+     "gross": "4389.88",
+     "line_discount": "0.00",
+     "net": "4389.88",
+     "taxable": "4389.88",
+     "taxes": {}
+    },
+    {
+     "gross": "60577.00",
+     "line_discount": "0.00",
+     "net": "60577.00",
+     "taxable": "60577.00",
+     "taxes": {
+      "gst": "3028.85",
+      "qst": "6042.56"
+     }
+    },
+    {
+     "gross": "465.66",
+     "line_discount": "0.00",
+     "net": "465.66",
+     "taxable": "465.66",
+     "taxes": {
+      "gst": "23.28",
+      "pst_bc": "32.60"
+     }
+    }
+   ],
+   "subtotal": "66574.77",
+   "tax_total": "9287.20",
+   "total": "75861.97",
+   "tax_by_component": {
+    "gst": "3052.13",
+    "hst_ns": "159.91",
+    "pst_bc": "32.60",
+    "qst": "6042.56"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 12",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "440.68",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "12.5"
+   },
+   {
+    "quantity": "0",
+    "unit_price": "1581.76",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "46.26"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "440.68",
+     "line_discount": "55.09",
+     "net": "385.59",
+     "taxable": "385.59",
+     "taxes": {
+      "gst": "19.28",
+      "pst_bc": "26.99"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_ns": "0.00"
+     }
+    }
+   ],
+   "subtotal": "385.59",
+   "tax_total": "46.27",
+   "total": "431.86",
+   "tax_by_component": {
+    "gst": "19.28",
+    "hst_ns": "0.00",
+    "pst_bc": "26.99"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 13",
+  "lines": [
+   {
+    "quantity": "12",
+    "unit_price": "557.21",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "1131.46",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "289.51"
+   },
+   {
+    "quantity": "2",
+    "unit_price": "1673.26",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "33.33"
+   },
+   {
+    "quantity": "100",
+    "unit_price": "1705.08",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "2"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "6686.52",
+     "line_discount": "0.00",
+     "net": "6686.52",
+     "taxable": "6686.52",
+     "taxes": {
+      "gst": "334.33",
+      "pst_bc": "468.06"
+     }
+    },
+    {
+     "gross": "3394.38",
+     "line_discount": "289.51",
+     "net": "3104.87",
+     "taxable": "3104.87",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "3346.52",
+     "line_discount": "1115.40",
+     "net": "2231.12",
+     "taxable": "2231.12",
+     "taxes": {
+      "gst": "111.56",
+      "rst_mb": "156.18"
+     }
+    },
+    {
+     "gross": "170508.00",
+     "line_discount": "3410.16",
+     "net": "167097.84",
+     "taxable": "167097.84",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    }
+   ],
+   "subtotal": "179120.35",
+   "tax_total": "1070.13",
+   "total": "180190.48",
+   "tax_by_component": {
+    "gst": "445.89",
+    "gst_zero": "0.00",
+    "pst_bc": "468.06",
+    "rst_mb": "156.18"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 14",
+  "lines": [
+   {
+    "quantity": "12",
+    "unit_price": "545.2494",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "6542.99",
+     "line_discount": "0.00",
+     "net": "6542.99",
+     "taxable": "6542.99",
+     "taxes": {
+      "hst_ns": "916.02"
+     }
+    }
+   ],
+   "subtotal": "6542.99",
+   "tax_total": "916.02",
+   "total": "7459.01",
+   "tax_by_component": {
+    "hst_ns": "916.02"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 15",
+  "lines": [
+   {
+    "quantity": "100",
+    "unit_price": "1929.87",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "0",
+    "unit_price": "2410.76",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "1523.57",
+    "components": []
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "1306.64",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "192987.00",
+     "line_discount": "0.00",
+     "net": "192987.00",
+     "taxable": "192987.00",
+     "taxes": {
+      "gst": "9649.35",
+      "qst": "19250.45"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_nb": "0.00"
+     }
+    },
+    {
+     "gross": "11426.78",
+     "line_discount": "0.00",
+     "net": "11426.78",
+     "taxable": "11426.78",
+     "taxes": {}
+    },
+    {
+     "gross": "435.50",
+     "line_discount": "0.00",
+     "net": "435.50",
+     "taxable": "435.50",
+     "taxes": {
+      "gst": "21.78",
+      "pst_sk": "26.13"
+     }
+    }
+   ],
+   "subtotal": "204849.28",
+   "tax_total": "28947.71",
+   "total": "233796.99",
+   "tax_by_component": {
+    "gst": "9671.13",
+    "hst_nb": "0.00",
+    "pst_sk": "26.13",
+    "qst": "19250.45"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 16",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "781.2069",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ]
+   },
+   {
+    "quantity": "100",
+    "unit_price": "1697.59",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "1562.41",
+     "line_discount": "0.00",
+     "net": "1562.41",
+     "taxable": "1562.41",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "169759.00",
+     "line_discount": "0.00",
+     "net": "169759.00",
+     "taxable": "169759.00",
+     "taxes": {
+      "gst": "8487.95",
+      "pst_sk": "10185.54"
+     }
+    }
+   ],
+   "subtotal": "171321.41",
+   "tax_total": "18673.49",
+   "total": "189994.90",
+   "tax_by_component": {
+    "gst": "8487.95",
+    "gst_zero": "0.00",
+    "pst_sk": "10185.54"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 17",
+  "lines": [
+   {
+    "quantity": "12",
+    "unit_price": "1674.98",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "20099.76",
+     "line_discount": "0.00",
+     "net": "20099.76",
+     "taxable": "20099.76",
+     "taxes": {
+      "hst_nb": "3014.96"
+     }
+    }
+   ],
+   "subtotal": "20099.76",
+   "tax_total": "3014.96",
+   "total": "23114.72",
+   "tax_by_component": {
+    "hst_nb": "3014.96"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 18",
+  "lines": [
+   {
+    "quantity": "100",
+    "unit_price": "815.61",
+    "components": [],
+    "discount_type": "percent",
+    "discount_value": "100"
+   },
+   {
+    "quantity": "1",
+    "unit_price": "699.83",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "244.9642",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "12.5"
+   },
+   {
+    "quantity": "12",
+    "unit_price": "653.91",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "1570.16",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "350.9337",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "81561.00",
+     "line_discount": "81561.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {}
+    },
+    {
+     "gross": "699.83",
+     "line_discount": "0.00",
+     "net": "699.83",
+     "taxable": "699.83",
+     "taxes": {
+      "gst": "34.99",
+      "rst_mb": "48.99"
+     }
+    },
+    {
+     "gross": "122.48",
+     "line_discount": "15.31",
+     "net": "107.17",
+     "taxable": "107.17",
+     "taxes": {
+      "hst_ns": "15.00"
+     }
+    },
+    {
+     "gross": "7846.92",
+     "line_discount": "0.00",
+     "net": "7846.92",
+     "taxable": "7846.92",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "3140.32",
+     "line_discount": "0.00",
+     "net": "3140.32",
+     "taxable": "3140.32",
+     "taxes": {
+      "hst_ns": "439.64"
+     }
+    },
+    {
+     "gross": "2632.00",
+     "line_discount": "0.00",
+     "net": "2632.00",
+     "taxable": "2632.00",
+     "taxes": {
+      "gst": "131.60",
+      "pst_bc": "184.24"
+     }
+    }
+   ],
+   "subtotal": "14426.24",
+   "tax_total": "854.46",
+   "total": "15280.70",
+   "tax_by_component": {
+    "gst": "166.59",
+    "gst_zero": "0.00",
+    "hst_ns": "454.64",
+    "pst_bc": "184.24",
+    "rst_mb": "48.99"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 19",
+  "lines": [
+   {
+    "quantity": "7.5",
+    "unit_price": "786.40",
+    "components": []
+   },
+   {
+    "quantity": "12",
+    "unit_price": "1146.28",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "1152.75",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "363.54"
+   },
+   {
+    "quantity": "100",
+    "unit_price": "2398.86",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "569.5484",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "683.70",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "33.33"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "5898.00",
+     "line_discount": "0.00",
+     "net": "5898.00",
+     "taxable": "5898.00",
+     "taxes": {}
+    },
+    {
+     "gross": "13755.36",
+     "line_discount": "0.00",
+     "net": "13755.36",
+     "taxable": "13755.36",
+     "taxes": {
+      "gst": "687.77"
+     }
+    },
+    {
+     "gross": "576.38",
+     "line_discount": "363.54",
+     "net": "212.84",
+     "taxable": "212.84",
+     "taxes": {
+      "hst_nb": "31.93"
+     }
+    },
+    {
+     "gross": "239886.00",
+     "line_discount": "0.00",
+     "net": "239886.00",
+     "taxable": "239886.00",
+     "taxes": {
+      "hst_ns": "33584.04"
+     }
+    },
+    {
+     "gross": "4271.61",
+     "line_discount": "0.00",
+     "net": "4271.61",
+     "taxable": "4271.61",
+     "taxes": {
+      "hst_on": "555.31"
+     }
+    },
+    {
+     "gross": "227.88",
+     "line_discount": "75.95",
+     "net": "151.93",
+     "taxable": "151.93",
+     "taxes": {
+      "hst_on": "19.75"
+     }
+    }
+   ],
+   "subtotal": "264175.74",
+   "tax_total": "34878.80",
+   "total": "299054.54",
+   "tax_by_component": {
+    "gst": "687.77",
+    "hst_nb": "31.93",
+    "hst_ns": "33584.04",
+    "hst_on": "575.06"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 20",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "463.92",
+    "components": []
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "927.84",
+     "line_discount": "0.00",
+     "net": "927.84",
+     "taxable": "927.84",
+     "taxes": {}
+    }
+   ],
+   "subtotal": "927.84",
+   "tax_total": "0.00",
+   "total": "927.84",
+   "tax_by_component": {}
+  }
+ },
+ {
+  "name": "Random exclusive 21",
+  "lines": [
+   {
+    "quantity": "3",
+    "unit_price": "2044.91",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "1.25",
+    "unit_price": "169.99",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "1799.30",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "931.31",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "1065.62",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "1637.92",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "6134.73",
+     "line_discount": "0.00",
+     "net": "6134.73",
+     "taxable": "6134.73",
+     "taxes": {
+      "gst": "306.74",
+      "qst": "611.94"
+     }
+    },
+    {
+     "gross": "212.49",
+     "line_discount": "0.00",
+     "net": "212.49",
+     "taxable": "212.49",
+     "taxes": {
+      "gst": "10.62",
+      "pst_bc": "14.87"
+     }
+    },
+    {
+     "gross": "599.71",
+     "line_discount": "0.00",
+     "net": "599.71",
+     "taxable": "599.71",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "2793.93",
+     "line_discount": "0.00",
+     "net": "2793.93",
+     "taxable": "2793.93",
+     "taxes": {
+      "hst_ns": "391.15"
+     }
+    },
+    {
+     "gross": "355.17",
+     "line_discount": "0.00",
+     "net": "355.17",
+     "taxable": "355.17",
+     "taxes": {
+      "hst_on": "46.17"
+     }
+    },
+    {
+     "gross": "3275.84",
+     "line_discount": "0.00",
+     "net": "3275.84",
+     "taxable": "3275.84",
+     "taxes": {
+      "gst": "163.79",
+      "rst_mb": "229.31"
+     }
+    }
+   ],
+   "subtotal": "13371.87",
+   "tax_total": "1774.59",
+   "total": "15146.46",
+   "tax_by_component": {
+    "gst": "481.15",
+    "gst_zero": "0.00",
+    "hst_ns": "391.15",
+    "hst_on": "46.17",
+    "pst_bc": "14.87",
+    "qst": "611.94",
+    "rst_mb": "229.31"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 22",
+  "lines": [
+   {
+    "quantity": "12",
+    "unit_price": "2177.18",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "216.58"
+   },
+   {
+    "quantity": "1.25",
+    "unit_price": "122.3926",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "10"
+   },
+   {
+    "quantity": "12",
+    "unit_price": "1473.57",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "26126.16",
+     "line_discount": "216.58",
+     "net": "25909.58",
+     "taxable": "25909.58",
+     "taxes": {
+      "hst_ns": "3627.34"
+     }
+    },
+    {
+     "gross": "152.99",
+     "line_discount": "15.30",
+     "net": "137.69",
+     "taxable": "137.69",
+     "taxes": {
+      "hst_nb": "20.65"
+     }
+    },
+    {
+     "gross": "17682.84",
+     "line_discount": "0.00",
+     "net": "17682.84",
+     "taxable": "17682.84",
+     "taxes": {
+      "gst": "884.14",
+      "rst_mb": "1237.80"
+     }
+    }
+   ],
+   "subtotal": "43730.11",
+   "tax_total": "5769.93",
+   "total": "49500.04",
+   "tax_by_component": {
+    "gst": "884.14",
+    "hst_nb": "20.65",
+    "hst_ns": "3627.34",
+    "rst_mb": "1237.80"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 23",
+  "lines": [
+   {
+    "quantity": "3",
+    "unit_price": "1794.52",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "1975.93",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "165.92"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "5383.56",
+     "line_discount": "0.00",
+     "net": "5383.56",
+     "taxable": "5383.56",
+     "taxes": {
+      "hst_ns": "753.70"
+     }
+    },
+    {
+     "gross": "3951.86",
+     "line_discount": "165.92",
+     "net": "3785.94",
+     "taxable": "3785.94",
+     "taxes": {
+      "gst": "189.30",
+      "pst_bc": "265.02"
+     }
+    }
+   ],
+   "subtotal": "9169.50",
+   "tax_total": "1208.02",
+   "total": "10377.52",
+   "tax_by_component": {
+    "gst": "189.30",
+    "hst_ns": "753.70",
+    "pst_bc": "265.02"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 24",
+  "lines": [
+   {
+    "quantity": "0.3333",
+    "unit_price": "33.7273",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "574.26",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "351.22"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "11.24",
+     "line_discount": "0.00",
+     "net": "11.24",
+     "taxable": "11.24",
+     "taxes": {
+      "gst": "0.56",
+      "qst": "1.12"
+     }
+    },
+    {
+     "gross": "1148.52",
+     "line_discount": "351.22",
+     "net": "797.30",
+     "taxable": "797.30",
+     "taxes": {
+      "hst_on": "103.65"
+     }
+    }
+   ],
+   "subtotal": "808.54",
+   "tax_total": "105.33",
+   "total": "913.87",
+   "tax_by_component": {
+    "gst": "0.56",
+    "hst_on": "103.65",
+    "qst": "1.12"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 25",
+  "lines": [
+   {
+    "quantity": "0",
+    "unit_price": "748.8693",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst": "0.00"
+     }
+    }
+   ],
+   "subtotal": "0.00",
+   "tax_total": "0.00",
+   "total": "0.00",
+   "tax_by_component": {
+    "gst": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 26",
+  "lines": [
+   {
+    "quantity": "3",
+    "unit_price": "505.72",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "100"
+   },
+   {
+    "quantity": "0",
+    "unit_price": "395.42",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "12",
+    "unit_price": "119.56",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "442.02"
+   },
+   {
+    "quantity": "12",
+    "unit_price": "1979.27",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "33.33"
+   },
+   {
+    "quantity": "0",
+    "unit_price": "296.70",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "10"
+   },
+   {
+    "quantity": "3",
+    "unit_price": "161.8638",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "12.5"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "1517.16",
+     "line_discount": "1517.16",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst": "0.00",
+      "pst_bc": "0.00"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_ns": "0.00"
+     }
+    },
+    {
+     "gross": "1434.72",
+     "line_discount": "442.02",
+     "net": "992.70",
+     "taxable": "992.70",
+     "taxes": {
+      "hst_on": "129.05"
+     }
+    },
+    {
+     "gross": "23751.24",
+     "line_discount": "7916.29",
+     "net": "15834.95",
+     "taxable": "15834.95",
+     "taxes": {
+      "gst": "791.75",
+      "pst_sk": "950.10"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "485.59",
+     "line_discount": "60.70",
+     "net": "424.89",
+     "taxable": "424.89",
+     "taxes": {
+      "gst": "21.24",
+      "pst_sk": "25.49"
+     }
+    }
+   ],
+   "subtotal": "17252.54",
+   "tax_total": "1917.63",
+   "total": "19170.17",
+   "tax_by_component": {
+    "gst": "812.99",
+    "gst_zero": "0.00",
+    "hst_ns": "0.00",
+    "hst_on": "129.05",
+    "pst_bc": "0.00",
+    "pst_sk": "975.59"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 27",
+  "lines": [
+   {
+    "quantity": "7.5",
+    "unit_price": "1538.11",
+    "components": [],
+    "discount_type": "amount",
+    "discount_value": "449.93"
+   },
+   {
+    "quantity": "1",
+    "unit_price": "658.6672",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "11535.83",
+     "line_discount": "449.93",
+     "net": "11085.90",
+     "taxable": "11085.90",
+     "taxes": {}
+    },
+    {
+     "gross": "658.67",
+     "line_discount": "0.00",
+     "net": "658.67",
+     "taxable": "658.67",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    }
+   ],
+   "subtotal": "11744.57",
+   "tax_total": "0.00",
+   "total": "11744.57",
+   "tax_by_component": {
+    "gst_zero": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 28",
+  "lines": [
+   {
+    "quantity": "1.25",
+    "unit_price": "640.87",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "1859.98",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "2"
+   },
+   {
+    "quantity": "3",
+    "unit_price": "2398.58",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "316.74",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "10"
+   },
+   {
+    "quantity": "0",
+    "unit_price": "1170.04",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "100"
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "389.85",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "801.09",
+     "line_discount": "0.00",
+     "net": "801.09",
+     "taxable": "801.09",
+     "taxes": {
+      "gst": "40.05",
+      "pst_sk": "48.07"
+     }
+    },
+    {
+     "gross": "13949.85",
+     "line_discount": "279.00",
+     "net": "13670.85",
+     "taxable": "13670.85",
+     "taxes": {
+      "gst": "683.54",
+      "pst_bc": "956.96"
+     }
+    },
+    {
+     "gross": "7195.74",
+     "line_discount": "0.00",
+     "net": "7195.74",
+     "taxable": "7195.74",
+     "taxes": {
+      "gst": "359.79",
+      "qst": "717.78"
+     }
+    },
+    {
+     "gross": "633.48",
+     "line_discount": "63.35",
+     "net": "570.13",
+     "taxable": "570.13",
+     "taxes": {
+      "gst": "28.51"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst": "0.00"
+     }
+    },
+    {
+     "gross": "2923.88",
+     "line_discount": "0.00",
+     "net": "2923.88",
+     "taxable": "2923.88",
+     "taxes": {
+      "hst_on": "380.10"
+     }
+    }
+   ],
+   "subtotal": "25161.69",
+   "tax_total": "3214.80",
+   "total": "28376.49",
+   "tax_by_component": {
+    "gst": "1111.89",
+    "hst_on": "380.10",
+    "pst_bc": "956.96",
+    "pst_sk": "48.07",
+    "qst": "717.78"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 29",
+  "lines": [
+   {
+    "quantity": "0.3333",
+    "unit_price": "970.53",
+    "components": [],
+    "discount_type": "percent",
+    "discount_value": "2"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "323.48",
+     "line_discount": "6.47",
+     "net": "317.01",
+     "taxable": "317.01",
+     "taxes": {}
+    }
+   ],
+   "subtotal": "317.01",
+   "tax_total": "0.00",
+   "total": "317.01",
+   "tax_by_component": {}
+  }
+ },
+ {
+  "name": "Random exclusive 30",
+  "lines": [
+   {
+    "quantity": "0.3333",
+    "unit_price": "1313.98",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "437.95",
+     "line_discount": "0.00",
+     "net": "437.95",
+     "taxable": "437.95",
+     "taxes": {
+      "hst_nb": "65.69"
+     }
+    }
+   ],
+   "subtotal": "437.95",
+   "tax_total": "65.69",
+   "total": "503.64",
+   "tax_by_component": {
+    "hst_nb": "65.69"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 31",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "1047.64",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "1643.05",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "100",
+    "unit_price": "511.1901",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ]
+   },
+   {
+    "quantity": "12",
+    "unit_price": "1709.96",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "100",
+    "unit_price": "1905.79",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "1941.49",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "2095.28",
+     "line_discount": "0.00",
+     "net": "2095.28",
+     "taxable": "2095.28",
+     "taxes": {
+      "gst": "104.76",
+      "pst_bc": "146.67"
+     }
+    },
+    {
+     "gross": "821.53",
+     "line_discount": "0.00",
+     "net": "821.53",
+     "taxable": "821.53",
+     "taxes": {
+      "gst": "41.08",
+      "pst_bc": "57.51"
+     }
+    },
+    {
+     "gross": "51119.01",
+     "line_discount": "0.00",
+     "net": "51119.01",
+     "taxable": "51119.01",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "20519.52",
+     "line_discount": "0.00",
+     "net": "20519.52",
+     "taxable": "20519.52",
+     "taxes": {
+      "gst": "1025.98",
+      "qst": "2046.82"
+     }
+    },
+    {
+     "gross": "190579.00",
+     "line_discount": "0.00",
+     "net": "190579.00",
+     "taxable": "190579.00",
+     "taxes": {
+      "hst_nb": "28586.85"
+     }
+    },
+    {
+     "gross": "3882.98",
+     "line_discount": "0.00",
+     "net": "3882.98",
+     "taxable": "3882.98",
+     "taxes": {
+      "gst": "194.15",
+      "pst_bc": "271.81"
+     }
+    }
+   ],
+   "subtotal": "269017.32",
+   "tax_total": "32475.63",
+   "total": "301492.95",
+   "tax_by_component": {
+    "gst": "1365.97",
+    "gst_zero": "0.00",
+    "hst_nb": "28586.85",
+    "pst_bc": "475.99",
+    "qst": "2046.82"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 32",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "1230.75",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "651.28",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "1594.60",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0",
+    "unit_price": "1880.01",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "385.4893",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "2461.50",
+     "line_discount": "0.00",
+     "net": "2461.50",
+     "taxable": "2461.50",
+     "taxes": {
+      "hst_nb": "369.23"
+     }
+    },
+    {
+     "gross": "217.07",
+     "line_discount": "0.00",
+     "net": "217.07",
+     "taxable": "217.07",
+     "taxes": {
+      "hst_on": "28.22"
+     }
+    },
+    {
+     "gross": "3189.20",
+     "line_discount": "0.00",
+     "net": "3189.20",
+     "taxable": "3189.20",
+     "taxes": {
+      "gst": "159.46"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_ns": "0.00"
+     }
+    },
+    {
+     "gross": "385.49",
+     "line_discount": "0.00",
+     "net": "385.49",
+     "taxable": "385.49",
+     "taxes": {
+      "hst_ns": "53.97"
+     }
+    }
+   ],
+   "subtotal": "6253.26",
+   "tax_total": "610.88",
+   "total": "6864.14",
+   "tax_by_component": {
+    "gst": "159.46",
+    "hst_nb": "369.23",
+    "hst_ns": "53.97",
+    "hst_on": "28.22"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 33",
+  "lines": [
+   {
+    "quantity": "1.25",
+    "unit_price": "2037.79",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "2477.57",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "0",
+    "unit_price": "941.2576",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "107.76"
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "2306.28",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "242.5436",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "2547.24",
+     "line_discount": "0.00",
+     "net": "2547.24",
+     "taxable": "2547.24",
+     "taxes": {
+      "gst": "127.36",
+      "pst_bc": "178.31"
+     }
+    },
+    {
+     "gross": "18581.78",
+     "line_discount": "0.00",
+     "net": "18581.78",
+     "taxable": "18581.78",
+     "taxes": {
+      "hst_ns": "2601.45"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_ns": "0.00"
+     }
+    },
+    {
+     "gross": "1153.14",
+     "line_discount": "0.00",
+     "net": "1153.14",
+     "taxable": "1153.14",
+     "taxes": {
+      "hst_on": "149.91"
+     }
+    },
+    {
+     "gross": "727.63",
+     "line_discount": "0.00",
+     "net": "727.63",
+     "taxable": "727.63",
+     "taxes": {
+      "gst": "36.38"
+     }
+    }
+   ],
+   "subtotal": "23009.79",
+   "tax_total": "3093.41",
+   "total": "26103.20",
+   "tax_by_component": {
+    "gst": "163.74",
+    "hst_ns": "2601.45",
+    "hst_on": "149.91",
+    "pst_bc": "178.31"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 34",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "1010.32",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "179.90",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "680.0834",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "33.33"
+   },
+   {
+    "quantity": "100",
+    "unit_price": "472.65",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "124.05"
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "1735.41",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "1.25",
+    "unit_price": "1636.22",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "2020.64",
+     "line_discount": "0.00",
+     "net": "2020.64",
+     "taxable": "2020.64",
+     "taxes": {
+      "hst_nb": "303.10"
+     }
+    },
+    {
+     "gross": "1349.25",
+     "line_discount": "0.00",
+     "net": "1349.25",
+     "taxable": "1349.25",
+     "taxes": {
+      "gst": "67.46",
+      "pst_bc": "94.45"
+     }
+    },
+    {
+     "gross": "2040.25",
+     "line_discount": "680.02",
+     "net": "1360.23",
+     "taxable": "1360.23",
+     "taxes": {
+      "hst_nb": "204.03"
+     }
+    },
+    {
+     "gross": "47265.00",
+     "line_discount": "124.05",
+     "net": "47140.95",
+     "taxable": "47140.95",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "867.71",
+     "line_discount": "0.00",
+     "net": "867.71",
+     "taxable": "867.71",
+     "taxes": {
+      "gst": "43.39",
+      "pst_bc": "60.74"
+     }
+    },
+    {
+     "gross": "2045.28",
+     "line_discount": "0.00",
+     "net": "2045.28",
+     "taxable": "2045.28",
+     "taxes": {
+      "gst": "102.26"
+     }
+    }
+   ],
+   "subtotal": "54784.06",
+   "tax_total": "875.43",
+   "total": "55659.49",
+   "tax_by_component": {
+    "gst": "213.11",
+    "gst_zero": "0.00",
+    "hst_nb": "507.13",
+    "pst_bc": "155.19"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 35",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "592.9969",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "2115.35",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "126.97"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "1185.99",
+     "line_discount": "0.00",
+     "net": "1185.99",
+     "taxable": "1185.99",
+     "taxes": {
+      "gst": "59.30",
+      "pst_bc": "83.02"
+     }
+    },
+    {
+     "gross": "2115.35",
+     "line_discount": "126.97",
+     "net": "1988.38",
+     "taxable": "1988.38",
+     "taxes": {
+      "hst_nb": "298.26"
+     }
+    }
+   ],
+   "subtotal": "3174.37",
+   "tax_total": "440.58",
+   "total": "3614.95",
+   "tax_by_component": {
+    "gst": "59.30",
+    "hst_nb": "298.26",
+    "pst_bc": "83.02"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 36",
+  "lines": [
+   {
+    "quantity": "3",
+    "unit_price": "1509.66",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "789.1956",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "2327.62",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "100",
+    "unit_price": "2246.65",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "4528.98",
+     "line_discount": "0.00",
+     "net": "4528.98",
+     "taxable": "4528.98",
+     "taxes": {
+      "gst": "226.45"
+     }
+    },
+    {
+     "gross": "2367.59",
+     "line_discount": "0.00",
+     "net": "2367.59",
+     "taxable": "2367.59",
+     "taxes": {
+      "gst": "118.38"
+     }
+    },
+    {
+     "gross": "1163.81",
+     "line_discount": "0.00",
+     "net": "1163.81",
+     "taxable": "1163.81",
+     "taxes": {
+      "gst": "58.19",
+      "pst_bc": "81.47"
+     }
+    },
+    {
+     "gross": "224665.00",
+     "line_discount": "0.00",
+     "net": "224665.00",
+     "taxable": "224665.00",
+     "taxes": {
+      "gst": "11233.25",
+      "pst_bc": "15726.55"
+     }
+    }
+   ],
+   "subtotal": "232725.38",
+   "tax_total": "27444.29",
+   "total": "260169.67",
+   "tax_by_component": {
+    "gst": "11636.27",
+    "pst_bc": "15808.02"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 37",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "1177.43",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "10"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "2354.86",
+     "line_discount": "235.49",
+     "net": "2119.37",
+     "taxable": "2119.37",
+     "taxes": {
+      "gst": "105.97",
+      "pst_bc": "148.36"
+     }
+    }
+   ],
+   "subtotal": "2119.37",
+   "tax_total": "254.33",
+   "total": "2373.70",
+   "tax_by_component": {
+    "gst": "105.97",
+    "pst_bc": "148.36"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 38",
+  "lines": [
+   {
+    "quantity": "3",
+    "unit_price": "381.39",
+    "components": []
+   },
+   {
+    "quantity": "3",
+    "unit_price": "1466.05",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "329.46"
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "2051.14",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "10"
+   },
+   {
+    "quantity": "12",
+    "unit_price": "2211.83",
+    "components": []
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "1144.17",
+     "line_discount": "0.00",
+     "net": "1144.17",
+     "taxable": "1144.17",
+     "taxes": {}
+    },
+    {
+     "gross": "4398.15",
+     "line_discount": "329.46",
+     "net": "4068.69",
+     "taxable": "4068.69",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "683.64",
+     "line_discount": "68.36",
+     "net": "615.28",
+     "taxable": "615.28",
+     "taxes": {
+      "gst": "30.76"
+     }
+    },
+    {
+     "gross": "26541.96",
+     "line_discount": "0.00",
+     "net": "26541.96",
+     "taxable": "26541.96",
+     "taxes": {}
+    }
+   ],
+   "subtotal": "32370.10",
+   "tax_total": "30.76",
+   "total": "32400.86",
+   "tax_by_component": {
+    "gst": "30.76",
+    "gst_zero": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 39",
+  "lines": [
+   {
+    "quantity": "12",
+    "unit_price": "924.59",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "1389.49",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "84.05"
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "1931.22",
+    "components": []
+   },
+   {
+    "quantity": "0",
+    "unit_price": "247.93",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "374.71"
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "862.65",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "11095.08",
+     "line_discount": "0.00",
+     "net": "11095.08",
+     "taxable": "11095.08",
+     "taxes": {
+      "gst": "554.75"
+     }
+    },
+    {
+     "gross": "463.12",
+     "line_discount": "84.05",
+     "net": "379.07",
+     "taxable": "379.07",
+     "taxes": {
+      "gst": "18.95",
+      "pst_sk": "22.74"
+     }
+    },
+    {
+     "gross": "643.68",
+     "line_discount": "0.00",
+     "net": "643.68",
+     "taxable": "643.68",
+     "taxes": {}
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst": "0.00",
+      "qst": "0.00"
+     }
+    },
+    {
+     "gross": "287.52",
+     "line_discount": "0.00",
+     "net": "287.52",
+     "taxable": "287.52",
+     "taxes": {
+      "gst": "14.38",
+      "pst_sk": "17.25"
+     }
+    }
+   ],
+   "subtotal": "12405.35",
+   "tax_total": "628.07",
+   "total": "13033.42",
+   "tax_by_component": {
+    "gst": "588.08",
+    "pst_sk": "39.99",
+    "qst": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 40",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "246.90",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "469.70",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "35.86",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "2013.82",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "12",
+    "unit_price": "406.2257",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "83.7870",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "2"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "493.80",
+     "line_discount": "0.00",
+     "net": "493.80",
+     "taxable": "493.80",
+     "taxes": {
+      "hst_ns": "69.13"
+     }
+    },
+    {
+     "gross": "469.70",
+     "line_discount": "0.00",
+     "net": "469.70",
+     "taxable": "469.70",
+     "taxes": {
+      "hst_nb": "70.46"
+     }
+    },
+    {
+     "gross": "17.93",
+     "line_discount": "0.00",
+     "net": "17.93",
+     "taxable": "17.93",
+     "taxes": {
+      "hst_ns": "2.51"
+     }
+    },
+    {
+     "gross": "15103.65",
+     "line_discount": "0.00",
+     "net": "15103.65",
+     "taxable": "15103.65",
+     "taxes": {
+      "gst": "755.18",
+      "qst": "1506.59"
+     }
+    },
+    {
+     "gross": "4874.71",
+     "line_discount": "0.00",
+     "net": "4874.71",
+     "taxable": "4874.71",
+     "taxes": {
+      "hst_on": "633.71"
+     }
+    },
+    {
+     "gross": "628.40",
+     "line_discount": "12.57",
+     "net": "615.83",
+     "taxable": "615.83",
+     "taxes": {
+      "gst": "30.79",
+      "rst_mb": "43.11"
+     }
+    }
+   ],
+   "subtotal": "21575.62",
+   "tax_total": "3111.48",
+   "total": "24687.10",
+   "tax_by_component": {
+    "gst": "785.97",
+    "hst_nb": "70.46",
+    "hst_ns": "71.64",
+    "hst_on": "633.71",
+    "qst": "1506.59",
+    "rst_mb": "43.11"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 41",
+  "lines": [
+   {
+    "quantity": "0.3333",
+    "unit_price": "1847.71",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "784.1054",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "2"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "615.84",
+     "line_discount": "0.00",
+     "net": "615.84",
+     "taxable": "615.84",
+     "taxes": {
+      "hst_ns": "86.22"
+     }
+    },
+    {
+     "gross": "5880.79",
+     "line_discount": "117.62",
+     "net": "5763.17",
+     "taxable": "5763.17",
+     "taxes": {
+      "gst": "288.16",
+      "pst_sk": "345.79"
+     }
+    }
+   ],
+   "subtotal": "6379.01",
+   "tax_total": "720.17",
+   "total": "7099.18",
+   "tax_by_component": {
+    "gst": "288.16",
+    "hst_ns": "86.22",
+    "pst_sk": "345.79"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 42",
+  "lines": [
+   {
+    "quantity": "0",
+    "unit_price": "60.5025",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "0",
+    "unit_price": "573.4221",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "377.5257",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "33.33"
+   },
+   {
+    "quantity": "0",
+    "unit_price": "2470.30",
+    "components": []
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_nb": "0.00"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "gst": "0.00"
+     }
+    },
+    {
+     "gross": "755.05",
+     "line_discount": "251.66",
+     "net": "503.39",
+     "taxable": "503.39",
+     "taxes": {
+      "gst": "25.17",
+      "pst_sk": "30.20"
+     }
+    },
+    {
+     "gross": "0.00",
+     "line_discount": "0.00",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {}
+    }
+   ],
+   "subtotal": "503.39",
+   "tax_total": "55.37",
+   "total": "558.76",
+   "tax_by_component": {
+    "gst": "25.17",
+    "hst_nb": "0.00",
+    "pst_sk": "30.20"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 43",
+  "lines": [
+   {
+    "quantity": "100",
+    "unit_price": "417.14",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "1345.47",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "1480.02",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "7.5",
+    "unit_price": "2212.35",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "2139.11",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "1999.40",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "41714.00",
+     "line_discount": "0.00",
+     "net": "41714.00",
+     "taxable": "41714.00",
+     "taxes": {
+      "gst": "2085.70",
+      "rst_mb": "2919.98"
+     }
+    },
+    {
+     "gross": "4036.41",
+     "line_discount": "0.00",
+     "net": "4036.41",
+     "taxable": "4036.41",
+     "taxes": {
+      "gst": "201.82"
+     }
+    },
+    {
+     "gross": "11100.15",
+     "line_discount": "0.00",
+     "net": "11100.15",
+     "taxable": "11100.15",
+     "taxes": {
+      "hst_ns": "1554.02"
+     }
+    },
+    {
+     "gross": "16592.63",
+     "line_discount": "0.00",
+     "net": "16592.63",
+     "taxable": "16592.63",
+     "taxes": {
+      "gst": "829.63"
+     }
+    },
+    {
+     "gross": "1069.56",
+     "line_discount": "0.00",
+     "net": "1069.56",
+     "taxable": "1069.56",
+     "taxes": {
+      "gst": "53.48",
+      "qst": "106.69"
+     }
+    },
+    {
+     "gross": "1999.40",
+     "line_discount": "0.00",
+     "net": "1999.40",
+     "taxable": "1999.40",
+     "taxes": {
+      "gst": "99.97",
+      "rst_mb": "139.96"
+     }
+    }
+   ],
+   "subtotal": "76512.15",
+   "tax_total": "7991.25",
+   "total": "84503.40",
+   "tax_by_component": {
+    "gst": "3270.60",
+    "hst_ns": "1554.02",
+    "qst": "106.69",
+    "rst_mb": "3059.94"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 44",
+  "lines": [
+   {
+    "quantity": "12",
+    "unit_price": "1411.50",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "2147.32",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     }
+    ]
+   },
+   {
+    "quantity": "1.25",
+    "unit_price": "288.81",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "365.71"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "16938.00",
+     "line_discount": "0.00",
+     "net": "16938.00",
+     "taxable": "16938.00",
+     "taxes": {
+      "hst_ns": "2371.32"
+     }
+    },
+    {
+     "gross": "4294.64",
+     "line_discount": "0.00",
+     "net": "4294.64",
+     "taxable": "4294.64",
+     "taxes": {
+      "gst": "214.73"
+     }
+    },
+    {
+     "gross": "361.01",
+     "line_discount": "361.01",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_nb": "0.00"
+     }
+    }
+   ],
+   "subtotal": "21232.64",
+   "tax_total": "2586.05",
+   "total": "23818.69",
+   "tax_by_component": {
+    "gst": "214.73",
+    "hst_nb": "0.00",
+    "hst_ns": "2371.32"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 45",
+  "lines": [
+   {
+    "quantity": "7.5",
+    "unit_price": "2270.17",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "17026.28",
+     "line_discount": "0.00",
+     "net": "17026.28",
+     "taxable": "17026.28",
+     "taxes": {
+      "gst": "851.31",
+      "qst": "1698.37"
+     }
+    }
+   ],
+   "subtotal": "17026.28",
+   "tax_total": "2549.68",
+   "total": "19575.96",
+   "tax_by_component": {
+    "gst": "851.31",
+    "qst": "1698.37"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 46",
+  "lines": [
+   {
+    "quantity": "3",
+    "unit_price": "708.35",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   },
+   {
+    "quantity": "3",
+    "unit_price": "1440.54",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "1217.26",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "850.18",
+    "components": []
+   },
+   {
+    "quantity": "3",
+    "unit_price": "1732.62",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "10"
+   },
+   {
+    "quantity": "3",
+    "unit_price": "184.86",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "2125.05",
+     "line_discount": "0.00",
+     "net": "2125.05",
+     "taxable": "2125.05",
+     "taxes": {
+      "gst": "106.25",
+      "pst_sk": "127.50"
+     }
+    },
+    {
+     "gross": "4321.62",
+     "line_discount": "0.00",
+     "net": "4321.62",
+     "taxable": "4321.62",
+     "taxes": {
+      "hst_nb": "648.24"
+     }
+    },
+    {
+     "gross": "608.63",
+     "line_discount": "0.00",
+     "net": "608.63",
+     "taxable": "608.63",
+     "taxes": {
+      "gst": "30.43",
+      "pst_bc": "42.60"
+     }
+    },
+    {
+     "gross": "1700.36",
+     "line_discount": "0.00",
+     "net": "1700.36",
+     "taxable": "1700.36",
+     "taxes": {}
+    },
+    {
+     "gross": "5197.86",
+     "line_discount": "519.79",
+     "net": "4678.07",
+     "taxable": "4678.07",
+     "taxes": {
+      "gst": "233.90",
+      "rst_mb": "327.46"
+     }
+    },
+    {
+     "gross": "554.58",
+     "line_discount": "0.00",
+     "net": "554.58",
+     "taxable": "554.58",
+     "taxes": {
+      "hst_nb": "83.19"
+     }
+    }
+   ],
+   "subtotal": "13988.31",
+   "tax_total": "1599.57",
+   "total": "15587.88",
+   "tax_by_component": {
+    "gst": "370.58",
+    "hst_nb": "731.43",
+    "pst_bc": "42.60",
+    "pst_sk": "127.50",
+    "rst_mb": "327.46"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 47",
+  "lines": [
+   {
+    "quantity": "7.5",
+    "unit_price": "740.26",
+    "components": [
+     {
+      "key": "hst_nb",
+      "rate": "15"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "524.1137",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "358.38"
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "5551.95",
+     "line_discount": "0.00",
+     "net": "5551.95",
+     "taxable": "5551.95",
+     "taxes": {
+      "hst_nb": "832.79"
+     }
+    },
+    {
+     "gross": "174.69",
+     "line_discount": "174.69",
+     "net": "0.00",
+     "taxable": "0.00",
+     "taxes": {
+      "hst_ns": "0.00"
+     }
+    }
+   ],
+   "subtotal": "5551.95",
+   "tax_total": "832.79",
+   "total": "6384.74",
+   "tax_by_component": {
+    "hst_nb": "832.79",
+    "hst_ns": "0.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 48",
+  "lines": [
+   {
+    "quantity": "2",
+    "unit_price": "1584.94",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "65.03"
+   },
+   {
+    "quantity": "0.5",
+    "unit_price": "190.5635",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   },
+   {
+    "quantity": "0.3333",
+    "unit_price": "511.89",
+    "components": [
+     {
+      "key": "hst_on",
+      "rate": "13"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "134.83"
+   },
+   {
+    "quantity": "12",
+    "unit_price": "922.2568",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "qst",
+      "rate": "9.975"
+     }
+    ],
+    "discount_type": "percent",
+    "discount_value": "33.33"
+   },
+   {
+    "quantity": "1.25",
+    "unit_price": "1494.60",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "3169.88",
+     "line_discount": "65.03",
+     "net": "3104.85",
+     "taxable": "3104.85",
+     "taxes": {
+      "hst_on": "403.63"
+     }
+    },
+    {
+     "gross": "95.28",
+     "line_discount": "0.00",
+     "net": "95.28",
+     "taxable": "95.28",
+     "taxes": {
+      "gst": "4.76",
+      "pst_sk": "5.72"
+     }
+    },
+    {
+     "gross": "170.61",
+     "line_discount": "134.83",
+     "net": "35.78",
+     "taxable": "35.78",
+     "taxes": {
+      "hst_on": "4.65"
+     }
+    },
+    {
+     "gross": "11067.08",
+     "line_discount": "3688.66",
+     "net": "7378.42",
+     "taxable": "7378.42",
+     "taxes": {
+      "gst": "368.92",
+      "qst": "736.00"
+     }
+    },
+    {
+     "gross": "1868.25",
+     "line_discount": "0.00",
+     "net": "1868.25",
+     "taxable": "1868.25",
+     "taxes": {
+      "hst_ns": "261.56"
+     }
+    }
+   ],
+   "subtotal": "12482.58",
+   "tax_total": "1785.24",
+   "total": "14267.82",
+   "tax_by_component": {
+    "gst": "373.68",
+    "hst_ns": "261.56",
+    "hst_on": "408.28",
+    "pst_sk": "5.72",
+    "qst": "736.00"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 49",
+  "lines": [
+   {
+    "quantity": "1.25",
+    "unit_price": "1333.70",
+    "components": [
+     {
+      "key": "hst_ns",
+      "rate": "14"
+     }
+    ]
+   },
+   {
+    "quantity": "2",
+    "unit_price": "788.2022",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "rst_mb",
+      "rate": "7"
+     }
+    ]
+   },
+   {
+    "quantity": "1",
+    "unit_price": "2296.92",
+    "components": [
+     {
+      "key": "gst_zero",
+      "rate": "0"
+     }
+    ],
+    "discount_type": "amount",
+    "discount_value": "165.50"
+   },
+   {
+    "quantity": "2",
+    "unit_price": "436.68",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_bc",
+      "rate": "7"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "1667.13",
+     "line_discount": "0.00",
+     "net": "1667.13",
+     "taxable": "1667.13",
+     "taxes": {
+      "hst_ns": "233.40"
+     }
+    },
+    {
+     "gross": "1576.40",
+     "line_discount": "0.00",
+     "net": "1576.40",
+     "taxable": "1576.40",
+     "taxes": {
+      "gst": "78.82",
+      "rst_mb": "110.35"
+     }
+    },
+    {
+     "gross": "2296.92",
+     "line_discount": "165.50",
+     "net": "2131.42",
+     "taxable": "2131.42",
+     "taxes": {
+      "gst_zero": "0.00"
+     }
+    },
+    {
+     "gross": "873.36",
+     "line_discount": "0.00",
+     "net": "873.36",
+     "taxable": "873.36",
+     "taxes": {
+      "gst": "43.67",
+      "pst_bc": "61.14"
+     }
+    }
+   ],
+   "subtotal": "6248.31",
+   "tax_total": "527.38",
+   "total": "6775.69",
+   "tax_by_component": {
+    "gst": "122.49",
+    "gst_zero": "0.00",
+    "hst_ns": "233.40",
+    "pst_bc": "61.14",
+    "rst_mb": "110.35"
+   }
+  }
+ },
+ {
+  "name": "Random exclusive 50",
+  "lines": [
+   {
+    "quantity": "1",
+    "unit_price": "432.5895",
+    "components": [
+     {
+      "key": "gst",
+      "rate": "5"
+     },
+     {
+      "key": "pst_sk",
+      "rate": "6"
+     }
+    ]
+   }
+  ],
+  "tax_mode": "exclusive",
+  "expected": {
+   "lines": [
+    {
+     "gross": "432.59",
+     "line_discount": "0.00",
+     "net": "432.59",
+     "taxable": "432.59",
+     "taxes": {
+      "gst": "21.63",
+      "pst_sk": "25.96"
+     }
+    }
+   ],
+   "subtotal": "432.59",
+   "tax_total": "47.59",
+   "total": "480.18",
+   "tax_by_component": {
+    "gst": "21.63",
+    "pst_sk": "25.96"
+   }
+  }
+ }
+]
