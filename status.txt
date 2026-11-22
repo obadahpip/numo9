@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 469   Remaining: 2318   Progress: 16.83%
+TOTAL ATOMIC TASKS: 2787   Completed: 470   Remaining: 2317   Progress: 16.86%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -627,7 +627,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-01-T11 — API /api/v1/tax/components, /api/v1/tax/codes (list filtered by side/date, CRUD, archive, versions); feature key tax.core read on all packages, edit permission tax.manage
 ✅ G-01-T12 — Tax code list UI: tabs, type badges, effective timeline, "Show expired" toggle, usage count
 ✅ G-01-T13 — Code editor with component builder, recoverable % input, live calculation example, effective-date picker
-❌ G-01-T14 — Shared TaxCodePicker component for the design system (side + date + account aware) used by D-01/E-02/F-01
+✅ G-01-T14 — Shared TaxCodePicker component for the design system (side + date + account aware) used by D-01/E-02/F-01
 ❌ G-01-T15 — Compliance fixture set tests/fixtures/compliance/sales_tax_2026.yaml (provinces × types × incl/excl × partial ITC)
 ❌ G-01-T16 — Audit hooks (code/component edits attributed to a user; never "System Generated" without a job id), i18n en/fr names
 ❌ G-01-T17 — Gap tests gap-07, gap-08, gap-45

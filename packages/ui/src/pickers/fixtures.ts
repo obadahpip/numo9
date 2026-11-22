@@ -1,3 +1,4 @@
+import type { PickerTaxCode } from "./TaxCodePicker";
 import type { AccountType, PickerAccount } from "./AccountPicker";
 import type { PickerContact } from "./ContactPicker";
 import type { DatePickerLabels } from "./DatePicker";
@@ -198,3 +199,75 @@ export const chartAccounts: PickerAccount[] = [
     archived: true,
   },
 ];
+
+/** Tax code versions for the tax code picker (G-01-T14). */
+export const sampleTaxCodes: PickerTaxCode[] = [
+  {
+    id: "s-on",
+    code: "sales.ON.standard",
+    name: "HST 13 % (Ontario) on sales",
+    side: "sales",
+    type: "taxable",
+    effective_from: "2010-07-01",
+    effective_to: null,
+    rate: "13",
+    detail: "HST (ON) 13 %",
+  },
+  {
+    id: "s-qc",
+    code: "sales.QC.standard",
+    name: "GST 5 % + QST 9.975 % (Quebec) on sales",
+    side: "sales",
+    type: "taxable",
+    effective_from: "2013-01-01",
+    effective_to: null,
+    rate: "14.975",
+    detail: "GST 5 % · QST 9.975 %",
+  },
+  {
+    id: "s-mb8",
+    code: "sales.MB.standard",
+    name: "GST 5 % + RST 8 % (Manitoba) on sales",
+    side: "sales",
+    type: "taxable",
+    effective_from: "2013-07-01",
+    effective_to: "2019-06-30",
+    rate: "13",
+  },
+  {
+    id: "s-zero",
+    code: "sales.zero_rated",
+    name: "Zero-rated on sales (0 %)",
+    side: "sales",
+    type: "zero_rated",
+    effective_from: "1991-01-01",
+    effective_to: null,
+    rate: "0",
+  },
+  {
+    id: "s-exempt",
+    code: "sales.exempt",
+    name: "Exempt on sales",
+    side: "sales",
+    type: "exempt",
+    effective_from: "1991-01-01",
+    effective_to: null,
+  },
+  {
+    id: "p-on",
+    code: "purchase.ON.standard",
+    name: "HST 13 % (Ontario) on purchases",
+    side: "purchase",
+    type: "taxable",
+    effective_from: "2010-07-01",
+    effective_to: null,
+    rate: "13",
+  },
+];
+
+export const taxTypeLabels = {
+  taxable: "Taxable",
+  zero_rated: "Zero-rated",
+  exempt: "Exempt",
+  out_of_scope: "Out of scope",
+} as const;
