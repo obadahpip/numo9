@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:50-0500\n"
+"POT-Creation-Date: 2026-11-22 08:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3960,6 +3960,22 @@ msgstr "Utilisez accounting (comptable) ou tax (fiscal)."
 msgid "There's no journal with this id in this organisation."
 msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
 
+#, python-format
+msgid "%(journal)s isn't waiting for approval."
+msgstr "%(journal)s n'attend pas d'approbation."
+
+#, python-format
+msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, python-format
+msgid "Say why the journal is sent back (at least %(min)d characters)."
+msgstr "Indiquez pourquoi l'écriture est renvoyée (au moins %(min)d caractères)."
+
+#, python-format
+msgid "Approval required: journals of %(threshold)s or more must be approved by someone else before they post. Submit it for approval."
+msgstr "Approbation requise : les écritures de %(threshold)s ou plus doivent être approuvées par une autre personne avant d'être comptabilisées. Soumettez-la pour approbation."
+
 #, fuzzy
 #| msgid "Accounting"
 msgid "accounting book"
@@ -4541,6 +4557,30 @@ msgstr "dérogation d'écriture"
 
 msgid "journal overrides"
 msgstr "dérogations d'écriture"
+
+msgid "Rejected"
+msgstr "Refusée"
+
+msgid "Withdrawn"
+msgstr "Retirée"
+
+msgid "submitted by"
+msgstr "soumise par"
+
+msgid "submitted at"
+msgstr "soumise le"
+
+msgid "decision"
+msgstr "décision"
+
+msgid "approval limit"
+msgstr ""
+
+msgid "journal approval"
+msgstr "approbation d'écriture"
+
+msgid "journal approvals"
+msgstr "approbations d'écritures"
 
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
@@ -5842,9 +5882,6 @@ msgid "Pay run"
 msgstr "Paie"
 
 msgid "maximum amount (CAD)"
-msgstr ""
-
-msgid "approval limit"
 msgstr ""
 
 msgid "approval limits"

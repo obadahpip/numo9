@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:50-0500\n"
+"POT-Creation-Date: 2026-11-22 08:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3751,6 +3751,22 @@ msgstr ""
 msgid "There's no journal with this id in this organisation."
 msgstr ""
 
+#, python-format
+msgid "%(journal)s isn't waiting for approval."
+msgstr ""
+
+#, python-format
+msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgstr ""
+
+#, python-format
+msgid "Say why the journal is sent back (at least %(min)d characters)."
+msgstr ""
+
+#, python-format
+msgid "Approval required: journals of %(threshold)s or more must be approved by someone else before they post. Submit it for approval."
+msgstr ""
+
 msgid "accounting book"
 msgstr ""
 
@@ -4282,6 +4298,30 @@ msgid "journal override"
 msgstr ""
 
 msgid "journal overrides"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Withdrawn"
+msgstr ""
+
+msgid "submitted by"
+msgstr ""
+
+msgid "submitted at"
+msgstr ""
+
+msgid "decision"
+msgstr ""
+
+msgid "approval limit"
+msgstr ""
+
+msgid "journal approval"
+msgstr ""
+
+msgid "journal approvals"
 msgstr ""
 
 #, python-format
@@ -5551,9 +5591,6 @@ msgid "Pay run"
 msgstr ""
 
 msgid "maximum amount (CAD)"
-msgstr ""
-
-msgid "approval limit"
 msgstr ""
 
 msgid "approval limits"

@@ -1053,3 +1053,79 @@ class JournalOverride(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.entry} · {self.reason[:40]}"
+
+
+# ---- journal approval (C-04-T02) ---------------------------------------------------------------
+
+
+class ApprovalDecision(models.TextChoices):
+    PENDING = "pending", _("Waiting")
+    APPROVED = "approved", _("Approved")
+    REJECTED = "rejected", _("Rejected")
+    WITHDRAWN = "withdrawn", _("Withdrawn")
+
+
+class JournalApproval(OrgOwnedModel):
+    """One round of approval of a manual journal (C-04-T02): submitted by someone, decided by
+    someone else. A journal sent back and submitted again gets a new round; the latest one is
+    the journal's approval state. ``total`` is the journal's total when submitted; ``limit`` the
+    approver's effective approval limit when they approved (A-03)."""
+
+    entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.CASCADE,
+        related_name="approvals",
+        verbose_name=_("journal"),
+    )
+    total = models.DecimalField(_("total"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    submitted_by = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("submitted by"),
+    )
+    submitted_at = models.DateTimeField(_("submitted at"), default=timezone.now)
+    decision = models.CharField(
+        _("decision"),
+        max_length=10,
+        choices=ApprovalDecision.choices,
+        default=ApprovalDecision.PENDING,
+    )
+    decided_by = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("decided by"),
+    )
+    decided_at = models.DateTimeField(_("decided at"), null=True, blank=True)
+    reason = models.TextField(_("reason"), blank=True)
+    limit = models.DecimalField(
+        _("approval limit"),
+        max_digits=MONEY_DIGITS,
+        decimal_places=MONEY_PLACES,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ("entry", "-submitted_at", "-pk")
+        verbose_name = _("journal approval")
+        verbose_name_plural = _("journal approvals")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(decision__in=ApprovalDecision.values),
+                name="ledger_approval_decision_valid",
+            ),
+            models.UniqueConstraint(
+                fields=["entry"],
+                condition=models.Q(decision="pending"),
+                name="ledger_approval_one_pending",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.entry} · {self.get_decision_display()}"
