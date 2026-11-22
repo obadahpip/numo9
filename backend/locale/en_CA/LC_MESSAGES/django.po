@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:19-0500\n"
+"POT-Creation-Date: 2026-11-22 08:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5988,6 +5988,18 @@ msgstr ""
 
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."
+msgstr ""
+
+#, python-format
+msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."
+msgstr ""
+
+#, python-format
+msgid "There's no %(side)s tax code %(code)s."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is archived: restore it or pick another code."
 msgstr ""
 
 msgid "Tenancy"

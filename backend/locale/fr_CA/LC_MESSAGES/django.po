@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:19-0500\n"
+"POT-Creation-Date: 2026-11-22 08:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6354,6 +6354,18 @@ msgstr "Un code détaxé ne contient que des composantes au taux zéro."
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."
 msgstr "%(component)s n'a pas de compte de contrôle : ajoutez d'abord le compte %(role)s."
+
+#, python-format
+msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."
+msgstr "%(code)s (%(name)s) est en vigueur %(range)s, pas le %(date)s : choisissez de nouveau le code pour cette date."
+
+#, python-format
+msgid "There's no %(side)s tax code %(code)s."
+msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
+
+#, python-format
+msgid "%(code)s is archived: restore it or pick another code."
+msgstr "%(code)s est archivé : restaurez-le ou choisissez un autre code."
 
 msgid "Tenancy"
 msgstr ""
