@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Statement imports — history and undo (F-02)">
+<title>Numo9 wireframe — Statement imports — history and undo (F-02)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Banking › RBC Business Chequing</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">RBC Business Chequing</text>
+<text x="24" y="170" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Transactions</text>
+<text x="150" y="170" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Statement lines</text>
+<rect x="270" y="155" width="86" height="22" rx="11" fill="#FFFAEB" stroke="#FEC84B" stroke-width="1"/>
+<text x="313.0" y="170" font-size="11" fill="#B54708" font-weight="600" text-anchor="middle">38 uncoded</text>
+<text x="390" y="170" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Imports</text>
+<rect x="390" y="178" width="60" height="3" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<circle cx="366" cy="158" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="366" y="162" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="1276" y="150" width="140" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1346.0" y="173.0" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Import a statement</text>
+<rect x="24" y="214" width="1392" height="40" rx="0" fill="#F9FAFB" stroke="#EAECF0" stroke-width="1"/>
+<text x="36" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start">Imported</text>
+<text x="220" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start">File</text>
+<text x="560" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start">Format · mapping</text>
+<text x="800" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start">Period</text>
+<text x="1000" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start">Lines</text>
+<text x="1160" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start">By</text>
+<text x="1300" y="239" font-size="12" fill="#344054" font-weight="700" text-anchor="start"></text>
+<rect x="24" y="254" width="1392" height="48" rx="0" fill="#FFFFFF" stroke="#EAECF0" stroke-width="1"/>
+<text x="36" y="283" font-size="12" fill="#111111" font-weight="400" text-anchor="start">2 Jul 2026 09:14</text>
+<text x="220" y="283" font-size="12" fill="#111111" font-weight="400" text-anchor="start">rbc-chequing-june.csv</text>
+<text x="560" y="283" font-size="12" fill="#111111" font-weight="400" text-anchor="start">CSV · RBC (CSV)</text>
+<text x="800" y="283" font-size="12" fill="#111111" font-weight="400" text-anchor="start">1–30 Jun 2026</text>
+<text x="1000" y="283" font-size="12" fill="#111111" font-weight="400" text-anchor="start">408 new · 3 dup.</text>
+<text x="1160" y="283" font-size="12" fill="#111111" font-weight="400" text-anchor="start">Dana Lee</text>
+<text x="1300" y="283" font-size="12" fill="#175CD3" font-weight="600" text-anchor="start">Undo</text>
+<rect x="24" y="302" width="1392" height="48" rx="0" fill="#FFFFFF" stroke="#EAECF0" stroke-width="1"/>
+<text x="36" y="331" font-size="12" fill="#111111" font-weight="400" text-anchor="start">2 Jun 2026 08:40</text>
+<text x="220" y="331" font-size="12" fill="#111111" font-weight="400" text-anchor="start">rbc-may.ofx</text>
+<text x="560" y="331" font-size="12" fill="#111111" font-weight="400" text-anchor="start">OFX</text>
+<text x="800" y="331" font-size="12" fill="#111111" font-weight="400" text-anchor="start">1–31 May 2026</text>
+<text x="1000" y="331" font-size="12" fill="#111111" font-weight="400" text-anchor="start">377 new</text>
+<text x="1160" y="331" font-size="12" fill="#111111" font-weight="400" text-anchor="start">Sam Patel</text>
+<text x="1300" y="331" font-size="12" fill="#98A2B3" font-weight="600" text-anchor="start">Undo — 2 matched</text>
+<rect x="24" y="350" width="1392" height="48" rx="0" fill="#FFFFFF" stroke="#EAECF0" stroke-width="1"/>
+<text x="36" y="379" font-size="12" fill="#111111" font-weight="400" text-anchor="start">5 May 2026 16:02</text>
+<text x="220" y="379" font-size="12" fill="#111111" font-weight="400" text-anchor="start">april.qbo</text>
+<text x="560" y="379" font-size="12" fill="#111111" font-weight="400" text-anchor="start">QBO</text>
+<text x="800" y="379" font-size="12" fill="#111111" font-weight="400" text-anchor="start">1–30 Apr 2026</text>
+<text x="1000" y="379" font-size="12" fill="#111111" font-weight="400" text-anchor="start">0 new · 360 dup.</text>
+<text x="1160" y="379" font-size="12" fill="#111111" font-weight="400" text-anchor="start">Dana Lee</text>
+<text x="1300" y="379" font-size="12" fill="#98A2B3" font-weight="600" text-anchor="start">—</text>
+<circle cx="1404" cy="262" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1404" y="266" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<rect x="24" y="422" width="760" height="64" rx="8" fill="#FEF3F2" stroke="#FDA29B" stroke-width="1"/>
+<text x="44" y="448" font-size="13" fill="#B42318" font-weight="600" text-anchor="start">Undo refused: 2 lines of this import are matched (3 Jun STAPLES #448, 5 Jun CHEQUE 000412).</text>
+<text x="44" y="470" font-size="12" fill="#B42318" font-weight="400" text-anchor="start">Unmatch them first, then undo the import.</text>
+<circle cx="796" cy="428" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="796" y="432" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="24" y="502" width="600" height="32" rx="16" fill="#ECFDF3" stroke="#75E0A7" stroke-width="1"/>
+<text x="40" y="523" font-size="12" fill="#067647" font-weight="600" text-anchor="start">408 lines imported from rbc-chequing-june.csv.   Undo import</text>
+<circle cx="636" cy="516" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="636" y="520" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+</svg>
