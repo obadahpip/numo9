@@ -66,7 +66,8 @@ def test_reset_restores_the_pristine_seed() -> None:
     with org_context(demo):
         assert Contact.objects.count() == 25
         assert not Contact.objects.filter(display_name="Visitor Co.").exists()
-        assert list(JournalEntry.objects.values_list("number", flat=True)) == [1]
+        # The opening balances (1) and the banking sample transactions (F-01-T15).
+        assert sorted(JournalEntry.objects.values_list("number", flat=True)) == list(range(1, 8))
         bank, sales = Account.objects.get(code="1010"), Account.objects.get(code="4000")
         entry = post_journal(
             JournalSpec(
@@ -79,7 +80,7 @@ def test_reset_restores_the_pristine_seed() -> None:
             organisation=demo,
             user=None,
         )
-        assert entry.number == 2
+        assert entry.number == 8  # after the 7 seeded journals: the sequence was cloned too
     assert OrganisationMember.objects.filter(organisation=demo, user=user).exists()
 
 

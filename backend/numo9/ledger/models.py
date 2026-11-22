@@ -610,6 +610,7 @@ class JournalType(models.TextChoices):
     OPENING = "opening", _("Opening balance")
     ADJUSTMENT = "adjustment", _("Adjustment")
     REVERSAL = "reversal", _("Reversal")
+    BANK = "bank", _("Bank transaction")
 
 
 class JournalCategory(models.TextChoices):

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 447   Remaining: 2340   Progress: 16.04%
+TOTAL ATOMIC TASKS: 2787   Completed: 456   Remaining: 2331   Progress: 16.36%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -603,15 +603,15 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-01-T01 — Wireframes in Figma: banking home, add-account sheet, account detail, spend/receive money form, no-bank prompt
 ✅ F-01-T02 — BankAccount model (OrgOwnedModel): gl_account 1:1, type enum (CHEQUING/SAVINGS/CREDIT_CARD/LOC/LOAN/CASH/CLEARING), institution, display_name, currency, masked_number (encrypted), statement_balance (nullable), statement_balance_date, is_reconciled_tracking flag, archived_at
 ✅ F-01-T03 — Type → GL type/sub-type mapping service; auto-create the linked GL account with the next free code in the bank range
-❌ F-01-T04 — Delete/archive guard: delete refused when lines exist (409 with count); archive allowed; archived accounts hidden from pickers but kept in reports
-❌ F-01-T05 — BankTransaction service for spend money / receive money: header (date, contact, reference, bank account, amounts tax incl/excl) + lines; posts a balanced JE through C-02 with source link
-❌ F-01-T06 — Ledger-balance query (posted lines, both books = accounting view) with an as_of param, cached per account and invalidated on post
-❌ F-01-T07 — API: /api/v1/bank-accounts (CRUD, archive), /api/v1/bank-transactions (spend/receive, list, void→reverse); feature key accounting.banking; RBAC permissions declared
-❌ F-01-T08 — Banking home screen: account cards with ledger and statement balance, type icon, "optional reconciliation" chip, skeleton loading, error retry
-❌ F-01-T09 — Add-account side-sheet (type segmented control with plain-language help, name, institution with Canadian bank list, currency); success toast with "Record a transaction" next action
-❌ F-01-T11 — Account detail page: running-balance transaction list, filters (date, contact, amount, status), column chooser, export CSV/XLSX
-❌ F-01-T12 — No-bank-account prompt: dashboard and banking banner, dismissible per user for 7 days, never blocks any action
-❌ F-01-T15 — Demo/seed: Canadian demo org gets Chequing, Visa, Petty Cash with sample spend/receive (U-07 seed update)
+✅ F-01-T04 — Delete/archive guard: delete refused when lines exist (409 with count); archive allowed; archived accounts hidden from pickers but kept in reports
+✅ F-01-T05 — BankTransaction service for spend money / receive money: header (date, contact, reference, bank account, amounts tax incl/excl) + lines; posts a balanced JE through C-02 with source link
+✅ F-01-T06 — Ledger-balance query (posted lines, both books = accounting view) with an as_of param, cached per account and invalidated on post
+✅ F-01-T07 — API: /api/v1/bank-accounts (CRUD, archive), /api/v1/bank-transactions (spend/receive, list, void→reverse); feature key accounting.banking; RBAC permissions declared
+✅ F-01-T08 — Banking home screen: account cards with ledger and statement balance, type icon, "optional reconciliation" chip, skeleton loading, error retry
+✅ F-01-T09 — Add-account side-sheet (type segmented control with plain-language help, name, institution with Canadian bank list, currency); success toast with "Record a transaction" next action
+✅ F-01-T11 — Account detail page: running-balance transaction list, filters (date, contact, amount, status), column chooser, export CSV/XLSX
+✅ F-01-T12 — No-bank-account prompt: dashboard and banking banner, dismissible per user for 7 days, never blocks any action
+✅ F-01-T15 — Demo/seed: Canadian demo org gets Chequing, Visa, Petty Cash with sample spend/receive (U-07 seed update)
 
 [G-01]
 ❌ G-01-T01 — Wireframes: tax code list with tabs/badges/timeline, code editor with live example

@@ -63,6 +63,7 @@ describe("route registry: settings sections and module gears (gap-03)", () => {
       "contacts",
       "accounting/chart-of-accounts",
       "accounting/journals",
+      "banking",
     ]);
     for (const entry of gears) {
       const target = findOrgModule(entry.settings ?? "");

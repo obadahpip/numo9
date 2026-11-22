@@ -14,6 +14,7 @@ from django.test import Client
 from numo9.accounts.models import User
 from numo9.contacts.models import Contact
 from numo9.demo.cloning import create_demo
+from numo9.demo.seeders import SEED_VERSION
 from numo9.demo.users import make_demo_user
 from numo9.entitlements.models import Subscription, SubscriptionStatus
 from numo9.entitlements.trials import register_trial
@@ -104,7 +105,7 @@ def test_reset_and_outbox_endpoints() -> None:
         Contact(organisation=demo, display_name="Visitor Co.", roles=["customer"]).save()
         DemoOutbox(organisation=demo, to_email="a@b.example", subject="Statement").save()
     reset = browser.post(f"/api/v1/o/{demo.public_id}/demo/reset")
-    assert reset.status_code == 200 and reset.json() == {"seed_version": 1}
+    assert reset.status_code == 200 and reset.json() == {"seed_version": SEED_VERSION}
     with org_context(demo):
         assert Contact.objects.count() == 25
     outbox = browser.get(f"/api/v1/o/{demo.public_id}/demo/outbox").json()["results"]

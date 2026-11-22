@@ -12,7 +12,7 @@ from decimal import Decimal
 import pytest
 
 from numo9.contacts.models import Address, Contact, ContactPerson
-from numo9.demo.seeders import load_seed, order, run_seed
+from numo9.demo.seeders import SEED_VERSION, load_seed, order, run_seed
 from numo9.ledger.models import Account, Book, JournalEntry, JournalLine
 from numo9.ledger.trial_balance import trial_balance
 from numo9.orgsettings.service import get_settings
@@ -41,11 +41,12 @@ def test_trial_balance_of_the_seeded_org_is_zero(seeded: Organisation) -> None:
             tb = trial_balance(book)
             assert tb.balanced
             assert tb.total_balance == Decimal("0.00")
-        entry = JournalEntry.objects.get()
+        # The opening-balances journal (later seeders, e.g. banking F-01-T15, post their own).
+        entry = JournalEntry.objects.get(number=1)
         assert (entry.number, entry.status) == (1, "posted")
-        totals = [(line.debit, line.credit) for line in JournalLine.objects.all()]
+        totals = [(line.debit, line.credit) for line in JournalLine.objects.filter(entry=entry)]
         assert sum(d for d, _c in totals) == sum(c for _d, c in totals) == Decimal("153390.00")
-        ar = JournalLine.objects.filter(account__code="1100")
+        ar = JournalLine.objects.filter(entry=entry, account__code="1100")
         assert ar.count() == 3 and all(line.contact_id for line in ar)
 
 
@@ -63,4 +64,4 @@ def test_seed_is_complete(seeded: Organisation) -> None:
         assert all(c.number for c in Contact.objects.all())
         assert Account.objects.filter(code="1100").exists()
         assert Account.objects.count() > 50
-    assert seed["version"] == 1
+    assert seed["version"] == SEED_VERSION

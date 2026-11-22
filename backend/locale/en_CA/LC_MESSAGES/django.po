@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 18:05-0500\n"
+"POT-Creation-Date: 2026-11-22 07:59-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -477,6 +477,43 @@ msgstr ""
 msgid "No events match these filters."
 msgstr ""
 
+msgid "That bank account doesn't exist."
+msgstr ""
+
+msgid "The currency is fixed once the account has transactions."
+msgstr ""
+
+msgid "Give the account a name."
+msgstr ""
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr ""
+
+msgid "That bank transaction doesn't exist."
+msgstr ""
+
+msgid "That account doesn't exist."
+msgstr ""
+
+msgid "That contact doesn't exist."
+msgstr ""
+
+msgid "That document doesn't exist."
+msgstr ""
+
+msgid "This transaction is already voided."
+msgstr ""
+
+msgid "bank transactions"
+msgstr ""
+
+#, python-format
+msgid "%(name)s has %(count)d transaction — archive it instead."
+msgid_plural "%(name)s has %(count)d transactions — archive it instead."
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "Chequing"
 msgstr ""
 
@@ -537,6 +574,126 @@ msgstr ""
 msgid "bank accounts"
 msgstr ""
 
+msgid "Spend money"
+msgstr ""
+
+msgid "Receive money"
+msgstr ""
+
+msgid "Tax exclusive"
+msgstr ""
+
+msgid "Tax inclusive"
+msgstr ""
+
+msgid "No tax"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+msgid "Voided"
+msgstr ""
+
+msgid "kind"
+msgstr ""
+
+msgid "date"
+msgstr ""
+
+msgid "contact"
+msgstr ""
+
+msgid "reference"
+msgstr ""
+
+msgid "amounts are"
+msgstr ""
+
+msgid "subtotal"
+msgstr ""
+
+msgid "tax"
+msgstr ""
+
+msgid "total"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "journal"
+msgstr ""
+
+msgid "voided at"
+msgstr ""
+
+msgid "bank transaction"
+msgstr ""
+
+msgid "line"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+msgid "account"
+msgstr ""
+
+msgid "amount"
+msgstr ""
+
+msgid "net"
+msgstr ""
+
+msgid "tax code"
+msgstr ""
+
+msgid "tax portions"
+msgstr ""
+
+msgid "bank transaction line"
+msgstr ""
+
+msgid "bank transaction lines"
+msgstr ""
+
+msgid "See bank, credit card and cash accounts, their balances and transactions"
+msgstr ""
+
+msgid "Add, rename, archive, restore and delete bank accounts"
+msgstr ""
+
+msgid "Record and void spend money and receive money"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Journal"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Received"
+msgstr ""
+
+msgid "Spent"
+msgstr ""
+
+msgid "Balance"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
 msgstr ""
@@ -545,11 +702,56 @@ msgstr ""
 msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
 msgstr ""
 
-msgid "Give the account a name."
+#, python-format
+msgid "%(account)s can't hold a %(type)s account."
 msgstr ""
 
 #, python-format
-msgid "There's already an account called “%(name)s”. Choose another name."
+msgid "%(account)s already has a bank account."
+msgstr ""
+
+#, python-format
+msgid "Amounts have at most 2 decimals: %(amount)s."
+msgstr ""
+
+msgid "Choose spend money or receive money."
+msgstr ""
+
+msgid "Unknown tax mode."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is archived: restore it or choose another account."
+msgstr ""
+
+msgid "Add at least one line."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the amount must be more than 0.00."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d has tax, but the amounts have no tax."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: a tax portion isn't valid."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the tax is more than the amount."
+msgstr ""
+
+#, python-format
+msgid "The organisation has no %(role)s account: add it to the chart of accounts."
+msgstr ""
+
+msgid "The total must be more than 0.00."
+msgstr ""
+
+#, python-format
+msgid "Void: %(label)s"
 msgstr ""
 
 msgid "Stripe event"
@@ -601,18 +803,6 @@ msgid "Stripe invoice"
 msgstr ""
 
 msgid "number"
-msgstr ""
-
-msgid "status"
-msgstr ""
-
-msgid "subtotal"
-msgstr ""
-
-msgid "tax"
-msgstr ""
-
-msgid "total"
 msgstr ""
 
 msgid "paid"
@@ -748,9 +938,6 @@ msgid "Organisation"
 msgstr ""
 
 msgid "Business Number"
-msgstr ""
-
-msgid "Status"
 msgstr ""
 
 msgid "Groups"
@@ -956,9 +1143,6 @@ msgstr ""
 msgid "Feature key"
 msgstr ""
 
-msgid "Description"
-msgstr ""
-
 msgid "Area"
 msgstr ""
 
@@ -999,9 +1183,6 @@ msgid "name (translation key)"
 msgstr ""
 
 msgid "Translation key of the product's name, e.g. 'catalogue.product.accounting'."
-msgstr ""
-
-msgid "kind"
 msgstr ""
 
 msgid "sort order"
@@ -1587,15 +1768,6 @@ msgstr ""
 msgid "Print and mail"
 msgstr ""
 
-msgid "Tax exclusive"
-msgstr ""
-
-msgid "Tax inclusive"
-msgstr ""
-
-msgid "No tax"
-msgstr ""
-
 msgid "Archived"
 msgstr ""
 
@@ -1681,9 +1853,6 @@ msgid "default bill terms"
 msgstr ""
 
 msgid "bill amounts are"
-msgstr ""
-
-msgid "contact"
 msgstr ""
 
 msgid "contacts"
@@ -1794,9 +1963,6 @@ msgid "Text"
 msgstr ""
 
 msgid "Number"
-msgstr ""
-
-msgid "Date"
 msgstr ""
 
 msgid "Choice list"
@@ -1976,9 +2142,6 @@ msgstr ""
 msgid "Used"
 msgstr ""
 
-msgid "amount"
-msgstr ""
-
 msgid "owed when requested"
 msgstr ""
 
@@ -2072,16 +2235,7 @@ msgstr ""
 msgid "supplier statement"
 msgstr ""
 
-msgid "date"
-msgstr ""
-
 msgid "invoice number"
-msgstr ""
-
-msgid "reference"
-msgstr ""
-
-msgid "description"
 msgstr ""
 
 msgid "file row"
@@ -2141,9 +2295,6 @@ msgstr ""
 msgid "Invoice number"
 msgstr ""
 
-msgid "Reference"
-msgstr ""
-
 msgid "Amount"
 msgstr ""
 
@@ -2197,9 +2348,6 @@ msgid "Document"
 msgstr ""
 
 msgid "Due date"
-msgstr ""
-
-msgid "Balance"
 msgstr ""
 
 msgid "Opening balance"
@@ -3958,9 +4106,6 @@ msgstr ""
 msgid "template row"
 msgstr ""
 
-msgid "account"
-msgstr ""
-
 msgid "accounts"
 msgstr ""
 
@@ -3996,9 +4141,6 @@ msgstr ""
 msgid "Awaiting approval"
 msgstr ""
 
-msgid "Posted"
-msgstr ""
-
 msgid "Reversed"
 msgstr ""
 
@@ -4024,6 +4166,9 @@ msgid "Adjustment"
 msgstr ""
 
 msgid "Reversal"
+msgstr ""
+
+msgid "Bank transaction"
 msgstr ""
 
 msgid "General"
@@ -4097,9 +4242,6 @@ msgstr ""
 msgid "line ID"
 msgstr ""
 
-msgid "line"
-msgstr ""
-
 msgid "debit"
 msgstr ""
 
@@ -4110,9 +4252,6 @@ msgid "book"
 msgstr ""
 
 msgid "tracking"
-msgstr ""
-
-msgid "tax code"
 msgstr ""
 
 msgid "journal line"
@@ -4907,9 +5046,6 @@ msgid "Quote"
 msgstr ""
 
 msgid "Purchase order"
-msgstr ""
-
-msgid "Contact"
 msgstr ""
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."

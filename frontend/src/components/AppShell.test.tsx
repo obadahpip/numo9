@@ -78,6 +78,7 @@ describe("Numo9 AppShell (A-10-T05)", () => {
       "Home",
       "Contacts",
       "Accounting",
+      "Banking",
       "Documents",
       "Settings",
     ]);

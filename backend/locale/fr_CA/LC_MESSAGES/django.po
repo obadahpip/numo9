@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 18:05-0500\n"
+"POT-Creation-Date: 2026-11-22 07:59-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -483,6 +483,43 @@ msgstr "%(count)s événements · exporté le %(when)s"
 msgid "No events match these filters."
 msgstr "Aucun événement ne correspond à ces filtres."
 
+msgid "That bank account doesn't exist."
+msgstr "Ce compte bancaire n'existe pas."
+
+msgid "The currency is fixed once the account has transactions."
+msgstr "La devise est fixée dès que le compte a des opérations."
+
+msgid "Give the account a name."
+msgstr "Donnez un nom au compte."
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
+
+msgid "That bank transaction doesn't exist."
+msgstr "Cette opération bancaire n'existe pas."
+
+msgid "That account doesn't exist."
+msgstr "Ce compte n'existe pas."
+
+msgid "That contact doesn't exist."
+msgstr "Ce contact n'existe pas."
+
+msgid "That document doesn't exist."
+msgstr "Ce document n'existe pas."
+
+msgid "This transaction is already voided."
+msgstr "Cette opération est déjà annulée."
+
+msgid "bank transactions"
+msgstr "opérations bancaires"
+
+#, python-format
+msgid "%(name)s has %(count)d transaction — archive it instead."
+msgid_plural "%(name)s has %(count)d transactions — archive it instead."
+msgstr[0] "%(name)s a %(count)d opération — archivez-le plutôt."
+msgstr[1] "%(name)s a %(count)d opérations — archivez-le plutôt."
+
 msgid "Chequing"
 msgstr "Compte chèques"
 
@@ -543,6 +580,132 @@ msgstr "compte bancaire"
 msgid "bank accounts"
 msgstr "comptes bancaires"
 
+msgid "Spend money"
+msgstr "Dépenser de l'argent"
+
+msgid "Receive money"
+msgstr "Recevoir de l'argent"
+
+msgid "Tax exclusive"
+msgstr ""
+
+msgid "Tax inclusive"
+msgstr ""
+
+msgid "No tax"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+msgid "Voided"
+msgstr "Annulée"
+
+msgid "kind"
+msgstr ""
+
+#, fuzzy
+#| msgid "Due date"
+msgid "date"
+msgstr "Date d’échéance"
+
+msgid "contact"
+msgstr "contact"
+
+msgid "reference"
+msgstr "référence"
+
+msgid "amounts are"
+msgstr "les montants sont"
+
+msgid "subtotal"
+msgstr "sous-total"
+
+msgid "tax"
+msgstr "taxes"
+
+msgid "total"
+msgstr "total"
+
+msgid "status"
+msgstr "statut"
+
+msgid "journal"
+msgstr "écriture"
+
+msgid "voided at"
+msgstr "annulée le"
+
+msgid "bank transaction"
+msgstr "opération bancaire"
+
+msgid "line"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "account"
+msgstr "Comptabilité"
+
+msgid "amount"
+msgstr "montant"
+
+msgid "net"
+msgstr "net"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax code"
+msgstr "code d’erreur"
+
+msgid "tax portions"
+msgstr "parts de taxe"
+
+msgid "bank transaction line"
+msgstr "ligne d'opération bancaire"
+
+msgid "bank transaction lines"
+msgstr "lignes d'opération bancaire"
+
+msgid "See bank, credit card and cash accounts, their balances and transactions"
+msgstr "Voir les comptes bancaires, de carte de crédit et de caisse, leurs soldes et leurs opérations"
+
+msgid "Add, rename, archive, restore and delete bank accounts"
+msgstr "Ajouter, renommer, archiver, restaurer et supprimer des comptes bancaires"
+
+msgid "Record and void spend money and receive money"
+msgstr "Enregistrer et annuler des dépenses et des encaissements"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Journal"
+msgstr "Écriture"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Reference"
+msgstr "Référence"
+
+msgid "Received"
+msgstr "Reçu"
+
+msgid "Spent"
+msgstr "Dépensé"
+
+msgid "Balance"
+msgstr "Solde"
+
+msgid "Status"
+msgstr "Statut"
+
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
 msgstr "« %(type)s » n'est pas un type de compte bancaire."
@@ -551,12 +714,57 @@ msgstr "« %(type)s » n'est pas un type de compte bancaire."
 msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
 msgstr "Tous les codes de %(first)d à %(last)d sont utilisés : renumérotez ou archivez un compte de cette plage, puis réessayez."
 
-msgid "Give the account a name."
-msgstr "Donnez un nom au compte."
+#, python-format
+msgid "%(account)s can't hold a %(type)s account."
+msgstr "%(account)s ne peut pas porter un compte de type %(type)s."
 
 #, python-format
-msgid "There's already an account called “%(name)s”. Choose another name."
-msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
+msgid "%(account)s already has a bank account."
+msgstr "%(account)s a déjà un compte bancaire."
+
+#, python-format
+msgid "Amounts have at most 2 decimals: %(amount)s."
+msgstr "Les montants ont au plus 2 décimales : %(amount)s."
+
+msgid "Choose spend money or receive money."
+msgstr "Choisissez une dépense ou un encaissement."
+
+msgid "Unknown tax mode."
+msgstr "Mode de taxe inconnu."
+
+#, python-format
+msgid "%(name)s is archived: restore it or choose another account."
+msgstr "%(name)s est archivé : restaurez-le ou choisissez un autre compte."
+
+msgid "Add at least one line."
+msgstr "Ajoutez au moins une ligne."
+
+#, python-format
+msgid "Line %(line)d: the amount must be more than 0.00."
+msgstr "Ligne %(line)d : le montant doit être supérieur à 0,00."
+
+#, python-format
+msgid "Line %(line)d has tax, but the amounts have no tax."
+msgstr "La ligne %(line)d a des taxes, mais les montants sont sans taxes."
+
+#, python-format
+msgid "Line %(line)d: a tax portion isn't valid."
+msgstr "Ligne %(line)d : une part de taxe n'est pas valide."
+
+#, python-format
+msgid "Line %(line)d: the tax is more than the amount."
+msgstr "Ligne %(line)d : la taxe dépasse le montant."
+
+#, python-format
+msgid "The organisation has no %(role)s account: add it to the chart of accounts."
+msgstr "L'organisation n'a pas de compte %(role)s : ajoutez-le au plan comptable."
+
+msgid "The total must be more than 0.00."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, python-format
+msgid "Void: %(label)s"
+msgstr "Annulation : %(label)s"
 
 msgid "Stripe event"
 msgstr "Événement Stripe"
@@ -608,18 +816,6 @@ msgstr "Facture Stripe"
 
 msgid "number"
 msgstr "numéro"
-
-msgid "status"
-msgstr "statut"
-
-msgid "subtotal"
-msgstr "sous-total"
-
-msgid "tax"
-msgstr "taxes"
-
-msgid "total"
-msgstr "total"
 
 msgid "paid"
 msgstr "payé"
@@ -755,9 +951,6 @@ msgstr "Organisation"
 
 msgid "Business Number"
 msgstr "Numéro d’entreprise"
-
-msgid "Status"
-msgstr "Statut"
 
 msgid "Groups"
 msgstr "Groupes"
@@ -966,9 +1159,6 @@ msgstr "code d’erreur"
 msgid "Feature key"
 msgstr ""
 
-msgid "Description"
-msgstr "Description"
-
 msgid "Area"
 msgstr ""
 
@@ -1009,9 +1199,6 @@ msgid "name (translation key)"
 msgstr ""
 
 msgid "Translation key of the product's name, e.g. 'catalogue.product.accounting'."
-msgstr ""
-
-msgid "kind"
 msgstr ""
 
 msgid "sort order"
@@ -1665,15 +1852,6 @@ msgstr ""
 msgid "Print and mail"
 msgstr ""
 
-msgid "Tax exclusive"
-msgstr ""
-
-msgid "Tax inclusive"
-msgstr ""
-
-msgid "No tax"
-msgstr ""
-
 msgid "Archived"
 msgstr "Archivée"
 
@@ -1764,9 +1942,6 @@ msgstr ""
 
 msgid "bill amounts are"
 msgstr ""
-
-msgid "contact"
-msgstr "contact"
 
 #, fuzzy
 #| msgid "Contacts"
@@ -1890,9 +2065,6 @@ msgstr ""
 
 msgid "Number"
 msgstr "Numéro"
-
-msgid "Date"
-msgstr "Date"
 
 msgid "Choice list"
 msgstr ""
@@ -2094,9 +2266,6 @@ msgstr "Refusée"
 msgid "Used"
 msgstr "Utilisée"
 
-msgid "amount"
-msgstr "montant"
-
 msgid "owed when requested"
 msgstr "solde dû à la demande"
 
@@ -2190,19 +2359,8 @@ msgstr "En-tête du fichier → champ de la ligne."
 msgid "supplier statement"
 msgstr "relevé du fournisseur"
 
-#, fuzzy
-#| msgid "Due date"
-msgid "date"
-msgstr "Date d’échéance"
-
 msgid "invoice number"
 msgstr "numéro de facture"
-
-msgid "reference"
-msgstr "référence"
-
-msgid "description"
-msgstr ""
 
 msgid "file row"
 msgstr "ligne du fichier"
@@ -2263,9 +2421,6 @@ msgstr "Lignes de relevé du fournisseur"
 msgid "Invoice number"
 msgstr "Numéro de facture"
 
-msgid "Reference"
-msgstr "Référence"
-
 msgid "Amount"
 msgstr "Montant"
 
@@ -2320,9 +2475,6 @@ msgstr "Document"
 
 msgid "Due date"
 msgstr "Date d’échéance"
-
-msgid "Balance"
-msgstr "Solde"
 
 msgid "Opening balance"
 msgstr "Solde d’ouverture"
@@ -4185,11 +4337,6 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Accounting"
-msgid "account"
-msgstr "Comptabilité"
-
-#, fuzzy
-#| msgid "Accounting"
 msgid "accounts"
 msgstr "Comptabilité"
 
@@ -4225,9 +4372,6 @@ msgstr ""
 msgid "Awaiting approval"
 msgstr ""
 
-msgid "Posted"
-msgstr ""
-
 msgid "Reversed"
 msgstr ""
 
@@ -4258,6 +4402,9 @@ msgstr "Documents"
 
 msgid "Reversal"
 msgstr ""
+
+msgid "Bank transaction"
+msgstr "Opération bancaire"
 
 msgid "General"
 msgstr "Général"
@@ -4347,9 +4494,6 @@ msgstr "Écriture de journal manuelle"
 msgid "line ID"
 msgstr ""
 
-msgid "line"
-msgstr ""
-
 msgid "debit"
 msgstr ""
 
@@ -4363,11 +4507,6 @@ msgstr ""
 #| msgid "Banking"
 msgid "tracking"
 msgstr "Banque"
-
-#, fuzzy
-#| msgid "error code"
-msgid "tax code"
-msgstr "code d’erreur"
 
 msgid "journal line"
 msgstr ""
@@ -5191,9 +5330,6 @@ msgstr "Soumission"
 
 msgid "Purchase order"
 msgstr "Bon de commande"
-
-msgid "Contact"
-msgstr "Contact"
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
 msgstr "Nombre minimal de chiffres, complété par des zéros (4 : 0001)."
