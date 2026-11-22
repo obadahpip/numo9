@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 472   Remaining: 2315   Progress: 16.94%
+TOTAL ATOMIC TASKS: 2787   Completed: 473   Remaining: 2314   Progress: 16.97%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -630,7 +630,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-01-T14 — Shared TaxCodePicker component for the design system (side + date + account aware) used by D-01/E-02/F-01
 ✅ G-01-T15 — Compliance fixture set tests/fixtures/compliance/sales_tax_2026.yaml (provinces × types × incl/excl × partial ITC)
 ✅ G-01-T16 — Audit hooks (code/component edits attributed to a user; never "System Generated" without a job id), i18n en/fr names
-❌ G-01-T17 — Gap tests gap-07, gap-08, gap-45
+✅ G-01-T17 — Gap tests gap-07, gap-08, gap-45
 
 [C-04]
 ❌ C-04-T01 — JournalApprovalPolicy model fields on OrganisationSettings: journal_approval_threshold (nullable = never)
