@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:15-0500\n"
+"POT-Creation-Date: 2026-11-22 09:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2568,6 +2568,50 @@ msgstr "DÉMO — DOCUMENT FICTIF"
 msgid "Documents"
 msgstr "Documents"
 
+msgid "No discount"
+msgstr "Aucun escompte"
+
+msgid "Percent"
+msgstr "Pourcentage"
+
+msgid "terms"
+msgstr "modalités"
+
+msgid "ship-to country"
+msgstr "pays de livraison"
+
+msgid "ship-to province"
+msgstr "province de livraison"
+
+msgid "discount"
+msgstr "rabais"
+
+msgid "discount value"
+msgstr "valeur de l’escompte"
+
+msgid "version"
+msgstr "version"
+
+msgid "quantity"
+msgstr ""
+
+msgid "unit price"
+msgstr "prix unitaire"
+
+msgid "line discount"
+msgstr "escompte de ligne"
+
+msgid "line discount value"
+msgstr "valeur de l’escompte de ligne"
+
+msgid "tax changed from the default"
+msgstr "taxe modifiée par rapport à la valeur par défaut"
+
+#, fuzzy
+#| msgid "Banking"
+msgid "tracking"
+msgstr "Banque"
+
 msgid "Prepared with Numo9"
 msgstr "Préparé avec Numo9"
 
@@ -4522,11 +4566,6 @@ msgstr ""
 msgid "book"
 msgstr ""
 
-#, fuzzy
-#| msgid "Banking"
-msgid "tracking"
-msgstr "Banque"
-
 msgid "journal line"
 msgstr ""
 
@@ -4810,9 +4849,6 @@ msgid "meter"
 msgstr ""
 
 msgid "day (UTC)"
-msgstr ""
-
-msgid "quantity"
 msgstr ""
 
 msgid "daily usage"
@@ -5648,9 +5684,6 @@ msgstr "Épuisé"
 msgid "Stored upper-case; organisations may type it in any case."
 msgstr "Enregistré en majuscules; les organisations peuvent le saisir en majuscules ou en minuscules."
 
-msgid "discount"
-msgstr "rabais"
-
 msgid "percent off"
 msgstr "pourcentage de rabais"
 
@@ -6403,9 +6436,6 @@ msgstr "Exonéré"
 
 msgid "Out of scope"
 msgstr "Hors champ"
-
-msgid "version"
-msgstr "version"
 
 msgid "side"
 msgstr "côté"

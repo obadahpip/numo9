@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 485   Remaining: 2302   Progress: 17.40%
+TOTAL ATOMIC TASKS: 2787   Completed: 486   Remaining: 2301   Progress: 17.44%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -653,7 +653,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-02-T09 — Purchase-side resolution (account default then supplier province) for bills and spend money
 
 [D-01]
-❌ D-01-T01 — Abstract models DocumentBase (contact, dates, terms, currency, tax_mode, doc_discount, totals, version) and DocumentLineBase
+✅ D-01-T01 — Abstract models DocumentBase (contact, dates, terms, currency, tax_mode, doc_discount, totals, version) and DocumentLineBase
 ❌ D-01-T02 — Minimal Item stub (code, name, accounts, tax codes, is_tracked=False) pending H-01
 ❌ D-01-T03 — DocumentCalculator — exclusive mode: line net, line discount, tax per component, totals
 ❌ D-01-T04 — Calculator — inclusive and no-tax modes

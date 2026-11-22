@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:15-0500\n"
+"POT-Creation-Date: 2026-11-22 09:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2437,6 +2437,48 @@ msgstr ""
 msgid "Documents"
 msgstr ""
 
+msgid "No discount"
+msgstr ""
+
+msgid "Percent"
+msgstr ""
+
+msgid "terms"
+msgstr ""
+
+msgid "ship-to country"
+msgstr ""
+
+msgid "ship-to province"
+msgstr ""
+
+msgid "discount"
+msgstr ""
+
+msgid "discount value"
+msgstr ""
+
+msgid "version"
+msgstr ""
+
+msgid "quantity"
+msgstr ""
+
+msgid "unit price"
+msgstr ""
+
+msgid "line discount"
+msgstr ""
+
+msgid "line discount value"
+msgstr ""
+
+msgid "tax changed from the default"
+msgstr ""
+
+msgid "tracking"
+msgstr ""
+
 msgid "Prepared with Numo9"
 msgstr ""
 
@@ -4270,9 +4312,6 @@ msgstr ""
 msgid "book"
 msgstr ""
 
-msgid "tracking"
-msgstr ""
-
 msgid "journal line"
 msgstr ""
 
@@ -4547,9 +4586,6 @@ msgid "meter"
 msgstr ""
 
 msgid "day (UTC)"
-msgstr ""
-
-msgid "quantity"
 msgstr ""
 
 msgid "daily usage"
@@ -5365,9 +5401,6 @@ msgstr ""
 msgid "Stored upper-case; organisations may type it in any case."
 msgstr ""
 
-msgid "discount"
-msgstr ""
-
 msgid "percent off"
 msgstr ""
 
@@ -6037,9 +6070,6 @@ msgid "Exempt"
 msgstr ""
 
 msgid "Out of scope"
-msgstr ""
-
-msgid "version"
 msgstr ""
 
 msgid "side"
