@@ -78,3 +78,29 @@ class LockedDocument(LockGuardMixin, OrgOwnedModel):
     def lock_applies(self, stored: dict[str, Any] | None) -> bool:
         was_draft = stored is None or stored["status"] == "draft"
         return not (self.status == "draft" and was_draft)
+
+
+# ---- D-01-T01: a concrete document on the shared abstract bases ---------------------------------
+
+from numo9.documents.models import DocumentBase, DocumentLineBase  # noqa: E402
+
+
+class SampleDocument(DocumentBase):
+    """A concrete header on ``DocumentBase`` (D-01-T01): what quotes and invoices will look like."""
+
+    number = models.CharField(max_length=20, blank=True)
+
+    class Meta(DocumentBase.Meta):
+        abstract = False
+        constraints = DocumentBase.header_constraints("testapp_sampledocument")
+
+    def __str__(self) -> str:
+        return f"Document {self.number}"
+
+
+class SampleDocumentLine(DocumentLineBase):
+    document = models.ForeignKey(SampleDocument, on_delete=models.CASCADE, related_name="lines")
+
+    class Meta(DocumentLineBase.Meta):
+        abstract = False
+        constraints = DocumentLineBase.line_constraints("testapp_sampledocumentline")

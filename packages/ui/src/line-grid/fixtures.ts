@@ -1,4 +1,6 @@
 import { typeLabels } from "../pickers/fixtures";
+import type { DocumentGridLine, DocumentLineAmounts, DocumentLinesLabels } from "./DocumentLines";
+import type { DocumentTotalsLabels, DocumentTotalsValue } from "./DocumentTotals";
 import type { JournalLine, JournalLinesLabels } from "./JournalLines";
 
 /** Sample labels and lines for the LineGrid / JournalLines stories and tests. */
@@ -28,3 +30,138 @@ export const sampleJournal: JournalLine[] = [
   { id: "l1", account: "a1000", description: "Owner contribution", debit: "1250.00", credit: null },
   { id: "l2", account: "a3000", description: "Owner contribution", debit: null, credit: "1200.00" },
 ];
+
+// ---- D-01: the document line editor -------------------------------------------------------------
+
+export const documentLabels: DocumentLinesLabels = {
+  ...journalLabels,
+  grid: "Invoice lines",
+  item: "Item",
+  description: "Description",
+  quantity: "Qty",
+  unitPrice: "Unit price",
+  discount: "Discount",
+  account: "Account",
+  taxCode: "Tax code",
+  taxAmount: "Tax amount",
+  amount: "Amount",
+  noAccounts: "No accounts match.",
+  noTaxCodes: "No tax codes match.",
+  accountTypes: typeLabels,
+  taxTypes: {
+    taxable: "Taxable",
+    zero_rated: "Zero-rated",
+    exempt: "Exempt",
+    out_of_scope: "Out of scope",
+  },
+  taxDefault: "Account default",
+  taxOthers: "All codes",
+  taxExpired: "Not in force on this date",
+  taxWhy: (n) => `Why this tax code, line ${n}`,
+  duplicated: (n) => `Line ${n} duplicated`,
+  hiddenWithValues: (columns) => `Hidden columns with values: ${columns}.`,
+  showHidden: "Show",
+  lineRemoved: (n) => `Line ${n} deleted`,
+  undo: "Undo",
+  undoAlt: "Add the line again",
+};
+
+export const sampleDocumentLines: DocumentGridLine[] = [
+  {
+    id: "d1",
+    item: "INSTALL",
+    description: "Kitchen cabinets — install",
+    quantity: "1",
+    unitPrice: "4800.00",
+    discount: "",
+    account: "c4001",
+    taxCode: "s-on",
+  },
+  {
+    id: "d2",
+    item: "",
+    description: "Hardware",
+    quantity: "24",
+    unitPrice: "13.00",
+    discount: "10%",
+    account: "c4001",
+    taxCode: "s-on",
+  },
+];
+
+/** Story / test stand-in for the calculator (the app uses the DocumentCalculator mirror). */
+export function roughAmounts(
+  lines: readonly DocumentGridLine[],
+  rates: Readonly<Record<string, string>>,
+): Record<string, DocumentLineAmounts> {
+  const out: Record<string, DocumentLineAmounts> = {};
+  for (const line of lines) {
+    const gross =
+      Math.round(Number(line.quantity || "0") * Number(line.unitPrice || "0") * 100) || 0;
+    const discount = line.discount.endsWith("%")
+      ? Math.round((gross * Number(line.discount.slice(0, -1))) / 100)
+      : Math.round(Number(line.discount || "0") * 100);
+    const net = Math.max(gross - discount, 0);
+    const tax = Math.round((net * Number(rates[line.taxCode ?? ""] ?? "0")) / 100);
+    out[line.id] = { tax: (tax / 100).toFixed(2), amount: (net / 100).toFixed(2) };
+  }
+  return out;
+}
+
+export const totalsLabels: DocumentTotalsLabels = {
+  region: "Totals",
+  subtotal: "Subtotal",
+  discount: "Discount",
+  discountType: "Discount type",
+  discountNone: "None",
+  discountAmount: "Amount",
+  discountPercent: "Percent",
+  discountValue: "Discount value",
+  total: "Total",
+  includes: (name, amount) => `Includes ${name} ${amount}`,
+  announce: (total) => `Total ${total}`,
+  pending: "Updating…",
+};
+
+export const sampleTotals: DocumentTotalsValue = {
+  subtotal: "5080.80",
+  discountTotal: "0.00",
+  taxes: [{ key: "hst_on", name: "HST (ON) 13 %", amount: "660.50" }],
+  taxTotal: "660.50",
+  total: "5741.30",
+  taxIncluded: false,
+};
+
+/**
+ * Pseudo-locale stand-in for stories (the app's en-XA, A-10-T13): accented letters and about
+ * 30 % more length, so layouts are checked against long French labels (D-01-T19).
+ */
+export function pseudo(text: string): string {
+  const from = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const to = "áƀçðéƒĝĥîĵķļɱñöþǫŕšţûṽŵẋýžÁƁÇÐÉƑĜĤÎĴĶĻṀÑÖÞǪŔŠŢÛṼŴẊÝŽ";
+  const chars = [...to];
+  let letters = 0;
+  const out = [...text]
+    .map((char) => {
+      const at = from.indexOf(char);
+      if (at < 0) return char;
+      letters += 1;
+      return chars[at];
+    })
+    .join("");
+  return `[${out} ${"~".repeat(Math.ceil(Math.max(letters, 1) * 0.3))}]`;
+}
+
+/** Every label of an object pseudo-localised (functions: their result). */
+export function pseudoLabels<T extends object>(labels: T): T {
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(labels)) {
+    if (typeof value === "string") out[key] = pseudo(value);
+    else if (typeof value === "function")
+      out[key] = (...args: unknown[]) =>
+        pseudo(String((value as (...a: unknown[]) => unknown)(...args)));
+    else if (value && typeof value === "object") out[key] = pseudoLabels(value as object);
+    else out[key] = value;
+  }
+  return out as T;
+}

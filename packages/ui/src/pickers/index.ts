@@ -37,3 +37,5 @@ export {
   type TaxCodeSide,
   type TaxCodeType,
 } from "./TaxCodePicker";
+export { DueDateField, type DueDateFieldLabels, type DueDateFieldProps } from "./DueDateField";
+export { daysBetween, dueDate, type PaymentTermOption, type TermsType } from "./dueDates";

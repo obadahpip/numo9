@@ -6,12 +6,15 @@ import { AccountPicker } from "./AccountPicker";
 import { ContactPicker } from "./ContactPicker";
 import { CurrencyInput } from "./CurrencyInput";
 import { DatePicker } from "./DatePicker";
+import { DueDateField } from "./DueDateField";
 import {
   chartAccounts,
   dateLabels,
+  dueDateLabels,
   sampleAccounts,
   sampleContacts,
   sampleTaxCodes,
+  sampleTerms,
   taxTypeLabels,
   typeLabels,
 } from "./fixtures";
@@ -200,3 +203,46 @@ function TaxCodes() {
 }
 
 export const TaxCodePickerSides: Story = { render: () => <TaxCodes /> };
+
+function DueDateDemo() {
+  const [due, setDue] = useState<IsoDate | null>(null);
+  const [term, setTerm] = useState<string | null>(null);
+  const [tried, setTried] = useState(false);
+  const [saved, setSaved] = useState<string | null>(null);
+  return (
+    <form
+      noValidate
+      className="flex max-w-md flex-col gap-3"
+      onSubmit={(event) => {
+        event.preventDefault();
+        setTried(true);
+        setSaved(due);
+      }}
+    >
+      <DueDateField
+        value={due}
+        onChange={(value, chosen) => {
+          setDue(value);
+          setTerm(chosen?.id ?? null);
+        }}
+        termId={term}
+        documentDate="2026-07-15"
+        terms={sampleTerms}
+        today="2026-07-15"
+        locale="en-CA"
+        labels={dueDateLabels}
+        showRequired={tried}
+      />
+      <button
+        type="submit"
+        className="self-start rounded-md border border-border px-3 py-2 text-sm"
+      >
+        Save
+      </button>
+      <p role="status">{saved ? `Saved — due ${saved}` : ""}</p>
+    </form>
+  );
+}
+
+/** Due date (D-01-T17): required, term chips from the terms master, "Due in N days". */
+export const DueDate: Story = { render: () => <DueDateDemo /> };

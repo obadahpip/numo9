@@ -607,6 +607,7 @@ def test_my_permissions(org: Organisation, owner: User) -> None:
             "contacts.contacts.view",
             "documents.file.view",
             "organisation.profile.view",
+            "sales.document.view",  # D-01-T09
         ]
     }
     other = Organisation.objects.create(name="Elsewhere Ltd.")

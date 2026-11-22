@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 485   Remaining: 2302   Progress: 17.40%
+TOTAL ATOMIC TASKS: 2787   Completed: 504   Remaining: 2283   Progress: 18.08%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -653,25 +653,25 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-02-T09 — Purchase-side resolution (account default then supplier province) for bills and spend money
 
 [D-01]
-❌ D-01-T01 — Abstract models DocumentBase (contact, dates, terms, currency, tax_mode, doc_discount, totals, version) and DocumentLineBase
-❌ D-01-T02 — Minimal Item stub (code, name, accounts, tax codes, is_tracked=False) pending H-01
-❌ D-01-T03 — DocumentCalculator — exclusive mode: line net, line discount, tax per component, totals
-❌ D-01-T04 — Calculator — inclusive and no-tax modes
-❌ D-01-T05 — Calculator — document discount pro-rata allocation (amount and %) with remainder cent on largest line
-❌ D-01-T06 — Side validator: account type and tax code side per document type; effective-date check
-❌ D-01-T07 — Due-date resolver from terms master (Net N, EOM, day-of-next-month, 2/10 net 30)
-❌ D-01-T08 — Posting-preview service (lines → proposed JE incl. tax control accounts)
-❌ D-01-T09 — API: /api/v1/documents/calculate (stateless) and /posting-preview
-❌ D-01-T10 — Frontend calculator mirror (TS) sharing fixture JSON with backend tests
-❌ D-01-T11 — Grid: columns, keyboard model, ARIA grid roles, add/duplicate/delete with undo toast
-❌ D-01-T12 — Filtered account and tax pickers (side + date aware, search by code/name, "why" tooltip)
-❌ D-01-T13 — Column chooser with per-user persistence; hidden-column note
-❌ D-01-T14 — Document discount control + totals panel (tax per component, live region)
-❌ D-01-T15 — Paste-from-spreadsheet (TSV) with per-cell validation highlighting
-❌ D-01-T16 — Tablet/stacked line-card layout ≤ 1024 px
-❌ D-01-T17 — Required due date field with term chips and "due in N days" helper
-❌ D-01-T18 — Storybook stories for every grid state + Figma spec parity check
-❌ D-01-T19 — i18n keys (en-CA/fr-CA) + pseudo-locale layout check
+✅ D-01-T01 — Abstract models DocumentBase (contact, dates, terms, currency, tax_mode, doc_discount, totals, version) and DocumentLineBase
+✅ D-01-T02 — Minimal Item stub (code, name, accounts, tax codes, is_tracked=False) pending H-01
+✅ D-01-T03 — DocumentCalculator — exclusive mode: line net, line discount, tax per component, totals
+✅ D-01-T04 — Calculator — inclusive and no-tax modes
+✅ D-01-T05 — Calculator — document discount pro-rata allocation (amount and %) with remainder cent on largest line
+✅ D-01-T06 — Side validator: account type and tax code side per document type; effective-date check
+✅ D-01-T07 — Due-date resolver from terms master (Net N, EOM, day-of-next-month, 2/10 net 30)
+✅ D-01-T08 — Posting-preview service (lines → proposed JE incl. tax control accounts)
+✅ D-01-T09 — API: /api/v1/documents/calculate (stateless) and /posting-preview
+✅ D-01-T10 — Frontend calculator mirror (TS) sharing fixture JSON with backend tests
+✅ D-01-T11 — Grid: columns, keyboard model, ARIA grid roles, add/duplicate/delete with undo toast
+✅ D-01-T12 — Filtered account and tax pickers (side + date aware, search by code/name, "why" tooltip)
+✅ D-01-T13 — Column chooser with per-user persistence; hidden-column note
+✅ D-01-T14 — Document discount control + totals panel (tax per component, live region)
+✅ D-01-T15 — Paste-from-spreadsheet (TSV) with per-cell validation highlighting
+✅ D-01-T16 — Tablet/stacked line-card layout ≤ 1024 px
+✅ D-01-T17 — Required due date field with term chips and "due in N days" helper
+✅ D-01-T18 — Storybook stories for every grid state + Figma spec parity check
+✅ D-01-T19 — i18n keys (en-CA/fr-CA) + pseudo-locale layout check
 
 [C-03]
 ❌ C-03-T12 — UI: contact column in journal grid; auto-shown when account requires it

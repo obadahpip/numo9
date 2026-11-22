@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:15-0500\n"
+"POT-Creation-Date: 2026-11-22 10:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2434,7 +2434,65 @@ msgstr ""
 msgid "DEMO — NOT A REAL DOCUMENT"
 msgstr ""
 
+#, python-format
+msgid "%(kind)s isn't a document of this side."
+msgstr ""
+
+msgid "That tax code doesn't exist."
+msgstr ""
+
 msgid "Documents"
+msgstr ""
+
+msgid "No discount"
+msgstr ""
+
+msgid "Percent"
+msgstr ""
+
+msgid "terms"
+msgstr ""
+
+msgid "ship-to country"
+msgstr ""
+
+msgid "ship-to province"
+msgstr ""
+
+msgid "discount"
+msgstr ""
+
+msgid "discount value"
+msgstr ""
+
+msgid "version"
+msgstr ""
+
+msgid "item"
+msgstr ""
+
+msgid "quantity"
+msgstr ""
+
+msgid "unit price"
+msgstr ""
+
+msgid "line discount"
+msgstr ""
+
+msgid "line discount value"
+msgstr ""
+
+msgid "tax changed from the default"
+msgstr ""
+
+msgid "tracking"
+msgstr ""
+
+msgid "See quotes, invoices and credit notes and how their amounts are worked out"
+msgstr ""
+
+msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
 msgstr ""
 
 msgid "Prepared with Numo9"
@@ -2467,6 +2525,44 @@ msgstr ""
 
 #, python-format
 msgid "Page %(page)s of %(pages)s"
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(message)s"
+msgstr ""
+
+#, python-format
+msgid "Unknown document type %(kind)s."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be used on a sales line: choose a revenue or other income account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be used on a purchase line: choose an expense or asset account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has sub-accounts: choose one of them."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is a purchase tax code: choose a sales tax code."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is a sales tax code: choose a purchase tax code."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is archived: choose another code."
+msgstr ""
+
+msgid "Choose tax exclusive, tax inclusive or no tax."
+msgstr ""
+
+msgid "The amounts have no tax: remove the tax code."
 msgstr ""
 
 msgid "Trial"
@@ -3656,6 +3752,36 @@ msgstr ""
 msgid "Column"
 msgstr ""
 
+msgid "Items"
+msgstr ""
+
+msgid "sale price"
+msgstr ""
+
+msgid "purchase price"
+msgstr ""
+
+msgid "sales account"
+msgstr ""
+
+msgid "purchase account"
+msgstr ""
+
+msgid "sales tax code"
+msgstr ""
+
+msgid "purchase tax code"
+msgstr ""
+
+msgid "track inventory"
+msgstr ""
+
+msgid "archived"
+msgstr ""
+
+msgid "items"
+msgstr ""
+
 msgid "Waiting to try again"
 msgstr ""
 
@@ -4270,9 +4396,6 @@ msgstr ""
 msgid "book"
 msgstr ""
 
-msgid "tracking"
-msgstr ""
-
 msgid "journal line"
 msgstr ""
 
@@ -4547,9 +4670,6 @@ msgid "meter"
 msgstr ""
 
 msgid "day (UTC)"
-msgstr ""
-
-msgid "quantity"
 msgstr ""
 
 msgid "daily usage"
@@ -5365,9 +5485,6 @@ msgstr ""
 msgid "Stored upper-case; organisations may type it in any case."
 msgstr ""
 
-msgid "discount"
-msgstr ""
-
 msgid "percent off"
 msgstr ""
 
@@ -5932,9 +6049,6 @@ msgstr ""
 msgid "Use the date format YYYY-MM-DD."
 msgstr ""
 
-msgid "That tax code doesn't exist."
-msgstr ""
-
 msgid "That tax component doesn't exist."
 msgstr ""
 
@@ -6037,9 +6151,6 @@ msgid "Exempt"
 msgstr ""
 
 msgid "Out of scope"
-msgstr ""
-
-msgid "version"
 msgstr ""
 
 msgid "side"

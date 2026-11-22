@@ -1456,6 +1456,75 @@
     },
     "yes": "Yes"
   },
+  "documents": {
+    "due": {
+      "beforeDate": "La date d’échéance est antérieure à la date du document.",
+      "dueIn": "{days, plural, =0 {Échéance à la date du document} one {Échéance dans # jour} other {Échéance dans # jours}}",
+      "label": "Date d’échéance",
+      "required": "Entrez une date d’échéance.",
+      "terms": "Modalités de paiement"
+    },
+    "lines": {
+      "account": "Compte",
+      "accountTypes": {
+        "asset": "Actifs",
+        "equity": "Capitaux propres",
+        "expense": "Charges",
+        "liability": "Passifs",
+        "revenue": "Revenus"
+      },
+      "actions": "Actions",
+      "addLine": "Ajouter une ligne",
+      "amount": "Montant",
+      "cell": "{column}, ligne {line}",
+      "columns": "Colonnes",
+      "description": "Description",
+      "discount": "Escompte",
+      "duplicated": "Ligne {line} dupliquée",
+      "grid": "Lignes",
+      "hiddenWithValues": "Colonnes masquées avec des valeurs : {columns}.",
+      "item": "Article",
+      "lineRemoved": "Ligne {line} supprimée",
+      "moveLine": "Déplacer la ligne {line} (glisser, ou Alt+↑/↓)",
+      "moved": "Ligne {from} déplacée à la position {to}",
+      "noAccounts": "Aucun compte ne correspond.",
+      "noTaxCodes": "Aucun code de taxe ne correspond.",
+      "quantity": "Qté",
+      "removeLine": "Supprimer la ligne {line}",
+      "showHidden": "Afficher",
+      "taxAmount": "Montant de taxe",
+      "taxCode": "Code de taxe",
+      "taxDefault": "Valeur par défaut du compte",
+      "taxExpired": "Pas en vigueur à cette date",
+      "taxOthers": "Tous les codes",
+      "taxTypes": {
+        "exempt": "Exonéré",
+        "outOfScope": "Hors champ",
+        "taxable": "Taxable",
+        "zeroRated": "Détaxé"
+      },
+      "taxWhy": "Pourquoi ce code de taxe, ligne {line}",
+      "totals": "Totaux",
+      "undo": "Annuler",
+      "undoAlt": "Ajouter la ligne de nouveau",
+      "unitCost": "Coût unitaire",
+      "unitPrice": "Prix unitaire"
+    },
+    "totals": {
+      "announce": "Total {total}",
+      "discount": "Escompte",
+      "discountAmount": "Montant",
+      "discountNone": "Aucun",
+      "discountPercent": "Pourcentage",
+      "discountType": "Type d’escompte",
+      "discountValue": "Valeur de l’escompte",
+      "includes": "Comprend {name} {amount}",
+      "pending": "Mise à jour…",
+      "region": "Totaux",
+      "subtotal": "Sous-total",
+      "total": "Total"
+    }
+  },
   "emailDomain": {
     "add": "Set up domain",
     "addFailed": "The domain couldn't be set up. Try again.",

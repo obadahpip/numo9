@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "numo9.search",
     "numo9.banking",
     "numo9.tax",
+    "numo9.items",  # D-01-T02 stub; H-01
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",

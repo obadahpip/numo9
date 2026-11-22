@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:15-0500\n"
+"POT-Creation-Date: 2026-11-22 10:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2565,8 +2565,68 @@ msgstr ""
 msgid "DEMO — NOT A REAL DOCUMENT"
 msgstr "DÉMO — DOCUMENT FICTIF"
 
+#, python-format
+msgid "%(kind)s isn't a document of this side."
+msgstr "%(kind)s n’est pas un document de ce côté."
+
+msgid "That tax code doesn't exist."
+msgstr "Ce code de taxe n'existe pas."
+
 msgid "Documents"
 msgstr "Documents"
+
+msgid "No discount"
+msgstr "Aucun escompte"
+
+msgid "Percent"
+msgstr "Pourcentage"
+
+msgid "terms"
+msgstr "modalités"
+
+msgid "ship-to country"
+msgstr "pays de livraison"
+
+msgid "ship-to province"
+msgstr "province de livraison"
+
+msgid "discount"
+msgstr "rabais"
+
+msgid "discount value"
+msgstr "valeur de l’escompte"
+
+msgid "version"
+msgstr "version"
+
+msgid "item"
+msgstr "article"
+
+msgid "quantity"
+msgstr ""
+
+msgid "unit price"
+msgstr "prix unitaire"
+
+msgid "line discount"
+msgstr "escompte de ligne"
+
+msgid "line discount value"
+msgstr "valeur de l’escompte de ligne"
+
+msgid "tax changed from the default"
+msgstr "taxe modifiée par rapport à la valeur par défaut"
+
+#, fuzzy
+#| msgid "Banking"
+msgid "tracking"
+msgstr "Banque"
+
+msgid "See quotes, invoices and credit notes and how their amounts are worked out"
+msgstr "Voir les soumissions, factures et notes de crédit et le calcul de leurs montants"
+
+msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
+msgstr "Voir les factures fournisseurs, bons de commande et crédits fournisseurs et le calcul de leurs montants"
 
 msgid "Prepared with Numo9"
 msgstr "Préparé avec Numo9"
@@ -2599,6 +2659,44 @@ msgstr "Total (CAD)"
 #, python-format
 msgid "Page %(page)s of %(pages)s"
 msgstr "Page %(page)s de %(pages)s"
+
+#, python-format
+msgid "Line %(line)d: %(message)s"
+msgstr "Ligne %(line)d : %(message)s"
+
+#, python-format
+msgid "Unknown document type %(kind)s."
+msgstr "Type de document inconnu : %(kind)s."
+
+#, python-format
+msgid "%(account)s can't be used on a sales line: choose a revenue or other income account."
+msgstr "%(account)s ne peut pas être utilisé sur une ligne de vente : choisissez un compte de revenus ou d’autres revenus."
+
+#, python-format
+msgid "%(account)s can't be used on a purchase line: choose an expense or asset account."
+msgstr "%(account)s ne peut pas être utilisé sur une ligne d’achat : choisissez un compte de charges ou d’actif."
+
+#, python-format
+msgid "%(account)s has sub-accounts: choose one of them."
+msgstr "%(account)s a des sous-comptes : choisissez-en un."
+
+#, python-format
+msgid "%(code)s is a purchase tax code: choose a sales tax code."
+msgstr "%(code)s est un code de taxe d’achat : choisissez un code de taxe de vente."
+
+#, python-format
+msgid "%(code)s is a sales tax code: choose a purchase tax code."
+msgstr "%(code)s est un code de taxe de vente : choisissez un code de taxe d’achat."
+
+#, python-format
+msgid "%(code)s is archived: choose another code."
+msgstr "%(code)s est archivé : choisissez un autre code."
+
+msgid "Choose tax exclusive, tax inclusive or no tax."
+msgstr "Choisissez taxes en sus, taxes incluses ou sans taxes."
+
+msgid "The amounts have no tax: remove the tax code."
+msgstr "Les montants sont sans taxes : retirez le code de taxe."
 
 msgid "Trial"
 msgstr "Essai"
@@ -3865,6 +3963,36 @@ msgstr ""
 msgid "Column"
 msgstr "colonnes"
 
+msgid "Items"
+msgstr "Articles"
+
+msgid "sale price"
+msgstr "prix de vente"
+
+msgid "purchase price"
+msgstr "prix d’achat"
+
+msgid "sales account"
+msgstr "compte de ventes"
+
+msgid "purchase account"
+msgstr "compte d’achats"
+
+msgid "sales tax code"
+msgstr "code de taxe de vente"
+
+msgid "purchase tax code"
+msgstr "code de taxe d’achat"
+
+msgid "track inventory"
+msgstr "suivre l’inventaire"
+
+msgid "archived"
+msgstr "archivé"
+
+msgid "items"
+msgstr "articles"
+
 msgid "Waiting to try again"
 msgstr "En attente d’un nouvel essai"
 
@@ -4522,11 +4650,6 @@ msgstr ""
 msgid "book"
 msgstr ""
 
-#, fuzzy
-#| msgid "Banking"
-msgid "tracking"
-msgstr "Banque"
-
 msgid "journal line"
 msgstr ""
 
@@ -4810,9 +4933,6 @@ msgid "meter"
 msgstr ""
 
 msgid "day (UTC)"
-msgstr ""
-
-msgid "quantity"
 msgstr ""
 
 msgid "daily usage"
@@ -5648,9 +5768,6 @@ msgstr "Épuisé"
 msgid "Stored upper-case; organisations may type it in any case."
 msgstr "Enregistré en majuscules; les organisations peuvent le saisir en majuscules ou en minuscules."
 
-msgid "discount"
-msgstr "rabais"
-
 msgid "percent off"
 msgstr "pourcentage de rabais"
 
@@ -6297,9 +6414,6 @@ msgstr "activité quotidienne du personnel"
 msgid "Use the date format YYYY-MM-DD."
 msgstr "Utilisez le format de date AAAA-MM-JJ."
 
-msgid "That tax code doesn't exist."
-msgstr "Ce code de taxe n'existe pas."
-
 msgid "That tax component doesn't exist."
 msgstr "Cette composante de taxe n'existe pas."
 
@@ -6403,9 +6517,6 @@ msgstr "Exonéré"
 
 msgid "Out of scope"
 msgstr "Hors champ"
-
-msgid "version"
-msgstr "version"
 
 msgid "side"
 msgstr "côté"
