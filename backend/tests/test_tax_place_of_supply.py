@@ -10,6 +10,7 @@ import pytest
 
 from numo9.tax.place_of_supply import (
     MISSING_PROVINCE,
+    PST_UNREGISTERED,
     SOURCE_ACCOUNT,
     SOURCE_CONTACT,
     SOURCE_ITEM,
@@ -204,3 +205,39 @@ def test_the_resolver_is_deterministic() -> None:
 def test_unknown_side_is_refused() -> None:
     with pytest.raises(ValueError):
         resolve(SupplyContext("other", DAY))
+
+
+# ---- PST-registration warning (G-02-T04) -------------------------------------------------------
+
+
+@pytest.mark.parametrize("province", ["BC", "SK", "MB"])
+def test_taxable_sale_into_a_pst_province_unregistered_warns(province: str) -> None:
+    result = resolve(sale(province))
+    assert result.warnings == (PST_UNREGISTERED,)
+    assert result.code == f"sales.{province}.gst"
+
+
+@pytest.mark.parametrize(("province", "reg"), [("BC", PST_BC), ("SK", PST_SK), ("MB", RST_MB)])
+def test_registered_for_the_provincial_tax_no_warning(province: str, reg: Registration) -> None:
+    assert resolve(sale(province, regs=(reg,))).warnings == ()
+
+
+@pytest.mark.parametrize("province", ["ON", "AB", "QC", "NS"])
+def test_no_pst_warning_outside_pst_provinces(province: str) -> None:
+    assert resolve(sale(province)).warnings == ()
+
+
+def test_no_warning_for_exports_purchases_or_non_taxable_lines() -> None:
+    assert resolve(sale(billing=US)).warnings == ()
+    assert resolve(purchase("BC")).warnings == ()
+    assert resolve(sale("BC", taxable=False)).warnings == ()
+
+
+def test_warning_holds_with_an_override_and_via_ship_to() -> None:
+    assert resolve(sale("BC", line_override="sales.exempt")).warnings == (PST_UNREGISTERED,)
+    assert resolve(sale("ON", ship_to=CA("CA", "BC"))).warnings == (PST_UNREGISTERED,)
+    assert resolve(sale(home="BC")).warnings == (PST_UNREGISTERED,)
+
+
+def test_wrong_province_registration_does_not_count() -> None:
+    assert resolve(sale("BC", regs=(PST_SK,))).warnings == (PST_UNREGISTERED,)

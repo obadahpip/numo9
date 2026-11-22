@@ -4,7 +4,8 @@
 home province and registrations, the contact's addresses, the line's ship-to and the item /
 account / contact defaults — and returns a ``Resolution``: the code key, where it came from, an
 explanation message key with its parameters (the "auto" chip's tooltip: "Ontario customer →
-HST 13 %"), the province of supply, flags (``missing_province``) and warnings. It reads no
+HST 13 %"), the province of supply, flags (``missing_province``) and warnings
+(``tax.pos.pst_unregistered`` — G-02-T04). It reads no
 database and never "last used"; the same context always gives the same code. The decision
 table is ``docs/specs/tax-place-of-supply.md``.
 
@@ -18,7 +19,7 @@ The key is resolved to the code version in force on the date by ``tax.resolver.c
 from __future__ import annotations
 
 import datetime as dt
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 SALES = "sales"
@@ -40,6 +41,11 @@ SOURCE_NONE = "none"
 
 # Flags.
 MISSING_PROVINCE = "missing_province"
+
+# Warnings (G-02-T04).
+PST_UNREGISTERED = "tax.pos.pst_unregistered"
+#: Provinces whose separate PST/RST the organisation must register for to collect it.
+PST_PROVINCES = frozenset({"BC", "SK", "MB"})
 
 
 @dataclass(frozen=True)
@@ -160,8 +166,30 @@ def _purchase(where: SupplyAddress) -> tuple[str, str, dict[str, Any]]:
     )
 
 
+def warnings_for(context: SupplyContext) -> tuple[str, ...]:
+    """Warnings for a line (G-02-T04): ``tax.pos.pst_unregistered`` for a taxable sale placed in
+    BC, SK or MB while the organisation has no active registration for that province's tax —
+    whatever code the line ends up with (an override doesn't silence it). Never blocks saving."""
+    if context.side != SALES or not context.taxable:
+        return ()
+    where, _flags = place(context)
+    if where is None or where.country != "CA" or where.province not in PST_PROVINCES:
+        return ()
+    if registered(context, PROVINCIAL_REGISTRATION[where.province]):
+        return ()
+    return (PST_UNREGISTERED,)
+
+
 def resolve(context: SupplyContext) -> Resolution:
-    """The default code for a line (module docstring)."""
+    """The default code for a line (module docstring), with its warnings."""
+    resolution = _resolve(context)
+    found = warnings_for(context)
+    if not found:
+        return resolution
+    return replace(resolution, warnings=found)
+
+
+def _resolve(context: SupplyContext) -> Resolution:
     side = context.side
     if side not in (SALES, PURCHASE):
         raise ValueError(f"Unknown side {side!r}.")
