@@ -141,3 +141,25 @@ test("paste 20 rows from Excel: 20 lines, invalid cells flagged", async ({ page 
   );
   await expect(page.getByRole("status", { name: /^Amount, line 3$/ })).toHaveText("$90.00");
 });
+
+test("tablet: lines become labelled cards at 768 px @visual", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto("/iframe.html?id=data-linegrid--document-lines-story&viewMode=story");
+  const grid = page.getByRole("grid", { name: "Invoice lines" });
+  await expect(grid).toHaveAttribute("data-stacked", "true");
+  // The column headers are for screen readers only; each card shows its field labels.
+  await expect(grid.locator("thead")).toHaveCSS("position", "absolute");
+  await expect(page.getByRole("row").nth(1).getByText("Unit price", { exact: true })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Description, line 1" })).toBeVisible();
+  const width = await grid.evaluate((element) => element.getBoundingClientRect().width);
+  expect(width).toBeLessThanOrEqual(768);
+  await expect(page.locator("#storybook-root")).toHaveScreenshot("document-lines-768.png", {
+    fullPage: true,
+  });
+});
+
+test("desktop keeps the table layout", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/iframe.html?id=data-linegrid--document-lines-story&viewMode=story");
+  await expect(page.locator("thead")).not.toHaveCSS("position", "absolute");
+});

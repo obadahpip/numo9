@@ -448,6 +448,7 @@ export function DocumentLines({
       readOnly={readOnly}
       defaultHiddenColumns={defaultHiddenColumns}
       columnStore={columnStore}
+      stacked
       onLineRemoved={(_line, index, restore) =>
         toast?.toast({
           title: labels.lineRemoved(index + 1),

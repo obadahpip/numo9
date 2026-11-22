@@ -153,6 +153,11 @@ export interface LineGridProps {
   onPasteRows?: (rows: string[][], line: number, columns: string[]) => void;
   /** Cells to flag as not valid, per line id: column ids (D-01-T15). */
   invalidCells?: Readonly<Record<string, readonly string[]>>;
+  /**
+   * At ≤ 1024 px each line becomes a card with labelled fields (D-01-T16: tablets and narrow
+   * windows). The grid keeps its roles, so screen readers still hear rows and cells.
+   */
+  stacked?: boolean;
 }
 
 /** Spreadsheet clipboard text → rows of cells (tabs, CRLF/LF; a trailing line break ignored). */
@@ -190,6 +195,7 @@ export function LineGrid({
   columnStore,
   onPasteRows,
   invalidCells = {},
+  stacked = false,
 }: LineGridProps) {
   const baseId = useId();
   const table = useRef<HTMLTableElement>(null);
@@ -373,19 +379,24 @@ export function LineGrid({
           ref={table}
           role="grid"
           aria-label={labels.grid}
-          className="w-full min-w-[40rem] table-fixed border-separate border-spacing-0 text-sm"
+          data-stacked={stacked || undefined}
+          className={cn(
+            "w-full min-w-[40rem] table-fixed border-separate border-spacing-0 text-sm",
+            stacked && "max-lg:block max-lg:min-w-0",
+          )}
         >
-          <colgroup>
+          <colgroup className={cn(stacked && "max-lg:hidden")}>
             <col style={{ width: 44 }} />
             {visible.map((column) => (
               <col key={column.id} style={column.width ? { width: column.width } : undefined} />
             ))}
             <col style={{ width: 52 }} />
           </colgroup>
-          <thead>
-            <tr>
+          <thead className={cn(stacked && "max-lg:sr-only")}>
+            <tr role="row">
               <th
                 scope="col"
+                role="columnheader"
                 className="border-b border-border-strong bg-surface-subtle px-2 py-2 text-xs font-bold"
               >
                 <span className="sr-only">#</span>
@@ -394,6 +405,7 @@ export function LineGrid({
                 <th
                   key={column.id}
                   scope="col"
+                  role="columnheader"
                   className={cn(
                     "border-b border-border-strong bg-surface-subtle px-2 py-2 text-xs font-bold text-fg",
                     column.kind === "money" ? "text-end" : "text-start",
@@ -402,19 +414,26 @@ export function LineGrid({
                   {column.header}
                 </th>
               ))}
-              <th scope="col" className="border-b border-border-strong bg-surface-subtle">
+              <th
+                scope="col"
+                role="columnheader"
+                className="border-b border-border-strong bg-surface-subtle"
+              >
                 <span className="sr-only">{labels.actions}</span>
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={cn(stacked && "max-lg:block max-lg:space-y-3 max-lg:p-2")}>
             {lines.map((line, index) => (
               <tr
                 key={line.id}
+                role="row"
                 data-line={index + 1}
                 onDragOver={(event) => onDragOver(event, index)}
                 onDrop={(event) => onDrop(event, index)}
                 className={cn(
+                  stacked &&
+                    "max-lg:grid max-lg:grid-cols-2 max-lg:gap-x-3 max-lg:gap-y-1 max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:p-2 max-md:grid-cols-1",
                   dragging === index && "opacity-50",
                   dropAt === index &&
                     dragging !== null &&
@@ -422,7 +441,13 @@ export function LineGrid({
                     "outline-2 -outline-offset-2 outline-border-focus",
                 )}
               >
-                <td className="border-b border-border px-1 align-middle">
+                <td
+                  role="gridcell"
+                  className={cn(
+                    "border-b border-border px-1 align-middle",
+                    stacked && "max-lg:col-span-full max-lg:border-0",
+                  )}
+                >
                   <button
                     type="button"
                     draggable={!readOnly}
@@ -470,6 +495,7 @@ export function LineGrid({
                   return (
                     <td
                       key={column.id}
+                      role="gridcell"
                       data-invalid={invalid || undefined}
                       onPasteCapture={(event) => {
                         if (!onPasteRows || readOnly || column.readOnly) return;
@@ -485,9 +511,19 @@ export function LineGrid({
                       }}
                       className={cn(
                         "border-b border-border p-1 align-top",
+                        stacked && "max-lg:block max-lg:border-0",
+                        stacked && !column.width && "max-lg:col-span-full",
                         invalid && "bg-surface-danger-subtle",
                       )}
                     >
+                      {stacked ? (
+                        <span
+                          aria-hidden="true"
+                          className="hidden px-2 text-xs font-semibold text-fg-muted max-lg:block"
+                        >
+                          {column.header}
+                        </span>
+                      ) : null}
                       {column.readOnly ? (
                         <output
                           id={id}
@@ -543,7 +579,14 @@ export function LineGrid({
                     </td>
                   );
                 })}
-                <td className="border-b border-border px-1 align-middle">
+                <td
+                  role="gridcell"
+                  className={cn(
+                    "border-b border-border px-1 align-middle",
+                    stacked &&
+                      "max-lg:col-span-full max-lg:flex max-lg:justify-end max-lg:border-0",
+                  )}
+                >
                   {readOnly ? null : (
                     <IconButton
                       label={labels.removeLine(index + 1)}
@@ -559,26 +602,46 @@ export function LineGrid({
             ))}
           </tbody>
           {hasTotals ? (
-            <tfoot>
-              <tr data-totals="">
+            <tfoot className={cn(stacked && "max-lg:block max-lg:px-2")}>
+              <tr
+                data-totals=""
+                role="row"
+                className={cn(stacked && "max-lg:flex max-lg:flex-wrap max-lg:justify-end")}
+              >
                 <th
                   scope="row"
+                  role="rowheader"
                   colSpan={1 + visible.findIndex((c) => c.total)}
-                  className="px-2 py-2 text-start text-sm font-semibold"
+                  className={cn(
+                    "px-2 py-2 text-start text-sm font-semibold",
+                    stacked && "max-lg:me-auto",
+                  )}
                 >
                   {labels.totals}
                 </th>
                 {visible.slice(visible.findIndex((c) => c.total)).map((column) => (
                   <td
                     key={column.id}
-                    className="px-3 py-2 text-end text-sm font-semibold tabular-nums"
+                    role="gridcell"
+                    className={cn(
+                      "px-3 py-2 text-end text-sm font-semibold tabular-nums",
+                      stacked && !column.total && "max-lg:hidden",
+                    )}
                   >
+                    {stacked && column.total ? (
+                      <span
+                        aria-hidden="true"
+                        className="hidden text-xs font-semibold text-fg-muted max-lg:block"
+                      >
+                        {column.header}
+                      </span>
+                    ) : null}
                     {column.total
                       ? formatMoney(totals[column.id] ?? "0", { locale, currency })
                       : null}
                   </td>
                 ))}
-                <td />
+                <td role="gridcell" className={cn(stacked && "max-lg:hidden")} />
               </tr>
             </tfoot>
           ) : null}

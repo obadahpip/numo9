@@ -50,6 +50,10 @@ and sign-in on the device (a server store, as the directory's saved views, can r
 changing the grid). When a hidden column holds values, a note under the grid says so
 (`labels.hiddenWithValues`) with a Show button.
 
+**Tablets (D-01-T16).** With `stacked` (DocumentLines sets it), at ≤ 1024 px each line is a card
+with its field labels (two columns, one below 768 px); the table keeps explicit grid, row and cell
+roles so screen readers still hear rows and cells, and the column headers stay for them only.
+
 Planned extensions (later D-01 tasks): paste from a spreadsheet (TSV), document-level discount and the
 tax-per-component totals panel, server-authoritative calculation (`DocumentCalculator`) with the
 frontend mirror wiring, per-user column-chooser persistence, and the stacked line-card layout at ≤ 1024 px.
