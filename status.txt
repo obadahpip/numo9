@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 482   Remaining: 2305   Progress: 17.29%
+TOTAL ATOMIC TASKS: 2787   Completed: 483   Remaining: 2304   Progress: 17.33%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -648,7 +648,7 @@ Phase 1 Core Books  (572 atomic tasks)
 [G-02]
 ✅ G-02-T01 — Decision table document (province × registration × side × item type → code), reviewed by the client's accountant
 ✅ G-02-T02 — TaxResolver.resolve(context) pure function implementing precedence and the decision table, returning code plus explanation string key
-❌ G-02-T03 — Context builder from document header/line (contact addresses B-01, ship-to, item H-01 hook, account default)
+✅ G-02-T03 — Context builder from document header/line (contact addresses B-01, ship-to, item H-01 hook, account default)
 ❌ G-02-T04 — PST-registration warning generator (taxable sale into BC/MB/SK while unregistered)
 ❌ G-02-T09 — Purchase-side resolution (account default then supplier province) for bills and spend money
 
