@@ -34,6 +34,11 @@ urlpatterns = [
         name="bank-transactions",
     ),
     path(
+        f"{ORG}bank-transactions/tax-default",
+        api.BankTransactionTaxDefaultView.as_view(),
+        name="bank-transactions-tax-default",
+    ),
+    path(
         f"{ORG}bank-transactions/<uuid:public_id>",
         api.BankTransactionDetailView.as_view(),
         name="bank-transaction",
