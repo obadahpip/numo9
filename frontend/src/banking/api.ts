@@ -128,6 +128,39 @@ export interface TransactionFilters {
   to?: string;
 }
 
+/** Input of `GET bank-transactions/tax-default` (G-02-T09). */
+export interface TaxDefaultQuery {
+  kind: BankTransactionKind;
+  date: string;
+  account?: string;
+  contact?: string;
+  amount?: string;
+  tax_mode?: TaxMode;
+}
+
+/** A line's default tax code and why: spend → account default, then the supplier's province;
+ * receive → the sales place-of-supply table. `"auto"` as a line's `tax_code` posts the same. */
+export interface TaxDefault {
+  code: string;
+  name: string;
+  version: number | null;
+  source: "override" | "item" | "contact" | "place_of_supply" | "account" | "none";
+  explanation: string;
+  params: Record<string, string>;
+  province: string;
+  flags: string[];
+  warnings: string[];
+  taxes: TaxPortion[];
+}
+
+export const AUTO_TAX_CODE = "auto";
+
+export function taxDefaultQuery(query: TaxDefaultQuery): string {
+  return new URLSearchParams(
+    Object.entries(query).filter((entry): entry is [string, string] => Boolean(entry[1])),
+  ).toString();
+}
+
 export const bankingApi = {
   accounts: (
     org: string,
@@ -162,6 +195,8 @@ export const bankingApi = {
   },
   record: (org: string, body: NewBankTransaction): Promise<ApiResult<BankTransaction & Refusal>> =>
     apiRequest(`${base(org)}/bank-transactions`, { method: "POST", body }),
+  taxDefault: (org: string, query: TaxDefaultQuery): Promise<ApiResult<TaxDefault & Refusal>> =>
+    apiRequest(`${base(org)}/bank-transactions/tax-default?${taxDefaultQuery(query)}`),
   void: (org: string, id: string, date?: string): Promise<ApiResult<BankTransaction & Refusal>> =>
     apiRequest(`${base(org)}/bank-transactions/${id}/void`, {
       method: "POST",

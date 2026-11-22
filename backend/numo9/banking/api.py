@@ -21,6 +21,10 @@ Bank transactions (spend money / receive money, F-01-T05):
 - ``POST bank-transactions`` ``{kind, bank_account, date, contact, reference, tax_mode, lines:
   [{account, amount, description, tax_code, taxes: [{role, amount, recoverable}], tracking}],
   attachments, override_reason}`` — posts it (201 with the transaction and its journal).
+- ``GET bank-transactions/tax-default`` ``?kind=&date=&account=&contact=&amount=&tax_mode=`` —
+  the line's default tax code (G-02-T09: spend → account default, then the supplier's province;
+  receive → the sales place-of-supply table), why, and its portions. A posted line with
+  ``tax_code: "auto"`` gets the same default and portions.
 - ``GET bank-transactions/<id>``; ``POST bank-transactions/<id>/void`` ``{date}`` — reverses the
   journal and marks it voided.
 
@@ -79,6 +83,7 @@ from .models import (
 from .permissions import BANKING_MANAGE, BANKING_TRANSACT, BANKING_VIEW
 from .register import RegisterFilters, export_register, register
 from .services import create_bank_account
+from .tax_defaults import apply_auto, line_default, portions
 from .transactions import (
     TAX_ROLES,
     MoneyLine,
@@ -474,6 +479,7 @@ class BankTransactionListView(APIView):
         data.is_valid(raise_exception=True)
         spec, documents = _spec(dict(data.validated_data))
         try:
+            spec = apply_auto(spec)
             txn = record_bank_transaction(
                 spec,
                 user=acting_user(),
@@ -485,6 +491,75 @@ class BankTransactionListView(APIView):
         except LedgerError as error:
             return _error(error)
         return Response(transaction_row(_txn(txn.public_id), lines=True), status=201)
+
+
+class TaxDefaultInputSerializer(serializers.Serializer[Any]):
+    kind = serializers.ChoiceField(choices=BankTransactionKind.choices)
+    date = serializers.DateField()
+    account = serializers.UUIDField(required=False, allow_null=True, default=None)
+    contact = serializers.UUIDField(required=False, allow_null=True, default=None)
+    amount = serializers.DecimalField(
+        max_digits=18, decimal_places=2, required=False, allow_null=True, default=None
+    )
+    tax_mode = serializers.ChoiceField(
+        choices=TaxMode.choices, required=False, default=TaxMode.EXCLUSIVE
+    )
+
+
+class BankTransactionTaxDefaultView(APIView):
+    """``GET bank-transactions/tax-default`` (G-02-T09) ``?kind=&date=&account=&contact=
+    &amount=&tax_mode=`` — the default code of a spend / receive line with why (explanation key
+    and parameters, flags, warnings) and, with an amount, its tax portions."""
+
+    queryset = BankTransaction._base_manager.none()
+
+    @requires_permission(BANKING_VIEW.key)
+    @requires_feature(READ)
+    @extend_schema(operation_id="bank_transactions_tax_default", responses={200: dict})
+    def get(self, request: Request, org: Any) -> Response:
+        data = TaxDefaultInputSerializer(data=request.query_params)
+        data.is_valid(raise_exception=True)
+        values = data.validated_data
+        account = contact = None
+        if values.get("account"):
+            account = Account.objects.filter(public_id=values["account"]).first()
+            if account is None:
+                raise serializers.ValidationError({"account": [_("That account doesn't exist.")]})
+        if values.get("contact"):
+            contact = Contact.objects.filter(
+                public_id=values["contact"], deleted_at__isnull=True
+            ).first()
+            if contact is None:
+                raise serializers.ValidationError({"contact": [_("That contact doesn't exist.")]})
+        resolution, version = line_default(
+            values["kind"], values["date"], current_org(), account=account, contact=contact
+        )
+        taxes: list[dict[str, Any]] = []
+        wants_taxes = values.get("amount") is not None and values["tax_mode"] != TaxMode.NO_TAX
+        if version is not None and wants_taxes:
+            taxes = [
+                {"role": p.role, "amount": _money(p.amount), "recoverable": p.recoverable}
+                for p in portions(
+                    version,
+                    values["amount"],
+                    inclusive=values["tax_mode"] == TaxMode.INCLUSIVE,
+                    account=account,
+                )
+            ]
+        return Response(
+            {
+                "code": version.code if version is not None else "",
+                "name": version.name if version is not None else "",
+                "version": version.version if version is not None else None,
+                "source": resolution.source,
+                "explanation": resolution.explanation,
+                "params": resolution.params,
+                "province": resolution.province,
+                "flags": sorted(resolution.flags),
+                "warnings": list(resolution.warnings),
+                "taxes": taxes,
+            }
+        )
 
 
 class BankTransactionDetailView(APIView):

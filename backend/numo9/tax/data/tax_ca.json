@@ -1,5 +1,5 @@
 {
- "version": "ca-2026.1",
+ "version": "ca-2026.2",
  "source": "CRA GST/HST rates (canada.ca, GST/HST calculator and rates), Revenu Québec QST, BC/MB/SK PST/RST — as published for 2026; confirm with the client's accountant (G-01 risk)",
  "authorities": [
   {
@@ -520,6 +520,82 @@
    "name": {
     "en-ca": "GST 5 % (Yukon) on sales",
     "fr-ca": "TPS 5 % (Yukon) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.BC.gst",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "BC",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % only (British Columbia) on sales — not registered for the provincial tax",
+    "fr-ca": "TPS 5 % seulement (Colombie-Britannique) sur les ventes — non inscrit à la taxe provinciale"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.MB.gst",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % only (Manitoba) on sales — not registered for the provincial tax",
+    "fr-ca": "TPS 5 % seulement (Manitoba) sur les ventes — non inscrit à la taxe provinciale"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.SK.gst",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "SK",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % only (Saskatchewan) on sales — not registered for the provincial tax",
+    "fr-ca": "TPS 5 % seulement (Saskatchewan) sur les ventes — non inscrit à la taxe provinciale"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.QC.gst",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "QC",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % only (Quebec) on sales — not registered for the provincial tax",
+    "fr-ca": "TPS 5 % seulement (Québec) sur les ventes — non inscrit à la taxe provinciale"
    },
    "components": [
     {
