@@ -345,6 +345,41 @@
       "verifiedTitle": "Your email is verified"
     }
   },
+  "banking": {
+    "addAccount": "Add account",
+    "archivedHeading": "Archived ({count})",
+    "archivedNote": "Hidden from pickers, kept in reports.",
+    "emptyBody": "Add a chequing, savings, credit card or cash account and record spend and receive money right away. No bank feed is needed, and nothing else is blocked meanwhile.",
+    "emptyTitle": "No bank account yet",
+    "intro": "Bank, credit card and cash accounts work the moment you add them — no feed, import or reconciliation needed.",
+    "lastActivity": "Last activity {date}",
+    "ledgerBalance": "Balance in Numo9",
+    "loadFailed": "Bank accounts couldn't be loaded",
+    "loadFailedBody": "Check your connection and try again. Nothing else on this page is blocked.",
+    "loading": "Loading bank accounts…",
+    "noActivity": "No transactions yet",
+    "noStatement": "No statement balance entered",
+    "owed": "{amount} owed",
+    "receiveMoney": "Receive money",
+    "reconcileOptional": "Not reconciled — optional",
+    "reconcileTracked": "Reconciliation tracked",
+    "restore": "Restore",
+    "restored": "{name} is back in your accounts.",
+    "retry": "Try again",
+    "showArchived": "Show archived accounts",
+    "spendMoney": "Spend money",
+    "statementBalance": "Statement balance {amount} on {date}",
+    "title": "Banking",
+    "type": {
+      "cash": "Cash / petty cash",
+      "chequing": "Chequing",
+      "clearing": "Clearing",
+      "creditCard": "Credit card",
+      "lineOfCredit": "Line of credit",
+      "loan": "Loan",
+      "savings": "Savings"
+    }
+  },
   "billing": {
     "annual": "Annual",
     "cancel": "Cancel subscription",
@@ -2088,6 +2123,7 @@
     "user": "Invite a user"
   },
   "routes": {
+    "banking": "Banking",
     "chartOfAccounts": "Chart of accounts",
     "contacts": "Contacts",
     "documents": "Documents",
@@ -2416,6 +2452,7 @@
     },
     "nav": {
       "accounting": "Accounting",
+      "banking": "Banking",
       "contacts": "Contacts",
       "documents": "Documents",
       "home": "Home",

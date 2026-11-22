@@ -32,6 +32,7 @@ const labels = defineMessages({
     description: "Module name (Accounting)",
   },
   documents: { id: "routes.documents", defaultMessage: "Documents", description: "Module name" },
+  banking: { id: "routes.banking", defaultMessage: "Banking", description: "Module name" },
   settingsGeneral: {
     id: "routes.settingsGeneral",
     defaultMessage: "Settings: General",
@@ -237,6 +238,13 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.journals,
     settings: "settings/lock-dates",
     aliases: ["journals", "journal", "manual-journals", "journal/search.aspx"],
+  },
+  {
+    path: "banking",
+    feature: "accounting.banking.read",
+    label: labels.banking,
+    settings: "settings/lock-dates",
+    aliases: ["bank", "bank-accounts", "bankaccounts", "bank/bankaccounts.aspx", "cash"],
   },
   {
     path: "documents",
