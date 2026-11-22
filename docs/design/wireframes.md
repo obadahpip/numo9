@@ -630,3 +630,17 @@ old system with French headers, saved in Windows-1252.
 | 2 | History rows | File, format and mapping, period, new/duplicate counts, who imported; Undo per batch |
 | 3 | Undo refused | A batch with matched lines can't be undone until they're unmatched; the lines are named |
 | 4 | Toast | After an import, "Undo import" is offered straight away |
+
+## 48. Transfer money dialog (F-06-T01)
+
+![Transfer dialog](wireframes/49-transfer-dialog.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Dialog | Compact dialog; Alt+T opens it anywhere in Banking |
+| 2 | Preset chips | "Between my accounts", "Fund petty cash", "Pay credit card" pre-fill the To/From account kinds |
+| 3 | Swap | Swaps From and To in one click |
+| 4 | Balances | Current ledger balance under each picker; only active accounts in the same currency are offered |
+| 5 | Negative warning | Going below zero warns (F-07) but doesn't block |
+| 6 | Refused states | Same account, amount ≤ 0, cross-currency (deferred to R-02), archived account, locked period |
+| 7 | Result | One journal with two lines, source TRANSFER, on both registers; Void reverses both sides |
