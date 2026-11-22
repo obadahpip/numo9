@@ -125,3 +125,146 @@ export const typeLabels: Record<TaxCodeType, MessageDescriptor> = defineMessages
     description: "Tax code type",
   },
 });
+
+export const ed = defineMessages({
+  newTitle: { id: "tax.editor.newTitle", defaultMessage: "New tax code", description: "Heading" },
+  editTitle: {
+    id: "tax.editor.editTitle",
+    defaultMessage: "Edit tax code — {name}",
+    description: "Heading",
+  },
+  back: { id: "tax.editor.back", defaultMessage: "Tax codes", description: "Breadcrumb link" },
+  code: { id: "tax.editor.code", defaultMessage: "Code", description: "Field label" },
+  codeHint: {
+    id: "tax.editor.codeHint",
+    defaultMessage: "A stable key, e.g. purchase.ON.fuel",
+    description: "Hint under the code field",
+  },
+  name: { id: "tax.editor.name", defaultMessage: "Name", description: "Field label" },
+  side: { id: "tax.editor.side", defaultMessage: "Side", description: "Field label" },
+  type: { id: "tax.editor.type", defaultMessage: "Type", description: "Field label" },
+  province: {
+    id: "tax.editor.province",
+    defaultMessage: "Province or territory",
+    description: "Field label",
+  },
+  anywhere: {
+    id: "tax.editor.anywhere",
+    defaultMessage: "Anywhere",
+    description: "Province option: the code isn't for one province",
+  },
+  effectiveFrom: {
+    id: "tax.editor.effectiveFrom",
+    defaultMessage: "Effective from",
+    description: "Field label",
+  },
+  newVersionHint: {
+    id: "tax.editor.newVersionHint",
+    defaultMessage:
+      "Saving creates version {version} from this date; posted lines keep version {current}.",
+    description: "Hint under the date when editing an existing code",
+  },
+  claimable: {
+    id: "tax.editor.claimable",
+    defaultMessage: "Claimable ITC % (optional)",
+    description: "Field label: restricted ITC share of a purchase code",
+  },
+  components: {
+    id: "tax.editor.components",
+    defaultMessage: "Components",
+    description: "Section heading",
+  },
+  component: {
+    id: "tax.editor.component",
+    defaultMessage: "Component {n}",
+    description: "Accessible name of a component picker",
+  },
+  pickComponent: {
+    id: "tax.editor.pickComponent",
+    defaultMessage: "Choose a component",
+    description: "Empty option of a component picker",
+  },
+  recoverable: {
+    id: "tax.editor.recoverable",
+    defaultMessage: "Recoverable % for component {n}",
+    description: "Accessible name of the recoverable % input",
+  },
+  remove: {
+    id: "tax.editor.remove",
+    defaultMessage: "Remove component {n}",
+    description: "Button",
+  },
+  add: { id: "tax.editor.add", defaultMessage: "Add component", description: "Button" },
+  example: {
+    id: "tax.editor.example",
+    defaultMessage: "Live example",
+    description: "Panel heading",
+  },
+  exampleAmount: {
+    id: "tax.editor.exampleAmount",
+    defaultMessage: "Amount",
+    description: "Example amount label",
+  },
+  exampleInclusive: {
+    id: "tax.editor.exampleInclusive",
+    defaultMessage: "Amount includes tax",
+    description: "Example toggle",
+  },
+  exampleTotal: {
+    id: "tax.editor.exampleTotal",
+    defaultMessage: "Total",
+    description: "Example line",
+  },
+  exampleNet: {
+    id: "tax.editor.exampleNet",
+    defaultMessage: "Before tax",
+    description: "Example line",
+  },
+  exampleClaimable: {
+    id: "tax.editor.exampleClaimable",
+    defaultMessage: "Recoverable (ITC / ITR)",
+    description: "Example line",
+  },
+  exampleCost: {
+    id: "tax.editor.exampleCost",
+    defaultMessage: "Added to the expense",
+    description: "Example line",
+  },
+  save: { id: "tax.editor.save", defaultMessage: "Save", description: "Button" },
+  saveVersion: {
+    id: "tax.editor.saveVersion",
+    defaultMessage: "Save as a new version",
+    description: "Button when editing an existing code",
+  },
+  cancel: { id: "tax.editor.cancel", defaultMessage: "Cancel", description: "Link" },
+  saved: {
+    id: "tax.editor.saved",
+    defaultMessage: "{name} saved (version {version}).",
+    description: "Status after saving",
+  },
+  failed: {
+    id: "tax.editor.failed",
+    defaultMessage: "The tax code couldn't be saved.",
+    description: "Generic error",
+  },
+  required: {
+    id: "tax.editor.required",
+    defaultMessage: "Fill in the code, name and date.",
+    description: "Validation message",
+  },
+  componentOption: {
+    id: "tax.editor.componentOption",
+    defaultMessage: "{name} {rate} % · {authority}",
+    description: "A component in the picker: name, rate and authority",
+  },
+  componentRate: {
+    id: "tax.editor.componentRate",
+    defaultMessage: "{name} {rate} %",
+    description: "A component line of the live example",
+  },
+  recoverablePlaceholder: {
+    id: "tax.editor.recoverablePlaceholder",
+    defaultMessage: "100",
+    description: "Placeholder of the recoverable % input (full recovery)",
+  },
+});
