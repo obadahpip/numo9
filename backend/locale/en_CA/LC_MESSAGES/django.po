@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:50-0500\n"
+"POT-Creation-Date: 2026-11-22 09:59-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2512,6 +2512,44 @@ msgstr ""
 
 #, python-format
 msgid "Page %(page)s of %(pages)s"
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: %(message)s"
+msgstr ""
+
+#, python-format
+msgid "Unknown document type %(kind)s."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be used on a sales line: choose a revenue or other income account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s can't be used on a purchase line: choose an expense or asset account."
+msgstr ""
+
+#, python-format
+msgid "%(account)s has sub-accounts: choose one of them."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is a purchase tax code: choose a sales tax code."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is a sales tax code: choose a purchase tax code."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is archived: choose another code."
+msgstr ""
+
+msgid "Choose tax exclusive, tax inclusive or no tax."
+msgstr ""
+
+msgid "The amounts have no tax: remove the tax code."
 msgstr ""
 
 msgid "Trial"

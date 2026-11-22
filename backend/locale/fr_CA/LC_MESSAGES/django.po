@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:50-0500\n"
+"POT-Creation-Date: 2026-11-22 09:59-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2646,6 +2646,44 @@ msgstr "Total (CAD)"
 #, python-format
 msgid "Page %(page)s of %(pages)s"
 msgstr "Page %(page)s de %(pages)s"
+
+#, python-format
+msgid "Line %(line)d: %(message)s"
+msgstr "Ligne %(line)d : %(message)s"
+
+#, python-format
+msgid "Unknown document type %(kind)s."
+msgstr "Type de document inconnu : %(kind)s."
+
+#, python-format
+msgid "%(account)s can't be used on a sales line: choose a revenue or other income account."
+msgstr "%(account)s ne peut pas être utilisé sur une ligne de vente : choisissez un compte de revenus ou d’autres revenus."
+
+#, python-format
+msgid "%(account)s can't be used on a purchase line: choose an expense or asset account."
+msgstr "%(account)s ne peut pas être utilisé sur une ligne d’achat : choisissez un compte de charges ou d’actif."
+
+#, python-format
+msgid "%(account)s has sub-accounts: choose one of them."
+msgstr "%(account)s a des sous-comptes : choisissez-en un."
+
+#, python-format
+msgid "%(code)s is a purchase tax code: choose a sales tax code."
+msgstr "%(code)s est un code de taxe d’achat : choisissez un code de taxe de vente."
+
+#, python-format
+msgid "%(code)s is a sales tax code: choose a purchase tax code."
+msgstr "%(code)s est un code de taxe de vente : choisissez un code de taxe d’achat."
+
+#, python-format
+msgid "%(code)s is archived: choose another code."
+msgstr "%(code)s est archivé : choisissez un autre code."
+
+msgid "Choose tax exclusive, tax inclusive or no tax."
+msgstr "Choisissez taxes en sus, taxes incluses ou sans taxes."
+
+msgid "The amounts have no tax: remove the tax code."
+msgstr "Les montants sont sans taxes : retirez le code de taxe."
 
 msgid "Trial"
 msgstr "Essai"
