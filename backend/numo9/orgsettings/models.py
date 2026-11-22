@@ -20,6 +20,7 @@ and the job scheduler read the organisation, and the settings page is the one pl
 from __future__ import annotations
 
 import re
+from decimal import Decimal
 from typing import Any, ClassVar
 
 from django.core.exceptions import ValidationError
@@ -216,6 +217,20 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         default=False,
         db_default=False,
         help_text=_("Every line of a journal on an expense account must name a contact."),
+    )
+    # ---- journal approval (C-04-T01) --------------------------------------------------------
+    journal_approval_threshold = models.DecimalField(
+        _("journals need approval from"),
+        max_digits=18,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_(
+            "Manual journals of this total or more must be approved by someone other than their "
+            "author before they post. Empty: journals never need approval (people's own approval "
+            "limits still apply)."
+        ),
     )
 
     # ---- default payment terms -------------------------------------------------------------

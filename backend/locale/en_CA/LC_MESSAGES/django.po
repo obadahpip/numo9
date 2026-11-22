@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:43-0500\n"
+"POT-Creation-Date: 2026-11-22 09:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3751,6 +3751,22 @@ msgstr ""
 msgid "There's no journal with this id in this organisation."
 msgstr ""
 
+#, python-format
+msgid "%(journal)s isn't waiting for approval."
+msgstr ""
+
+#, python-format
+msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgstr ""
+
+#, python-format
+msgid "Say why the journal is sent back (at least %(min)d characters)."
+msgstr ""
+
+#, python-format
+msgid "Approval required: journals of %(threshold)s or more must be approved by someone else before they post. Submit it for approval."
+msgstr ""
+
 msgid "accounting book"
 msgstr ""
 
@@ -4282,6 +4298,54 @@ msgid "journal override"
 msgstr ""
 
 msgid "journal overrides"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Withdrawn"
+msgstr ""
+
+msgid "submitted by"
+msgstr ""
+
+msgid "submitted at"
+msgstr ""
+
+msgid "decision"
+msgstr ""
+
+msgid "approval limit"
+msgstr ""
+
+msgid "journal approval"
+msgstr ""
+
+msgid "journal approvals"
+msgstr ""
+
+#, python-format
+msgid "%(journal)s is waiting for your approval"
+msgstr ""
+
+#, python-format
+msgid "%(person)s submitted a journal of %(total)s dated %(date)s: %(narration)s"
+msgstr ""
+
+#, python-format
+msgid "%(journal)s was approved and posted"
+msgstr ""
+
+#, python-format
+msgid "%(person)s approved your journal of %(total)s."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s was sent back"
+msgstr ""
+
+#, python-format
+msgid "%(person)s sent your journal back: %(reason)s"
 msgstr ""
 
 #, python-format
@@ -4923,6 +4987,12 @@ msgstr ""
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr ""
 
+msgid "journals need approval from"
+msgstr ""
+
+msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr ""
 
@@ -5545,9 +5615,6 @@ msgid "Pay run"
 msgstr ""
 
 msgid "maximum amount (CAD)"
-msgstr ""
-
-msgid "approval limit"
 msgstr ""
 
 msgid "approval limits"

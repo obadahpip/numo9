@@ -68,7 +68,7 @@ def account_document(account: Any) -> Doc | None:
 
 
 def journal_document(entry: Any) -> Doc | None:
-    from numo9.ledger.models import JournalLine
+    from numo9.ledger.models import JournalLine, JournalStatus
     from numo9.ledger.sequence import format_journal_number
 
     lines = JournalLine._base_manager.filter(
@@ -77,9 +77,15 @@ def journal_document(entry: Any) -> Doc | None:
     descriptions = " ".join(d for d in lines.values_list("description", flat=True) if d)
     total = lines.aggregate(total=Sum("debit"))["total"] or Decimal("0")
     number = format_journal_number(entry.organisation, entry.number) if entry.number else ""
+    # Drafts and journals waiting for approval say so (C-04-T14: approvers find them by narration).
+    state = (
+        str(JournalStatus(entry.status).label)
+        if entry.status in (JournalStatus.DRAFT, JournalStatus.AWAITING_APPROVAL)
+        else ""
+    )
     return Doc(
         title=number or str(entry),
-        subtitle=(entry.narration or "")[:300],
+        subtitle=" — ".join(x for x in (state, (entry.narration or "")[:300]) if x),
         code=number,
         body=" ".join(x for x in (entry.narration or "", descriptions) if x),
         amount=total,

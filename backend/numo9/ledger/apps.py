@@ -14,7 +14,10 @@ class LedgerConfig(AppConfig):
     def ready(self) -> None:
         from numo9.imports.fields import register_entity
 
-        from . import cache  # noqa: F401  (chart cache busting on account changes)
+        from . import (
+            cache,  # noqa: F401  (chart cache busting on account changes)
+            notifications,  # noqa: F401  (journal approval events, C-04-T13)
+        )
         from .importing import ACCOUNT
 
         # The chart of accounts can be imported and exported (C-01-T13, B-03 framework).

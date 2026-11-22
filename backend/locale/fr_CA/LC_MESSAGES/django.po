@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:43-0500\n"
+"POT-Creation-Date: 2026-11-22 09:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3960,6 +3960,22 @@ msgstr "Utilisez accounting (comptable) ou tax (fiscal)."
 msgid "There's no journal with this id in this organisation."
 msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
 
+#, python-format
+msgid "%(journal)s isn't waiting for approval."
+msgstr "%(journal)s n'attend pas d'approbation."
+
+#, python-format
+msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, python-format
+msgid "Say why the journal is sent back (at least %(min)d characters)."
+msgstr "Indiquez pourquoi l'écriture est renvoyée (au moins %(min)d caractères)."
+
+#, python-format
+msgid "Approval required: journals of %(threshold)s or more must be approved by someone else before they post. Submit it for approval."
+msgstr "Approbation requise : les écritures de %(threshold)s ou plus doivent être approuvées par une autre personne avant d'être comptabilisées. Soumettez-la pour approbation."
+
 #, fuzzy
 #| msgid "Accounting"
 msgid "accounting book"
@@ -4541,6 +4557,54 @@ msgstr "dérogation d'écriture"
 
 msgid "journal overrides"
 msgstr "dérogations d'écriture"
+
+msgid "Rejected"
+msgstr "Refusée"
+
+msgid "Withdrawn"
+msgstr "Retirée"
+
+msgid "submitted by"
+msgstr "soumise par"
+
+msgid "submitted at"
+msgstr "soumise le"
+
+msgid "decision"
+msgstr "décision"
+
+msgid "approval limit"
+msgstr ""
+
+msgid "journal approval"
+msgstr "approbation d'écriture"
+
+msgid "journal approvals"
+msgstr "approbations d'écritures"
+
+#, python-format
+msgid "%(journal)s is waiting for your approval"
+msgstr "%(journal)s attend votre approbation"
+
+#, python-format
+msgid "%(person)s submitted a journal of %(total)s dated %(date)s: %(narration)s"
+msgstr "%(person)s a soumis une écriture de %(total)s datée du %(date)s : %(narration)s"
+
+#, python-format
+msgid "%(journal)s was approved and posted"
+msgstr "%(journal)s a été approuvée et comptabilisée"
+
+#, python-format
+msgid "%(person)s approved your journal of %(total)s."
+msgstr "%(person)s a approuvé votre écriture de %(total)s."
+
+#, python-format
+msgid "%(journal)s was sent back"
+msgstr "%(journal)s a été renvoyée"
+
+#, python-format
+msgid "%(person)s sent your journal back: %(reason)s"
+msgstr "%(person)s a renvoyé votre écriture : %(reason)s"
 
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
@@ -5206,6 +5270,12 @@ msgstr "contact exigé sur les lignes de dépenses"
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr "Chaque ligne d'une écriture sur un compte de dépenses doit indiquer un contact."
 
+msgid "journals need approval from"
+msgstr "les écritures doivent être approuvées à partir de"
+
+msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
+msgstr "Les écritures manuelles de ce total ou plus doivent être approuvées par une autre personne que leur auteur avant d'être comptabilisées. Vide : les écritures n'ont jamais besoin d'approbation (les limites d'approbation de chacun s'appliquent toujours)."
+
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"
 
@@ -5836,9 +5906,6 @@ msgid "Pay run"
 msgstr "Paie"
 
 msgid "maximum amount (CAD)"
-msgstr ""
-
-msgid "approval limit"
 msgstr ""
 
 msgid "approval limits"
