@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:54-0500\n"
+"POT-Creation-Date: 2026-11-22 09:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4581,6 +4581,30 @@ msgstr "approbation d'écriture"
 
 msgid "journal approvals"
 msgstr "approbations d'écritures"
+
+#, python-format
+msgid "%(journal)s is waiting for your approval"
+msgstr "%(journal)s attend votre approbation"
+
+#, python-format
+msgid "%(person)s submitted a journal of %(total)s dated %(date)s: %(narration)s"
+msgstr "%(person)s a soumis une écriture de %(total)s datée du %(date)s : %(narration)s"
+
+#, python-format
+msgid "%(journal)s was approved and posted"
+msgstr "%(journal)s a été approuvée et comptabilisée"
+
+#, python-format
+msgid "%(person)s approved your journal of %(total)s."
+msgstr "%(person)s a approuvé votre écriture de %(total)s."
+
+#, python-format
+msgid "%(journal)s was sent back"
+msgstr "%(journal)s a été renvoyée"
+
+#, python-format
+msgid "%(person)s sent your journal back: %(reason)s"
+msgstr "%(person)s a renvoyé votre écriture : %(reason)s"
 
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."

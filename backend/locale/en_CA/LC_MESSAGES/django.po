@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:54-0500\n"
+"POT-Creation-Date: 2026-11-22 09:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4322,6 +4322,30 @@ msgid "journal approval"
 msgstr ""
 
 msgid "journal approvals"
+msgstr ""
+
+#, python-format
+msgid "%(journal)s is waiting for your approval"
+msgstr ""
+
+#, python-format
+msgid "%(person)s submitted a journal of %(total)s dated %(date)s: %(narration)s"
+msgstr ""
+
+#, python-format
+msgid "%(journal)s was approved and posted"
+msgstr ""
+
+#, python-format
+msgid "%(person)s approved your journal of %(total)s."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s was sent back"
+msgstr ""
+
+#, python-format
+msgid "%(person)s sent your journal back: %(reason)s"
 msgstr ""
 
 #, python-format
