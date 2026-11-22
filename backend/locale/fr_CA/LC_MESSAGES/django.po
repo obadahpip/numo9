@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:21-0500\n"
+"POT-Creation-Date: 2026-11-22 08:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6230,6 +6230,10 @@ msgstr "activité quotidienne du personnel"
 msgid "A taxable code needs at least one tax component."
 msgstr "Un code taxable doit avoir au moins une composante de taxe."
 
+#, python-format
+msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
+msgstr "Choisissez une date après le %(start)s, pendant la version en vigueur : la nouvelle version commence à cette date et la version actuelle se termine la veille."
+
 msgid "tax authority"
 msgstr "autorité fiscale"
 
@@ -6324,6 +6328,10 @@ msgstr "Un code de taxe ne peut pas se terminer avant de commencer."
 #, python-format
 msgid "%(code)s already has version %(version)d in force from %(start)s: versions of a tax code can't overlap."
 msgstr "%(code)s a déjà la version %(version)d en vigueur depuis le %(start)s : les versions d'un code de taxe ne peuvent pas se chevaucher."
+
+#, python-format
+msgid "The components of %(code)s version %(version)d can't change: create a new version from a date instead (posted lines keep this one)."
+msgstr "Les composantes de la version %(version)d de %(code)s ne peuvent pas changer : créez plutôt une nouvelle version à partir d'une date (les lignes comptabilisées gardent celle-ci)."
 
 msgid "component"
 msgstr "composante"

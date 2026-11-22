@@ -342,6 +342,17 @@ class TaxCode(NamedMixin, AuditedModel, OrgOwnedModel):
                 )
 
 
+def _locked_components(code: TaxCode) -> TaxError:
+    return TaxError(
+        _(
+            "The components of %(code)s version %(version)d can't change: create a new version "
+            "from a date instead (posted lines keep this one)."
+        ),
+        code="tax.code.component_locked",
+        params={"code": code.code, "version": code.version},
+    )
+
+
 class TaxCodeComponent(OrgOwnedModel):
     """One component of a tax code version, with an optional recoverable % override.
 
@@ -384,8 +395,13 @@ class TaxCodeComponent(OrgOwnedModel):
         return f"{self.tax_code.code} · {self.component.key}"
 
     def save(self, *args: Any, **kwargs: Any) -> None:
+        if self.pk is not None:
+            raise _locked_components(self.tax_code)
         self.clean()
         super().save(*args, **kwargs)
+
+    def delete(self, *args: Any, **kwargs: Any) -> tuple[int, dict[str, int]]:
+        raise _locked_components(self.tax_code)
 
     def clean(self) -> None:
         code, part = self.tax_code, self.component

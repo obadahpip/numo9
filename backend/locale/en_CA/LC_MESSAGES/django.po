@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:21-0500\n"
+"POT-Creation-Date: 2026-11-22 08:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5865,6 +5865,10 @@ msgstr ""
 msgid "A taxable code needs at least one tax component."
 msgstr ""
 
+#, python-format
+msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
+msgstr ""
+
 msgid "tax authority"
 msgstr ""
 
@@ -5958,6 +5962,10 @@ msgstr ""
 
 #, python-format
 msgid "%(code)s already has version %(version)d in force from %(start)s: versions of a tax code can't overlap."
+msgstr ""
+
+#, python-format
+msgid "The components of %(code)s version %(version)d can't change: create a new version from a date instead (posted lines keep this one)."
 msgstr ""
 
 msgid "component"

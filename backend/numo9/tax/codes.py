@@ -81,3 +81,61 @@ def define_code(
                 recoverable_pct=pct,
             ).save()
         return tax_code
+
+
+def revise_code(
+    current: TaxCode,
+    *,
+    effective_from: dt.date,
+    components: Sequence[ComponentSpec | TaxComponent],
+    name: str | None = None,
+    name_fr: str | None = None,
+    itc_restriction_pct: Decimal | None | object = ...,
+) -> TaxCode:
+    """A new version of ``current``'s code from ``effective_from`` with new components (G-01-T10).
+
+    The version in force on that date is closed the day before; versions are never edited, so a
+    line that stored the old version recalculates exactly as before. ``effective_from`` must be
+    after the closed version's start (``tax.code.revision_date``)."""
+    organisation = current.organisation
+    with org_context(organisation), transaction.atomic():
+        versions = list(
+            TaxCode._base_manager.select_for_update()
+            .filter(organisation=organisation, code=current.code)
+            .order_by("version")
+        )
+        open_version = next((v for v in versions if v.is_active_on(effective_from)), None)
+        if open_version is None or effective_from <= open_version.effective_from:
+            raise TaxError(
+                _(
+                    "Choose a date after %(start)s, inside the version in force: the new version "
+                    "starts there and the current one ends the day before."
+                ),
+                code="tax.code.revision_date",
+                params={"start": (open_version or current).effective_from.isoformat()},
+            )
+        end = open_version.effective_to
+        open_version.effective_to = effective_from - dt.timedelta(days=1)
+        open_version.save(update_fields=["effective_to", "updated_at"])
+        names = dict(open_version.name_i18n or {})
+        if name is not None:
+            names["en-ca"] = name
+        if name_fr is not None:
+            names["fr-ca"] = name_fr
+        restriction = (
+            open_version.itc_restriction_pct if itc_restriction_pct is ... else itc_restriction_pct
+        )
+        return define_code(
+            organisation,
+            code=open_version.code,
+            name=names.get("en-ca", ""),
+            name_fr=names.get("fr-ca", ""),
+            side=open_version.side,
+            type=open_version.type,
+            province=open_version.province,
+            effective_from=effective_from,
+            effective_to=end,
+            components=components,
+            version=max(v.version for v in versions) + 1,
+            itc_restriction_pct=restriction,
+        )
