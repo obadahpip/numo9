@@ -141,3 +141,50 @@ def create_bank_account(
         )
         bank.save()
         return bank
+
+
+def attach_bank_account(
+    ledger: Account,
+    *,
+    type: str,  # noqa: A002 - the field's name
+    display_name: str,
+    institution: str = "",
+    currency: str = "CAD",
+    account_last4: str = "",
+    user: Any = None,
+) -> BankAccount:
+    """A bank profile for an existing ledger account (e.g. the template's Chequing account).
+
+    The ledger account must be a bank account (``is_bank``) in the place the type maps to (an
+    asset for Chequing/Savings/Cash/Clearing, a liability for cards, lines of credit and loans)
+    and not yet have a profile."""
+    name = " ".join((display_name or "").split())
+    place = ledger_place(type)
+    family = SUBTYPE_TYPE[place.subtype]
+    if not ledger.is_bank or ledger.type != family:
+        raise LedgerError(
+            _("%(account)s can't hold a %(type)s account."),
+            code="banking.account.ledger_mismatch",
+            params={"account": str(ledger), "type": BankAccountType(type).label},
+        )
+    person = user if user is not None else acting_user()
+    by = person if getattr(person, "is_authenticated", False) else None
+    with org_context(ledger.organisation), transaction.atomic():
+        if BankAccount._base_manager.filter(gl_account=ledger).exists():
+            raise LedgerError(
+                _("%(account)s already has a bank account."),
+                code="banking.account.ledger_taken",
+                params={"account": str(ledger)},
+            )
+        bank = BankAccount(
+            organisation=ledger.organisation,
+            gl_account=ledger,
+            type=type,
+            display_name=name,
+            institution=institution.strip(),
+            currency=(currency or "CAD").upper(),
+            account_last4=account_last4.strip(),
+            created_by=by,
+        )
+        bank.save()
+        return bank

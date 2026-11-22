@@ -58,6 +58,7 @@ Register it from the module's `AppConfig.ready()` (import of a `demo_seed` modul
 | 0 | Settings, C-01, B-01, C-02 | Company profile and BN; Canadian chart (ON); 25 contacts in 6 provinces with people and addresses; opening-balances journal | TB = 0 (done, U-07-T04) |
 | 1 | D (sales) | 12 sales invoices over 3 months across ON/QC/BC/AB customers (HST, GST+QST, GST+PST), one **revised to 101-1** with the reversal and re-posting, 2 credit notes, partial and full receipts, one overdue | AR aging = statements; revision chain; TB = 0 |
 | 1 | D (purchases) | 10 bills from the suppliers incl. one with 3-way match (PO, receipt, bill), 1 supplier credit, payments; one supplier statement for reconciliation | AP aging = sub-ledger |
+| 1 | F-01 (banking) | Chequing (template 1010), Petty Cash (1000) and a Visa card with six spend / receive money transactions (float, deposit, rent, software, supplies, a 50 % ITC lunch) — `numo9.banking.demo_seed`, seed v2 | Balances 48,515.00 / 254.80 / −169.50 owed; TB = 0 (done, F-01-T15) |
 | 1 | E (bank) | 2 bank accounts (chequing, credit card) with 60 imported transactions, bank rules, reconciled to one statement date, a negative-balance warning example | Reconciled balance = statement |
 | 1 | G (sales tax) | GST/HST registration (quarterly), **two filed periods** with their returns and one open period | Return totals = ledger |
 | 2 | Inventory | 15 items (tracked and untracked), opening stock, a stock adjustment | Stock valuation = inventory account |

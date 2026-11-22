@@ -35,7 +35,7 @@ from django.db import models, transaction
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import Organisation
 
-SEED_VERSION = 1
+SEED_VERSION = 2
 SEED_DIR = Path(__file__).parent / "seed"
 
 

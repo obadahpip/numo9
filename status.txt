@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 455   Remaining: 2332   Progress: 16.33%
+TOTAL ATOMIC TASKS: 2787   Completed: 456   Remaining: 2331   Progress: 16.36%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -611,7 +611,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-01-T09 — Add-account side-sheet (type segmented control with plain-language help, name, institution with Canadian bank list, currency); success toast with "Record a transaction" next action
 ✅ F-01-T11 — Account detail page: running-balance transaction list, filters (date, contact, amount, status), column chooser, export CSV/XLSX
 ✅ F-01-T12 — No-bank-account prompt: dashboard and banking banner, dismissible per user for 7 days, never blocks any action
-❌ F-01-T15 — Demo/seed: Canadian demo org gets Chequing, Visa, Petty Cash with sample spend/receive (U-07 seed update)
+✅ F-01-T15 — Demo/seed: Canadian demo org gets Chequing, Visa, Petty Cash with sample spend/receive (U-07 seed update)
 
 [G-01]
 ❌ G-01-T01 — Wireframes: tax code list with tabs/badges/timeline, code editor with live example

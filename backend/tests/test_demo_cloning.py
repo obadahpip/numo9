@@ -19,7 +19,7 @@ from numo9.contacts.models import Address, Contact
 from numo9.demo import cloning, seeders
 from numo9.demo.cloning import CloneError, clone, create_demo, pristine_hash, template_for
 from numo9.demo.models import DemoTemplate
-from numo9.demo.seeders import Seeder
+from numo9.demo.seeders import SEED_VERSION, Seeder
 from numo9.ledger.models import Account, Book, JournalEntry, JournalLine
 from numo9.ledger.trial_balance import trial_balance
 from numo9.tenancy.context import org_context
@@ -32,12 +32,12 @@ def test_clone_is_the_seed_exactly() -> None:
     template = template_for()
     demo = create_demo()
     assert demo.is_demo and demo.status == OrganisationStatus.DEMO
-    assert demo.demo_seed_version == 1 and demo.last_active_at is not None
+    assert demo.demo_seed_version == SEED_VERSION and demo.last_active_at is not None
     assert pristine_hash(demo) == template.pristine_hash == pristine_hash(template.organisation)
     with org_context(demo):
         assert trial_balance(Book.ACCOUNTING).total_balance == Decimal("0.00")
         assert trial_balance(Book.TAX).balanced
-        entry = JournalEntry.objects.get()
+        entry = JournalEntry.objects.get(number=1)  # the opening balances
         assert (entry.number, entry.status) == (1, "posted")
         assert {line.account.organisation_id for line in JournalLine.objects.all()} == {demo.pk}
         assert {a.contact.organisation_id for a in Address.objects.all()} == {demo.pk}

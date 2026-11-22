@@ -21,6 +21,8 @@ class BankingConfig(AppConfig):
 
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
+        from . import demo_seed  # noqa: F401 — registers the banking demo seeder (F-01-T15)
+
         SWEEP_FACTORIES["banking.BankAccount"] = _sweep_bank_account
         SWEEP_FACTORIES["banking.BankTransaction"] = _sweep_bank_transaction
 
