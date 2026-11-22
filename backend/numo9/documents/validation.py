@@ -161,11 +161,16 @@ def problems(
                 _("Choose tax exclusive, tax inclusive or no tax."),
             )
         )
+    # One check per account, however many lines use it (50 lines on one account: one query).
+    account_problems: dict[int, LineProblem | None] = {}
     for number, line in enumerate(lines, start=1):
         if line.account is not None:
-            problem = _account_problem(number, line.account, side)
+            key = line.account.pk
+            if key not in account_problems:
+                account_problems[key] = _account_problem(1, line.account, side)
+            problem = account_problems[key]
             if problem:
-                found.append(problem)
+                found.append(LineProblem(number, problem.field, problem.code, problem.message))
         if line.tax_code is not None:
             if tax_mode == TaxMode.NO_TAX:
                 found.append(

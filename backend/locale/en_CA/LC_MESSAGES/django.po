@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:59-0500\n"
+"POT-Creation-Date: 2026-11-22 10:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2434,6 +2434,13 @@ msgstr ""
 msgid "DEMO — NOT A REAL DOCUMENT"
 msgstr ""
 
+#, python-format
+msgid "%(kind)s isn't a document of this side."
+msgstr ""
+
+msgid "That tax code doesn't exist."
+msgstr ""
+
 msgid "Documents"
 msgstr ""
 
@@ -2480,6 +2487,12 @@ msgid "tax changed from the default"
 msgstr ""
 
 msgid "tracking"
+msgstr ""
+
+msgid "See quotes, invoices and credit notes and how their amounts are worked out"
+msgstr ""
+
+msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
 msgstr ""
 
 msgid "Prepared with Numo9"
@@ -6034,9 +6047,6 @@ msgid "daily staff activity"
 msgstr ""
 
 msgid "Use the date format YYYY-MM-DD."
-msgstr ""
-
-msgid "That tax code doesn't exist."
 msgstr ""
 
 msgid "That tax component doesn't exist."

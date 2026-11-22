@@ -123,6 +123,8 @@ class Preview:
 def _links(code: Any) -> list[Any]:
     if code is None:
         return []
+    if "components" in getattr(code, "_prefetched_objects_cache", {}):
+        return sorted(code.components.all(), key=lambda link: link.position)
     return list(code.components.select_related("component", "tax_code").order_by("position"))
 
 
@@ -148,23 +150,19 @@ def _negate(tax: LineTax) -> LineTax:
     )
 
 
-def preview(
-    kind: str,
-    date: dt.date,
+def _all_links(lines: Sequence[PreviewLine], tax_mode: str) -> list[list[Any]]:
+    return [_links(line.tax_code) if tax_mode != TaxMode.NO_TAX else [] for line in lines]
+
+
+def _document_input(
+    side: str,
     lines: Sequence[PreviewLine],
-    *,
-    tax_mode: str = TaxMode.EXCLUSIVE,
-    discount_type: str = NONE,
-    discount_value: Decimal = ZERO,
-    contact: Any = None,
-) -> Preview:
-    """The document's calculation and journal lines (module docstring)."""
-    side = side_of(kind)
-    validate_lines(
-        kind, date, [LineCheck(line.account, line.tax_code) for line in lines], tax_mode=tax_mode
-    )
-    links = [_links(line.tax_code) if tax_mode != TaxMode.NO_TAX else [] for line in lines]
-    document = DocumentInput(
+    links: Sequence[Sequence[Any]],
+    tax_mode: str,
+    discount_type: str,
+    discount_value: Decimal,
+) -> DocumentInput:
+    return DocumentInput(
         lines=[
             LineInput(
                 quantity=Decimal(line.quantity),
@@ -190,7 +188,39 @@ def preview(
         discount_type=discount_type,
         discount_value=Decimal(discount_value),
     )
-    result = calculate(document)
+
+
+def result_for(
+    kind: str,
+    lines: Sequence[PreviewLine],
+    *,
+    tax_mode: str = TaxMode.EXCLUSIVE,
+    discount_type: str = NONE,
+    discount_value: Decimal = ZERO,
+) -> DocumentResult:
+    """The calculation alone (no validation, no journal): the stateless calculate endpoint."""
+    side = side_of(kind)
+    links = _all_links(lines, tax_mode)
+    return calculate(_document_input(side, lines, links, tax_mode, discount_type, discount_value))
+
+
+def preview(
+    kind: str,
+    date: dt.date,
+    lines: Sequence[PreviewLine],
+    *,
+    tax_mode: str = TaxMode.EXCLUSIVE,
+    discount_type: str = NONE,
+    discount_value: Decimal = ZERO,
+    contact: Any = None,
+) -> Preview:
+    """The document's calculation and journal lines (module docstring)."""
+    side = side_of(kind)
+    validate_lines(
+        kind, date, [LineCheck(line.account, line.tax_code) for line in lines], tax_mode=tax_mode
+    )
+    links = _all_links(lines, tax_mode)
+    result = calculate(_document_input(side, lines, links, tax_mode, discount_type, discount_value))
     taxed: list[TaxedLine] = []
     complete = True
     for line, parts, figures in zip(lines, links, result.lines, strict=True):

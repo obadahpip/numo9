@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:59-0500\n"
+"POT-Creation-Date: 2026-11-22 10:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2565,6 +2565,13 @@ msgstr ""
 msgid "DEMO — NOT A REAL DOCUMENT"
 msgstr "DÉMO — DOCUMENT FICTIF"
 
+#, python-format
+msgid "%(kind)s isn't a document of this side."
+msgstr "%(kind)s n’est pas un document de ce côté."
+
+msgid "That tax code doesn't exist."
+msgstr "Ce code de taxe n'existe pas."
+
 msgid "Documents"
 msgstr "Documents"
 
@@ -2614,6 +2621,12 @@ msgstr "taxe modifiée par rapport à la valeur par défaut"
 #| msgid "Banking"
 msgid "tracking"
 msgstr "Banque"
+
+msgid "See quotes, invoices and credit notes and how their amounts are worked out"
+msgstr "Voir les soumissions, factures et notes de crédit et le calcul de leurs montants"
+
+msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
+msgstr "Voir les factures fournisseurs, bons de commande et crédits fournisseurs et le calcul de leurs montants"
 
 msgid "Prepared with Numo9"
 msgstr "Préparé avec Numo9"
@@ -6400,9 +6413,6 @@ msgstr "activité quotidienne du personnel"
 
 msgid "Use the date format YYYY-MM-DD."
 msgstr "Utilisez le format de date AAAA-MM-JJ."
-
-msgid "That tax code doesn't exist."
-msgstr "Ce code de taxe n'existe pas."
 
 msgid "That tax component doesn't exist."
 msgstr "Cette composante de taxe n'existe pas."

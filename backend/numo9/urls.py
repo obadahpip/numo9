@@ -29,6 +29,7 @@ urlpatterns = [
     path("api/v1/", include("numo9.ledger.urls")),  # journals read API (C-02-T15)
     path("api/v1/", include("numo9.banking.urls")),  # bank accounts and transactions (F-01-T07)
     path("api/v1/", include("numo9.tax.urls")),  # tax codes and rates (G-01-T11)
+    path("api/v1/", include("numo9.documents.urls")),  # document calculation (D-01-T09)
     path("api/v1/", include("numo9.billing.urls")),  # subscription billing (U-04)
     path("api/v1/", include("numo9.platform.urls")),  # platform console (U-06)
     path("api/v1/", include("numo9.bulk.urls")),  # bulk actions over organisations (V-03)
