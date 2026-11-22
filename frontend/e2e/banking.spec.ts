@@ -63,3 +63,30 @@ test("home: empty state with no account", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "No bank account yet" })).toBeVisible();
   await expect(page.getByText(/No bank feed is needed/)).toBeVisible();
 });
+
+test("add account: side-sheet creates a usable account in one step", async ({ page }) => {
+  await mockCsrf(page);
+  let results: unknown[] = [];
+  await page.route("**/api/v1/o/acme/bank-accounts?*", (r) => r.fulfill({ json: { results } }));
+  await page.route("**/api/v1/o/acme/bank-accounts", async (r) => {
+    const body = r.request().postDataJSON() as Record<string, string>;
+    const made = account({ id: "new", display_name: body.display_name, type: body.type });
+    results = [made];
+    await r.fulfill({ status: 201, json: made });
+  });
+  const started = Date.now();
+  await page.goto(`/o/${ORG}/banking`);
+  await page.getByRole("button", { name: "Add account" }).first().click();
+  const sheet = page.getByRole("dialog", { name: "Add a bank account" });
+  await sheet.getByRole("radio", { name: "Cash / petty cash" }).click();
+  await expect(sheet.getByText("Notes and coins on hand")).toBeVisible();
+  await sheet.getByLabel("Name").fill("Petty Cash");
+  await page.getByRole("button", { name: "Add account" }).last().click();
+  await expect(page.getByText("Petty Cash is ready.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Record a transaction" })).toHaveAttribute(
+    "href",
+    `/o/${ORG}/banking/spend?account=new`,
+  );
+  await expect(page.getByRole("article", { name: "Petty Cash" })).toBeVisible();
+  expect(Date.now() - started).toBeLessThan(30_000);
+});
