@@ -51,6 +51,8 @@ export interface LineColumn {
   /** Sum this money column in the totals footer. */
   total?: boolean;
   placeholder?: string;
+  /** Calculated, not typed (Tax amount, Amount): shown, never edited, not a tab stop. */
+  readOnly?: boolean;
 }
 
 export interface LineGridLabels {
@@ -69,6 +71,8 @@ export interface LineGridLabels {
   totals: string;
   /** Announced after a reorder: (from, to) → "Line 2 moved to position 3". */
   moved: (from: number, to: number) => string;
+  /** Announced after Ctrl+D (D-01-T11): (line) → "Line 3 duplicated". */
+  duplicated?: (line: number) => string;
 }
 
 export interface LineGridProps {
@@ -88,6 +92,16 @@ export interface LineGridProps {
   footer?: (totals: Record<string, string>) => ReactNode;
   readOnly?: boolean;
   className?: string;
+  /**
+   * Ctrl+D (D-01-T11): the copy of a line placed under it; default: the same values with
+   * `newLine()`'s id. Without `labels.duplicated` the shortcut is off.
+   */
+  duplicateLine?: (line: DocumentLine, fresh: DocumentLine) => DocumentLine;
+  /**
+   * After a line is deleted (button or Ctrl+Backspace): show an Undo toast — `restore()` puts the
+   * line back where it was (D-01-T11).
+   */
+  onLineRemoved?: (line: DocumentLine, index: number, restore: () => void) => void;
 }
 
 /**
@@ -97,7 +111,8 @@ export interface LineGridProps {
  * Keyboard: Tab moves through cells; ↑/↓ move to the same column on the previous/next line;
  * Enter moves down and, on the last line, adds a line; Alt+Shift+↑/↓ moves the line (also
  * Alt+↑/↓ on the line's drag handle); the drag handle reorders with the mouse. Alt+↓ in a cell
- * opens its list (account) or calendar. Money cells accept forgiving amounts and are summed exactly in the
+ * opens its list (account) or calendar. Ctrl+D duplicates the line (when `labels.duplicated` is
+ * given) and Ctrl+Backspace deletes it — `onLineRemoved` offers Undo (D-01-T11). Money cells accept forgiving amounts and are summed exactly in the
  * totals footer. Optional columns are chosen in the column chooser.
  */
 export function LineGrid({
@@ -113,6 +128,8 @@ export function LineGrid({
   footer,
   readOnly = false,
   className,
+  duplicateLine,
+  onLineRemoved,
 }: LineGridProps) {
   const baseId = useId();
   const table = useRef<HTMLTableElement>(null);
@@ -150,11 +167,31 @@ export function LineGrid({
     pendingFocus.current = cellId(line.id, focusColumn ?? visible[0]?.id ?? "");
   };
 
-  const removeLine = (index: number) => {
+  const removeLine = (index: number, focusColumn?: string) => {
+    const removed = latest.current[index];
+    if (!removed || latest.current.length <= minLines) return;
     const next = latest.current.filter((_, i) => i !== index);
     commit(next);
     const target = next[Math.min(index, next.length - 1)];
-    if (target) pendingFocus.current = cellId(target.id, visible[0]?.id ?? "");
+    if (target) pendingFocus.current = cellId(target.id, focusColumn ?? visible[0]?.id ?? "");
+    onLineRemoved?.(removed, index, () => {
+      const restored = [...latest.current];
+      restored.splice(Math.min(index, restored.length), 0, removed);
+      commit(restored);
+      pendingFocus.current = cellId(removed.id, focusColumn ?? visible[0]?.id ?? "");
+    });
+  };
+
+  const duplicate = (index: number, focusColumn: string) => {
+    const source = latest.current[index];
+    if (!source || !labels.duplicated) return;
+    const fresh = newLine();
+    const copy = duplicateLine ? duplicateLine(source, fresh) : { ...source, id: fresh.id };
+    const next = [...latest.current];
+    next.splice(index + 1, 0, copy);
+    commit(next);
+    setAnnouncement(labels.duplicated(index + 1));
+    pendingFocus.current = cellId(copy.id, focusColumn);
   };
 
   const move = (from: number, to: number, focusColumn?: string) => {
@@ -178,6 +215,21 @@ export function LineGrid({
       event.preventDefault();
       if (!readOnly) move(index, index + (event.key === "ArrowUp" ? -1 : 1), columnId);
       return;
+    }
+    const command = event.ctrlKey || event.metaKey;
+    if (command && !event.altKey && !event.shiftKey && !readOnly) {
+      if (event.key === "d" || event.key === "D") {
+        if (labels.duplicated) {
+          event.preventDefault();
+          duplicate(index, columnId);
+        }
+        return;
+      }
+      if (event.key === "Backspace") {
+        event.preventDefault();
+        removeLine(index, columnId);
+        return;
+      }
     }
     // Alt+↓ is left to the cell (opens an account list or a calendar).
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
@@ -235,6 +287,7 @@ export function LineGrid({
       <div className="overflow-x-auto">
         <table
           ref={table}
+          role="grid"
           aria-label={labels.grid}
           className="w-full min-w-[40rem] table-fixed border-separate border-spacing-0 text-sm"
         >
@@ -331,7 +384,23 @@ export function LineGrid({
                     onCellKey(event, index, column.id);
                   return (
                     <td key={column.id} className="border-b border-border p-1 align-top">
-                      {column.kind === "custom" && column.render ? (
+                      {column.readOnly ? (
+                        <output
+                          id={id}
+                          aria-label={label}
+                          // Calculated per line: the totals announce changes, not every cell.
+                          aria-live="off"
+                          data-numeric={column.kind === "money" ? "" : undefined}
+                          className={cn(
+                            "flex min-h-10 items-center px-2 text-sm text-fg-muted",
+                            column.kind === "money" && "justify-end tabular-nums",
+                          )}
+                        >
+                          {column.kind === "money" && value !== null && value !== undefined
+                            ? formatMoney(String(value), { locale, currency })
+                            : String(value ?? "")}
+                        </output>
+                      ) : column.kind === "custom" && column.render ? (
                         column.render({
                           id,
                           label,

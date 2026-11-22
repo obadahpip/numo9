@@ -1,8 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
-import { sampleAccounts } from "../pickers/fixtures";
-import { journalLabels, sampleJournal } from "./fixtures";
+import { sampleAccounts, sampleTaxCodes } from "../pickers/fixtures";
+import { ToastProvider } from "../primitives/Toast";
+import { DocumentLines, newDocumentLine, type DocumentGridLine } from "./DocumentLines";
+import {
+  documentLabels,
+  journalLabels,
+  roughAmounts,
+  sampleDocumentLines,
+  sampleJournal,
+} from "./fixtures";
 import { JournalLines } from "./JournalLines";
 import { LineGrid, type DocumentLine } from "./LineGrid";
 
@@ -56,4 +64,39 @@ function InvoiceShape() {
 export const InvoiceShapeStory: Story = {
   name: "Invoice shape (D-01 preview)",
   render: () => <InvoiceShape />,
+};
+
+function DocumentDemo({ initial }: { initial: DocumentGridLine[] }) {
+  const [lines, setLines] = useState(initial);
+  const rates = Object.fromEntries(sampleTaxCodes.map((code) => [code.id, code.rate ?? "0"]));
+  return (
+    <ToastProvider labels={{ region: "Notifications ({hotkey})", close: "Close" }}>
+      <DocumentLines
+        lines={lines}
+        onChange={setLines}
+        side="sales"
+        date="2026-07-15"
+        accounts={sampleAccounts}
+        taxCodes={sampleTaxCodes}
+        amounts={roughAmounts(lines, rates)}
+        labels={documentLabels}
+        locale="en-CA"
+      />
+    </ToastProvider>
+  );
+}
+
+/**
+ * Document lines (D-01-T11): invoice, quote and credit note editor. Ctrl+D duplicates a line,
+ * Ctrl+Backspace deletes it (Undo in the toast); Tax amount and Amount are calculated.
+ */
+export const DocumentLinesStory: Story = {
+  name: "Document lines (D-01)",
+  render: () => <DocumentDemo initial={sampleDocumentLines} />,
+};
+
+/** An empty document: the keyboard-only flow starts here (Playwright fills 5 lines). */
+export const DocumentLinesEmpty: Story = {
+  name: "Document lines — empty",
+  render: () => <DocumentDemo initial={[{ ...newDocumentLine(), id: "first" }]} />,
 };

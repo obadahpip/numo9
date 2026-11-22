@@ -31,10 +31,22 @@ credits ($1,200.00) differ by $50.00. Adjust a line so the difference is $0.00."
 | Invoice, quote, recurring invoice, credit note (D-01) | Item · Description · Qty · Unit price · Line discount (amount or %) · Account · Tax code · Tax amount · Amount | `AccountPicker types={["revenue"]}` (other income added with C-01 sub-types); tax picker filtered to sales codes effective on the document date (G-01); Amount and Tax amount are `total` columns. |
 | Bill, purchase order (E-02) | Item · Description · Qty · Unit cost · Account · Tax code · Tax amount (ITC) · Amount | `AccountPicker types={["expense", "asset"]}`; purchase tax codes only; partial ITC shown per line. |
 
-Planned extensions (D-01 tasks, not in Phase 0): `Ctrl+D` duplicate line, `Ctrl+Backspace` delete
-with an Undo toast (`useToast`), paste from a spreadsheet (TSV), document-level discount and the
+### Document configuration — `DocumentLines` (D-01-T11)
+
+Item (optional column) · Description · Qty · Unit price · Discount (optional; `10%` or `5.00`,
+`parseLineDiscount`) · Account (`AccountPicker`) · Tax code (`TaxCodePicker`, side and date) · Tax
+amount · Amount. Tax amount and Amount are read-only, calculated columns (`readOnly: true`),
+shown from the `amounts` the editor gets from the DocumentCalculator (the client mirror, replaced
+by the server's result) and totalled in the footer. The table has `role="grid"`.
+
+| Key | Action |
+|---|---|
+| Ctrl+D | Duplicate the line under it (announced: "Line 3 duplicated"); focus stays in the column. |
+| Ctrl+Backspace | Delete the line; a toast offers Undo (`onLineRemoved` → restore at the same place). The last line stays. |
+
+Planned extensions (later D-01 tasks): paste from a spreadsheet (TSV), document-level discount and the
 tax-per-component totals panel, server-authoritative calculation (`DocumentCalculator`) with the
-frontend mirror, per-user column-chooser persistence, and the stacked line-card layout at ≤ 1024 px.
+frontend mirror wiring, per-user column-chooser persistence, and the stacked line-card layout at ≤ 1024 px.
 
 ## Using it
 

@@ -28,6 +28,7 @@ export { Tabs, type TabItem, type TabsProps } from "./Tabs";
 export {
   ToastProvider,
   UNDO_DURATION_MS,
+  useOptionalToast,
   useToast,
   type ToastOptions,
   type ToastProviderProps,

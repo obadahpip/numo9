@@ -134,6 +134,12 @@ export function ToastProvider({ children, labels }: ToastProviderProps) {
   );
 }
 
+/** Toast API of the nearest `ToastProvider`, or null outside one (components that work both
+ * inside the app and alone, e.g. in a story). */
+export function useOptionalToast(): ToastApi | null {
+  return useContext(ToastContext);
+}
+
 /** Toast API of the nearest `ToastProvider`. */
 export function useToast(): ToastApi {
   const api = useContext(ToastContext);
