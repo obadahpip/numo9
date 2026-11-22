@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Statement import — step 1, upload (F-02)">
+<title>Numo9 wireframe — Statement import — step 1, upload (F-02)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Banking › RBC Business Chequing › Import a statement</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Import a statement</text>
+<text x="1416" y="124" font-size="12" fill="#5B6472" font-weight="400" text-anchor="end">CSV · OFX · QFX · QBO · XLSX</text>
+<rect x="24" y="150" width="200" height="36" rx="18" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="124" y="173" font-size="13" fill="#FFFFFF" font-weight="700" text-anchor="middle">1 Upload</text>
+<line x1="224" y1="168" x2="244" y2="168" stroke="#98A2B3" stroke-width="2"/>
+<rect x="244" y="150" width="200" height="36" rx="18" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="344" y="173" font-size="13" fill="#344054" font-weight="500" text-anchor="middle">2 Map columns</text>
+<line x1="444" y1="168" x2="464" y2="168" stroke="#98A2B3" stroke-width="2"/>
+<rect x="464" y="150" width="200" height="36" rx="18" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="564" y="173" font-size="13" fill="#344054" font-weight="500" text-anchor="middle">3 Preview</text>
+<line x1="664" y1="168" x2="684" y2="168" stroke="#98A2B3" stroke-width="2"/>
+<rect x="684" y="150" width="200" height="36" rx="18" fill="#F2F4F7" stroke="#D0D5DD" stroke-width="1"/>
+<text x="784" y="173" font-size="13" fill="#344054" font-weight="500" text-anchor="middle">4 Confirm</text>
+<circle cx="916" cy="150" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="916" y="154" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="24" y="214" width="880" height="260" rx="12" fill="#F9FAFB" stroke="#98A2B3" stroke-width="1" stroke-dasharray="8 6"/>
+<circle cx="916" cy="214" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="916" y="218" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<text x="464" y="330" font-size="16" fill="#111111" font-weight="600" text-anchor="middle">Drop the statement file here, or choose a file</text>
+<text x="464" y="358" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">From your bank's website: CSV, OFX, QFX, QBO (QuickBooks) or Excel. Up to 50 MB.</text>
+<rect x="394" y="384" width="140" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="464.0" y="407.0" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Choose a file</text>
+<rect x="940" y="214" width="476" height="260" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="960" y="244" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Where to find the file</text>
+<text x="960" y="276" font-size="12" fill="#344054" font-weight="400" text-anchor="start">• RBC: Accounts › Download transactions › CSV</text>
+<text x="960" y="306" font-size="12" fill="#344054" font-weight="400" text-anchor="start">• TD: Account activity › Download › Spreadsheet (CSV)</text>
+<text x="960" y="336" font-size="12" fill="#344054" font-weight="400" text-anchor="start">• Scotiabank: Download › QBO or CSV</text>
+<text x="960" y="366" font-size="12" fill="#344054" font-weight="400" text-anchor="start">• Desjardins: Relevés › Exporter (OFX)</text>
+<text x="960" y="396" font-size="12" fill="#344054" font-weight="400" text-anchor="start">• Any bank: OFX/QFX works best — dates, amounts and IDs are exact</text>
+<circle cx="1428" cy="214" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1428" y="218" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="24" y="500" width="880" height="56" rx="8" fill="#ECFDF3" stroke="#75E0A7" stroke-width="1"/>
+<text x="44" y="524" font-size="13" fill="#067647" font-weight="600" text-anchor="start">rbc-chequing-june.csv — detected: CSV, UTF-8 with BOM, comma-separated, 412 rows</text>
+<text x="44" y="544" font-size="12" fill="#067647" font-weight="400" text-anchor="start">Saved mapping “RBC (CSV)” matches the columns. Next: check the columns.</text>
+<circle cx="916" cy="500" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="916" y="504" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<rect x="24" y="572" width="880" height="56" rx="8" fill="#FEF3F2" stroke="#FDA29B" stroke-width="1"/>
+<text x="44" y="596" font-size="13" fill="#B42318" font-weight="600" text-anchor="start">statement.pdf can't be imported: PDF statements have no data rows.</text>
+<text x="44" y="616" font-size="12" fill="#B42318" font-weight="400" text-anchor="start">Download the CSV, OFX or QBO version from your bank instead.</text>
+<circle cx="916" cy="572" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="916" y="576" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">5</text>
+<rect x="24" y="644" width="880" height="56" rx="8" fill="#EFF8FF" stroke="#84CAFF" stroke-width="1"/>
+<text x="44" y="668" font-size="13" fill="#175CD3" font-weight="600" text-anchor="start">Large file — 48,210 rows: the import runs in the background (job tray shows progress).</text>
+<text x="44" y="688" font-size="12" fill="#175CD3" font-weight="400" text-anchor="start">You can keep working; you'll get a notification when the preview is ready.</text>
+<circle cx="916" cy="644" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="916" y="648" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">6</text>
+<rect x="1196" y="740" width="100" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1246.0" y="763.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Cancel</text>
+<rect x="1316" y="740" width="100" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1366.0" y="763.0" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Next</text>
+</svg>

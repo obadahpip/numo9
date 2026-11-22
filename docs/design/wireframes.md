@@ -583,3 +583,50 @@ old system with French headers, saved in Windows-1252.
 | 4 | Live example | "100.00 → HST 13.00; recoverable 6.50; added to the expense 6.50" — the same numbers as the server's calculation |
 | 5 | Effective from | Editing components creates a new version from this date; posted lines keep the old version |
 
+
+## 44. Statement import — upload (F-02-T01)
+
+![Statement upload](wireframes/45-statement-upload.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Stepper | Upload → Map columns → Preview → Confirm; nothing is written until Confirm |
+| 2 | Drop zone | CSV, OFX, QFX, QBO, XLSX up to 50 MB; format and encoding (BOM, Latin-1) are detected, never assumed |
+| 3 | Bank help | Where each Canadian bank puts its export; OFX/QFX is recommended |
+| 4 | Detected | Format, delimiter, row count; a saved mapping that matches the columns is chosen automatically |
+| 5 | Error state | Unsupported file (PDF, image): plain reason and what to download instead |
+| 6 | Large-file state | Above the inline limit the parse runs as a background job (job tray + notification); the person can leave the page |
+
+## 45. Statement import — map columns (F-02-T01)
+
+![Statement mapping](wireframes/46-statement-mapping.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Saved mapping | Mappings are saved per bank account and reused on the next import |
+| 2 | Format options | Date format is declared, amounts as one signed column or Money in / Money out; skip header rows |
+| 3 | Mapping grid | First rows of the file; a role per column (Date, Amount, Description, Payee, Reference, Ignore) |
+| 4 | Required roles | Date, an amount and Description must be mapped before Preview is enabled; ambiguous dates are never guessed |
+| 5 | Row warning | Rows that don't parse are listed with the reason and are skipped, not silently altered |
+
+## 46. Statement import — preview (F-02-T01)
+
+![Statement preview](wireframes/47-statement-preview.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Status groups | New / Duplicates / Errors with counts; each chip filters the table |
+| 2 | Statement period | Period and closing balance from the file, when present |
+| 3 | Same-day lines | Identical lines on the same day are both kept (sequence number) unless the bank's FITID marks them the same; true re-imports are duplicates with the batch they came from |
+| 4 | Skip errors | Imports the valid lines only; the button shows how many lines will be created |
+
+## 47. Statement imports — history (F-02-T01)
+
+![Statement history](wireframes/48-statement-history.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Tabs | Imports tab on the account; statement lines show an uncoded count |
+| 2 | History rows | File, format and mapping, period, new/duplicate counts, who imported; Undo per batch |
+| 3 | Undo refused | A batch with matched lines can't be undone until they're unmatched; the lines are named |
+| 4 | Toast | After an import, "Undo import" is offered straight away |
