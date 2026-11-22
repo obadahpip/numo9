@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
-import { sampleAccounts, sampleTaxCodes } from "../pickers/fixtures";
+import { chartAccounts, sampleAccounts, sampleTaxCodes } from "../pickers/fixtures";
 import { ToastProvider } from "../primitives/Toast";
 import { DocumentLines, newDocumentLine, type DocumentGridLine } from "./DocumentLines";
 import {
@@ -76,9 +76,15 @@ function DocumentDemo({ initial }: { initial: DocumentGridLine[] }) {
         onChange={setLines}
         side="sales"
         date="2026-07-15"
-        accounts={sampleAccounts}
+        accounts={chartAccounts}
         taxCodes={sampleTaxCodes}
         amounts={roughAmounts(lines, rates)}
+        taxWhy={Object.fromEntries(
+          lines
+            .filter((l) => l.taxCode === "s-on")
+            .map((l) => [l.id, "Ontario customer → HST 13 %"]),
+        )}
+        accountDefaults={{ c4001: "sales.ON.standard", c4002: "sales.ON.standard" }}
         labels={documentLabels}
         locale="en-CA"
       />

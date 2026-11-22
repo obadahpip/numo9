@@ -9,6 +9,7 @@ import {
   type TaxCodeType,
 } from "../pickers/TaxCodePicker";
 import { useOptionalToast } from "../primitives/Toast";
+import { Tooltip } from "../primitives/Tooltip";
 import { LineGrid, type DocumentLine, type LineColumn, type LineGridLabels } from "./LineGrid";
 
 /** A line of a sales or purchase document (D-01): what the person types. */
@@ -47,6 +48,8 @@ export interface DocumentLinesLabels extends LineGridLabels {
   taxDefault: string;
   taxOthers: string;
   taxExpired: string;
+  /** Accessible name of the "why this tax" button: (line) → "Why this tax code, line 2". */
+  taxWhy: (line: number) => string;
   duplicated: (line: number) => string;
   /** Undo toast after a delete: (line) → "Line 3 deleted". */
   lineRemoved: (line: number) => string;
@@ -65,6 +68,10 @@ export interface DocumentLinesProps {
   taxCodes: readonly PickerTaxCode[];
   /** Figures per line id (Tax amount, Amount). */
   amounts?: Readonly<Record<string, DocumentLineAmounts>>;
+  /** Why a line has its tax code, per line id: "Ontario customer → HST 13 %" (D-01-T12, G-02). */
+  taxWhy?: Readonly<Record<string, string>>;
+  /** Each line account's default tax code key (G-01-T09), listed first in the tax picker. */
+  accountDefaults?: Readonly<Record<string, string>>;
   labels: DocumentLinesLabels;
   locale: AppLocale;
   currency?: string;
@@ -114,6 +121,8 @@ export function DocumentLines({
   accounts,
   taxCodes,
   amounts = {},
+  taxWhy = {},
+  accountDefaults = {},
   labels,
   locale,
   currency = "CAD",
@@ -178,6 +187,9 @@ export function DocumentLines({
           id={id}
           aria-label={label}
           accounts={accounts}
+          // Sales lines: revenue, other income, deposits — never an expense account (gap-07);
+          // purchase lines: expenses and the assets a bill buys. Same rules as the server.
+          context={side}
           value={(value as string | null) ?? null}
           onChange={(accountId) => set(accountId)}
           typeLabels={labels.accountTypes}
@@ -192,24 +204,48 @@ export function DocumentLines({
       header: labels.taxCode,
       kind: "custom",
       width: 200,
-      render: ({ id, label, value, onChange: set, onKeyDown }) => (
-        <TaxCodePicker
-          id={id}
-          aria-label={label}
-          codes={taxCodes}
-          value={(value as string | null) ?? null}
-          onChange={(codeId) => set(codeId)}
-          side={side}
-          date={date}
-          typeLabels={labels.taxTypes}
-          defaultLabel={labels.taxDefault}
-          othersLabel={labels.taxOthers}
-          expiredLabel={labels.taxExpired}
-          emptyMessage={labels.noTaxCodes}
-          disabled={readOnly}
-          onKeyDownCapture={onKeyDown}
-        />
-      ),
+      render: ({ id, label, value, onChange: set, onKeyDown, line, index }) => {
+        const why = taxWhy[line.id];
+        const account = (line as DocumentGridLine).account;
+        return (
+          <div className="flex items-start gap-1">
+            <div className="min-w-0 flex-1">
+              <TaxCodePicker
+                id={id}
+                aria-label={label}
+                codes={taxCodes}
+                value={(value as string | null) ?? null}
+                onChange={(codeId) => set(codeId)}
+                // Only this side's codes, in force on the document date (gap-07, G-01-T08).
+                side={side}
+                date={date}
+                accountDefault={account ? (accountDefaults[account] ?? null) : null}
+                typeLabels={labels.taxTypes}
+                defaultLabel={labels.taxDefault}
+                othersLabel={labels.taxOthers}
+                expiredLabel={labels.taxExpired}
+                emptyMessage={labels.noTaxCodes}
+                disabled={readOnly}
+                onKeyDownCapture={onKeyDown}
+              />
+            </div>
+            {why ? (
+              <Tooltip content={why}>
+                <button
+                  type="button"
+                  aria-label={labels.taxWhy(index + 1)}
+                  aria-description={why}
+                  tabIndex={-1}
+                  data-tax-why=""
+                  className="mt-2 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-fg-muted hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-border-focus"
+                >
+                  <span aria-hidden="true">?</span>
+                </button>
+              </Tooltip>
+            ) : null}
+          </div>
+        );
+      },
     },
     {
       id: "taxAmount",

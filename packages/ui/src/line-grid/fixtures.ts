@@ -56,6 +56,7 @@ export const documentLabels: DocumentLinesLabels = {
   taxDefault: "Account default",
   taxOthers: "All codes",
   taxExpired: "Not in force on this date",
+  taxWhy: (n) => `Why this tax code, line ${n}`,
   duplicated: (n) => `Line ${n} duplicated`,
   lineRemoved: (n) => `Line ${n} deleted`,
   undo: "Undo",
@@ -70,7 +71,7 @@ export const sampleDocumentLines: DocumentGridLine[] = [
     quantity: "1",
     unitPrice: "4800.00",
     discount: "",
-    account: "a4000",
+    account: "c4001",
     taxCode: "s-on",
   },
   {
@@ -80,7 +81,7 @@ export const sampleDocumentLines: DocumentGridLine[] = [
     quantity: "24",
     unitPrice: "13.00",
     discount: "10%",
-    account: "a4000",
+    account: "c4001",
     taxCode: "s-on",
   },
 ];

@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 
-import { sampleAccounts, sampleTaxCodes } from "../pickers/fixtures";
+import { chartAccounts, sampleTaxCodes } from "../pickers/fixtures";
 import { ToastProvider } from "../primitives/Toast";
 import { expectNoAxeViolations } from "../test/axe";
 import { DocumentLines, parseLineDiscount, type DocumentGridLine } from "./DocumentLines";
@@ -19,9 +19,10 @@ function Editor({ initial }: { initial: DocumentGridLine[] }) {
         onChange={setLines}
         side="sales"
         date="2026-07-15"
-        accounts={sampleAccounts}
+        accounts={chartAccounts}
         taxCodes={sampleTaxCodes}
         amounts={roughAmounts(lines, RATES)}
+        taxWhy={{ d1: "Ontario customer → HST 13 %" }}
         labels={documentLabels}
         locale="en-CA"
       />
@@ -55,9 +56,7 @@ describe("DocumentLines (D-01-T11)", () => {
       "Actions",
     ]);
     // 24 × 13.00 − 10 % = 280.80, HST 36.50
-    expect(screen.getByRole("status", { name: "Amount, line 2", exact: true })).toHaveTextContent(
-      "$280.80",
-    );
+    expect(screen.getByRole("status", { name: /^Amount, line 2$/ })).toHaveTextContent("$280.80");
     expect(screen.getByRole("status", { name: "Tax amount, line 2" })).toHaveTextContent("$36.50");
   });
 
@@ -104,6 +103,34 @@ describe("DocumentLines (D-01-T11)", () => {
     expect(state()).toHaveLength(3);
     await user.keyboard("{Control>}a{/Control}3");
     expect(state()[2]![2]).toBe("3");
+  });
+
+  it("sales lines offer no expense accounts and no purchase codes (gap-07)", async () => {
+    const user = userEvent.setup();
+    render(<Editor initial={sampleDocumentLines} />);
+    await user.click(screen.getByRole("combobox", { name: "Account, line 1" }));
+    await user.keyboard("{Control>}a{/Control}{Backspace}");
+    const accounts = screen.getAllByRole("option").map((o) => o.textContent ?? "");
+    expect(accounts.some((t) => t.includes("Sales — retail"))).toBe(true);
+    expect(accounts.some((t) => t.includes("Interest income"))).toBe(true);
+    for (const banned of ["Office supplies", "Fuel", "Chequing", "Accounts receivable"]) {
+      expect(accounts.some((t) => t.includes(banned))).toBe(false);
+    }
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByRole("combobox", { name: "Tax code, line 1" }));
+    await user.keyboard("{Control>}a{/Control}{Backspace}");
+    const codes = screen.getAllByRole("option").map((o) => o.textContent ?? "");
+    expect(codes.some((t) => t.includes("HST 13 % (Ontario) on sales"))).toBe(true);
+    expect(codes.some((t) => t.includes("on purchases"))).toBe(false);
+    // MB RST 8 % ended 30 Jun 2019: not offered on a 2026 document.
+    expect(codes.some((t) => t.includes("Manitoba"))).toBe(false);
+  });
+
+  it("explains why a line has its tax code", () => {
+    render(<Editor initial={sampleDocumentLines} />);
+    const why = screen.getByRole("button", { name: "Why this tax code, line 1" });
+    expect(why).toHaveAccessibleDescription("Ontario customer → HST 13 %");
+    expect(screen.queryByRole("button", { name: "Why this tax code, line 2" })).toBeNull();
   });
 
   it("is axe-clean", async () => {

@@ -29,7 +29,7 @@ test("keyboard only: five lines", async ({ page }) => {
     await page.keyboard.press("Tab");
     await page.keyboard.type("100");
     await page.keyboard.press("Tab");
-    await pick(page, "Sales");
+    await pick(page, "retail");
     await page.keyboard.press("Tab");
     await pick(page, "Ontario");
     if (n < 5) {
@@ -56,7 +56,7 @@ test("keyboard only: five lines", async ({ page }) => {
 });
 
 test("Ctrl+D duplicates, Ctrl+Backspace deletes with Undo", async ({ page }) => {
-  await page.goto("/iframe.html?id=data-linegrid--document-lines&viewMode=story");
+  await page.goto("/iframe.html?id=data-linegrid--document-lines-story&viewMode=story");
   await page.getByRole("textbox", { name: "Description, line 2" }).focus();
   await page.keyboard.press("Control+d");
   await expect(page.getByRole("textbox", { name: "Description, line 3" })).toHaveValue("Hardware");
@@ -65,4 +65,26 @@ test("Ctrl+D duplicates, Ctrl+Backspace deletes with Undo", async ({ page }) => 
   await expect(page.getByRole("textbox", { name: "Description, line 3" })).toHaveCount(0);
   await page.getByRole("button", { name: "Undo" }).click();
   await expect(page.getByRole("textbox", { name: "Description, line 3" })).toHaveValue("Hardware");
+});
+
+test("gap-07: a sales line offers no expense accounts and no purchase codes", async ({ page }) => {
+  await page.goto("/iframe.html?id=data-linegrid--document-lines-story&viewMode=story");
+  const account = page.getByRole("combobox", { name: "Account, line 1" });
+  await account.click();
+  await account.fill("");
+  const accounts = page.getByRole("option");
+  await expect(accounts.filter({ hasText: "Sales — retail" })).toHaveCount(1);
+  await expect(accounts.filter({ hasText: "Office supplies" })).toHaveCount(0);
+  await expect(accounts.filter({ hasText: "Fuel" })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  const tax = page.getByRole("combobox", { name: "Tax code, line 1" });
+  await tax.click();
+  await tax.fill("");
+  const codes = page.getByRole("option");
+  await expect(codes.filter({ hasText: "on sales" }).first()).toBeVisible();
+  await expect(codes.filter({ hasText: "on purchases" })).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Why this tax code, line 1" }),
+  ).toHaveAccessibleDescription("Ontario customer → HST 13 %");
 });
