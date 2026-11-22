@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from decimal import Decimal
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -184,6 +185,8 @@ def _account_from_row(
         gifi_id=row.gifi,
         require_contact=row.require_contact,
         default_tax_key=tax_key(row.tax, province),
+        # Meals and entertainment: half of the ITC/ITR is claimable (G-01-T05).
+        itc_restriction_pct=Decimal("50") if row.tax == "purchase_itc50" else None,
         template_ref=f"{template.key}:{row.code}",
     )
 
@@ -192,6 +195,11 @@ def _check_context(organisation: Organisation) -> None:
     active = current_org()
     if active is not None and active.pk != organisation.pk:
         raise ValueError("Load a template only for the active organisation.")
+
+
+#: Called with the organisation after its chart is loaded, in the same transaction — the tax
+#: table installs itself here so its components post to the new control accounts (G-01-T04).
+CHART_LOADED: list[Any] = []
 
 
 def load_template(
@@ -206,26 +214,28 @@ def load_template(
     home = normalise_province(province)
     definition = get_template(template)
     created: list[Account] = []
-    with (
-        org_context(organisation),
-        acting_as(actor),
-        transaction.atomic(),
-        audit_batch(
+    with org_context(organisation), acting_as(actor), transaction.atomic():
+        with audit_batch(
             f"Chart of accounts loaded: {definition.title} ({home})",
             organisation=organisation,
             meta={"template": definition.key, "version": definition.version, "province": home},
-        ),
-    ):
-        if Account._base_manager.filter(organisation=organisation).exists():
-            raise LedgerError(
-                _("This organisation already has accounts: a template loads into an empty chart."),
-                code="ledger.template.chart_not_empty",
-            )
-        for row in definition.rows_for(home):
-            account = _account_from_row(organisation, row, definition, home, row.code)
-            account.created_by = actor if getattr(actor, "is_authenticated", False) else None
-            account.save()
-            created.append(account)
+        ):
+            if Account._base_manager.filter(organisation=organisation).exists():
+                raise LedgerError(
+                    _(
+                        "This organisation already has accounts: a template loads into an "
+                        "empty chart."
+                    ),
+                    code="ledger.template.chart_not_empty",
+                )
+            for row in definition.rows_for(home):
+                account = _account_from_row(organisation, row, definition, home, row.code)
+                account.created_by = actor if getattr(actor, "is_authenticated", False) else None
+                account.save()
+                created.append(account)
+        # After the chart's own audit batch, in the same transaction (their own batch).
+        for hook in list(CHART_LOADED):
+            hook(organisation)
     return created
 
 

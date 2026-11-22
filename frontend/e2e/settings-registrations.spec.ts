@@ -83,7 +83,11 @@ test("repeater: add with server validation, save, remove, history", async ({ pag
     page.locator('[data-registration="aaaaaaaa-0000-4000-8000-000000000001"]'),
   ).toBeVisible();
   const nav = page.getByRole("navigation", { name: "Settings sections" });
-  await expect(nav.getByRole("link", { name: /tax/i })).toHaveCount(1);
+  // Tax registrations and Tax codes (G-01-T12) until the tax settings hub (G-06) joins them.
+  await expect(nav.getByRole("link", { name: /tax/i })).toHaveText([
+    "Tax registrations",
+    "Tax codes",
+  ]);
   await expectAccessible(page);
 
   await page.getByRole("button", { name: "Add registration" }).click();

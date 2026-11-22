@@ -558,3 +558,28 @@ old system with French headers, saved in Windows-1252.
 |---|---|---|
 | 1 | Prompt | "Add your first bank account": on the dashboard and on Banking only, while the organisation has none; nothing is blocked |
 | 2 | Dismiss | Hides it for this person (persistent but dismissible) |
+
+## 42. Tax codes — list (G-01-T01)
+
+![Tax codes](wireframes/43-tax-codes-list.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Sales / Purchases tabs | Separate lists per side, with counts: a sales line never offers a purchase code (gap-07) |
+| 2 | Type badge | Taxable, Zero-rated, Exempt, Out of scope — zero-rated ≠ exempt ≠ out of scope (gap-08) |
+| 3 | Show expired rates | Off by default: ended rates (NS HST 15 % to 31 Mar 2025, MB RST 8 % to 30 Jun 2019) are hidden and can't be picked on a later document |
+| 4 | Effective timeline | Start → end of each version; the current version is solid, ended ones grey; "Used on" counts posted lines |
+| 5 | New tax code | Opens the editor (wireframe 44); a code used on posted lines is archived, never deleted |
+
+## 43. Tax code editor (G-01-T01)
+
+![Tax code editor](wireframes/44-tax-code-editor.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Header fields | Code, name, side, type, province; side and type decide which components fit (a sales code can't hold a purchase-only component) |
+| 2 | Components | Component builder: rate (numeric 7,4), authority, control account; add or remove components |
+| 3 | Recoverable % | Partial ITC/ITR (e.g. meals 50 %); resolution line › account › code (G-01-T05) |
+| 4 | Live example | "100.00 → HST 13.00; recoverable 6.50; added to the expense 6.50" — the same numbers as the server's calculation |
+| 5 | Effective from | Editing components creates a new version from this date; posted lines keep the old version |
+

@@ -8,6 +8,7 @@ import { renderWithIntl } from "@/test/intl";
 const SECTIONS = [
   ["General", "/o/acme/settings/general"],
   ["Tax registrations", "/o/acme/settings/registrations"],
+  ["Tax codes", "/o/acme/settings/tax-codes"],
   ["Lock dates", "/o/acme/settings/lock-dates"],
   ["Users and roles", "/o/acme/settings/users-roles"],
   ["Email domain", "/o/acme/settings/email-domain"],

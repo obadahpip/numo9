@@ -6,10 +6,19 @@ import { AccountPicker } from "./AccountPicker";
 import { ContactPicker } from "./ContactPicker";
 import { CurrencyInput } from "./CurrencyInput";
 import { DatePicker } from "./DatePicker";
-import { chartAccounts, dateLabels, sampleAccounts, sampleContacts, typeLabels } from "./fixtures";
+import {
+  chartAccounts,
+  dateLabels,
+  sampleAccounts,
+  sampleContacts,
+  sampleTaxCodes,
+  taxTypeLabels,
+  typeLabels,
+} from "./fixtures";
 import { isValidPostalCode } from "./postalCode";
 import { PostalCodeInput } from "./PostalCodeInput";
 import { ProvincePicker } from "./ProvincePicker";
+import { TaxCodePicker, type TaxCodeSide } from "./TaxCodePicker";
 
 /**
  * Pickers (A-10-T09). All keyboard-operable: the date field reads `26/10`, `oct 26`, `+30`,
@@ -156,3 +165,38 @@ function AccountContexts() {
 }
 
 export const AccountPickerContexts: Story = { render: () => <AccountContexts /> };
+
+/** G-01-T14 — the tax code picker on a sales line and on a purchase line (2026 document). */
+function TaxCodes() {
+  const [values, setValues] = useState<Record<TaxCodeSide, string | null>>({
+    sales: "s-on",
+    purchase: null,
+  });
+  return (
+    <div className="grid max-w-xl gap-6">
+      {(["sales", "purchase"] as const).map((side) => (
+        <div key={side} className="grid gap-1">
+          <label htmlFor={`tax-${side}`} className="text-sm font-medium">
+            {side === "sales" ? "Tax code (sales line)" : "Tax code (purchase line)"}
+          </label>
+          <TaxCodePicker
+            id={`tax-${side}`}
+            codes={sampleTaxCodes}
+            value={values[side]}
+            onChange={(id) => setValues((v) => ({ ...v, [side]: id }))}
+            side={side}
+            date="2026-06-15"
+            accountDefault={side === "sales" ? "sales.ON.standard" : "purchase.ON.standard"}
+            typeLabels={taxTypeLabels}
+            defaultLabel="Account default"
+            othersLabel="All codes"
+            expiredLabel="Not in force on this date"
+            emptyMessage="No tax code matches"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export const TaxCodePickerSides: Story = { render: () => <TaxCodes /> };

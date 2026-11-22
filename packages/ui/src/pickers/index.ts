@@ -28,3 +28,12 @@ export { formatPostalCode, isValidPostalCode, postalCodeMatchesProvince } from "
 export { PostalCodeInput, type PostalCodeInputProps } from "./PostalCodeInput";
 export { PROVINCES, provinceName, type Province } from "./provinces";
 export { ProvincePicker, type ProvincePickerProps } from "./ProvincePicker";
+export {
+  TAX_TYPE_TONES,
+  TaxCodePicker,
+  taxCodeOffered,
+  type PickerTaxCode,
+  type TaxCodePickerProps,
+  type TaxCodeSide,
+  type TaxCodeType,
+} from "./TaxCodePicker";

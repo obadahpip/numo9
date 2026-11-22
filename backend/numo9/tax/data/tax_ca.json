@@ -1,0 +1,1251 @@
+{
+ "version": "ca-2026.1",
+ "source": "CRA GST/HST rates (canada.ca, GST/HST calculator and rates), Revenu Québec QST, BC/MB/SK PST/RST — as published for 2026; confirm with the client's accountant (G-01 risk)",
+ "authorities": [
+  {
+   "code": "CRA",
+   "name": {
+    "en-ca": "Canada Revenue Agency",
+    "fr-ca": "Agence du revenu du Canada"
+   }
+  },
+  {
+   "code": "RQ",
+   "name": {
+    "en-ca": "Revenu Québec",
+    "fr-ca": "Revenu Québec"
+   }
+  },
+  {
+   "code": "BC",
+   "name": {
+    "en-ca": "British Columbia Ministry of Finance",
+    "fr-ca": "Ministère des Finances de la Colombie-Britannique"
+   }
+  },
+  {
+   "code": "MB",
+   "name": {
+    "en-ca": "Manitoba Finance",
+    "fr-ca": "Finances Manitoba"
+   }
+  },
+  {
+   "code": "SK",
+   "name": {
+    "en-ca": "Saskatchewan Ministry of Finance",
+    "fr-ca": "Ministère des Finances de la Saskatchewan"
+   }
+  }
+ ],
+ "components": [
+  {
+   "key": "gst",
+   "kind": "gst",
+   "authority": "CRA",
+   "rate": "5",
+   "from": "2008-01-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "GST",
+    "fr-ca": "TPS"
+   }
+  },
+  {
+   "key": "gst_zero",
+   "kind": "gst",
+   "authority": "CRA",
+   "rate": "0",
+   "from": "1991-01-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "GST/HST zero-rated",
+    "fr-ca": "TPS/TVH détaxée"
+   }
+  },
+  {
+   "key": "hst_on",
+   "kind": "hst",
+   "authority": "CRA",
+   "rate": "13",
+   "from": "2010-07-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "HST (ON)",
+    "fr-ca": "TVH (Ont.)"
+   }
+  },
+  {
+   "key": "hst_nb",
+   "kind": "hst",
+   "authority": "CRA",
+   "rate": "15",
+   "from": "2016-07-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "HST (NB)",
+    "fr-ca": "TVH (N.-B.)"
+   }
+  },
+  {
+   "key": "hst_nl",
+   "kind": "hst",
+   "authority": "CRA",
+   "rate": "15",
+   "from": "2016-07-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "HST (NL)",
+    "fr-ca": "TVH (T.-N.-L.)"
+   }
+  },
+  {
+   "key": "hst_pe",
+   "kind": "hst",
+   "authority": "CRA",
+   "rate": "15",
+   "from": "2016-10-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "HST (PE)",
+    "fr-ca": "TVH (Î.-P.-É.)"
+   }
+  },
+  {
+   "key": "hst_ns",
+   "kind": "hst",
+   "authority": "CRA",
+   "rate": "15",
+   "from": "2010-07-01",
+   "to": "2025-03-31",
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "HST (NS)",
+    "fr-ca": "TVH (N.-É.)"
+   }
+  },
+  {
+   "key": "hst_ns",
+   "kind": "hst",
+   "authority": "CRA",
+   "rate": "14",
+   "from": "2025-04-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "HST (NS)",
+    "fr-ca": "TVH (N.-É.)"
+   }
+  },
+  {
+   "key": "qst",
+   "kind": "qst",
+   "authority": "RQ",
+   "rate": "9.975",
+   "from": "2013-01-01",
+   "to": null,
+   "recoverable": true,
+   "side": "both",
+   "name": {
+    "en-ca": "QST",
+    "fr-ca": "TVQ"
+   }
+  },
+  {
+   "key": "pst_bc",
+   "kind": "pst",
+   "authority": "BC",
+   "rate": "7",
+   "from": "2013-04-01",
+   "to": null,
+   "recoverable": false,
+   "side": "both",
+   "name": {
+    "en-ca": "PST (BC)",
+    "fr-ca": "TVP (C.-B.)"
+   }
+  },
+  {
+   "key": "rst_mb",
+   "kind": "pst",
+   "authority": "MB",
+   "rate": "8",
+   "from": "2013-07-01",
+   "to": "2019-06-30",
+   "recoverable": false,
+   "side": "both",
+   "name": {
+    "en-ca": "RST (MB)",
+    "fr-ca": "TVD (Man.)"
+   }
+  },
+  {
+   "key": "rst_mb",
+   "kind": "pst",
+   "authority": "MB",
+   "rate": "7",
+   "from": "2019-07-01",
+   "to": null,
+   "recoverable": false,
+   "side": "both",
+   "name": {
+    "en-ca": "RST (MB)",
+    "fr-ca": "TVD (Man.)"
+   }
+  },
+  {
+   "key": "pst_sk",
+   "kind": "pst",
+   "authority": "SK",
+   "rate": "6",
+   "from": "2017-03-23",
+   "to": null,
+   "recoverable": false,
+   "side": "both",
+   "name": {
+    "en-ca": "PST (SK)",
+    "fr-ca": "TVP (Sask.)"
+   }
+  }
+ ],
+ "codes": [
+  {
+   "code": "sales.AB.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "AB",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Alberta) on sales",
+    "fr-ca": "TPS 5 % (Alberta) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.BC.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "BC",
+   "from": "2013-04-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + PST 7 % (British Columbia) on sales",
+    "fr-ca": "TPS 5 % + TVP 7 % (Colombie-Britannique) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "pst_bc",
+     "from": "2013-04-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.MB.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2013-07-01",
+   "to": "2019-06-30",
+   "name": {
+    "en-ca": "GST 5 % + RST 8 % (Manitoba) on sales",
+    "fr-ca": "TPS 5 % + TVD 8 % (Manitoba) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "rst_mb",
+     "from": "2013-07-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.MB.standard",
+   "version": 2,
+   "side": "sales",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2019-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + RST 7 % (Manitoba) on sales",
+    "fr-ca": "TPS 5 % + TVD 7 % (Manitoba) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "rst_mb",
+     "from": "2019-07-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.NB.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "NB",
+   "from": "2016-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 15 % (New Brunswick) on sales",
+    "fr-ca": "TVH 15 % (Nouveau-Brunswick) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "hst_nb",
+     "from": "2016-07-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.NL.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "NL",
+   "from": "2016-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 15 % (Newfoundland and Labrador) on sales",
+    "fr-ca": "TVH 15 % (Terre-Neuve-et-Labrador) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "hst_nl",
+     "from": "2016-07-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.NS.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "NS",
+   "from": "2010-07-01",
+   "to": "2025-03-31",
+   "name": {
+    "en-ca": "HST 15 % (Nova Scotia) on sales",
+    "fr-ca": "TVH 15 % (Nouvelle-Écosse) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "hst_ns",
+     "from": "2010-07-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.NS.standard",
+   "version": 2,
+   "side": "sales",
+   "type": "taxable",
+   "province": "NS",
+   "from": "2025-04-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 14 % (Nova Scotia) on sales",
+    "fr-ca": "TVH 14 % (Nouvelle-Écosse) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "hst_ns",
+     "from": "2025-04-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.NT.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "NT",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Northwest Territories) on sales",
+    "fr-ca": "TPS 5 % (Territoires du Nord-Ouest) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.NU.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "NU",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Nunavut) on sales",
+    "fr-ca": "TPS 5 % (Nunavut) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.ON.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "ON",
+   "from": "2010-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 13 % (Ontario) on sales",
+    "fr-ca": "TVH 13 % (Ontario) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "hst_on",
+     "from": "2010-07-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.PE.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "PE",
+   "from": "2016-10-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 15 % (Prince Edward Island) on sales",
+    "fr-ca": "TVH 15 % (Île-du-Prince-Édouard) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "hst_pe",
+     "from": "2016-10-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.QC.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "QC",
+   "from": "2013-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + QST 9.975 % (Quebec) on sales",
+    "fr-ca": "TPS 5 % + TVQ 9,975 % (Québec) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "qst",
+     "from": "2013-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.SK.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "SK",
+   "from": "2017-03-23",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + PST 6 % (Saskatchewan) on sales",
+    "fr-ca": "TPS 5 % + TVP 6 % (Saskatchewan) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "pst_sk",
+     "from": "2017-03-23"
+    }
+   ]
+  },
+  {
+   "code": "sales.YT.standard",
+   "version": 1,
+   "side": "sales",
+   "type": "taxable",
+   "province": "YT",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Yukon) on sales",
+    "fr-ca": "TPS 5 % (Yukon) sur les ventes"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.zero_rated",
+   "version": 1,
+   "side": "sales",
+   "type": "zero_rated",
+   "province": "",
+   "from": "1991-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "Zero-rated on sales (0 %)",
+    "fr-ca": "Détaxé sur les ventes (0 %)"
+   },
+   "components": [
+    {
+     "key": "gst_zero",
+     "from": "1991-01-01"
+    }
+   ]
+  },
+  {
+   "code": "sales.exempt",
+   "version": 1,
+   "side": "sales",
+   "type": "exempt",
+   "province": "",
+   "from": "1991-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "Exempt on sales",
+    "fr-ca": "Exonéré sur les ventes"
+   },
+   "components": []
+  },
+  {
+   "code": "sales.out_of_scope",
+   "version": 1,
+   "side": "sales",
+   "type": "out_of_scope",
+   "province": "",
+   "from": "1991-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "Out of scope on sales",
+    "fr-ca": "Hors champ sur les ventes"
+   },
+   "components": []
+  },
+  {
+   "code": "purchase.AB.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "AB",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Alberta) on purchases",
+    "fr-ca": "TPS 5 % (Alberta) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.AB.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "AB",
+   "from": "2008-01-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % (Alberta) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % (Alberta) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.BC.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "BC",
+   "from": "2013-04-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + PST 7 % (British Columbia) on purchases",
+    "fr-ca": "TPS 5 % + TVP 7 % (Colombie-Britannique) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "pst_bc",
+     "from": "2013-04-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.BC.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "BC",
+   "from": "2013-04-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % + PST 7 % (British Columbia) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % + TVP 7 % (Colombie-Britannique) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "pst_bc",
+     "from": "2013-04-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.MB.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2013-07-01",
+   "to": "2019-06-30",
+   "name": {
+    "en-ca": "GST 5 % + RST 8 % (Manitoba) on purchases",
+    "fr-ca": "TPS 5 % + TVD 8 % (Manitoba) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "rst_mb",
+     "from": "2013-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.MB.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2013-07-01",
+   "to": "2019-06-30",
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % + RST 8 % (Manitoba) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % + TVD 8 % (Manitoba) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "rst_mb",
+     "from": "2013-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.MB.standard",
+   "version": 2,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2019-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + RST 7 % (Manitoba) on purchases",
+    "fr-ca": "TPS 5 % + TVD 7 % (Manitoba) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "rst_mb",
+     "from": "2019-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.MB.standard.itc50",
+   "version": 2,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "MB",
+   "from": "2019-07-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % + RST 7 % (Manitoba) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % + TVD 7 % (Manitoba) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "rst_mb",
+     "from": "2019-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NB.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NB",
+   "from": "2016-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 15 % (New Brunswick) on purchases",
+    "fr-ca": "TVH 15 % (Nouveau-Brunswick) sur les achats"
+   },
+   "components": [
+    {
+     "key": "hst_nb",
+     "from": "2016-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NB.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NB",
+   "from": "2016-07-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "HST 15 % (New Brunswick) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TVH 15 % (Nouveau-Brunswick) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "hst_nb",
+     "from": "2016-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NL.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NL",
+   "from": "2016-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 15 % (Newfoundland and Labrador) on purchases",
+    "fr-ca": "TVH 15 % (Terre-Neuve-et-Labrador) sur les achats"
+   },
+   "components": [
+    {
+     "key": "hst_nl",
+     "from": "2016-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NL.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NL",
+   "from": "2016-07-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "HST 15 % (Newfoundland and Labrador) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TVH 15 % (Terre-Neuve-et-Labrador) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "hst_nl",
+     "from": "2016-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NS.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NS",
+   "from": "2010-07-01",
+   "to": "2025-03-31",
+   "name": {
+    "en-ca": "HST 15 % (Nova Scotia) on purchases",
+    "fr-ca": "TVH 15 % (Nouvelle-Écosse) sur les achats"
+   },
+   "components": [
+    {
+     "key": "hst_ns",
+     "from": "2010-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NS.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NS",
+   "from": "2010-07-01",
+   "to": "2025-03-31",
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "HST 15 % (Nova Scotia) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TVH 15 % (Nouvelle-Écosse) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "hst_ns",
+     "from": "2010-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NS.standard",
+   "version": 2,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NS",
+   "from": "2025-04-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 14 % (Nova Scotia) on purchases",
+    "fr-ca": "TVH 14 % (Nouvelle-Écosse) sur les achats"
+   },
+   "components": [
+    {
+     "key": "hst_ns",
+     "from": "2025-04-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NS.standard.itc50",
+   "version": 2,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NS",
+   "from": "2025-04-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "HST 14 % (Nova Scotia) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TVH 14 % (Nouvelle-Écosse) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "hst_ns",
+     "from": "2025-04-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NT.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NT",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Northwest Territories) on purchases",
+    "fr-ca": "TPS 5 % (Territoires du Nord-Ouest) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NT.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NT",
+   "from": "2008-01-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % (Northwest Territories) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % (Territoires du Nord-Ouest) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NU.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NU",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Nunavut) on purchases",
+    "fr-ca": "TPS 5 % (Nunavut) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.NU.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "NU",
+   "from": "2008-01-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % (Nunavut) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % (Nunavut) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.ON.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "ON",
+   "from": "2010-07-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 13 % (Ontario) on purchases",
+    "fr-ca": "TVH 13 % (Ontario) sur les achats"
+   },
+   "components": [
+    {
+     "key": "hst_on",
+     "from": "2010-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.ON.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "ON",
+   "from": "2010-07-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "HST 13 % (Ontario) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TVH 13 % (Ontario) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "hst_on",
+     "from": "2010-07-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.PE.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "PE",
+   "from": "2016-10-01",
+   "to": null,
+   "name": {
+    "en-ca": "HST 15 % (Prince Edward Island) on purchases",
+    "fr-ca": "TVH 15 % (Île-du-Prince-Édouard) sur les achats"
+   },
+   "components": [
+    {
+     "key": "hst_pe",
+     "from": "2016-10-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.PE.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "PE",
+   "from": "2016-10-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "HST 15 % (Prince Edward Island) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TVH 15 % (Île-du-Prince-Édouard) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "hst_pe",
+     "from": "2016-10-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.QC.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "QC",
+   "from": "2013-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + QST 9.975 % (Quebec) on purchases",
+    "fr-ca": "TPS 5 % + TVQ 9,975 % (Québec) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "qst",
+     "from": "2013-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.QC.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "QC",
+   "from": "2013-01-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % + QST 9.975 % (Quebec) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % + TVQ 9,975 % (Québec) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "qst",
+     "from": "2013-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.SK.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "SK",
+   "from": "2017-03-23",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % + PST 6 % (Saskatchewan) on purchases",
+    "fr-ca": "TPS 5 % + TVP 6 % (Saskatchewan) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "pst_sk",
+     "from": "2017-03-23"
+    }
+   ]
+  },
+  {
+   "code": "purchase.SK.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "SK",
+   "from": "2017-03-23",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % + PST 6 % (Saskatchewan) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % + TVP 6 % (Saskatchewan) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    },
+    {
+     "key": "pst_sk",
+     "from": "2017-03-23"
+    }
+   ]
+  },
+  {
+   "code": "purchase.YT.standard",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "YT",
+   "from": "2008-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "GST 5 % (Yukon) on purchases",
+    "fr-ca": "TPS 5 % (Yukon) sur les achats"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.YT.standard.itc50",
+   "version": 1,
+   "side": "purchase",
+   "type": "taxable",
+   "province": "YT",
+   "from": "2008-01-01",
+   "to": null,
+   "itc_restriction_pct": "50",
+   "name": {
+    "en-ca": "GST 5 % (Yukon) on purchases, 50 % ITC (meals and entertainment)",
+    "fr-ca": "TPS 5 % (Yukon) sur les achats, CTI 50 % (repas et divertissements)"
+   },
+   "components": [
+    {
+     "key": "gst",
+     "from": "2008-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.zero_rated",
+   "version": 1,
+   "side": "purchase",
+   "type": "zero_rated",
+   "province": "",
+   "from": "1991-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "Zero-rated on purchases (0 %)",
+    "fr-ca": "Détaxé sur les achats (0 %)"
+   },
+   "components": [
+    {
+     "key": "gst_zero",
+     "from": "1991-01-01"
+    }
+   ]
+  },
+  {
+   "code": "purchase.exempt",
+   "version": 1,
+   "side": "purchase",
+   "type": "exempt",
+   "province": "",
+   "from": "1991-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "Exempt on purchases",
+    "fr-ca": "Exonéré sur les achats"
+   },
+   "components": []
+  },
+  {
+   "code": "purchase.out_of_scope",
+   "version": 1,
+   "side": "purchase",
+   "type": "out_of_scope",
+   "province": "",
+   "from": "1991-01-01",
+   "to": null,
+   "name": {
+    "en-ca": "Out of scope on purchases",
+    "fr-ca": "Hors champ sur les achats"
+   },
+   "components": []
+  }
+ ]
+}

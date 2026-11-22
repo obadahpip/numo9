@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:59-0500\n"
+"POT-Creation-Date: 2026-11-22 08:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4103,6 +4103,9 @@ msgstr ""
 msgid "default tax code"
 msgstr ""
 
+msgid "claimable ITC %"
+msgstr ""
+
 msgid "template row"
 msgstr ""
 
@@ -5857,6 +5860,190 @@ msgid "dormant staff alerts"
 msgstr ""
 
 msgid "daily staff activity"
+msgstr ""
+
+msgid "Use the date format YYYY-MM-DD."
+msgstr ""
+
+msgid "That tax code doesn't exist."
+msgstr ""
+
+msgid "That tax component doesn't exist."
+msgstr ""
+
+#, python-format
+msgid "%(component)s is used on %(count)d posted lines: add a new version from a date instead of changing its rate."
+msgstr ""
+
+msgid "Unknown tax authority."
+msgstr ""
+
+msgid "Unknown tax component."
+msgstr ""
+
+msgid "Use sales or purchase."
+msgstr ""
+
+#, python-format
+msgid "%(code)s already exists: add a version to it instead."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is used on %(count)d posted lines: archive it instead."
+msgstr ""
+
+msgid "A taxable code needs at least one tax component."
+msgstr ""
+
+#, python-format
+msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
+msgstr ""
+
+msgid "tax authority"
+msgstr ""
+
+msgid "tax authorities"
+msgstr ""
+
+msgid "GST"
+msgstr ""
+
+msgid "HST"
+msgstr ""
+
+msgid "PST"
+msgstr ""
+
+msgid "QST"
+msgstr ""
+
+msgid "Sales and purchases"
+msgstr ""
+
+msgid "Sales only"
+msgstr ""
+
+msgid "Purchases only"
+msgstr ""
+
+msgid "authority"
+msgstr ""
+
+msgid "rate (%)"
+msgstr ""
+
+msgid "recoverable on purchases"
+msgstr ""
+
+msgid "used on"
+msgstr ""
+
+msgid "control account (sales)"
+msgstr ""
+
+msgid "control account (purchases)"
+msgstr ""
+
+msgid "tax component"
+msgstr ""
+
+msgid "tax components"
+msgstr ""
+
+msgid "Another version of this tax component is already in force on some of these days."
+msgstr ""
+
+msgid "A component can't end before it starts."
+msgstr ""
+
+#, python-format
+msgid "%(component)s already has a version in force from %(start)s: versions of a component can't overlap."
+msgstr ""
+
+msgid "Taxable"
+msgstr ""
+
+msgid "Zero-rated"
+msgstr ""
+
+msgid "Exempt"
+msgstr ""
+
+msgid "Out of scope"
+msgstr ""
+
+msgid "version"
+msgstr ""
+
+msgid "side"
+msgstr ""
+
+msgid "province"
+msgstr ""
+
+msgid "tax codes"
+msgstr ""
+
+msgid "Another version of this tax code is already in force on some of these days."
+msgstr ""
+
+msgid "A tax code can't end before it starts."
+msgstr ""
+
+#, python-format
+msgid "%(code)s already has version %(version)d in force from %(start)s: versions of a tax code can't overlap."
+msgstr ""
+
+#, python-format
+msgid "The components of %(code)s version %(version)d can't change: create a new version from a date instead (posted lines keep this one)."
+msgstr ""
+
+msgid "component"
+msgstr ""
+
+msgid "recoverable %"
+msgstr ""
+
+msgid "tax code component"
+msgstr ""
+
+msgid "tax code components"
+msgstr ""
+
+#, python-format
+msgid "%(component)s is used on %(side)s only: it can't be part of %(code)s."
+msgstr ""
+
+#, python-format
+msgid "%(component)s isn't in force over the whole of %(code)s version %(version)d."
+msgstr ""
+
+msgid "An exempt or out-of-scope code has no tax component."
+msgstr ""
+
+msgid "A zero-rated code only holds components with a rate of zero."
+msgstr ""
+
+msgid "See tax codes, rates and their history"
+msgstr ""
+
+msgid "Add, version, archive and restore tax codes and rates"
+msgstr ""
+
+#, python-format
+msgid "%(component)s has no control account: add the %(role)s account first."
+msgstr ""
+
+#, python-format
+msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."
+msgstr ""
+
+#, python-format
+msgid "There's no %(side)s tax code %(code)s."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is archived: restore it or pick another code."
 msgstr ""
 
 msgid "Tenancy"

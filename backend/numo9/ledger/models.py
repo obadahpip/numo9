@@ -21,6 +21,8 @@ log (``AuditedModel``):
   never a total line, and in a section that fits the account's type;
 - ``require_contact`` / ``require_tracking`` / ``require_attachment`` — enforced on journal lines
   by C-03 (gap-46);
+- ``itc_restriction_pct`` — the share of an ITC/ITR that may be claimed on this account's
+  purchases (50 for meals and entertainment, G-01-T05); null = the tax code's rule;
 - ``default_tax_key`` — the default sales/purchase tax code key, resolved to a G-01 tax code in
   Phase 1 (``purchase.ON.standard``, ``purchase.exempt``… — see ``numo9.ledger.template``);
 - ``status`` — active or archived (accounts are archived, never deleted: C-01-T08);
@@ -379,6 +381,11 @@ class Account(AuditedModel, OrgOwnedModel):
     require_tracking = models.BooleanField(_("require a tracking category"), default=False)
     require_attachment = models.BooleanField(_("require an attachment"), default=False)
     default_tax_key = models.CharField(_("default tax code"), max_length=60, blank=True)
+    #: Share of the input tax credit (and QST refund) that may be claimed on purchases posted to
+    #: this account, e.g. 50 for meals and entertainment (G-01-T05); null = the tax code's rule.
+    itc_restriction_pct = models.DecimalField(
+        _("claimable ITC %"), max_digits=5, decimal_places=2, null=True, blank=True
+    )
     status = models.CharField(
         _("status"), max_length=16, choices=AccountStatus.choices, default=AccountStatus.ACTIVE
     )

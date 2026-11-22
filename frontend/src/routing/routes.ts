@@ -43,6 +43,11 @@ const labels = defineMessages({
     defaultMessage: "Settings: Tax registrations",
     description: "Settings section: BN, GST/HST, QST registrations",
   },
+  settingsTaxCodes: {
+    id: "routes.settingsTaxCodes",
+    defaultMessage: "Settings: Tax codes",
+    description: "Settings section: GST/HST, QST and PST codes and rates (G-01)",
+  },
   settingsLockDates: {
     id: "routes.settingsLockDates",
     defaultMessage: "Settings: Lock dates",
@@ -105,6 +110,11 @@ const sectionLabels = defineMessages({
     id: "settings.nav.registrations",
     defaultMessage: "Tax registrations",
     description: "Settings section: BN, GST/HST, QST registrations",
+  },
+  taxCodes: {
+    id: "settings.nav.taxCodes",
+    defaultMessage: "Tax codes",
+    description: "Settings section: GST/HST, QST and PST codes and rates",
   },
   lockDates: {
     id: "settings.nav.lockDates",
@@ -274,6 +284,13 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.settingsRegistrations,
     sectionLabel: sectionLabels.registrations,
     aliases: ["settings/tax", "tax-settings", "registrations"],
+  },
+  {
+    path: "settings/tax-codes",
+    feature: CORE,
+    label: labels.settingsTaxCodes,
+    sectionLabel: sectionLabels.taxCodes,
+    aliases: ["tax-codes", "tax-rates", "settings/tax-rates", "setup/taxrates.aspx"],
   },
   {
     path: "settings/lock-dates",

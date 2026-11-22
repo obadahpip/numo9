@@ -15,6 +15,7 @@ import {
 
 import { queryWords, normaliseForSearch } from "../org-switcher/search";
 import { ChevronDownIcon } from "../shell/icons";
+import { Badge, type BadgeTone } from "./Badge";
 import { cn } from "./cn";
 import { INPUT_BASE } from "./Input";
 
@@ -30,6 +31,8 @@ export interface ComboboxOption {
   disabled?: boolean;
   /** Indent level under the group (e.g. a sub-account under its parent); 0 = none. */
   indent?: number;
+  /** A badge after the label, e.g. a tax code's type (G-01-T14). */
+  badge?: { label: string; tone?: BadgeTone };
 }
 
 export interface ComboboxProps {
@@ -298,7 +301,12 @@ export const Combobox = forwardRef<HTMLInputElement, ComboboxProps>(function Com
                       option.disabled && "cursor-not-allowed text-fg-disabled",
                     )}
                   >
-                    <span>{option.label}</span>
+                    <span className="flex flex-wrap items-center gap-2">
+                      <span>{option.label}</span>
+                      {option.badge ? (
+                        <Badge tone={option.badge.tone ?? "neutral"}>{option.badge.label}</Badge>
+                      ) : null}
+                    </span>
                     {option.description ? (
                       <span className="text-xs font-normal text-fg-muted">
                         {option.description}

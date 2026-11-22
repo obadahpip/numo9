@@ -2214,6 +2214,7 @@
     "settingsPackageFeatures": "Paramètres : Forfait et fonctionnalités",
     "settingsRegistrations": "Paramètres : Inscriptions fiscales",
     "settingsSubscription": "Paramètres : Abonnement",
+    "settingsTaxCodes": "Settings: Tax codes",
     "settingsUsersRoles": "Paramètres : Utilisateurs et rôles"
   },
   "security": {
@@ -2349,6 +2350,7 @@
       "registrations": "Inscriptions fiscales",
       "settings": "Paramètres",
       "subscription": "Abonnement",
+      "taxCodes": "Tax codes",
       "usersRoles": "Utilisateurs et rôles"
     },
     "registrations": {
@@ -2664,6 +2666,82 @@
       "dormant": "Dormant",
       "pending": "Invitation pending",
       "suspended": "Suspended"
+    }
+  },
+  "tax": {
+    "codes": {
+      "archived": "Archived",
+      "claimable": "{pct} % claimable",
+      "colCode": "Code",
+      "colComponents": "Components",
+      "colEffective": "In force",
+      "colName": "Name",
+      "colType": "Type",
+      "colUsage": "Used on",
+      "edit": "Edit {name}",
+      "empty": "No code matches",
+      "expired": "Expired",
+      "from": "From {start}",
+      "intro": "Every rate is effective-dated: an ended rate can't be picked on a document dated after it.",
+      "loadFailed": "Tax codes couldn't be loaded",
+      "loadFailedBody": "Verify your connection and try again.",
+      "loading": "Loading tax codes…",
+      "newCode": "New tax code",
+      "noComponents": "No tax",
+      "purchases": "Purchases",
+      "range": "{start} – {end}",
+      "retry": "Try again",
+      "sales": "Sales",
+      "search": "Search codes",
+      "showExpired": "Show expired rates",
+      "table": "{side} tax codes",
+      "tabs": "Side",
+      "title": "Tax codes",
+      "usage": "{count, plural, =0 {Not used} one {# line} other {# lines}}",
+      "version": "version {version}"
+    },
+    "editor": {
+      "add": "Add component",
+      "anywhere": "Anywhere",
+      "back": "Tax codes",
+      "cancel": "Cancel",
+      "claimable": "Claimable ITC % (optional)",
+      "code": "Code",
+      "codeHint": "A stable key, e.g. purchase.ON.fuel",
+      "component": "Component {n}",
+      "componentOption": "{name} {rate} % · {authority}",
+      "componentRate": "{name} {rate} %",
+      "components": "Components",
+      "editTitle": "Edit tax code — {name}",
+      "effectiveFrom": "Effective from",
+      "example": "Live example",
+      "exampleAmount": "Amount",
+      "exampleClaimable": "Recoverable (ITC / ITR)",
+      "exampleCost": "Added to the expense",
+      "exampleInclusive": "Amount includes tax",
+      "exampleNet": "Before tax",
+      "exampleTotal": "Total",
+      "failed": "The tax code couldn't be saved.",
+      "name": "Name",
+      "newTitle": "New tax code",
+      "newVersionHint": "Saving creates version {version} from this date; posted lines keep version {current}.",
+      "pickComponent": "Choose a component",
+      "province": "Province or territory",
+      "recoverable": "Recoverable % for component {n}",
+      "recoverablePlaceholder": "100",
+      "remove": "Remove component {n}",
+      "required": "Fill in the code, name and date.",
+      "save": "Save",
+      "saveVersion": "Save as a new version",
+      "saved": "{name} saved (version {version}).",
+      "side": "Side",
+      "type": "Type"
+    },
+    "type": {
+      "exempt": "Exempt",
+      "outOfScope": "Out of scope",
+      "taxable": "Taxable",
+      "zeroRated": "Zero-rated"
     }
   }
 }
