@@ -55,7 +55,7 @@ test("navigation items of gated modules show a lock glyph and a tooltip", async 
   await expect(nav.getByRole("link", { name: "Settings", exact: true })).not.toHaveAttribute(
     "data-locked",
   );
-  await expect(nav.locator('[data-locked="true"]')).toHaveCount(3); // Contacts, Accounting, Documents
+  await expect(nav.locator('[data-locked="true"]')).toHaveCount(4); // Contacts, Accounting, Banking, Documents
 
   await contacts.hover();
   await expect(page.getByRole("tooltip")).toHaveText(

@@ -13,6 +13,8 @@ export const ACCOUNTING_FEATURES = [
   "accounting.journals.write",
   "accounting.journals.approve",
   "accounting.documents.read",
+  "accounting.banking.read",
+  "accounting.banking.write",
   "accounting.documents.write",
   "accounting.sales_invoices.read",
   "accounting.sales_invoices.write",
