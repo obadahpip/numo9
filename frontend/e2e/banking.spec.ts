@@ -90,3 +90,38 @@ test("add account: side-sheet creates a usable account in one step", async ({ pa
   await expect(page.getByRole("article", { name: "Petty Cash" })).toBeVisible();
   expect(Date.now() - started).toBeLessThan(30_000);
 });
+
+test("account detail: running balance of the last row equals the ledger balance", async ({
+  page,
+}) => {
+  await mockCsrf(page);
+  const id = "6ca1b880-64f7-4053-80e3-0c3618895553";
+  const line = (over: Record<string, unknown>) => ({
+    journal: { id: "j", number: "JE-000001", type: "bank" },
+    status: "posted",
+    contact: null,
+    description: "",
+    reference: "",
+    transaction: null,
+    voided: false,
+    received: null,
+    spent: null,
+    ...over,
+  });
+  await page.route(`**/api/v1/o/acme/bank-accounts/${id}/register*`, (r) =>
+    r.fulfill({
+      json: {
+        account: account({ id, ledger_balance: "887.00" }),
+        results: [
+          line({ id: "1", date: "2026-06-01", received: "1000.00", balance: "1000.00" }),
+          line({ id: "2", date: "2026-06-15", spent: "113.00", balance: "887.00" }),
+        ],
+      },
+    }),
+  );
+  await page.goto(`/o/${ORG}/banking/${id}`);
+  const grid = page.getByRole("grid", { name: "Transactions" });
+  await expect(grid.getByRole("row").last()).toContainText("$887.00");
+  await expect(page.locator("[data-ledger-balance]")).toHaveText("$887.00");
+  await expectAccessible(page);
+});

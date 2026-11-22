@@ -24,6 +24,11 @@ urlpatterns = [
         name="bank-account-restore",
     ),
     path(
+        f"{ORG}bank-accounts/<uuid:public_id>/register",
+        api.BankAccountRegisterView.as_view(),
+        name="bank-account-register",
+    ),
+    path(
         f"{ORG}bank-transactions",
         api.BankTransactionListView.as_view(),
         name="bank-transactions",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:23-0500\n"
+"POT-Creation-Date: 2026-11-22 07:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -667,6 +667,33 @@ msgstr ""
 msgid "Record and void spend money and receive money"
 msgstr ""
 
+msgid "Date"
+msgstr ""
+
+msgid "Journal"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Received"
+msgstr ""
+
+msgid "Spent"
+msgstr ""
+
+msgid "Balance"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
 msgstr ""
@@ -905,9 +932,6 @@ msgstr ""
 msgid "Business Number"
 msgstr ""
 
-msgid "Status"
-msgstr ""
-
 msgid "Groups"
 msgstr ""
 
@@ -1109,9 +1133,6 @@ msgid "Product code"
 msgstr ""
 
 msgid "Feature key"
-msgstr ""
-
-msgid "Description"
 msgstr ""
 
 msgid "Area"
@@ -1936,9 +1957,6 @@ msgstr ""
 msgid "Number"
 msgstr ""
 
-msgid "Date"
-msgstr ""
-
 msgid "Choice list"
 msgstr ""
 
@@ -2269,9 +2287,6 @@ msgstr ""
 msgid "Invoice number"
 msgstr ""
 
-msgid "Reference"
-msgstr ""
-
 msgid "Amount"
 msgstr ""
 
@@ -2325,9 +2340,6 @@ msgid "Document"
 msgstr ""
 
 msgid "Due date"
-msgstr ""
-
-msgid "Balance"
 msgstr ""
 
 msgid "Opening balance"
@@ -5026,9 +5038,6 @@ msgid "Quote"
 msgstr ""
 
 msgid "Purchase order"
-msgstr ""
-
-msgid "Contact"
 msgstr ""
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."

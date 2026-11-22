@@ -168,3 +168,54 @@ export const bankingApi = {
       body: date ? { date } : {},
     }),
 };
+
+export interface RegisterRow {
+  id: string;
+  date: string;
+  journal: { id: string; number: string; type: string };
+  status: "posted" | "reversed";
+  contact: { id: string; name: string } | null;
+  description: string;
+  reference: string;
+  transaction: string | null;
+  voided: boolean;
+  received: string | null;
+  spent: string | null;
+  balance: string;
+}
+
+export interface RegisterFilters {
+  date_from?: string;
+  date_to?: string;
+  contact?: string;
+  amount_min?: string;
+  amount_max?: string;
+  status?: "posted" | "reversed";
+}
+
+export function registerQuery(filters: RegisterFilters, exportAs?: "csv" | "xlsx"): string {
+  const params = new URLSearchParams(
+    Object.entries(filters).filter((entry): entry is [string, string] => Boolean(entry[1])),
+  );
+  if (exportAs) params.set("export", exportAs);
+  const query = params.toString();
+  return query ? `?${query}` : "";
+}
+
+export function registerUrl(
+  org: string,
+  id: string,
+  filters: RegisterFilters = {},
+  exportAs?: "csv" | "xlsx",
+): string {
+  return `${base(org)}/bank-accounts/${id}/register${registerQuery(filters, exportAs)}`;
+}
+
+export const registerApi = {
+  get: (
+    org: string,
+    id: string,
+    filters: RegisterFilters = {},
+  ): Promise<ApiResult<{ account: BankAccount; results: RegisterRow[] }>> =>
+    apiRequest(registerUrl(org, id, filters)),
+};

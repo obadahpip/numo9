@@ -244,3 +244,136 @@ export const typeHelp: Record<BankAccountType, MessageDescriptor> = defineMessag
     description: "Plain-language help of the type",
   },
 });
+
+export const reg = defineMessages({
+  back: { id: "banking.detail.back", defaultMessage: "Banking", description: "Breadcrumb link" },
+  statementNone: {
+    id: "banking.detail.statementNone",
+    defaultMessage: "Statement balance: not entered",
+    description: "Account header when no statement balance was entered",
+  },
+  grid: {
+    id: "banking.detail.grid",
+    defaultMessage: "Transactions",
+    description: "Accessible name of the transactions grid",
+  },
+  results: {
+    id: "banking.detail.results",
+    defaultMessage: "{shown} of {total} transactions",
+    description: "Live region after filtering",
+  },
+  loading: {
+    id: "banking.detail.loading",
+    defaultMessage: "Loading transactions…",
+    description: "Loading text",
+  },
+  colDate: { id: "banking.detail.colDate", defaultMessage: "Date", description: "Column" },
+  colJournal: { id: "banking.detail.colJournal", defaultMessage: "Journal", description: "Column" },
+  colContact: { id: "banking.detail.colContact", defaultMessage: "Contact", description: "Column" },
+  colDescription: {
+    id: "banking.detail.colDescription",
+    defaultMessage: "Description",
+    description: "Column",
+  },
+  colReference: {
+    id: "banking.detail.colReference",
+    defaultMessage: "Reference",
+    description: "Column",
+  },
+  colReceived: {
+    id: "banking.detail.colReceived",
+    defaultMessage: "Received",
+    description: "Column: money in",
+  },
+  colSpent: {
+    id: "banking.detail.colSpent",
+    defaultMessage: "Spent",
+    description: "Column: money out",
+  },
+  colBalance: {
+    id: "banking.detail.colBalance",
+    defaultMessage: "Running balance",
+    description: "Column: the account balance after the row",
+  },
+  colStatus: { id: "banking.detail.colStatus", defaultMessage: "Status", description: "Column" },
+  statusPosted: {
+    id: "banking.detail.statusPosted",
+    defaultMessage: "Posted",
+    description: "Row status",
+  },
+  statusReversed: {
+    id: "banking.detail.statusReversed",
+    defaultMessage: "Reversed",
+    description: "Row status",
+  },
+  statusVoided: {
+    id: "banking.detail.statusVoided",
+    defaultMessage: "Voided",
+    description: "Row status: a voided spend / receive money",
+  },
+  filters: {
+    id: "banking.detail.filters",
+    defaultMessage: "Filter transactions",
+    description: "Accessible name of the filter group",
+  },
+  from: { id: "banking.detail.from", defaultMessage: "From", description: "Filter: start date" },
+  to: { id: "banking.detail.to", defaultMessage: "To", description: "Filter: end date" },
+  contact: {
+    id: "banking.detail.contact",
+    defaultMessage: "Contact",
+    description: "Filter: contact",
+  },
+  anyContact: {
+    id: "banking.detail.anyContact",
+    defaultMessage: "Any contact",
+    description: "Contact filter: no filter",
+  },
+  amountMin: {
+    id: "banking.detail.amountMin",
+    defaultMessage: "Amount from",
+    description: "Filter: smallest amount",
+  },
+  amountMax: {
+    id: "banking.detail.amountMax",
+    defaultMessage: "Amount to",
+    description: "Filter: largest amount",
+  },
+  status: { id: "banking.detail.status", defaultMessage: "Status", description: "Filter" },
+  anyStatus: {
+    id: "banking.detail.anyStatus",
+    defaultMessage: "Any status",
+    description: "Status filter: no filter",
+  },
+  apply: { id: "banking.detail.apply", defaultMessage: "Apply", description: "Button" },
+  clear: { id: "banking.detail.clear", defaultMessage: "Clear", description: "Button" },
+  exportCsv: {
+    id: "banking.detail.exportCsv",
+    defaultMessage: "Export CSV",
+    description: "Download the filtered transactions as CSV",
+  },
+  exportXlsx: {
+    id: "banking.detail.exportXlsx",
+    defaultMessage: "Export Excel",
+    description: "Download the filtered transactions as XLSX",
+  },
+  empty: {
+    id: "banking.detail.empty",
+    defaultMessage: "No transactions yet",
+    description: "Empty state title",
+  },
+  emptyBody: {
+    id: "banking.detail.emptyBody",
+    defaultMessage: "Spend money or receive money to see it here, with the running balance.",
+    description: "Empty state body",
+  },
+  noMatch: {
+    id: "banking.detail.noMatch",
+    defaultMessage: "No transaction matches these filters.",
+    description: "No results state",
+  },
+  loadFailed: {
+    id: "banking.detail.loadFailed",
+    defaultMessage: "This account couldn't be loaded",
+    description: "Error title",
+  },
+});

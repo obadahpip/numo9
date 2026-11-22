@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:23-0500\n"
+"POT-Creation-Date: 2026-11-22 07:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -679,6 +679,33 @@ msgstr "Ajouter, renommer, archiver, restaurer et supprimer des comptes bancaire
 msgid "Record and void spend money and receive money"
 msgstr "Enregistrer et annuler des dépenses et des encaissements"
 
+msgid "Date"
+msgstr "Date"
+
+msgid "Journal"
+msgstr "Écriture"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Reference"
+msgstr "Référence"
+
+msgid "Received"
+msgstr "Reçu"
+
+msgid "Spent"
+msgstr "Dépensé"
+
+msgid "Balance"
+msgstr "Solde"
+
+msgid "Status"
+msgstr "Statut"
+
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
 msgstr "« %(type)s » n'est pas un type de compte bancaire."
@@ -917,9 +944,6 @@ msgstr "Organisation"
 msgid "Business Number"
 msgstr "Numéro d’entreprise"
 
-msgid "Status"
-msgstr "Statut"
-
 msgid "Groups"
 msgstr "Groupes"
 
@@ -1126,9 +1150,6 @@ msgstr "code d’erreur"
 
 msgid "Feature key"
 msgstr ""
-
-msgid "Description"
-msgstr "Description"
 
 msgid "Area"
 msgstr ""
@@ -2037,9 +2058,6 @@ msgstr ""
 msgid "Number"
 msgstr "Numéro"
 
-msgid "Date"
-msgstr "Date"
-
 msgid "Choice list"
 msgstr ""
 
@@ -2395,9 +2413,6 @@ msgstr "Lignes de relevé du fournisseur"
 msgid "Invoice number"
 msgstr "Numéro de facture"
 
-msgid "Reference"
-msgstr "Référence"
-
 msgid "Amount"
 msgstr "Montant"
 
@@ -2452,9 +2467,6 @@ msgstr "Document"
 
 msgid "Due date"
 msgstr "Date d’échéance"
-
-msgid "Balance"
-msgstr "Solde"
 
 msgid "Opening balance"
 msgstr "Solde d’ouverture"
@@ -5310,9 +5322,6 @@ msgstr "Soumission"
 
 msgid "Purchase order"
 msgstr "Bon de commande"
-
-msgid "Contact"
-msgstr "Contact"
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
 msgstr "Nombre minimal de chiffres, complété par des zéros (4 : 0001)."

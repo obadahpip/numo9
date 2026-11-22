@@ -7,6 +7,8 @@ Bank accounts:
   number, ledger account (code, name), transaction count and last activity date.
 - ``POST bank-accounts`` ``{type, display_name, institution, currency, account_last4,
   loan_current}`` — creates the account and its ledger account (F-01-T03). 201.
+- ``GET bank-accounts/<id>/register`` — the transactions with their running balance and filters
+  (F-01-T11); ``?export=csv|xlsx`` downloads them.
 - ``GET`` / ``PATCH`` / ``DELETE bank-accounts/<id>`` — read; edit the name (the ledger account is
   renamed too), institution, last 4 digits, statement balance and date, reconciliation tracking,
   currency (refused once the account has transactions); delete — **409**
@@ -38,6 +40,7 @@ from typing import Any
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import transaction
 from django.db.models import Count, Max, QuerySet
+from django.http import HttpResponse
 from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema
 from rest_framework import serializers, status
@@ -74,6 +77,7 @@ from .models import (
     TaxMode,
 )
 from .permissions import BANKING_MANAGE, BANKING_TRANSACT, BANKING_VIEW
+from .register import RegisterFilters, export_register, register
 from .services import create_bank_account
 from .transactions import (
     TAX_ROLES,
@@ -518,3 +522,61 @@ class BankTransactionVoidView(APIView):
         except LedgerError as error:
             return _error(error)
         return Response(transaction_row(_txn(public_id), lines=True))
+
+
+# ---- account register (F-01-T11) ---------------------------------------------------------------
+
+
+class RegisterQuerySerializer(serializers.Serializer[Any]):
+    date_from = serializers.DateField(required=False)
+    date_to = serializers.DateField(required=False)
+    contact = serializers.UUIDField(required=False)
+    amount_min = serializers.DecimalField(max_digits=18, decimal_places=2, required=False)
+    amount_max = serializers.DecimalField(max_digits=18, decimal_places=2, required=False)
+    status = serializers.ChoiceField(choices=["posted", "reversed"], required=False)
+    #: ``format`` is DRF's content-negotiation parameter: the download is ``export``.
+    export = serializers.ChoiceField(choices=["csv", "xlsx"], required=False)
+
+
+def _register_row(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        **row,
+        "received": _money(row["received"]) if row["received"] else None,
+        "spent": _money(row["spent"]) if row["spent"] else None,
+        "balance": _money(row["balance"]),
+    }
+
+
+class BankAccountRegisterView(APIView):
+    """``GET bank-accounts/<id>/register`` — the transactions with their running balance;
+    ``?export=csv|xlsx`` downloads the same rows."""
+
+    queryset = BankAccount._base_manager.none()
+
+    @requires_permission(BANKING_VIEW.key)
+    @requires_feature(READ)
+    @extend_schema(
+        operation_id="bank_accounts_register",
+        parameters=[RegisterQuerySerializer],
+        responses={200: dict},
+    )
+    def get(self, request: Request, org: Any, public_id: Any) -> Response | HttpResponse:
+        query = RegisterQuerySerializer(data=request.query_params)
+        query.is_valid(raise_exception=True)
+        data = dict(query.validated_data)
+        fmt = data.pop("export", None)
+        if data.get("contact"):
+            data["contact"] = str(data["contact"])
+        bank = _bank(public_id)
+        rows = register(bank, RegisterFilters(**data))
+        if fmt in ("csv", "xlsx"):
+            content, content_type, name = export_register(bank, rows, fmt)
+            response = HttpResponse(content, content_type=content_type)
+            response["Content-Disposition"] = f'attachment; filename="{name}"'
+            return response
+        return Response(
+            {
+                "account": account_row(bank),
+                "results": [_register_row(row) for row in rows],
+            }
+        )
