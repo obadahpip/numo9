@@ -18,6 +18,18 @@ Rules (exclusive mode):
   its lines' (``tax_by_component``);
 - **Totals**: ``subtotal`` = Σ net; ``tax_total`` = Σ tax; ``total`` = subtotal + tax.
 
+Inclusive mode (D-01-T04): the unit prices include tax. The line amount and line discount are
+worked out the same way on the tax-inclusive amount; each line's tax is backed out of it with the
+G-01-T06 rule — the exclusive amount is the one whose exclusive tax gives back exactly the
+inclusive amount (round(amount ÷ (1 + Σ rates)) or a cent either side); when none does, the
+residual cent goes to the largest component, so exclusive + tax = inclusive always.
+``total`` = subtotal (the tax is included in it); ``tax_total`` is the tax it includes.
+
+No-tax mode: components are ignored, there is no tax, ``total`` = subtotal.
+
+Every line also carries ``exclusive`` (its taxable amount before tax) and the document
+``net_total`` (total − tax): what posts to the revenue or expense accounts.
+
 Money is ``Decimal`` throughout; nothing goes through floats.
 """
 
@@ -96,9 +108,12 @@ class LineResult:
     line_discount: Decimal
     #: gross − line discount: the line's Amount column.
     net: Decimal
-    #: Tax is calculated on this (net less the line's share of the document discount).
+    #: Tax is calculated on this (net less the line's share of the document discount); in
+    #: inclusive mode it includes the tax.
     taxable: Decimal
     taxes: tuple[ComponentResult, ...]
+    #: The taxable amount before tax (= taxable, except in inclusive mode).
+    exclusive: Decimal = ZERO
 
     @property
     def tax(self) -> Decimal:
@@ -113,6 +128,15 @@ class DocumentResult:
     tax_total: Decimal
     total: Decimal
     tax_by_component: dict[str, Decimal] = field(default_factory=dict)
+
+    @property
+    def tax_included(self) -> bool:
+        return self.tax_mode == INCLUSIVE
+
+    @property
+    def net_total(self) -> Decimal:
+        """The total before tax."""
+        return self.total - self.tax_total
 
 
 def _line_discount(gross: Decimal, line: LineInput) -> Decimal:
@@ -140,6 +164,25 @@ def _taxes(
     return tuple(out)
 
 
+def _inclusive_taxes(
+    gross: Decimal, components: Sequence[Component], side: str
+) -> tuple[Decimal, tuple[ComponentResult, ...]]:
+    """(exclusive amount, taxes) backed out of the tax-inclusive ``gross`` (module docstring)."""
+    if not components:
+        return gross, ()
+    rates = [dec(c.rate) for c in components]
+    first = cents(gross / (1 + sum(rates, Decimal("0")) / HUNDRED))
+    step = CENT if gross >= 0 else -CENT
+    for net in (first, first - step, first + step):
+        amounts = [cents(net * rate / HUNDRED) for rate in rates]
+        if net + sum(amounts, ZERO) == gross:
+            return net, tuple(_split(c, a, side) for c, a in zip(components, amounts, strict=True))
+    amounts = [cents(first * rate / HUNDRED) for rate in rates]
+    largest = max(range(len(rates)), key=lambda i: (rates[i], -i))
+    amounts[largest] += gross - first - sum(amounts, ZERO)
+    return first, tuple(_split(c, a, side) for c, a in zip(components, amounts, strict=True))
+
+
 def _split(component: Component, amount: Decimal, side: str) -> ComponentResult:
     claimable = cost = ZERO
     if side == "purchase":
@@ -152,29 +195,37 @@ def calculate(document: DocumentInput) -> DocumentResult:
     """The document's amounts (module docstring)."""
     if document.tax_mode not in TAX_MODES:
         raise CalculationError(f"Unknown tax mode {document.tax_mode!r}.")
-    if document.tax_mode != EXCLUSIVE:
-        raise CalculationError(f"Tax mode {document.tax_mode!r} isn't supported yet.")
     lines: list[LineResult] = []
     for line in document.lines:
         gross = cents(dec(line.quantity) * dec(line.unit_price))
         discount = _line_discount(gross, line)
         net = gross - discount
-        lines.append(
-            LineResult(gross, discount, net, net, _taxes(net, line.components, document.side))
-        )
+        lines.append(_line(document, line, gross, discount, net, net))
     by_component: dict[str, Decimal] = {}
     for result in lines:
         for tax in result.taxes:
             by_component[tax.key] = by_component.get(tax.key, ZERO) + tax.amount
     subtotal = sum((r.net for r in lines), ZERO)
     tax_total = sum(by_component.values(), ZERO)
-    return DocumentResult(
-        document.tax_mode,
-        tuple(lines),
-        subtotal,
-        tax_total,
-        subtotal + tax_total,
-        by_component,
+    total = subtotal if document.tax_mode == INCLUSIVE else subtotal + tax_total
+    return DocumentResult(document.tax_mode, tuple(lines), subtotal, tax_total, total, by_component)
+
+
+def _line(
+    document: DocumentInput,
+    line: LineInput,
+    gross: Decimal,
+    discount: Decimal,
+    net: Decimal,
+    taxable: Decimal,
+) -> LineResult:
+    if document.tax_mode == NO_TAX:
+        return LineResult(gross, discount, net, taxable, (), taxable)
+    if document.tax_mode == INCLUSIVE:
+        exclusive, taxes = _inclusive_taxes(taxable, line.components, document.side)
+        return LineResult(gross, discount, net, taxable, taxes, exclusive)
+    return LineResult(
+        gross, discount, net, taxable, _taxes(taxable, line.components, document.side), taxable
     )
 
 
@@ -220,6 +271,7 @@ def to_fixture(result: DocumentResult) -> dict[str, Any]:
                 "line_discount": money(line.line_discount),
                 "net": money(line.net),
                 "taxable": money(line.taxable),
+                "exclusive": money(line.exclusive),
                 "taxes": {t.key: money(t.amount) for t in line.taxes},
             }
             for line in result.lines
@@ -227,5 +279,6 @@ def to_fixture(result: DocumentResult) -> dict[str, Any]:
         "subtotal": money(result.subtotal),
         "tax_total": money(result.tax_total),
         "total": money(result.total),
+        "net_total": money(result.net_total),
         "tax_by_component": {k: money(v) for k, v in sorted(result.tax_by_component.items())},
     }

@@ -31,6 +31,8 @@ def load(name: str) -> list[dict[str, Any]]:
 
 
 EXCLUSIVE = load("calculator_exclusive.json")
+INCLUSIVE = load("calculator_inclusive.json")
+NO_TAX = load("calculator_no_tax.json")
 
 
 def test_fifty_exclusive_fixtures() -> None:
@@ -40,6 +42,60 @@ def test_fifty_exclusive_fixtures() -> None:
 @pytest.mark.parametrize("doc", EXCLUSIVE, ids=[d["name"] for d in EXCLUSIVE])
 def test_exclusive_fixtures_match_the_reference_sheet(doc: dict[str, Any]) -> None:
     assert to_fixture(calculate(from_fixture(doc))) == doc["expected"]
+
+
+@pytest.mark.parametrize("doc", INCLUSIVE + NO_TAX, ids=[d["name"] for d in INCLUSIVE + NO_TAX])
+def test_inclusive_and_no_tax_fixtures(doc: dict[str, Any]) -> None:
+    assert to_fixture(calculate(from_fixture(doc))) == doc["expected"]
+
+
+def test_inclusive_by_hand() -> None:
+    result = calculate(
+        DocumentInput(
+            [
+                LineInput(Decimal("1"), Decimal("113.00"), components=HST),
+                LineInput(Decimal("1"), Decimal("1.03"), components=GST_QST),
+            ],
+            tax_mode="inclusive",
+        )
+    )
+    first, second = result.lines
+    assert (first.exclusive, first.tax) == (Decimal("100.00"), Decimal("13.00"))
+    # No exclusive amount gives back 1.03: the residual cent goes to QST (the larger rate).
+    assert second.exclusive + second.tax == Decimal("1.03")
+    assert [t.amount for t in second.taxes] == [Decimal("0.05"), Decimal("0.08")]
+    assert (result.subtotal, result.tax_total, result.total, result.net_total) == (
+        Decimal("114.03"),
+        Decimal("13.13"),
+        Decimal("114.03"),
+        Decimal("100.90"),
+    )
+    assert result.tax_included
+
+
+def test_inclusive_agrees_with_the_tax_calculator() -> None:
+    """Same back-out as G-01-T06 (``numo9.tax.calculator``) on rates."""
+    for gross in ("0.01", "1.03", "9.99", "114.98", "1234.56", "-56.50"):
+        result = calculate(
+            DocumentInput(
+                [LineInput(Decimal("1"), Decimal(gross), components=GST_QST)], tax_mode="inclusive"
+            )
+        )
+        line = result.lines[0]
+        assert line.exclusive + line.tax == Decimal(gross)
+
+
+def test_no_tax_ignores_components() -> None:
+    result = calculate(
+        DocumentInput(
+            [LineInput(Decimal("3"), Decimal("10.00"), components=HST)], tax_mode="no_tax"
+        )
+    )
+    assert (result.tax_total, result.total, result.lines[0].taxes) == (
+        Decimal("0.00"),
+        Decimal("30.00"),
+        (),
+    )
 
 
 def test_exclusive_by_hand() -> None:

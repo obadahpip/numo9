@@ -48,7 +48,8 @@ def frac(text: str) -> Fraction:
     return Fraction(text)
 
 
-def exclusive_reference(doc: dict[str, Any]) -> dict[str, Any]:
+def reference(doc: dict[str, Any]) -> dict[str, Any]:
+    mode = doc.get("tax_mode", "exclusive")
     lines: list[dict[str, Any]] = []
     nets: list[Fraction] = []
     by: dict[str, Fraction] = {}
@@ -62,29 +63,124 @@ def exclusive_reference(doc: dict[str, Any]) -> dict[str, Any]:
             discount = half_up(gross * value / 100)
         net = gross - discount
         nets.append(net)
+        rates = [(c["key"], frac(c["rate"])) for c in line.get("components", [])]
+        if mode == "no_tax":
+            rates = []
+        exclusive: Fraction = net
         taxes: dict[str, Fraction] = {}
-        for c in line.get("components", []):
-            amount = half_up(net * frac(c["rate"]) / 100)
-            taxes[c["key"]] = amount
-            by[c["key"]] = by.get(c["key"], Fraction(0)) + amount
+        if mode == "inclusive" and rates:
+            exclusive, taxes = back_out(net, rates)
+        else:
+            taxes = {key: half_up(net * rate / 100) for key, rate in rates}
+        for key, amount in taxes.items():
+            by[key] = by.get(key, Fraction(0)) + amount
         lines.append(
             {
                 "gross": money(gross),
                 "line_discount": money(discount),
                 "net": money(net),
                 "taxable": money(net),
+                "exclusive": money(exclusive),
                 "taxes": {k: money(v) for k, v in taxes.items()},
             }
         )
     subtotal = sum(nets, Fraction(0))
     tax_total = sum(by.values(), Fraction(0))
+    total = subtotal if mode == "inclusive" else subtotal + tax_total
     return {
         "lines": lines,
         "subtotal": money(subtotal),
         "tax_total": money(tax_total),
-        "total": money(subtotal + tax_total),
+        "total": money(total),
+        "net_total": money(total - tax_total),
         "tax_by_component": {k: money(v) for k, v in sorted(by.items())},
     }
+
+
+def back_out(
+    gross: Fraction, rates: list[tuple[str, Fraction]]
+) -> tuple[Fraction, dict[str, Fraction]]:
+    """Inclusive: the exclusive amount whose taxes give back ``gross`` exactly, searched over
+    every cent near gross / (1 + Σ rates); else the nearest one with the residual cent on the
+    largest rate."""
+    total_rate = sum((r for _, r in rates), Fraction(0))
+    first = half_up(gross / (1 + total_rate / 100))
+    step = Fraction(1, 100) if gross >= 0 else Fraction(-1, 100)
+    for net in (first, first - step, first + step):
+        taxes = {k: half_up(net * r / 100) for k, r in rates}
+        if net + sum(taxes.values(), Fraction(0)) == gross:
+            return net, taxes
+    taxes = {k: half_up(first * r / 100) for k, r in rates}
+    order = sorted(range(len(rates)), key=lambda i: (-rates[i][1], i))
+    biggest = rates[order[0]][0]
+    taxes[biggest] += gross - first - sum(taxes.values(), Fraction(0))
+    return first, taxes
+
+
+EDGE_INCLUSIVE = [
+    {
+        "name": "Ontario 113 inclusive",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "113.00",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            }
+        ],
+    },
+    {
+        "name": "Quebec 114.98 inclusive",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "114.98",
+                "components": [{"key": "gst", "rate": "5"}, {"key": "qst", "rate": "9.975"}],
+            }
+        ],
+    },
+    {
+        "name": "Quebec small amount",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "1.15",
+                "components": [{"key": "gst", "rate": "5"}, {"key": "qst", "rate": "9.975"}],
+            }
+        ],
+    },
+    {
+        "name": "Quebec residual cent",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "1.03",
+                "components": [{"key": "gst", "rate": "5"}, {"key": "qst", "rate": "9.975"}],
+            }
+        ],
+    },
+    {
+        "name": "Inclusive one third",
+        "lines": [
+            {
+                "quantity": "0.3333",
+                "unit_price": "33.90",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            }
+        ],
+    },
+    {
+        "name": "Inclusive 100 % discount",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "56.50",
+                "discount_type": "percent",
+                "discount_value": "100",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            }
+        ],
+    },
+]
 
 
 def components(regime: str) -> list[dict[str, Any]]:
@@ -197,8 +293,18 @@ def main() -> None:
     exclusive = build(20261, 50, EDGE_EXCLUSIVE, "Random exclusive")
     for doc in exclusive:
         doc["tax_mode"] = "exclusive"
-        doc["expected"] = exclusive_reference(doc)
+        doc["expected"] = reference(doc)
     (HERE / "calculator_exclusive.json").write_text(json.dumps(exclusive, indent=1) + "\n")
+    inclusive = build(20262, 30, EDGE_INCLUSIVE, "Random inclusive")
+    no_tax = build(20263, 10, [], "Random no tax")
+    for doc in inclusive:
+        doc["tax_mode"] = "inclusive"
+        doc["expected"] = reference(doc)
+    for doc in no_tax:
+        doc["tax_mode"] = "no_tax"
+        doc["expected"] = reference(doc)
+    (HERE / "calculator_inclusive.json").write_text(json.dumps(inclusive, indent=1) + "\n")
+    (HERE / "calculator_no_tax.json").write_text(json.dumps(no_tax, indent=1) + "\n")
 
 
 if __name__ == "__main__":

@@ -21,6 +21,7 @@
      "line_discount": "0.00",
      "net": "100.00",
      "taxable": "100.00",
+     "exclusive": "100.00",
      "taxes": {
       "hst_on": "13.00"
      }
@@ -29,6 +30,7 @@
    "subtotal": "100.00",
    "tax_total": "13.00",
    "total": "113.00",
+   "net_total": "100.00",
    "tax_by_component": {
     "hst_on": "13.00"
    }
@@ -60,6 +62,7 @@
      "line_discount": "0.00",
      "net": "100.00",
      "taxable": "100.00",
+     "exclusive": "100.00",
      "taxes": {
       "gst": "5.00",
       "qst": "9.98"
@@ -69,6 +72,7 @@
    "subtotal": "100.00",
    "tax_total": "14.98",
    "total": "114.98",
+   "net_total": "100.00",
    "tax_by_component": {
     "gst": "5.00",
     "qst": "9.98"
@@ -97,6 +101,7 @@
      "line_discount": "0.00",
      "net": "10.00",
      "taxable": "10.00",
+     "exclusive": "10.00",
      "taxes": {
       "hst_on": "1.30"
      }
@@ -105,6 +110,7 @@
    "subtotal": "10.00",
    "tax_total": "1.30",
    "total": "11.30",
+   "net_total": "10.00",
    "tax_by_component": {
     "hst_on": "1.30"
    }
@@ -152,6 +158,7 @@
      "line_discount": "0.00",
      "net": "3.33",
      "taxable": "3.33",
+     "exclusive": "3.33",
      "taxes": {
       "gst": "0.17"
      }
@@ -161,6 +168,7 @@
      "line_discount": "0.00",
      "net": "3.33",
      "taxable": "3.33",
+     "exclusive": "3.33",
      "taxes": {
       "gst": "0.17"
      }
@@ -170,6 +178,7 @@
      "line_discount": "0.00",
      "net": "3.33",
      "taxable": "3.33",
+     "exclusive": "3.33",
      "taxes": {
       "gst": "0.17"
      }
@@ -178,6 +187,7 @@
    "subtotal": "9.99",
    "tax_total": "0.51",
    "total": "10.50",
+   "net_total": "9.99",
    "tax_by_component": {
     "gst": "0.51"
    }
@@ -211,6 +221,7 @@
      "line_discount": "90.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst": "0.00",
       "pst_bc": "0.00"
@@ -220,6 +231,7 @@
    "subtotal": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
+   "net_total": "0.00",
    "tax_by_component": {
     "gst": "0.00",
     "pst_bc": "0.00"
@@ -248,6 +260,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_on": "0.00"
      }
@@ -256,6 +269,7 @@
    "subtotal": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
+   "net_total": "0.00",
    "tax_by_component": {
     "hst_on": "0.00"
    }
@@ -283,6 +297,7 @@
      "line_discount": "0.00",
      "net": "0.10",
      "taxable": "0.10",
+     "exclusive": "0.10",
      "taxes": {
       "gst": "0.01"
      }
@@ -291,6 +306,7 @@
    "subtotal": "0.10",
    "tax_total": "0.01",
    "total": "0.11",
+   "net_total": "0.10",
    "tax_by_component": {
     "gst": "0.01"
    }
@@ -320,6 +336,7 @@
      "line_discount": "20.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_on": "0.00"
      }
@@ -328,6 +345,7 @@
    "subtotal": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
+   "net_total": "0.00",
    "tax_by_component": {
     "hst_on": "0.00"
    }
@@ -360,6 +378,7 @@
      "line_discount": "0.00",
      "net": "50.00",
      "taxable": "50.00",
+     "exclusive": "50.00",
      "taxes": {}
     },
     {
@@ -367,6 +386,7 @@
      "line_discount": "0.00",
      "net": "14.97",
      "taxable": "14.97",
+     "exclusive": "14.97",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -375,6 +395,7 @@
    "subtotal": "64.97",
    "tax_total": "0.00",
    "total": "64.97",
+   "net_total": "64.97",
    "tax_by_component": {
     "gst_zero": "0.00"
    }
@@ -430,6 +451,7 @@
      "line_discount": "0.00",
      "net": "10.00",
      "taxable": "10.00",
+     "exclusive": "10.00",
      "taxes": {
       "hst_on": "1.30"
      }
@@ -439,6 +461,7 @@
      "line_discount": "0.00",
      "net": "10.00",
      "taxable": "10.00",
+     "exclusive": "10.00",
      "taxes": {
       "gst": "0.50",
       "qst": "1.00"
@@ -449,6 +472,7 @@
      "line_discount": "0.00",
      "net": "10.00",
      "taxable": "10.00",
+     "exclusive": "10.00",
      "taxes": {
       "gst": "0.50",
       "pst_sk": "0.60"
@@ -458,6 +482,7 @@
    "subtotal": "30.00",
    "tax_total": "3.90",
    "total": "33.90",
+   "net_total": "30.00",
    "tax_by_component": {
     "gst": "1.00",
     "hst_on": "1.30",
@@ -521,6 +546,7 @@
      "line_discount": "0.00",
      "net": "1142.23",
      "taxable": "1142.23",
+     "exclusive": "1142.23",
      "taxes": {
       "hst_ns": "159.91"
      }
@@ -530,6 +556,7 @@
      "line_discount": "0.00",
      "net": "4389.88",
      "taxable": "4389.88",
+     "exclusive": "4389.88",
      "taxes": {}
     },
     {
@@ -537,6 +564,7 @@
      "line_discount": "0.00",
      "net": "60577.00",
      "taxable": "60577.00",
+     "exclusive": "60577.00",
      "taxes": {
       "gst": "3028.85",
       "qst": "6042.56"
@@ -547,6 +575,7 @@
      "line_discount": "0.00",
      "net": "465.66",
      "taxable": "465.66",
+     "exclusive": "465.66",
      "taxes": {
       "gst": "23.28",
       "pst_bc": "32.60"
@@ -556,6 +585,7 @@
    "subtotal": "66574.77",
    "tax_total": "9287.20",
    "total": "75861.97",
+   "net_total": "66574.77",
    "tax_by_component": {
     "gst": "3052.13",
     "hst_ns": "159.91",
@@ -604,6 +634,7 @@
      "line_discount": "55.09",
      "net": "385.59",
      "taxable": "385.59",
+     "exclusive": "385.59",
      "taxes": {
       "gst": "19.28",
       "pst_bc": "26.99"
@@ -614,6 +645,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_ns": "0.00"
      }
@@ -622,6 +654,7 @@
    "subtotal": "385.59",
    "tax_total": "46.27",
    "total": "431.86",
+   "net_total": "385.59",
    "tax_by_component": {
     "gst": "19.28",
     "hst_ns": "0.00",
@@ -695,6 +728,7 @@
      "line_discount": "0.00",
      "net": "6686.52",
      "taxable": "6686.52",
+     "exclusive": "6686.52",
      "taxes": {
       "gst": "334.33",
       "pst_bc": "468.06"
@@ -705,6 +739,7 @@
      "line_discount": "289.51",
      "net": "3104.87",
      "taxable": "3104.87",
+     "exclusive": "3104.87",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -714,6 +749,7 @@
      "line_discount": "1115.40",
      "net": "2231.12",
      "taxable": "2231.12",
+     "exclusive": "2231.12",
      "taxes": {
       "gst": "111.56",
       "rst_mb": "156.18"
@@ -724,6 +760,7 @@
      "line_discount": "3410.16",
      "net": "167097.84",
      "taxable": "167097.84",
+     "exclusive": "167097.84",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -732,6 +769,7 @@
    "subtotal": "179120.35",
    "tax_total": "1070.13",
    "total": "180190.48",
+   "net_total": "179120.35",
    "tax_by_component": {
     "gst": "445.89",
     "gst_zero": "0.00",
@@ -762,6 +800,7 @@
      "line_discount": "0.00",
      "net": "6542.99",
      "taxable": "6542.99",
+     "exclusive": "6542.99",
      "taxes": {
       "hst_ns": "916.02"
      }
@@ -770,6 +809,7 @@
    "subtotal": "6542.99",
    "tax_total": "916.02",
    "total": "7459.01",
+   "net_total": "6542.99",
    "tax_by_component": {
     "hst_ns": "916.02"
    }
@@ -830,6 +870,7 @@
      "line_discount": "0.00",
      "net": "192987.00",
      "taxable": "192987.00",
+     "exclusive": "192987.00",
      "taxes": {
       "gst": "9649.35",
       "qst": "19250.45"
@@ -840,6 +881,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_nb": "0.00"
      }
@@ -849,6 +891,7 @@
      "line_discount": "0.00",
      "net": "11426.78",
      "taxable": "11426.78",
+     "exclusive": "11426.78",
      "taxes": {}
     },
     {
@@ -856,6 +899,7 @@
      "line_discount": "0.00",
      "net": "435.50",
      "taxable": "435.50",
+     "exclusive": "435.50",
      "taxes": {
       "gst": "21.78",
       "pst_sk": "26.13"
@@ -865,6 +909,7 @@
    "subtotal": "204849.28",
    "tax_total": "28947.71",
    "total": "233796.99",
+   "net_total": "204849.28",
    "tax_by_component": {
     "gst": "9671.13",
     "hst_nb": "0.00",
@@ -909,6 +954,7 @@
      "line_discount": "0.00",
      "net": "1562.41",
      "taxable": "1562.41",
+     "exclusive": "1562.41",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -918,6 +964,7 @@
      "line_discount": "0.00",
      "net": "169759.00",
      "taxable": "169759.00",
+     "exclusive": "169759.00",
      "taxes": {
       "gst": "8487.95",
       "pst_sk": "10185.54"
@@ -927,6 +974,7 @@
    "subtotal": "171321.41",
    "tax_total": "18673.49",
    "total": "189994.90",
+   "net_total": "171321.41",
    "tax_by_component": {
     "gst": "8487.95",
     "gst_zero": "0.00",
@@ -956,6 +1004,7 @@
      "line_discount": "0.00",
      "net": "20099.76",
      "taxable": "20099.76",
+     "exclusive": "20099.76",
      "taxes": {
       "hst_nb": "3014.96"
      }
@@ -964,6 +1013,7 @@
    "subtotal": "20099.76",
    "tax_total": "3014.96",
    "total": "23114.72",
+   "net_total": "20099.76",
    "tax_by_component": {
     "hst_nb": "3014.96"
    }
@@ -1048,6 +1098,7 @@
      "line_discount": "81561.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {}
     },
     {
@@ -1055,6 +1106,7 @@
      "line_discount": "0.00",
      "net": "699.83",
      "taxable": "699.83",
+     "exclusive": "699.83",
      "taxes": {
       "gst": "34.99",
       "rst_mb": "48.99"
@@ -1065,6 +1117,7 @@
      "line_discount": "15.31",
      "net": "107.17",
      "taxable": "107.17",
+     "exclusive": "107.17",
      "taxes": {
       "hst_ns": "15.00"
      }
@@ -1074,6 +1127,7 @@
      "line_discount": "0.00",
      "net": "7846.92",
      "taxable": "7846.92",
+     "exclusive": "7846.92",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -1083,6 +1137,7 @@
      "line_discount": "0.00",
      "net": "3140.32",
      "taxable": "3140.32",
+     "exclusive": "3140.32",
      "taxes": {
       "hst_ns": "439.64"
      }
@@ -1092,6 +1147,7 @@
      "line_discount": "0.00",
      "net": "2632.00",
      "taxable": "2632.00",
+     "exclusive": "2632.00",
      "taxes": {
       "gst": "131.60",
       "pst_bc": "184.24"
@@ -1101,6 +1157,7 @@
    "subtotal": "14426.24",
    "tax_total": "854.46",
    "total": "15280.70",
+   "net_total": "14426.24",
    "tax_by_component": {
     "gst": "166.59",
     "gst_zero": "0.00",
@@ -1181,6 +1238,7 @@
      "line_discount": "0.00",
      "net": "5898.00",
      "taxable": "5898.00",
+     "exclusive": "5898.00",
      "taxes": {}
     },
     {
@@ -1188,6 +1246,7 @@
      "line_discount": "0.00",
      "net": "13755.36",
      "taxable": "13755.36",
+     "exclusive": "13755.36",
      "taxes": {
       "gst": "687.77"
      }
@@ -1197,6 +1256,7 @@
      "line_discount": "363.54",
      "net": "212.84",
      "taxable": "212.84",
+     "exclusive": "212.84",
      "taxes": {
       "hst_nb": "31.93"
      }
@@ -1206,6 +1266,7 @@
      "line_discount": "0.00",
      "net": "239886.00",
      "taxable": "239886.00",
+     "exclusive": "239886.00",
      "taxes": {
       "hst_ns": "33584.04"
      }
@@ -1215,6 +1276,7 @@
      "line_discount": "0.00",
      "net": "4271.61",
      "taxable": "4271.61",
+     "exclusive": "4271.61",
      "taxes": {
       "hst_on": "555.31"
      }
@@ -1224,6 +1286,7 @@
      "line_discount": "75.95",
      "net": "151.93",
      "taxable": "151.93",
+     "exclusive": "151.93",
      "taxes": {
       "hst_on": "19.75"
      }
@@ -1232,6 +1295,7 @@
    "subtotal": "264175.74",
    "tax_total": "34878.80",
    "total": "299054.54",
+   "net_total": "264175.74",
    "tax_by_component": {
     "gst": "687.77",
     "hst_nb": "31.93",
@@ -1257,12 +1321,14 @@
      "line_discount": "0.00",
      "net": "927.84",
      "taxable": "927.84",
+     "exclusive": "927.84",
      "taxes": {}
     }
    ],
    "subtotal": "927.84",
    "tax_total": "0.00",
    "total": "927.84",
+   "net_total": "927.84",
    "tax_by_component": {}
   }
  },
@@ -1350,6 +1416,7 @@
      "line_discount": "0.00",
      "net": "6134.73",
      "taxable": "6134.73",
+     "exclusive": "6134.73",
      "taxes": {
       "gst": "306.74",
       "qst": "611.94"
@@ -1360,6 +1427,7 @@
      "line_discount": "0.00",
      "net": "212.49",
      "taxable": "212.49",
+     "exclusive": "212.49",
      "taxes": {
       "gst": "10.62",
       "pst_bc": "14.87"
@@ -1370,6 +1438,7 @@
      "line_discount": "0.00",
      "net": "599.71",
      "taxable": "599.71",
+     "exclusive": "599.71",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -1379,6 +1448,7 @@
      "line_discount": "0.00",
      "net": "2793.93",
      "taxable": "2793.93",
+     "exclusive": "2793.93",
      "taxes": {
       "hst_ns": "391.15"
      }
@@ -1388,6 +1458,7 @@
      "line_discount": "0.00",
      "net": "355.17",
      "taxable": "355.17",
+     "exclusive": "355.17",
      "taxes": {
       "hst_on": "46.17"
      }
@@ -1397,6 +1468,7 @@
      "line_discount": "0.00",
      "net": "3275.84",
      "taxable": "3275.84",
+     "exclusive": "3275.84",
      "taxes": {
       "gst": "163.79",
       "rst_mb": "229.31"
@@ -1406,6 +1478,7 @@
    "subtotal": "13371.87",
    "tax_total": "1774.59",
    "total": "15146.46",
+   "net_total": "13371.87",
    "tax_by_component": {
     "gst": "481.15",
     "gst_zero": "0.00",
@@ -1467,6 +1540,7 @@
      "line_discount": "216.58",
      "net": "25909.58",
      "taxable": "25909.58",
+     "exclusive": "25909.58",
      "taxes": {
       "hst_ns": "3627.34"
      }
@@ -1476,6 +1550,7 @@
      "line_discount": "15.30",
      "net": "137.69",
      "taxable": "137.69",
+     "exclusive": "137.69",
      "taxes": {
       "hst_nb": "20.65"
      }
@@ -1485,6 +1560,7 @@
      "line_discount": "0.00",
      "net": "17682.84",
      "taxable": "17682.84",
+     "exclusive": "17682.84",
      "taxes": {
       "gst": "884.14",
       "rst_mb": "1237.80"
@@ -1494,6 +1570,7 @@
    "subtotal": "43730.11",
    "tax_total": "5769.93",
    "total": "49500.04",
+   "net_total": "43730.11",
    "tax_by_component": {
     "gst": "884.14",
     "hst_nb": "20.65",
@@ -1540,6 +1617,7 @@
      "line_discount": "0.00",
      "net": "5383.56",
      "taxable": "5383.56",
+     "exclusive": "5383.56",
      "taxes": {
       "hst_ns": "753.70"
      }
@@ -1549,6 +1627,7 @@
      "line_discount": "165.92",
      "net": "3785.94",
      "taxable": "3785.94",
+     "exclusive": "3785.94",
      "taxes": {
       "gst": "189.30",
       "pst_bc": "265.02"
@@ -1558,6 +1637,7 @@
    "subtotal": "9169.50",
    "tax_total": "1208.02",
    "total": "10377.52",
+   "net_total": "9169.50",
    "tax_by_component": {
     "gst": "189.30",
     "hst_ns": "753.70",
@@ -1603,6 +1683,7 @@
      "line_discount": "0.00",
      "net": "11.24",
      "taxable": "11.24",
+     "exclusive": "11.24",
      "taxes": {
       "gst": "0.56",
       "qst": "1.12"
@@ -1613,6 +1694,7 @@
      "line_discount": "351.22",
      "net": "797.30",
      "taxable": "797.30",
+     "exclusive": "797.30",
      "taxes": {
       "hst_on": "103.65"
      }
@@ -1621,6 +1703,7 @@
    "subtotal": "808.54",
    "tax_total": "105.33",
    "total": "913.87",
+   "net_total": "808.54",
    "tax_by_component": {
     "gst": "0.56",
     "hst_on": "103.65",
@@ -1650,6 +1733,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst": "0.00"
      }
@@ -1658,6 +1742,7 @@
    "subtotal": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
+   "net_total": "0.00",
    "tax_by_component": {
     "gst": "0.00"
    }
@@ -1757,6 +1842,7 @@
      "line_discount": "1517.16",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst": "0.00",
       "pst_bc": "0.00"
@@ -1767,6 +1853,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_ns": "0.00"
      }
@@ -1776,6 +1863,7 @@
      "line_discount": "442.02",
      "net": "992.70",
      "taxable": "992.70",
+     "exclusive": "992.70",
      "taxes": {
       "hst_on": "129.05"
      }
@@ -1785,6 +1873,7 @@
      "line_discount": "7916.29",
      "net": "15834.95",
      "taxable": "15834.95",
+     "exclusive": "15834.95",
      "taxes": {
       "gst": "791.75",
       "pst_sk": "950.10"
@@ -1795,6 +1884,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -1804,6 +1894,7 @@
      "line_discount": "60.70",
      "net": "424.89",
      "taxable": "424.89",
+     "exclusive": "424.89",
      "taxes": {
       "gst": "21.24",
       "pst_sk": "25.49"
@@ -1813,6 +1904,7 @@
    "subtotal": "17252.54",
    "tax_total": "1917.63",
    "total": "19170.17",
+   "net_total": "17252.54",
    "tax_by_component": {
     "gst": "812.99",
     "gst_zero": "0.00",
@@ -1852,6 +1944,7 @@
      "line_discount": "449.93",
      "net": "11085.90",
      "taxable": "11085.90",
+     "exclusive": "11085.90",
      "taxes": {}
     },
     {
@@ -1859,6 +1952,7 @@
      "line_discount": "0.00",
      "net": "658.67",
      "taxable": "658.67",
+     "exclusive": "658.67",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -1867,6 +1961,7 @@
    "subtotal": "11744.57",
    "tax_total": "0.00",
    "total": "11744.57",
+   "net_total": "11744.57",
    "tax_by_component": {
     "gst_zero": "0.00"
    }
@@ -1962,6 +2057,7 @@
      "line_discount": "0.00",
      "net": "801.09",
      "taxable": "801.09",
+     "exclusive": "801.09",
      "taxes": {
       "gst": "40.05",
       "pst_sk": "48.07"
@@ -1972,6 +2068,7 @@
      "line_discount": "279.00",
      "net": "13670.85",
      "taxable": "13670.85",
+     "exclusive": "13670.85",
      "taxes": {
       "gst": "683.54",
       "pst_bc": "956.96"
@@ -1982,6 +2079,7 @@
      "line_discount": "0.00",
      "net": "7195.74",
      "taxable": "7195.74",
+     "exclusive": "7195.74",
      "taxes": {
       "gst": "359.79",
       "qst": "717.78"
@@ -1992,6 +2090,7 @@
      "line_discount": "63.35",
      "net": "570.13",
      "taxable": "570.13",
+     "exclusive": "570.13",
      "taxes": {
       "gst": "28.51"
      }
@@ -2001,6 +2100,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst": "0.00"
      }
@@ -2010,6 +2110,7 @@
      "line_discount": "0.00",
      "net": "2923.88",
      "taxable": "2923.88",
+     "exclusive": "2923.88",
      "taxes": {
       "hst_on": "380.10"
      }
@@ -2018,6 +2119,7 @@
    "subtotal": "25161.69",
    "tax_total": "3214.80",
    "total": "28376.49",
+   "net_total": "25161.69",
    "tax_by_component": {
     "gst": "1111.89",
     "hst_on": "380.10",
@@ -2046,12 +2148,14 @@
      "line_discount": "6.47",
      "net": "317.01",
      "taxable": "317.01",
+     "exclusive": "317.01",
      "taxes": {}
     }
    ],
    "subtotal": "317.01",
    "tax_total": "0.00",
    "total": "317.01",
+   "net_total": "317.01",
    "tax_by_component": {}
   }
  },
@@ -2077,6 +2181,7 @@
      "line_discount": "0.00",
      "net": "437.95",
      "taxable": "437.95",
+     "exclusive": "437.95",
      "taxes": {
       "hst_nb": "65.69"
      }
@@ -2085,6 +2190,7 @@
    "subtotal": "437.95",
    "tax_total": "65.69",
    "total": "503.64",
+   "net_total": "437.95",
    "tax_by_component": {
     "hst_nb": "65.69"
    }
@@ -2178,6 +2284,7 @@
      "line_discount": "0.00",
      "net": "2095.28",
      "taxable": "2095.28",
+     "exclusive": "2095.28",
      "taxes": {
       "gst": "104.76",
       "pst_bc": "146.67"
@@ -2188,6 +2295,7 @@
      "line_discount": "0.00",
      "net": "821.53",
      "taxable": "821.53",
+     "exclusive": "821.53",
      "taxes": {
       "gst": "41.08",
       "pst_bc": "57.51"
@@ -2198,6 +2306,7 @@
      "line_discount": "0.00",
      "net": "51119.01",
      "taxable": "51119.01",
+     "exclusive": "51119.01",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -2207,6 +2316,7 @@
      "line_discount": "0.00",
      "net": "20519.52",
      "taxable": "20519.52",
+     "exclusive": "20519.52",
      "taxes": {
       "gst": "1025.98",
       "qst": "2046.82"
@@ -2217,6 +2327,7 @@
      "line_discount": "0.00",
      "net": "190579.00",
      "taxable": "190579.00",
+     "exclusive": "190579.00",
      "taxes": {
       "hst_nb": "28586.85"
      }
@@ -2226,6 +2337,7 @@
      "line_discount": "0.00",
      "net": "3882.98",
      "taxable": "3882.98",
+     "exclusive": "3882.98",
      "taxes": {
       "gst": "194.15",
       "pst_bc": "271.81"
@@ -2235,6 +2347,7 @@
    "subtotal": "269017.32",
    "tax_total": "32475.63",
    "total": "301492.95",
+   "net_total": "269017.32",
    "tax_by_component": {
     "gst": "1365.97",
     "gst_zero": "0.00",
@@ -2306,6 +2419,7 @@
      "line_discount": "0.00",
      "net": "2461.50",
      "taxable": "2461.50",
+     "exclusive": "2461.50",
      "taxes": {
       "hst_nb": "369.23"
      }
@@ -2315,6 +2429,7 @@
      "line_discount": "0.00",
      "net": "217.07",
      "taxable": "217.07",
+     "exclusive": "217.07",
      "taxes": {
       "hst_on": "28.22"
      }
@@ -2324,6 +2439,7 @@
      "line_discount": "0.00",
      "net": "3189.20",
      "taxable": "3189.20",
+     "exclusive": "3189.20",
      "taxes": {
       "gst": "159.46"
      }
@@ -2333,6 +2449,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_ns": "0.00"
      }
@@ -2342,6 +2459,7 @@
      "line_discount": "0.00",
      "net": "385.49",
      "taxable": "385.49",
+     "exclusive": "385.49",
      "taxes": {
       "hst_ns": "53.97"
      }
@@ -2350,6 +2468,7 @@
    "subtotal": "6253.26",
    "tax_total": "610.88",
    "total": "6864.14",
+   "net_total": "6253.26",
    "tax_by_component": {
     "gst": "159.46",
     "hst_nb": "369.23",
@@ -2426,6 +2545,7 @@
      "line_discount": "0.00",
      "net": "2547.24",
      "taxable": "2547.24",
+     "exclusive": "2547.24",
      "taxes": {
       "gst": "127.36",
       "pst_bc": "178.31"
@@ -2436,6 +2556,7 @@
      "line_discount": "0.00",
      "net": "18581.78",
      "taxable": "18581.78",
+     "exclusive": "18581.78",
      "taxes": {
       "hst_ns": "2601.45"
      }
@@ -2445,6 +2566,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_ns": "0.00"
      }
@@ -2454,6 +2576,7 @@
      "line_discount": "0.00",
      "net": "1153.14",
      "taxable": "1153.14",
+     "exclusive": "1153.14",
      "taxes": {
       "hst_on": "149.91"
      }
@@ -2463,6 +2586,7 @@
      "line_discount": "0.00",
      "net": "727.63",
      "taxable": "727.63",
+     "exclusive": "727.63",
      "taxes": {
       "gst": "36.38"
      }
@@ -2471,6 +2595,7 @@
    "subtotal": "23009.79",
    "tax_total": "3093.41",
    "total": "26103.20",
+   "net_total": "23009.79",
    "tax_by_component": {
     "gst": "163.74",
     "hst_ns": "2601.45",
@@ -2563,6 +2688,7 @@
      "line_discount": "0.00",
      "net": "2020.64",
      "taxable": "2020.64",
+     "exclusive": "2020.64",
      "taxes": {
       "hst_nb": "303.10"
      }
@@ -2572,6 +2698,7 @@
      "line_discount": "0.00",
      "net": "1349.25",
      "taxable": "1349.25",
+     "exclusive": "1349.25",
      "taxes": {
       "gst": "67.46",
       "pst_bc": "94.45"
@@ -2582,6 +2709,7 @@
      "line_discount": "680.02",
      "net": "1360.23",
      "taxable": "1360.23",
+     "exclusive": "1360.23",
      "taxes": {
       "hst_nb": "204.03"
      }
@@ -2591,6 +2719,7 @@
      "line_discount": "124.05",
      "net": "47140.95",
      "taxable": "47140.95",
+     "exclusive": "47140.95",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -2600,6 +2729,7 @@
      "line_discount": "0.00",
      "net": "867.71",
      "taxable": "867.71",
+     "exclusive": "867.71",
      "taxes": {
       "gst": "43.39",
       "pst_bc": "60.74"
@@ -2610,6 +2740,7 @@
      "line_discount": "0.00",
      "net": "2045.28",
      "taxable": "2045.28",
+     "exclusive": "2045.28",
      "taxes": {
       "gst": "102.26"
      }
@@ -2618,6 +2749,7 @@
    "subtotal": "54784.06",
    "tax_total": "875.43",
    "total": "55659.49",
+   "net_total": "54784.06",
    "tax_by_component": {
     "gst": "213.11",
     "gst_zero": "0.00",
@@ -2664,6 +2796,7 @@
      "line_discount": "0.00",
      "net": "1185.99",
      "taxable": "1185.99",
+     "exclusive": "1185.99",
      "taxes": {
       "gst": "59.30",
       "pst_bc": "83.02"
@@ -2674,6 +2807,7 @@
      "line_discount": "126.97",
      "net": "1988.38",
      "taxable": "1988.38",
+     "exclusive": "1988.38",
      "taxes": {
       "hst_nb": "298.26"
      }
@@ -2682,6 +2816,7 @@
    "subtotal": "3174.37",
    "tax_total": "440.58",
    "total": "3614.95",
+   "net_total": "3174.37",
    "tax_by_component": {
     "gst": "59.30",
     "hst_nb": "298.26",
@@ -2749,6 +2884,7 @@
      "line_discount": "0.00",
      "net": "4528.98",
      "taxable": "4528.98",
+     "exclusive": "4528.98",
      "taxes": {
       "gst": "226.45"
      }
@@ -2758,6 +2894,7 @@
      "line_discount": "0.00",
      "net": "2367.59",
      "taxable": "2367.59",
+     "exclusive": "2367.59",
      "taxes": {
       "gst": "118.38"
      }
@@ -2767,6 +2904,7 @@
      "line_discount": "0.00",
      "net": "1163.81",
      "taxable": "1163.81",
+     "exclusive": "1163.81",
      "taxes": {
       "gst": "58.19",
       "pst_bc": "81.47"
@@ -2777,6 +2915,7 @@
      "line_discount": "0.00",
      "net": "224665.00",
      "taxable": "224665.00",
+     "exclusive": "224665.00",
      "taxes": {
       "gst": "11233.25",
       "pst_bc": "15726.55"
@@ -2786,6 +2925,7 @@
    "subtotal": "232725.38",
    "tax_total": "27444.29",
    "total": "260169.67",
+   "net_total": "232725.38",
    "tax_by_component": {
     "gst": "11636.27",
     "pst_bc": "15808.02"
@@ -2820,6 +2960,7 @@
      "line_discount": "235.49",
      "net": "2119.37",
      "taxable": "2119.37",
+     "exclusive": "2119.37",
      "taxes": {
       "gst": "105.97",
       "pst_bc": "148.36"
@@ -2829,6 +2970,7 @@
    "subtotal": "2119.37",
    "tax_total": "254.33",
    "total": "2373.70",
+   "net_total": "2119.37",
    "tax_by_component": {
     "gst": "105.97",
     "pst_bc": "148.36"
@@ -2881,6 +3023,7 @@
      "line_discount": "0.00",
      "net": "1144.17",
      "taxable": "1144.17",
+     "exclusive": "1144.17",
      "taxes": {}
     },
     {
@@ -2888,6 +3031,7 @@
      "line_discount": "329.46",
      "net": "4068.69",
      "taxable": "4068.69",
+     "exclusive": "4068.69",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -2897,6 +3041,7 @@
      "line_discount": "68.36",
      "net": "615.28",
      "taxable": "615.28",
+     "exclusive": "615.28",
      "taxes": {
       "gst": "30.76"
      }
@@ -2906,12 +3051,14 @@
      "line_discount": "0.00",
      "net": "26541.96",
      "taxable": "26541.96",
+     "exclusive": "26541.96",
      "taxes": {}
     }
    ],
    "subtotal": "32370.10",
    "tax_total": "30.76",
    "total": "32400.86",
+   "net_total": "32370.10",
    "tax_by_component": {
     "gst": "30.76",
     "gst_zero": "0.00"
@@ -2991,6 +3138,7 @@
      "line_discount": "0.00",
      "net": "11095.08",
      "taxable": "11095.08",
+     "exclusive": "11095.08",
      "taxes": {
       "gst": "554.75"
      }
@@ -3000,6 +3148,7 @@
      "line_discount": "84.05",
      "net": "379.07",
      "taxable": "379.07",
+     "exclusive": "379.07",
      "taxes": {
       "gst": "18.95",
       "pst_sk": "22.74"
@@ -3010,6 +3159,7 @@
      "line_discount": "0.00",
      "net": "643.68",
      "taxable": "643.68",
+     "exclusive": "643.68",
      "taxes": {}
     },
     {
@@ -3017,6 +3167,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst": "0.00",
       "qst": "0.00"
@@ -3027,6 +3178,7 @@
      "line_discount": "0.00",
      "net": "287.52",
      "taxable": "287.52",
+     "exclusive": "287.52",
      "taxes": {
       "gst": "14.38",
       "pst_sk": "17.25"
@@ -3036,6 +3188,7 @@
    "subtotal": "12405.35",
    "tax_total": "628.07",
    "total": "13033.42",
+   "net_total": "12405.35",
    "tax_by_component": {
     "gst": "588.08",
     "pst_sk": "39.99",
@@ -3125,6 +3278,7 @@
      "line_discount": "0.00",
      "net": "493.80",
      "taxable": "493.80",
+     "exclusive": "493.80",
      "taxes": {
       "hst_ns": "69.13"
      }
@@ -3134,6 +3288,7 @@
      "line_discount": "0.00",
      "net": "469.70",
      "taxable": "469.70",
+     "exclusive": "469.70",
      "taxes": {
       "hst_nb": "70.46"
      }
@@ -3143,6 +3298,7 @@
      "line_discount": "0.00",
      "net": "17.93",
      "taxable": "17.93",
+     "exclusive": "17.93",
      "taxes": {
       "hst_ns": "2.51"
      }
@@ -3152,6 +3308,7 @@
      "line_discount": "0.00",
      "net": "15103.65",
      "taxable": "15103.65",
+     "exclusive": "15103.65",
      "taxes": {
       "gst": "755.18",
       "qst": "1506.59"
@@ -3162,6 +3319,7 @@
      "line_discount": "0.00",
      "net": "4874.71",
      "taxable": "4874.71",
+     "exclusive": "4874.71",
      "taxes": {
       "hst_on": "633.71"
      }
@@ -3171,6 +3329,7 @@
      "line_discount": "12.57",
      "net": "615.83",
      "taxable": "615.83",
+     "exclusive": "615.83",
      "taxes": {
       "gst": "30.79",
       "rst_mb": "43.11"
@@ -3180,6 +3339,7 @@
    "subtotal": "21575.62",
    "tax_total": "3111.48",
    "total": "24687.10",
+   "net_total": "21575.62",
    "tax_by_component": {
     "gst": "785.97",
     "hst_nb": "70.46",
@@ -3228,6 +3388,7 @@
      "line_discount": "0.00",
      "net": "615.84",
      "taxable": "615.84",
+     "exclusive": "615.84",
      "taxes": {
       "hst_ns": "86.22"
      }
@@ -3237,6 +3398,7 @@
      "line_discount": "117.62",
      "net": "5763.17",
      "taxable": "5763.17",
+     "exclusive": "5763.17",
      "taxes": {
       "gst": "288.16",
       "pst_sk": "345.79"
@@ -3246,6 +3408,7 @@
    "subtotal": "6379.01",
    "tax_total": "720.17",
    "total": "7099.18",
+   "net_total": "6379.01",
    "tax_by_component": {
     "gst": "288.16",
     "hst_ns": "86.22",
@@ -3306,6 +3469,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_nb": "0.00"
      }
@@ -3315,6 +3479,7 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "gst": "0.00"
      }
@@ -3324,6 +3489,7 @@
      "line_discount": "251.66",
      "net": "503.39",
      "taxable": "503.39",
+     "exclusive": "503.39",
      "taxes": {
       "gst": "25.17",
       "pst_sk": "30.20"
@@ -3334,12 +3500,14 @@
      "line_discount": "0.00",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {}
     }
    ],
    "subtotal": "503.39",
    "tax_total": "55.37",
    "total": "558.76",
+   "net_total": "503.39",
    "tax_by_component": {
     "gst": "25.17",
     "hst_nb": "0.00",
@@ -3431,6 +3599,7 @@
      "line_discount": "0.00",
      "net": "41714.00",
      "taxable": "41714.00",
+     "exclusive": "41714.00",
      "taxes": {
       "gst": "2085.70",
       "rst_mb": "2919.98"
@@ -3441,6 +3610,7 @@
      "line_discount": "0.00",
      "net": "4036.41",
      "taxable": "4036.41",
+     "exclusive": "4036.41",
      "taxes": {
       "gst": "201.82"
      }
@@ -3450,6 +3620,7 @@
      "line_discount": "0.00",
      "net": "11100.15",
      "taxable": "11100.15",
+     "exclusive": "11100.15",
      "taxes": {
       "hst_ns": "1554.02"
      }
@@ -3459,6 +3630,7 @@
      "line_discount": "0.00",
      "net": "16592.63",
      "taxable": "16592.63",
+     "exclusive": "16592.63",
      "taxes": {
       "gst": "829.63"
      }
@@ -3468,6 +3640,7 @@
      "line_discount": "0.00",
      "net": "1069.56",
      "taxable": "1069.56",
+     "exclusive": "1069.56",
      "taxes": {
       "gst": "53.48",
       "qst": "106.69"
@@ -3478,6 +3651,7 @@
      "line_discount": "0.00",
      "net": "1999.40",
      "taxable": "1999.40",
+     "exclusive": "1999.40",
      "taxes": {
       "gst": "99.97",
       "rst_mb": "139.96"
@@ -3487,6 +3661,7 @@
    "subtotal": "76512.15",
    "tax_total": "7991.25",
    "total": "84503.40",
+   "net_total": "76512.15",
    "tax_by_component": {
     "gst": "3270.60",
     "hst_ns": "1554.02",
@@ -3539,6 +3714,7 @@
      "line_discount": "0.00",
      "net": "16938.00",
      "taxable": "16938.00",
+     "exclusive": "16938.00",
      "taxes": {
       "hst_ns": "2371.32"
      }
@@ -3548,6 +3724,7 @@
      "line_discount": "0.00",
      "net": "4294.64",
      "taxable": "4294.64",
+     "exclusive": "4294.64",
      "taxes": {
       "gst": "214.73"
      }
@@ -3557,6 +3734,7 @@
      "line_discount": "361.01",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_nb": "0.00"
      }
@@ -3565,6 +3743,7 @@
    "subtotal": "21232.64",
    "tax_total": "2586.05",
    "total": "23818.69",
+   "net_total": "21232.64",
    "tax_by_component": {
     "gst": "214.73",
     "hst_nb": "0.00",
@@ -3598,6 +3777,7 @@
      "line_discount": "0.00",
      "net": "17026.28",
      "taxable": "17026.28",
+     "exclusive": "17026.28",
      "taxes": {
       "gst": "851.31",
       "qst": "1698.37"
@@ -3607,6 +3787,7 @@
    "subtotal": "17026.28",
    "tax_total": "2549.68",
    "total": "19575.96",
+   "net_total": "17026.28",
    "tax_by_component": {
     "gst": "851.31",
     "qst": "1698.37"
@@ -3694,6 +3875,7 @@
      "line_discount": "0.00",
      "net": "2125.05",
      "taxable": "2125.05",
+     "exclusive": "2125.05",
      "taxes": {
       "gst": "106.25",
       "pst_sk": "127.50"
@@ -3704,6 +3886,7 @@
      "line_discount": "0.00",
      "net": "4321.62",
      "taxable": "4321.62",
+     "exclusive": "4321.62",
      "taxes": {
       "hst_nb": "648.24"
      }
@@ -3713,6 +3896,7 @@
      "line_discount": "0.00",
      "net": "608.63",
      "taxable": "608.63",
+     "exclusive": "608.63",
      "taxes": {
       "gst": "30.43",
       "pst_bc": "42.60"
@@ -3723,6 +3907,7 @@
      "line_discount": "0.00",
      "net": "1700.36",
      "taxable": "1700.36",
+     "exclusive": "1700.36",
      "taxes": {}
     },
     {
@@ -3730,6 +3915,7 @@
      "line_discount": "519.79",
      "net": "4678.07",
      "taxable": "4678.07",
+     "exclusive": "4678.07",
      "taxes": {
       "gst": "233.90",
       "rst_mb": "327.46"
@@ -3740,6 +3926,7 @@
      "line_discount": "0.00",
      "net": "554.58",
      "taxable": "554.58",
+     "exclusive": "554.58",
      "taxes": {
       "hst_nb": "83.19"
      }
@@ -3748,6 +3935,7 @@
    "subtotal": "13988.31",
    "tax_total": "1599.57",
    "total": "15587.88",
+   "net_total": "13988.31",
    "tax_by_component": {
     "gst": "370.58",
     "hst_nb": "731.43",
@@ -3791,6 +3979,7 @@
      "line_discount": "0.00",
      "net": "5551.95",
      "taxable": "5551.95",
+     "exclusive": "5551.95",
      "taxes": {
       "hst_nb": "832.79"
      }
@@ -3800,6 +3989,7 @@
      "line_discount": "174.69",
      "net": "0.00",
      "taxable": "0.00",
+     "exclusive": "0.00",
      "taxes": {
       "hst_ns": "0.00"
      }
@@ -3808,6 +3998,7 @@
    "subtotal": "5551.95",
    "tax_total": "832.79",
    "total": "6384.74",
+   "net_total": "5551.95",
    "tax_by_component": {
     "hst_nb": "832.79",
     "hst_ns": "0.00"
@@ -3890,6 +4081,7 @@
      "line_discount": "65.03",
      "net": "3104.85",
      "taxable": "3104.85",
+     "exclusive": "3104.85",
      "taxes": {
       "hst_on": "403.63"
      }
@@ -3899,6 +4091,7 @@
      "line_discount": "0.00",
      "net": "95.28",
      "taxable": "95.28",
+     "exclusive": "95.28",
      "taxes": {
       "gst": "4.76",
       "pst_sk": "5.72"
@@ -3909,6 +4102,7 @@
      "line_discount": "134.83",
      "net": "35.78",
      "taxable": "35.78",
+     "exclusive": "35.78",
      "taxes": {
       "hst_on": "4.65"
      }
@@ -3918,6 +4112,7 @@
      "line_discount": "3688.66",
      "net": "7378.42",
      "taxable": "7378.42",
+     "exclusive": "7378.42",
      "taxes": {
       "gst": "368.92",
       "qst": "736.00"
@@ -3928,6 +4123,7 @@
      "line_discount": "0.00",
      "net": "1868.25",
      "taxable": "1868.25",
+     "exclusive": "1868.25",
      "taxes": {
       "hst_ns": "261.56"
      }
@@ -3936,6 +4132,7 @@
    "subtotal": "12482.58",
    "tax_total": "1785.24",
    "total": "14267.82",
+   "net_total": "12482.58",
    "tax_by_component": {
     "gst": "373.68",
     "hst_ns": "261.56",
@@ -4007,6 +4204,7 @@
      "line_discount": "0.00",
      "net": "1667.13",
      "taxable": "1667.13",
+     "exclusive": "1667.13",
      "taxes": {
       "hst_ns": "233.40"
      }
@@ -4016,6 +4214,7 @@
      "line_discount": "0.00",
      "net": "1576.40",
      "taxable": "1576.40",
+     "exclusive": "1576.40",
      "taxes": {
       "gst": "78.82",
       "rst_mb": "110.35"
@@ -4026,6 +4225,7 @@
      "line_discount": "165.50",
      "net": "2131.42",
      "taxable": "2131.42",
+     "exclusive": "2131.42",
      "taxes": {
       "gst_zero": "0.00"
      }
@@ -4035,6 +4235,7 @@
      "line_discount": "0.00",
      "net": "873.36",
      "taxable": "873.36",
+     "exclusive": "873.36",
      "taxes": {
       "gst": "43.67",
       "pst_bc": "61.14"
@@ -4044,6 +4245,7 @@
    "subtotal": "6248.31",
    "tax_total": "527.38",
    "total": "6775.69",
+   "net_total": "6248.31",
    "tax_by_component": {
     "gst": "122.49",
     "gst_zero": "0.00",
@@ -4079,6 +4281,7 @@
      "line_discount": "0.00",
      "net": "432.59",
      "taxable": "432.59",
+     "exclusive": "432.59",
      "taxes": {
       "gst": "21.63",
       "pst_sk": "25.96"
@@ -4088,6 +4291,7 @@
    "subtotal": "432.59",
    "tax_total": "47.59",
    "total": "480.18",
+   "net_total": "432.59",
    "tax_by_component": {
     "gst": "21.63",
     "pst_sk": "25.96"
