@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 464   Remaining: 2323   Progress: 16.65%
+TOTAL ATOMIC TASKS: 2787   Completed: 465   Remaining: 2322   Progress: 16.68%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -622,7 +622,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-01-T06 — TaxCalculator service (Decimal, ROUND_HALF_UP): exclusive/inclusive, per-component amounts, recoverable vs non-recoverable split, residual-cent rule
 ✅ G-01-T07 — Posting mapper: tax lines to the right control accounts (GST/HST payable, ITC receivable, PST payable, QST payable, QST ITR); non-recoverable added to the expense line
 ✅ G-01-T08 — Effective-date resolver: codes_available(side, date, org) returns only active codes; expired codes raise TaxCodeExpired on validation
-❌ G-01-T09 — Default purchase code per expense account = home-province purchase code (from A-05 province); migration helper for the CoA template
+✅ G-01-T09 — Default purchase code per expense account = home-province purchase code (from A-05 province); migration helper for the CoA template
 ❌ G-01-T10 — Versioning: editing a code's components creates a new version effective from a date; posted lines keep the old version FK
 ❌ G-01-T11 — API /api/v1/tax/components, /api/v1/tax/codes (list filtered by side/date, CRUD, archive, versions); feature key tax.core read on all packages, edit permission tax.manage
 ❌ G-01-T12 — Tax code list UI: tabs, type badges, effective timeline, "Show expired" toggle, usage count
