@@ -20,7 +20,7 @@ import {
 } from "@numo9/ui";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { useFormatMessage } from "@/i18n";
 
@@ -35,11 +35,19 @@ export interface BankingHomeProps {
   onAddAccount?: () => void;
   /** Increment to reload the cards (after an account is added). */
   refreshKey?: number;
-  /** Rendered above the cards (the no-bank prompt, F-01-T12). */
+  /** Rendered above the cards (the add-account notice, the no-bank prompt). */
   banner?: ReactNode;
+  /** Called with how many accounts (archived ones too) the organisation has, once loaded. */
+  onLoaded?: (count: number) => void;
 }
 
-export function BankingHomeScreen({ org, onAddAccount, refreshKey = 0, banner }: BankingHomeProps) {
+export function BankingHomeScreen({
+  org,
+  onAddAccount,
+  refreshKey = 0,
+  banner,
+  onLoaded,
+}: BankingHomeProps) {
   const fm = useFormatMessage();
   const [accounts, setAccounts] = useState<BankAccount[] | null>(null);
   const [archived, setArchived] = useState<BankAccount[]>([]);
@@ -47,6 +55,9 @@ export function BankingHomeScreen({ org, onAddAccount, refreshKey = 0, banner }:
   const [attempt, setAttempt] = useState(0);
   const [showArchived, setShowArchived] = useState(false);
   const [status, setStatus] = useState("");
+  // A notification: a new function identity must not reload the cards.
+  const loaded = useRef(onLoaded);
+  loaded.current = onLoaded;
 
   useEffect(() => {
     let cancelled = false;
@@ -56,6 +67,7 @@ export function BankingHomeScreen({ org, onAddAccount, refreshKey = 0, banner }:
       if (result.status === 200 && Array.isArray(result.body?.results)) {
         setAccounts(result.body.results.filter((a) => !a.archived_at));
         setArchived(result.body.results.filter((a) => a.archived_at));
+        loaded.current?.(result.body.results.length);
       } else setFailed(true);
     });
     return () => {

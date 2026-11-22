@@ -6,7 +6,7 @@
  */
 import { Button } from "@numo9/ui";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
 
@@ -14,6 +14,7 @@ import { AddAccountSheet } from "./AddAccountSheet";
 import type { BankAccount } from "./api";
 import { BankingHomeScreen } from "./BankingHomeScreen";
 import { sheet } from "./messages";
+import { NoBankPrompt } from "./NoBankPrompt";
 
 /** The spend-money form for an account (F-01-T10). */
 export function spendUrl(org: string, account: string): string {
@@ -25,6 +26,12 @@ export function BankingHome({ org }: { org: string }) {
   const [adding, setAdding] = useState(false);
   const [created, setCreated] = useState<BankAccount | null>(null);
   const [refresh, setRefresh] = useState(0);
+  const [count, setCount] = useState<number | undefined>(undefined);
+
+  // `/o/:org/banking?add=1` (the dashboard prompt's button) opens the add-account sheet.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("add") === "1") setAdding(true);
+  }, []);
 
   const notice = created ? (
     <div
@@ -55,7 +62,15 @@ export function BankingHome({ org }: { org: string }) {
         org={org}
         onAddAccount={() => setAdding(true)}
         refreshKey={refresh}
-        banner={notice}
+        onLoaded={setCount}
+        banner={
+          <>
+            {notice}
+            {count === 0 ? (
+              <NoBankPrompt org={org} count={0} onAdd={() => setAdding(true)} />
+            ) : null}
+          </>
+        }
       />
       <AddAccountSheet
         org={org}

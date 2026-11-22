@@ -125,3 +125,28 @@ test("account detail: running balance of the last row equals the ledger balance"
   await expect(page.locator("[data-ledger-balance]")).toHaveText("$887.00");
   await expectAccessible(page);
 });
+
+test("no-bank prompt: on home, dismissed for 7 days, back afterwards", async ({ page }) => {
+  await mockAccounts(page, []);
+  await page.goto(`/o/${ORG}/home`);
+  const prompt = page.getByRole("heading", { name: "Add your first bank account" });
+  await expect(prompt).toBeVisible();
+  await expect(page.getByRole("link", { name: "Add account" })).toHaveAttribute(
+    "href",
+    `/o/${ORG}/banking?add=1`,
+  );
+  await page.getByRole("button", { name: "Hide for 7 days" }).click();
+  await expect(prompt).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Home", level: 1 })).toBeVisible();
+  await expect(prompt).toHaveCount(0);
+  await page.evaluate((org) => {
+    const eightDays = 8 * 24 * 60 * 60 * 1000;
+    window.localStorage.setItem(
+      `numo9.banking.noBankPrompt.${org}`,
+      String(Date.now() - eightDays),
+    );
+  }, ORG);
+  await page.reload();
+  await expect(prompt).toBeVisible();
+});

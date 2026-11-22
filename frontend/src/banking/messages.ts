@@ -377,3 +377,23 @@ export const reg = defineMessages({
     description: "Error title",
   },
 });
+
+export const prompt = defineMessages({
+  title: {
+    id: "banking.prompt.title",
+    defaultMessage: "Add your first bank account",
+    description: "No-bank-account prompt title (F-01-T12)",
+  },
+  body: {
+    id: "banking.prompt.body",
+    defaultMessage:
+      "Record spend and receive money right away — no feed or plan upgrade needed. Nothing is blocked meanwhile.",
+    description: "No-bank-account prompt text",
+  },
+  add: { id: "banking.prompt.add", defaultMessage: "Add account", description: "Prompt button" },
+  dismiss: {
+    id: "banking.prompt.dismiss",
+    defaultMessage: "Hide for 7 days",
+    description: "Prompt dismiss button: hides it for this person for 7 days",
+  },
+});

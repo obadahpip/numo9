@@ -428,6 +428,12 @@
     "noActivity": "No transactions yet",
     "noStatement": "No statement balance entered",
     "owed": "{amount} owed",
+    "prompt": {
+      "add": "Add account",
+      "body": "Record spend and receive money right away — no feed or plan upgrade needed. Nothing is blocked meanwhile.",
+      "dismiss": "Hide for 7 days",
+      "title": "Add your first bank account"
+    },
     "receiveMoney": "Receive money",
     "reconcileOptional": "Not reconciled — optional",
     "reconcileTracked": "Reconciliation tracked",

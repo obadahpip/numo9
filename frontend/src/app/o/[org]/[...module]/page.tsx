@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { NoBankPrompt } from "@/banking/NoBankPrompt";
 import { AppShell } from "@/components/AppShell";
 import { defineMessages } from "@/i18n";
 import { getFormatMessage } from "@/i18n/server";
@@ -34,6 +35,11 @@ export default async function OrganisationModulePage({ params }: { params: Promi
 
   const body = (
     <>
+      {entry.path === "home" ? (
+        <div className="mb-6">
+          <NoBankPrompt org={org} />
+        </div>
+      ) : null}
       <h1 className="text-2xl font-semibold">{fm(entry.label)}</h1>
       <p className="mt-2 text-sm text-fg-muted">{fm(messages.placeholder)}</p>
     </>
