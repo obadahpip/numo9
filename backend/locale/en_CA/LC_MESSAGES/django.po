@@ -5859,6 +5859,67 @@ msgstr ""
 msgid "daily staff activity"
 msgstr ""
 
+msgid "tax authority"
+msgstr ""
+
+msgid "tax authorities"
+msgstr ""
+
+msgid "GST"
+msgstr ""
+
+msgid "HST"
+msgstr ""
+
+msgid "PST"
+msgstr ""
+
+msgid "QST"
+msgstr ""
+
+msgid "Sales and purchases"
+msgstr ""
+
+msgid "Sales only"
+msgstr ""
+
+msgid "Purchases only"
+msgstr ""
+
+msgid "authority"
+msgstr ""
+
+msgid "rate (%)"
+msgstr ""
+
+msgid "recoverable on purchases"
+msgstr ""
+
+msgid "used on"
+msgstr ""
+
+msgid "control account (sales)"
+msgstr ""
+
+msgid "control account (purchases)"
+msgstr ""
+
+msgid "tax component"
+msgstr ""
+
+msgid "tax components"
+msgstr ""
+
+msgid "Another version of this tax component is already in force on some of these days."
+msgstr ""
+
+msgid "A component can't end before it starts."
+msgstr ""
+
+#, python-format
+msgid "%(component)s already has a version in force from %(start)s: versions of a component can't overlap."
+msgstr ""
+
 msgid "Tenancy"
 msgstr ""
 

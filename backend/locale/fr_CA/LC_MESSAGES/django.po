@@ -6224,6 +6224,67 @@ msgstr "alertes de personnel inactif"
 msgid "daily staff activity"
 msgstr "activité quotidienne du personnel"
 
+msgid "tax authority"
+msgstr "autorité fiscale"
+
+msgid "tax authorities"
+msgstr "autorités fiscales"
+
+msgid "GST"
+msgstr "TPS"
+
+msgid "HST"
+msgstr "TVH"
+
+msgid "PST"
+msgstr "TVP"
+
+msgid "QST"
+msgstr "TVQ"
+
+msgid "Sales and purchases"
+msgstr "Ventes et achats"
+
+msgid "Sales only"
+msgstr "Ventes seulement"
+
+msgid "Purchases only"
+msgstr "Achats seulement"
+
+msgid "authority"
+msgstr "autorité"
+
+msgid "rate (%)"
+msgstr "taux (%)"
+
+msgid "recoverable on purchases"
+msgstr "récupérable sur les achats"
+
+msgid "used on"
+msgstr "utilisé sur"
+
+msgid "control account (sales)"
+msgstr "compte de contrôle (ventes)"
+
+msgid "control account (purchases)"
+msgstr "compte de contrôle (achats)"
+
+msgid "tax component"
+msgstr "composante de taxe"
+
+msgid "tax components"
+msgstr "composantes de taxe"
+
+msgid "Another version of this tax component is already in force on some of these days."
+msgstr "Une autre version de cette composante de taxe est déjà en vigueur certains de ces jours."
+
+msgid "A component can't end before it starts."
+msgstr "Une composante ne peut pas se terminer avant de commencer."
+
+#, python-format
+msgid "%(component)s already has a version in force from %(start)s: versions of a component can't overlap."
+msgstr "%(component)s a déjà une version en vigueur depuis le %(start)s : les versions d'une composante ne peuvent pas se chevaucher."
+
 msgid "Tenancy"
 msgstr ""
 
