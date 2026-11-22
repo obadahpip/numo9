@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:43-0500\n"
+"POT-Creation-Date: 2026-11-22 08:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5205,6 +5205,12 @@ msgstr "contact exigé sur les lignes de dépenses"
 
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr "Chaque ligne d'une écriture sur un compte de dépenses doit indiquer un contact."
+
+msgid "journals need approval from"
+msgstr "les écritures doivent être approuvées à partir de"
+
+msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
+msgstr "Les écritures manuelles de ce total ou plus doivent être approuvées par une autre personne que leur auteur avant d'être comptabilisées. Vide : les écritures n'ont jamais besoin d'approbation (les limites d'approbation de chacun s'appliquent toujours)."
 
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"

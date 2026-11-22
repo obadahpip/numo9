@@ -59,3 +59,29 @@ def test_only_settings_managers_change_them() -> None:
         content_type="application/json",
     )
     assert response.status_code == 403
+
+
+def test_journal_approval_threshold_persisted_and_audited() -> None:
+    """C-04-T01 — journal_approval_threshold: empty by default (never), set and cleared through
+    the settings API, every change audited; negative amounts refused."""
+    org = Organisation.objects.create(name="Refined Interiors Inc.")
+    owner = client(org, "owner")
+    url = f"/api/v1/o/{org.public_id}/settings"
+    assert owner.get(url).json()["journal_approval_threshold"] is None
+    changed = owner.patch(
+        url, {"journal_approval_threshold": "5000.00"}, content_type="application/json"
+    )
+    assert changed.status_code == 200 and changed.json()["journal_approval_threshold"] == "5000.00"
+    with org_context(org):
+        event = AuditEvent.objects.filter(object_type="orgsettings.OrganisationSettings").latest(
+            "pk"
+        )
+        assert event.changes["journal_approval_threshold"] == [None, "5000.00"]
+    refused = owner.patch(
+        url, {"journal_approval_threshold": "-1"}, content_type="application/json"
+    )
+    assert refused.status_code == 400
+    cleared = owner.patch(
+        url, {"journal_approval_threshold": None}, content_type="application/json"
+    )
+    assert cleared.json()["journal_approval_threshold"] is None

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 08:43-0500\n"
+"POT-Creation-Date: 2026-11-22 08:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4921,6 +4921,12 @@ msgid "expense journal lines need a contact"
 msgstr ""
 
 msgid "Every line of a journal on an expense account must name a contact."
+msgstr ""
+
+msgid "journals need approval from"
+msgstr ""
+
+msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
 msgstr ""
 
 msgid "sales: default due date"
