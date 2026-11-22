@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 18:05-0500\n"
+"POT-Creation-Date: 2026-11-22 07:09-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -476,6 +476,12 @@ msgstr ""
 
 msgid "No events match these filters."
 msgstr ""
+
+#, python-format
+msgid "%(name)s has %(count)d transaction — archive it instead."
+msgid_plural "%(name)s has %(count)d transactions — archive it instead."
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Chequing"
 msgstr ""

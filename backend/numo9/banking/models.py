@@ -21,7 +21,7 @@ to its ledger account (F-01-T05); there is no feed, import, reconciliation or pl
 
 from __future__ import annotations
 
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.db import models
 from django.db.models.functions import Lower
@@ -29,6 +29,7 @@ from django.utils.translation import gettext_lazy as _
 
 from numo9.audit.mixins import AuditedModel
 from numo9.security.fields import EncryptedField
+from numo9.tenancy.managers import OrgScopedManager
 from numo9.tenancy.models import OrgOwnedModel
 
 MONEY_DIGITS, MONEY_PLACES = 18, 2
@@ -44,7 +45,20 @@ class BankAccountType(models.TextChoices):
     CLEARING = "clearing", _("Clearing")
 
 
+class BankAccountQuerySet(models.QuerySet["BankAccount"]):
+    def pickable(self) -> BankAccountQuerySet:
+        """Accounts a person can choose on a new transaction: not archived, not deleted
+        (F-01-T04). Reports read every account, archived ones included."""
+        return self.filter(archived_at__isnull=True, deleted_at__isnull=True)
+
+
+#: Organisation-scoped (A-01-T04) with the bank-account queryset's helpers.
+BankAccountManager = OrgScopedManager.from_queryset(BankAccountQuerySet)
+
+
 class BankAccount(AuditedModel, OrgOwnedModel):
+    objects: ClassVar[Any] = BankAccountManager()
+
     audit_masked: ClassVar[frozenset[str]] = frozenset(
         {"account_last4", "transit_number", "institution_number"}
     )
