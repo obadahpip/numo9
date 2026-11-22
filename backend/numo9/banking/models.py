@@ -122,3 +122,136 @@ class BankAccount(AuditedModel, OrgOwnedModel):
     @property
     def is_archived(self) -> bool:
         return self.archived_at is not None
+
+
+# ---- spend money / receive money (F-01-T05) -----------------------------------------------------
+
+
+class BankTransactionKind(models.TextChoices):
+    SPEND = "spend", _("Spend money")
+    RECEIVE = "receive", _("Receive money")
+
+
+class TaxMode(models.TextChoices):
+    """How the line amounts are read: before tax, including tax, or with no tax at all."""
+
+    EXCLUSIVE = "exclusive", _("Tax exclusive")
+    INCLUSIVE = "inclusive", _("Tax inclusive")
+    NO_TAX = "no_tax", _("No tax")
+
+
+class BankTransactionStatus(models.TextChoices):
+    POSTED = "posted", _("Posted")
+    VOIDED = "voided", _("Voided")
+
+
+class BankTransaction(AuditedModel, OrgOwnedModel):
+    """Money spent from or received into a bank account, posted as one balanced journal.
+
+    The header carries the totals (``subtotal`` before tax, ``tax_total``, ``total`` — the amount
+    that left or reached the bank); the lines say where the money went. ``journal_entry`` is the
+    posted journal (its ``source_type`` / ``source_id`` point back here); voiding reverses it."""
+
+    kind = models.CharField(_("kind"), max_length=10, choices=BankTransactionKind.choices)
+    bank_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.PROTECT,
+        related_name="transactions",
+        verbose_name=_("bank account"),
+    )
+    date = models.DateField(_("date"))
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bank_transactions",
+        verbose_name=_("contact"),
+    )
+    reference = models.CharField(_("reference"), max_length=255, blank=True)
+    tax_mode = models.CharField(
+        _("amounts are"), max_length=10, choices=TaxMode.choices, default=TaxMode.EXCLUSIVE
+    )
+    subtotal = models.DecimalField(
+        _("subtotal"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES
+    )
+    tax_total = models.DecimalField(_("tax"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    total = models.DecimalField(_("total"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=BankTransactionStatus.choices,
+        default=BankTransactionStatus.POSTED,
+    )
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bank_transaction",
+        verbose_name=_("journal"),
+    )
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-date", "-pk")
+        verbose_name = _("bank transaction")
+        verbose_name_plural = _("bank transactions")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(kind__in=BankTransactionKind.values),
+                name="banking_txn_kind_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(total=models.F("subtotal") + models.F("tax_total")),
+                name="banking_txn_total_adds_up",
+            ),
+            models.CheckConstraint(condition=models.Q(total__gt=0), name="banking_txn_positive"),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=["organisation", "bank_account", "date"], name="banking_txn_acct_idx"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_kind_display()} {self.total} {self.date:%Y-%m-%d}"
+
+
+class BankTransactionLine(OrgOwnedModel):
+    """One line of a spend / receive: the account the money went to or came from."""
+
+    transaction = models.ForeignKey(
+        BankTransaction,
+        on_delete=models.CASCADE,
+        related_name="lines",
+        verbose_name=_("bank transaction"),
+    )
+    line_no = models.PositiveSmallIntegerField(_("line"))
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    account = models.ForeignKey(
+        "ledger.Account",
+        on_delete=models.PROTECT,
+        related_name="bank_transaction_lines",
+        verbose_name=_("account"),
+    )
+    #: As entered (before or including tax, per the header's tax mode).
+    amount = models.DecimalField(_("amount"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    net = models.DecimalField(_("net"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    tax_amount = models.DecimalField(
+        _("tax"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES, default=0
+    )
+    tax_code = models.CharField(_("tax code"), max_length=60, blank=True)
+    #: The tax portions: ``[{"role": "itc_receivable", "amount": "13.00", "recoverable": true}]``.
+    taxes = models.JSONField(_("tax portions"), default=list, blank=True)
+
+    class Meta:
+        ordering = ("transaction", "line_no")
+        verbose_name = _("bank transaction line")
+        verbose_name_plural = _("bank transaction lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(fields=["transaction", "line_no"], name="banking_txn_line_no")
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.line_no}: {self.net}"

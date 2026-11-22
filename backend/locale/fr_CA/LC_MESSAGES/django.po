@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:09-0500\n"
+"POT-Creation-Date: 2026-11-22 07:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -549,6 +549,119 @@ msgstr "compte bancaire"
 msgid "bank accounts"
 msgstr "comptes bancaires"
 
+msgid "Spend money"
+msgstr "Dépenser de l'argent"
+
+#, fuzzy
+#| msgid "live mode"
+msgid "Receive money"
+msgstr "mode réel"
+
+msgid "Tax exclusive"
+msgstr ""
+
+msgid "Tax inclusive"
+msgstr ""
+
+msgid "No tax"
+msgstr ""
+
+msgid "Posted"
+msgstr ""
+
+#, fuzzy
+#| msgid "Void"
+msgid "Voided"
+msgstr "Annulée"
+
+msgid "kind"
+msgstr ""
+
+#, fuzzy
+#| msgid "Due date"
+msgid "date"
+msgstr "Date d’échéance"
+
+msgid "contact"
+msgstr "contact"
+
+msgid "reference"
+msgstr "référence"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amounts are"
+msgstr "montant dû"
+
+msgid "subtotal"
+msgstr "sous-total"
+
+msgid "tax"
+msgstr "taxes"
+
+msgid "total"
+msgstr "total"
+
+msgid "status"
+msgstr "statut"
+
+#, fuzzy
+#| msgid "Number"
+msgid "journal"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "decided at"
+msgid "voided at"
+msgstr "décision prise le"
+
+#, fuzzy
+#| msgid "bank account"
+msgid "bank transaction"
+msgstr "compte bancaire"
+
+#, fuzzy
+#| msgid "bank accounts"
+msgid "bank transactions"
+msgstr "comptes bancaires"
+
+msgid "line"
+msgstr ""
+
+msgid "description"
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "account"
+msgstr "Comptabilité"
+
+msgid "amount"
+msgstr "montant"
+
+msgid "net"
+msgstr "net"
+
+#, fuzzy
+#| msgid "error code"
+msgid "tax code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "tax registrations"
+msgid "tax portions"
+msgstr "inscriptions fiscales"
+
+#, fuzzy
+#| msgid "Change organisation settings"
+msgid "bank transaction line"
+msgstr "Modifier les paramètres de l’organisation"
+
+#, fuzzy
+#| msgid "Change organisation settings"
+msgid "bank transaction lines"
+msgstr "Modifier les paramètres de l’organisation"
+
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
 msgstr "« %(type)s » n'est pas un type de compte bancaire."
@@ -563,6 +676,61 @@ msgstr "Donnez un nom au compte."
 #, python-format
 msgid "There's already an account called “%(name)s”. Choose another name."
 msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
+
+#, python-format
+msgid "Amounts have at most 2 decimals: %(amount)s."
+msgstr "Les montants ont au plus 2 décimales : %(amount)s."
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "That account doesn't exist."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, fuzzy
+#| msgid "Choose whether to add, move or remove."
+msgid "Choose spend money or receive money."
+msgstr "Choisissez d’ajouter, de déplacer ou de retirer."
+
+#, fuzzy
+#| msgid "Unknown status."
+msgid "Unknown tax mode."
+msgstr "Statut inconnu."
+
+#, python-format
+msgid "%(name)s is archived: restore it or choose another account."
+msgstr "%(name)s est archivé : restaurez-le ou choisissez un autre compte."
+
+#, fuzzy
+#| msgid "Select at least one organisation."
+msgid "Add at least one line."
+msgstr "Sélectionnez au moins une organisation."
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "Line %(line)d: the amount must be more than 0.00."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, python-format
+msgid "Line %(line)d has tax, but the amounts have no tax."
+msgstr "La ligne %(line)d a des taxes, mais les montants sont sans taxes."
+
+#, python-format
+msgid "Line %(line)d: a tax portion isn't valid."
+msgstr "Ligne %(line)d : une part de taxe n'est pas valide."
+
+#, fuzzy, python-format
+#| msgid "Choose a role used in this organisation."
+msgid "Line %(line)d: the tax is more than the amount."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, python-format
+msgid "The organisation has no %(role)s account: add it to the chart of accounts."
+msgstr "L'organisation n'a pas de compte %(role)s : ajoutez-le au plan comptable."
+
+#, fuzzy
+#| msgid "Enter an amount greater than $0.00."
+msgid "The total must be more than 0.00."
+msgstr "Entrez un montant supérieur à 0,00 $."
 
 msgid "Stripe event"
 msgstr "Événement Stripe"
@@ -614,18 +782,6 @@ msgstr "Facture Stripe"
 
 msgid "number"
 msgstr "numéro"
-
-msgid "status"
-msgstr "statut"
-
-msgid "subtotal"
-msgstr "sous-total"
-
-msgid "tax"
-msgstr "taxes"
-
-msgid "total"
-msgstr "total"
 
 msgid "paid"
 msgstr "payé"
@@ -1015,9 +1171,6 @@ msgid "name (translation key)"
 msgstr ""
 
 msgid "Translation key of the product's name, e.g. 'catalogue.product.accounting'."
-msgstr ""
-
-msgid "kind"
 msgstr ""
 
 msgid "sort order"
@@ -1671,15 +1824,6 @@ msgstr ""
 msgid "Print and mail"
 msgstr ""
 
-msgid "Tax exclusive"
-msgstr ""
-
-msgid "Tax inclusive"
-msgstr ""
-
-msgid "No tax"
-msgstr ""
-
 msgid "Archived"
 msgstr "Archivée"
 
@@ -1770,9 +1914,6 @@ msgstr ""
 
 msgid "bill amounts are"
 msgstr ""
-
-msgid "contact"
-msgstr "contact"
 
 #, fuzzy
 #| msgid "Contacts"
@@ -2100,9 +2241,6 @@ msgstr "Refusée"
 msgid "Used"
 msgstr "Utilisée"
 
-msgid "amount"
-msgstr "montant"
-
 msgid "owed when requested"
 msgstr "solde dû à la demande"
 
@@ -2196,19 +2334,8 @@ msgstr "En-tête du fichier → champ de la ligne."
 msgid "supplier statement"
 msgstr "relevé du fournisseur"
 
-#, fuzzy
-#| msgid "Due date"
-msgid "date"
-msgstr "Date d’échéance"
-
 msgid "invoice number"
 msgstr "numéro de facture"
-
-msgid "reference"
-msgstr "référence"
-
-msgid "description"
-msgstr ""
 
 msgid "file row"
 msgstr "ligne du fichier"
@@ -4191,11 +4318,6 @@ msgstr ""
 
 #, fuzzy
 #| msgid "Accounting"
-msgid "account"
-msgstr "Comptabilité"
-
-#, fuzzy
-#| msgid "Accounting"
 msgid "accounts"
 msgstr "Comptabilité"
 
@@ -4231,9 +4353,6 @@ msgstr ""
 msgid "Awaiting approval"
 msgstr ""
 
-msgid "Posted"
-msgstr ""
-
 msgid "Reversed"
 msgstr ""
 
@@ -4264,6 +4383,11 @@ msgstr "Documents"
 
 msgid "Reversal"
 msgstr ""
+
+#, fuzzy
+#| msgid "organisation"
+msgid "Bank transaction"
+msgstr "organisation"
 
 msgid "General"
 msgstr "Général"
@@ -4353,9 +4477,6 @@ msgstr "Écriture de journal manuelle"
 msgid "line ID"
 msgstr ""
 
-msgid "line"
-msgstr ""
-
 msgid "debit"
 msgstr ""
 
@@ -4369,11 +4490,6 @@ msgstr ""
 #| msgid "Banking"
 msgid "tracking"
 msgstr "Banque"
-
-#, fuzzy
-#| msgid "error code"
-msgid "tax code"
-msgstr "code d’erreur"
 
 msgid "journal line"
 msgstr ""
