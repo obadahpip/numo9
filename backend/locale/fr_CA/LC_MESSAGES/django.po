@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:14-0500\n"
+"POT-Creation-Date: 2026-11-22 07:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -483,6 +483,34 @@ msgstr "%(count)s événements · exporté le %(when)s"
 msgid "No events match these filters."
 msgstr "Aucun événement ne correspond à ces filtres."
 
+msgid "That bank account doesn't exist."
+msgstr "Ce compte bancaire n'existe pas."
+
+msgid "The currency is fixed once the account has transactions."
+msgstr "La devise est fixée dès que le compte a des opérations."
+
+msgid "Give the account a name."
+msgstr "Donnez un nom au compte."
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
+
+msgid "That bank transaction doesn't exist."
+msgstr "Cette opération bancaire n'existe pas."
+
+msgid "That account doesn't exist."
+msgstr "Ce compte n'existe pas."
+
+msgid "That contact doesn't exist."
+msgstr "Ce contact n'existe pas."
+
+msgid "That document doesn't exist."
+msgstr "Ce document n'existe pas."
+
+msgid "This transaction is already voided."
+msgstr "Cette opération est déjà annulée."
+
 #, python-format
 msgid "%(name)s has %(count)d transaction — archive it instead."
 msgid_plural "%(name)s has %(count)d transactions — archive it instead."
@@ -552,10 +580,8 @@ msgstr "comptes bancaires"
 msgid "Spend money"
 msgstr "Dépenser de l'argent"
 
-#, fuzzy
-#| msgid "live mode"
 msgid "Receive money"
-msgstr "mode réel"
+msgstr "Recevoir de l'argent"
 
 msgid "Tax exclusive"
 msgstr ""
@@ -569,8 +595,6 @@ msgstr ""
 msgid "Posted"
 msgstr ""
 
-#, fuzzy
-#| msgid "Void"
 msgid "Voided"
 msgstr "Annulée"
 
@@ -588,10 +612,8 @@ msgstr "contact"
 msgid "reference"
 msgstr "référence"
 
-#, fuzzy
-#| msgid "amount due"
 msgid "amounts are"
-msgstr "montant dû"
+msgstr "les montants sont"
 
 msgid "subtotal"
 msgstr "sous-total"
@@ -605,25 +627,17 @@ msgstr "total"
 msgid "status"
 msgstr "statut"
 
-#, fuzzy
-#| msgid "Number"
 msgid "journal"
-msgstr "Numéro"
+msgstr "écriture"
 
-#, fuzzy
-#| msgid "decided at"
 msgid "voided at"
-msgstr "décision prise le"
+msgstr "annulée le"
 
-#, fuzzy
-#| msgid "bank account"
 msgid "bank transaction"
-msgstr "compte bancaire"
+msgstr "opération bancaire"
 
-#, fuzzy
-#| msgid "bank accounts"
 msgid "bank transactions"
-msgstr "comptes bancaires"
+msgstr "opérations bancaires"
 
 msgid "line"
 msgstr ""
@@ -647,20 +661,23 @@ msgstr "net"
 msgid "tax code"
 msgstr "code d’erreur"
 
-#, fuzzy
-#| msgid "tax registrations"
 msgid "tax portions"
-msgstr "inscriptions fiscales"
+msgstr "parts de taxe"
 
-#, fuzzy
-#| msgid "Change organisation settings"
 msgid "bank transaction line"
-msgstr "Modifier les paramètres de l’organisation"
+msgstr "ligne d'opération bancaire"
 
-#, fuzzy
-#| msgid "Change organisation settings"
 msgid "bank transaction lines"
-msgstr "Modifier les paramètres de l’organisation"
+msgstr "lignes d'opération bancaire"
+
+msgid "See bank, credit card and cash accounts, their balances and transactions"
+msgstr "Voir les comptes bancaires, de carte de crédit et de caisse, leurs soldes et leurs opérations"
+
+msgid "Add, rename, archive, restore and delete bank accounts"
+msgstr "Ajouter, renommer, archiver, restaurer et supprimer des comptes bancaires"
+
+msgid "Record and void spend money and receive money"
+msgstr "Enregistrer et annuler des dépenses et des encaissements"
 
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
@@ -670,45 +687,26 @@ msgstr "« %(type)s » n'est pas un type de compte bancaire."
 msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
 msgstr "Tous les codes de %(first)d à %(last)d sont utilisés : renumérotez ou archivez un compte de cette plage, puis réessayez."
 
-msgid "Give the account a name."
-msgstr "Donnez un nom au compte."
-
-#, python-format
-msgid "There's already an account called “%(name)s”. Choose another name."
-msgstr "Un compte s'appelle déjà « %(name)s ». Choisissez un autre nom."
-
 #, python-format
 msgid "Amounts have at most 2 decimals: %(amount)s."
 msgstr "Les montants ont au plus 2 décimales : %(amount)s."
 
-#, fuzzy
-#| msgid "Choose a role used in this organisation."
-msgid "That account doesn't exist."
-msgstr "Choisissez un rôle utilisé dans cette organisation."
-
-#, fuzzy
-#| msgid "Choose whether to add, move or remove."
 msgid "Choose spend money or receive money."
-msgstr "Choisissez d’ajouter, de déplacer ou de retirer."
+msgstr "Choisissez une dépense ou un encaissement."
 
-#, fuzzy
-#| msgid "Unknown status."
 msgid "Unknown tax mode."
-msgstr "Statut inconnu."
+msgstr "Mode de taxe inconnu."
 
 #, python-format
 msgid "%(name)s is archived: restore it or choose another account."
 msgstr "%(name)s est archivé : restaurez-le ou choisissez un autre compte."
 
-#, fuzzy
-#| msgid "Select at least one organisation."
 msgid "Add at least one line."
-msgstr "Sélectionnez au moins une organisation."
+msgstr "Ajoutez au moins une ligne."
 
-#, fuzzy, python-format
-#| msgid "Choose a role used in this organisation."
+#, python-format
 msgid "Line %(line)d: the amount must be more than 0.00."
-msgstr "Choisissez un rôle utilisé dans cette organisation."
+msgstr "Ligne %(line)d : le montant doit être supérieur à 0,00."
 
 #, python-format
 msgid "Line %(line)d has tax, but the amounts have no tax."
@@ -718,19 +716,20 @@ msgstr "La ligne %(line)d a des taxes, mais les montants sont sans taxes."
 msgid "Line %(line)d: a tax portion isn't valid."
 msgstr "Ligne %(line)d : une part de taxe n'est pas valide."
 
-#, fuzzy, python-format
-#| msgid "Choose a role used in this organisation."
+#, python-format
 msgid "Line %(line)d: the tax is more than the amount."
-msgstr "Choisissez un rôle utilisé dans cette organisation."
+msgstr "Ligne %(line)d : la taxe dépasse le montant."
 
 #, python-format
 msgid "The organisation has no %(role)s account: add it to the chart of accounts."
 msgstr "L'organisation n'a pas de compte %(role)s : ajoutez-le au plan comptable."
 
-#, fuzzy
-#| msgid "Enter an amount greater than $0.00."
 msgid "The total must be more than 0.00."
-msgstr "Entrez un montant supérieur à 0,00 $."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, python-format
+msgid "Void: %(label)s"
+msgstr "Annulation : %(label)s"
 
 msgid "Stripe event"
 msgstr "Événement Stripe"
@@ -4384,10 +4383,8 @@ msgstr "Documents"
 msgid "Reversal"
 msgstr ""
 
-#, fuzzy
-#| msgid "organisation"
 msgid "Bank transaction"
-msgstr "organisation"
+msgstr "Opération bancaire"
 
 msgid "General"
 msgstr "Général"

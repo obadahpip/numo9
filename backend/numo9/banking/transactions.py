@@ -58,6 +58,7 @@ from .models import (
     BankTransaction,
     BankTransactionKind,
     BankTransactionLine,
+    BankTransactionStatus,
     TaxMode,
 )
 
@@ -324,3 +325,34 @@ def record_bank_transaction(
         txn.journal_entry = entry
         txn.save(update_fields=["journal_entry", "updated_at"])
         return txn
+
+
+def void_bank_transaction(
+    txn: BankTransaction, *, date: dt.date | None = None, user: Any = ACTING
+) -> BankTransaction:
+    """Void: reverse its journal (C-02 ``reverse``, lock module Bank) and mark it Voided.
+
+    The journal is never edited; the reversal is dated ``date`` (the transaction's date by
+    default). Voiding twice is refused (``banking.transaction.voided``)."""
+    from django.utils import timezone
+
+    from numo9.ledger.services import reverse
+
+    with org_context(txn.organisation), transaction.atomic():
+        locked = BankTransaction._base_manager.select_for_update().get(pk=txn.pk)
+        if locked.status == BankTransactionStatus.VOIDED:
+            raise LedgerError(
+                _("This transaction is already voided."), code="banking.transaction.voided"
+            )
+        if locked.journal_entry is not None:
+            reverse(
+                locked.journal_entry,
+                date=date or locked.date,
+                narration=_("Void: %(label)s") % {"label": str(locked)},
+                user=user,
+                module=LockModule.BANK,
+            )
+        locked.status = BankTransactionStatus.VOIDED
+        locked.voided_at = timezone.now()
+        locked.save(update_fields=["status", "voided_at", "updated_at"])
+        return locked

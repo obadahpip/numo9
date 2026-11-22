@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 07:14-0500\n"
+"POT-Creation-Date: 2026-11-22 07:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -477,6 +477,34 @@ msgstr ""
 msgid "No events match these filters."
 msgstr ""
 
+msgid "That bank account doesn't exist."
+msgstr ""
+
+msgid "The currency is fixed once the account has transactions."
+msgstr ""
+
+msgid "Give the account a name."
+msgstr ""
+
+#, python-format
+msgid "There's already an account called “%(name)s”. Choose another name."
+msgstr ""
+
+msgid "That bank transaction doesn't exist."
+msgstr ""
+
+msgid "That account doesn't exist."
+msgstr ""
+
+msgid "That contact doesn't exist."
+msgstr ""
+
+msgid "That document doesn't exist."
+msgstr ""
+
+msgid "This transaction is already voided."
+msgstr ""
+
 #, python-format
 msgid "%(name)s has %(count)d transaction — archive it instead."
 msgid_plural "%(name)s has %(count)d transactions — archive it instead."
@@ -630,6 +658,15 @@ msgstr ""
 msgid "bank transaction lines"
 msgstr ""
 
+msgid "See bank, credit card and cash accounts, their balances and transactions"
+msgstr ""
+
+msgid "Add, rename, archive, restore and delete bank accounts"
+msgstr ""
+
+msgid "Record and void spend money and receive money"
+msgstr ""
+
 #, python-format
 msgid "“%(type)s” isn't a bank account type."
 msgstr ""
@@ -638,18 +675,8 @@ msgstr ""
 msgid "Every code from %(first)d to %(last)d is used: renumber or archive an account in that range, then try again."
 msgstr ""
 
-msgid "Give the account a name."
-msgstr ""
-
-#, python-format
-msgid "There's already an account called “%(name)s”. Choose another name."
-msgstr ""
-
 #, python-format
 msgid "Amounts have at most 2 decimals: %(amount)s."
-msgstr ""
-
-msgid "That account doesn't exist."
 msgstr ""
 
 msgid "Choose spend money or receive money."
@@ -686,6 +713,10 @@ msgid "The organisation has no %(role)s account: add it to the chart of accounts
 msgstr ""
 
 msgid "The total must be more than 0.00."
+msgstr ""
+
+#, python-format
+msgid "Void: %(label)s"
 msgstr ""
 
 msgid "Stripe event"
