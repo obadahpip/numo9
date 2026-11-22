@@ -161,3 +161,31 @@ test("desktop keeps the table layout", async ({ page }) => {
   await page.goto("/iframe.html?id=data-linegrid--document-lines-story&viewMode=story");
   await expect(page.locator("thead")).not.toHaveCSS("position", "absolute");
 });
+
+for (const width of [1440, 1024, 768]) {
+  test(`pseudo-locale: no clipped labels at ${width} px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/iframe.html?id=data-linegrid--document-pseudo-locale&viewMode=story");
+    await expect(page.getByRole("grid")).toBeVisible();
+    const clipped = await page.evaluate(() => {
+      const selectors = [
+        "th",
+        "td > span[aria-hidden]",
+        "button",
+        "dt",
+        "dd",
+        "label",
+        "[data-hidden-note]",
+      ];
+      return [...document.querySelectorAll<HTMLElement>(selectors.join(","))]
+        .filter((el) => el.offsetParent !== null && el.textContent?.includes("["))
+        .filter((el) => el.scrollWidth > el.clientWidth + 1)
+        .map((el) => el.textContent);
+    });
+    expect(clipped).toEqual([]);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+}

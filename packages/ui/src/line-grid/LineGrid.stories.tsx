@@ -16,6 +16,7 @@ import {
   roughAmounts,
   sampleDocumentLines,
   sampleJournal,
+  pseudoLabels,
   sampleTotals,
   totalsLabels,
 } from "./fixtures";
@@ -81,11 +82,13 @@ function DocumentDemo({
   side = "sales",
   readOnly = false,
   problems,
+  labels = documentLabels,
 }: {
   initial: DocumentGridLine[];
   side?: "sales" | "purchase";
   readOnly?: boolean;
   problems?: Record<string, string[]>;
+  labels?: typeof documentLabels;
 }) {
   const [lines, setLines] = useState(initial);
   const rates = Object.fromEntries(sampleTaxCodes.map((code) => [code.id, code.rate ?? "0"]));
@@ -108,7 +111,7 @@ function DocumentDemo({
         )}
         accountDefaults={{ c4001: "sales.ON.standard", c4002: "sales.ON.standard" }}
         columnStore={STORE}
-        labels={documentLabels}
+        labels={labels}
         locale="en-CA"
       />
     </ToastProvider>
@@ -196,5 +199,22 @@ export const DocumentTotalsInclusive: Story = {
       labels={totalsLabels}
       locale="en-CA"
     />
+  ),
+};
+
+/** Pseudo-locale (+30 %, D-01-T19): long labels must not clip, in the table or in the cards. */
+export const DocumentPseudoLocale: Story = {
+  name: "Document lines — pseudo-locale",
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <DocumentDemo initial={sampleDocumentLines} labels={pseudoLabels(documentLabels)} />
+      <DocumentTotals
+        value={sampleTotals}
+        discountType="percent"
+        discountValue="5"
+        labels={pseudoLabels(totalsLabels)}
+        locale="en-CA"
+      />
+    </div>
   ),
 };

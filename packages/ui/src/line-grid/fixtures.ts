@@ -131,3 +131,37 @@ export const sampleTotals: DocumentTotalsValue = {
   total: "5741.30",
   taxIncluded: false,
 };
+
+/**
+ * Pseudo-locale stand-in for stories (the app's en-XA, A-10-T13): accented letters and about
+ * 30 % more length, so layouts are checked against long French labels (D-01-T19).
+ */
+export function pseudo(text: string): string {
+  const from = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const to = "áƀçðéƒĝĥîĵķļɱñöþǫŕšţûṽŵẋýžÁƁÇÐÉƑĜĤÎĴĶĻṀÑÖÞǪŔŠŢÛṼŴẊÝŽ";
+  const chars = [...to];
+  let letters = 0;
+  const out = [...text]
+    .map((char) => {
+      const at = from.indexOf(char);
+      if (at < 0) return char;
+      letters += 1;
+      return chars[at];
+    })
+    .join("");
+  return `[${out} ${"~".repeat(Math.ceil(Math.max(letters, 1) * 0.3))}]`;
+}
+
+/** Every label of an object pseudo-localised (functions: their result). */
+export function pseudoLabels<T extends object>(labels: T): T {
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(labels)) {
+    if (typeof value === "string") out[key] = pseudo(value);
+    else if (typeof value === "function")
+      out[key] = (...args: unknown[]) =>
+        pseudo(String((value as (...a: unknown[]) => unknown)(...args)));
+    else if (value && typeof value === "object") out[key] = pseudoLabels(value as object);
+    else out[key] = value;
+  }
+  return out as T;
+}

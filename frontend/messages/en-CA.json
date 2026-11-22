@@ -1456,6 +1456,75 @@
     },
     "yes": "Yes"
   },
+  "documents": {
+    "due": {
+      "beforeDate": "The due date is before the document date.",
+      "dueIn": "{days, plural, =0 {Due on the document date} one {Due in # day} other {Due in # days}}",
+      "label": "Due date",
+      "required": "Enter a due date.",
+      "terms": "Payment terms"
+    },
+    "lines": {
+      "account": "Account",
+      "accountTypes": {
+        "asset": "Assets",
+        "equity": "Equity",
+        "expense": "Expenses",
+        "liability": "Liabilities",
+        "revenue": "Revenue"
+      },
+      "actions": "Actions",
+      "addLine": "Add a line",
+      "amount": "Amount",
+      "cell": "{column}, line {line}",
+      "columns": "Columns",
+      "description": "Description",
+      "discount": "Discount",
+      "duplicated": "Line {line} duplicated",
+      "grid": "Lines",
+      "hiddenWithValues": "Hidden columns with values: {columns}.",
+      "item": "Item",
+      "lineRemoved": "Line {line} deleted",
+      "moveLine": "Move line {line} (drag, or Alt+↑/↓)",
+      "moved": "Line {from} moved to position {to}",
+      "noAccounts": "No accounts match.",
+      "noTaxCodes": "No tax codes match.",
+      "quantity": "Qty",
+      "removeLine": "Delete line {line}",
+      "showHidden": "Show",
+      "taxAmount": "Tax amount",
+      "taxCode": "Tax code",
+      "taxDefault": "Account default",
+      "taxExpired": "Not in force on this date",
+      "taxOthers": "All codes",
+      "taxTypes": {
+        "exempt": "Exempt",
+        "outOfScope": "Out of scope",
+        "taxable": "Taxable",
+        "zeroRated": "Zero-rated"
+      },
+      "taxWhy": "Why this tax code, line {line}",
+      "totals": "Totals",
+      "undo": "Undo",
+      "undoAlt": "Add the line again",
+      "unitCost": "Unit cost",
+      "unitPrice": "Unit price"
+    },
+    "totals": {
+      "announce": "Total {total}",
+      "discount": "Discount",
+      "discountAmount": "Amount",
+      "discountNone": "None",
+      "discountPercent": "Percent",
+      "discountType": "Discount type",
+      "discountValue": "Discount value",
+      "includes": "Includes {name} {amount}",
+      "pending": "Updating…",
+      "region": "Totals",
+      "subtotal": "Subtotal",
+      "total": "Total"
+    }
+  },
   "emailDomain": {
     "add": "Set up domain",
     "addFailed": "The domain couldn't be set up. Try again.",

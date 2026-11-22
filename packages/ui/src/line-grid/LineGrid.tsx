@@ -382,17 +382,17 @@ export function LineGrid({
           data-stacked={stacked || undefined}
           className={cn(
             "w-full min-w-[40rem] table-fixed border-separate border-spacing-0 text-sm",
-            stacked && "max-lg:block max-lg:min-w-0",
+            stacked && "max-[1025px]:block max-[1025px]:min-w-0",
           )}
         >
-          <colgroup className={cn(stacked && "max-lg:hidden")}>
+          <colgroup className={cn(stacked && "max-[1025px]:hidden")}>
             <col style={{ width: 44 }} />
             {visible.map((column) => (
               <col key={column.id} style={column.width ? { width: column.width } : undefined} />
             ))}
             <col style={{ width: 52 }} />
           </colgroup>
-          <thead className={cn(stacked && "max-lg:sr-only")}>
+          <thead className={cn(stacked && "max-[1025px]:sr-only")}>
             <tr role="row">
               <th
                 scope="col"
@@ -423,7 +423,7 @@ export function LineGrid({
               </th>
             </tr>
           </thead>
-          <tbody className={cn(stacked && "max-lg:block max-lg:space-y-3 max-lg:p-2")}>
+          <tbody className={cn(stacked && "max-[1025px]:block max-[1025px]:space-y-3 max-[1025px]:p-2")}>
             {lines.map((line, index) => (
               <tr
                 key={line.id}
@@ -433,7 +433,7 @@ export function LineGrid({
                 onDrop={(event) => onDrop(event, index)}
                 className={cn(
                   stacked &&
-                    "max-lg:grid max-lg:grid-cols-2 max-lg:gap-x-3 max-lg:gap-y-1 max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:p-2 max-md:grid-cols-1",
+                    "max-[1025px]:grid max-[1025px]:grid-cols-2 max-[1025px]:gap-x-3 max-[1025px]:gap-y-1 max-[1025px]:rounded-lg max-[1025px]:border max-[1025px]:border-border max-[1025px]:p-2 max-md:grid-cols-1",
                   dragging === index && "opacity-50",
                   dropAt === index &&
                     dragging !== null &&
@@ -445,7 +445,7 @@ export function LineGrid({
                   role="gridcell"
                   className={cn(
                     "border-b border-border px-1 align-middle",
-                    stacked && "max-lg:col-span-full max-lg:border-0",
+                    stacked && "max-[1025px]:col-span-full max-[1025px]:border-0",
                   )}
                 >
                   <button
@@ -511,15 +511,15 @@ export function LineGrid({
                       }}
                       className={cn(
                         "border-b border-border p-1 align-top",
-                        stacked && "max-lg:block max-lg:border-0",
-                        stacked && !column.width && "max-lg:col-span-full",
+                        stacked && "max-[1025px]:block max-[1025px]:border-0",
+                        stacked && !column.width && "max-[1025px]:col-span-full",
                         invalid && "bg-surface-danger-subtle",
                       )}
                     >
                       {stacked ? (
                         <span
                           aria-hidden="true"
-                          className="hidden px-2 text-xs font-semibold text-fg-muted max-lg:block"
+                          className="hidden px-2 text-xs font-semibold text-fg-muted max-[1025px]:block"
                         >
                           {column.header}
                         </span>
@@ -584,7 +584,7 @@ export function LineGrid({
                   className={cn(
                     "border-b border-border px-1 align-middle",
                     stacked &&
-                      "max-lg:col-span-full max-lg:flex max-lg:justify-end max-lg:border-0",
+                      "max-[1025px]:col-span-full max-[1025px]:flex max-[1025px]:justify-end max-[1025px]:border-0",
                   )}
                 >
                   {readOnly ? null : (
@@ -602,11 +602,11 @@ export function LineGrid({
             ))}
           </tbody>
           {hasTotals ? (
-            <tfoot className={cn(stacked && "max-lg:block max-lg:px-2")}>
+            <tfoot className={cn(stacked && "max-[1025px]:block max-[1025px]:px-2")}>
               <tr
                 data-totals=""
                 role="row"
-                className={cn(stacked && "max-lg:flex max-lg:flex-wrap max-lg:justify-end")}
+                className={cn(stacked && "max-[1025px]:flex max-[1025px]:flex-wrap max-[1025px]:justify-end")}
               >
                 <th
                   scope="row"
@@ -614,7 +614,7 @@ export function LineGrid({
                   colSpan={1 + visible.findIndex((c) => c.total)}
                   className={cn(
                     "px-2 py-2 text-start text-sm font-semibold",
-                    stacked && "max-lg:me-auto",
+                    stacked && "max-[1025px]:me-auto",
                   )}
                 >
                   {labels.totals}
@@ -625,13 +625,13 @@ export function LineGrid({
                     role="gridcell"
                     className={cn(
                       "px-3 py-2 text-end text-sm font-semibold tabular-nums",
-                      stacked && !column.total && "max-lg:hidden",
+                      stacked && !column.total && "max-[1025px]:hidden",
                     )}
                   >
                     {stacked && column.total ? (
                       <span
                         aria-hidden="true"
-                        className="hidden text-xs font-semibold text-fg-muted max-lg:block"
+                        className="hidden text-xs font-semibold text-fg-muted max-[1025px]:block"
                       >
                         {column.header}
                       </span>
@@ -641,7 +641,7 @@ export function LineGrid({
                       : null}
                   </td>
                 ))}
-                <td role="gridcell" className={cn(stacked && "max-lg:hidden")} />
+                <td role="gridcell" className={cn(stacked && "max-[1025px]:hidden")} />
               </tr>
             </tfoot>
           ) : null}
