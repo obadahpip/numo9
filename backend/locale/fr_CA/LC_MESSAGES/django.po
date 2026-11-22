@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 09:44-0500\n"
+"POT-Creation-Date: 2026-11-22 09:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2592,6 +2592,9 @@ msgstr "valeur de l’escompte"
 msgid "version"
 msgstr "version"
 
+msgid "item"
+msgstr "article"
+
 msgid "quantity"
 msgstr ""
 
@@ -3908,6 +3911,36 @@ msgstr ""
 #| msgid "columns"
 msgid "Column"
 msgstr "colonnes"
+
+msgid "Items"
+msgstr "Articles"
+
+msgid "sale price"
+msgstr "prix de vente"
+
+msgid "purchase price"
+msgstr "prix d’achat"
+
+msgid "sales account"
+msgstr "compte de ventes"
+
+msgid "purchase account"
+msgstr "compte d’achats"
+
+msgid "sales tax code"
+msgstr "code de taxe de vente"
+
+msgid "purchase tax code"
+msgstr "code de taxe d’achat"
+
+msgid "track inventory"
+msgstr "suivre l’inventaire"
+
+msgid "archived"
+msgstr "archivé"
+
+msgid "items"
+msgstr "articles"
 
 msgid "Waiting to try again"
 msgstr "En attente d’un nouvel essai"

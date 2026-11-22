@@ -17,7 +17,7 @@ bills, purchase orders and supplier credits.
   ``DocumentCalculator`` (server-authoritative);
 - ``version`` — bumped on every saved change (optimistic concurrency for the editors).
 
-``DocumentLineBase`` (line): ``position``, ``description``,
+``DocumentLineBase`` (line): ``position``, ``item`` (D-01-T02 stub), ``description``,
 ``quantity`` (4 decimals), ``unit_price`` (4 decimals), line discount (amount or %), ``account``,
 ``tax_code`` (a version, G-01), ``tax_overridden`` (the "changed from default" dot, G-02),
 ``tracking`` and the calculated ``net`` / ``tax_amount`` / ``amount``.
@@ -131,6 +131,14 @@ class DocumentLineBase(OrgOwnedModel):
     """A line of a sales or purchase document (module docstring)."""
 
     position = models.PositiveIntegerField(_("position"), default=0)
+    item = models.ForeignKey(
+        "items.Item",
+        on_delete=models.PROTECT,
+        related_name="+",
+        null=True,
+        blank=True,
+        verbose_name=_("item"),
+    )
     description = models.TextField(_("description"), blank=True)
     quantity = models.DecimalField(_("quantity"), max_digits=18, decimal_places=4, default=1)
     unit_price = models.DecimalField(_("unit price"), max_digits=18, decimal_places=4, default=ZERO)
