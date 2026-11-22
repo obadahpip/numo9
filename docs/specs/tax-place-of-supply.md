@@ -47,7 +47,7 @@ R = the organisation's registrations in force on the document date (A-05-T03,
 | QC | active or not recorded | QST active | `sales.QC.standard` (GST + QST) | `tax.pos.gst_qst` | — |
 | QC | active or not recorded | none | `sales.QC.gst` | `tax.pos.gst_unregistered_qst` | — (info only) |
 | Outside Canada | any | any | `sales.zero_rated` | `tax.pos.export` | — |
-| any | ended before the date (G-03b stop) | any | `sales.out_of_scope` | `tax.pos.deregistered` | `tax.pos.deregistered` |
+| any | ended before the date (G-03b stop — implemented in G-02-T05) | any | `sales.out_of_scope` | `tax.pos.deregistered` | `tax.pos.deregistered` |
 
 Notes:
 

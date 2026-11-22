@@ -113,3 +113,28 @@ def test_idempotent_and_linked_later() -> None:
     with org_context(bare):
         assert TaxComponent.objects.get(key="qst").control_account_sales is not None
     assert link_control_accounts(bare) == 0
+
+
+def test_gst_only_codes_for_unregistered_provincial_tax(org: Organisation) -> None:
+    """G-02-T02: GST-only sales codes for BC, MB, SK and QC (the organisation isn't registered
+    for the provincial tax)."""
+    with org_context(org):
+        for province in ("BC", "MB", "SK", "QC"):
+            code = TaxCode.objects.get(code=f"sales.{province}.gst")
+            assert code.province == province and code.type == "taxable"
+            assert [c.component.key for c in code.components.all()] == ["gst"]
+
+
+def test_install_missing_codes_adds_only_what_is_missing(org: Organisation) -> None:
+    from numo9.tax.models import TaxCodeComponent
+    from numo9.tax.seed import install_missing_codes
+
+    keys = ("sales.BC.gst", "sales.QC.gst")
+    with org_context(org):
+        TaxCodeComponent._base_manager.filter(tax_code__code__in=keys).delete()
+        TaxCode._base_manager.filter(code__in=keys).delete()
+    assert install_missing_codes(org) == 2
+    assert install_missing_codes(org) == 0
+    with org_context(org):
+        assert TaxCode.objects.count() == len(load_tax_seed()["codes"])
+    assert install_missing_codes(Organisation.objects.create(name="No table")) == 0

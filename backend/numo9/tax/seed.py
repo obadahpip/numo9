@@ -119,38 +119,81 @@ def install_tax_table(organisation: Any, *, models: Any = None) -> bool:
             )
             item.save()
             components[(row["key"], row["from"])] = item
-        code_fields = {f.name for f in models.TaxCode._meta.get_fields()}
         for row in seed["codes"]:
-            restriction = row.get("itc_restriction_pct")
-            # The code's claimable ITC % (G-01-T05); a table installed before that field existed
-            # (migration tax.0003) carries it on the components instead — same result.
-            on_code = restriction is not None and "itc_restriction_pct" in code_fields
-            extra = {"itc_restriction_pct": Decimal(restriction)} if on_code else {}
-            code = models.TaxCode(
-                organisation_id=org_id,
-                code=row["code"],
-                version=row["version"],
-                side=row["side"],
-                type=row["type"],
-                province=row["province"],
-                effective_from=_day(row["from"]),
-                effective_to=_day(row["to"]),
-                name_i18n=row["name"],
-                **extra,
-            )
-            code.save()
-            for position, part in enumerate(row["components"], start=1):
-                component = components[(part["key"], part["from"])]
-                models.TaxCodeComponent(
-                    organisation_id=org_id,
-                    tax_code=code,
-                    component=component,
-                    position=position,
-                    recoverable_pct=Decimal(restriction)
-                    if restriction and component.recoverable and not on_code
-                    else None,
-                ).save()
+            _create_code(models, org_id, row, components)
     return True
+
+
+def _create_code(models: Any, org_id: Any, row: dict[str, Any], components: dict[Any, Any]) -> None:
+    """One seed code with its components (``components`` keyed by (key, from))."""
+    code_fields = {f.name for f in models.TaxCode._meta.get_fields()}
+    restriction: str | None = row.get("itc_restriction_pct")
+    # The code's claimable ITC % (G-01-T05); a table installed before that field existed
+    # (migration tax.0003) carries it on the components instead — same result.
+    on_code = restriction is not None and "itc_restriction_pct" in code_fields
+    extra = (
+        {"itc_restriction_pct": Decimal(restriction)} if restriction is not None and on_code else {}
+    )
+    code = models.TaxCode(
+        organisation_id=org_id,
+        code=row["code"],
+        version=row["version"],
+        side=row["side"],
+        type=row["type"],
+        province=row["province"],
+        effective_from=_day(row["from"]),
+        effective_to=_day(row["to"]),
+        name_i18n=row["name"],
+        **extra,
+    )
+    code.save()
+    for position, part in enumerate(row["components"], start=1):
+        component = components[(part["key"], part["from"])]
+        models.TaxCodeComponent(
+            organisation_id=org_id,
+            tax_code=code,
+            component=component,
+            position=position,
+            recoverable_pct=Decimal(restriction)
+            if restriction and component.recoverable and not on_code
+            else None,
+        ).save()
+
+
+def install_missing_codes(organisation: Any, *, models: Any = None) -> int:
+    """Add the seed codes an installed table doesn't have yet (codes added to the seed after the
+    organisation's table was installed — G-02's GST-only codes); returns how many were added.
+    Codes the organisation archived or edited are left alone: only a missing (code, version) is
+    created. An organisation without a table is skipped (it gets the full table on first use)."""
+    if models is None:
+        from numo9.tax import models as tax_models
+
+        models = tax_models
+    from numo9.tenancy.context import org_context
+
+    seed = load_tax_seed()
+    org_id = organisation.pk
+    added = 0
+    with org_context(organisation), transaction.atomic():
+        if not models.TaxAuthority._base_manager.filter(organisation_id=org_id).exists():
+            return 0
+        have = set(
+            models.TaxCode._base_manager.filter(organisation_id=org_id).values_list(
+                "code", "version"
+            )
+        )
+        components = {
+            (c.key, c.effective_from.isoformat()): c
+            for c in models.TaxComponent._base_manager.filter(organisation_id=org_id)
+        }
+        for row in seed["codes"]:
+            if (row["code"], row["version"]) in have:
+                continue
+            if any((p["key"], p["from"]) not in components for p in row["components"]):
+                continue
+            _create_code(models, org_id, row, components)
+            added += 1
+    return added
 
 
 def ensure_tax_table(organisation: Any) -> None:
