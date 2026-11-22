@@ -9,13 +9,17 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from hypothesis import given, settings
+from hypothesis import strategies as st
 
 from numo9.documents.calculator import (
     CalculationError,
     Component,
     DocumentInput,
     LineInput,
+    allocate,
     calculate,
+    document_discount,
     from_fixture,
     to_fixture,
 )
@@ -33,6 +37,7 @@ def load(name: str) -> list[dict[str, Any]]:
 EXCLUSIVE = load("calculator_exclusive.json")
 INCLUSIVE = load("calculator_inclusive.json")
 NO_TAX = load("calculator_no_tax.json")
+DISCOUNT = load("calculator_discount.json")
 
 
 def test_fifty_exclusive_fixtures() -> None:
@@ -163,3 +168,105 @@ def test_unknown_tax_mode_is_refused() -> None:
 def test_empty_document() -> None:
     result = calculate(DocumentInput([]))
     assert result.subtotal == result.tax_total == result.total == Decimal("0")
+
+
+# ---- document discount (D-01-T05) ----------------------------------------------------------------
+
+
+@pytest.mark.parametrize("doc", DISCOUNT, ids=[d["name"] for d in DISCOUNT])
+def test_discount_fixtures(doc: dict[str, Any]) -> None:
+    assert to_fixture(calculate(from_fixture(doc))) == doc["expected"]
+
+
+def test_document_discount_by_hand() -> None:
+    result = calculate(
+        DocumentInput(
+            [
+                LineInput(Decimal("1"), Decimal("10.00"), components=HST),
+                LineInput(Decimal("1"), Decimal("10.00"), components=HST),
+                LineInput(Decimal("1"), Decimal("10.00"), components=HST),
+            ],
+            discount_type="amount",
+            discount_value=Decimal("10.00"),
+        )
+    )
+    assert [line.discount_share for line in result.lines] == [
+        Decimal("3.34"),
+        Decimal("3.33"),
+        Decimal("3.33"),
+    ]
+    assert [line.tax for line in result.lines] == [
+        Decimal("0.87"),
+        Decimal("0.87"),
+        Decimal("0.87"),
+    ]
+    assert (result.subtotal, result.discount_total, result.tax_total, result.total) == (
+        Decimal("30.00"),
+        Decimal("10.00"),
+        Decimal("2.61"),
+        Decimal("22.61"),
+    )
+
+
+money = st.integers(min_value=0, max_value=10_000_000).map(lambda c: Decimal(c) / 100)
+
+
+@settings(max_examples=300, deadline=None)
+@given(
+    nets=st.lists(st.integers(min_value=-5_000, max_value=5_000_000), min_size=1, max_size=40),
+    fraction=st.integers(min_value=0, max_value=10_000),
+)
+def test_allocation_sums_to_the_discount_and_never_overshoots(
+    nets: list[int], fraction: int
+) -> None:
+    values = [Decimal(n) / 100 for n in nets]
+    base = sum((v for v in values if v > 0), Decimal("0"))
+    discount = (base * fraction / 10_000).quantize(Decimal("0.01"), rounding="ROUND_DOWN")
+    shares = allocate(discount, values)
+    assert sum(shares, Decimal("0")) == discount
+    for value, share in zip(values, shares, strict=True):
+        assert Decimal("0") <= share <= max(value, Decimal("0"))
+
+
+@settings(max_examples=200, deadline=None)
+@given(
+    prices=st.lists(money, min_size=1, max_size=15),
+    percent=st.integers(min_value=0, max_value=10_000).map(lambda p: Decimal(p) / 100),
+    mode=st.sampled_from(["exclusive", "inclusive", "no_tax"]),
+)
+def test_percent_discount_totals_are_consistent(
+    prices: list[Decimal], percent: Decimal, mode: str
+) -> None:
+    result = calculate(
+        DocumentInput(
+            [LineInput(Decimal("1"), p, components=GST_QST) for p in prices],
+            tax_mode=mode,
+            discount_type="percent",
+            discount_value=percent,
+        )
+    )
+    assert (
+        sum((line.discount_share for line in result.lines), Decimal("0")) == result.discount_total
+    )
+    assert all(line.taxable >= 0 for line in result.lines)
+    expected = result.subtotal - result.discount_total
+    if mode == "exclusive":
+        expected += result.tax_total
+    assert result.total == expected
+
+
+def test_discount_rules() -> None:
+    nets = [Decimal("10.00"), Decimal("5.00")]
+    assert document_discount(nets, "amount", Decimal("100")) == Decimal("15.00")
+    assert document_discount(nets, "percent", Decimal("50")) == Decimal("7.50")
+    assert document_discount(nets, "none", Decimal("5")) == Decimal("0")
+    for kind, value in (
+        ("percent", Decimal("100.01")),
+        ("amount", Decimal("-1")),
+        ("x", Decimal("1")),
+    ):
+        with pytest.raises(CalculationError):
+            document_discount(nets, kind, value)
+    with pytest.raises(CalculationError):
+        allocate(Decimal("20.00"), nets)
+    assert allocate(Decimal("1.00"), [Decimal("0"), Decimal("-3")]) == [Decimal("0")] * 2

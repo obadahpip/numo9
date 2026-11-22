@@ -50,9 +50,7 @@ def frac(text: str) -> Fraction:
 
 def reference(doc: dict[str, Any]) -> dict[str, Any]:
     mode = doc.get("tax_mode", "exclusive")
-    lines: list[dict[str, Any]] = []
-    nets: list[Fraction] = []
-    by: dict[str, Fraction] = {}
+    rows = []
     for line in doc["lines"]:
         gross = half_up(frac(line.get("quantity", "1")) * frac(line.get("unit_price", "0")))
         kind, value = line.get("discount_type", "none"), frac(line.get("discount_value", "0"))
@@ -61,17 +59,41 @@ def reference(doc: dict[str, Any]) -> dict[str, Any]:
             discount = min(half_up(value), gross) if gross >= 0 else Fraction(0)
         elif kind == "percent":
             discount = half_up(gross * value / 100)
-        net = gross - discount
-        nets.append(net)
+        rows.append((line, gross, discount, gross - discount))
+    nets = [row[3] for row in rows]
+    base = sum((n for n in nets if n > 0), Fraction(0))
+    kind, value = doc.get("discount_type", "none"), frac(doc.get("discount_value", "0"))
+    doc_discount = Fraction(0)
+    if kind == "amount" and value:
+        doc_discount = min(half_up(value), base)
+    elif kind == "percent" and value:
+        doc_discount = half_up(base * value / 100)
+    shares = [Fraction(0)] * len(nets)
+    if doc_discount and base:
+        for i, net in enumerate(nets):
+            if net > 0:
+                shares[i] = min(half_up(doc_discount * net / base), net)
+        left = round((doc_discount - sum(shares, Fraction(0))) * 100)
+        order = sorted((i for i, n in enumerate(nets) if n > 0), key=lambda i: (-nets[i], i))
+        cent = Fraction(1, 100) if left > 0 else Fraction(-1, 100)
+        while left:
+            for i in order:
+                if left and 0 <= shares[i] + cent <= nets[i]:
+                    shares[i] += cent
+                    left -= 1 if cent > 0 else -1
+    lines: list[dict[str, Any]] = []
+    by: dict[str, Fraction] = {}
+    for (line, gross, discount, net), share in zip(rows, shares, strict=True):
+        taxable = net - share
         rates = [(c["key"], frac(c["rate"])) for c in line.get("components", [])]
         if mode == "no_tax":
             rates = []
-        exclusive: Fraction = net
+        exclusive: Fraction = taxable
         taxes: dict[str, Fraction] = {}
         if mode == "inclusive" and rates:
-            exclusive, taxes = back_out(net, rates)
+            exclusive, taxes = back_out(taxable, rates)
         else:
-            taxes = {key: half_up(net * rate / 100) for key, rate in rates}
+            taxes = {key: half_up(taxable * rate / 100) for key, rate in rates}
         for key, amount in taxes.items():
             by[key] = by.get(key, Fraction(0)) + amount
         lines.append(
@@ -79,17 +101,20 @@ def reference(doc: dict[str, Any]) -> dict[str, Any]:
                 "gross": money(gross),
                 "line_discount": money(discount),
                 "net": money(net),
-                "taxable": money(net),
+                "discount_share": money(share),
+                "taxable": money(taxable),
                 "exclusive": money(exclusive),
                 "taxes": {k: money(v) for k, v in taxes.items()},
             }
         )
     subtotal = sum(nets, Fraction(0))
     tax_total = sum(by.values(), Fraction(0))
-    total = subtotal if mode == "inclusive" else subtotal + tax_total
+    after = subtotal - doc_discount
+    total = after if mode == "inclusive" else after + tax_total
     return {
         "lines": lines,
         "subtotal": money(subtotal),
+        "discount_total": money(doc_discount),
         "tax_total": money(tax_total),
         "total": money(total),
         "net_total": money(total - tax_total),
@@ -178,6 +203,86 @@ EDGE_INCLUSIVE = [
                 "discount_value": "100",
                 "components": [{"key": "hst_on", "rate": "13"}],
             }
+        ],
+    },
+]
+
+
+EDGE_DISCOUNT: list[dict[str, Any]] = [
+    {
+        "name": "10 % off three lines",
+        "discount_type": "percent",
+        "discount_value": "10",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "100.00",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            },
+            {"quantity": "1", "unit_price": "50.00", "components": [{"key": "gst", "rate": "5"}]},
+            {"quantity": "1", "unit_price": "0.01", "components": []},
+        ],
+    },
+    {
+        "name": "10.00 off three equal lines",
+        "discount_type": "amount",
+        "discount_value": "10.00",
+        "lines": [{"quantity": "1", "unit_price": "10.00"}] * 3,
+    },
+    {
+        "name": "100 % document discount",
+        "discount_type": "percent",
+        "discount_value": "100",
+        "lines": [
+            {
+                "quantity": "2",
+                "unit_price": "19.99",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            },
+            {
+                "quantity": "1",
+                "unit_price": "5.00",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            },
+        ],
+    },
+    {
+        "name": "Discount larger than the lines",
+        "discount_type": "amount",
+        "discount_value": "500.00",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "120.00",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            }
+        ],
+    },
+    {
+        "name": "Inclusive with 25.00 off",
+        "tax_mode": "inclusive",
+        "discount_type": "amount",
+        "discount_value": "25.00",
+        "lines": [
+            {
+                "quantity": "1",
+                "unit_price": "113.00",
+                "components": [{"key": "hst_on", "rate": "13"}],
+            },
+            {
+                "quantity": "1",
+                "unit_price": "114.98",
+                "components": [{"key": "gst", "rate": "5"}, {"key": "qst", "rate": "9.975"}],
+            },
+        ],
+    },
+    {
+        "name": "Zero lines take no share",
+        "discount_type": "amount",
+        "discount_value": "3.00",
+        "lines": [
+            {"quantity": "0", "unit_price": "10.00"},
+            {"quantity": "1", "unit_price": "7.00"},
         ],
     },
 ]
@@ -303,6 +408,24 @@ def main() -> None:
     for doc in no_tax:
         doc["tax_mode"] = "no_tax"
         doc["expected"] = reference(doc)
+    discounted = build(20264, 20, EDGE_DISCOUNT, "Random document discount")
+    rng = random.Random(20265)  # noqa: S311 — reproducible test data, not security
+    for doc in discounted:
+        if "discount_type" not in doc:
+            doc["tax_mode"] = rng.choice(["exclusive", "exclusive", "inclusive", "no_tax"])
+            if rng.random() < 0.5:
+                doc |= {
+                    "discount_type": "percent",
+                    "discount_value": rng.choice(["5", "10", "15.5", "33.33", "100"]),
+                }
+            else:
+                doc |= {
+                    "discount_type": "amount",
+                    "discount_value": f"{rng.randint(1, 100000) / 100:.2f}",
+                }
+        doc.setdefault("tax_mode", "exclusive")
+        doc["expected"] = reference(doc)
+    (HERE / "calculator_discount.json").write_text(json.dumps(discounted, indent=1) + "\n")
     (HERE / "calculator_inclusive.json").write_text(json.dumps(inclusive, indent=1) + "\n")
     (HERE / "calculator_no_tax.json").write_text(json.dumps(no_tax, indent=1) + "\n")
 

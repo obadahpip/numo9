@@ -20,6 +20,7 @@
      "gross": "100.00",
      "line_discount": "0.00",
      "net": "100.00",
+     "discount_share": "0.00",
      "taxable": "100.00",
      "exclusive": "100.00",
      "taxes": {
@@ -28,6 +29,7 @@
     }
    ],
    "subtotal": "100.00",
+   "discount_total": "0.00",
    "tax_total": "13.00",
    "total": "113.00",
    "net_total": "100.00",
@@ -61,6 +63,7 @@
      "gross": "100.00",
      "line_discount": "0.00",
      "net": "100.00",
+     "discount_share": "0.00",
      "taxable": "100.00",
      "exclusive": "100.00",
      "taxes": {
@@ -70,6 +73,7 @@
     }
    ],
    "subtotal": "100.00",
+   "discount_total": "0.00",
    "tax_total": "14.98",
    "total": "114.98",
    "net_total": "100.00",
@@ -100,6 +104,7 @@
      "gross": "10.00",
      "line_discount": "0.00",
      "net": "10.00",
+     "discount_share": "0.00",
      "taxable": "10.00",
      "exclusive": "10.00",
      "taxes": {
@@ -108,6 +113,7 @@
     }
    ],
    "subtotal": "10.00",
+   "discount_total": "0.00",
    "tax_total": "1.30",
    "total": "11.30",
    "net_total": "10.00",
@@ -157,6 +163,7 @@
      "gross": "3.33",
      "line_discount": "0.00",
      "net": "3.33",
+     "discount_share": "0.00",
      "taxable": "3.33",
      "exclusive": "3.33",
      "taxes": {
@@ -167,6 +174,7 @@
      "gross": "3.33",
      "line_discount": "0.00",
      "net": "3.33",
+     "discount_share": "0.00",
      "taxable": "3.33",
      "exclusive": "3.33",
      "taxes": {
@@ -177,6 +185,7 @@
      "gross": "3.33",
      "line_discount": "0.00",
      "net": "3.33",
+     "discount_share": "0.00",
      "taxable": "3.33",
      "exclusive": "3.33",
      "taxes": {
@@ -185,6 +194,7 @@
     }
    ],
    "subtotal": "9.99",
+   "discount_total": "0.00",
    "tax_total": "0.51",
    "total": "10.50",
    "net_total": "9.99",
@@ -220,6 +230,7 @@
      "gross": "90.00",
      "line_discount": "90.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -229,6 +240,7 @@
     }
    ],
    "subtotal": "0.00",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
    "net_total": "0.00",
@@ -259,6 +271,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -267,6 +280,7 @@
     }
    ],
    "subtotal": "0.00",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
    "net_total": "0.00",
@@ -296,6 +310,7 @@
      "gross": "0.10",
      "line_discount": "0.00",
      "net": "0.10",
+     "discount_share": "0.00",
      "taxable": "0.10",
      "exclusive": "0.10",
      "taxes": {
@@ -304,6 +319,7 @@
     }
    ],
    "subtotal": "0.10",
+   "discount_total": "0.00",
    "tax_total": "0.01",
    "total": "0.11",
    "net_total": "0.10",
@@ -335,6 +351,7 @@
      "gross": "20.00",
      "line_discount": "20.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -343,6 +360,7 @@
     }
    ],
    "subtotal": "0.00",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
    "net_total": "0.00",
@@ -377,6 +395,7 @@
      "gross": "50.00",
      "line_discount": "0.00",
      "net": "50.00",
+     "discount_share": "0.00",
      "taxable": "50.00",
      "exclusive": "50.00",
      "taxes": {}
@@ -385,6 +404,7 @@
      "gross": "14.97",
      "line_discount": "0.00",
      "net": "14.97",
+     "discount_share": "0.00",
      "taxable": "14.97",
      "exclusive": "14.97",
      "taxes": {
@@ -393,6 +413,7 @@
     }
    ],
    "subtotal": "64.97",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "64.97",
    "net_total": "64.97",
@@ -450,6 +471,7 @@
      "gross": "10.00",
      "line_discount": "0.00",
      "net": "10.00",
+     "discount_share": "0.00",
      "taxable": "10.00",
      "exclusive": "10.00",
      "taxes": {
@@ -460,6 +482,7 @@
      "gross": "10.00",
      "line_discount": "0.00",
      "net": "10.00",
+     "discount_share": "0.00",
      "taxable": "10.00",
      "exclusive": "10.00",
      "taxes": {
@@ -471,6 +494,7 @@
      "gross": "10.00",
      "line_discount": "0.00",
      "net": "10.00",
+     "discount_share": "0.00",
      "taxable": "10.00",
      "exclusive": "10.00",
      "taxes": {
@@ -480,6 +504,7 @@
     }
    ],
    "subtotal": "30.00",
+   "discount_total": "0.00",
    "tax_total": "3.90",
    "total": "33.90",
    "net_total": "30.00",
@@ -545,6 +570,7 @@
      "gross": "1142.23",
      "line_discount": "0.00",
      "net": "1142.23",
+     "discount_share": "0.00",
      "taxable": "1142.23",
      "exclusive": "1142.23",
      "taxes": {
@@ -555,6 +581,7 @@
      "gross": "4389.88",
      "line_discount": "0.00",
      "net": "4389.88",
+     "discount_share": "0.00",
      "taxable": "4389.88",
      "exclusive": "4389.88",
      "taxes": {}
@@ -563,6 +590,7 @@
      "gross": "60577.00",
      "line_discount": "0.00",
      "net": "60577.00",
+     "discount_share": "0.00",
      "taxable": "60577.00",
      "exclusive": "60577.00",
      "taxes": {
@@ -574,6 +602,7 @@
      "gross": "465.66",
      "line_discount": "0.00",
      "net": "465.66",
+     "discount_share": "0.00",
      "taxable": "465.66",
      "exclusive": "465.66",
      "taxes": {
@@ -583,6 +612,7 @@
     }
    ],
    "subtotal": "66574.77",
+   "discount_total": "0.00",
    "tax_total": "9287.20",
    "total": "75861.97",
    "net_total": "66574.77",
@@ -633,6 +663,7 @@
      "gross": "440.68",
      "line_discount": "55.09",
      "net": "385.59",
+     "discount_share": "0.00",
      "taxable": "385.59",
      "exclusive": "385.59",
      "taxes": {
@@ -644,6 +675,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -652,6 +684,7 @@
     }
    ],
    "subtotal": "385.59",
+   "discount_total": "0.00",
    "tax_total": "46.27",
    "total": "431.86",
    "net_total": "385.59",
@@ -727,6 +760,7 @@
      "gross": "6686.52",
      "line_discount": "0.00",
      "net": "6686.52",
+     "discount_share": "0.00",
      "taxable": "6686.52",
      "exclusive": "6686.52",
      "taxes": {
@@ -738,6 +772,7 @@
      "gross": "3394.38",
      "line_discount": "289.51",
      "net": "3104.87",
+     "discount_share": "0.00",
      "taxable": "3104.87",
      "exclusive": "3104.87",
      "taxes": {
@@ -748,6 +783,7 @@
      "gross": "3346.52",
      "line_discount": "1115.40",
      "net": "2231.12",
+     "discount_share": "0.00",
      "taxable": "2231.12",
      "exclusive": "2231.12",
      "taxes": {
@@ -759,6 +795,7 @@
      "gross": "170508.00",
      "line_discount": "3410.16",
      "net": "167097.84",
+     "discount_share": "0.00",
      "taxable": "167097.84",
      "exclusive": "167097.84",
      "taxes": {
@@ -767,6 +804,7 @@
     }
    ],
    "subtotal": "179120.35",
+   "discount_total": "0.00",
    "tax_total": "1070.13",
    "total": "180190.48",
    "net_total": "179120.35",
@@ -799,6 +837,7 @@
      "gross": "6542.99",
      "line_discount": "0.00",
      "net": "6542.99",
+     "discount_share": "0.00",
      "taxable": "6542.99",
      "exclusive": "6542.99",
      "taxes": {
@@ -807,6 +846,7 @@
     }
    ],
    "subtotal": "6542.99",
+   "discount_total": "0.00",
    "tax_total": "916.02",
    "total": "7459.01",
    "net_total": "6542.99",
@@ -869,6 +909,7 @@
      "gross": "192987.00",
      "line_discount": "0.00",
      "net": "192987.00",
+     "discount_share": "0.00",
      "taxable": "192987.00",
      "exclusive": "192987.00",
      "taxes": {
@@ -880,6 +921,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -890,6 +932,7 @@
      "gross": "11426.78",
      "line_discount": "0.00",
      "net": "11426.78",
+     "discount_share": "0.00",
      "taxable": "11426.78",
      "exclusive": "11426.78",
      "taxes": {}
@@ -898,6 +941,7 @@
      "gross": "435.50",
      "line_discount": "0.00",
      "net": "435.50",
+     "discount_share": "0.00",
      "taxable": "435.50",
      "exclusive": "435.50",
      "taxes": {
@@ -907,6 +951,7 @@
     }
    ],
    "subtotal": "204849.28",
+   "discount_total": "0.00",
    "tax_total": "28947.71",
    "total": "233796.99",
    "net_total": "204849.28",
@@ -953,6 +998,7 @@
      "gross": "1562.41",
      "line_discount": "0.00",
      "net": "1562.41",
+     "discount_share": "0.00",
      "taxable": "1562.41",
      "exclusive": "1562.41",
      "taxes": {
@@ -963,6 +1009,7 @@
      "gross": "169759.00",
      "line_discount": "0.00",
      "net": "169759.00",
+     "discount_share": "0.00",
      "taxable": "169759.00",
      "exclusive": "169759.00",
      "taxes": {
@@ -972,6 +1019,7 @@
     }
    ],
    "subtotal": "171321.41",
+   "discount_total": "0.00",
    "tax_total": "18673.49",
    "total": "189994.90",
    "net_total": "171321.41",
@@ -1003,6 +1051,7 @@
      "gross": "20099.76",
      "line_discount": "0.00",
      "net": "20099.76",
+     "discount_share": "0.00",
      "taxable": "20099.76",
      "exclusive": "20099.76",
      "taxes": {
@@ -1011,6 +1060,7 @@
     }
    ],
    "subtotal": "20099.76",
+   "discount_total": "0.00",
    "tax_total": "3014.96",
    "total": "23114.72",
    "net_total": "20099.76",
@@ -1097,6 +1147,7 @@
      "gross": "81561.00",
      "line_discount": "81561.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {}
@@ -1105,6 +1156,7 @@
      "gross": "699.83",
      "line_discount": "0.00",
      "net": "699.83",
+     "discount_share": "0.00",
      "taxable": "699.83",
      "exclusive": "699.83",
      "taxes": {
@@ -1116,6 +1168,7 @@
      "gross": "122.48",
      "line_discount": "15.31",
      "net": "107.17",
+     "discount_share": "0.00",
      "taxable": "107.17",
      "exclusive": "107.17",
      "taxes": {
@@ -1126,6 +1179,7 @@
      "gross": "7846.92",
      "line_discount": "0.00",
      "net": "7846.92",
+     "discount_share": "0.00",
      "taxable": "7846.92",
      "exclusive": "7846.92",
      "taxes": {
@@ -1136,6 +1190,7 @@
      "gross": "3140.32",
      "line_discount": "0.00",
      "net": "3140.32",
+     "discount_share": "0.00",
      "taxable": "3140.32",
      "exclusive": "3140.32",
      "taxes": {
@@ -1146,6 +1201,7 @@
      "gross": "2632.00",
      "line_discount": "0.00",
      "net": "2632.00",
+     "discount_share": "0.00",
      "taxable": "2632.00",
      "exclusive": "2632.00",
      "taxes": {
@@ -1155,6 +1211,7 @@
     }
    ],
    "subtotal": "14426.24",
+   "discount_total": "0.00",
    "tax_total": "854.46",
    "total": "15280.70",
    "net_total": "14426.24",
@@ -1237,6 +1294,7 @@
      "gross": "5898.00",
      "line_discount": "0.00",
      "net": "5898.00",
+     "discount_share": "0.00",
      "taxable": "5898.00",
      "exclusive": "5898.00",
      "taxes": {}
@@ -1245,6 +1303,7 @@
      "gross": "13755.36",
      "line_discount": "0.00",
      "net": "13755.36",
+     "discount_share": "0.00",
      "taxable": "13755.36",
      "exclusive": "13755.36",
      "taxes": {
@@ -1255,6 +1314,7 @@
      "gross": "576.38",
      "line_discount": "363.54",
      "net": "212.84",
+     "discount_share": "0.00",
      "taxable": "212.84",
      "exclusive": "212.84",
      "taxes": {
@@ -1265,6 +1325,7 @@
      "gross": "239886.00",
      "line_discount": "0.00",
      "net": "239886.00",
+     "discount_share": "0.00",
      "taxable": "239886.00",
      "exclusive": "239886.00",
      "taxes": {
@@ -1275,6 +1336,7 @@
      "gross": "4271.61",
      "line_discount": "0.00",
      "net": "4271.61",
+     "discount_share": "0.00",
      "taxable": "4271.61",
      "exclusive": "4271.61",
      "taxes": {
@@ -1285,6 +1347,7 @@
      "gross": "227.88",
      "line_discount": "75.95",
      "net": "151.93",
+     "discount_share": "0.00",
      "taxable": "151.93",
      "exclusive": "151.93",
      "taxes": {
@@ -1293,6 +1356,7 @@
     }
    ],
    "subtotal": "264175.74",
+   "discount_total": "0.00",
    "tax_total": "34878.80",
    "total": "299054.54",
    "net_total": "264175.74",
@@ -1320,12 +1384,14 @@
      "gross": "927.84",
      "line_discount": "0.00",
      "net": "927.84",
+     "discount_share": "0.00",
      "taxable": "927.84",
      "exclusive": "927.84",
      "taxes": {}
     }
    ],
    "subtotal": "927.84",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "927.84",
    "net_total": "927.84",
@@ -1415,6 +1481,7 @@
      "gross": "6134.73",
      "line_discount": "0.00",
      "net": "6134.73",
+     "discount_share": "0.00",
      "taxable": "6134.73",
      "exclusive": "6134.73",
      "taxes": {
@@ -1426,6 +1493,7 @@
      "gross": "212.49",
      "line_discount": "0.00",
      "net": "212.49",
+     "discount_share": "0.00",
      "taxable": "212.49",
      "exclusive": "212.49",
      "taxes": {
@@ -1437,6 +1505,7 @@
      "gross": "599.71",
      "line_discount": "0.00",
      "net": "599.71",
+     "discount_share": "0.00",
      "taxable": "599.71",
      "exclusive": "599.71",
      "taxes": {
@@ -1447,6 +1516,7 @@
      "gross": "2793.93",
      "line_discount": "0.00",
      "net": "2793.93",
+     "discount_share": "0.00",
      "taxable": "2793.93",
      "exclusive": "2793.93",
      "taxes": {
@@ -1457,6 +1527,7 @@
      "gross": "355.17",
      "line_discount": "0.00",
      "net": "355.17",
+     "discount_share": "0.00",
      "taxable": "355.17",
      "exclusive": "355.17",
      "taxes": {
@@ -1467,6 +1538,7 @@
      "gross": "3275.84",
      "line_discount": "0.00",
      "net": "3275.84",
+     "discount_share": "0.00",
      "taxable": "3275.84",
      "exclusive": "3275.84",
      "taxes": {
@@ -1476,6 +1548,7 @@
     }
    ],
    "subtotal": "13371.87",
+   "discount_total": "0.00",
    "tax_total": "1774.59",
    "total": "15146.46",
    "net_total": "13371.87",
@@ -1539,6 +1612,7 @@
      "gross": "26126.16",
      "line_discount": "216.58",
      "net": "25909.58",
+     "discount_share": "0.00",
      "taxable": "25909.58",
      "exclusive": "25909.58",
      "taxes": {
@@ -1549,6 +1623,7 @@
      "gross": "152.99",
      "line_discount": "15.30",
      "net": "137.69",
+     "discount_share": "0.00",
      "taxable": "137.69",
      "exclusive": "137.69",
      "taxes": {
@@ -1559,6 +1634,7 @@
      "gross": "17682.84",
      "line_discount": "0.00",
      "net": "17682.84",
+     "discount_share": "0.00",
      "taxable": "17682.84",
      "exclusive": "17682.84",
      "taxes": {
@@ -1568,6 +1644,7 @@
     }
    ],
    "subtotal": "43730.11",
+   "discount_total": "0.00",
    "tax_total": "5769.93",
    "total": "49500.04",
    "net_total": "43730.11",
@@ -1616,6 +1693,7 @@
      "gross": "5383.56",
      "line_discount": "0.00",
      "net": "5383.56",
+     "discount_share": "0.00",
      "taxable": "5383.56",
      "exclusive": "5383.56",
      "taxes": {
@@ -1626,6 +1704,7 @@
      "gross": "3951.86",
      "line_discount": "165.92",
      "net": "3785.94",
+     "discount_share": "0.00",
      "taxable": "3785.94",
      "exclusive": "3785.94",
      "taxes": {
@@ -1635,6 +1714,7 @@
     }
    ],
    "subtotal": "9169.50",
+   "discount_total": "0.00",
    "tax_total": "1208.02",
    "total": "10377.52",
    "net_total": "9169.50",
@@ -1682,6 +1762,7 @@
      "gross": "11.24",
      "line_discount": "0.00",
      "net": "11.24",
+     "discount_share": "0.00",
      "taxable": "11.24",
      "exclusive": "11.24",
      "taxes": {
@@ -1693,6 +1774,7 @@
      "gross": "1148.52",
      "line_discount": "351.22",
      "net": "797.30",
+     "discount_share": "0.00",
      "taxable": "797.30",
      "exclusive": "797.30",
      "taxes": {
@@ -1701,6 +1783,7 @@
     }
    ],
    "subtotal": "808.54",
+   "discount_total": "0.00",
    "tax_total": "105.33",
    "total": "913.87",
    "net_total": "808.54",
@@ -1732,6 +1815,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -1740,6 +1824,7 @@
     }
    ],
    "subtotal": "0.00",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "0.00",
    "net_total": "0.00",
@@ -1841,6 +1926,7 @@
      "gross": "1517.16",
      "line_discount": "1517.16",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -1852,6 +1938,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -1862,6 +1949,7 @@
      "gross": "1434.72",
      "line_discount": "442.02",
      "net": "992.70",
+     "discount_share": "0.00",
      "taxable": "992.70",
      "exclusive": "992.70",
      "taxes": {
@@ -1872,6 +1960,7 @@
      "gross": "23751.24",
      "line_discount": "7916.29",
      "net": "15834.95",
+     "discount_share": "0.00",
      "taxable": "15834.95",
      "exclusive": "15834.95",
      "taxes": {
@@ -1883,6 +1972,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -1893,6 +1983,7 @@
      "gross": "485.59",
      "line_discount": "60.70",
      "net": "424.89",
+     "discount_share": "0.00",
      "taxable": "424.89",
      "exclusive": "424.89",
      "taxes": {
@@ -1902,6 +1993,7 @@
     }
    ],
    "subtotal": "17252.54",
+   "discount_total": "0.00",
    "tax_total": "1917.63",
    "total": "19170.17",
    "net_total": "17252.54",
@@ -1943,6 +2035,7 @@
      "gross": "11535.83",
      "line_discount": "449.93",
      "net": "11085.90",
+     "discount_share": "0.00",
      "taxable": "11085.90",
      "exclusive": "11085.90",
      "taxes": {}
@@ -1951,6 +2044,7 @@
      "gross": "658.67",
      "line_discount": "0.00",
      "net": "658.67",
+     "discount_share": "0.00",
      "taxable": "658.67",
      "exclusive": "658.67",
      "taxes": {
@@ -1959,6 +2053,7 @@
     }
    ],
    "subtotal": "11744.57",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "11744.57",
    "net_total": "11744.57",
@@ -2056,6 +2151,7 @@
      "gross": "801.09",
      "line_discount": "0.00",
      "net": "801.09",
+     "discount_share": "0.00",
      "taxable": "801.09",
      "exclusive": "801.09",
      "taxes": {
@@ -2067,6 +2163,7 @@
      "gross": "13949.85",
      "line_discount": "279.00",
      "net": "13670.85",
+     "discount_share": "0.00",
      "taxable": "13670.85",
      "exclusive": "13670.85",
      "taxes": {
@@ -2078,6 +2175,7 @@
      "gross": "7195.74",
      "line_discount": "0.00",
      "net": "7195.74",
+     "discount_share": "0.00",
      "taxable": "7195.74",
      "exclusive": "7195.74",
      "taxes": {
@@ -2089,6 +2187,7 @@
      "gross": "633.48",
      "line_discount": "63.35",
      "net": "570.13",
+     "discount_share": "0.00",
      "taxable": "570.13",
      "exclusive": "570.13",
      "taxes": {
@@ -2099,6 +2198,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -2109,6 +2209,7 @@
      "gross": "2923.88",
      "line_discount": "0.00",
      "net": "2923.88",
+     "discount_share": "0.00",
      "taxable": "2923.88",
      "exclusive": "2923.88",
      "taxes": {
@@ -2117,6 +2218,7 @@
     }
    ],
    "subtotal": "25161.69",
+   "discount_total": "0.00",
    "tax_total": "3214.80",
    "total": "28376.49",
    "net_total": "25161.69",
@@ -2147,12 +2249,14 @@
      "gross": "323.48",
      "line_discount": "6.47",
      "net": "317.01",
+     "discount_share": "0.00",
      "taxable": "317.01",
      "exclusive": "317.01",
      "taxes": {}
     }
    ],
    "subtotal": "317.01",
+   "discount_total": "0.00",
    "tax_total": "0.00",
    "total": "317.01",
    "net_total": "317.01",
@@ -2180,6 +2284,7 @@
      "gross": "437.95",
      "line_discount": "0.00",
      "net": "437.95",
+     "discount_share": "0.00",
      "taxable": "437.95",
      "exclusive": "437.95",
      "taxes": {
@@ -2188,6 +2293,7 @@
     }
    ],
    "subtotal": "437.95",
+   "discount_total": "0.00",
    "tax_total": "65.69",
    "total": "503.64",
    "net_total": "437.95",
@@ -2283,6 +2389,7 @@
      "gross": "2095.28",
      "line_discount": "0.00",
      "net": "2095.28",
+     "discount_share": "0.00",
      "taxable": "2095.28",
      "exclusive": "2095.28",
      "taxes": {
@@ -2294,6 +2401,7 @@
      "gross": "821.53",
      "line_discount": "0.00",
      "net": "821.53",
+     "discount_share": "0.00",
      "taxable": "821.53",
      "exclusive": "821.53",
      "taxes": {
@@ -2305,6 +2413,7 @@
      "gross": "51119.01",
      "line_discount": "0.00",
      "net": "51119.01",
+     "discount_share": "0.00",
      "taxable": "51119.01",
      "exclusive": "51119.01",
      "taxes": {
@@ -2315,6 +2424,7 @@
      "gross": "20519.52",
      "line_discount": "0.00",
      "net": "20519.52",
+     "discount_share": "0.00",
      "taxable": "20519.52",
      "exclusive": "20519.52",
      "taxes": {
@@ -2326,6 +2436,7 @@
      "gross": "190579.00",
      "line_discount": "0.00",
      "net": "190579.00",
+     "discount_share": "0.00",
      "taxable": "190579.00",
      "exclusive": "190579.00",
      "taxes": {
@@ -2336,6 +2447,7 @@
      "gross": "3882.98",
      "line_discount": "0.00",
      "net": "3882.98",
+     "discount_share": "0.00",
      "taxable": "3882.98",
      "exclusive": "3882.98",
      "taxes": {
@@ -2345,6 +2457,7 @@
     }
    ],
    "subtotal": "269017.32",
+   "discount_total": "0.00",
    "tax_total": "32475.63",
    "total": "301492.95",
    "net_total": "269017.32",
@@ -2418,6 +2531,7 @@
      "gross": "2461.50",
      "line_discount": "0.00",
      "net": "2461.50",
+     "discount_share": "0.00",
      "taxable": "2461.50",
      "exclusive": "2461.50",
      "taxes": {
@@ -2428,6 +2542,7 @@
      "gross": "217.07",
      "line_discount": "0.00",
      "net": "217.07",
+     "discount_share": "0.00",
      "taxable": "217.07",
      "exclusive": "217.07",
      "taxes": {
@@ -2438,6 +2553,7 @@
      "gross": "3189.20",
      "line_discount": "0.00",
      "net": "3189.20",
+     "discount_share": "0.00",
      "taxable": "3189.20",
      "exclusive": "3189.20",
      "taxes": {
@@ -2448,6 +2564,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -2458,6 +2575,7 @@
      "gross": "385.49",
      "line_discount": "0.00",
      "net": "385.49",
+     "discount_share": "0.00",
      "taxable": "385.49",
      "exclusive": "385.49",
      "taxes": {
@@ -2466,6 +2584,7 @@
     }
    ],
    "subtotal": "6253.26",
+   "discount_total": "0.00",
    "tax_total": "610.88",
    "total": "6864.14",
    "net_total": "6253.26",
@@ -2544,6 +2663,7 @@
      "gross": "2547.24",
      "line_discount": "0.00",
      "net": "2547.24",
+     "discount_share": "0.00",
      "taxable": "2547.24",
      "exclusive": "2547.24",
      "taxes": {
@@ -2555,6 +2675,7 @@
      "gross": "18581.78",
      "line_discount": "0.00",
      "net": "18581.78",
+     "discount_share": "0.00",
      "taxable": "18581.78",
      "exclusive": "18581.78",
      "taxes": {
@@ -2565,6 +2686,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -2575,6 +2697,7 @@
      "gross": "1153.14",
      "line_discount": "0.00",
      "net": "1153.14",
+     "discount_share": "0.00",
      "taxable": "1153.14",
      "exclusive": "1153.14",
      "taxes": {
@@ -2585,6 +2708,7 @@
      "gross": "727.63",
      "line_discount": "0.00",
      "net": "727.63",
+     "discount_share": "0.00",
      "taxable": "727.63",
      "exclusive": "727.63",
      "taxes": {
@@ -2593,6 +2717,7 @@
     }
    ],
    "subtotal": "23009.79",
+   "discount_total": "0.00",
    "tax_total": "3093.41",
    "total": "26103.20",
    "net_total": "23009.79",
@@ -2687,6 +2812,7 @@
      "gross": "2020.64",
      "line_discount": "0.00",
      "net": "2020.64",
+     "discount_share": "0.00",
      "taxable": "2020.64",
      "exclusive": "2020.64",
      "taxes": {
@@ -2697,6 +2823,7 @@
      "gross": "1349.25",
      "line_discount": "0.00",
      "net": "1349.25",
+     "discount_share": "0.00",
      "taxable": "1349.25",
      "exclusive": "1349.25",
      "taxes": {
@@ -2708,6 +2835,7 @@
      "gross": "2040.25",
      "line_discount": "680.02",
      "net": "1360.23",
+     "discount_share": "0.00",
      "taxable": "1360.23",
      "exclusive": "1360.23",
      "taxes": {
@@ -2718,6 +2846,7 @@
      "gross": "47265.00",
      "line_discount": "124.05",
      "net": "47140.95",
+     "discount_share": "0.00",
      "taxable": "47140.95",
      "exclusive": "47140.95",
      "taxes": {
@@ -2728,6 +2857,7 @@
      "gross": "867.71",
      "line_discount": "0.00",
      "net": "867.71",
+     "discount_share": "0.00",
      "taxable": "867.71",
      "exclusive": "867.71",
      "taxes": {
@@ -2739,6 +2869,7 @@
      "gross": "2045.28",
      "line_discount": "0.00",
      "net": "2045.28",
+     "discount_share": "0.00",
      "taxable": "2045.28",
      "exclusive": "2045.28",
      "taxes": {
@@ -2747,6 +2878,7 @@
     }
    ],
    "subtotal": "54784.06",
+   "discount_total": "0.00",
    "tax_total": "875.43",
    "total": "55659.49",
    "net_total": "54784.06",
@@ -2795,6 +2927,7 @@
      "gross": "1185.99",
      "line_discount": "0.00",
      "net": "1185.99",
+     "discount_share": "0.00",
      "taxable": "1185.99",
      "exclusive": "1185.99",
      "taxes": {
@@ -2806,6 +2939,7 @@
      "gross": "2115.35",
      "line_discount": "126.97",
      "net": "1988.38",
+     "discount_share": "0.00",
      "taxable": "1988.38",
      "exclusive": "1988.38",
      "taxes": {
@@ -2814,6 +2948,7 @@
     }
    ],
    "subtotal": "3174.37",
+   "discount_total": "0.00",
    "tax_total": "440.58",
    "total": "3614.95",
    "net_total": "3174.37",
@@ -2883,6 +3018,7 @@
      "gross": "4528.98",
      "line_discount": "0.00",
      "net": "4528.98",
+     "discount_share": "0.00",
      "taxable": "4528.98",
      "exclusive": "4528.98",
      "taxes": {
@@ -2893,6 +3029,7 @@
      "gross": "2367.59",
      "line_discount": "0.00",
      "net": "2367.59",
+     "discount_share": "0.00",
      "taxable": "2367.59",
      "exclusive": "2367.59",
      "taxes": {
@@ -2903,6 +3040,7 @@
      "gross": "1163.81",
      "line_discount": "0.00",
      "net": "1163.81",
+     "discount_share": "0.00",
      "taxable": "1163.81",
      "exclusive": "1163.81",
      "taxes": {
@@ -2914,6 +3052,7 @@
      "gross": "224665.00",
      "line_discount": "0.00",
      "net": "224665.00",
+     "discount_share": "0.00",
      "taxable": "224665.00",
      "exclusive": "224665.00",
      "taxes": {
@@ -2923,6 +3062,7 @@
     }
    ],
    "subtotal": "232725.38",
+   "discount_total": "0.00",
    "tax_total": "27444.29",
    "total": "260169.67",
    "net_total": "232725.38",
@@ -2959,6 +3099,7 @@
      "gross": "2354.86",
      "line_discount": "235.49",
      "net": "2119.37",
+     "discount_share": "0.00",
      "taxable": "2119.37",
      "exclusive": "2119.37",
      "taxes": {
@@ -2968,6 +3109,7 @@
     }
    ],
    "subtotal": "2119.37",
+   "discount_total": "0.00",
    "tax_total": "254.33",
    "total": "2373.70",
    "net_total": "2119.37",
@@ -3022,6 +3164,7 @@
      "gross": "1144.17",
      "line_discount": "0.00",
      "net": "1144.17",
+     "discount_share": "0.00",
      "taxable": "1144.17",
      "exclusive": "1144.17",
      "taxes": {}
@@ -3030,6 +3173,7 @@
      "gross": "4398.15",
      "line_discount": "329.46",
      "net": "4068.69",
+     "discount_share": "0.00",
      "taxable": "4068.69",
      "exclusive": "4068.69",
      "taxes": {
@@ -3040,6 +3184,7 @@
      "gross": "683.64",
      "line_discount": "68.36",
      "net": "615.28",
+     "discount_share": "0.00",
      "taxable": "615.28",
      "exclusive": "615.28",
      "taxes": {
@@ -3050,12 +3195,14 @@
      "gross": "26541.96",
      "line_discount": "0.00",
      "net": "26541.96",
+     "discount_share": "0.00",
      "taxable": "26541.96",
      "exclusive": "26541.96",
      "taxes": {}
     }
    ],
    "subtotal": "32370.10",
+   "discount_total": "0.00",
    "tax_total": "30.76",
    "total": "32400.86",
    "net_total": "32370.10",
@@ -3137,6 +3284,7 @@
      "gross": "11095.08",
      "line_discount": "0.00",
      "net": "11095.08",
+     "discount_share": "0.00",
      "taxable": "11095.08",
      "exclusive": "11095.08",
      "taxes": {
@@ -3147,6 +3295,7 @@
      "gross": "463.12",
      "line_discount": "84.05",
      "net": "379.07",
+     "discount_share": "0.00",
      "taxable": "379.07",
      "exclusive": "379.07",
      "taxes": {
@@ -3158,6 +3307,7 @@
      "gross": "643.68",
      "line_discount": "0.00",
      "net": "643.68",
+     "discount_share": "0.00",
      "taxable": "643.68",
      "exclusive": "643.68",
      "taxes": {}
@@ -3166,6 +3316,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -3177,6 +3328,7 @@
      "gross": "287.52",
      "line_discount": "0.00",
      "net": "287.52",
+     "discount_share": "0.00",
      "taxable": "287.52",
      "exclusive": "287.52",
      "taxes": {
@@ -3186,6 +3338,7 @@
     }
    ],
    "subtotal": "12405.35",
+   "discount_total": "0.00",
    "tax_total": "628.07",
    "total": "13033.42",
    "net_total": "12405.35",
@@ -3277,6 +3430,7 @@
      "gross": "493.80",
      "line_discount": "0.00",
      "net": "493.80",
+     "discount_share": "0.00",
      "taxable": "493.80",
      "exclusive": "493.80",
      "taxes": {
@@ -3287,6 +3441,7 @@
      "gross": "469.70",
      "line_discount": "0.00",
      "net": "469.70",
+     "discount_share": "0.00",
      "taxable": "469.70",
      "exclusive": "469.70",
      "taxes": {
@@ -3297,6 +3452,7 @@
      "gross": "17.93",
      "line_discount": "0.00",
      "net": "17.93",
+     "discount_share": "0.00",
      "taxable": "17.93",
      "exclusive": "17.93",
      "taxes": {
@@ -3307,6 +3463,7 @@
      "gross": "15103.65",
      "line_discount": "0.00",
      "net": "15103.65",
+     "discount_share": "0.00",
      "taxable": "15103.65",
      "exclusive": "15103.65",
      "taxes": {
@@ -3318,6 +3475,7 @@
      "gross": "4874.71",
      "line_discount": "0.00",
      "net": "4874.71",
+     "discount_share": "0.00",
      "taxable": "4874.71",
      "exclusive": "4874.71",
      "taxes": {
@@ -3328,6 +3486,7 @@
      "gross": "628.40",
      "line_discount": "12.57",
      "net": "615.83",
+     "discount_share": "0.00",
      "taxable": "615.83",
      "exclusive": "615.83",
      "taxes": {
@@ -3337,6 +3496,7 @@
     }
    ],
    "subtotal": "21575.62",
+   "discount_total": "0.00",
    "tax_total": "3111.48",
    "total": "24687.10",
    "net_total": "21575.62",
@@ -3387,6 +3547,7 @@
      "gross": "615.84",
      "line_discount": "0.00",
      "net": "615.84",
+     "discount_share": "0.00",
      "taxable": "615.84",
      "exclusive": "615.84",
      "taxes": {
@@ -3397,6 +3558,7 @@
      "gross": "5880.79",
      "line_discount": "117.62",
      "net": "5763.17",
+     "discount_share": "0.00",
      "taxable": "5763.17",
      "exclusive": "5763.17",
      "taxes": {
@@ -3406,6 +3568,7 @@
     }
    ],
    "subtotal": "6379.01",
+   "discount_total": "0.00",
    "tax_total": "720.17",
    "total": "7099.18",
    "net_total": "6379.01",
@@ -3468,6 +3631,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -3478,6 +3642,7 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -3488,6 +3653,7 @@
      "gross": "755.05",
      "line_discount": "251.66",
      "net": "503.39",
+     "discount_share": "0.00",
      "taxable": "503.39",
      "exclusive": "503.39",
      "taxes": {
@@ -3499,12 +3665,14 @@
      "gross": "0.00",
      "line_discount": "0.00",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {}
     }
    ],
    "subtotal": "503.39",
+   "discount_total": "0.00",
    "tax_total": "55.37",
    "total": "558.76",
    "net_total": "503.39",
@@ -3598,6 +3766,7 @@
      "gross": "41714.00",
      "line_discount": "0.00",
      "net": "41714.00",
+     "discount_share": "0.00",
      "taxable": "41714.00",
      "exclusive": "41714.00",
      "taxes": {
@@ -3609,6 +3778,7 @@
      "gross": "4036.41",
      "line_discount": "0.00",
      "net": "4036.41",
+     "discount_share": "0.00",
      "taxable": "4036.41",
      "exclusive": "4036.41",
      "taxes": {
@@ -3619,6 +3789,7 @@
      "gross": "11100.15",
      "line_discount": "0.00",
      "net": "11100.15",
+     "discount_share": "0.00",
      "taxable": "11100.15",
      "exclusive": "11100.15",
      "taxes": {
@@ -3629,6 +3800,7 @@
      "gross": "16592.63",
      "line_discount": "0.00",
      "net": "16592.63",
+     "discount_share": "0.00",
      "taxable": "16592.63",
      "exclusive": "16592.63",
      "taxes": {
@@ -3639,6 +3811,7 @@
      "gross": "1069.56",
      "line_discount": "0.00",
      "net": "1069.56",
+     "discount_share": "0.00",
      "taxable": "1069.56",
      "exclusive": "1069.56",
      "taxes": {
@@ -3650,6 +3823,7 @@
      "gross": "1999.40",
      "line_discount": "0.00",
      "net": "1999.40",
+     "discount_share": "0.00",
      "taxable": "1999.40",
      "exclusive": "1999.40",
      "taxes": {
@@ -3659,6 +3833,7 @@
     }
    ],
    "subtotal": "76512.15",
+   "discount_total": "0.00",
    "tax_total": "7991.25",
    "total": "84503.40",
    "net_total": "76512.15",
@@ -3713,6 +3888,7 @@
      "gross": "16938.00",
      "line_discount": "0.00",
      "net": "16938.00",
+     "discount_share": "0.00",
      "taxable": "16938.00",
      "exclusive": "16938.00",
      "taxes": {
@@ -3723,6 +3899,7 @@
      "gross": "4294.64",
      "line_discount": "0.00",
      "net": "4294.64",
+     "discount_share": "0.00",
      "taxable": "4294.64",
      "exclusive": "4294.64",
      "taxes": {
@@ -3733,6 +3910,7 @@
      "gross": "361.01",
      "line_discount": "361.01",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -3741,6 +3919,7 @@
     }
    ],
    "subtotal": "21232.64",
+   "discount_total": "0.00",
    "tax_total": "2586.05",
    "total": "23818.69",
    "net_total": "21232.64",
@@ -3776,6 +3955,7 @@
      "gross": "17026.28",
      "line_discount": "0.00",
      "net": "17026.28",
+     "discount_share": "0.00",
      "taxable": "17026.28",
      "exclusive": "17026.28",
      "taxes": {
@@ -3785,6 +3965,7 @@
     }
    ],
    "subtotal": "17026.28",
+   "discount_total": "0.00",
    "tax_total": "2549.68",
    "total": "19575.96",
    "net_total": "17026.28",
@@ -3874,6 +4055,7 @@
      "gross": "2125.05",
      "line_discount": "0.00",
      "net": "2125.05",
+     "discount_share": "0.00",
      "taxable": "2125.05",
      "exclusive": "2125.05",
      "taxes": {
@@ -3885,6 +4067,7 @@
      "gross": "4321.62",
      "line_discount": "0.00",
      "net": "4321.62",
+     "discount_share": "0.00",
      "taxable": "4321.62",
      "exclusive": "4321.62",
      "taxes": {
@@ -3895,6 +4078,7 @@
      "gross": "608.63",
      "line_discount": "0.00",
      "net": "608.63",
+     "discount_share": "0.00",
      "taxable": "608.63",
      "exclusive": "608.63",
      "taxes": {
@@ -3906,6 +4090,7 @@
      "gross": "1700.36",
      "line_discount": "0.00",
      "net": "1700.36",
+     "discount_share": "0.00",
      "taxable": "1700.36",
      "exclusive": "1700.36",
      "taxes": {}
@@ -3914,6 +4099,7 @@
      "gross": "5197.86",
      "line_discount": "519.79",
      "net": "4678.07",
+     "discount_share": "0.00",
      "taxable": "4678.07",
      "exclusive": "4678.07",
      "taxes": {
@@ -3925,6 +4111,7 @@
      "gross": "554.58",
      "line_discount": "0.00",
      "net": "554.58",
+     "discount_share": "0.00",
      "taxable": "554.58",
      "exclusive": "554.58",
      "taxes": {
@@ -3933,6 +4120,7 @@
     }
    ],
    "subtotal": "13988.31",
+   "discount_total": "0.00",
    "tax_total": "1599.57",
    "total": "15587.88",
    "net_total": "13988.31",
@@ -3978,6 +4166,7 @@
      "gross": "5551.95",
      "line_discount": "0.00",
      "net": "5551.95",
+     "discount_share": "0.00",
      "taxable": "5551.95",
      "exclusive": "5551.95",
      "taxes": {
@@ -3988,6 +4177,7 @@
      "gross": "174.69",
      "line_discount": "174.69",
      "net": "0.00",
+     "discount_share": "0.00",
      "taxable": "0.00",
      "exclusive": "0.00",
      "taxes": {
@@ -3996,6 +4186,7 @@
     }
    ],
    "subtotal": "5551.95",
+   "discount_total": "0.00",
    "tax_total": "832.79",
    "total": "6384.74",
    "net_total": "5551.95",
@@ -4080,6 +4271,7 @@
      "gross": "3169.88",
      "line_discount": "65.03",
      "net": "3104.85",
+     "discount_share": "0.00",
      "taxable": "3104.85",
      "exclusive": "3104.85",
      "taxes": {
@@ -4090,6 +4282,7 @@
      "gross": "95.28",
      "line_discount": "0.00",
      "net": "95.28",
+     "discount_share": "0.00",
      "taxable": "95.28",
      "exclusive": "95.28",
      "taxes": {
@@ -4101,6 +4294,7 @@
      "gross": "170.61",
      "line_discount": "134.83",
      "net": "35.78",
+     "discount_share": "0.00",
      "taxable": "35.78",
      "exclusive": "35.78",
      "taxes": {
@@ -4111,6 +4305,7 @@
      "gross": "11067.08",
      "line_discount": "3688.66",
      "net": "7378.42",
+     "discount_share": "0.00",
      "taxable": "7378.42",
      "exclusive": "7378.42",
      "taxes": {
@@ -4122,6 +4317,7 @@
      "gross": "1868.25",
      "line_discount": "0.00",
      "net": "1868.25",
+     "discount_share": "0.00",
      "taxable": "1868.25",
      "exclusive": "1868.25",
      "taxes": {
@@ -4130,6 +4326,7 @@
     }
    ],
    "subtotal": "12482.58",
+   "discount_total": "0.00",
    "tax_total": "1785.24",
    "total": "14267.82",
    "net_total": "12482.58",
@@ -4203,6 +4400,7 @@
      "gross": "1667.13",
      "line_discount": "0.00",
      "net": "1667.13",
+     "discount_share": "0.00",
      "taxable": "1667.13",
      "exclusive": "1667.13",
      "taxes": {
@@ -4213,6 +4411,7 @@
      "gross": "1576.40",
      "line_discount": "0.00",
      "net": "1576.40",
+     "discount_share": "0.00",
      "taxable": "1576.40",
      "exclusive": "1576.40",
      "taxes": {
@@ -4224,6 +4423,7 @@
      "gross": "2296.92",
      "line_discount": "165.50",
      "net": "2131.42",
+     "discount_share": "0.00",
      "taxable": "2131.42",
      "exclusive": "2131.42",
      "taxes": {
@@ -4234,6 +4434,7 @@
      "gross": "873.36",
      "line_discount": "0.00",
      "net": "873.36",
+     "discount_share": "0.00",
      "taxable": "873.36",
      "exclusive": "873.36",
      "taxes": {
@@ -4243,6 +4444,7 @@
     }
    ],
    "subtotal": "6248.31",
+   "discount_total": "0.00",
    "tax_total": "527.38",
    "total": "6775.69",
    "net_total": "6248.31",
@@ -4280,6 +4482,7 @@
      "gross": "432.59",
      "line_discount": "0.00",
      "net": "432.59",
+     "discount_share": "0.00",
      "taxable": "432.59",
      "exclusive": "432.59",
      "taxes": {
@@ -4289,6 +4492,7 @@
     }
    ],
    "subtotal": "432.59",
+   "discount_total": "0.00",
    "tax_total": "47.59",
    "total": "480.18",
    "net_total": "432.59",

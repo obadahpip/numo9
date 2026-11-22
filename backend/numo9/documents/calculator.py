@@ -25,6 +25,15 @@ inclusive amount (round(amount ÷ (1 + Σ rates)) or a cent either side); when n
 residual cent goes to the largest component, so exclusive + tax = inclusive always.
 ``total`` = subtotal (the tax is included in it); ``tax_total`` is the tax it includes.
 
+Document discount (D-01-T05): an amount (at most the lines' total) or a percent of the lines'
+total, round(Σ net × % ÷ 100). It is allocated to the lines pro-rata to their net —
+round(discount × net ÷ Σ net) each — and the cents left over by rounding go one by one to the
+largest lines (the first of equal ones), so Σ shares = the discount exactly and no line's share
+is more than its net (a line never goes negative; lines with a net of zero or less take no
+share). Tax is calculated on each line's net less its share (``taxable``). ``discount_total`` is
+the discount; exclusive ``total`` = subtotal − discount + tax, inclusive ``total`` = subtotal −
+discount.
+
 No-tax mode: components are ignored, there is no tax, ``total`` = subtotal.
 
 Every line also carries ``exclusive`` (its taxable amount before tax) and the document
@@ -90,6 +99,8 @@ class DocumentInput:
     lines: Sequence[LineInput]
     tax_mode: str = EXCLUSIVE
     side: str = "sales"
+    discount_type: str = NONE
+    discount_value: Decimal = ZERO
 
 
 @dataclass(frozen=True)
@@ -114,6 +125,8 @@ class LineResult:
     taxes: tuple[ComponentResult, ...]
     #: The taxable amount before tax (= taxable, except in inclusive mode).
     exclusive: Decimal = ZERO
+    #: The line's share of the document discount.
+    discount_share: Decimal = ZERO
 
     @property
     def tax(self) -> Decimal:
@@ -128,6 +141,7 @@ class DocumentResult:
     tax_total: Decimal
     total: Decimal
     tax_by_component: dict[str, Decimal] = field(default_factory=dict)
+    discount_total: Decimal = ZERO
 
     @property
     def tax_included(self) -> bool:
@@ -191,24 +205,79 @@ def _split(component: Component, amount: Decimal, side: str) -> ComponentResult:
     return ComponentResult(component.key, dec(component.rate), amount, claimable, cost)
 
 
+def document_discount(nets: Sequence[Decimal], kind: str, value: Decimal) -> Decimal:
+    """The document discount on lines whose nets are ``nets`` (module docstring)."""
+    value = dec(value)
+    if kind == NONE or not value:
+        return ZERO
+    if value < 0:
+        raise CalculationError("A discount can't be negative.")
+    base = sum((n for n in nets if n > 0), ZERO)
+    if kind == AMOUNT:
+        return min(cents(value), base)
+    if kind == PERCENT:
+        if value > HUNDRED:
+            raise CalculationError("A percent discount is at most 100 %.")
+        return cents(base * value / HUNDRED)
+    raise CalculationError(f"Unknown discount type {kind!r}.")
+
+
+def allocate(discount: Decimal, nets: Sequence[Decimal]) -> list[Decimal]:
+    """Pro-rata shares of ``discount`` (module docstring): Σ shares = discount exactly."""
+    shares = [ZERO] * len(nets)
+    base = sum((n for n in nets if n > 0), ZERO)
+    if not discount or not base:
+        return shares
+    if discount > base:
+        raise CalculationError("The discount is more than the lines' total.")
+    for i, net in enumerate(nets):
+        if net > 0:
+            shares[i] = min(cents(discount * net / base), net)
+    remainder = discount - sum(shares, ZERO)
+    order = sorted((i for i, n in enumerate(nets) if n > 0), key=lambda i: (-nets[i], i))
+    step = CENT if remainder > 0 else -CENT
+    while remainder:
+        moved = False
+        for i in order:
+            if not remainder:
+                break
+            proposed = shares[i] + step
+            if ZERO <= proposed <= nets[i]:
+                shares[i] = proposed
+                remainder -= step
+                moved = True
+        if not moved:  # pragma: no cover — impossible while discount ≤ base
+            raise CalculationError("The discount can't be allocated.")
+    return shares
+
+
 def calculate(document: DocumentInput) -> DocumentResult:
     """The document's amounts (module docstring)."""
     if document.tax_mode not in TAX_MODES:
         raise CalculationError(f"Unknown tax mode {document.tax_mode!r}.")
-    lines: list[LineResult] = []
+    figures = []
     for line in document.lines:
         gross = cents(dec(line.quantity) * dec(line.unit_price))
         discount = _line_discount(gross, line)
-        net = gross - discount
-        lines.append(_line(document, line, gross, discount, net, net))
+        figures.append((line, gross, discount, gross - discount))
+    nets = [net for *_, net in figures]
+    discount_total = document_discount(nets, document.discount_type, document.discount_value)
+    shares = allocate(discount_total, nets)
+    lines: list[LineResult] = [
+        _line(document, line, gross, discount, net, share)
+        for (line, gross, discount, net), share in zip(figures, shares, strict=True)
+    ]
     by_component: dict[str, Decimal] = {}
     for result in lines:
         for tax in result.taxes:
             by_component[tax.key] = by_component.get(tax.key, ZERO) + tax.amount
     subtotal = sum((r.net for r in lines), ZERO)
     tax_total = sum(by_component.values(), ZERO)
-    total = subtotal if document.tax_mode == INCLUSIVE else subtotal + tax_total
-    return DocumentResult(document.tax_mode, tuple(lines), subtotal, tax_total, total, by_component)
+    after_discount = subtotal - discount_total
+    total = after_discount if document.tax_mode == INCLUSIVE else after_discount + tax_total
+    return DocumentResult(
+        document.tax_mode, tuple(lines), subtotal, tax_total, total, by_component, discount_total
+    )
 
 
 def _line(
@@ -217,16 +286,16 @@ def _line(
     gross: Decimal,
     discount: Decimal,
     net: Decimal,
-    taxable: Decimal,
+    share: Decimal,
 ) -> LineResult:
+    taxable = net - share
     if document.tax_mode == NO_TAX:
-        return LineResult(gross, discount, net, taxable, (), taxable)
+        return LineResult(gross, discount, net, taxable, (), taxable, share)
     if document.tax_mode == INCLUSIVE:
         exclusive, taxes = _inclusive_taxes(taxable, line.components, document.side)
-        return LineResult(gross, discount, net, taxable, taxes, exclusive)
-    return LineResult(
-        gross, discount, net, taxable, _taxes(taxable, line.components, document.side), taxable
-    )
+        return LineResult(gross, discount, net, taxable, taxes, exclusive, share)
+    taxes = _taxes(taxable, line.components, document.side)
+    return LineResult(gross, discount, net, taxable, taxes, taxable, share)
 
 
 # ---- fixtures (shared with the client mirror) ----------------------------------------------------
@@ -255,6 +324,8 @@ def from_fixture(data: dict[str, Any]) -> DocumentInput:
         ],
         tax_mode=data.get("tax_mode", EXCLUSIVE),
         side=data.get("side", "sales"),
+        discount_type=data.get("discount_type", NONE),
+        discount_value=dec(data.get("discount_value", "0")),
     )
 
 
@@ -270,6 +341,7 @@ def to_fixture(result: DocumentResult) -> dict[str, Any]:
                 "gross": money(line.gross),
                 "line_discount": money(line.line_discount),
                 "net": money(line.net),
+                "discount_share": money(line.discount_share),
                 "taxable": money(line.taxable),
                 "exclusive": money(line.exclusive),
                 "taxes": {t.key: money(t.amount) for t in line.taxes},
@@ -277,6 +349,7 @@ def to_fixture(result: DocumentResult) -> dict[str, Any]:
             for line in result.lines
         ],
         "subtotal": money(result.subtotal),
+        "discount_total": money(result.discount_total),
         "tax_total": money(result.tax_total),
         "total": money(result.total),
         "net_total": money(result.net_total),
