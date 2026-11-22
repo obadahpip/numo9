@@ -56,6 +56,7 @@ from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import acting_practice, current_org, org_context
 from numo9.tenancy.models import Organisation
 
+from .approvals import assert_approved
 from .models import (
     JournalEntry,
     JournalLine,
@@ -93,6 +94,11 @@ def _organisation(organisation: Organisation | None) -> Organisation:
     if active is not None and active.pk != organisation.pk:
         raise ValueError("Journals are posted in the active organisation only.")
     return organisation
+
+
+def _total(checked: ValidatedJournal) -> Any:
+    """The journal's amount for the approval gate: the larger book's debits."""
+    return max((debit for debit, _credit in checked.totals.values()), default=0)
 
 
 def _contact_id(value: Any) -> int | None:
@@ -194,6 +200,8 @@ def post_journal(
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, spec.date, person, module)
+        if reversal_of is None:  # C-04-T03: a manual journal over the threshold needs approval
+            assert_approved(None, organisation, _total(checked), spec.type)
         documents = list({document.pk: document for document in attachments}.values())
         if reversal_of is None:  # a reversal mirrors an entry that passed the rules
             check_policy(
@@ -438,6 +446,7 @@ def post_entry(
         spec = _spec_of(entry)
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, entry.date, person, module)
+        assert_approved(entry, organisation, _total(checked), entry.type)
         check_policy(
             checked,
             caller=caller,

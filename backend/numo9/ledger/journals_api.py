@@ -43,6 +43,7 @@ from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
 from .api import JournalDetailSerializer, JournalDetailView, JournalListView
+from .approvals import ApprovalRefused
 from .cash_guard import shortfalls
 from .models import (
     SELECTABLE_CATEGORIES,
@@ -166,6 +167,11 @@ def _problems(error: Exception) -> list[dict[str, str]]:
 
 
 def _refused(error: LedgerError) -> Response:
+    if isinstance(error, ApprovalRefused):  # C-04-T03: 409 "Approval required"
+        return Response(
+            {"code": error.code, "detail": " ".join(str(m) for m in error.messages)},
+            status=status.HTTP_409_CONFLICT,
+        )
     if isinstance(error, NegativeCash):
         code = error.error_list[0].code or "ledger.journal.negative_cash"
         return Response(

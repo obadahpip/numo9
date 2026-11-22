@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 475   Remaining: 2312   Progress: 17.04%
+TOTAL ATOMIC TASKS: 2787   Completed: 476   Remaining: 2311   Progress: 17.08%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -635,7 +635,7 @@ Phase 1 Core Books  (572 atomic tasks)
 [C-04]
 ✅ C-04-T01 — JournalApprovalPolicy model fields on OrganisationSettings: journal_approval_threshold (nullable = never)
 ✅ C-04-T02 — Approval service: submit(), approve(user), reject(user, reason); checks approver ≠ creator and ApprovalLimit
-❌ C-04-T03 — Posting gate: post() refuses if approval required and not approved
+✅ C-04-T03 — Posting gate: post() refuses if approval required and not approved
 ❌ C-04-T13 — Notifications: submit → approvers notified; approve/reject → creator notified (A-07)
 ❌ C-04-T14 — Global search & quick-create registration for journals (N J) incl. narration indexing
 
