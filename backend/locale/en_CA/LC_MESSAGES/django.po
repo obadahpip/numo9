@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:45-0500\n"
+"POT-Creation-Date: 2026-11-24 05:47-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2445,6 +2445,39 @@ msgid "Enter the account's balance as a debit or a credit."
 msgstr ""
 
 msgid "The conversion is finalised: correct it with a correcting opening journal."
+msgstr ""
+
+msgid "Choose the column with the account code or name."
+msgstr ""
+
+msgid "Choose Debit and Credit columns, or one Balance column — not both."
+msgstr ""
+
+#, python-format
+msgid "The file has no column “%(column)s”."
+msgstr ""
+
+#, python-format
+msgid "“%(value)s” isn't an amount."
+msgstr ""
+
+msgid "The row has a debit and a credit: keep one."
+msgstr ""
+
+#, python-format
+msgid "More than one account is called “%(name)s”: use its code."
+msgstr ""
+
+#, python-format
+msgid "There's no account “%(account)s” in the chart of accounts."
+msgstr ""
+
+#, python-format
+msgid "%(code)s has sub-accounts: give the balances of its sub-accounts."
+msgstr ""
+
+#, python-format
+msgid "%(code)s is already on row %(row)d."
 msgstr ""
 
 msgid "No open demo organisation with this id."
