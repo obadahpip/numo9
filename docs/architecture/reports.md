@@ -75,3 +75,11 @@ and bank transactions now), anything else opens the journal.
 API: `GET /api/v1/o/<org>/reports/<report>/drill?account=5400&from=2026-06-01&to=2026-06-30
 &book=accounting&tracking=region:east&page=1` (`reports.reports.view`, feature
 `accounting.reports.read`); bad parameters → 400 with a `reports.*` code.
+
+## Header (K-01-T06)
+
+`numo9.reports.header.report_header(org, title, today, period | as_of, basis, book, language)`:
+display name; legal name (left out when the same as the display name); period label ("1 Apr 2026
+to 31 Mar 2027" or "As at 30 Jun 2026"); **"Year to date — unaudited"** when the period or the
+balance date ends after today; the basis label (G-06 default or the report's override); "Accounting
+book" / "Tax book".

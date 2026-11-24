@@ -6272,6 +6272,17 @@ msgstr ""
 msgid "There's no such report."
 msgstr ""
 
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr ""
+
+#, python-format
+msgid "As at %(date)s"
+msgstr ""
+
+msgid "Year to date — unaudited"
+msgstr ""
+
 msgid "Run reports and drill down to their lines"
 msgstr ""
 

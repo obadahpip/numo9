@@ -6699,6 +6699,19 @@ msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 msgid "There's no such report."
 msgstr ""
 
+#, fuzzy, python-format
+#| msgid "%(start)s to %(end)s · times in %(zone)s"
+msgid "%(start)s to %(end)s"
+msgstr "Du %(start)s au %(end)s · heures en %(zone)s"
+
+#, fuzzy, python-format
+#| msgid "conversion rate (30 days)"
+msgid "As at %(date)s"
+msgstr "taux de conversion (30 jours)"
+
+msgid "Year to date — unaudited"
+msgstr ""
+
 msgid "Run reports and drill down to their lines"
 msgstr ""
 
