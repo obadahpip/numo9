@@ -14,3 +14,12 @@ REPORTS_VIEW = register(
         Risk.LOW,
     )
 )
+
+LAYOUTS_MANAGE = register(
+    Permission(
+        "reports.layouts.manage",
+        _("Edit, publish and save report layouts and notes"),
+        "reports",
+        Risk.MEDIUM,
+    )
+)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:32-0500\n"
+"POT-Creation-Date: 2026-11-24 07:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6287,7 +6287,43 @@ msgstr ""
 msgid "Year to date — unaudited"
 msgstr ""
 
+msgid "Published"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "report"
+msgstr ""
+
+msgid "layout"
+msgstr ""
+
+msgid "{\"rows\": [{\"key\", \"label\", \"hidden\"}], \"text_blocks\": [{\"after\", \"text\"}]}"
+msgstr ""
+
+msgid "footnotes"
+msgstr ""
+
+msgid "published snapshot"
+msgstr ""
+
+msgid "published at"
+msgstr ""
+
+msgid "published by"
+msgstr ""
+
+msgid "report layout"
+msgstr ""
+
+msgid "report layouts"
+msgstr ""
+
 msgid "Run reports and drill down to their lines"
+msgstr ""
+
+msgid "Edit, publish and save report layouts and notes"
 msgstr ""
 
 msgid "Trial balance"

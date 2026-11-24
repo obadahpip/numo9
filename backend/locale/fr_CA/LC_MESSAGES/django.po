@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:32-0500\n"
+"POT-Creation-Date: 2026-11-24 07:34-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6717,7 +6717,53 @@ msgstr "taux de conversion (30 jours)"
 msgid "Year to date — unaudited"
 msgstr ""
 
+msgid "Published"
+msgstr ""
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "Custom"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "Reports"
+msgid "report"
+msgstr "Rapports"
+
+msgid "layout"
+msgstr ""
+
+msgid "{\"rows\": [{\"key\", \"label\", \"hidden\"}], \"text_blocks\": [{\"after\", \"text\"}]}"
+msgstr ""
+
+#, fuzzy
+#| msgid "note"
+msgid "footnotes"
+msgstr "note"
+
+msgid "published snapshot"
+msgstr ""
+
+#, fuzzy
+#| msgid "used at"
+msgid "published at"
+msgstr "utilisée le"
+
+#, fuzzy
+#| msgid "submitted by"
+msgid "published by"
+msgstr "soumise par"
+
+msgid "report layout"
+msgstr ""
+
+msgid "report layouts"
+msgstr ""
+
 msgid "Run reports and drill down to their lines"
+msgstr ""
+
+msgid "Edit, publish and save report layouts and notes"
 msgstr ""
 
 #, fuzzy

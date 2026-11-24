@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 558   Remaining: 2229   Progress: 20.02%
+TOTAL ATOMIC TASKS: 2787   Completed: 559   Remaining: 2228   Progress: 20.06%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -744,7 +744,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-01-T05 — Drill-down API: figure → lines (paginated) → source document link
 ✅ K-01-T06 — Header service: display name, legal name, period label, unaudited/YTD label, basis and book labels
 ✅ K-01-T07 — Legal-name validation in A-05 settings (reject numeric-only, min letters)
-❌ K-01-T08 — Layout model ReportLayout (report id, org/practice, rows config, text blocks, notes, status DRAFT/PUBLISHED/CUSTOM, version) and published snapshot storage
+✅ K-01-T08 — Layout model ReportLayout (report id, org/practice, rows config, text blocks, notes, status DRAFT/PUBLISHED/CUSTOM, version) and published snapshot storage
 ❌ K-01-T09 — Cell annotation (ReportNote on row/column key)
 ❌ K-01-T10 — Export renderers: PDF (WeasyPrint Letter, inch margins), XLSX (openpyxl with formulas for totals), CSV
 ❌ K-01-T11 — API /api/v1/reports (catalogue, run, drill, layouts, publish, export, favourites); feature keys per report

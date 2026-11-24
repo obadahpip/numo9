@@ -122,7 +122,9 @@ class ReportRow:
             "kind": self.kind,
             "level": self.level,
             "values": [None if v is None else f"{v:.2f}" for v in self.values],
-            "drill": self.drill,
+            "drill": None
+            if self.drill is None
+            else {k: v.isoformat() if isinstance(v, dt.date) else v for k, v in self.drill.items()},
         }
 
 

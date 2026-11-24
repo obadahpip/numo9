@@ -91,3 +91,18 @@ The header prints the legal name, so the organisation settings refuse one that i
 `orgsettings.legal_name.numeric`) or fewer than two letters ("1001633222 A" →
 `orgsettings.legal_name.too_few_letters`). "1001633222 Ontario Inc." and "3M Canada" are fine.
 Contacts keep the plain "not only a number" rule.
+
+## Layouts and published snapshots (K-01-T08)
+
+`ReportLayout` (`numo9.reports.models`) keeps, per organisation and report, a named layout:
+row order, labels, hidden rows, text blocks, footnotes and the parameters it runs with.
+`numo9.reports.layouts`:
+
+- `apply_layout(result, config)` — reorder, rename, hide, insert text blocks; rows the layout
+  doesn't name (a new account) follow the ones it does;
+- `save_draft` / `save_custom` — saved in place while not published;
+- `publish(layout, user, today)` — runs the report, applies the layout and stores the result with
+  its header as the **snapshot**; the layout is then frozen (`reports.layout.published`) and a
+  change starts a new draft version. Later postings never change a published snapshot.
+
+Managing layouts needs `reports.layouts.manage`.

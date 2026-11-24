@@ -260,6 +260,28 @@ longer count.
 `receipt_id` (`CASCADE`), `po_line_id` → `purchases_purchaseorderline` (`PROTECT`), `quantity`
 (numeric(18,4), > 0, `purchases_grnline_quantity_positive`).
 
+## Reports (`reports`) {#reports}
+
+Design: [Report engine](../architecture/reports.md).
+
+### `reports_reportlayout` — Report layout {#reports-reportlayout}
+
+A saved arrangement of one report for one organisation (K-01-T08). Business record:
+`OrgOwnedModel` and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `report_id` | varchar(60) | no | The report's id in the registry (`trial_balance`) |
+| `name` | varchar(120) | no | The layout's name; `(organisation, report_id, name, version)` unique among live rows |
+| `practice_id` | bigint → `tenancy_practice` | yes | The practice whose staff made it for this client; empty for the organisation's own |
+| `status` | varchar(10) | no | `draft`, `published`, `custom` (`reports_layout_status_valid`) |
+| `version` | integer | no | 1, 2…: a change to a published layout is a new draft version |
+| `params` | jsonb | no | The report parameters the layout runs with |
+| `config` | jsonb | no | `rows` (key, label, hidden) in order and `text_blocks` (after, text) |
+| `notes` | text | no | Footnotes printed under the report |
+| `snapshot` | jsonb | yes | The published result (header, columns, rows, totals, notes); required when published (`reports_layout_published_snapshot`); never changed afterwards |
+| `published_at`, `published_by_id` | — | yes | When and who published |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
