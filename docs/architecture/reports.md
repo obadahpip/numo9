@@ -106,3 +106,11 @@ row order, labels, hidden rows, text blocks, footnotes and the parameters it run
   change starts a new draft version. Later postings never change a published snapshot.
 
 Managing layouts needs `reports.layouts.manage`.
+
+## Cell notes (K-01-T09)
+
+`ReportNote` keeps a note on one cell — the row's stable key (`account:5400`) and the column's key
+(empty for the whole row) — for the report or for one layout. `numo9.reports.notes`: `set_note`
+(an empty text removes it), `notes_for`, and `annotate(result, notes)`, which puts each note on its
+row when the report runs again and lists the notes whose row isn't in this run under
+`unplaced_notes` (nothing is lost when a period has no activity).

@@ -1,4 +1,4 @@
-"""Report layouts (K-01-T08).
+"""Report layouts (K-01-T08) and cell notes (K-01-T09).
 
 ``ReportLayout`` — a saved arrangement of one report for one organisation: which rows show, in
 which order, under which labels, the text blocks between them and the footnotes. ``status``:
@@ -88,3 +88,43 @@ class ReportLayout(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.report_id} · {self.name} v{self.version}"
+
+
+class ReportNote(AuditedModel, OrgOwnedModel):
+    """A note on one cell of a report (K-01-T09): the row's key (``account:5400``, stable across
+    runs — a renamed account keeps its key until it is renumbered) and the column's key
+    (``debit``, ``p0``…; empty = the whole row). A note belongs to the report, or to one layout
+    when ``layout`` is set; it is kept when the report runs again."""
+
+    report_id = models.CharField(_("report"), max_length=60)
+    layout = models.ForeignKey(
+        ReportLayout,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="cell_notes",
+        verbose_name=_("layout"),
+    )
+    row_key = models.CharField(_("row"), max_length=120)
+    column_key = models.CharField(_("column"), max_length=60, blank=True)
+    text = models.TextField(_("note"))
+
+    class Meta:
+        ordering = ("report_id", "row_key", "column_key")
+        verbose_name = _("report note")
+        verbose_name_plural = _("report notes")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "report_id", "row_key", "column_key"],
+                condition=models.Q(layout__isnull=True, deleted_at__isnull=True),
+                name="reports_note_cell_unique",
+            ),
+            models.UniqueConstraint(
+                fields=["layout", "row_key", "column_key"],
+                condition=models.Q(layout__isnull=False, deleted_at__isnull=True),
+                name="reports_note_layout_cell_unique",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.report_id} · {self.row_key}/{self.column_key}"

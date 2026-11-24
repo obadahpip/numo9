@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:34-0500\n"
+"POT-Creation-Date: 2026-11-24 07:35-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6759,6 +6759,21 @@ msgstr ""
 
 msgid "report layouts"
 msgstr ""
+
+#, fuzzy
+#| msgid "columns"
+msgid "column"
+msgstr "colonnes"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "report note"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "report notes"
+msgstr "Note de crédit"
 
 msgid "Run reports and drill down to their lines"
 msgstr ""

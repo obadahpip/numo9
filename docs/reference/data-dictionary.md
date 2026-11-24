@@ -282,6 +282,13 @@ A saved arrangement of one report for one organisation (K-01-T08). Business reco
 | `snapshot` | jsonb | yes | The published result (header, columns, rows, totals, notes); required when published (`reports_layout_published_snapshot`); never changed afterwards |
 | `published_at`, `published_by_id` | — | yes | When and who published |
 
+### `reports_reportnote` — Report cell note {#reports-reportnote}
+
+A note on one cell of a report (K-01-T09). Business record: `OrgOwnedModel` and `AuditedModel`.
+`report_id`, `layout_id` (→ `reports_reportlayout`, `CASCADE`; empty = the report's own note),
+`row_key` (`account:5400`), `column_key` (empty = the whole row), `text`. One live note per cell
+(`reports_note_cell_unique`, `reports_note_layout_cell_unique`).
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
