@@ -93,3 +93,31 @@ def test_direct_method_equals_the_indirect_total() -> None:
     assert direct["total:financing"] == [D("8000.00")]
     assert direct["net_change"] == indirect["net_change"] == [D("5650.00")]
     assert "flow:payroll" not in direct
+
+
+def test_cash_definition_setting() -> None:
+    from django.core.exceptions import ValidationError
+
+    from numo9.banking.services import create_bank_account
+    from numo9.orgsettings.models import validate_cash_definition
+    from numo9.orgsettings.service import get_settings
+    from numo9.reports.cashflow import cash_account_ids, cash_types
+
+    books = report_books()
+    org = books["org"]
+    card = create_bank_account(org, type="credit_card", display_name="Visa")
+    with org_context(org):
+        assert cash_types(org) == ("chequing", "savings", "cash")
+        post_journal(pay(books["office"], card.gl_account, "40.00", dt.date(2026, 7, 2)), user=None)
+        assert card.gl_account_id not in cash_account_ids(org)
+        params = {"date_from": "2026-07-01", "date_to": "2026-07-31"}
+        before = _values(registry.get("cash_flow").run(org, params))
+        settings = get_settings(org)
+        settings.cash_definition = ["chequing", "savings", "cash", "credit_card"]
+        settings.save()
+        assert card.gl_account_id in cash_account_ids(org)
+        after = _values(registry.get("cash_flow").run(org, params))
+    assert after["net_change"][0] == before["net_change"][0] - D("40.00")
+    for bad in ([], ["chequing", "chequing"], ["wallet"], "chequing"):
+        with pytest.raises(ValidationError):
+            validate_cash_definition(bad)

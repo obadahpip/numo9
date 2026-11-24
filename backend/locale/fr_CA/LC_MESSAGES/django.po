@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:41-0500\n"
+"POT-Creation-Date: 2026-11-24 15:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5591,6 +5591,11 @@ msgstr "du mois suivant"
 msgid "of the current month"
 msgstr "du mois courant"
 
+#, fuzzy
+#| msgid "Choose one of the bulk actions."
+msgid "Choose one or more bank account types, each once."
+msgstr "Choisissez l’une des actions groupées."
+
 msgid "As registered; printed on statements, invoices and tax forms."
 msgstr "Telle qu’enregistrée; imprimée sur les relevés, les factures et les formulaires fiscaux."
 
@@ -5642,6 +5647,12 @@ msgid "bills need the supplier's invoice number"
 msgstr "numéro de facture"
 
 msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
+msgid "cash for the cash flow statement"
+msgstr ""
+
+msgid "The bank account types the cash flow statement counts as cash: chequing, savings and cash by default; credit cards, lines of credit, loans and clearing accounts only when chosen."
 msgstr ""
 
 msgid "journals need approval from"

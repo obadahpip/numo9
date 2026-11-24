@@ -68,7 +68,11 @@ CONTRA = "accumulated_amortisation"
 
 
 def cash_types(organisation: Any) -> tuple[str, ...]:
-    return DEFAULT_CASH_TYPES
+    """The organisation's cash definition (K-02-T09 setting), the default when it has none."""
+    from numo9.orgsettings.service import get_settings
+
+    chosen = getattr(get_settings(organisation), "cash_definition", None)
+    return tuple(chosen) if chosen else DEFAULT_CASH_TYPES
 
 
 def cash_account_ids(organisation: Any) -> set[int]:
