@@ -55,7 +55,7 @@ import {
   type Refusal,
   type TaxMode,
 } from "./api";
-import { m, statusLabels } from "./messages";
+import { match as matchMessages, m, statusLabels } from "./messages";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -393,6 +393,19 @@ export function BillEditor({
     return null;
   };
 
+  const approveWithVariance = async () => {
+    if (!bill || busy) return;
+    setBusy(true);
+    const result = await billsApi.approve(org, bill.id, true);
+    if (result.status === 200) {
+      fill(result.body);
+      setRefusal(null);
+      setStatus(fm(m.approved, { number: result.body.number }));
+    } else setRefusal(result.body && typeof result.body === "object" ? result.body : {});
+    setBusy(false);
+    setRefresh((n) => n + 1);
+  };
+
   const act = async (action: "save" | "submit" | "approve", event?: FormEvent) => {
     event?.preventDefault();
     if (busy || !supplier) return;
@@ -620,6 +633,14 @@ export function BillEditor({
           >
             {refusalText}
           </p>
+        ) : null}
+        {refusal?.code === "purchases.bill.variance" ? (
+          <div className="flex flex-wrap items-center gap-3" data-variance="">
+            <Button variant="primary" disabled={busy} onClick={() => void approveWithVariance()}>
+              {fm(matchMessages.approveWithVariance)}
+            </Button>
+            <span className="text-xs text-fg-muted">{fm(matchMessages.varianceHint)}</span>
+          </div>
         ) : null}
         <p role="status" className="text-sm text-fg">
           {status}

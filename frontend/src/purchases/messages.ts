@@ -221,3 +221,72 @@ export const checks = defineMessages({
     description: "A bill without a number",
   },
 });
+
+/** PO match panel (E-02-T13). */
+export const match = defineMessages({
+  title: {
+    id: "purchases.bill.match.title",
+    defaultMessage: "Match with purchase order {po}",
+    description: "Match panel heading",
+  },
+  line: { id: "purchases.bill.match.line", defaultMessage: "Line", description: "Column" },
+  ordered: { id: "purchases.bill.match.ordered", defaultMessage: "Ordered", description: "Column" },
+  received: {
+    id: "purchases.bill.match.received",
+    defaultMessage: "Received",
+    description: "Column",
+  },
+  billedElsewhere: {
+    id: "purchases.bill.match.billedElsewhere",
+    defaultMessage: "Billed before",
+    description: "Column: quantity on other bills",
+  },
+  quantity: {
+    id: "purchases.bill.match.quantity",
+    defaultMessage: "This bill",
+    description: "Column",
+  },
+  price: { id: "purchases.bill.match.price", defaultMessage: "Price (PO)", description: "Column" },
+  result: { id: "purchases.bill.match.result", defaultMessage: "Match", description: "Column" },
+  green: {
+    id: "purchases.bill.match.green",
+    defaultMessage: "Matches",
+    description: "Line status",
+  },
+  amber: {
+    id: "purchases.bill.match.amber",
+    defaultMessage: "Within tolerance",
+    description: "Line status",
+  },
+  red: {
+    id: "purchases.bill.match.red",
+    defaultMessage: "Doesn't match",
+    description: "Line status",
+  },
+  over: {
+    id: "purchases.bill.match.over",
+    defaultMessage: "{quantity} more than received",
+    description: "Over-billed quantity",
+  },
+  priceDiff: {
+    id: "purchases.bill.match.priceDiff",
+    defaultMessage: "price {pct} % off",
+    description: "Price difference with the PO",
+  },
+  priceCell: {
+    id: "purchases.bill.match.priceCell",
+    defaultMessage: "{price} ({po})",
+    description: "This bill's price and the PO's",
+  },
+  approveWithVariance: {
+    id: "purchases.bill.approveWithVariance",
+    defaultMessage: "Approve with variance",
+    description: "Button: approve a bill that doesn't match its PO",
+  },
+  varianceHint: {
+    id: "purchases.bill.varianceHint",
+    defaultMessage:
+      "Approving with variance is recorded in the audit log with your name. Only approvers can do it.",
+    description: "Next to Approve with variance",
+  },
+});
