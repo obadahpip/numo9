@@ -6,7 +6,7 @@
  * **running balance** after it (computed over the whole history on the server, so filtered rows
  * keep true balances; with no filter the last row's balance is the ledger balance). Filters: date
  * range, contact, amount range, status. The grid's column chooser hides columns; Export CSV /
- * Excel downloads the filtered rows.
+ * Excel downloads the filtered rows. **History** opens the account's audit trail (F-01-T14).
  */
 import {
   Badge,
@@ -24,6 +24,7 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useEffect, useId, useMemo, useState, type FormEvent, type ReactNode } from "react";
 
+import { RecordHistory } from "@/audit/RecordHistory";
 import { useGridLabels } from "@/directory/DirectoryScreen";
 import { useFormatMessage } from "@/i18n";
 
@@ -193,7 +194,16 @@ export function BankAccountDetail({ org, account: id }: { org: string; account: 
       {account ? (
         <header className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-bold text-fg">{account.display_name}</h1>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl font-bold text-fg">{account.display_name}</h1>
+              {/* F-01-T14: created, renamed, statement balance edited, archived — who and when. */}
+              <RecordHistory
+                org={org}
+                type="banking.BankAccount"
+                id={account.id}
+                label={account.display_name}
+              />
+            </div>
             <p className="text-sm text-fg-muted">
               {[
                 fm(typeLabels[account.type]),

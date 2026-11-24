@@ -99,7 +99,17 @@ export interface DocumentLinesProps {
    * `taxCode`…). Flagged until the next calculation.
    */
   problems?: Readonly<Record<string, readonly string[]>>;
+  /**
+   * Bank mode (spend / receive money, F-01-T10): a line is an amount, not a quantity × price —
+   * no Item, Quantity or Discount columns; the amount typed is the line's Amount (headed
+   * `labels.amount`; quantity stays 1) and accounts follow the `bank` context's side rules
+   * through `side` as usual.
+   */
+  bank?: boolean;
 }
+
+/** Bank mode: the typed amount is the line; item, quantity, discount and the computed amount go. */
+const BANK_DROPPED: ReadonlySet<string> = new Set(["item", "quantity", "discount", "amount"]);
 
 let counter = 0;
 export function newDocumentLine(): DocumentGridLine {
@@ -292,6 +302,7 @@ export function DocumentLines({
   defaultHiddenColumns = ["item", "discount"],
   columnStore,
   problems = {},
+  bank = false,
 }: DocumentLinesProps) {
   const toast = useOptionalToast();
   const [invalid, setInvalid] = useState<Record<string, string[]>>({});
@@ -426,6 +437,14 @@ export function DocumentLines({
     { id: "amount", header: labels.amount, kind: "money", width: 128, readOnly: true, total: true },
   ];
 
+  const visibleColumns = bank
+    ? columns
+        .filter((column) => !BANK_DROPPED.has(column.id))
+        .map((column) =>
+          column.id === "unitPrice" ? { ...column, header: labels.amount, total: true } : column,
+        )
+    : columns;
+
   const shown = lines.map((line) => ({
     ...line,
     taxAmount: amounts[line.id]?.tax ?? null,
@@ -475,13 +494,13 @@ export function DocumentLines({
               setInvalid((flags) => ({ ...flags, ...pasted.invalid }));
             }
       }
-      columns={columns}
+      columns={visibleColumns}
       newLine={newDocumentLine}
       labels={labels}
       locale={locale}
       currency={currency}
       readOnly={readOnly}
-      defaultHiddenColumns={defaultHiddenColumns}
+      defaultHiddenColumns={bank ? [] : defaultHiddenColumns}
       columnStore={columnStore}
       stacked
       onLineRemoved={(_line, index, restore) =>

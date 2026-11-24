@@ -397,3 +397,130 @@ export const prompt = defineMessages({
     description: "Prompt dismiss button: hides it for this person for 7 days",
   },
 });
+
+/** Spend money / Receive money form (F-01-T10). */
+export const money = defineMessages({
+  spendTitle: {
+    id: "banking.money.spendTitle",
+    defaultMessage: "Spend money",
+    description: "Heading of the spend money form",
+  },
+  receiveTitle: {
+    id: "banking.money.receiveTitle",
+    defaultMessage: "Receive money",
+    description: "Heading of the receive money form",
+  },
+  bankAccount: {
+    id: "banking.money.bankAccount",
+    defaultMessage: "Bank account",
+    description: "Field: the bank, card or cash account the money leaves or arrives in",
+  },
+  date: { id: "banking.money.date", defaultMessage: "Date", description: "Field" },
+  paidTo: {
+    id: "banking.money.paidTo",
+    defaultMessage: "Paid to",
+    description: "Field of spend money: the supplier (contact) paid",
+  },
+  receivedFrom: {
+    id: "banking.money.receivedFrom",
+    defaultMessage: "Received from",
+    description: "Field of receive money: the customer (contact) who paid",
+  },
+  noContact: {
+    id: "banking.money.noContact",
+    defaultMessage: "No contact",
+    description: "Empty choice of the contact field (optional)",
+  },
+  chooseContact: {
+    id: "banking.money.chooseContact",
+    defaultMessage: "Choose a contact",
+    description: "Empty choice of the contact field when a contact is required",
+  },
+  contactRequired: {
+    id: "banking.money.contactRequired",
+    defaultMessage: "A line's account needs a contact.",
+    description: "Under the contact field when a line's account requires a contact",
+  },
+  reference: {
+    id: "banking.money.reference",
+    defaultMessage: "Reference",
+    description: "Field: receipt number, cheque number…",
+  },
+  taxMode: {
+    id: "banking.money.taxMode",
+    defaultMessage: "Amounts are",
+    description: "Field: whether line amounts include tax",
+  },
+  taxExclusive: {
+    id: "banking.money.taxExclusive",
+    defaultMessage: "Tax exclusive",
+    description: "Tax mode option",
+  },
+  taxInclusive: {
+    id: "banking.money.taxInclusive",
+    defaultMessage: "Tax inclusive",
+    description: "Tax mode option",
+  },
+  taxNone: {
+    id: "banking.money.taxNone",
+    defaultMessage: "No tax",
+    description: "Tax mode option",
+  },
+  attachments: {
+    id: "banking.money.attachments",
+    defaultMessage: "Supporting documents",
+    description: "Heading of the attachment drop zone",
+  },
+  attachHint: {
+    id: "banking.money.attachHint",
+    defaultMessage: "Drop a receipt here, or choose a file.",
+    description: "Text in the attachment drop zone",
+  },
+  attachButton: {
+    id: "banking.money.attachButton",
+    defaultMessage: "Attach a document",
+    description: "File picker of the drop zone",
+  },
+  attachmentRequired: {
+    id: "banking.money.attachmentRequired",
+    defaultMessage: "A line's account needs a supporting document.",
+    description: "Drop zone message when an attachment is required",
+  },
+  uploading: {
+    id: "banking.money.uploading",
+    defaultMessage: "Uploading {name}…",
+    description: "While a document uploads",
+  },
+  uploadFailed: {
+    id: "banking.money.uploadFailed",
+    defaultMessage: "{name} couldn't be uploaded. Try again.",
+    description: "A document upload failed",
+  },
+  overrideReason: {
+    id: "banking.money.overrideReason",
+    defaultMessage: "Reason (at least {min} characters)",
+    description: "Adviser's reason to take a bank or cash account below zero",
+  },
+  saveSpend: {
+    id: "banking.money.saveSpend",
+    defaultMessage: "Record spend",
+    description: "Button: posts the spend money transaction",
+  },
+  saveReceive: {
+    id: "banking.money.saveReceive",
+    defaultMessage: "Record receipt",
+    description: "Button: posts the receive money transaction",
+  },
+  saving: { id: "banking.money.saving", defaultMessage: "Saving…", description: "Button busy" },
+  failed: {
+    id: "banking.money.failed",
+    defaultMessage: "The transaction couldn't be saved. Try again.",
+    description: "Unexpected error",
+  },
+  loadFailed: {
+    id: "banking.money.loadFailed",
+    defaultMessage: "The form couldn't load.",
+    description: "Error state",
+  },
+  retry: { id: "banking.money.retry", defaultMessage: "Try again", description: "Retry button" },
+});

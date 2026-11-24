@@ -12,7 +12,10 @@ the same purchase resolution when they arrive (D-03b).
   every component is tax collected.
 - ``apply_auto(spec)`` — lines whose ``tax_code`` is ``"auto"`` (and that carry no portions) get
   the default code and its portions; ``"auto"`` with no default, or in a no-tax transaction,
-  becomes no code. Lines with an explicit code or portions are posted as given.
+  becomes no code. A line with an explicit code and no portions (what the spend / receive form
+  sends, F-01-T10) gets that code's portions: the version in force on the transaction date, on
+  the transaction's side (``code_for`` raises ``TaxCodeUnknown`` / ``TaxCodeExpired`` otherwise).
+  Lines with portions are posted as given.
 """
 
 from __future__ import annotations
@@ -27,6 +30,7 @@ from numo9.tax.calculator import calculate
 from numo9.tax.models import TaxSide
 from numo9.tax.place_of_supply import Resolution
 from numo9.tax.posting import ROLES
+from numo9.tax.resolver import code_for
 from numo9.tax.supply_context import resolve_line
 
 from .models import BankTransactionKind, TaxMode
@@ -67,23 +71,28 @@ def portions(
 
 
 def apply_auto(spec: MoneySpec) -> MoneySpec:
-    if not any(line.tax_code == AUTO for line in spec.lines):
+    if not any(line.tax_code and not line.taxes for line in spec.lines):
         return spec
     organisation = spec.bank_account.organisation
     lines: list[MoneyLine] = []
     for line in spec.lines:
-        if line.tax_code != AUTO or line.taxes:
+        if not line.tax_code or line.taxes:
             lines.append(line)
             continue
         if spec.tax_mode == TaxMode.NO_TAX:
-            lines.append(dataclasses.replace(line, tax_code=""))
+            lines.append(
+                dataclasses.replace(line, tax_code="" if line.tax_code == AUTO else line.tax_code)
+            )
             continue
         account = line.account
         if not isinstance(account, Account):
             account = Account.objects.get(pk=account)
-        _resolution, version = line_default(
-            spec.kind, spec.date, organisation, account=account, contact=spec.contact
-        )
+        if line.tax_code == AUTO:
+            _resolution, version = line_default(
+                spec.kind, spec.date, organisation, account=account, contact=spec.contact
+            )
+        else:
+            version = code_for(line.tax_code, side_for(spec.kind), spec.date, organisation)
         taxes = portions(
             version,
             Decimal(str(line.amount)),

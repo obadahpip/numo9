@@ -29,6 +29,15 @@ export function LockIcon() {
   );
 }
 
+/** Plus: the top bar's create menu (F-01-T13). */
+export function PlusIcon() {
+  return (
+    <Icon data-icon="plus">
+      <path d="M12 5v14M5 12h14" />
+    </Icon>
+  );
+}
+
 export function MenuIcon() {
   return (
     <Icon>

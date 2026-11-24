@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFormatMessage } from "@/i18n";
 
 import { CommandPalette, isPaletteShortcut } from "./CommandPalette";
+import { CreateMenu } from "./CreateMenu";
 import { m } from "./messages";
 import { quickCreateUrl } from "./quickCreate";
 import { anotherDialogOpen, isTypingTarget, shortcutFor } from "./shortcuts";
@@ -15,7 +16,8 @@ import { ShortcutSheet } from "./ShortcutSheet";
  * Top bar search slot inside an organisation (A-09-T07/T08): the "Search or jump to… Ctrl+K"
  * button and the command palette, plus the organisation's keyboard shortcuts — Ctrl/⌘+K toggles
  * the palette (unless another dialog is open), `?` opens the shortcut sheet, `N` then a letter
- * opens a quick-create action (`shortcuts.ts`).
+ * opens a quick-create action (`shortcuts.ts`); the "+" menu lists the same actions with their
+ * shortcuts (F-01-T13).
  */
 export function SearchSlot({ org }: { org: string }) {
   const t = useFormatMessage();
@@ -48,7 +50,7 @@ export function SearchSlot({ org }: { org: string }) {
   }, [open, org, router]);
 
   return (
-    <>
+    <div className="flex items-center gap-2">
       <CommandPalette
         org={org}
         open={open}
@@ -65,7 +67,8 @@ export function SearchSlot({ org }: { org: string }) {
           </button>
         }
       />
+      <CreateMenu org={org} />
       <ShortcutSheet open={sheet} onOpenChange={setSheet} />
-    </>
+    </div>
   );
 }

@@ -8,14 +8,16 @@ trigram indexes on title and code. Row-level security keeps it per organisation.
 **Providers.** A searchable model registers `to_document()` (`numo9/search/registry.py`); saves
 and deletes update its document in the same transaction. Phase 0 providers: contacts (and their
 people), accounts, journals (narration and line descriptions), the organisation, its users,
-documents.
+documents. Phase 1 adds bank accounts (name, institution, type, ledger code — "petty" finds Petty
+Cash) and spend / receive money (reference, contact, line descriptions), registered by
+`numo9/banking/search.py` (F-01-T13).
 
 **API.** `GET /api/v1/o/<org>/search?q=…` — records, settings, reports, navigation. Results the
 user may not see are left out; results the package lacks stay, locked, with the reason.
 
 **Palette.** Ctrl/⌘+K in an organisation (`frontend/src/search`): Recent, Create, Records,
 Settings, Reports, Go to. `?` opens the shortcut sheet; `N` then a letter opens a quick-create
-action:
+action; the top bar's **+** menu lists the same actions with their shortcuts:
 
 | Keys | Action |
 | ---- | ------ |
@@ -27,6 +29,7 @@ action:
 | N J | New manual journal |
 | N S | Spend money |
 | N R | Receive money |
+| N A | Add bank account |
 | N T | Transfer money |
 | N U | Invite a user |
 

@@ -23,7 +23,7 @@ export {
   searchOrganisations,
 } from "./org-switcher/search";
 /** Small line icons (V-01: chip remove, menu buttons). */
-export { ChevronDownIcon, CloseIcon, LockIcon, SearchIcon } from "./shell/icons";
+export { ChevronDownIcon, CloseIcon, LockIcon, PlusIcon, SearchIcon } from "./shell/icons";
 export * from "./primitives";
 export * from "./forms";
 export * from "./format";

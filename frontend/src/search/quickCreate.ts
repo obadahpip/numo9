@@ -47,6 +47,11 @@ const m = defineMessages({
     description: "Quick-create: between bank accounts",
   },
   user: { id: "quickCreate.user", defaultMessage: "Invite a user", description: "Quick-create" },
+  bankAccount: {
+    id: "quickCreate.bankAccount",
+    defaultMessage: "Add bank account",
+    description: "Quick-create: a bank, credit-card or cash account (F-01-T13)",
+  },
 });
 
 export interface QuickCreate {
@@ -120,18 +125,24 @@ export const QUICK_CREATE: readonly QuickCreate[] = [
     key: "S",
     label: m.spend,
     path: "banking/spend",
-    permission: "banking.transactions.manage",
+    permission: "accounting.banking.transact",
     feature: "accounting.banking.write",
-    availableIn: "Phase 1",
   },
   {
     id: "receive",
     key: "R",
     label: m.receive,
     path: "banking/receive",
-    permission: "banking.transactions.manage",
+    permission: "accounting.banking.transact",
     feature: "accounting.banking.write",
-    availableIn: "Phase 1",
+  },
+  {
+    id: "bank-account",
+    key: "A",
+    label: m.bankAccount,
+    path: "banking?add=1",
+    permission: "accounting.banking.manage",
+    feature: "accounting.banking.write",
   },
   {
     id: "transfer",

@@ -33,6 +33,7 @@ test("? sheet, N C opens a new contact, inline hints, nothing while typing", asy
     "N J",
     "N S",
     "N R",
+    "N A",
     "N T",
     "N U",
   ]);

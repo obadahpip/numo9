@@ -29,6 +29,10 @@ class BankingConfig(AppConfig):
         # A posted spend / receive keeps its contact, like its journal lines (C-02-T04).
         register_reference("banking.BankTransaction", "contact", "keep", _("bank transactions"))
 
+        from .search import register_banking_search
+
+        register_banking_search()  # bank accounts and transactions in the global search (F-01-T13)
+
         SWEEP_FACTORIES["banking.BankAccount"] = _sweep_bank_account
         SWEEP_FACTORIES["banking.BankTransaction"] = _sweep_bank_transaction
 

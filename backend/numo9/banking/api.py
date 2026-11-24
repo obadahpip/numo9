@@ -62,6 +62,7 @@ from numo9.ledger.policy import JournalRuleError
 from numo9.ledger.renumber import acting_as
 from numo9.orgsettings.locks import acting_user
 from numo9.rbac.drf import requires_permission
+from numo9.tax.models import TaxError
 from numo9.tenancy.context import current_org
 
 from .balances import ledger_balance
@@ -488,7 +489,7 @@ class BankTransactionListView(APIView):
             )
         except JournalRuleError as error:
             return journal_refused(error)
-        except LedgerError as error:
+        except (LedgerError, TaxError) as error:
             return _error(error)
         return Response(transaction_row(_txn(txn.public_id), lines=True), status=201)
 

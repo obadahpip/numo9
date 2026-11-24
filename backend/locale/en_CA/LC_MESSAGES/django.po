@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-22 10:12-0500\n"
+"POT-Creation-Date: 2026-11-24 04:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -692,6 +692,9 @@ msgid "Balance"
 msgstr ""
 
 msgid "Status"
+msgstr ""
+
+msgid "Archived"
 msgstr ""
 
 #, python-format
@@ -1766,9 +1769,6 @@ msgid "Don't send statements"
 msgstr ""
 
 msgid "Print and mail"
-msgstr ""
-
-msgid "Archived"
 msgstr ""
 
 msgid "Unique in the organisation; the next number is used when left empty."

@@ -63,6 +63,16 @@ export const m = defineMessages({
     defaultMessage: "{product} isn't in this organisation's package",
     description: "Why a quick-create action is locked (its product is missing from the package)",
   },
+  createMenu: {
+    id: "palette.createMenu",
+    defaultMessage: "Create",
+    description: "Accessible name of the top bar's + menu of quick-create actions (F-01-T13)",
+  },
+  loading: {
+    id: "palette.createMenuLoading",
+    defaultMessage: "Loading…",
+    description: "The + menu while the person's permissions load",
+  },
   lockedPrefix: {
     id: "palette.lockedPrefix",
     defaultMessage: "Locked:",
