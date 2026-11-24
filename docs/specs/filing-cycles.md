@@ -84,7 +84,8 @@ filled by G-09 (the lesser of the prior-year and current-year methods).
 
 1. It may not overlap a filed or paid period.
 2. Unfiled periods it overlaps are removed; the regular periods **realign from the day after its
-   end** (16 Mar): a stub to the next regular boundary, then whole periods.
+   end**: with a 1 Jan–15 Mar custom period, quarters run 16 Mar–15 Jun, 16 Jun–15 Sep… until the
+   next cycle change (or a later custom period) re-anchors them.
 3. A custom period can be deleted only while unfiled with no locked tax postings; the regular
    periods are regenerated over its dates.
 

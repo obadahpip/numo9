@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Add an out-of-cycle period">
+<title>Numo9 wireframe — Add an out-of-cycle period</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Banking</text>
+<text x="716" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Accounting</text>
+<rect x="716" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Settings › Tax › GST/HST 123456782 RT 0001</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">GST/HST filing periods</text>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#111111" fill-opacity="0.35" stroke="#111111" stroke-width="1"/>
+<rect x="270" y="110" width="900" height="640" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="294" y="150" font-size="20" fill="#111111" font-weight="700" text-anchor="start">Add an out-of-cycle period</text>
+<text x="294" y="176" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">For a CRA-approved stub, e.g. after a change of fiscal year.</text>
+<text x="294" y="214" font-size="12" fill="#344054" font-weight="600" text-anchor="start">From</text>
+<rect x="294" y="222" width="400" height="34" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="306" y="244" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Jan 2027</text>
+<text x="294" y="280" font-size="12" fill="#344054" font-weight="600" text-anchor="start">To</text>
+<rect x="294" y="288" width="400" height="34" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="306" y="310" font-size="13" fill="#111111" font-weight="400" text-anchor="start">15 Mar 2027</text>
+<text x="294" y="346" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Note</text>
+<rect x="294" y="354" width="852" height="34" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="306" y="376" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Fiscal year change approved 4 Dec 2026</text>
+<circle cx="282" cy="222" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="282" y="226" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<text x="294" y="420" font-size="13" fill="#5B6472" font-weight="600" text-anchor="start">Overlap preview</text>
+<rect x="294" y="434" width="213" height="56" rx="4" fill="#F2F4F7" stroke="#98A2B3" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="400.5" y="458" font-size="12" fill="#98A2B3" font-weight="700" text-anchor="middle">Q1 Jan–Mar</text>
+<text x="400.5" y="476" font-size="11" fill="#98A2B3" font-weight="400" text-anchor="middle">Removed</text>
+<rect x="507" y="434" width="213" height="56" rx="4" fill="#F2F4F7" stroke="#98A2B3" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="613.5" y="458" font-size="12" fill="#98A2B3" font-weight="700" text-anchor="middle">Q2 Apr–Jun</text>
+<text x="613.5" y="476" font-size="11" fill="#98A2B3" font-weight="400" text-anchor="middle">Removed</text>
+<rect x="294" y="504" width="213" height="56" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+<text x="400.5" y="528" font-size="12" fill="#111111" font-weight="700" text-anchor="middle">1 Jan–15 Mar</text>
+<text x="400.5" y="546" font-size="11" fill="#111111" font-weight="400" text-anchor="middle">Custom</text>
+<rect x="507" y="504" width="213" height="56" rx="4" fill="#E0EAFF" stroke="#3538CD" stroke-width="1.5"/>
+<text x="613.5" y="528" font-size="12" fill="#3538CD" font-weight="700" text-anchor="middle">16 Mar–15 Jun</text>
+<text x="613.5" y="546" font-size="11" fill="#3538CD" font-weight="400" text-anchor="middle">Realigned</text>
+<rect x="720" y="504" width="213" height="56" rx="4" fill="#E0EAFF" stroke="#3538CD" stroke-width="1.5"/>
+<text x="826.5" y="528" font-size="12" fill="#3538CD" font-weight="700" text-anchor="middle">16 Jun–15 Sep</text>
+<text x="826.5" y="546" font-size="11" fill="#3538CD" font-weight="400" text-anchor="middle">Realigned</text>
+<circle cx="282" cy="446" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="282" y="450" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<rect x="294" y="584" width="852" height="44" rx="6" fill="#E7F6EC" stroke="#0B6E4F" stroke-width="1"/>
+<text x="310" y="611" font-size="13" fill="#0B6E4F" font-weight="500" text-anchor="start">No filed period overlaps. Regular quarters restart from 16 Mar 2027.</text>
+<circle cx="282" cy="604" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="282" y="608" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="880" y="672" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="940.0" y="695" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Cancel</text>
+<rect x="1016" y="672" width="130" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1081.0" y="695" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Add period</text>
+</svg>

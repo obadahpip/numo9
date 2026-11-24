@@ -832,3 +832,36 @@ old system with French headers, saved in Windows-1252.
 | 1 | Summary | Statement balance ± outstanding items = adjusted statement balance, against the reconciled ledger balance (opening reconciled balance + matched ledger lines); the difference chip is green at $0.00 |
 | 2 | Unreconciled items | Ledger lines not on a statement and statement lines not matched, by date |
 | 3 | Footnote | Started mid-history from the opening reconciled balance; unreconciling asks for a reason and is audited; reconciled lines in a locked bank period need the permission |
+
+## 64. Filing periods timeline (G-03a-T02)
+
+![Filing periods timeline](wireframes/65-filing-timeline.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Actions | Change frequency (wizard, 65) · Add out-of-cycle period (dialog, 66); both preview before saving |
+| 2 | Period blocks | One block per period of the registration, coloured by status: filed green, open blue, due soon amber (≤ 14 days), overdue red; no gaps, no overlaps |
+| 3 | Switch marker | Where a filing cycle takes effect, with its frequency |
+| 4 | Hover card | Dates, sequence number, return and payment due dates (a rolled due date has an asterisk), status |
+| 5 | Legend | Status colours; the asterisk explains the holiday roll (next business day) |
+
+## 65. Change filing frequency wizard (G-03a-T02)
+
+![Change filing frequency](wireframes/66-filing-change-frequency.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Steps | Frequency → effective date → CRA approval reference and date → preview |
+| 2 | Warning | An effective date that isn't a financial year start warns; a mid-year switch without the approval reference is refused; a date inside a filed period is refused |
+| 3 | Diff | Periods before and after: filed periods unchanged, unfiled periods removed (dashed grey) and added (dashed black) |
+| 4 | Summary | Counts of removed and added periods; tax postings stay on their dates. Confirm saves exactly the previewed result |
+
+## 66. Out-of-cycle period dialog (G-03a-T02)
+
+![Out-of-cycle period](wireframes/67-filing-out-of-cycle.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Dates and note | The custom period's start and end, and why (kept in the history) |
+| 2 | Overlap preview | Unfiled periods it overlaps are removed; regular periods realign from the day after its end |
+| 3 | Check | Green when no filed period overlaps; an overlap with a filed period is refused with the period named |
