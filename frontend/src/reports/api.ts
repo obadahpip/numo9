@@ -85,12 +85,20 @@ export interface ReportHeader {
   book_label: string;
 }
 
+export interface ReportAlert {
+  code: string;
+  level: "error" | "warning";
+  message: string;
+}
+
 export interface ReportBody {
   report: string;
   params: Record<string, string | number | boolean | null>;
   columns: { key: string; label: string }[];
   rows: ReportRowData[];
   totals: ReportRowData[];
+  /** Integrity problems (K-02-T05): an `error` is a red banner above the statement. */
+  alerts?: ReportAlert[];
   header: ReportHeader;
   notes: string;
   unplaced_notes?: { row: string; column: string; text: string }[];

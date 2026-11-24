@@ -430,6 +430,20 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
               {header.basis_label ? <Badge tone="neutral">{header.basis_label}</Badge> : null}
               <Badge tone="neutral">{header.book_label}</Badge>
             </div>
+            {(body.alerts ?? []).map((alert) => (
+              <p
+                key={alert.code + alert.message}
+                role="alert"
+                data-report-alert={alert.code}
+                className={
+                  alert.level === "error"
+                    ? "mt-2 rounded-md border-2 border-border-danger bg-surface-danger-subtle px-4 py-3 text-sm text-fg"
+                    : "mt-2 rounded-md border border-border bg-surface-warning-subtle px-4 py-3 text-sm text-fg"
+                }
+              >
+                {alert.message}
+              </p>
+            ))}
             {body.layout ? (
               <p className="text-xs text-fg-muted">
                 {fm(runner.layoutName, { name: body.layout.name, version: body.layout.version })}

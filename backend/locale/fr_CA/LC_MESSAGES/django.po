@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:26-0500\n"
+"POT-Creation-Date: 2026-11-24 15:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7209,6 +7209,14 @@ msgid "Total equity"
 msgstr ""
 
 msgid "Total liabilities and equity"
+msgstr ""
+
+#, python-format
+msgid "The balance sheet at %(date)s doesn't balance by %(difference)s — the books need a look before this is used."
+msgstr ""
+
+#, python-format
+msgid "Net income for %(period)s (%(income)s) doesn't equal the change in retained and current year earnings (%(change)s) — the books need a look before this is used."
 msgstr ""
 
 msgid "No activity in this period"

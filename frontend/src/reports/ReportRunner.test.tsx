@@ -120,3 +120,22 @@ it("an empty P&L shows the no-activity hint and offers the financial year (K-01-
   expect(within(screen.getByRole("table")).getByText("$0.00")).toBeVisible();
   expect(within(hint).queryByRole("button", { name: "Run this financial year" })).toBeNull();
 });
+
+it("an integrity failure is a red banner above the statement (K-02-T05)", async () => {
+  serve({
+    body: {
+      ...BODY,
+      alerts: [
+        {
+          code: "reports.integrity.unbalanced",
+          level: "error",
+          message: "The balance sheet at 31 Jul 2026 doesn't balance by 12.34.",
+        },
+      ],
+    },
+  });
+  renderWithIntl(<ReportRunner org={ORG} slug="account-activity" />);
+  const banner = await screen.findByRole("alert");
+  expect(banner).toHaveTextContent("doesn't balance by 12.34");
+  expect(banner).toHaveAttribute("data-report-alert", "reports.integrity.unbalanced");
+});

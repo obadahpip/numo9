@@ -227,6 +227,18 @@ class ProfitAndLossReport(ReportDefinition):
         net = [(b or ZERO) - (t or ZERO) for b, t in zip(before, taxes, strict=True)]
         return [ReportRow("net_income", _("Net income"), "total", _v(net))]
 
+    def alerts(self, organisation: Any, result: Any) -> list[dict[str, Any]]:
+        net = next(row for row in result.totals if row.key == "net_income").values
+        found = []
+        for span, column, income in zip(
+            _period_columns(result.params), result.columns, net, strict=True
+        ):
+            change = _earnings_change(organisation, span, result.params["book"])
+            alert = _earnings_mismatch(column.label, income or ZERO, change)
+            if alert:
+                found.append(alert)
+        return found
+
 
 # ---- balance sheet (K-02-T03) --------------------------------------------------------------
 
@@ -436,3 +448,82 @@ class BalanceSheetReport(ReportDefinition):
                 "total:liabilities_and_equity", _("Total liabilities and equity"), "total", _v(both)
             )
         ]
+
+    def alerts(self, organisation: Any, result: Any) -> list[dict[str, Any]]:
+        by_key = {row.key: row for row in [*result.rows, *result.totals]}
+        assets = by_key["total:assets"].values
+        other = by_key["total:liabilities_and_equity"].values
+        found = []
+        for column, a, b in zip(result.columns, assets, other, strict=True):
+            alert = _imbalance(column.label, a or ZERO, b or ZERO)
+            if alert:
+                found.append(alert)
+        return found
+
+
+# ---- integrity (K-02-T05) ------------------------------------------------------------------
+
+
+def _imbalance(label: str, assets: Decimal, other: Decimal) -> dict[str, Any] | None:
+    if assets == other:
+        return None
+    return {
+        "code": "reports.integrity.unbalanced",
+        "level": "error",
+        "message": _(
+            "The balance sheet at %(date)s doesn't balance by %(difference)s — the books need a "
+            "look before this is used."
+        )
+        % {"date": label, "difference": f"{abs(assets - other):.2f}"},
+        "detail": {"assets": f"{assets:.2f}", "liabilities_and_equity": f"{other:.2f}"},
+    }
+
+
+def _earnings_change(organisation: Any, span: DateRange, book: str) -> Decimal:
+    """Δ (retained earnings + current-year earnings) over the period, from the balance sheet."""
+    data = balance_figures(organisation, [span.start - dt.timedelta(days=1), span.end], book)
+    closing_accounts = [
+        a for a in data.accounts if a.subtype in ("retained_earnings", "current_year_earnings")
+    ]
+
+    def total(i: int) -> Decimal:
+        posted = -sum((data.balances.get(a.pk, [ZERO, ZERO])[i] for a in closing_accounts), ZERO)
+        return data.retained[i] + data.current_year[i] + posted
+
+    return total(1) - total(0)
+
+
+def _earnings_mismatch(label: str, income: Decimal, change: Decimal) -> dict[str, Any] | None:
+    if income == change:
+        return None
+    return {
+        "code": "reports.integrity.earnings",
+        "level": "error",
+        "message": _(
+            "Net income for %(period)s (%(income)s) doesn't equal the change in retained and "
+            "current year earnings (%(change)s) — the books need a look before this is used."
+        )
+        % {"period": label, "income": f"{income:.2f}", "change": f"{change:.2f}"},
+        "detail": {"net_income": f"{income:.2f}", "earnings_change": f"{change:.2f}"},
+    }
+
+
+def integrity(organisation: Any, as_of: dt.date, book: str = "accounting") -> list[dict[str, Any]]:
+    """Both checks on one date: the balance sheet balances, and the financial year's net income
+    equals the change in retained and current-year earnings since its start."""
+    from numo9.tenancy.context import org_context
+
+    with org_context(organisation):
+        sheet = registry_get("balance_sheet").run(organisation, {"as_of": as_of, "book": book})
+        span = DateRange(fiscal_start(organisation, as_of), as_of)
+        income = net_income(pnl_figures([span], book))[0]
+        change = _earnings_change(organisation, span, book)
+    alerts = list(sheet.alerts)
+    mismatch = _earnings_mismatch(_range_label(span), income, change)
+    return [*alerts, mismatch] if mismatch else alerts
+
+
+def registry_get(report_id: str) -> Any:
+    from .engine import registry
+
+    return registry.get(report_id)
