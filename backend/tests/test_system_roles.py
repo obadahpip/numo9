@@ -110,7 +110,8 @@ def test_functional_roles_start_small() -> None:
     # Documents are read-only for the functional roles (A-06); their own modules arrive later.
     # Sales and purchasing keep contacts (B-01-T11): customers and suppliers are their work; each
     # sees its own side's documents (D-01-T09); sales sees, writes and emails invoices (D-03a);
-    # purchasing writes, approves (within a limit) and receives purchase orders (E-01). Every
+    # purchasing writes, approves (within a limit) and receives purchase orders (E-01) and enters
+    # and approves bills (E-02). Every
     # functional role that reads reports runs them (K-01).
     for key, own in (
         (
@@ -131,6 +132,9 @@ def test_functional_roles_start_small() -> None:
                 "purchases.orders.write",
                 "purchases.orders.approve",
                 "purchases.orders.receive",
+                "purchases.bills.view",
+                "purchases.bills.write",
+                "purchases.bills.approve",
                 "reports.reports.view",
             },
         ),

@@ -113,5 +113,11 @@ name = "Only numo9.ledger.services writes JournalLine (ADR-0003)"
 type = "ledger_writes"
 models_module = "numo9.ledger.models"
 # numo9.scale.fixtures (S-06-T08): the scratch-only perf fixture inserts posted lines with
-# generate_series the way the engine writes them (drafts, lines, then Posted) — never real books.
-allowed_modules = ["numo9.ledger.services", "numo9.scale.fixtures"]
+# generate_series the way the engine writes them (drafts, lines, then Posted) — never real books;
+# numo9.reports.management.commands.seed_report_books (K-01-T17) does the same for the report
+# performance books.
+allowed_modules = [
+    "numo9.ledger.services",
+    "numo9.scale.fixtures",
+    "numo9.reports.management.commands.seed_report_books",
+]
