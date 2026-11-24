@@ -776,3 +776,59 @@ old system with French headers, saved in Windows-1252.
 | 1 | No activity | The period has no postings: say so and offer the financial year |
 | 2 | Empty books | A new organisation: point to opening balances (C-05) |
 | 3 | Zero cells | "No activity" in a cell; rows with no activity in any column are hidden unless "Show zero rows" is on |
+
+## 60. Reconcile a bank account — two panes (F-05-T01)
+
+![Reconcile two panes](wireframes/61-reconcile-two-pane.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Optional banner | Reconciliation is opt-in per account and never blocks posting, reports, payroll or payments; "Mark account as not reconciled" hides this screen for the account (F-05-T03) |
+| 2 | Progress | "38 of 52 lines reconciled" for the statement lines imported (F-02) |
+| 3 | Statement line (left) | Date, bank description, reference, amount; the focused line has the heavy border |
+| 4 | Tabs (right) | Match (suggestions) · Create (spend / receive / transfer, rule-assisted) · Find & match · Split |
+| 5 | Confidence chip | Suggestion score from amount, date ±7 days, contact similarity and reference (F-05-T04): "98 % match", "Rule", "Exact total" (many-to-one) |
+| 6 | OK | Confirms the suggested match; amounts must be equal to the cent |
+| 7 | Undo snackbar | Each match can be undone for 10 s (Ctrl+Z); later, Unreconcile asks for a reason and is audited |
+
+**Keyboard map**
+
+| Key | Action |
+|---|---|
+| J / K | Next / previous statement line |
+| Enter | OK — accept the focused suggestion |
+| 1 · 2 · 3 · 4 | Match · Create · Find & match · Split tab |
+| F | Open Find & match |
+| S | Open Split |
+| Ctrl+Z | Undo the last match |
+| Esc | Close a modal without saving |
+
+## 61. Find & match modal (F-05-T01)
+
+![Find and match](wireframes/62-reconcile-find-match.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Search and filters | Contact, number, reference or amount; open invoices, bills and existing transactions; date window ±7 days (configurable) |
+| 2 | Candidates | Tick one or many (one deposit paying three invoices = many-to-one); Space ticks the focused row, ↑/↓ moves |
+| 3 | Totals | Selected vs statement line and the difference; Match is enabled only at $0.00 difference (a mismatch shows the difference, never a partial match) |
+
+## 62. Split a statement line (F-05-T01)
+
+![Split](wireframes/63-reconcile-split.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Part matched | A part matched to a document (a payout paying INV-0230) |
+| 2 | Part created | A part created on an account — a bank fee netted from a deposit creates a fee line |
+| 3 | Left to split | The parts add up to the line; Split and match is enabled at $0.00 left |
+
+## 63. Reconciliation report (F-05-T01)
+
+![Reconciliation report](wireframes/64-reconciliation-report.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Summary | Statement balance ± outstanding items = adjusted statement balance, against the reconciled ledger balance (opening reconciled balance + matched ledger lines); the difference chip is green at $0.00 |
+| 2 | Unreconciled items | Ledger lines not on a statement and statement lines not matched, by date |
+| 3 | Footnote | Started mid-history from the opening reconciled balance; unreconciling asks for a reason and is audited; reconciled lines in a locked bank period need the permission |
