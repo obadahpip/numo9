@@ -218,6 +218,16 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         db_default=False,
         help_text=_("Every line of a journal on an expense account must name a contact."),
     )
+    # ---- bills (E-02) -------------------------------------------------------------------------
+    bill_requires_supplier_invoice_no = models.BooleanField(
+        _("bills need the supplier's invoice number"),
+        default=True,
+        db_default=True,
+        help_text=_(
+            "A bill can be approved only with the supplier's invoice number, which must not be "
+            "on another bill from the same supplier."
+        ),
+    )
     # ---- journal approval (C-04-T01) --------------------------------------------------------
     journal_approval_threshold = models.DecimalField(
         _("journals need approval from"),

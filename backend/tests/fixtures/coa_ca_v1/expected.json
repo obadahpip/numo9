@@ -3,7 +3,7 @@
   "template": "ca_v1",
   "provinces": {
     "AB": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.AB.standard",
       "home_purchase_tax": "GST 5 %",
@@ -15,6 +15,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -29,7 +30,7 @@
       "province_only_codes": []
     },
     "BC": {
-      "accounts": 114,
+      "accounts": 115,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.BC.standard",
       "home_purchase_tax": "GST 5 % + PST 7 %",
@@ -42,6 +43,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -61,7 +63,7 @@
       ]
     },
     "MB": {
-      "accounts": 114,
+      "accounts": 115,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.MB.standard",
       "home_purchase_tax": "GST 5 % + RST 7 %",
@@ -74,6 +76,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -93,7 +96,7 @@
       ]
     },
     "NB": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NB.standard",
       "home_purchase_tax": "HST 15 %",
@@ -105,6 +108,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -119,7 +123,7 @@
       "province_only_codes": []
     },
     "NL": {
-      "accounts": 113,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NL.standard",
       "home_purchase_tax": "HST 15 %",
@@ -132,6 +136,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -149,7 +154,7 @@
       ]
     },
     "NS": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NS.standard",
       "home_purchase_tax": "HST 14 %",
@@ -161,6 +166,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -175,7 +181,7 @@
       "province_only_codes": []
     },
     "NT": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NT.standard",
       "home_purchase_tax": "GST 5 %",
@@ -187,6 +193,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -201,7 +208,7 @@
       "province_only_codes": []
     },
     "NU": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NU.standard",
       "home_purchase_tax": "GST 5 %",
@@ -213,6 +220,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -227,7 +235,7 @@
       "province_only_codes": []
     },
     "ON": {
-      "accounts": 113,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.ON.standard",
       "home_purchase_tax": "HST 13 %",
@@ -240,6 +248,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -257,7 +266,7 @@
       ]
     },
     "PE": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.PE.standard",
       "home_purchase_tax": "HST 15 %",
@@ -269,6 +278,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -283,7 +293,7 @@
       "province_only_codes": []
     },
     "QC": {
-      "accounts": 117,
+      "accounts": 118,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.QC.standard",
       "home_purchase_tax": "GST 5 % + QST 9.975 %",
@@ -296,6 +306,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -321,7 +332,7 @@
       ]
     },
     "SK": {
-      "accounts": 112,
+      "accounts": 113,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.SK.standard",
       "home_purchase_tax": "GST 5 % + PST 6 %",
@@ -333,6 +344,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
@@ -350,7 +362,7 @@
       ]
     },
     "YT": {
-      "accounts": 111,
+      "accounts": 112,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.YT.standard",
       "home_purchase_tax": "GST 5 %",
@@ -362,6 +374,7 @@
         "ei_payable",
         "fx_gain_loss",
         "gst_hst_payable",
+        "holdback_payable",
         "income_tax_withheld",
         "inventory",
         "itc_receivable",

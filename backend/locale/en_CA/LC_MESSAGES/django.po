@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:36-0500\n"
+"POT-Creation-Date: 2026-11-24 14:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4249,6 +4249,9 @@ msgstr ""
 msgid "Foreign exchange gain or loss"
 msgstr ""
 
+msgid "Holdbacks payable"
+msgstr ""
+
 msgid "Current assets"
 msgstr ""
 
@@ -5296,6 +5299,12 @@ msgstr ""
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr ""
 
+msgid "bills need the supplier's invoice number"
+msgstr ""
+
+msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
 msgid "journals need approval from"
 msgstr ""
 
@@ -5849,6 +5858,49 @@ msgstr ""
 
 #, python-format
 msgid "%(order)s isn't a draft."
+msgstr ""
+
+msgid "Add a Holdbacks payable account to the chart of accounts to post holdbacks."
+msgstr ""
+
+msgid "Holdback"
+msgstr ""
+
+msgid "The holdback is more than the amount owed on the bill."
+msgstr ""
+
+#, python-format
+msgid "Bill %(number)s — %(contact)s"
+msgstr ""
+
+msgid "draft"
+msgstr ""
+
+msgid "Enter the supplier's invoice number before approving the bill."
+msgstr ""
+
+#, python-format
+msgid "%(supplier)s's invoice %(number)s is already on %(bill)s."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s is already %(status)s."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the bill is approved."
+msgstr ""
+
+msgid "A bill's total must be more than zero: for money the supplier owes you, enter a supplier credit."
+msgstr ""
+
+msgid "You wrote or submitted this bill: someone else must approve it."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
+msgstr ""
+
+msgid "A draft bill"
 msgstr ""
 
 #, python-format
