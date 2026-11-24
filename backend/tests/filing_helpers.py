@@ -13,7 +13,7 @@ from numo9.tenancy.models import Organisation
 def registration(
     name: str = "Filing Ltd.",
     *,
-    start: dt.date = dt.date(2026, 1, 1),
+    start: dt.date | None = dt.date(2026, 1, 1),
     stop: dt.date | None = None,
     kind: str = "rt",
     **settings: Any,

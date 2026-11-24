@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:14-0500\n"
+"POT-Creation-Date: 2026-11-24 16:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7233,6 +7233,12 @@ msgstr ""
 
 #, python-format
 msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
+msgstr ""
+
+msgid "Choose the registration's filing frequency first."
+msgstr ""
+
+msgid "Enter the registration's effective date first."
 msgstr ""
 
 msgid "tax authority"
