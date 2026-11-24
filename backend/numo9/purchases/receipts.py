@@ -1,4 +1,4 @@
-"""Goods receipts (E-01-T04): receive against an approved purchase order, partially or in full.
+"""Goods receipts (E-01-T04, T05): receive against an approved purchase order, partially or in full.
 
     result = receive(order, user, [(po_line, Decimal("6"))], date=…, notes="…")
 
@@ -12,7 +12,8 @@
   same way: the quantity is recorded, no stock;
 - each line's ``quantity_received`` grows; the PO's status follows (``refresh_status``): nothing
   received → Approved, some → **Partially received**, every line in full → **Received**;
-- the receipt is audited ``purchases.goodsreceipt.received``.
+- the receipt is audited ``purchases.goodsreceipt.received``; each line of a **tracked** item is
+  sent to the stock movement sink (E-01-T05, ``numo9.purchases.stock``) as +quantity.
 """
 
 from __future__ import annotations
@@ -118,6 +119,8 @@ def receive(
     from numo9.audit import service as audit
     from numo9.orgsettings.locks import local_date
 
+    from .stock import Movement, sink, tracked
+
     person = _person(user)
     with org_context(order.organisation), transaction.atomic():
         locked = PurchaseOrder._base_manager.select_for_update().get(pk=order.pk)
@@ -182,6 +185,7 @@ def receive(
             notes=notes.strip(),
         )
         receipt.save()
+        movements: list[Movement] = []
         for line, qty in wanted:
             current = lines[line.pk]
             GoodsReceiptLine(
@@ -189,6 +193,8 @@ def receive(
             ).save()
             current.quantity_received = Decimal(current.quantity_received) + qty
             current.save(update_fields=["quantity_received", "updated_at"])
+            if tracked(current):
+                movements.append(Movement.of(receipt, current, qty))
         refresh_status(locked)
         audit.record(
             "purchases.goodsreceipt.received",
@@ -200,4 +206,6 @@ def receive(
             },
             actor=person,
         )
+        if movements:
+            sink().record(movements)
         return ReceiptResult(receipt, over)
