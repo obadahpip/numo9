@@ -98,6 +98,8 @@ nav:
   - Operations:
       - "Operations runbook": operations/runbook.md
       - "Connection pooling (PgBouncer)": operations/pgbouncer.md
+  - User guide:
+      - "Manual journals: types and controls": user-guide/journal-types-and-controls.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:
