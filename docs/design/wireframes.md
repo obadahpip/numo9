@@ -682,3 +682,28 @@ old system with French headers, saved in Windows-1252.
 | 2 | Summary chips | Would match / won by a higher-priority rule / skipped |
 | 3 | Results | Per line: the coding it would get, or why not — no match (which condition), a higher rule wins (named), matched or locked-period lines are never touched |
 | 4 | Split preview | How the allocation would split a sample line, with the tax per line |
+
+## 52. Tax registrations and settings — one page (G-06-T01)
+
+![Tax settings](wireframes/53-tax-settings.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | History | Opens the history drawer (9) |
+| 2 | Anchor nav | Business number · Registrations · Tax basis · Default codes · Quick method · Restricted ITCs; deep links from Sales, Purchases, Reports and the G-03 worksheet land on the anchor |
+| 3 | Card, read mode | Each card shows its values with an Edit action; no other page edits tax settings |
+| 4 | Card, inline edit | Validation names the format with an example: BN 9 digits, program account `123456782RT0001`, QST `1234567890TQ0001` |
+| 5 | Registrations | GST/HST, QST, PST BC/MB/SK: number, start date, status, filing cycle (link to the G-03a timeline), stop / restart |
+| 6 | Tax basis | Accrual or cash; the default for reports, which can override it and say so ("Basis: Cash (organisation default)") |
+| 7 | Mid-year change | Changing the basis during the year warns and needs a reason |
+| 8 | Defaults | Sales and purchase codes per account type, rounding mode, quick-method election, restricted-ITC accounts |
+| 9 | History drawer | Every change with who (a person, or a job with its id — never just "System"), when, old → new value and the reason |
+
+## 53. Tax settings — not registered and missing BN (G-06-T01)
+
+![Tax settings empty state](wireframes/54-tax-settings-empty.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Empty state | "Not registered for GST/HST?" explains the small-supplier rule; new documents default to the out-of-scope code; one action to add a registration |
+| 2 | Missing BN | A GST/HST registration without a business number is flagged inline (and in the exceptions engine) |
