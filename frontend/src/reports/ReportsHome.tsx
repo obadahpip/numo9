@@ -204,10 +204,10 @@ export function ReportsHome({ org }: { org: string }) {
           {shown.map((report) => (
             <li
               key={report.id}
-              className="flex items-start justify-between gap-3 rounded-lg border border-border bg-surface p-4"
+              className="flex min-w-0 items-start justify-between gap-3 rounded-lg border border-border bg-surface p-4"
               data-report={report.id}
             >
-              <div className="flex min-w-0 flex-col gap-1">
+              <div className="flex min-w-0 flex-col gap-1 [overflow-wrap:anywhere]">
                 <Link
                   href={reportUrl(org, report.slug)}
                   className="font-semibold text-fg underline-offset-2 hover:underline"
@@ -269,7 +269,7 @@ export function ReportsHome({ org }: { org: string }) {
     );
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       {header}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <label className="flex w-full max-w-md flex-col gap-1 text-sm font-semibold text-fg">
@@ -288,6 +288,7 @@ export function ReportsHome({ org }: { org: string }) {
         />
       </div>
       <Tabs
+        className="min-w-0 max-w-full"
         label={fm(home.tabs)}
         value={tab}
         onValueChange={setTab}

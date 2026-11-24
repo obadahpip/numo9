@@ -2538,7 +2538,7 @@
       "editLayout": "Edit layout",
       "export": "Export",
       "failed": "The report couldn't be run",
-      "failedBody": "Nothing was changed. Check the options and try again.",
+      "failedBody": "Nothing was changed. Review the options and try again.",
       "from": "From",
       "gated": "{name} is part of {product}, which isn't in this organisation's package.",
       "gatedBody": "Your data is kept. The organisation owner can add it to the package.",

@@ -180,7 +180,7 @@ export const runner = defineMessages({
   },
   failedBody: {
     id: "reports.runner.failedBody",
-    defaultMessage: "Nothing was changed. Check the options and try again.",
+    defaultMessage: "Nothing was changed. Review the options and try again.",
     description: "Error body",
   },
   retry: { id: "reports.runner.retry", defaultMessage: "Try again", description: "Button" },
