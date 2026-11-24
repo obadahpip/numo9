@@ -8,3 +8,8 @@ class SalesConfig(AppConfig):
     name = "numo9.sales"
     label = "sales"
     verbose_name = "Sales"
+
+    def ready(self) -> None:
+        from .credit import register_invoice_exposure
+
+        register_invoice_exposure()  # what customers owe from invoices (D-03a-T06)

@@ -6,7 +6,8 @@ account, Cr **each tax control account separately** (GST/HST payable, PST payabl
 
 ``approve(invoice, user)`` — in **one transaction**: lock the invoice, refuse what can't be
 approved (not a draft or awaiting approval; a line with an amount but no account; a total of
-zero or below — a negative invoice is a credit note), store the server's figures on the header
+zero or below — a negative invoice is a credit note; the customer's credit limit in block mode
+without an approved override, D-03a-T06), store the server's figures on the header
 and lines, take the number (D-03a-T02), and post the preview's journal through the posting
 engine (C-02: lock dates of the AR module, closed periods, every journal rule) with the invoice
 as its source. All or nothing: a refused posting leaves the invoice a draft without a number.
@@ -22,6 +23,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from numo9.contacts.credit import assert_credit
 from numo9.documents.posting import Preview, PreviewLine, preview
 from numo9.ledger.models import LedgerError
 from numo9.ledger.renumber import acting_as
@@ -29,6 +31,7 @@ from numo9.ledger.services import post_journal
 from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import org_context
 
+from .credit import DOCUMENT_TYPE as CREDIT_DOCUMENT
 from .models import Invoice, InvoiceStatus
 from .numbering import assign_number
 
@@ -113,6 +116,15 @@ def approve(invoice: Invoice, user: Any) -> Invoice:
                 ),
                 "sales.invoice.total_not_positive",
             )
+        # D-03a-T06: the customer's credit limit — warn posts with the warning, block refuses
+        # unless an approved override for this invoice covers it (used up here).
+        credit = assert_credit(
+            locked.contact,
+            shown.result.total,
+            user=person,
+            document_type=CREDIT_DOCUMENT,
+            document_ref=str(locked.public_id),
+        )
         store_figures(locked, shown.result)
         number = assign_number(locked)
         entry = post_journal(
@@ -133,4 +145,5 @@ def approve(invoice: Invoice, user: Any) -> Invoice:
         locked.approved_at = timezone.now()
         locked.version += 1
         locked.save()
+        locked.credit_warning = credit.message  # type: ignore[attr-defined]
         return locked
