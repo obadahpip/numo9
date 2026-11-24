@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Bank rules list with priority (F-04)">
+<title>Numo9 wireframe — Bank rules list with priority (F-04)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Banking › Bank rules</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Bank rules</text>
+<rect x="1236" y="100" width="180" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1326.0" y="123.0" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">+ New rule</text>
+<circle cx="1428" cy="100" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1428" y="104" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="24" y="150" width="91" height="28" rx="14" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="69.5" y="168" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">Spend (6)</text>
+<rect x="123" y="150" width="105" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="175.5" y="168" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Receive (3)</text>
+<rect x="236" y="150" width="112" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="292.0" y="168" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Transfer (1)</text>
+<circle cx="380" cy="150" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="380" y="154" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<text x="24" y="210" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">First matching rule wins. Drag ⋮⋮ to change the order.</text>
+<rect x="24" y="230" width="1360" height="288" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="24" y="230" width="1360" height="48" rx="6" fill="#F9FAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="36" y="255" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Priority</text>
+<text x="136" y="255" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Rule</text>
+<text x="356" y="255" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">When</text>
+<text x="786" y="255" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Then</text>
+<text x="1116" y="255" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Auto-apply</text>
+<text x="1372" y="255" font-size="12" fill="#5B6472" font-weight="600" text-anchor="end">Last 30 days</text>
+<line x1="24" y1="278" x2="1384" y2="278" stroke="#D0D5DD"/>
+<text x="36" y="303" font-size="12" fill="#344054" font-weight="400" text-anchor="start">⋮⋮  1</text>
+<text x="136" y="303" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Petro-Canada fuel</text>
+<text x="356" y="303" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Description contains “PETRO”</text>
+<text x="786" y="303" font-size="12" fill="#344054" font-weight="400" text-anchor="start">6300 Vehicle fuel · HST</text>
+<text x="1116" y="303" font-size="12" fill="#344054" font-weight="400" text-anchor="start">On</text>
+<text x="1372" y="303" font-size="12" fill="#344054" font-weight="400" text-anchor="end">42</text>
+<line x1="24" y1="326" x2="1384" y2="326" stroke="#D0D5DD"/>
+<text x="36" y="351" font-size="12" fill="#344054" font-weight="400" text-anchor="start">⋮⋮  2</text>
+<text x="136" y="351" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Bell monthly</text>
+<text x="356" y="351" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Payee is “BELL CANADA” and amount 90–120</text>
+<text x="786" y="351" font-size="12" fill="#344054" font-weight="400" text-anchor="start">6420 Telephone · HST</text>
+<text x="1116" y="351" font-size="12" fill="#344054" font-weight="400" text-anchor="start">On</text>
+<text x="1372" y="351" font-size="12" fill="#344054" font-weight="400" text-anchor="end">11</text>
+<line x1="24" y1="374" x2="1384" y2="374" stroke="#D0D5DD"/>
+<text x="36" y="399" font-size="12" fill="#344054" font-weight="400" text-anchor="start">⋮⋮  3</text>
+<text x="136" y="399" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Rent — split</text>
+<text x="356" y="399" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Reference starts with “RENT-”</text>
+<text x="786" y="399" font-size="12" fill="#344054" font-weight="400" text-anchor="start">60 % 6100 / 40 % 6110</text>
+<text x="1116" y="399" font-size="12" fill="#344054" font-weight="400" text-anchor="start">On</text>
+<text x="1372" y="399" font-size="12" fill="#344054" font-weight="400" text-anchor="end">6</text>
+<line x1="24" y1="422" x2="1384" y2="422" stroke="#D0D5DD"/>
+<text x="36" y="447" font-size="12" fill="#344054" font-weight="400" text-anchor="start">⋮⋮  4</text>
+<text x="136" y="447" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Bank fees</text>
+<text x="356" y="447" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Description matches /SVC CHG|MONTHLY FEE/</text>
+<text x="786" y="447" font-size="12" fill="#344054" font-weight="400" text-anchor="start">6800 Bank charges · Exempt</text>
+<text x="1116" y="447" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Off</text>
+<text x="1372" y="447" font-size="12" fill="#344054" font-weight="400" text-anchor="end">0</text>
+<line x1="24" y1="470" x2="1384" y2="470" stroke="#D0D5DD"/>
+<text x="36" y="495" font-size="12" fill="#344054" font-weight="400" text-anchor="start">⋮⋮  5</text>
+<text x="136" y="495" font-size="12" fill="#B42318" font-weight="400" text-anchor="start">Old courier</text>
+<text x="356" y="495" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Payee is “PUROLATOR”</text>
+<text x="786" y="495" font-size="12" fill="#B42318" font-weight="400" text-anchor="start">6900 Courier — archived</text>
+<text x="1116" y="495" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Off</text>
+<text x="1372" y="495" font-size="12" fill="#344054" font-weight="400" text-anchor="end">3</text>
+<circle cx="16" cy="290" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="16" y="294" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="744" y="278" width="80" height="26" rx="13" fill="#ECFDF3" stroke="#ECFDF3" stroke-width="1"/>
+<text x="784" y="295" font-size="11" fill="#027A48" font-weight="600" text-anchor="middle">Toggle</text>
+<circle cx="1180" cy="290" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1180" y="294" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<rect x="24" y="540" width="1392" height="52" rx="8" fill="#FFFAEB" stroke="#FEC84B" stroke-width="1"/>
+<text x="44" y="571" font-size="12" fill="#B54708" font-weight="600" text-anchor="start">“Old courier” is off: its account 6900 Courier is archived. Pick another account to turn it back on.</text>
+<circle cx="1428" cy="540" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1428" y="544" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">5</text>
+<rect x="24" y="620" width="680" height="220" rx="8" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="44" y="652" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Empty state (no rules yet)</text>
+<text x="44" y="680" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Code repeated statement lines automatically.</text>
+<text x="44" y="702" font-size="12" fill="#344054" font-weight="400" text-anchor="start">Example: “When Description contains ‘PETRO’, code to Vehicle fuel, HST.”</text>
+<rect x="44" y="724" width="200" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="144.0" y="747.0" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Create your first rule</text>
+<circle cx="716" cy="620" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="716" y="624" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">6</text>
+</svg>
