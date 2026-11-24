@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:25-0500\n"
+"POT-Creation-Date: 2026-11-24 14:27-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5927,6 +5927,23 @@ msgstr ""
 msgid "Holdback released"
 msgstr ""
 
+msgid "remove its payments first."
+msgstr ""
+
+msgid "reverse the holdback release first."
+msgstr ""
+
+msgid "only bills awaiting payment can be voided; delete a draft instead."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s can't be voided: %(why)s"
+msgstr ""
+
+#, python-format
+msgid "Void of bill %(number)s"
+msgstr ""
+
 #, python-format
 msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
 msgstr ""
@@ -6693,9 +6710,6 @@ msgstr ""
 
 #, python-format
 msgid "%(invoice)s can't be voided: %(why)s"
-msgstr ""
-
-msgid "remove its payments first."
 msgstr ""
 
 msgid "only approved or sent invoices can be voided."
