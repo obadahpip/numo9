@@ -57,3 +57,21 @@ def test_unknown_account() -> None:
         registry.get("account_transactions").run(
             books["org"], {"account": "9999", "date_from": "2026-06-01", "date_to": "2026-07-31"}
         )
+
+
+def test_journal_report_order_and_direction() -> None:
+    books = report_books()
+    org = books["org"]
+    params = {"date_from": "2026-05-01", "date_to": "2026-07-31"}
+    result = registry.get("journal_report").run(org, params)
+    journals = [r for r in result.rows if r.key.startswith("journal:")]
+    assert len(journals) == 4  # the draft never shows
+    totals = [r.values for r in result.rows if r.key.startswith("total:")]
+    assert all(debit == credit for debit, credit in totals)
+    assert result.totals[0].values == [D("8750.00"), D("8750.00")]
+    newest = registry.get("journal_report").run(
+        org, {**params, "order": "date", "direction": "desc"}
+    )
+    first = [r for r in newest.rows if r.key.startswith("journal:")]
+    assert [r.key for r in first] == [r.key for r in reversed(journals)]
+    assert "2026" in first[0].label

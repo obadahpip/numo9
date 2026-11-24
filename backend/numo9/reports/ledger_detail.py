@@ -4,7 +4,10 @@
   opening balance, each posted line of the period (date, journal number, narration) with its
   debit, credit and **running balance**, then the closing balance, which equals the trial
   balance's;
-- ``account_transactions`` — the same for one account (``account`` = its code).
+- ``account_transactions`` — the same for one account (``account`` = its code);
+- ``journal_report`` — the posted journals of a period with their lines, ordered by number or
+  date (``order``), ascending or descending (``direction``); each journal's debits equal its
+  credits, and so do the report's totals.
 
 Balances are debit-positive (net = debit − credit), the way the trial balance computes them.
 """
@@ -168,3 +171,86 @@ class AccountTransactionsReport(_LedgerBase):
                 _("There's no account %(code)s.") % {"code": code}, code="reports.account.unknown"
             )
         return [code]
+
+
+@register
+class JournalReport(ReportDefinition):
+    id = "journal_report"
+    slug = "journal-report"
+    name = _lazy("Journal report")
+    description = _lazy("The posted journals of a period with their lines.")
+    category = "financial"
+    keywords = (_lazy("journals"), _lazy("day book"), "journal général")
+    params = (
+        *_PERIOD,
+        ParamSpec("order", "choice", "number", ("number", "date")),
+        ParamSpec("direction", "choice", "asc", ("asc", "desc")),
+    )
+
+    def columns(self, params: dict[str, Any]) -> list[Column]:
+        return [Column("debit", str(_("Debit"))), Column("credit", str(_("Credit")))]
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> list[tuple[Any, list[Any]]]:
+        from numo9.ledger.models import LOCKED_STATUSES, JournalEntry
+
+        from .aggregation import _lines
+
+        fields = ["number", "date"] if params["order"] == "number" else ["date", "number"]
+        sign = "-" if params["direction"] == "desc" else ""
+        ordering = [f"{sign}{f}" for f in [*fields, "id"]]
+        lines = _lines(params["book"], None, None).filter(
+            entry__date__gte=params["date_from"], entry__date__lte=params["date_to"]
+        )
+        entries = list(
+            JournalEntry.objects.filter(
+                status__in=LOCKED_STATUSES, pk__in=lines.values("entry_id")
+            ).order_by(*ordering)
+        )
+        by_entry: dict[int, list[Any]] = {}
+        for line in lines.select_related("account").order_by("entry_id", "line_no"):
+            by_entry.setdefault(line.entry_id, []).append(line)
+        return [(entry, by_entry.get(entry.pk, [])) for entry in entries]
+
+    def rows(self, data: Any, params: dict[str, Any]) -> list[ReportRow]:
+        from numo9.documents.formatting import format_date
+
+        rows: list[ReportRow] = []
+        for entry, lines in data:
+            title = " · ".join(
+                part
+                for part in (
+                    _("Journal %(number)s") % {"number": entry.number} if entry.number else "",
+                    format_date(entry.date),
+                    entry.narration,
+                )
+                if part
+            )
+            rows.append(ReportRow(f"journal:{entry.pk}", title, "section"))
+            for line in lines:
+                rows.append(
+                    ReportRow(
+                        f"line:{entry.pk}:{line.line_no}",
+                        _label(line.account),
+                        values=[line.debit or None, line.credit or None],
+                        level=1,
+                    )
+                )
+            rows.append(
+                ReportRow(
+                    f"total:{entry.pk}",
+                    _("Total"),
+                    "total",
+                    [
+                        sum((x.debit for x in lines), ZERO),
+                        sum((x.credit for x in lines), ZERO),
+                    ],
+                    level=1,
+                )
+            )
+        return rows
+
+    def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
+        journals = [r for r in rows if r.key.startswith("total:")]
+        debit = sum((r.values[0] or ZERO for r in journals), ZERO)
+        credit = sum((r.values[1] or ZERO for r in journals), ZERO)
+        return [ReportRow("total", _("Total"), "total", [debit, credit])]
