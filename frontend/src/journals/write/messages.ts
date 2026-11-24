@@ -186,4 +186,34 @@ export const wm = defineMessages({
     defaultMessage: "{name} couldn't be uploaded. Try again.",
     description: "A document upload failed",
   },
+  contact: {
+    id: "journals.write.contact",
+    defaultMessage: "Contact",
+    description: "Column header: the contact a journal line is for (C-03-T12)",
+  },
+  contactOfLine: {
+    id: "journals.write.contactOfLine",
+    defaultMessage: "Contact, line {line}",
+    description: "Accessible name of a line's contact cell",
+  },
+  noContact: {
+    id: "journals.write.noContact",
+    defaultMessage: "No contact",
+    description: "Empty choice of a line's contact cell",
+  },
+  contactRequired: {
+    id: "journals.write.contactRequired",
+    defaultMessage: "This account needs a contact.",
+    description: "Under a line's contact cell when its account requires a contact",
+  },
+  showContacts: {
+    id: "journals.write.showContacts",
+    defaultMessage: "Show contact column",
+    description: "Button: reveals the per-line contact column",
+  },
+  hideContacts: {
+    id: "journals.write.hideContacts",
+    defaultMessage: "Hide contact column",
+    description: "Button: hides the per-line contact column",
+  },
 });
