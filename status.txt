@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 605   Remaining: 2182   Progress: 21.71%
+TOTAL ATOMIC TASKS: 2787   Completed: 606   Remaining: 2181   Progress: 21.74%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -804,7 +804,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-05-T01 — Wireframes: two-pane reconcile, find & match modal, split modal, reconciliation report
 
 [G-03a]
-❌ G-03a-T01 — Rules specification: frequencies, due-date rules, instalment rules, holiday roll, switch constraints (signed off by the client)
+✅ G-03a-T01 — Rules specification: frequencies, due-date rules, instalment rules, holiday roll, switch constraints (signed off by the client)
 ❌ G-03a-T02 — Wireframes: registration timeline, change-frequency wizard with preview diff, out-of-cycle dialog
 ❌ G-03a-T03 — TaxRegistration model (type GST_HST/QST, number, start_date, stop_date, status) if not already present from G-06
 ❌ G-03a-T04 — FilingCycle model (registration, frequency, effective_from, approval_ref, approval_date, note, created_by)
