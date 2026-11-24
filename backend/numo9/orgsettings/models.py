@@ -847,13 +847,14 @@ class LockDate(AuditedModel, OrgOwnedModel):
 
 class DocType(models.TextChoices):
     """Documents numbered by the organisation's sequences (D-02 quotes, D-03 invoices, D-04
-    credit notes, E-01 purchase orders) and contacts (B-01-T02: the contact number). Journals have
-    their own gap-free sequence (C-02) and cheques one per bank account (E-06)."""
+    credit notes, E-01 purchase orders, E-02 bills) and contacts (B-01-T02: the contact number).
+    Journals have their own gap-free sequence (C-02) and cheques one per bank account (E-06)."""
 
     INVOICE = "invoice", _("Invoice")
     CREDIT_NOTE = "credit_note", _("Credit note")
     QUOTE = "quote", _("Quote")
     PURCHASE_ORDER = "purchase_order", _("Purchase order")
+    BILL = "bill", _("Bill")
     CONTACT = "contact", _("Contact")
 
 
@@ -864,6 +865,7 @@ DEFAULT_PREFIXES: dict[str, str] = {
     DocType.CREDIT_NOTE: "CN-",
     DocType.QUOTE: "QU-",
     DocType.PURCHASE_ORDER: "PO-",
+    DocType.BILL: "BILL-",
     DocType.CONTACT: "C-",
 }
 DEFAULT_PADDING = 4
