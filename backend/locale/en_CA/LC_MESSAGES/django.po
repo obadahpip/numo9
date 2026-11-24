@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 04:58-0500\n"
+"POT-Creation-Date: 2026-11-24 05:33-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6309,6 +6309,57 @@ msgstr ""
 msgid "A zero-rated code only holds components with a rate of zero."
 msgstr ""
 
+msgid "Accrual"
+msgstr ""
+
+msgid "Cash"
+msgstr ""
+
+msgid "Per line"
+msgstr ""
+
+msgid "Per document"
+msgstr ""
+
+msgid "tax basis"
+msgstr ""
+
+msgid "rounding"
+msgstr ""
+
+msgid "quick method elected"
+msgstr ""
+
+msgid "quick method from"
+msgstr ""
+
+msgid "default codes"
+msgstr ""
+
+msgid "tax settings"
+msgstr ""
+
+msgid "Tax settings"
+msgstr ""
+
+msgid "Give the date the quick method starts."
+msgstr ""
+
+msgid "Default codes are kept for the sales and purchase sides only."
+msgstr ""
+
+#, python-format
+msgid "No default %(side)s code is kept for %(type)s accounts."
+msgstr ""
+
+#, python-format
+msgid "There's no %(side)s tax code %(code)s."
+msgstr ""
+
+#, python-format
+msgid "%(message)s Example: %(example)s."
+msgstr ""
+
 msgid "See tax codes, rates and their history"
 msgstr ""
 
@@ -6324,11 +6375,26 @@ msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code
 msgstr ""
 
 #, python-format
-msgid "There's no %(side)s tax code %(code)s."
+msgid "%(code)s is archived: restore it or pick another code."
 msgstr ""
 
 #, python-format
-msgid "%(code)s is archived: restore it or pick another code."
+msgid "The fiscal year started on %(start)s: changing to the %(basis)s basis during the year leaves the returns already filed on the %(current)s basis."
+msgstr ""
+
+msgid "Choose accrual or cash."
+msgstr ""
+
+#, python-format
+msgid "Say why the tax basis changes (at least %(min)d characters)."
+msgstr ""
+
+#, python-format
+msgid "Basis: %(basis)s (organisation default)"
+msgstr ""
+
+#, python-format
+msgid "Basis: %(basis)s (this report)"
 msgstr ""
 
 msgid "Tenancy"

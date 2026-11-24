@@ -644,3 +644,66 @@ old system with French headers, saved in Windows-1252.
 | 5 | Negative warning | Going below zero warns (F-07) but doesn't block |
 | 6 | Refused states | Same account, amount ≤ 0, cross-currency (deferred to R-02), archived account, locked period |
 | 7 | Result | One journal with two lines, source TRANSFER, on both registers; Void reverses both sides |
+
+## 49. Bank rules — list and priority (F-04-T01)
+
+![Bank rules list](wireframes/50-bank-rules-list.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | New rule | Opens the rule builder for the selected type |
+| 2 | Type tabs | Spend / Receive / Transfer, each with its count; priority is per type |
+| 3 | Priority | Drag handle (and Alt+↑/↓ on the keyboard); the first matching rule wins |
+| 4 | Auto-apply toggle | Per rule; off by default; "Last 30 days" counts the lines each rule coded |
+| 5 | Disabled rule | A rule pointing at an archived account is turned off with a warning naming the account |
+| 6 | Empty state | Explains rules with an example; one primary action |
+
+## 50. Bank rule — sentence builder and allocation (F-04-T01)
+
+![Bank rule builder](wireframes/51-bank-rule-builder.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | All / any | Whether every condition or any one must match |
+| 2 | Conditions | Field (payee, description, reference, amount, any text field) · operator (equals, contains, does not contain, starts/ends with, regex, is blank, amount between / greater / less) · value |
+| 3 | Regex guard | Validated on save; a pattern that can't be tested within 50 ms is refused with the reason |
+| 4 | Then | Contact and a reference template (`{description}`, `{date}`, `{reference}`) |
+| 5 | Allocation grid | Fixed amounts first, then percentages that must total 100 %; the rounding cent goes to the last percentage line; a tax code per line; the example column shows a 113.00 line split |
+| 6 | Scope and auto-apply | All bank accounts or a selected set; auto-apply explained in plain words |
+| 7 | Actions | Test against history (next frame) and Save |
+
+## 51. Bank rule — test against history (F-04-T01)
+
+![Test against history](wireframes/52-bank-rule-history.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Side panel | Runs the unsaved rule over the last 12 months; changes nothing |
+| 2 | Summary chips | Would match / won by a higher-priority rule / skipped |
+| 3 | Results | Per line: the coding it would get, or why not — no match (which condition), a higher rule wins (named), matched or locked-period lines are never touched |
+| 4 | Split preview | How the allocation would split a sample line, with the tax per line |
+
+## 52. Tax registrations and settings — one page (G-06-T01)
+
+![Tax settings](wireframes/53-tax-settings.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | History | Opens the history drawer (9) |
+| 2 | Anchor nav | Business number · Registrations · Tax basis · Default codes · Quick method · Restricted ITCs; deep links from Sales, Purchases, Reports and the G-03 worksheet land on the anchor |
+| 3 | Card, read mode | Each card shows its values with an Edit action; no other page edits tax settings |
+| 4 | Card, inline edit | Validation names the format with an example: BN 9 digits, program account `123456782RT0001`, QST `1234567890TQ0001` |
+| 5 | Registrations | GST/HST, QST, PST BC/MB/SK: number, start date, status, filing cycle (link to the G-03a timeline), stop / restart |
+| 6 | Tax basis | Accrual or cash; the default for reports, which can override it and say so ("Basis: Cash (organisation default)") |
+| 7 | Mid-year change | Changing the basis during the year warns and needs a reason |
+| 8 | Defaults | Sales and purchase codes per account type, rounding mode, quick-method election, restricted-ITC accounts |
+| 9 | History drawer | Every change with who (a person, or a job with its id — never just "System"), when, old → new value and the reason |
+
+## 53. Tax settings — not registered and missing BN (G-06-T01)
+
+![Tax settings empty state](wireframes/54-tax-settings-empty.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Empty state | "Not registered for GST/HST?" explains the small-supplier rule; new documents default to the out-of-scope code; one action to add a registration |
+| 2 | Missing BN | A GST/HST registration without a business number is flagged inline (and in the exceptions engine) |

@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import datetime as dt
 import uuid
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from decimal import Decimal
 from enum import Enum
 from typing import Any
@@ -150,6 +150,10 @@ def clean_changes(changes: Mapping[str, Any] | None) -> dict[str, list[Any]]:
     return cleaned
 
 
+#: Called with each new event before it is sealed (it may complete ``meta``); modules register.
+BEFORE_SEAL: list[Callable[[AuditEvent], None]] = []
+
+
 def record(
     action: str,
     *,
@@ -221,6 +225,8 @@ def record(
         request_id=context.request_id[:64],
         batch_id=batch_id,
     )
+    for hook in BEFORE_SEAL:  # e.g. tax objects: a system write always names its run (G-06-T06)
+        hook(event)
     with transaction.atomic(using=AuditEvent.platform_events.db):
         seal(event)  # id, prev_hash and hash: the organisation's hash chain (A-04-T05)
         event.save(using=AuditEvent.platform_events.db)

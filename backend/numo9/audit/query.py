@@ -14,6 +14,8 @@ Filters (query parameters; repeat a parameter or separate values with commas for
 - ``type`` — record types (model labels, e.g. ``testapp.AuditedInvoice``);
 - ``action`` — full actions (``role.created``) or verbs (``created``, ``updated``, ``deleted``,
   ``restored``) matching every record type;
+- ``scope`` — a named set of record types (``tax``: every tax setting, code, component and
+  registration — the tax settings history, G-06-T06);
 - ``object_type`` + ``object_id`` — one record;
 - ``batch`` — one bulk operation (A-04-T06);
 - ``q`` — text in the record's name, the actor's name or the action.
@@ -111,6 +113,15 @@ def decode_cursor(token: str) -> tuple[dt.datetime, int]:
         raise api_error(errors.AUDIT_BAD_CURSOR) from None
 
 
+#: Named sets of record types (``?scope=tax`` — the tax settings history, G-06-T06); modules
+#: register theirs (``register_scope``). An unknown scope matches nothing.
+SCOPES: dict[str, tuple[str, ...]] = {}
+
+
+def register_scope(name: str, object_types: tuple[str, ...]) -> None:
+    SCOPES[name] = tuple(object_types)
+
+
 @dataclass(frozen=True)
 class AuditQuery:
     date_from: dt.date
@@ -163,7 +174,8 @@ class AuditQuery:
             time_zone=tz,
             default_range=default_range,
             users=users,
-            types=tuple(_values(params, "type")),
+            types=tuple(_values(params, "type"))
+            + (SCOPES.get(str(params["scope"]), ("—",)) if params.get("scope") else ()),
             actions=tuple(_values(params, "action")),
             object_type=str(params.get("object_type") or "").strip(),
             object_id=str(params.get("object_id") or "").strip(),

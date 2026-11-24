@@ -442,3 +442,124 @@ class TaxCodeComponent(OrgOwnedModel):
         from .recovery import claimable_pct
 
         return claimable_pct(self)
+
+
+# ---- tax settings (G-06-T02) ------------------------------------------------------------------
+
+
+class TaxBasis(models.TextChoices):
+    """When sales tax is reported: when invoiced (accrual) or when paid (cash)."""
+
+    ACCRUAL = "accrual", _("Accrual")
+    CASH = "cash", _("Cash")
+
+
+class RoundingMode(models.TextChoices):
+    """Where tax is rounded to the cent (G-01-T06 rounds per line by default)."""
+
+    LINE = "line", _("Per line")
+    DOCUMENT = "document", _("Per document")
+
+
+#: Account types a default code is kept for, per side (G-06; the account's own code wins).
+DEFAULT_CODE_TYPES: dict[str, tuple[str, ...]] = {
+    "sales": ("revenue", "asset"),
+    "purchase": ("expense", "asset", "liability"),
+}
+
+
+class TaxSettings(AuditedModel, OrgOwnedModel):
+    """The organisation's sales-tax settings (G-06-T02), one row per organisation, on the single
+    "Tax registrations & settings" page:
+
+    - ``basis`` — accrual or cash; the default basis of tax reports (K-01 may override per
+      report and says so);
+    - ``rounding_mode`` — per line (default) or per document;
+    - ``quick_method`` / ``quick_method_from`` — the GST/HST quick-method election and its date;
+    - ``default_codes`` — ``{"sales": {"revenue": "<code key>"}, "purchase": {"expense": …}}``: the
+      code new lines get per account type when the account has none (keys as ``TaxCode.code``).
+
+    Registrations and numbers stay on ``orgsettings.TaxRegistration`` (A-05); every change here is
+    audited with its author.
+    """
+
+    basis = models.CharField(
+        _("tax basis"), max_length=10, choices=TaxBasis.choices, default=TaxBasis.ACCRUAL
+    )
+    rounding_mode = models.CharField(
+        _("rounding"), max_length=10, choices=RoundingMode.choices, default=RoundingMode.LINE
+    )
+    quick_method = models.BooleanField(_("quick method elected"), default=False)
+    quick_method_from = models.DateField(_("quick method from"), null=True, blank=True)
+    default_codes = models.JSONField(_("default codes"), default=dict, blank=True)
+
+    class Meta:
+        verbose_name = _("tax settings")
+        verbose_name_plural = _("tax settings")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(fields=["organisation"], name="tax_settings_one_per_org"),
+            models.CheckConstraint(
+                condition=models.Q(basis__in=TaxBasis.values), name="tax_settings_basis_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(rounding_mode__in=RoundingMode.values),
+                name="tax_settings_rounding_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(quick_method=False) | models.Q(quick_method_from__isnull=False),
+                name="tax_settings_quick_method_dated",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return str(_("Tax settings"))
+
+    def clean(self) -> None:
+        errors: dict[str, list[ValidationError]] = {}
+        if self.quick_method and self.quick_method_from is None:
+            errors.setdefault("quick_method_from", []).append(
+                ValidationError(
+                    _("Give the date the quick method starts."),
+                    code="tax.settings.quick_method_date",
+                )
+            )
+        codes = self.default_codes or {}
+        if not isinstance(codes, dict) or set(codes) - set(DEFAULT_CODE_TYPES):
+            errors.setdefault("default_codes", []).append(
+                ValidationError(
+                    _("Default codes are kept for the sales and purchase sides only."),
+                    code="tax.settings.default_codes_invalid",
+                )
+            )
+        else:
+            known = set(
+                TaxCode._base_manager.filter(organisation_id=self.organisation_id).values_list(
+                    "code", "side"
+                )
+            )
+            for side, by_type in codes.items():
+                if not isinstance(by_type, dict):
+                    by_type = {}
+                for account_type, key in by_type.items():
+                    if account_type not in DEFAULT_CODE_TYPES[side]:
+                        errors.setdefault("default_codes", []).append(
+                            ValidationError(
+                                _("No default %(side)s code is kept for %(type)s accounts."),
+                                code="tax.settings.default_codes_invalid",
+                                params={"side": side, "type": account_type},
+                            )
+                        )
+                    elif (key, side) not in known:
+                        errors.setdefault("default_codes", []).append(
+                            ValidationError(
+                                _("There's no %(side)s tax code %(code)s."),
+                                code="tax.code.unknown",
+                                params={"side": side, "code": key},
+                            )
+                        )
+        if errors:
+            raise ValidationError(errors)
+
+    def default_code(self, side: str, account_type: str) -> str:
+        """The default code key of ``side`` for ``account_type`` ('' when none is set)."""
+        return str(((self.default_codes or {}).get(side) or {}).get(account_type) or "")
