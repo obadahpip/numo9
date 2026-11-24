@@ -93,13 +93,15 @@ Partition-ready: primary key `(organisation_id, id)` (C-02-T03 hash-partitions b
 | `account_id` | bigint → `ledger_account` | no | Leaf, active account of the organisation (checked by the engine); `PROTECT` |
 | `debit`, `credit` | numeric(18,2) | no | Non-negative (`ledger_line_debit_not_negative`, `ledger_line_credit_not_negative`); exactly one > 0 (`ledger_line_one_side`) |
 | `book` | varchar(16) | no | `both`, `accounting`, `tax` (`ledger_line_book_valid`) |
+| `date` | date | yes | The entry's date, copied by the database on insert (trigger `ledger_journalline_a_fill_date`) and kept equal when a draft's date changes (K-01-T04); filled on every line |
 | `contact_id` | bigint → `contacts_contact` | yes | Contact on the line (C-03-T02); `PROTECT` |
 | `tracking` | jsonb | no | Tracking categories (C-03) |
 | `description` | varchar(500) | no | Line description |
 | `tax_code` | varchar(60) | no | Tax code key (G-01) |
 | `created_at`, `updated_at` | timestamptz | no | Set automatically |
 
-Indexes `(organisation, account, book)` (trial balance) and `(organisation, entry)`.
+Indexes `(organisation, account, book)` (trial balance), `(organisation, account, date, book)`
+(report aggregation, K-01-T04) and `(organisation, entry)`.
 
 ### `ledger_journalsequence` — Journal number sequence {#ledger-journalsequence}
 

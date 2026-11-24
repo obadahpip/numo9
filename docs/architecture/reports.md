@@ -45,3 +45,20 @@ approval never count.
 - **Book** — `book_filter(book)`: `["both", book]`; `accounting` or `tax`.
 - **Tracking** — `tracking_filter({category: [options]})`: lines whose option is one of those
   chosen, for every category chosen.
+
+## Ledger aggregation (K-01-T04)
+
+`numo9.reports.aggregation`:
+
+- `period_movements(ranges, book, tracking, accounts)` → `{account_id: [net movement per range]}`
+  — one grouped query with a conditional sum per range;
+- `balances_at(dates, …)` → `{account_id: [balance at each date]}` (balance-sheet figures);
+- posted and reversed entries only; book filter `book ∈ (both, <book>)`; tracking filter;
+- lines are read by the index `(organisation, account, date, book)` on the line's own copy of
+  its entry's date (`ledger_journalline.date`, filled by a database trigger on insert and kept
+  equal when a draft's date changes — migration `ledger.0016`);
+- `snapshot()` runs a report's queries in one **repeatable-read** read-only view of the ledger, so
+  postings made while it runs never mix into it.
+
+Performance: a 12-month aggregation of a 100,000-line organisation runs in well under 1 s
+(`tests/test_report_aggregation_performance.py`; about 0.07 s on the CI database).
