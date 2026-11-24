@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:27-0500\n"
+"POT-Creation-Date: 2026-11-24 14:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5838,6 +5838,37 @@ msgstr ""
 
 #, python-format
 msgid "Already used on %(bill)s (%(date)s)"
+msgstr ""
+
+msgid "There's no bill with this id in this organisation."
+msgstr ""
+
+msgid "That supplier doesn't exist."
+msgstr ""
+
+msgid "Those payment terms don't exist."
+msgstr ""
+
+#, python-format
+msgid "That %(field)s doesn't exist."
+msgstr ""
+
+msgid "The due date is before the bill date."
+msgstr ""
+
+msgid "Only a draft bill can be edited: void it to correct it."
+msgstr ""
+
+msgid "Someone else saved this bill: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft bill can be deleted: void a posted bill."
+msgstr ""
+
+msgid "There's no such purchase order."
+msgstr ""
+
+msgid "There's no such goods receipt."
 msgstr ""
 
 msgid "Draft purchase order"

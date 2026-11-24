@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:27-0500\n"
+"POT-Creation-Date: 2026-11-24 14:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6186,6 +6186,54 @@ msgstr "Créé"
 #, python-format
 msgid "Already used on %(bill)s (%(date)s)"
 msgstr ""
+
+#, fuzzy
+#| msgid "There's no journal with this id in this organisation."
+msgid "There's no bill with this id in this organisation."
+msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
+
+#, fuzzy
+#| msgid "That document doesn't exist."
+msgid "That supplier doesn't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy
+#| msgid "That document doesn't exist."
+msgid "Those payment terms don't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy, python-format
+#| msgid "That document doesn't exist."
+msgid "That %(field)s doesn't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy
+#| msgid "The end date is before the start date."
+msgid "The due date is before the bill date."
+msgstr "La date de fin est antérieure à la date de début."
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft bill can be edited: void it to correct it."
+msgstr "Seul un brouillon peut être passé."
+
+msgid "Someone else saved this bill: reload it to see their changes."
+msgstr ""
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft bill can be deleted: void a posted bill."
+msgstr "Seul un brouillon peut être passé."
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "There's no such purchase order."
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "There's no such goods receipt."
+msgstr "bons de commande"
 
 #, fuzzy
 #| msgid "purchase orders"
