@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { billsApi, type Bill, type BillPreview } from "./api";
 import { DuplicatePanel } from "./DuplicatePanel";
+import { MatchPanel } from "./MatchPanel";
 
 export function BillPanels({
   org,
@@ -31,6 +32,7 @@ export function BillPanels({
   if (!preview || !bill) return null;
   return (
     <div className="flex flex-col gap-3" data-bill-panels="">
+      <MatchPanel rows={preview.match} />
       <DuplicatePanel org={org} suspects={preview.duplicates} />
     </div>
   );

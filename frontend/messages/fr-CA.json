@@ -2394,6 +2394,7 @@
   "purchases": {
     "bill": {
       "approve": "Approve",
+      "approveWithVariance": "Approve with variance",
       "approved": "{number} is approved and awaiting payment.",
       "attach": "Attach a file",
       "checking": "Checking the number…",
@@ -2418,6 +2419,22 @@
       "holdbackPercent": "% of the total",
       "holdbackValue": "Holdback value",
       "loadFailed": "The bill couldn't be loaded",
+      "match": {
+        "amber": "Within tolerance",
+        "billedElsewhere": "Billed before",
+        "green": "Matches",
+        "line": "Line",
+        "ordered": "Ordered",
+        "over": "{quantity} more than received",
+        "price": "Price (PO)",
+        "priceCell": "{price} ({po})",
+        "priceDiff": "price {pct} % off",
+        "quantity": "This bill",
+        "received": "Received",
+        "red": "Doesn't match",
+        "result": "Match",
+        "title": "Match with purchase order {po}"
+      },
       "newTitle": "New bill",
       "noDocument": "Drop the supplier's invoice here to see it beside the form.",
       "notes": "Notes",
@@ -2450,7 +2467,8 @@
       "taxNone": "No tax",
       "title": "Bill {number}",
       "uploadFailed": "{name} couldn't be uploaded. Try again.",
-      "uploading": "Uploading {name}…"
+      "uploading": "Uploading {name}…",
+      "varianceHint": "Approving with variance is recorded in the audit log with your name. Only approvers can do it."
     }
   },
   "quickCreate": {
