@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Report empty and no-activity states">
+<title>Numo9 wireframe — Report empty and no-activity states</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Banking</text>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Reports</text>
+<rect x="924" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Reports › Financial</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Profit and loss</text>
+<rect x="24" y="160" width="680" height="300" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="364" y="260" font-size="18" fill="#111111" font-weight="700" text-anchor="middle">No activity in this period</text>
+<text x="364" y="290" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Nothing was posted between 1 Apr and 30 Apr 2026.</text>
+<rect x="244" y="320" width="240" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="364.0" y="343.0" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">Try the financial year</text>
+<circle cx="36" cy="176" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="36" y="180" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="736" y="160" width="680" height="300" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1076" y="260" font-size="18" fill="#111111" font-weight="700" text-anchor="middle">Your books are empty</text>
+<text x="1076" y="290" font-size="13" fill="#5B6472" font-weight="400" text-anchor="middle">Reports fill in as you invoice, pay bills and reconcile.</text>
+<rect x="936" y="320" width="280" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1076.0" y="343.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Enter opening balances</text>
+<circle cx="748" cy="176" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="748" y="180" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<rect x="24" y="500" width="680" height="120" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<rect x="24" y="500" width="680" height="40" rx="6" fill="#F9FAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="36" y="525" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Account</text>
+<text x="552" y="525" font-size="12" fill="#5B6472" font-weight="600" text-anchor="end">Apr 2026</text>
+<text x="692" y="525" font-size="12" fill="#5B6472" font-weight="600" text-anchor="end">May 2026</text>
+<line x1="24" y1="540" x2="704" y2="540" stroke="#D0D5DD"/>
+<text x="36" y="565" font-size="12" fill="#344054" font-weight="400" text-anchor="start">5400 · Rent</text>
+<text x="552" y="565" font-size="12" fill="#344054" font-weight="400" text-anchor="end">$2,400.00</text>
+<text x="692" y="565" font-size="12" fill="#344054" font-weight="400" text-anchor="end">No activity</text>
+<line x1="24" y1="580" x2="704" y2="580" stroke="#D0D5DD"/>
+<text x="36" y="605" font-size="12" fill="#344054" font-weight="400" text-anchor="start">5600 · Wages</text>
+<text x="552" y="605" font-size="12" fill="#344054" font-weight="400" text-anchor="end">No activity</text>
+<text x="692" y="605" font-size="12" fill="#344054" font-weight="400" text-anchor="end">$15,850.00</text>
+<circle cx="560" cy="560" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="560" y="564" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<text x="24" y="650" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Zero cells say "No activity" (never "–"); a row with no activity in any column is hidden unless "Show zero rows" is on.</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Report export menu">
+<title>Numo9 wireframe — Report export menu</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Banking</text>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Reports</text>
+<rect x="924" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Reports › Financial</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Profit and loss</text>
+<rect x="1150" y="112" width="120" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1210.0" y="135.0" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Export ▾</text>
+<rect x="1060" y="156" width="356" height="220" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="1080" y="184" font-size="14" fill="#111111" font-weight="600" text-anchor="start">PDF</text>
+<text x="1080" y="202" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Letter, 1 in margins, with the report header</text>
+<text x="1080" y="232" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Excel (.xlsx)</text>
+<text x="1080" y="250" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Formulas for totals</text>
+<text x="1080" y="280" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Google Sheets (.xlsx)</text>
+<text x="1080" y="298" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Opens in Google Sheets as it is</text>
+<text x="1080" y="328" font-size="14" fill="#111111" font-weight="600" text-anchor="start">CSV</text>
+<text x="1080" y="346" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">Values only, one row per line</text>
+<circle cx="1048" cy="176" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1048" y="180" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<text x="24" y="200" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Exports carry exactly what the screen shows: the same parameters, layout, notes and header.</text>
+<circle cx="24" cy="220" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="24" y="224" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+</svg>

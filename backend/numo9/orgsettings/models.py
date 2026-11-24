@@ -38,7 +38,7 @@ from .validators import (
     normalise_phone,
     normalise_postal_code,
     normalise_registration_number,
-    validate_legal_name,
+    validate_organisation_legal_name,
     validate_postal_code,
     validate_postal_code_province,
     validate_province,
@@ -116,7 +116,7 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         _("legal name"),
         max_length=200,
         blank=True,
-        validators=[validate_legal_name],
+        validators=[validate_organisation_legal_name],
         help_text=_("As registered; printed on statements, invoices and tax forms."),
     )
     display_name = models.CharField(

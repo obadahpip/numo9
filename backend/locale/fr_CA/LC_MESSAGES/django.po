@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:12-0500\n"
+"POT-Creation-Date: 2026-11-24 07:35-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5843,6 +5843,11 @@ msgstr "Yukon"
 msgid "A legal name needs letters: %(value)s looks like a number."
 msgstr "Une dénomination sociale contient des lettres : %(value)s ressemble à un numéro."
 
+#, fuzzy, python-format
+#| msgid "A legal name needs letters: %(value)s looks like a number."
+msgid "A legal name needs at least %(count)s letters: %(value)s is too short a name."
+msgstr "Une dénomination sociale contient des lettres : %(value)s ressemble à un numéro."
+
 msgid "Enter a Canadian postal code like A1A 1A1."
 msgstr "Entrez un code postal canadien comme A1A 1A1."
 
@@ -6695,6 +6700,120 @@ msgstr "Employés, congés et dossiers RH."
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
+
+msgid "There's no such report."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "%(start)s to %(end)s · times in %(zone)s"
+msgid "%(start)s to %(end)s"
+msgstr "Du %(start)s au %(end)s · heures en %(zone)s"
+
+#, fuzzy, python-format
+#| msgid "conversion rate (30 days)"
+msgid "As at %(date)s"
+msgstr "taux de conversion (30 jours)"
+
+msgid "Year to date — unaudited"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "Custom"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "Reports"
+msgid "report"
+msgstr "Rapports"
+
+msgid "layout"
+msgstr ""
+
+msgid "{\"rows\": [{\"key\", \"label\", \"hidden\"}], \"text_blocks\": [{\"after\", \"text\"}]}"
+msgstr ""
+
+#, fuzzy
+#| msgid "note"
+msgid "footnotes"
+msgstr "note"
+
+msgid "published snapshot"
+msgstr ""
+
+#, fuzzy
+#| msgid "used at"
+msgid "published at"
+msgstr "utilisée le"
+
+#, fuzzy
+#| msgid "submitted by"
+msgid "published by"
+msgstr "soumise par"
+
+msgid "report layout"
+msgstr ""
+
+msgid "report layouts"
+msgstr ""
+
+#, fuzzy
+#| msgid "columns"
+msgid "column"
+msgstr "colonnes"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "report note"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "report notes"
+msgstr "Note de crédit"
+
+msgid "Run reports and drill down to their lines"
+msgstr ""
+
+msgid "Edit, publish and save report layouts and notes"
+msgstr ""
+
+#, fuzzy
+#| msgid "their balance"
+msgid "Trial balance"
+msgstr "leur solde"
+
+msgid "Every account's debit or credit balance on a date, in one book."
+msgstr ""
+
+#, fuzzy
+#| msgid "total"
+msgid "Total"
+msgstr "total"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Account activity"
+msgstr "Comptable"
+
+msgid "Debits, credits and net movement of each account for a period."
+msgstr ""
+
+#, fuzzy
+#| msgid "Debit"
+msgid "Debits"
+msgstr "Débit"
+
+#, fuzzy
+#| msgid "Credit"
+msgid "Credits"
+msgstr "Crédit"
+
+msgid "Net movement"
+msgstr ""
 
 #, fuzzy
 #| msgid "There's no contact with this id in this organisation."

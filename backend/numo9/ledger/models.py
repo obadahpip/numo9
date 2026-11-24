@@ -889,6 +889,10 @@ class JournalLine(OrgOwnedModel):
         _("credit"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES, default=Decimal("0")
     )
     book = models.CharField(_("book"), max_length=16, choices=Book.choices, default=Book.BOTH)
+    #: The entry's date, copied on every line (K-01-T04: report aggregation by account and date
+    #: without a join). Filled by the database (trigger) from the entry when a line is inserted,
+    #: and kept equal when a draft's date changes.
+    date = models.DateField(_("date"), null=True, blank=True, editable=False)
     contact = models.ForeignKey(
         "contacts.Contact",
         on_delete=models.PROTECT,
@@ -935,6 +939,11 @@ class JournalLine(OrgOwnedModel):
                 fields=("organisation", "account", "book"), name="ledger_line_account_book_idx"
             ),
             models.Index(fields=("organisation", "entry"), name="ledger_line_entry_idx"),
+            # Report aggregation: period balances by account (K-01-T04).
+            models.Index(
+                fields=("organisation", "account", "date", "book"),
+                name="ledger_line_account_date_idx",
+            ),
             # A contact's lines (AR/AP sub-ledger views, C-03-T02).
             models.Index(
                 fields=("organisation", "contact"),

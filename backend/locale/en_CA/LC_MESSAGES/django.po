@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:12-0500\n"
+"POT-Creation-Date: 2026-11-24 07:35-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5503,6 +5503,10 @@ msgstr ""
 msgid "A legal name needs letters: %(value)s looks like a number."
 msgstr ""
 
+#, python-format
+msgid "A legal name needs at least %(count)s letters: %(value)s is too short a name."
+msgstr ""
+
 msgid "Enter a Canadian postal code like A1A 1A1."
 msgstr ""
 
@@ -6267,6 +6271,92 @@ msgid "Employees, leave and HR records."
 msgstr ""
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
+msgstr ""
+
+msgid "There's no such report."
+msgstr ""
+
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr ""
+
+#, python-format
+msgid "As at %(date)s"
+msgstr ""
+
+msgid "Year to date — unaudited"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "report"
+msgstr ""
+
+msgid "layout"
+msgstr ""
+
+msgid "{\"rows\": [{\"key\", \"label\", \"hidden\"}], \"text_blocks\": [{\"after\", \"text\"}]}"
+msgstr ""
+
+msgid "footnotes"
+msgstr ""
+
+msgid "published snapshot"
+msgstr ""
+
+msgid "published at"
+msgstr ""
+
+msgid "published by"
+msgstr ""
+
+msgid "report layout"
+msgstr ""
+
+msgid "report layouts"
+msgstr ""
+
+msgid "column"
+msgstr ""
+
+msgid "report note"
+msgstr ""
+
+msgid "report notes"
+msgstr ""
+
+msgid "Run reports and drill down to their lines"
+msgstr ""
+
+msgid "Edit, publish and save report layouts and notes"
+msgstr ""
+
+msgid "Trial balance"
+msgstr ""
+
+msgid "Every account's debit or credit balance on a date, in one book."
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Account activity"
+msgstr ""
+
+msgid "Debits, credits and net movement of each account for a period."
+msgstr ""
+
+msgid "Debits"
+msgstr ""
+
+msgid "Credits"
+msgstr ""
+
+msgid "Net movement"
 msgstr ""
 
 msgid "There's no invoice with this id in this organisation."

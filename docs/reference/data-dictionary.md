@@ -93,13 +93,15 @@ Partition-ready: primary key `(organisation_id, id)` (C-02-T03 hash-partitions b
 | `account_id` | bigint → `ledger_account` | no | Leaf, active account of the organisation (checked by the engine); `PROTECT` |
 | `debit`, `credit` | numeric(18,2) | no | Non-negative (`ledger_line_debit_not_negative`, `ledger_line_credit_not_negative`); exactly one > 0 (`ledger_line_one_side`) |
 | `book` | varchar(16) | no | `both`, `accounting`, `tax` (`ledger_line_book_valid`) |
+| `date` | date | yes | The entry's date, copied by the database on insert (trigger `ledger_journalline_a_fill_date`) and kept equal when a draft's date changes (K-01-T04); filled on every line |
 | `contact_id` | bigint → `contacts_contact` | yes | Contact on the line (C-03-T02); `PROTECT` |
 | `tracking` | jsonb | no | Tracking categories (C-03) |
 | `description` | varchar(500) | no | Line description |
 | `tax_code` | varchar(60) | no | Tax code key (G-01) |
 | `created_at`, `updated_at` | timestamptz | no | Set automatically |
 
-Indexes `(organisation, account, book)` (trial balance) and `(organisation, entry)`.
+Indexes `(organisation, account, book)` (trial balance), `(organisation, account, date, book)`
+(report aggregation, K-01-T04) and `(organisation, entry)`.
 
 ### `ledger_journalsequence` — Journal number sequence {#ledger-journalsequence}
 
@@ -257,6 +259,35 @@ longer count.
 
 `receipt_id` (`CASCADE`), `po_line_id` → `purchases_purchaseorderline` (`PROTECT`), `quantity`
 (numeric(18,4), > 0, `purchases_grnline_quantity_positive`).
+
+## Reports (`reports`) {#reports}
+
+Design: [Report engine](../architecture/reports.md).
+
+### `reports_reportlayout` — Report layout {#reports-reportlayout}
+
+A saved arrangement of one report for one organisation (K-01-T08). Business record:
+`OrgOwnedModel` and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `report_id` | varchar(60) | no | The report's id in the registry (`trial_balance`) |
+| `name` | varchar(120) | no | The layout's name; `(organisation, report_id, name, version)` unique among live rows |
+| `practice_id` | bigint → `tenancy_practice` | yes | The practice whose staff made it for this client; empty for the organisation's own |
+| `status` | varchar(10) | no | `draft`, `published`, `custom` (`reports_layout_status_valid`) |
+| `version` | integer | no | 1, 2…: a change to a published layout is a new draft version |
+| `params` | jsonb | no | The report parameters the layout runs with |
+| `config` | jsonb | no | `rows` (key, label, hidden) in order and `text_blocks` (after, text) |
+| `notes` | text | no | Footnotes printed under the report |
+| `snapshot` | jsonb | yes | The published result (header, columns, rows, totals, notes); required when published (`reports_layout_published_snapshot`); never changed afterwards |
+| `published_at`, `published_by_id` | — | yes | When and who published |
+
+### `reports_reportnote` — Report cell note {#reports-reportnote}
+
+A note on one cell of a report (K-01-T09). Business record: `OrgOwnedModel` and `AuditedModel`.
+`report_id`, `layout_id` (→ `reports_reportlayout`, `CASCADE`; empty = the report's own note),
+`row_key` (`account:5400`), `column_key` (empty = the whole row), `text`. One live note per cell
+(`reports_note_cell_unique`, `reports_note_layout_cell_unique`).
 
 ## Organisation settings (`orgsettings`)
 

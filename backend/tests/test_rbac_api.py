@@ -607,6 +607,7 @@ def test_my_permissions(org: Organisation, owner: User) -> None:
             "contacts.contacts.view",
             "documents.file.view",
             "organisation.profile.view",
+            "reports.reports.view",  # K-01-T02
             "sales.document.view",  # D-01-T09
             "sales.invoices.send",  # D-03a-T12
             "sales.invoices.view",

@@ -15,6 +15,7 @@ import { auditLabels, blocking, describeFindings, runAxe } from "../../packages/
 const SECTIONS = [
   ["general", "General"],
   ["registrations", "Tax registrations"],
+  ["tax-codes", "Tax codes"],
   ["lock-dates", "Lock dates"],
   ["users-roles", "Users and roles"],
   ["email-domain", "Email domain"],
