@@ -2631,7 +2631,7 @@
         "checkHelp": "See whether someone can approve a document of this amount with today's limits.",
         "colAmount": "Up to (CAD)",
         "colWho": "Person or role",
-        "docType": "{type, select, journal {Manual journals} bill {Bills} purchase_order {Purchase orders} pay_run {Pay runs} other {{type}}}",
+        "docType": "{type, select, journal {Manual journals} invoice {Invoices} bill {Bills} purchase_order {Purchase orders} pay_run {Pay runs} other {{type}}}",
         "edit": "Change the limit of {who}",
         "editShort": "Change",
         "heading": "Approval limits",

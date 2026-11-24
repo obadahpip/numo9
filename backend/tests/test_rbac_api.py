@@ -553,7 +553,7 @@ def test_limit_for_a_role_and_validation(org: Organisation, owner: User) -> None
     assert (
         client.post(
             url(org, "approval-limits"),
-            {"doc_type": "invoice", "max_amount": "1", "user": str(owner.public_id)},
+            {"doc_type": "quote", "max_amount": "1", "user": str(owner.public_id)},
             format="json",
         ).status_code
         == 400

@@ -232,6 +232,20 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
             "limits still apply)."
         ),
     )
+    # ---- invoice approval (D-03a-T05) --------------------------------------------------------
+    invoice_approval_threshold = models.DecimalField(
+        _("invoices need approval from"),
+        max_digits=18,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_(
+            "Invoices of this total or more wait for approval by someone other than the person "
+            "who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices "
+            "still route larger invoices to an approver)."
+        ),
+    )
 
     # ---- default payment terms -------------------------------------------------------------
     sales_terms_type = models.CharField(

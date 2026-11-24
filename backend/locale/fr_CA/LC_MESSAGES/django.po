@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:51-0500\n"
+"POT-Creation-Date: 2026-11-24 05:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5640,6 +5640,14 @@ msgstr "les écritures doivent être approuvées à partir de"
 msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
 msgstr "Les écritures manuelles de ce total ou plus doivent être approuvées par une autre personne que leur auteur avant d'être comptabilisées. Vide : les écritures n'ont jamais besoin d'approbation (les limites d'approbation de chacun s'appliquent toujours)."
 
+#, fuzzy
+#| msgid "journals need approval from"
+msgid "invoices need approval from"
+msgstr "les écritures doivent être approuvées à partir de"
+
+msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"
 
@@ -6168,6 +6176,11 @@ msgstr "Sa note : %(note)s"
 msgid "manual journals"
 msgstr "écritures de journal manuelles"
 
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoices"
+msgstr "Facture"
+
 msgid "bills"
 msgstr "factures fournisseurs"
 
@@ -6401,6 +6414,21 @@ msgstr "Employés, congés et dossiers RH."
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(invoice)s isn't a draft."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+#, fuzzy, python-format
+#| msgid "%(journal)s isn't waiting for approval."
+msgid "%(invoice)s isn't waiting for approval."
+msgstr "%(journal)s n'attend pas d'approbation."
+
+#, fuzzy
+#| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgid "You wrote or submitted this invoice: someone else must approve it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
 msgid "Partially paid"
 msgstr ""
 
@@ -6435,11 +6463,6 @@ msgstr ""
 #, fuzzy
 #| msgid "Invoice"
 msgid "invoice"
-msgstr "Facture"
-
-#, fuzzy
-#| msgid "Invoice"
-msgid "invoices"
 msgstr "Facture"
 
 #, fuzzy

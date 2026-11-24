@@ -266,7 +266,7 @@ def test_amount_must_be_finite_and_not_negative(org: Organisation, bad: Decimal)
 def test_unknown_document_type(org: Organisation) -> None:
     sam = member(org, "purchasing", "sam@refined.ca")
     with org_context(org), pytest.raises(ValueError, match="document type"):
-        assert_can_approve(sam, "invoice", Decimal("1"))
+        assert_can_approve(sam, "quote", Decimal("1"))
 
 
 def test_organisation_argument_and_context(org: Organisation) -> None:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:51-0500\n"
+"POT-Creation-Date: 2026-11-24 05:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5302,6 +5302,12 @@ msgstr ""
 msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
 msgstr ""
 
+msgid "invoices need approval from"
+msgstr ""
+
+msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr ""
 
@@ -5822,6 +5828,9 @@ msgstr ""
 msgid "manual journals"
 msgstr ""
 
+msgid "invoices"
+msgstr ""
+
 msgid "bills"
 msgstr ""
 
@@ -6055,6 +6064,17 @@ msgstr ""
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr ""
 
+#, python-format
+msgid "%(invoice)s isn't a draft."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s isn't waiting for approval."
+msgstr ""
+
+msgid "You wrote or submitted this invoice: someone else must approve it."
+msgstr ""
+
 msgid "Partially paid"
 msgstr ""
 
@@ -6077,9 +6097,6 @@ msgid "current revision"
 msgstr ""
 
 msgid "invoice"
-msgstr ""
-
-msgid "invoices"
 msgstr ""
 
 msgid "Draft invoice"

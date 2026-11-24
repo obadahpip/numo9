@@ -294,6 +294,7 @@ class ApprovalDocumentType(models.TextChoices):
     """Documents whose approval is limited by amount (Phase 0 plan A-03, gap #25)."""
 
     JOURNAL = "journal", _("Manual journal")
+    INVOICE = "invoice", _("Invoice")
     BILL = "bill", _("Bill")
     PURCHASE_ORDER = "purchase_order", _("Purchase order")
     PAY_RUN = "pay_run", _("Pay run")
