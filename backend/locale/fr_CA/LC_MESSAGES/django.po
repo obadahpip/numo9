@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:29-0500\n"
+"POT-Creation-Date: 2026-11-24 13:36-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6166,6 +6166,15 @@ msgid "feature flags"
 msgstr "indicateurs de fonctionnalité"
 
 #, fuzzy
+#| msgid "Created"
+msgid "a draft bill"
+msgstr "Créé"
+
+#, python-format
+msgid "Already used on %(bill)s (%(date)s)"
+msgstr ""
+
+#, fuzzy
 #| msgid "purchase orders"
 msgid "Draft purchase order"
 msgstr "bons de commande"
@@ -6435,6 +6444,12 @@ msgid "Approve purchase orders, within an approval limit"
 msgstr ""
 
 msgid "Record and reverse goods receipts"
+msgstr ""
+
+msgid "Enter, edit and void supplier bills and release holdbacks"
+msgstr ""
+
+msgid "Approve supplier bills for payment, within an approval limit"
 msgstr ""
 
 #, python-format
