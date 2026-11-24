@@ -1,0 +1,23 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+200 King Street West, Suite 1200
+Toronto ON  M5V 2T6
+GST/HST registration: 123456782 RT 0001
+Credit note
+Credit to
+BC Customer Ltd
+Somewhere BC
+Credit note number CN-0001
+Credit note date 15 Jun 2026
+Credits invoice INV-0001
+DESCRIPTION QUANTITY UNIT PRICE DISCOUNTTAX AMOUNT
+Line 1 1 $250.00 GST 5 % + PST 7 % (British Columbia) on sales $250.00
+Subtotal $250.00
+GST $12.50
+PST (BC) $17.50
+Total credit (CAD) $280.00
+Credit remaining $280.00
+QST registration: 1234567890 TQ 0001
+One chair returned damaged.
+Prepared with Numo9 Page 1 of 1

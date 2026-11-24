@@ -12,6 +12,12 @@ send back with a cheque. The language is the customer's (``Contact.language``).
 ``invoice_context(invoice)`` builds the data; ``sample_invoice_context()`` is the Canadian sample
 the theme preview uses (Refined Interiors Inc., Toronto, billing Maple Leaf Supply Ltd., HST 13 %);
 ``render_invoice_pdf(invoice)`` → PDF bytes.
+
+Credit notes (D-06-T07) use the same baseline and parts (``sales/credit_note.html``): a red
+"Credit note" title, the number (``Draft`` before approval), the date and the invoice it credits,
+the lines and tax per component, the total credit, what has been applied or refunded and the
+credit remaining — no pay-advice slip (nothing is owed). ``credit_note_context(note)``,
+``render_credit_note_pdf(note)``.
 """
 
 from __future__ import annotations
@@ -27,9 +33,10 @@ from numo9.documents.pdf import render_pdf
 from numo9.documents.sample_data import sample_context
 from numo9.tenancy.context import org_context
 
-from .models import Invoice
+from .models import CreditNote, Invoice
 
 TEMPLATE = "sales/invoice.html"
+CREDIT_NOTE_TEMPLATE = "sales/credit_note.html"
 DEFAULT_ACCENT = "#111111"
 COLOUR = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
@@ -81,7 +88,7 @@ def _issuer(organisation: Any, day: dt.date) -> dict[str, Any]:
     }
 
 
-def _customer(invoice: Invoice) -> dict[str, Any]:
+def _customer(invoice: Invoice | CreditNote) -> dict[str, Any]:
     from numo9.contacts.models import AddressKind
 
     contact = invoice.contact
@@ -99,60 +106,83 @@ def _customer(invoice: Invoice) -> dict[str, Any]:
     }
 
 
+def _body(document: Invoice | CreditNote, result: Any) -> dict[str, Any]:
+    """The lines, tax per component and totals both templates print."""
+    lines = list(document.lines.select_related("tax_code").order_by("position", "pk"))
+    names = {}
+    for line in lines:
+        if line.tax_code is not None:
+            for link in line.tax_code.components.select_related("component"):
+                names[link.component.key] = link.component.name
+    return {
+        "accent": _accent(document.organisation),
+        "issuer": _issuer(document.organisation, document.date),
+        "customer": _customer(document),
+        "document_number": document.number or _("Draft"),
+        "draft": not document.number,
+        "issue_date": document.date,
+        "reference": document.reference,
+        "tax_included": result.tax_included,
+        "lines": [
+            {
+                "description": line.description,
+                "quantity": f"{line.quantity.normalize():f}",
+                "unit": line.unit_price,
+                "discount_percent": (
+                    f"{line.discount_value.normalize():f} %"
+                    if line.discount_type == "percent" and line.discount_value
+                    else ""
+                ),
+                "discount_amount": (
+                    line.discount_value
+                    if line.discount_type == "amount" and line.discount_value
+                    else None
+                ),
+                "tax_code": line.tax_code.name if line.tax_code else "",
+                "amount": figures.net,
+            }
+            for line, figures in zip(lines, result.lines, strict=True)
+        ],
+        "subtotal": result.subtotal,
+        "discount_total": result.discount_total,
+        "taxes": [
+            {"key": key, "name": names.get(key, key.upper()), "amount": amount}
+            for key, amount in result.tax_by_component.items()
+            if amount
+        ],
+        "total": result.total,
+        "currency": document.currency,
+        "notes": document.notes,
+    }
+
+
 def invoice_context(invoice: Invoice) -> dict[str, Any]:
     from .posting import invoice_preview
 
     with org_context(invoice.organisation):
         result = invoice_preview(invoice).result
-        lines = list(invoice.lines.select_related("tax_code").order_by("position", "pk"))
-        names = {}
-        for line in lines:
-            if line.tax_code is not None:
-                for link in line.tax_code.components.select_related("component"):
-                    names[link.component.key] = link.component.name
         return {
-            "accent": _accent(invoice.organisation),
-            "issuer": _issuer(invoice.organisation, invoice.date),
-            "customer": _customer(invoice),
-            "document_number": invoice.number or _("Draft"),
-            "draft": not invoice.number,
-            "issue_date": invoice.date,
+            **_body(invoice, result),
             "due_date": invoice.due_date,
             "terms": invoice.terms.name if invoice.terms_id and invoice.terms else "",
-            "reference": invoice.reference,
-            "tax_included": result.tax_included,
-            "lines": [
-                {
-                    "description": line.description,
-                    "quantity": f"{line.quantity.normalize():f}",
-                    "unit": line.unit_price,
-                    "discount_percent": (
-                        f"{line.discount_value.normalize():f} %"
-                        if line.discount_type == "percent" and line.discount_value
-                        else ""
-                    ),
-                    "discount_amount": (
-                        line.discount_value
-                        if line.discount_type == "amount" and line.discount_value
-                        else None
-                    ),
-                    "tax_code": line.tax_code.name if line.tax_code else "",
-                    "amount": figures.net,
-                }
-                for line, figures in zip(lines, result.lines, strict=True)
-            ],
-            "subtotal": result.subtotal,
-            "discount_total": result.discount_total,
-            "taxes": [
-                {"key": key, "name": names.get(key, key.upper()), "amount": amount}
-                for key, amount in result.tax_by_component.items()
-                if amount
-            ],
-            "total": result.total,
             "amount_paid": invoice.amount_paid,
             "amount_due": result.total - Decimal(invoice.amount_paid),
-            "currency": invoice.currency,
-            "notes": invoice.notes,
+        }
+
+
+def credit_note_context(note: CreditNote) -> dict[str, Any]:
+    from .credit_notes import credit_note_preview
+
+    with org_context(note.organisation):
+        result = credit_note_preview(note).result
+        used = Decimal(note.amount_applied) + Decimal(note.amount_refunded)
+        return {
+            **_body(note, result),
+            "accent": "#B42318",
+            "credited_invoice": note.invoice.number if note.invoice_id and note.invoice else "",
+            "amount_applied": note.amount_applied,
+            "amount_refunded": note.amount_refunded,
+            "credit_remaining": result.total - used,
         }
 
 
@@ -183,3 +213,7 @@ def sample_invoice_context() -> dict[str, Any]:
 
 def render_invoice_pdf(invoice: Invoice) -> bytes:
     return render_pdf(TEMPLATE, invoice_context(invoice), locale=invoice.contact.language)
+
+
+def render_credit_note_pdf(note: CreditNote) -> bytes:
+    return render_pdf(CREDIT_NOTE_TEMPLATE, credit_note_context(note), locale=note.contact.language)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:57-0500\n"
+"POT-Creation-Date: 2026-11-24 16:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7582,6 +7582,51 @@ msgid "Void of invoice %(number)s"
 msgstr "numéro de facture"
 
 #, fuzzy
+#| msgid "Credit note"
+msgid "Credit to"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "Credit note number"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "Credit note date"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Stripe invoice"
+msgid "Credits invoice"
+msgstr "Facture Stripe"
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total credit (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "Applied to invoices"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "ended"
+msgid "Refunded"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "Credit remaining"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy, python-format
+#| msgid "GST/HST registration: %(bn)s"
+msgid "QST registration: %(qst)s"
+msgstr "Inscription TPS/TVH : %(bn)s"
+
+#, fuzzy
 #| msgid "invoice page"
 msgid "Invoice date"
 msgstr "page de la facture"
@@ -7595,11 +7640,6 @@ msgstr "modalités"
 #| msgid "amount due"
 msgid "Amount due"
 msgstr "montant dû"
-
-#, fuzzy, python-format
-#| msgid "GST/HST registration: %(bn)s"
-msgid "QST registration: %(qst)s"
-msgstr "Inscription TPS/TVH : %(bn)s"
 
 #, fuzzy
 #| msgid "arguments"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:57-0500\n"
+"POT-Creation-Date: 2026-11-24 16:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6930,6 +6930,35 @@ msgstr ""
 msgid "Void of invoice %(number)s"
 msgstr ""
 
+msgid "Credit to"
+msgstr ""
+
+msgid "Credit note number"
+msgstr ""
+
+msgid "Credit note date"
+msgstr ""
+
+msgid "Credits invoice"
+msgstr ""
+
+#, python-format
+msgid "Total credit (%(currency)s)"
+msgstr ""
+
+msgid "Applied to invoices"
+msgstr ""
+
+msgid "Refunded"
+msgstr ""
+
+msgid "Credit remaining"
+msgstr ""
+
+#, python-format
+msgid "QST registration: %(qst)s"
+msgstr ""
+
 msgid "Invoice date"
 msgstr ""
 
@@ -6937,10 +6966,6 @@ msgid "Terms"
 msgstr ""
 
 msgid "Amount due"
-msgstr ""
-
-#, python-format
-msgid "QST registration: %(qst)s"
 msgstr ""
 
 msgid "Payment advice"
