@@ -335,3 +335,84 @@ export const exportLabels: Record<string, MessageDescriptor> = defineMessages({
   },
   csv: { id: "reports.export.csv", defaultMessage: "CSV", description: "Export format" },
 });
+
+/** Drill-down drawer (K-01-T14). */
+export const drillMessages = defineMessages({
+  summary: {
+    id: "reports.drill.summary",
+    defaultMessage: "{count, plural, one {# line} other {# lines}} · total {total}",
+    description: "Drawer header: line count and total (= the figure)",
+  },
+  period: {
+    id: "reports.drill.period",
+    defaultMessage: "{from} to {to}",
+    description: "Drawer header: the figure's period",
+  },
+  upTo: {
+    id: "reports.drill.upTo",
+    defaultMessage: "Up to {to}",
+    description: "Drawer header: a balance figure (from the start of the books)",
+  },
+  lines: { id: "reports.drill.lines", defaultMessage: "Lines", description: "Table name" },
+  date: { id: "reports.drill.date", defaultMessage: "Date", description: "Column" },
+  source: { id: "reports.drill.source", defaultMessage: "Source", description: "Column" },
+  description: {
+    id: "reports.drill.description",
+    defaultMessage: "Description",
+    description: "Column",
+  },
+  amount: { id: "reports.drill.amount", defaultMessage: "Amount", description: "Column" },
+  openInvoice: {
+    id: "reports.drill.openInvoice",
+    defaultMessage: "Open invoice",
+    description: "Link to the line's source document: an invoice",
+  },
+  openBankTransaction: {
+    id: "reports.drill.openBankTransaction",
+    defaultMessage: "Open bank transaction",
+    description: "Link to the line's source document: a bank transaction",
+  },
+  openDocument: {
+    id: "reports.drill.openDocument",
+    defaultMessage: "Open document",
+    description: "Link to the line's source document (another kind)",
+  },
+  openJournal: {
+    id: "reports.drill.openJournal",
+    defaultMessage: "Open journal",
+    description: "Link to the journal entry (no other source document)",
+  },
+  journalNumber: {
+    id: "reports.drill.journalNumber",
+    defaultMessage: "Journal {number}",
+    description: "The line's journal number under the source link",
+  },
+  previous: {
+    id: "reports.drill.previous",
+    defaultMessage: "Previous page",
+    description: "Button",
+  },
+  next: { id: "reports.drill.next", defaultMessage: "Next page", description: "Button" },
+  page: {
+    id: "reports.drill.page",
+    defaultMessage: "Page {page} of {pages}",
+    description: "Pagination status",
+  },
+  exportLines: {
+    id: "reports.drill.exportLines",
+    defaultMessage: "Export lines (CSV)",
+    description: "Download the drawer's lines",
+  },
+  close: { id: "reports.drill.close", defaultMessage: "Close", description: "Close the drawer" },
+  loading: {
+    id: "reports.drill.loading",
+    defaultMessage: "Loading the lines…",
+    description: "Status",
+  },
+  failed: {
+    id: "reports.drill.failed",
+    defaultMessage: "The lines couldn't be loaded",
+    description: "Error title",
+  },
+  retry: { id: "reports.drill.retry", defaultMessage: "Try again", description: "Button" },
+});
