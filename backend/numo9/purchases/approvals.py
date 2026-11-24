@@ -1,4 +1,4 @@
-"""Purchase order approval (E-01-T02), with the A-03 purchase-order approval limits.
+"""Purchase order approval (E-01-T02, T03), with the A-03 purchase-order approval limits.
 
 - ``recalculate(order)`` — the calculator's figures on the PO and its lines (purchase side,
   server-authoritative; what the editor does on save).
@@ -9,6 +9,9 @@
   and when and the **approved total**, and audits ``purchases.purchaseorder.approved``.
 - ``submit_or_approve(order, user)`` — the editor's Approve: approves at once when the total is
   within the person's limit, otherwise sends the PO to Awaiting approval (who, when).
+- ``reapproval_needed(order)`` / ``revise(order, user)`` (E-01-T03) — after an approved PO is
+  edited: its total above the approved total → back to **Awaiting approval** (the number is
+  kept; audited ``purchases.purchaseorder.reapproval``); equal or lower stays approved.
 """
 
 from __future__ import annotations
@@ -30,6 +33,9 @@ from .numbering import assign_number
 
 DOC_TYPE = ApprovalDocumentType.PURCHASE_ORDER
 APPROVABLE = (PurchaseOrderStatus.DRAFT, PurchaseOrderStatus.AWAITING_APPROVAL)
+#: Statuses an approved PO's edit can send back to Awaiting approval (nothing received yet
+#: or partly: the outstanding part is still a commitment).
+REVISABLE = (PurchaseOrderStatus.APPROVED, PurchaseOrderStatus.PARTIALLY_RECEIVED)
 
 
 class PurchaseOrderRefused(LedgerError):
@@ -150,3 +156,40 @@ def submit_or_approve(order: PurchaseOrder, user: Any) -> PurchaseOrder:
     if can_approve(_person(user), DOC_TYPE, Decimal(order.total), organisation=order.organisation):
         return approve(order, user)
     return submit(order, user)
+
+
+def reapproval_needed(order: PurchaseOrder) -> bool:
+    return (
+        order.status in REVISABLE
+        and order.approved_total is not None
+        and Decimal(order.total) > Decimal(order.approved_total)
+    )
+
+
+def revise(order: PurchaseOrder, user: Any) -> PurchaseOrder:
+    """After an approved PO's lines changed: recalculate; a higher total needs approval again."""
+    from numo9.audit import service as audit
+
+    order = recalculate(order)
+    with org_context(order.organisation), transaction.atomic():
+        locked = _locked(order)
+        if not reapproval_needed(locked):
+            return locked
+        previous = locked.status
+        locked.status = PurchaseOrderStatus.AWAITING_APPROVAL
+        locked.submitted_by = _person(user)
+        locked.submitted_at = timezone.now()
+        locked.version += 1
+        locked.save()
+        audit.record(
+            "purchases.purchaseorder.reapproval",
+            obj=locked,
+            changes={"status": [previous, PurchaseOrderStatus.AWAITING_APPROVAL]},
+            meta={
+                "number": locked.number,
+                "approved_total": f"{locked.approved_total:.2f}",
+                "total": f"{locked.total:.2f}",
+            },
+            actor=_person(user),
+        )
+        return locked
