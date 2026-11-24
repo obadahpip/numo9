@@ -33,6 +33,7 @@ describe("quick-create registry (A-09-T06)", () => {
     const all = offeredQuickCreates(null, () => null).map((o) => o.entry.id);
     expect(all).toEqual([
       "invoice",
+      "bill",
       "contact",
       "journal",
       "spend",
@@ -52,6 +53,12 @@ describe("quick-create registry (A-09-T06)", () => {
     expect(quickCreateFor("i")?.path).toBe("sales/invoices/new");
     const seller = offeredQuickCreates(new Set(["sales.invoices.write"]), () => null);
     expect(seller.map((o) => o.entry.id)).toEqual(["invoice"]);
+  });
+
+  it("bills (E-02-T16): New bill N B for people who enter bills", () => {
+    expect(quickCreateFor("b")?.path).toBe("purchases/bills/new");
+    const clerk = offeredQuickCreates(new Set(["purchases.bills.write"]), () => null);
+    expect(clerk.map((o) => o.entry.id)).toEqual(["bill"]);
   });
 
   it("banking (F-01-T13): Spend money N S, Receive money N R, Add bank account N A", () => {

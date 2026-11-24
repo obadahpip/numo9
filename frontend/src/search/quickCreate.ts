@@ -81,9 +81,8 @@ export const QUICK_CREATE: readonly QuickCreate[] = [
     key: "B",
     label: m.bill,
     path: "purchases/bills/new",
-    permission: "purchases.bills.manage",
+    permission: "purchases.bills.write",
     feature: "accounting.bills.write",
-    availableIn: "Phase 1",
   },
   {
     id: "contact",
