@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:12-0500\n"
+"POT-Creation-Date: 2026-11-24 07:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6267,6 +6267,33 @@ msgid "Employees, leave and HR records."
 msgstr ""
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
+msgstr ""
+
+msgid "Run reports and drill down to their lines"
+msgstr ""
+
+msgid "Trial balance"
+msgstr ""
+
+msgid "Every account's debit or credit balance on a date, in one book."
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Account activity"
+msgstr ""
+
+msgid "Debits, credits and net movement of each account for a period."
+msgstr ""
+
+msgid "Debits"
+msgstr ""
+
+msgid "Credits"
+msgstr ""
+
+msgid "Net movement"
 msgstr ""
 
 msgid "There's no invoice with this id in this organisation."

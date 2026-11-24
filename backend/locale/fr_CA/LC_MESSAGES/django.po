@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:12-0500\n"
+"POT-Creation-Date: 2026-11-24 07:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6695,6 +6695,43 @@ msgstr "Employés, congés et dossiers RH."
 
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
+
+msgid "Run reports and drill down to their lines"
+msgstr ""
+
+#, fuzzy
+#| msgid "their balance"
+msgid "Trial balance"
+msgstr "leur solde"
+
+msgid "Every account's debit or credit balance on a date, in one book."
+msgstr ""
+
+#, fuzzy
+#| msgid "total"
+msgid "Total"
+msgstr "total"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Account activity"
+msgstr "Comptable"
+
+msgid "Debits, credits and net movement of each account for a period."
+msgstr ""
+
+#, fuzzy
+#| msgid "Debit"
+msgid "Debits"
+msgstr "Débit"
+
+#, fuzzy
+#| msgid "Credit"
+msgid "Credits"
+msgstr "Crédit"
+
+msgid "Net movement"
+msgstr ""
 
 #, fuzzy
 #| msgid "There's no contact with this id in this organisation."

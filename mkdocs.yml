@@ -96,6 +96,7 @@ nav:
       - "Rate limit per organisation": architecture/rate-limit.md
       - "Search and command palette": architecture/search.md
       - "Invoice fixtures": architecture/invoice-fixtures.md
+      - "Report engine": architecture/reports.md
   - Operations:
       - "Operations runbook": operations/runbook.md
       - "Connection pooling (PgBouncer)": operations/pgbouncer.md
