@@ -1,0 +1,25 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+200 King Street West, Suite 1200
+Toronto ON  M5V 2T6
+GST/HST registration: 123456782 RT 0001
+Purchase order
+Supplier
+Cedar Supply Co.
+Toronto ON
+PO number PO-0001
+Date 15 Jun 2026
+Delivery date 29 Jun 2026
+Deliver to Attention: Receiving
+200 King Street West, Loading dock B
+Toronto ON M5V 2T6
+Instructions Weekdays 8–4 only.
+DESCRIPTION QUANTITY UNIT PRICE DISCOUNTTAX AMOUNT
+Line 1 10 $25.00 HST 13 % (Ontario) on purchases $250.00
+Line 2 2 $80.00 HST 13 % (Ontario) on purchases $160.00
+Subtotal $410.00
+HST (ON) $53.30
+Total (CAD) $463.30
+Quote Q-1182 prices apply.
+Prepared with Numo9 Page 1 of 1

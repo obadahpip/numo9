@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:06-0500\n"
+"POT-Creation-Date: 2026-11-24 07:09-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5834,6 +5834,23 @@ msgstr ""
 msgid "%(order)s isn't a draft."
 msgstr ""
 
+#, python-format
+msgid "Purchase order %(number)s from %(organisation)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Please find purchase order %(number)s attached. Thank you."
+msgstr ""
+
+msgid "Only an approved purchase order can be sent."
+msgstr ""
+
+msgid "Add at least one email address to send the purchase order to."
+msgstr ""
+
 msgid "Partially received"
 msgstr ""
 
@@ -5964,6 +5981,33 @@ msgid "%(order)s is %(status)s: its receipts can't be reversed."
 msgstr ""
 
 msgid "Say why the receipt is reversed."
+msgstr ""
+
+msgid "PO number"
+msgstr ""
+
+msgid "Delivery date"
+msgstr ""
+
+msgid "Deliver to"
+msgstr ""
+
+#, python-format
+msgid "Attention: %(name)s"
+msgstr ""
+
+msgid "Instructions"
+msgstr ""
+
+msgid "Discount"
+msgstr ""
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, python-format
+msgid "Total (%(currency)s)"
 msgstr ""
 
 #, python-format
@@ -6366,17 +6410,6 @@ msgid "Invoice date"
 msgstr ""
 
 msgid "Terms"
-msgstr ""
-
-msgid "Discount"
-msgstr ""
-
-#, python-format
-msgid "Includes %(name)s"
-msgstr ""
-
-#, python-format
-msgid "Total (%(currency)s)"
 msgstr ""
 
 msgid "Amount due"

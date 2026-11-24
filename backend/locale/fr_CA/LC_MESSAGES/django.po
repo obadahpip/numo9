@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:06-0500\n"
+"POT-Creation-Date: 2026-11-24 07:09-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6180,6 +6180,24 @@ msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'app
 msgid "%(order)s isn't a draft."
 msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
 
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Purchase order %(number)s from %(organisation)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Please find purchase order %(number)s attached. Thank you."
+msgstr ""
+
+msgid "Only an approved purchase order can be sent."
+msgstr ""
+
+msgid "Add at least one email address to send the purchase order to."
+msgstr ""
+
 #, fuzzy
 #| msgid "Email received"
 msgid "Partially received"
@@ -6368,6 +6386,44 @@ msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent 
 
 msgid "Say why the receipt is reversed."
 msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "PO number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "Delivery date"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "Deliver to"
+msgstr "événement de livraison le"
+
+#, python-format
+msgid "Attention: %(name)s"
+msgstr ""
+
+#, fuzzy
+#| msgid "institution"
+msgid "Instructions"
+msgstr "institution"
+
+#, fuzzy
+#| msgid "discount"
+msgid "Discount"
+msgstr "rabais"
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
 
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
@@ -6829,20 +6885,6 @@ msgstr "page de la facture"
 #| msgid "terms"
 msgid "Terms"
 msgstr "modalités"
-
-#, fuzzy
-#| msgid "discount"
-msgid "Discount"
-msgstr "rabais"
-
-#, python-format
-msgid "Includes %(name)s"
-msgstr ""
-
-#, fuzzy, python-format
-#| msgid "Amount due (%(currency)s)"
-msgid "Total (%(currency)s)"
-msgstr "Montant dû (%(currency)s)"
 
 #, fuzzy
 #| msgid "amount due"

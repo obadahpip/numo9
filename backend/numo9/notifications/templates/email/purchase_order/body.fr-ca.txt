@@ -1,0 +1,11 @@
+{% autoescape off %}{{ message }}
+
+Bon de commande {{ number }}
+Total : {{ total }}{% if delivery_date %}
+Date de livraison : {{ delivery_date }}{% endif %}
+
+Le bon de commande est joint en PDF. Répondez à ce courriel pour toute question.
+
+--
+{{ organisation }}
+{% endautoescape %}
