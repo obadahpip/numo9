@@ -147,3 +147,53 @@ def approve(invoice: Invoice, user: Any) -> Invoice:
         locked.save()
         locked.credit_warning = credit.message  # type: ignore[attr-defined]
         return locked
+
+
+# ---- void (D-03a-T07) --------------------------------------------------------------------------
+
+VOIDABLE = (InvoiceStatus.APPROVED, InvoiceStatus.SENT)
+
+
+def void(invoice: Invoice, user: Any, *, date: Any = None, reason: str = "") -> Invoice:
+    """Void a posted invoice: its journal is reversed (C-02 ``reverse``) on ``date`` — the
+    invoice's own date by default, checked against the AR lock date and closed periods — the
+    status becomes Void, the **number is kept**, and the void is audited with the reason. An
+    invoice with payments can't be voided (remove the payments first); a draft is deleted, not
+    voided."""
+    from numo9.audit import service as audit
+    from numo9.ledger.services import reverse
+
+    person = user if getattr(user, "is_authenticated", False) else None
+    with org_context(invoice.organisation), transaction.atomic(), acting_as(person):
+        locked = Invoice._base_manager.select_for_update().get(pk=invoice.pk)
+        if locked.status not in VOIDABLE or locked.amount_paid:
+            raise _refuse(
+                _("%(invoice)s can't be voided: %(why)s"),
+                "sales.invoice.not_voidable",
+                invoice=str(locked),
+                why=_("remove its payments first.")
+                if locked.amount_paid
+                else _("only approved or sent invoices can be voided."),
+            )
+        assert locked.journal_entry is not None  # noqa: S101 — posted statuses have one (DB check)
+        reversal = reverse(
+            locked.journal_entry,
+            date=date or locked.date,
+            narration=_("Void of invoice %(number)s") % {"number": locked.number},
+            user=person,
+            module=LockModule.AR,
+        )
+        previous = locked.status
+        locked.status = InvoiceStatus.VOID
+        locked.void_entry = reversal
+        locked.voided_at = timezone.now()
+        locked.version += 1
+        locked.save()
+        audit.record(
+            "sales.invoice.voided",
+            obj=locked,
+            changes={"status": [previous, InvoiceStatus.VOID]},
+            meta={"number": locked.number, "reason": " ".join((reason or "").split())},
+            actor=person,
+        )
+        return locked

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:53-0500\n"
+"POT-Creation-Date: 2026-11-24 05:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6512,6 +6512,21 @@ msgstr ""
 #, python-format
 msgid "Invoice %(number)s — %(contact)s"
 msgstr ""
+
+#, python-format
+msgid "%(invoice)s can't be voided: %(why)s"
+msgstr ""
+
+msgid "remove its payments first."
+msgstr ""
+
+msgid "only approved or sent invoices can be voided."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "invoice number"
+msgid "Void of invoice %(number)s"
+msgstr "numéro de facture"
 
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
