@@ -707,3 +707,72 @@ old system with French headers, saved in Windows-1252.
 |---|---|---|
 | 1 | Empty state | "Not registered for GST/HST?" explains the small-supplier rule; new documents default to the out-of-scope code; one action to add a registration |
 | 2 | Missing BN | A GST/HST registration without a business number is flagged inline (and in the exceptions engine) |
+
+## 54. Reports home — search, categories, favourites, tabs (K-01-T01)
+
+![Reports home](wireframes/55-reports-home.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Search | Finds reports by name, description and words in them; the same index as the global search (A-09, K-01-T18) |
+| 2 | Categories | All, Favourites, Financial, Tax, Sales, Purchases, Banking, Payroll — reports whose product the package lacks are shown with the product name (gated, never hidden) |
+| 3 | Tabs | Standard · Drafts · Published · Custom (saved layouts, K-01-T08) |
+| 4 | Descriptions | One-line description under each report; the toggle is remembered per person |
+| 5 | Report card | Opens the runner; ★ toggles the favourite (per person, first in search) |
+
+## 55. Report runner — parameter bar and results (K-01-T01)
+
+![Report runner](wireframes/56-report-runner.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Date range | Presets — this/last month, quarter, financial year (FYE-aware), MTD/QTD/YTD — or custom dates; the resolved dates show beside it |
+| 2 | Compare | None, N previous periods or prior year; variance and % columns are added (up to 12 columns) |
+| 3 | Basis chip | Accrual or cash; says "(organisation default)" when it comes from tax settings (G-06), "(chosen for this report)" when overridden |
+| 4 | Book | Accounting or tax book; tax-book reports are populated in Phase 2 (K-07), the switch and filter exist now |
+| 5 | Tracking | Filter by tracking options, or show them as columns |
+| 6 | Report header | Display name and legal name, period label, "Year to date — unaudited" when the period ends in the future, basis and book labels (K-01-T06) |
+| 7 | Export / Edit layout | Export menu (59); layout editor panel (58) |
+| 8 | Figure | ⤢ on hover opens the drill drawer (57); every figure is reproducible from its lines |
+| 9 | No activity | "No activity in this period" instead of "–" or 0.00 (K-01-T16) |
+
+## 56. Report drill-down drawer (K-01-T01)
+
+![Report drill drawer](wireframes/57-report-drill-drawer.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Drawer header | The account and period of the figure; the line count and total, equal to the figure |
+| 2 | Lines | Date, source document, description, amount; Source opens the document |
+| 3 | Pages | 50 lines a page; Export lines downloads the drawer's lines (CSV) |
+
+## 57. Report layout editor panel (K-01-T01)
+
+![Report layout editor](wireframes/58-report-layout-editor.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Rows | Drag to reorder sections, account rows and totals |
+| 2 | Text block | Free text between rows, printed with the report |
+| 3 | Rename | The selected row's name (account names stay in the chart; the layout keeps the label) |
+| 4 | Note | A note on one cell (row × column), kept when the report is run again (K-01-T09) |
+| 5 | Save | Save as draft · Publish (an immutable snapshot: later postings never change it) · Save as custom (per organisation or per practice) |
+
+## 58. Report export menu (K-01-T01)
+
+![Report export menu](wireframes/59-report-export-menu.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Formats | PDF (Letter, 1 in margins, report header), Excel with formulas for totals, Google-Sheets-compatible XLSX, CSV |
+| 2 | Same as screen | Exports use the screen's parameters, layout, notes and header — the values match the screen (K-01-T10 snapshot) |
+
+## 59. Report empty and no-activity states (K-01-T01)
+
+![Report empty states](wireframes/60-report-empty-states.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | No activity | The period has no postings: say so and offer the financial year |
+| 2 | Empty books | A new organisation: point to opening balances (C-05) |
+| 3 | Zero cells | "No activity" in a cell; rows with no activity in any column are hidden unless "Show zero rows" is on |

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Reports home">
+<title>Numo9 wireframe — Reports home</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Banking</text>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Reports</text>
+<rect x="924" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Reports</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Reports</text>
+<rect x="24" y="150" width="520" height="40" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="36" y="175.0" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Search reports…  (name, description or a word in it)</text>
+<circle cx="556" cy="170" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="556" y="174" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="24" y="206" width="49" height="28" rx="14" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="48.5" y="224" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">All</text>
+<rect x="81" y="206" width="98" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="130.0" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Favourites</text>
+<rect x="187" y="206" width="91" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="232.5" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Financial</text>
+<rect x="286" y="206" width="49" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="310.5" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Tax</text>
+<rect x="343" y="206" width="63" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="374.5" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Sales</text>
+<rect x="414" y="206" width="91" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="459.5" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Purchases</text>
+<rect x="513" y="206" width="77" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="551.5" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Banking</text>
+<rect x="598" y="206" width="77" height="28" rx="14" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="636.5" y="224" font-size="12" fill="#344054" font-weight="600" text-anchor="middle">Payroll</text>
+<circle cx="691" cy="220" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="691" y="224" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<text x="24" y="272" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Standard</text>
+<rect x="24" y="280" width="72" height="3" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="144" y="272" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Drafts</text>
+<text x="264" y="272" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Published</text>
+<text x="384" y="272" font-size="14" fill="#5B6472" font-weight="500" text-anchor="start">Custom</text>
+<circle cx="500" cy="268" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="500" y="272" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<line x1="24" y1="284" x2="1416" y2="284" stroke="#D0D5DD"/>
+<text x="1240" y="272" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Show descriptions</text>
+<rect x="1380" y="258" width="36" height="20" rx="10" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<circle cx="1226" cy="268" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1226" y="272" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<rect x="24" y="304" width="452" height="300" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="332" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Financial</text>
+<text x="40" y="364" font-size="14" fill="#111111" font-weight="600" text-anchor="start">★ Profit and loss</text>
+<text x="40" y="382" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="40" y="410" font-size="14" fill="#111111" font-weight="600" text-anchor="start">★ Balance sheet</text>
+<text x="40" y="428" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="40" y="456" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Trial balance</text>
+<text x="40" y="474" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="40" y="502" font-size="14" fill="#111111" font-weight="600" text-anchor="start">General ledger</text>
+<text x="40" y="520" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="40" y="548" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Cash summary</text>
+<text x="40" y="566" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<rect x="492" y="304" width="452" height="300" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="508" y="332" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Tax</text>
+<text x="508" y="364" font-size="14" fill="#111111" font-weight="600" text-anchor="start">GST/HST return worksheet</text>
+<text x="508" y="382" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="508" y="410" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Sales tax by component</text>
+<text x="508" y="428" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="508" y="456" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Tax reconciliation</text>
+<text x="508" y="474" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<rect x="960" y="304" width="452" height="300" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="976" y="332" font-size="15" fill="#111111" font-weight="700" text-anchor="start">Sales &amp; purchases</text>
+<text x="976" y="364" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Aged receivables</text>
+<text x="976" y="382" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="976" y="410" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Aged payables</text>
+<text x="976" y="428" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="976" y="456" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Purchase commitments</text>
+<text x="976" y="474" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<text x="976" y="502" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Invoice summary</text>
+<text x="976" y="520" font-size="11" fill="#5B6472" font-weight="400" text-anchor="start">What it shows, in one line (descriptions on)</text>
+<circle cx="470" cy="364" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="470" y="368" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">5</text>
+<text x="24" y="640" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">★ = favourite: the star toggles it; favourites are per person and appear first in search.</text>
+</svg>
