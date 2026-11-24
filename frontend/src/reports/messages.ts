@@ -416,3 +416,134 @@ export const drillMessages = defineMessages({
   },
   retry: { id: "reports.drill.retry", defaultMessage: "Try again", description: "Button" },
 });
+
+/** Layout editor panel (K-01-T15). */
+export const layoutMessages = defineMessages({
+  title: {
+    id: "reports.layout.title",
+    defaultMessage: "Edit layout",
+    description: "Panel heading",
+  },
+  name: { id: "reports.layout.name", defaultMessage: "Layout name", description: "Field" },
+  defaultName: {
+    id: "reports.layout.defaultName",
+    defaultMessage: "{report} layout",
+    description: "Default name of a new layout",
+  },
+  rows: { id: "reports.layout.rows", defaultMessage: "Rows", description: "List heading" },
+  rowsHint: {
+    id: "reports.layout.rowsHint",
+    defaultMessage: "Drag rows, or use the arrows, to reorder them.",
+    description: "Help under the rows heading",
+  },
+  rename: {
+    id: "reports.layout.rename",
+    defaultMessage: "Label for {row}",
+    description: "Rename field of a row (the chart keeps the account name)",
+  },
+  hide: { id: "reports.layout.hide", defaultMessage: "Hide {row}", description: "Checkbox" },
+  moveUp: { id: "reports.layout.moveUp", defaultMessage: "Move {row} up", description: "Button" },
+  moveDown: {
+    id: "reports.layout.moveDown",
+    defaultMessage: "Move {row} down",
+    description: "Button",
+  },
+  drag: { id: "reports.layout.drag", defaultMessage: "Drag {row}", description: "Drag handle" },
+  textBlocks: {
+    id: "reports.layout.textBlocks",
+    defaultMessage: "Text blocks",
+    description: "Heading",
+  },
+  addText: {
+    id: "reports.layout.addText",
+    defaultMessage: "Add text after {row}",
+    description: "Button: a text block after the row",
+  },
+  addTextTop: {
+    id: "reports.layout.addTextTop",
+    defaultMessage: "Add text at the top",
+    description: "Button: a text block before every row",
+  },
+  textAfter: {
+    id: "reports.layout.textAfter",
+    defaultMessage: "Text after {row}",
+    description: "Text block field",
+  },
+  textTop: {
+    id: "reports.layout.textTop",
+    defaultMessage: "Text at the top",
+    description: "Text block field",
+  },
+  removeText: {
+    id: "reports.layout.removeText",
+    defaultMessage: "Remove this text",
+    description: "Button",
+  },
+  footnotes: { id: "reports.layout.footnotes", defaultMessage: "Footnotes", description: "Field" },
+  noteHeading: {
+    id: "reports.layout.noteHeading",
+    defaultMessage: "Note on a cell",
+    description: "Heading",
+  },
+  noteRow: { id: "reports.layout.noteRow", defaultMessage: "Row", description: "Select label" },
+  noteColumn: {
+    id: "reports.layout.noteColumn",
+    defaultMessage: "Column",
+    description: "Select label",
+  },
+  noteWholeRow: {
+    id: "reports.layout.noteWholeRow",
+    defaultMessage: "The whole row",
+    description: "Column option: a note on the row",
+  },
+  noteText: { id: "reports.layout.noteText", defaultMessage: "Note", description: "Field" },
+  saveNote: { id: "reports.layout.saveNote", defaultMessage: "Save note", description: "Button" },
+  noteSaved: {
+    id: "reports.layout.noteSaved",
+    defaultMessage: "Note saved. It stays when the report is run again.",
+    description: "Status",
+  },
+  saveDraft: {
+    id: "reports.layout.saveDraft",
+    defaultMessage: "Save as draft",
+    description: "Button",
+  },
+  publish: { id: "reports.layout.publish", defaultMessage: "Publish", description: "Button" },
+  saveCustom: {
+    id: "reports.layout.saveCustom",
+    defaultMessage: "Save as custom",
+    description: "Button",
+  },
+  publishHint: {
+    id: "reports.layout.publishHint",
+    defaultMessage: "Publishing stores this run as it is: later postings never change it.",
+    description: "Help next to Publish",
+  },
+  published: {
+    id: "reports.layout.published",
+    defaultMessage:
+      "Version {version} is published and can't be changed. Saving starts version {next}.",
+    description: "Editing a published layout",
+  },
+  saved: { id: "reports.layout.saved", defaultMessage: "Saved as a draft.", description: "Status" },
+  savedCustom: {
+    id: "reports.layout.savedCustom",
+    defaultMessage: "Saved as a custom layout.",
+    description: "Status",
+  },
+  publishedNow: {
+    id: "reports.layout.publishedNow",
+    defaultMessage: "Published version {version}.",
+    description: "Status",
+  },
+  failed: {
+    id: "reports.layout.failed",
+    defaultMessage: "The layout couldn't be saved: {detail}",
+    description: "Error",
+  },
+  close: {
+    id: "reports.layout.close",
+    defaultMessage: "Close the layout editor",
+    description: "Button",
+  },
+});

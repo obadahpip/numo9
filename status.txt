@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 565   Remaining: 2222   Progress: 20.27%
+TOTAL ATOMIC TASKS: 2787   Completed: 566   Remaining: 2221   Progress: 20.31%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -751,7 +751,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-01-T12 — Report home UI: search, categories, favourites, tabs Drafts/Published/Custom
 ✅ K-01-T13 — Runner UI: sticky param bar, comparisons, basis chip, book switch, tracking filter, result table (virtualised for long reports)
 ✅ K-01-T14 — Drill-down drawer with lines table and "open document"
-❌ K-01-T15 — Layout editor panel (drag rows, rename, text blocks, notes) and Save as Draft/Publish/Custom
+✅ K-01-T15 — Layout editor panel (drag rows, rename, text blocks, notes) and Save as Draft/Publish/Custom
 ❌ K-01-T16 — "No activity in this period" and zero-rendering rules in the design-system table component
 ❌ K-01-T17 — Performance test: k6 run on 100k-line fixture org
 ❌ K-01-T18 — Register reports in global search (A-09) and quick-open
