@@ -24,6 +24,10 @@ class TaxConfig(AppConfig):
         SWEEP_FACTORIES["tax.TaxCode"] = _sweep_code
         SWEEP_FACTORIES["tax.TaxComponent"] = _sweep_component
 
+        from .history import register_history
+
+        register_history()  # one attributed history of every tax object (G-06-T06)
+
 
 def _sweep_code(organisation: Any) -> Any:
     from .models import TaxCode
