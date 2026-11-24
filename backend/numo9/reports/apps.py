@@ -10,4 +10,4 @@ class ReportsConfig(AppConfig):
     verbose_name = "Reports"
 
     def ready(self) -> None:
-        from . import standard  # noqa: F401 — registers the standard reports
+        from . import standard, statements  # noqa: F401 — registers the standard reports

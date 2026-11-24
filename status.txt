@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 588   Remaining: 2199   Progress: 21.10%
+TOTAL ATOMIC TASKS: 2787   Completed: 589   Remaining: 2198   Progress: 21.13%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -780,7 +780,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [K-02]
 ✅ K-02-T01 — Statement presentation spec (ASPE-style sections, sub-totals, contra placement, overdraft reclassification note) reviewed by the client
-❌ K-02-T02 — P&L definition: sections by account type, gross profit, operating income, net income; comparatives
+✅ K-02-T02 — P&L definition: sections by account type, gross profit, operating income, net income; comparatives
 ❌ K-02-T03 — Balance Sheet definition: A/L/E always printed, current-year earnings line, contra accounts under parents
 ❌ K-02-T05 — Integrity check: BS balances; NI = ΔRE + CYE; failure banner and S-04 event
 ❌ K-02-T06 — Trial Balance: sorted by code, opening/movement/closing Dr/Cr columns, totals equal

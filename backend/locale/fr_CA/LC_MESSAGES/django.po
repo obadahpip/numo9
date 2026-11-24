@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:03-0500\n"
+"POT-Creation-Date: 2026-11-24 15:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7158,6 +7158,25 @@ msgid "Credits"
 msgstr "Crédit"
 
 msgid "Net movement"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total %(section)s"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Gross profit"
+msgstr ""
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Operating income"
+msgstr "Solde d’ouverture"
+
+msgid "Income before income taxes"
+msgstr ""
+
+msgid "Net income"
 msgstr ""
 
 msgid "No activity in this period"
