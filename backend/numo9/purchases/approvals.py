@@ -126,6 +126,9 @@ def approve(order: PurchaseOrder, user: Any) -> PurchaseOrder:
         locked.approved_total = locked.total
         locked.version += 1
         locked.save()
+        from .receipts import refresh_status
+
+        refresh_status(locked)  # re-approved after receipts: partially received again
         audit.record(
             "purchases.purchaseorder.approved",
             obj=locked,

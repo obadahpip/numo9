@@ -246,6 +246,18 @@ Design: `numo9.purchases.models` (E-01). Purchase orders are **non-posting**: co
 `quantity_received` and `quantity_billed` (numeric(18,4), ≥ 0, `purchases_poline_quantities_positive`).
 Outstanding = ordered − received (never below zero).
 
+### `purchases_goodsreceipt` — Goods receipt {#purchases-goodsreceipt}
+
+A delivery received against a PO (E-01-T04). Business record: `OrgOwnedModel` and `AuditedModel`.
+`purchase_order_id` (`PROTECT`), `date`, `received_by_id`, `notes`; `reversed_at`,
+`reversed_by_id`, `reversal_reason` when reversed (E-01-T06) — a reversed receipt's quantities no
+longer count.
+
+### `purchases_goodsreceiptline` — Goods receipt line {#purchases-goodsreceiptline}
+
+`receipt_id` (`CASCADE`), `po_line_id` → `purchases_purchaseorderline` (`PROTECT`), `quantity`
+(numeric(18,4), > 0, `purchases_grnline_quantity_positive`).
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
@@ -277,6 +289,8 @@ The one settings row of an organisation (A-05-T01). Business record: `OrgOwnedMo
 | `time_format` | varchar(3) | no | `12h` (default) or `24h` for the organisation's documents and emails |
 | `sales_terms_type`, `purchase_terms_type` | varchar(32) | no | `days_after_document` (default), `days_after_month_end`, `day_of_following_month`, `day_of_current_month` |
 | `sales_terms_days`, `purchase_terms_days` | smallint | no | Days (0–365, default 30), or the day of the month (1–31) for the `day_of_*` types |
+| `po_receipt_tolerance_percent` | numeric(5,2) | no | Over-receipt tolerance on PO lines, % of the ordered quantity (default 0, E-01-T04) |
+| `po_over_receipt` | varchar(8) | no | Beyond the tolerance: `warn` (default; received once confirmed) or `block` (refused) |
 
 Audit actions: `orgsettings.organisationsettings.created`, `.updated`.
 

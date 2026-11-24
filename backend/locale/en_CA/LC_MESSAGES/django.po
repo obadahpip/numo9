@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 06:57-0500\n"
+"POT-Creation-Date: 2026-11-24 07:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5308,6 +5308,21 @@ msgstr ""
 msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
 msgstr ""
 
+msgid "over-receipt tolerance (%)"
+msgstr ""
+
+msgid "How much more than ordered may be received on a purchase order line without a warning, as a percentage of the ordered quantity (E-01-T04)."
+msgstr ""
+
+msgid "receiving more than the tolerance"
+msgstr ""
+
+msgid "Block"
+msgstr ""
+
+msgid "Warn: allowed once confirmed. Block: refused (E-01-T04)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr ""
 
@@ -5873,6 +5888,42 @@ msgstr ""
 msgid "purchase order lines"
 msgstr ""
 
+msgid "date received"
+msgstr ""
+
+msgid "received by"
+msgstr ""
+
+msgid "reversed at"
+msgstr ""
+
+msgid "reversed by"
+msgstr ""
+
+msgid "reversal reason"
+msgstr ""
+
+msgid "goods receipt"
+msgstr ""
+
+msgid "goods receipts"
+msgstr ""
+
+msgid "receipt"
+msgstr ""
+
+msgid "PO line"
+msgstr ""
+
+msgid "quantity received"
+msgstr ""
+
+msgid "goods receipt line"
+msgstr ""
+
+msgid "goods receipt lines"
+msgstr ""
+
 msgid "See purchase orders and goods receipts"
 msgstr ""
 
@@ -5883,6 +5934,26 @@ msgid "Approve purchase orders, within an approval limit"
 msgstr ""
 
 msgid "Record and reverse goods receipts"
+msgstr ""
+
+#, python-format
+msgid "Only an approved purchase order can be received: %(order)s is %(status)s."
+msgstr ""
+
+msgid "Enter the quantity received on at least one line."
+msgstr ""
+
+#, python-format
+msgid "A line isn't on %(order)s."
+msgstr ""
+
+msgid "Quantities received can't be negative: reverse the receipt instead."
+msgstr ""
+
+msgid "More than ordered (beyond the tolerance) can't be received."
+msgstr ""
+
+msgid "This receives more than ordered: confirm to receive it anyway."
 msgstr ""
 
 #, python-format

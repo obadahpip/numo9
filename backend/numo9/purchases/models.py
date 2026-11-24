@@ -26,7 +26,9 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from numo9.audit.mixins import AuditedModel
 from numo9.documents.models import DocumentBase, DocumentLineBase
+from numo9.tenancy.models import OrgOwnedModel
 
 
 class PurchaseOrderStatus(models.TextChoices):
@@ -154,3 +156,56 @@ class PurchaseOrderLine(DocumentLineBase):
     @property
     def outstanding(self) -> Decimal:
         return max(Decimal(self.quantity) - Decimal(self.quantity_received), Decimal("0"))
+
+
+class GoodsReceipt(AuditedModel, OrgOwnedModel):
+    """A delivery received against a purchase order (E-01-T04): the date, who received it, notes,
+    and its lines (quantity per PO line). A reversed receipt (E-01-T06) keeps its row with when,
+    who and why; its quantities no longer count."""
+
+    purchase_order = models.ForeignKey(
+        PurchaseOrder,
+        on_delete=models.PROTECT,
+        related_name="receipts",
+        verbose_name=_("purchase order"),
+    )
+    date = models.DateField(_("date received"))
+    received_by = _user(_("received by"))
+    notes = models.TextField(_("notes"), blank=True)
+    reversed_at = models.DateTimeField(_("reversed at"), null=True, blank=True)
+    reversed_by = _user(_("reversed by"))
+    reversal_reason = models.CharField(_("reversal reason"), max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("-date", "-pk")
+        verbose_name = _("goods receipt")
+        verbose_name_plural = _("goods receipts")
+
+    def __str__(self) -> str:
+        return f"{self.purchase_order} · {self.date:%Y-%m-%d}"
+
+
+class GoodsReceiptLine(OrgOwnedModel):
+    receipt = models.ForeignKey(
+        GoodsReceipt, on_delete=models.CASCADE, related_name="lines", verbose_name=_("receipt")
+    )
+    po_line = models.ForeignKey(
+        PurchaseOrderLine,
+        on_delete=models.PROTECT,
+        related_name="receipt_lines",
+        verbose_name=_("PO line"),
+    )
+    quantity = models.DecimalField(_("quantity received"), max_digits=18, decimal_places=4)
+
+    class Meta:
+        ordering = ("receipt", "pk")
+        verbose_name = _("goods receipt line")
+        verbose_name_plural = _("goods receipt lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(quantity__gt=0), name="purchases_grnline_quantity_positive"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.po_line} × {self.quantity}"
