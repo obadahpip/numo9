@@ -13,6 +13,13 @@ cover **every day from ``start`` to ``end`` exactly once**, in date order:
   mid-period, a custom period starting — is a ``stub``;
 - custom periods are emitted as they are (``custom``).
 
+**Due dates** (G-03a-T08) — ``due_dates(end, frequency, …)`` → (return due, payment due) from the
+rules in ``data/filing_due_rules.json`` (data, not code): one month after the period end for
+monthly and quarterly filers, three months for annual, and 15 June (payment 30 April) for an
+individual with a 31 December year end; "N months after" a month-end period ends on that later
+month's last day (30 Sep → 31 Oct). Each date then rolls to the next business day
+(``holidays.calendar().roll``: weekends and the registration's statutory holidays).
+
 Boundaries are the anchor plus N months (``relativedelta``, which keeps month ends: a 31 Jan
 anchor gives 28/29 Feb, 31 Mar…), the way ``dateutil.rrule`` would count monthly steps without
 skipping short months.
@@ -22,8 +29,12 @@ from __future__ import annotations
 
 import calendar as _calendar
 import datetime as dt
-from collections.abc import Iterator, Sequence
+import json
+from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
+from functools import cache
+from pathlib import Path
+from typing import Any
 
 from dateutil.relativedelta import relativedelta
 
@@ -153,3 +164,56 @@ def _walk(
         kind = "regular" if (cursor, stop) == (span.start, span.end) else "stub"
         yield Period(cursor, stop, kind, cycle.frequency)
         cursor = stop + ONE_DAY
+
+
+# ---- due dates (G-03a-T08) ----------------------------------------------------------------------
+
+DUE_RULES = Path(__file__).parent / "data" / "filing_due_rules.json"
+
+
+@cache
+def due_rules() -> tuple[dict[str, Any], ...]:
+    return tuple(json.loads(DUE_RULES.read_text(encoding="utf-8"))["rules"])
+
+
+def _month_end(day: dt.date) -> dt.date:
+    return day.replace(day=_calendar.monthrange(day.year, day.month)[1])
+
+
+def _apply(rule: dict[str, Any], end: dt.date) -> dt.date:
+    if "fixed" in rule:
+        month, day = (int(x) for x in rule["fixed"].split("-"))
+        return dt.date(end.year + 1, month, day)
+    later = end + relativedelta(months=int(rule["months_after"]))
+    return _month_end(later) if end == _month_end(end) else later
+
+
+def _matches(rule: dict[str, Any], frequency: str, structure: str, fye: tuple[int, int]) -> bool:
+    if rule["frequency"] != frequency:
+        return False
+    if "structures" in rule and structure not in rule["structures"]:
+        return False
+    if "fiscal_year_end" in rule:
+        month, day = (int(x) for x in rule["fiscal_year_end"].split("-"))
+        return (month, day) == fye
+    return True
+
+
+def due_dates(
+    end: dt.date,
+    frequency: str,
+    *,
+    structure: str = "",
+    fye: tuple[int, int] = (12, 31),
+    jurisdictions: Iterable[str] = ("CA",),
+    rolled: bool = True,
+) -> tuple[dt.date, dt.date]:
+    """(return due, payment due) of a period ending ``end`` (module docstring)."""
+    from .holidays import calendar
+
+    rule = next(r for r in due_rules() if _matches(r, frequency, structure, fye))
+    dates = (_apply(rule["return"], end), _apply(rule["payment"], end))
+    if not rolled:
+        return dates
+    places = tuple(jurisdictions)
+    return calendar().roll(dates[0], places), calendar().roll(dates[1], places)

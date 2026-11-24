@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 612   Remaining: 2175   Progress: 21.96%
+TOTAL ATOMIC TASKS: 2787   Completed: 613   Remaining: 2174   Progress: 21.99%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -811,7 +811,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-03a-T05 — FilingPeriod model (registration, start, end, kind REGULAR/CUSTOM/STUB, sequence_no, due_date, payment_due_date, status) with an exclusion constraint (PostgreSQL daterange + GiST) preventing overlaps
 ✅ G-03a-T06 — HolidayCalendar data (federal and provincial statutory holidays by year) and a business-day roll helper
 ✅ G-03a-T07 — Pure period generator: (cycles, fiscal anchor, from, to, custom periods) → list of periods (dateutil.rrule)
-❌ G-03a-T08 — Due-date calculator (monthly/quarterly +1 month end; annual +3 months; individual 15 Jun rule as data) with holiday roll
+✅ G-03a-T08 — Due-date calculator (monthly/quarterly +1 month end; annual +3 months; individual 15 Jun rule as data) with holiday roll
 ❌ G-03a-T09 — Instalment schedule for annual filers (quarter-end-month+1 dates) with amount placeholder for G-09
 ❌ G-03a-T10 — Regeneration service: deletes/recreates only unfiled periods after the effective date, splits an open period crossing the effective date, keeps tax postings re-assigned by date
 ❌ G-03a-T11 — Switch validation: effective date not inside a filed period; warning if not a fiscal-year start; approval_ref required for a mid-year switch

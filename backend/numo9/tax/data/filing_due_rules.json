@@ -1,0 +1,16 @@
+{
+  "source": "CRA GST/HST and Revenu Québec QST filing and remittance deadlines (G-03a-T08). The first rule that matches a period wins; the last rule of a frequency is its default.",
+  "rules": [
+    {
+      "name": "individual_annual_calendar_year",
+      "frequency": "annual",
+      "structures": ["sole_proprietorship"],
+      "fiscal_year_end": "12-31",
+      "return": {"fixed": "06-15"},
+      "payment": {"fixed": "04-30"}
+    },
+    {"name": "annual", "frequency": "annual", "return": {"months_after": 3}, "payment": {"months_after": 3}},
+    {"name": "quarterly", "frequency": "quarterly", "return": {"months_after": 1}, "payment": {"months_after": 1}},
+    {"name": "monthly", "frequency": "monthly", "return": {"months_after": 1}, "payment": {"months_after": 1}}
+  ]
+}
