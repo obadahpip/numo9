@@ -162,6 +162,20 @@ The organisation's sales-tax settings (G-06-T02), one row per organisation
 | `quick_method` / `quick_method_from` | boolean / date | no / yes | GST/HST quick-method election; dated when elected (`tax_settings_quick_method_dated`) |
 | `default_codes` | jsonb | no | `{"sales": {"revenue": code}, "purchase": {"expense": code, …}}` — code keys of this organisation on that side |
 
+## Conversion balances (`conversion`) {#conversion}
+
+### `conversion_conversionsession` — Conversion {#conversion-conversionsession}
+
+The organisation's conversion to Numo9 (C-05-T01). `OrgOwnedModel` and `AuditedModel`; started
+by `numo9.conversion.services.start_conversion`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; **one per organisation** among undeleted rows (`conversion_one_per_org`) |
+| `conversion_date` | date | no | The first day the books are kept in Numo9 |
+| `status` | varchar(10) | no | `draft` or `finalised` (`conversion_status_valid`) |
+| `finalised_by_id`, `finalised_at` | bigint → `accounts_user`, timestamptz | yes | Who finalised and when; a finalised session is dated (`conversion_finalised_dated`) |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

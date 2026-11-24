@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:33-0500\n"
+"POT-Creation-Date: 2026-11-24 05:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2521,6 +2521,47 @@ msgstr ""
 #| msgid "Unknown limit: %(names)s."
 msgid "Unknown role: %(roles)s."
 msgstr "Limite inconnue : %(names)s."
+
+msgid "Finalised"
+msgstr ""
+
+#, fuzzy
+#| msgid "conversion rate (30 days)"
+msgid "conversion date"
+msgstr "taux de conversion (30 jours)"
+
+#, fuzzy
+#| msgid "This organisation is not a demo."
+msgid "The first day the organisation's books are kept in Numo9."
+msgstr "Cette organisation n'est pas une démo."
+
+msgid "finalised by"
+msgstr ""
+
+#, fuzzy
+#| msgid "finished at"
+msgid "finalised at"
+msgstr "terminée le"
+
+#, fuzzy
+#| msgid "version"
+msgid "conversion"
+msgstr "version"
+
+#, fuzzy
+#| msgid "version"
+msgid "conversions"
+msgstr "version"
+
+#, fuzzy, python-format
+#| msgid "conversion rate (30 days)"
+msgid "Conversion at %(date)s"
+msgstr "taux de conversion (30 jours)"
+
+#, fuzzy
+#| msgid "This organisation already has an owner. Ask the owner to invite you, or to add users."
+msgid "This organisation already has a conversion: continue that one."
+msgstr "Cette organisation a déjà un propriétaire. Demandez au propriétaire de vous inviter ou d’ajouter des utilisateurs."
 
 #, fuzzy
 #| msgid "Your role in this organisation can't make this change."

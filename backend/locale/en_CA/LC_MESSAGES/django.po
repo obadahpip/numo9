@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:33-0500\n"
+"POT-Creation-Date: 2026-11-24 05:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2393,6 +2393,34 @@ msgstr ""
 
 #, python-format
 msgid "Unknown role: %(roles)s."
+msgstr ""
+
+msgid "Finalised"
+msgstr ""
+
+msgid "conversion date"
+msgstr ""
+
+msgid "The first day the organisation's books are kept in Numo9."
+msgstr ""
+
+msgid "finalised by"
+msgstr ""
+
+msgid "finalised at"
+msgstr ""
+
+msgid "conversion"
+msgstr ""
+
+msgid "conversions"
+msgstr ""
+
+#, python-format
+msgid "Conversion at %(date)s"
+msgstr ""
+
+msgid "This organisation already has a conversion: continue that one."
 msgstr ""
 
 msgid "No open demo organisation with this id."
