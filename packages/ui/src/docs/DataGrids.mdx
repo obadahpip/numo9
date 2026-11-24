@@ -3,6 +3,7 @@ import { Canvas, Meta } from "@storybook/blocks";
 import * as Heatmap from "../charts/ActivityHeatmap.stories";
 import * as DataGrid from "../data-grid/DataGrid.stories";
 import * as LineGrid from "../line-grid/LineGrid.stories";
+import * as ReportTable from "../report-table/ReportTable.stories";
 import { Do, DoDont, Dont } from "./DoDont";
 
 <Meta title="Guidelines/Data grids" />
@@ -55,6 +56,25 @@ footer.
   <Dont>
     <p>A separate grid for bills and another for invoices (Xero's two generations).</p>
     <p>Floating-point totals — amounts are decimal strings, summed exactly.</p>
+  </Dont>
+</DoDont>
+
+## ReportTable — financial reports
+
+The one table every report renders in (K-01-T13): sticky header and first column, a drill-down
+button on each figure, compact view, windowed rendering above 200 rows, and comparisons up to 12
+columns scrolling inside the table. A report with nothing posted says "No activity in this
+period" (K-01-T16).
+
+<Canvas of={ReportTable.ProfitAndLoss} />
+
+<DoDont>
+  <Do>
+    <p>Render every financial, tax and operational report with `ReportTable`.</p>
+    <p>Print $0.00 for an empty total and "No activity" in an empty cell.</p>
+  </Do>
+  <Dont>
+    <p>A dash for zero, or a page that scrolls sideways for a wide comparison.</p>
   </Dont>
 </DoDont>
 

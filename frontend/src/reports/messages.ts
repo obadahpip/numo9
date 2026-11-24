@@ -123,3 +123,215 @@ export const categoryLabels: Record<string, MessageDescriptor> = defineMessages(
     description: "Report category",
   },
 });
+
+/** Report runner (K-01-T13). */
+export const runner = defineMessages({
+  back: {
+    id: "reports.runner.back",
+    defaultMessage: "All reports",
+    description: "Link back to the report home",
+  },
+  parameters: {
+    id: "reports.runner.parameters",
+    defaultMessage: "Report options",
+    description: "Name of the parameter bar",
+  },
+  range: { id: "reports.runner.range", defaultMessage: "Date range", description: "Select label" },
+  from: { id: "reports.runner.from", defaultMessage: "From", description: "Date field" },
+  to: { id: "reports.runner.to", defaultMessage: "To", description: "Date field" },
+  asOf: { id: "reports.runner.asOf", defaultMessage: "As at", description: "Balance date field" },
+  compare: { id: "reports.runner.compare", defaultMessage: "Compare", description: "Select label" },
+  periods: {
+    id: "reports.runner.periods",
+    defaultMessage: "Periods",
+    description: "How many comparison periods (1–12)",
+  },
+  basis: { id: "reports.runner.basis", defaultMessage: "Basis", description: "Select label" },
+  book: {
+    id: "reports.runner.book",
+    defaultMessage: "Book",
+    description: "Switch label: accounting or tax book",
+  },
+  tracking: {
+    id: "reports.runner.tracking",
+    defaultMessage: "Tracking",
+    description: "Tracking filter field (category:option, comma-separated)",
+  },
+  trackingHint: {
+    id: "reports.runner.trackingHint",
+    defaultMessage: "For example region:east",
+    description: "Placeholder of the tracking filter",
+  },
+  update: {
+    id: "reports.runner.update",
+    defaultMessage: "Update",
+    description: "Button: run the report",
+  },
+  compact: { id: "reports.runner.compact", defaultMessage: "Compact view", description: "Switch" },
+  running: {
+    id: "reports.runner.running",
+    defaultMessage: "Running the report…",
+    description: "Status",
+  },
+  failed: {
+    id: "reports.runner.failed",
+    defaultMessage: "The report couldn't be run",
+    description: "Error title",
+  },
+  failedBody: {
+    id: "reports.runner.failedBody",
+    defaultMessage: "Nothing was changed. Check the options and try again.",
+    description: "Error body",
+  },
+  retry: { id: "reports.runner.retry", defaultMessage: "Try again", description: "Button" },
+  unknown: {
+    id: "reports.runner.unknown",
+    defaultMessage: "There's no such report",
+    description: "Unknown report slug",
+  },
+  unknownBody: {
+    id: "reports.runner.unknownBody",
+    defaultMessage: "The address may be old. Every report is listed on the report home.",
+    description: "Unknown report slug: what to do",
+  },
+  gatedBody: {
+    id: "reports.runner.gatedBody",
+    defaultMessage: "Your data is kept. The organisation owner can add it to the package.",
+    description: "402 from the run: what stays and who can fix it",
+  },
+  gated: {
+    id: "reports.runner.gated",
+    defaultMessage: "{name} is part of {product}, which isn't in this organisation's package.",
+    description: "402 from the run",
+  },
+  drill: {
+    id: "reports.runner.drill",
+    defaultMessage: "Show the lines of {row}, {column}",
+    description: "Drill button on a report figure",
+  },
+  note: {
+    id: "reports.runner.note",
+    defaultMessage: "Note:",
+    description: "Read before a cell note",
+  },
+  export: {
+    id: "reports.runner.export",
+    defaultMessage: "Export",
+    description: "Export menu button",
+  },
+  editLayout: {
+    id: "reports.runner.editLayout",
+    defaultMessage: "Edit layout",
+    description: "Opens the layout editor panel",
+  },
+  layoutName: {
+    id: "reports.runner.layoutName",
+    defaultMessage: "Layout: {name} (version {version})",
+    description: "The layout a run uses",
+  },
+  publishedLayout: {
+    id: "reports.runner.publishedLayout",
+    defaultMessage: "Published — this is the stored snapshot; later postings don't change it.",
+    description: "A published layout's run",
+  },
+});
+
+export const presetLabels: Record<string, MessageDescriptor> = defineMessages({
+  this_month: {
+    id: "reports.preset.thisMonth",
+    defaultMessage: "This month",
+    description: "Date range preset",
+  },
+  last_month: {
+    id: "reports.preset.lastMonth",
+    defaultMessage: "Last month",
+    description: "Date range preset",
+  },
+  this_quarter: {
+    id: "reports.preset.thisQuarter",
+    defaultMessage: "This quarter",
+    description: "Date range preset",
+  },
+  last_quarter: {
+    id: "reports.preset.lastQuarter",
+    defaultMessage: "Last quarter",
+    description: "Date range preset",
+  },
+  this_financial_year: {
+    id: "reports.preset.thisFinancialYear",
+    defaultMessage: "This financial year",
+    description: "Date range preset",
+  },
+  last_financial_year: {
+    id: "reports.preset.lastFinancialYear",
+    defaultMessage: "Last financial year",
+    description: "Date range preset",
+  },
+  month_to_date: {
+    id: "reports.preset.monthToDate",
+    defaultMessage: "Month to date",
+    description: "Date range preset",
+  },
+  quarter_to_date: {
+    id: "reports.preset.quarterToDate",
+    defaultMessage: "Quarter to date",
+    description: "Date range preset",
+  },
+  year_to_date: {
+    id: "reports.preset.yearToDate",
+    defaultMessage: "Year to date",
+    description: "Date range preset",
+  },
+  custom: {
+    id: "reports.preset.custom",
+    defaultMessage: "Custom dates",
+    description: "Date range preset",
+  },
+});
+
+export const compareLabels: Record<string, MessageDescriptor> = defineMessages({
+  none: {
+    id: "reports.compare.none",
+    defaultMessage: "No comparison",
+    description: "Compare option",
+  },
+  previous: {
+    id: "reports.compare.previous",
+    defaultMessage: "Previous periods",
+    description: "Compare option",
+  },
+  prior_year: {
+    id: "reports.compare.priorYear",
+    defaultMessage: "Prior year",
+    description: "Compare option",
+  },
+});
+
+export const basisLabels: Record<string, MessageDescriptor> = defineMessages({
+  default: {
+    id: "reports.basis.default",
+    defaultMessage: "Organisation default",
+    description: "Basis option: the tax-settings basis",
+  },
+  accrual: { id: "reports.basis.accrual", defaultMessage: "Accrual", description: "Basis option" },
+  cash: { id: "reports.basis.cash", defaultMessage: "Cash", description: "Basis option" },
+});
+
+export const bookLabels: Record<string, MessageDescriptor> = defineMessages({
+  accounting: {
+    id: "reports.book.accounting",
+    defaultMessage: "Accounting",
+    description: "Book option",
+  },
+  tax: { id: "reports.book.tax", defaultMessage: "Tax", description: "Book option" },
+});
+
+export const exportLabels: Record<string, MessageDescriptor> = defineMessages({
+  pdf: { id: "reports.export.pdf", defaultMessage: "PDF (Letter)", description: "Export format" },
+  xlsx: {
+    id: "reports.export.xlsx",
+    defaultMessage: "Excel / Google Sheets (formulas for totals)",
+    description: "Export format",
+  },
+  csv: { id: "reports.export.csv", defaultMessage: "CSV", description: "Export format" },
+});
