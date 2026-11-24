@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 524   Remaining: 2263   Progress: 18.80%
+TOTAL ATOMIC TASKS: 2787   Completed: 525   Remaining: 2262   Progress: 18.84%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -702,7 +702,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-06-T01 — Wireframes: single tax settings page with anchor nav, cards, history drawer, empty state
 ✅ G-06-T02 — TaxSettings model (basis, rounding_mode, quick_method, default codes per account type) one-to-one with org
 ✅ G-06-T03 — BN / program account / QST number validators
-❌ G-06-T05 — Tax-basis change guard with reason, mid-year warning; basis used by K-01 as default with per-report override flag
+✅ G-06-T05 — Tax-basis change guard with reason, mid-year warning; basis used by K-01 as default with per-report override flag
 ❌ G-06-T06 — Unified settings history (audit log filter on tax objects) with user attribution enforced (system jobs carry a job id)
 
 [C-05]

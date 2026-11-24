@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:32-0500\n"
+"POT-Creation-Date: 2026-11-24 05:33-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6786,6 +6786,28 @@ msgstr "%(code)s (%(name)s) est en vigueur %(range)s, pas le %(date)s : choisiss
 #, python-format
 msgid "%(code)s is archived: restore it or pick another code."
 msgstr "%(code)s est archivé : restaurez-le ou choisissez un autre code."
+
+#, python-format
+msgid "The fiscal year started on %(start)s: changing to the %(basis)s basis during the year leaves the returns already filed on the %(current)s basis."
+msgstr ""
+
+#, fuzzy
+#| msgid "Choose a role for this group."
+msgid "Choose accrual or cash."
+msgstr "Choisissez un rôle pour ce groupe."
+
+#, fuzzy, python-format
+#| msgid "Say why the journal is sent back (at least %(min)d characters)."
+msgid "Say why the tax basis changes (at least %(min)d characters)."
+msgstr "Indiquez pourquoi l'écriture est renvoyée (au moins %(min)d caractères)."
+
+#, python-format
+msgid "Basis: %(basis)s (organisation default)"
+msgstr ""
+
+#, python-format
+msgid "Basis: %(basis)s (this report)"
+msgstr ""
 
 msgid "Tenancy"
 msgstr ""
