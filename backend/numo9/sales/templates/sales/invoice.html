@@ -1,0 +1,84 @@
+{% extends "documents/base.html" %}
+{% load i18n documents %}
+{% comment %}D-03a-T09 — invoice on the document baseline (Letter, 1 in margins, gap-43).{% endcomment %}
+{% block title %}{% translate "Invoice" %} {{ document_number }}{% endblock %}
+{% block style %}
+  h1 { border-block-end: 3pt solid {{ accent }}; padding-block-end: 4pt; display: inline-block; }
+  th { color: {{ accent }}; }
+  .parties { display: flex; justify-content: space-between; margin-block-end: 18pt; }
+  .meta td { border: 0; padding: 1pt 0 1pt 12pt; }
+  .totals { width: 50%; margin-inline-start: auto; margin-block-start: 12pt; }
+  .totals td { border: 0; }
+  .totals .grand td { border-block-start: 1.5pt solid #111111; font-weight: 700; padding-block-start: 6pt; }
+  .totals .due td { font-weight: 700; font-size: 11pt; }
+  .notes { margin-block-start: 18pt; font-size: 9pt; white-space: pre-line; }
+  .registrations { font-size: 8pt; color: #5B6472; margin-block-start: 6pt; }
+  .pay-advice { break-inside: avoid; margin-block-start: 24pt; border-block-start: 1pt dashed #5B6472; padding-block-start: 10pt; }
+  .pay-advice h2 { font-size: 11pt; margin: 0 0 6pt; }
+  .pay-advice td { border: 0; padding: 2pt 12pt 2pt 0; }
+{% endblock %}
+{% block content %}
+  <h1>{% translate "Invoice" %}</h1>
+  <div class="parties">
+    <div>
+      <div class="muted">{% translate "Bill to" %}</div>
+      <strong>{{ customer.legal_name }}</strong><br>
+      {% if customer.address_line %}{{ customer.address_line }}<br>{% endif %}
+      {{ customer.city }} {{ customer.province }}&nbsp;&nbsp;{{ customer.postal_code }}
+    </div>
+    <table class="meta" style="width:auto">
+      <tr><td class="muted">{% translate "Invoice number" %}</td><td>{{ document_number }}</td></tr>
+      <tr><td class="muted">{% translate "Invoice date" %}</td><td>{{ issue_date|docdate:document_locale }}</td></tr>
+      {% if due_date %}<tr><td class="muted">{% translate "Due date" %}</td><td>{{ due_date|docdate:document_locale }}</td></tr>{% endif %}
+      {% if terms %}<tr><td class="muted">{% translate "Terms" %}</td><td>{{ terms }}</td></tr>{% endif %}
+      {% if reference %}<tr><td class="muted">{% translate "Reference" %}</td><td>{{ reference }}</td></tr>{% endif %}
+    </table>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>{% translate "Description" %}</th>
+        <th class="num">{% translate "Quantity" %}</th>
+        <th class="num">{% translate "Unit price" %}</th>
+        <th class="num">{% translate "Discount" %}</th>
+        <th>{% translate "Tax" %}</th>
+        <th class="num">{% translate "Amount" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for line in lines %}
+      <tr>
+        <td>{{ line.description }}</td>
+        <td class="num">{{ line.quantity }}</td>
+        <td class="num">{{ line.unit|money:document_locale }}</td>
+        <td class="num">{% if line.discount_percent %}{{ line.discount_percent }}{% elif line.discount_amount %}{{ line.discount_amount|money:document_locale }}{% endif %}</td>
+        <td>{{ line.tax_code }}</td>
+        <td class="num">{{ line.amount|money:document_locale }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <table class="totals">
+    <tr><td>{% translate "Subtotal" %}</td><td class="num">{{ subtotal|money:document_locale }}</td></tr>
+    {% if discount_total %}<tr><td>{% translate "Discount" %}</td><td class="num">−{{ discount_total|money:document_locale }}</td></tr>{% endif %}
+    {% for tax in taxes %}
+    <tr><td>{% if tax_included %}{% blocktranslate with name=tax.name %}Includes {{ name }}{% endblocktranslate %}{% else %}{{ tax.name }}{% endif %}</td><td class="num">{{ tax.amount|money:document_locale }}</td></tr>
+    {% endfor %}
+    <tr class="grand"><td>{% blocktranslate %}Total ({{ currency }}){% endblocktranslate %}</td><td class="num">{{ total|money:document_locale }}</td></tr>
+    {% if amount_paid %}<tr><td>{% translate "Paid" %}</td><td class="num">−{{ amount_paid|money:document_locale }}</td></tr>{% endif %}
+    <tr class="due"><td>{% translate "Amount due" %}</td><td class="num">{{ amount_due|money:document_locale }}</td></tr>
+  </table>
+  {% if issuer.qst_number %}<div class="registrations">{% blocktranslate with qst=issuer.qst_number %}QST registration: {{ qst }}{% endblocktranslate %}</div>{% endif %}
+  {% if notes %}<div class="notes">{{ notes }}</div>{% endif %}
+  <section class="pay-advice" aria-label="{% translate 'Payment advice' %}">
+    <h2>{% translate "Payment advice — detach and return with your payment" %}</h2>
+    <table style="width:auto">
+      <tr><td class="muted">{% translate "To" %}</td><td>{{ issuer.legal_name }}</td></tr>
+      <tr><td class="muted">{% translate "Customer" %}</td><td>{{ customer.legal_name }}</td></tr>
+      <tr><td class="muted">{% translate "Invoice number" %}</td><td>{{ document_number }}</td></tr>
+      {% if due_date %}<tr><td class="muted">{% translate "Due date" %}</td><td>{{ due_date|docdate:document_locale }}</td></tr>{% endif %}
+      <tr><td class="muted">{% translate "Amount due" %}</td><td><strong>{{ amount_due|money:document_locale }}</strong></td></tr>
+      <tr><td class="muted">{% translate "Amount enclosed" %}</td><td>______________________</td></tr>
+    </table>
+  </section>
+{% endblock %}

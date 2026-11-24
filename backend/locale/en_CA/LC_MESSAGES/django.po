@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:57-0500\n"
+"POT-Creation-Date: 2026-11-24 06:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6127,6 +6127,12 @@ msgstr ""
 msgid "invoice revisions"
 msgstr ""
 
+msgid "Net 30"
+msgstr ""
+
+msgid "Thank you for your business. Payment by cheque or e-Transfer."
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s is already %(status)s."
 msgstr ""
@@ -6153,6 +6159,42 @@ msgstr ""
 
 #, python-format
 msgid "Void of invoice %(number)s"
+msgstr ""
+
+msgid "Invoice date"
+msgstr ""
+
+msgid "Terms"
+msgstr ""
+
+msgid "Discount"
+msgstr ""
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, python-format
+msgid "Total (%(currency)s)"
+msgstr ""
+
+msgid "Amount due"
+msgstr ""
+
+#, python-format
+msgid "QST registration: %(qst)s"
+msgstr ""
+
+msgid "Payment advice"
+msgstr ""
+
+msgid "Payment advice — detach and return with your payment"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Amount enclosed"
 msgstr ""
 
 #, python-format

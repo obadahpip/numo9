@@ -1,0 +1,29 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+200 King Street West, Suite 1200
+Toronto ON  M5V 2T6
+GST/HST registration: 123456782 RT 0001
+Invoice
+Bill to
+BC Customer Ltd
+Somewhere BC
+Invoice number INV-0001
+Invoice date 15 Jun 2026
+DESCRIPTION QUANTITY UNIT PRICE DISCOUNTTAX AMOUNT
+Line 1 3 $250.00 GST 5 % + PST 7 % (British Columbia) on sales $750.00
+Line 2 1 $120.00 GST 5 % + PST 7 % (British Columbia) on sales $120.00
+Subtotal $870.00
+GST $43.50
+PST (BC) $60.90
+Total (CAD) $974.40
+Amount due $974.40
+QST registration: 1234567890 TQ 0001
+Thank you. Pay by cheque or e-Transfer to accounts@refined.example.ca.
+Payment advice — detach and return with your payment
+To Refined Interiors Inc.
+Customer BC Customer Ltd
+Invoice number INV-0001
+Amount due $974.40
+Amount enclosed ______________________
+Prepared with Numo9 Page 1 of 1

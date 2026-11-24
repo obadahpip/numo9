@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:57-0500\n"
+"POT-Creation-Date: 2026-11-24 06:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6507,6 +6507,12 @@ msgstr "Soumissions, factures et clients."
 msgid "invoice revisions"
 msgstr "Soumissions, factures et clients."
 
+msgid "Net 30"
+msgstr ""
+
+msgid "Thank you for your business. Payment by cheque or e-Transfer."
+msgstr ""
+
 #, fuzzy, python-format
 #| msgid "This override request is already %(status)s."
 msgid "%(invoice)s is already %(status)s."
@@ -6536,6 +6542,56 @@ msgstr ""
 #| msgid "invoice number"
 msgid "Void of invoice %(number)s"
 msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "invoice page"
+msgid "Invoice date"
+msgstr "page de la facture"
+
+#, fuzzy
+#| msgid "terms"
+msgid "Terms"
+msgstr "modalités"
+
+#, fuzzy
+#| msgid "discount"
+msgid "Discount"
+msgstr "rabais"
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "Amount due"
+msgstr "montant dû"
+
+#, fuzzy, python-format
+#| msgid "GST/HST registration: %(bn)s"
+msgid "QST registration: %(qst)s"
+msgstr "Inscription TPS/TVH : %(bn)s"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "Payment advice"
+msgstr "arguments"
+
+msgid "Payment advice — detach and return with your payment"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount (cents)"
+msgid "Amount enclosed"
+msgstr "montant (cents)"
 
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
