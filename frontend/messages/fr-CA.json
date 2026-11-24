@@ -2404,6 +2404,40 @@
     "transfer": "Transfer money",
     "user": "Invite a user"
   },
+  "reports": {
+    "category": {
+      "banking": "Banking",
+      "financial": "Financial",
+      "payroll": "Payroll",
+      "purchases": "Purchases",
+      "sales": "Sales",
+      "tax": "Tax"
+    },
+    "home": {
+      "all": "All",
+      "categories": "Categories",
+      "custom": "Custom",
+      "drafts": "Drafts",
+      "favourites": "Favourites",
+      "gated": "Part of {product} — not in this organisation's package",
+      "intro": "One place for every financial, tax and operational report. Star the ones you use most.",
+      "layoutVersion": "{report} · version {version}",
+      "loadFailed": "Reports couldn't be loaded",
+      "loadFailedBody": "Nothing was changed. Try again in a moment.",
+      "noFavourites": "Star a report to keep it here.",
+      "noLayouts": "No saved layouts here yet. Open a report and use Edit layout to save one.",
+      "noMatch": "No report matches “{query}”.",
+      "published": "Published",
+      "retry": "Try again",
+      "search": "Search reports",
+      "showDescriptions": "Show descriptions",
+      "standard": "Standard",
+      "star": "Add {name} to favourites",
+      "tabs": "Report views",
+      "title": "Reports",
+      "unstar": "Remove {name} from favourites"
+    }
+  },
   "routes": {
     "banking": "Banking",
     "chartOfAccounts": "Chart of accounts",
@@ -2412,6 +2446,7 @@
     "home": "Home",
     "journals": "Journals",
     "placeholder": "This screen is a placeholder until its deliverable is built.",
+    "reports": "Reports",
     "settingsAuditLog": "Paramètres : Journal d’audit",
     "settingsCustomFields": "Paramètres : Champs personnalisés",
     "settingsEmailDomain": "Paramètres : Domaine de courriel",
@@ -2793,6 +2828,7 @@
       "locked": "{product} isn't in this organisation's package",
       "lockedUnknown": "Not in this organisation's package",
       "main": "Main",
+      "reports": "Reports",
       "settings": "Settings"
     },
     "notifications": "Notifications",

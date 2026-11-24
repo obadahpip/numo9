@@ -197,6 +197,7 @@ def test_report_outside_the_package_answers_402_with_its_product(
     catalogue = client.get(base).json()
     [tax] = [c for c in catalogue["categories"] if c["key"] == "tax"]
     assert tax["reports"][0]["available"] is False
+    assert (tax["reports"][0]["product"], tax["reports"][0]["product_name"]) == ("tax", "Tax")
     for url in (f"{base}/tax-sample/run", f"{base}/tax-sample/export?file=csv"):
         refused = client.get(url)
         assert refused.status_code == 402, url

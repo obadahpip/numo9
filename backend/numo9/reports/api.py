@@ -41,8 +41,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from numo9.catalogue.drf import CORE, require_feature, requires_feature
+from numo9.catalogue.drf import CORE, product_of, require_feature, requires_feature
 from numo9.catalogue.entitlements import get_resolver
+from numo9.catalogue.texts import product_name
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
@@ -161,6 +162,8 @@ class ReportCatalogueView(APIView):
                     "reports": [
                         {
                             **report.summary(),
+                            "product": product_of(report.feature),
+                            "product_name": product_name(product_of(report.feature)),
                             "available": resolver.allows(organisation, report.feature),
                             "favourite": report.id in starred,
                         }

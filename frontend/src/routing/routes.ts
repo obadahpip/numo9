@@ -33,6 +33,7 @@ const labels = defineMessages({
   },
   documents: { id: "routes.documents", defaultMessage: "Documents", description: "Module name" },
   banking: { id: "routes.banking", defaultMessage: "Banking", description: "Module name" },
+  reports: { id: "routes.reports", defaultMessage: "Reports", description: "Module name (K-01)" },
   settingsGeneral: {
     id: "routes.settingsGeneral",
     defaultMessage: "Settings: General",
@@ -255,6 +256,14 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.banking,
     settings: "settings/lock-dates",
     aliases: ["bank", "bank-accounts", "bankaccounts", "bank/bankaccounts.aspx", "cash"],
+  },
+  {
+    // K-01: the report home lists every report, gated ones too (named, never hidden), so the
+    // module is core; each report is gated by its own feature key when it runs.
+    path: "reports",
+    feature: CORE,
+    label: labels.reports,
+    aliases: ["report", "reporting", "reports/index", "reporting/index.aspx", "report/index.aspx"],
   },
   {
     path: "documents",

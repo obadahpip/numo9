@@ -64,6 +64,11 @@ const labels = defineMessages({
     defaultMessage: "Banking",
     description: "Top navigation item: bank, credit card and cash accounts (F-01)",
   },
+  reports: {
+    id: "shell.nav.reports",
+    defaultMessage: "Reports",
+    description: "Top navigation item: the report home (K-01)",
+  },
   settings: {
     id: "shell.nav.settings",
     defaultMessage: "Settings",
@@ -100,6 +105,7 @@ export const PRIMARY_NAV: readonly PrimaryNavEntry[] = [
     section: "accounting",
   },
   { id: "banking", label: labels.banking, modulePath: "banking", section: "banking" },
+  { id: "reports", label: labels.reports, modulePath: "reports", section: "reports" },
   { id: "documents", label: labels.documents, modulePath: "documents", section: "documents" },
   { id: "settings", label: labels.settings, modulePath: "settings/general", section: "settings" },
 ];
