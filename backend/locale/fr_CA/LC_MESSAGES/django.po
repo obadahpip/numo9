@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:54-0500\n"
+"POT-Creation-Date: 2026-11-24 15:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7348,6 +7348,27 @@ msgstr "%(journal)s n'attend pas d'approbation."
 #| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
 msgid "You wrote or submitted this invoice: someone else must approve it."
 msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(note)s is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "A credit note can credit only an approved invoice of the same customer."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the credit note is approved."
+msgstr ""
+
+#, fuzzy
+#| msgid "The total must be more than 0.00."
+msgid "A credit note's total must be more than zero."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Credit note %(number)s — %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
 
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."

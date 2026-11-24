@@ -32,7 +32,7 @@ from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import org_context
 
 from .credit import DOCUMENT_TYPE as CREDIT_DOCUMENT
-from .models import Invoice, InvoiceStatus
+from .models import CreditNote, Invoice, InvoiceStatus
 from .numbering import assign_number
 
 SOURCE_TYPE = "sales.invoice"
@@ -43,7 +43,7 @@ class InvoiceRefused(LedgerError):
     """An invoice action the rules refuse (``code`` names the rule)."""
 
 
-def preview_lines(invoice: Invoice) -> list[PreviewLine]:
+def preview_lines(invoice: Invoice | CreditNote) -> list[PreviewLine]:
     return [
         PreviewLine(
             account=line.account,
@@ -72,7 +72,7 @@ def invoice_preview(invoice: Invoice) -> Preview:
         )
 
 
-def store_figures(invoice: Invoice, result: Any) -> None:
+def store_figures(invoice: Invoice | CreditNote, result: Any) -> None:
     """The calculator's figures on the header and each line (server-authoritative)."""
     lines = list(invoice.lines.order_by("position", "pk"))
     for line, figures in zip(lines, result.lines, strict=True):
