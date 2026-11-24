@@ -30,6 +30,7 @@ class TrialBalanceReport(ReportDefinition):
     name = _("Trial balance")
     description = _("Every account's debit or credit balance on a date, in one book.")
     category = "financial"
+    keywords = (_("TB"), _("balances"), "balance de vérification")
     params = (ParamSpec("as_of", "date"), ParamSpec("book", "choice", "accounting", BOOKS))
 
     def columns(self, params: dict[str, Any]) -> list[Column]:
@@ -65,6 +66,7 @@ class AccountActivityReport(ReportDefinition):
     name = _("Account activity")
     description = _("Debits, credits and net movement of each account for a period.")
     category = "financial"
+    keywords = (_("movements"), _("account summary"), "mouvements")
     params = (
         ParamSpec("date_from", "date", required=True),
         ParamSpec("date_to", "date", required=True),

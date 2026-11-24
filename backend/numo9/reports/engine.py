@@ -23,7 +23,9 @@ A report is a ``ReportDefinition`` subclass registered in the catalogue (``regis
   ``query`` → ``rows`` → ``totals``, every value a ``Decimal`` or ``None`` per column.
 
 The registry refuses two reports with the same id or slug, finds one by id or slug, and lists
-them by category (the report home, K-01-T12).
+them by category (the report home, K-01-T12). Every registered report is also an entry of the
+global search and the command palette (A-09, K-01-T18): its name and ``keywords`` find it, and it
+opens the runner (``/o/<org>/reports/<slug>``), gated by its feature key like the API.
 """
 
 from __future__ import annotations
@@ -158,6 +160,8 @@ class ReportDefinition:
     feature: ClassVar[str] = "accounting.reports.read"
     permission: ClassVar[str] = "reports.reports.view"
     params: ClassVar[tuple[ParamSpec, ...]] = ()
+    #: Other words people search the report by (K-01-T18): "TB", "income statement"…
+    keywords: ClassVar[tuple[str | Promise, ...]] = ()
 
     def clean_params(self, raw: Mapping[str, Any] | None) -> dict[str, Any]:
         raw = dict(raw or {})
@@ -220,6 +224,7 @@ class ReportRegistry:
             )
         self._by_id[report.id] = report
         self._by_slug[report.slug] = report
+        _register_search(report)
         return definition
 
     def unregister(self, report_id: str) -> None:
@@ -227,6 +232,9 @@ class ReportRegistry:
         report = self._by_id.pop(report_id, None)
         if report is not None:
             self._by_slug.pop(report.slug, None)
+            from numo9.search.static import unregister_static
+
+            unregister_static(f"reports.{report.id}")
 
     def get(self, key: str) -> ReportDefinition:
         found = self._by_id.get(key) or self._by_slug.get(key)
@@ -245,6 +253,23 @@ class ReportRegistry:
 
     def __contains__(self, key: object) -> bool:
         return key in self._by_id or key in self._by_slug
+
+
+def _register_search(report: ReportDefinition) -> None:
+    """The report as a global-search entry (A-09 static entries, group ``reports``)."""
+    from numo9.search.static import REPORTS, StaticEntry, register_static
+
+    register_static(
+        StaticEntry(
+            f"reports.{report.id}",
+            REPORTS,
+            report.name,
+            f"reports/{report.slug}",
+            tuple(report.keywords),
+            permission_key=report.permission,
+            feature_key=report.feature,
+        )
+    )
 
 
 registry = ReportRegistry()

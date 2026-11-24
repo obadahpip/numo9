@@ -51,6 +51,11 @@ def register_static(*entries: StaticEntry) -> None:
         _entries[entry.key] = entry
 
 
+def unregister_static(key: str) -> None:
+    """Tests only (a sample report registered for one test)."""
+    _entries.pop(key, None)
+
+
 def static_entries() -> list[StaticEntry]:
     return list(_entries.values())
 
@@ -145,7 +150,8 @@ register_static(
         "settings/package-features",
         (_("what's included"), _("feature matrix")),
     ),
-    # ---- reports catalogue (Phase 1 reports, K-01…, register theirs) ----------------------
+    # ---- reports catalogue: every report-engine report registers itself (K-01-T18,
+    # numo9.reports.engine); other report-like pages are listed here --------------------------
     StaticEntry(
         "reports.contact_statement",
         REPORTS,
@@ -157,6 +163,14 @@ register_static(
     ),
     # ---- navigation ------------------------------------------------------------------------
     StaticEntry("nav.home", NAVIGATION, _("Home"), "", (_("dashboard"), "accueil")),
+    StaticEntry(
+        "nav.reports",
+        NAVIGATION,
+        _("Reports"),
+        "reports",
+        (_("report home"), _("favourite reports"), "rapports"),
+        permission_key="reports.reports.view",
+    ),
     StaticEntry(
         "nav.contacts",
         NAVIGATION,
