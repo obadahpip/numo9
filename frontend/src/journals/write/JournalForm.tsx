@@ -1,15 +1,17 @@
 "use client";
 
 /**
- * Manual journal screen (C-03-T11…T14), `/o/:org/accounting/journals/new`: the header (date,
+ * Manual journal screen (C-03-T11…T14; per-line contact column C-03-T12),
+ * `/o/:org/accounting/journals/new`: the header (date,
  * journal type, narration, automatic reversal date), the lines (account, debit, credit,
  * description) and Post / Save as draft. As the journal is typed, the server is asked what it
  * would say (`journals/check`): problems are listed before posting.
  */
 import { Button, Dialog, ErrorState, Input, Tooltip } from "@numo9/ui";
-import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { accountsApi, type Account } from "@/accounts/api";
+import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useDebounced } from "@/directory/useDebounced";
 import type { FileDocument } from "@/files/api";
 import { uploadFile } from "@/files/upload";
@@ -74,6 +76,12 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
   const attachId = useId();
   const [documents, setDocuments] = useState<FileDocument[]>([]);
   const [upload, setUpload] = useState<{ name: string; failed: boolean } | null>(null);
+  // C-03-T12: the per-line contact column is hidden until asked for, or until an account that
+  // requires a contact is chosen (then it opens and the line's contact cell takes focus).
+  const [contactColumn, setContactColumn] = useState(false);
+  const [contacts, setContacts] = useState<ContactSummary[] | null>(null);
+  const [focusContact, setFocusContact] = useState<number | null>(null);
+  const contactRefs = useRef<(HTMLSelectElement | null)[]>([]);
 
   useEffect(() => {
     accountsApi
@@ -117,6 +125,34 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
 
   const setLine = (index: number, changes: Partial<LineInput>) =>
     setLines((rows) => rows.map((row, i) => (i === index ? { ...row, ...changes } : row)));
+
+  const accountOf = (id: string) => (accounts ?? []).find((account) => account.id === id);
+  // `needs.contact_lines` numbers the filled lines from 1 (the ones sent to the server).
+  const filledIndexes = lines.flatMap((line, i) => (filledLines([line]).length ? [i] : []));
+  const contactRequired = (line: LineInput, index: number) =>
+    Boolean(accountOf(line.account)?.require_contact) ||
+    (check?.needs.contact_lines ?? []).includes(filledIndexes.indexOf(index) + 1);
+  const contactNeeded = lines.some(contactRequired);
+  const showContacts = contactColumn || contactNeeded;
+
+  const chooseAccount = (index: number, accountId: string) => {
+    setLine(index, { account: accountId });
+    if (accountOf(accountId)?.require_contact && !lines[index]?.contact) setFocusContact(index);
+  };
+
+  useEffect(() => {
+    if (!showContacts || contacts) return;
+    contactsApi
+      .list(org, { status: "active" })
+      .then((result) => setContacts(result.status === 200 ? result.body.results : []))
+      .catch(() => setContacts([]));
+  }, [org, showContacts, contacts]);
+
+  useEffect(() => {
+    if (focusContact === null) return;
+    contactRefs.current[focusContact]?.focus();
+    setFocusContact(null);
+  }, [focusContact, showContacts]);
 
   const submit = async (post: boolean, overrideReason = "") => {
     setBusy(true);
@@ -275,6 +311,11 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
             <th scope="col" className="py-1 text-start">
               {fm(wm.description)}
             </th>
+            {showContacts ? (
+              <th scope="col" className="py-1 ps-2 text-start" data-column="contact">
+                {fm(wm.contact)}
+              </th>
+            ) : null}
           </tr>
         </thead>
         <tbody>
@@ -286,7 +327,7 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
                   <select
                     aria-label={fm(wm.accountOfLine, { line: n })}
                     value={line.account}
-                    onChange={(e) => setLine(index, { account: e.target.value })}
+                    onChange={(e) => chooseAccount(index, e.target.value)}
                     className="min-h-touch-target w-full rounded-md border border-border bg-surface px-2 text-sm text-fg"
                   >
                     <option value="">{fm(wm.chooseAccount)}</option>
@@ -330,19 +371,67 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
                     onChange={(e) => setLine(index, { description: e.target.value })}
                   />
                 </td>
+                {showContacts ? (
+                  <td className="py-2 ps-2" data-column="contact">
+                    <select
+                      ref={(element) => {
+                        contactRefs.current[index] = element;
+                      }}
+                      aria-label={fm(wm.contactOfLine, { line: n })}
+                      aria-required={contactRequired(line, index) || undefined}
+                      aria-invalid={(contactRequired(line, index) && !line.contact) || undefined}
+                      data-required={contactRequired(line, index) ? "true" : undefined}
+                      value={line.contact ?? ""}
+                      onChange={(e) => setLine(index, { contact: e.target.value || null })}
+                      className={`min-h-touch-target w-full rounded-md border bg-surface px-2 text-sm text-fg ${
+                        contactRequired(line, index) && !line.contact
+                          ? "border-border-danger"
+                          : "border-border"
+                      }`}
+                    >
+                      <option value="">{fm(wm.noContact)}</option>
+                      {(contacts ?? []).map((contact) => (
+                        <option key={contact.id} value={contact.id}>
+                          {contact.display_name}
+                        </option>
+                      ))}
+                    </select>
+                    {contactRequired(line, index) && !line.contact ? (
+                      <p
+                        className="mt-1 text-xs font-medium text-fg-danger"
+                        data-contact-required=""
+                      >
+                        {fm(wm.contactRequired)}
+                      </p>
+                    ) : null}
+                  </td>
+                ) : null}
               </tr>
             );
           })}
         </tbody>
       </table>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Button
-          variant="secondary"
-          type="button"
-          onClick={() => setLines((r) => [...r, emptyLine()])}
-        >
-          {fm(wm.addLine)}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => setLines((r) => [...r, emptyLine()])}
+          >
+            {fm(wm.addLine)}
+          </Button>
+          <Button
+            variant="ghost"
+            type="button"
+            aria-pressed={showContacts}
+            // Once an account needs a contact, the column stays: it can't be hidden.
+            disabled={contactNeeded}
+            onClick={() => setContactColumn((shown) => !shown)}
+            data-toggle="contact-column"
+          >
+            {showContacts ? fm(wm.hideContacts) : fm(wm.showContacts)}
+          </Button>
+        </div>
         <p className="text-sm text-fg-muted" data-totals="">
           {fm(wm.totals, { debit: money(lines, "debit"), credit: money(lines, "credit") })}
         </p>
