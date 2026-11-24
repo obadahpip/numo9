@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:43-0500\n"
+"POT-Creation-Date: 2026-11-24 15:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6573,6 +6573,16 @@ msgstr ""
 msgid "Year to date — unaudited"
 msgstr ""
 
+msgid "Closing balance"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+#, python-format
+msgid "There's no account %(code)s."
+msgstr ""
+
 msgid "Published"
 msgstr ""
 
@@ -6658,9 +6668,6 @@ msgid "Closing debit"
 msgstr ""
 
 msgid "Closing credit"
-msgstr ""
-
-msgid "Total"
 msgstr ""
 
 msgid "Account activity"

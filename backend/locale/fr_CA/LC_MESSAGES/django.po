@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:43-0500\n"
+"POT-Creation-Date: 2026-11-24 15:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7090,6 +7090,21 @@ msgstr "taux de conversion (30 jours)"
 msgid "Year to date — unaudited"
 msgstr ""
 
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Closing balance"
+msgstr "Solde d’ouverture"
+
+#, fuzzy
+#| msgid "total"
+msgid "Total"
+msgstr "total"
+
+#, fuzzy, python-format
+#| msgid "There's no %(side)s tax code %(code)s."
+msgid "There's no account %(code)s."
+msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
+
 msgid "Published"
 msgstr ""
 
@@ -7210,11 +7225,6 @@ msgstr "Clôture"
 #| msgid "Closing"
 msgid "Closing credit"
 msgstr "Clôture"
-
-#, fuzzy
-#| msgid "total"
-msgid "Total"
-msgstr "total"
 
 #, fuzzy
 #| msgid "Accountant"

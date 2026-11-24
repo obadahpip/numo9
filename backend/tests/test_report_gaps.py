@@ -151,9 +151,12 @@ def test_one_engine_for_financial_and_tax_reports(books: dict[str, Any], tax_rep
 
 def _sample_params(report: ReportDefinition) -> dict[str, str]:
     names = {spec.name for spec in report.params}
+    params = {}
     if {"date_from", "date_to"} <= names:
-        return {"date_from": "2026-06-01", "date_to": "2026-06-30"}
-    return {}
+        params = {"date_from": "2026-06-01", "date_to": "2026-06-30"}
+    if "account" in names:  # account transactions (K-02-T10): the report books' chequing account
+        params["account"] = "1000"
+    return params
 
 
 @pytest.mark.gap("gap-55")
