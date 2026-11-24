@@ -54,6 +54,7 @@ describe("keyboard shortcuts (A-09-T08)", () => {
       "N J",
       "N S",
       "N R",
+      "N A",
       "N T",
       "N U",
     ]);

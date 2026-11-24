@@ -2242,6 +2242,8 @@
   "palette": {
     "button": "Search or jump to…",
     "close": "Close",
+    "createMenu": "Create",
+    "createMenuLoading": "Loading…",
     "empty": "Nothing matches “{query}”. Try a name, a code or an amount.",
     "error": "Search isn't available right now. Make sure you're online, then try again.",
     "group": {
@@ -2289,6 +2291,7 @@
     }
   },
   "quickCreate": {
+    "bankAccount": "Add bank account",
     "bill": "New bill",
     "contact": "New contact",
     "invoice": "New invoice",
