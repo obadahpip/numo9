@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:29-0500\n"
+"POT-Creation-Date: 2026-11-24 15:35-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7125,6 +7125,36 @@ msgid "balances"
 msgstr "Solde"
 
 #, fuzzy
+#| msgid "Opening balance"
+msgid "Opening debit"
+msgstr "Solde d’ouverture"
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Opening credit"
+msgstr "Solde d’ouverture"
+
+#, fuzzy
+#| msgid "Debit"
+msgid "Debits"
+msgstr "Débit"
+
+#, fuzzy
+#| msgid "Credit"
+msgid "Credits"
+msgstr "Crédit"
+
+#, fuzzy
+#| msgid "Closing"
+msgid "Closing debit"
+msgstr "Clôture"
+
+#, fuzzy
+#| msgid "Closing"
+msgid "Closing credit"
+msgstr "Clôture"
+
+#, fuzzy
 #| msgid "total"
 msgid "Total"
 msgstr "total"
@@ -7146,16 +7176,6 @@ msgstr "Documents"
 #| msgid "Accounting"
 msgid "account summary"
 msgstr "Comptabilité"
-
-#, fuzzy
-#| msgid "Debit"
-msgid "Debits"
-msgstr "Débit"
-
-#, fuzzy
-#| msgid "Credit"
-msgid "Credits"
-msgstr "Crédit"
 
 msgid "Net movement"
 msgstr ""

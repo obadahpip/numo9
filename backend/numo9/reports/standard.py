@@ -1,7 +1,9 @@
 """The standard reports (K-01-T02 registers the first two; K-02… add the statements).
 
 - ``trial_balance`` — every account's debit or credit balance in one book as at a date
-  (C-02-T11 ``trial_balance``), with the totals of both columns;
+  (C-02-T11 ``trial_balance``), with the totals of both columns; with a ``date_from`` (K-02-T06)
+  the **opening / movement / closing** debit and credit of each account for the period, sorted by
+  code, each pair of columns totalling equal;
 - ``account_activity`` — for a period, each account's debits, credits and net movement in one
   book, from posted lines; accounts without activity are left out.
 """
@@ -31,17 +33,94 @@ class TrialBalanceReport(ReportDefinition):
     description = _("Every account's debit or credit balance on a date, in one book.")
     category = "financial"
     keywords = (_("TB"), _("balances"), "balance de vérification")
-    params = (ParamSpec("as_of", "date"), ParamSpec("book", "choice", "accounting", BOOKS))
+    params = (
+        ParamSpec("as_of", "date"),
+        ParamSpec("book", "choice", "accounting", BOOKS),
+        ParamSpec("date_from", "date"),
+    )
 
     def columns(self, params: dict[str, Any]) -> list[Column]:
+        if params.get("date_from"):
+            return [
+                Column("opening_debit", str(_("Opening debit"))),
+                Column("opening_credit", str(_("Opening credit"))),
+                Column("movement_debit", str(_("Debits"))),
+                Column("movement_credit", str(_("Credits"))),
+                Column("closing_debit", str(_("Closing debit"))),
+                Column("closing_credit", str(_("Closing credit"))),
+            ]
         return [Column("debit", str(_("Debit"))), Column("credit", str(_("Credit")))]
 
     def query(self, organisation: Any, params: dict[str, Any]) -> Any:
+        if params.get("date_from"):
+            return self._periodic(params)
         from numo9.ledger.trial_balance import trial_balance
 
         return trial_balance(params["book"], as_of=params["as_of"])
 
+    @staticmethod
+    def _end(params: dict[str, Any]) -> dt.date:
+        from django.utils import timezone
+
+        return params.get("as_of") or timezone.localdate()
+
+    def _periodic(self, params: dict[str, Any]) -> list[tuple[Any, list[Decimal]]]:
+        from numo9.ledger.models import LOCKED_STATUSES, Account, JournalLine
+        from numo9.ledger.trial_balance import book_lines_filter
+
+        from .aggregation import balances_at
+
+        start: dt.date = params["date_from"]
+        end = self._end(params)
+        opening = balances_at([start - dt.timedelta(days=1)], book=params["book"])
+        moves = {
+            row["account_id"]: (row["debit"], row["credit"])
+            for row in JournalLine.objects.filter(
+                entry__status__in=LOCKED_STATUSES,
+                entry__date__gte=start,
+                entry__date__lte=end,
+                book__in=book_lines_filter(params["book"]),
+            )
+            .values("account_id")
+            .annotate(debit=Coalesce(Sum("debit"), ZERO), credit=Coalesce(Sum("credit"), ZERO))
+        }
+        ids = set(moves) | {pk for pk, (value,) in opening.items() if value}
+        out = []
+        for account in Account.objects.filter(pk__in=ids).order_by("code"):
+            before = opening.get(account.pk, [ZERO])[0]
+            debit, credit = moves.get(account.pk, (ZERO, ZERO))
+            after = before + debit - credit
+            out.append(
+                (
+                    account,
+                    [
+                        max(before, ZERO),
+                        max(-before, ZERO),
+                        debit,
+                        credit,
+                        max(after, ZERO),
+                        max(-after, ZERO),
+                    ],
+                )
+            )
+        return out
+
     def rows(self, data: Any, params: dict[str, Any]) -> list[ReportRow]:
+        if params.get("date_from"):
+            return [
+                ReportRow(
+                    key=f"account:{account.code}",
+                    label=f"{account.code} · {account.name}",
+                    values=[v or None for v in values],
+                    drill={
+                        "account": account.code,
+                        "book": params["book"],
+                        "from": params["date_from"],
+                        "to": self._end(params),
+                    },
+                )
+                for account, values in data
+            ]
         return [
             ReportRow(
                 key=f"account:{row.code}",
@@ -54,9 +133,9 @@ class TrialBalanceReport(ReportDefinition):
         ]
 
     def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
-        debit = sum((r.values[0] or ZERO for r in rows), ZERO)
-        credit = sum((r.values[1] or ZERO for r in rows), ZERO)
-        return [ReportRow("total", str(_("Total")), "total", [debit, credit])]
+        width = 6 if params.get("date_from") else 2
+        sums = [sum((r.values[i] or ZERO for r in rows), ZERO) for i in range(width)]
+        return [ReportRow("total", str(_("Total")), "total", list(sums))]
 
 
 @register
