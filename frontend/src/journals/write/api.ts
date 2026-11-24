@@ -68,6 +68,17 @@ export const writeApi = {
     apiRequest<CheckResult>(journalsUrl(org, "/check"), { method: "POST", body }),
   create: (org: string, body: JournalInput): Promise<ApiResult<Journal & Refusal>> =>
     apiRequest<Journal & Refusal>(journalsUrl(org), { method: "POST", body }),
+  /** C-04-T07 workflow actions on an existing journal. */
+  action: (
+    org: string,
+    id: string,
+    action: "post" | "submit" | "approve" | "reject" | "withdraw" | "reverse",
+    body: Record<string, unknown> = {},
+  ): Promise<ApiResult<Journal & Refusal>> =>
+    apiRequest<Journal & Refusal>(journalsUrl(org, `/${encodeURIComponent(id)}/${action}`), {
+      method: "POST",
+      body,
+    }),
 };
 
 /** Lines with an account and an amount: what the server is asked about. */

@@ -1129,3 +1129,128 @@ class JournalApproval(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.entry} · {self.get_decision_display()}"
+
+
+# ---- recurring journals (C-04-T04) --------------------------------------------------------------
+
+
+class RecurringMode(models.TextChoices):
+    """What each occurrence of a recurring journal becomes."""
+
+    DRAFT = "draft", _("Save as a draft")
+    POST = "post", _("Post")
+
+
+class RecurringJournalTemplate(AuditedModel, OrgOwnedModel):
+    """A journal that repeats on a schedule (C-04-T04): the lines and header of the journal, an
+    RFC 5545 recurrence rule, a start and an optional end date, and the mode — each occurrence a
+    draft or posted. ``next_run`` is the next occurrence still to generate (``None``: finished);
+    ``paused`` templates generate nothing; ``version`` goes up on every edit and is stored on each
+    run (C-04 risk: template drift). ``lines`` is validated by ``numo9.ledger.recurring``:
+    ``[{account, debit, credit, book, contact, description}]`` with public ids, balanced."""
+
+    name = models.CharField(_("name"), max_length=200)
+    narration = models.CharField(_("narration"), max_length=1000, blank=True)
+    journal_type = models.CharField(
+        _("journal type"),
+        max_length=20,
+        choices=JournalCategory.choices,
+        default=JournalCategory.GENERAL,
+    )
+    lines = models.JSONField(_("lines"), default=list)
+    rrule = models.CharField(
+        _("schedule"),
+        max_length=500,
+        help_text=_("An RFC 5545 recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."),
+    )
+    start_date = models.DateField(_("start date"))
+    end_date = models.DateField(_("end date"), null=True, blank=True)
+    mode = models.CharField(
+        _("mode"), max_length=10, choices=RecurringMode.choices, default=RecurringMode.DRAFT
+    )
+    next_run = models.DateField(_("next run"), null=True, blank=True)
+    paused = models.BooleanField(_("paused"), default=False)
+    version = models.PositiveIntegerField(_("version"), default=1)
+
+    class Meta:
+        ordering = ("name", "pk")
+        verbose_name = _("recurring journal")
+        verbose_name_plural = _("recurring journals")
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "paused", "next_run"], name="ledger_recur_due"),
+        ]
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(mode__in=RecurringMode.values),
+                name="ledger_recur_mode_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(end_date__isnull=True)
+                | models.Q(end_date__gte=models.F("start_date")),
+                name="ledger_recur_end_after_start",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+    def clean(self) -> None:
+        from .recurring import validate_template
+
+        validate_template(self)
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self._state.adding and self.next_run is None:
+            from .recurring import first_run
+
+            self.next_run = first_run(self)
+        super().save(*args, **kwargs)
+
+
+class RecurringRunStatus(models.TextChoices):
+    CREATED = "created", _("Created")
+    SKIPPED = "skipped", _("Skipped")
+
+
+class RecurringJournalRun(OrgOwnedModel):
+    """One occurrence of a recurring journal (C-04-T06). **Unique per (template, date)**: the
+    idempotency row — a tick that runs twice (two workers, a restart) inserts it once, and only
+    the insert that wins creates the journal. A skipped occurrence (its date locked or closed, or
+    the journal refused) is recorded with the reason, never posted on another date."""
+
+    template = models.ForeignKey(
+        RecurringJournalTemplate,
+        on_delete=models.CASCADE,
+        related_name="runs",
+        verbose_name=_("recurring journal"),
+    )
+    occurrence_date = models.DateField(_("occurrence date"))
+    template_version = models.PositiveIntegerField(_("template version"))
+    status = models.CharField(_("status"), max_length=10, choices=RecurringRunStatus.choices)
+    entry = models.OneToOneField(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="recurring_run",
+        verbose_name=_("journal"),
+    )
+    code = models.CharField(_("reason code"), max_length=100, blank=True)
+    message = models.TextField(_("reason"), blank=True)
+
+    class Meta:
+        ordering = ("template", "-occurrence_date")
+        verbose_name = _("recurring journal run")
+        verbose_name_plural = _("recurring journal runs")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["template", "occurrence_date"], name="ledger_recur_run_once"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=RecurringRunStatus.values),
+                name="ledger_recur_run_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.template} · {self.occurrence_date}"

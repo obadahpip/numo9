@@ -22,6 +22,7 @@ const account = (id: string, code: string, name: string, requireContact: boolean
   code,
   name,
   type: requireContact ? "asset" : "expense",
+  subtype: requireContact ? "current_asset" : "operating_expense",
   has_children: false,
   require_contact: requireContact,
   require_tracking: false,
@@ -29,13 +30,17 @@ const account = (id: string, code: string, name: string, requireContact: boolean
 });
 
 let checks: Record<string, unknown>[] = [];
+let urls: string[] = [];
+const fetchCalls = () => urls.join(" ");
 
 function serve(contactLines: number[] = []) {
   checks = [];
+  urls = [];
   vi.stubGlobal(
     "fetch",
     vi.fn(
       serveJson((url, init) => {
+        urls.push(url);
         if (url.includes("/accounts?"))
           return {
             body: {
@@ -75,10 +80,19 @@ function serve(contactLines: number[] = []) {
 
 afterEach(() => vi.unstubAllGlobals());
 
+/** C-04-T09: the account cell is an autocomplete — type and pick. */
+async function pickAccount(line: number, name: string) {
+  const box = screen.getByRole("combobox", { name: `Account, line ${line}` });
+  await userEvent.click(box);
+  await userEvent.type(box, name);
+  await userEvent.click(await screen.findByRole("option", { name: new RegExp(name) }));
+}
+
 it("hides the contact column by default; the toggle shows and hides it", async () => {
   serve();
   renderWithIntl(<JournalForm org={ORG} />);
-  await screen.findAllByRole("option", { name: /Office supplies/ });
+  await screen.findByRole("combobox", { name: "Account, line 1" });
+  await waitFor(() => expect(fetchCalls()).toContain("accounts"));
   expect(screen.queryByRole("columnheader", { name: "Contact" })).toBeNull();
   await userEvent.click(screen.getByRole("button", { name: "Show contact column" }));
   expect(screen.getByRole("columnheader", { name: "Contact" })).toBeVisible();
@@ -90,8 +104,9 @@ it("hides the contact column by default; the toggle shows and hides it", async (
 it("a require-contact account reveals the column and focuses that line's contact cell", async () => {
   serve();
   renderWithIntl(<JournalForm org={ORG} />);
-  await screen.findAllByRole("option", { name: /Office supplies/ });
-  await userEvent.selectOptions(screen.getByLabelText("Account, line 2"), AR);
+  await screen.findByRole("combobox", { name: "Account, line 1" });
+  await waitFor(() => expect(fetchCalls()).toContain("accounts"));
+  await pickAccount(2, "Accounts receivable");
   const cell = await screen.findByLabelText("Contact, line 2");
   await waitFor(() => expect(cell).toHaveFocus());
   expect(cell).toHaveAttribute("aria-required", "true");
@@ -111,10 +126,11 @@ it("a require-contact account reveals the column and focuses that line's contact
 it("sends the chosen contact with the line", async () => {
   serve();
   renderWithIntl(<JournalForm org={ORG} />);
-  await screen.findAllByRole("option", { name: /Office supplies/ });
-  await userEvent.selectOptions(screen.getByLabelText("Account, line 1"), OFFICE);
+  await screen.findByRole("combobox", { name: "Account, line 1" });
+  await waitFor(() => expect(fetchCalls()).toContain("accounts"));
+  await pickAccount(1, "Office supplies");
   await userEvent.type(screen.getByLabelText("Debit, line 1"), "50");
-  await userEvent.selectOptions(screen.getByLabelText("Account, line 2"), AR);
+  await pickAccount(2, "Accounts receivable");
   await userEvent.type(screen.getByLabelText("Credit, line 2"), "50");
   await screen.findAllByRole("option", { name: "Maple Leaf Ltd" });
   await userEvent.selectOptions(screen.getByLabelText("Contact, line 2"), CUSTOMER);
@@ -128,10 +144,11 @@ it("shows the column when the server says a line needs a contact (expense rule)"
   // The expense-contact rule (C-03-T06) is the organisation's: only the check knows it.
   serve([1]);
   renderWithIntl(<JournalForm org={ORG} />);
-  await screen.findAllByRole("option", { name: /Office supplies/ });
-  await userEvent.selectOptions(screen.getByLabelText("Account, line 1"), OFFICE);
+  await screen.findByRole("combobox", { name: "Account, line 1" });
+  await waitFor(() => expect(fetchCalls()).toContain("accounts"));
+  await pickAccount(1, "Office supplies");
   await userEvent.type(screen.getByLabelText("Debit, line 1"), "50");
-  await userEvent.selectOptions(screen.getByLabelText("Account, line 2"), OFFICE);
+  await pickAccount(2, "Office supplies");
   await userEvent.type(screen.getByLabelText("Credit, line 2"), "50");
   const cell = await screen.findByLabelText("Contact, line 1", {}, { timeout: 2000 });
   expect(cell).toHaveAttribute("aria-required", "true");

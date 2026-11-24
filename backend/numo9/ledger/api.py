@@ -90,6 +90,53 @@ class JournalDetailSerializer(JournalSummarySerializer):
         child=serializers.DictField(), help_text="Advisers' reasons for posting past the cash guard"
     )
     audit = serializers.ListField(child=serializers.DictField())
+    created_by = serializers.DictField(allow_null=True)
+    approval = serializers.DictField(
+        allow_null=True, help_text="The latest approval round (C-04): submitted, decided, reason"
+    )
+    viewer = serializers.DictField(
+        help_text="What the signed-in person may do with it (C-04-T10): is_author, can_approve"
+    )
+
+
+def _person(user: Any) -> dict[str, str] | None:
+    return {"id": str(user.public_id), "name": user.name} if user is not None else None
+
+
+def _approval(entry: JournalEntry, user: Any) -> tuple[dict[str, Any] | None, dict[str, Any]]:
+    """The latest approval round and the viewer's standing (author? may approve?)."""
+    from numo9.rbac.approvals import effective_limit
+    from numo9.rbac.inbox import blocked_reason
+    from numo9.rbac.models import ApprovalDocumentType
+    from numo9.rbac.resolver import has_perm
+
+    from .approvals import journal_total, latest_round
+
+    round_ = latest_round(entry)
+    authors = {pk for pk in (entry.created_by_id, round_.submitted_by_id if round_ else None) if pk}
+    is_author = getattr(user, "pk", None) in authors
+    blocked: str | None = "not_waiting"
+    if entry.status == "awaiting_approval":
+        if not has_perm(user, entry.organisation, "accounting.journals.approve"):
+            blocked = "permission"
+        else:
+            limit = effective_limit(
+                user, ApprovalDocumentType.JOURNAL, organisation=entry.organisation
+            )
+            blocked = blocked_reason(user, authors, limit, journal_total(entry))
+    approval = (
+        {
+            "decision": round_.decision,
+            "submitted_by": _person(round_.submitted_by),
+            "submitted_at": round_.submitted_at,
+            "decided_by": _person(round_.decided_by),
+            "decided_at": round_.decided_at,
+            "reason": round_.reason,
+        }
+        if round_ is not None
+        else None
+    )
+    return approval, {"is_author": is_author, "can_approve": blocked is None, "blocked": blocked}
 
 
 def _money(value: Decimal) -> str:
@@ -281,7 +328,7 @@ class JournalDetailView(APIView):
     def get(self, request: Request, org: Any, public_id: Any) -> Response:
         entry = (
             JournalEntry.objects.filter(public_id=public_id, deleted_at__isnull=True)
-            .select_related("organisation", "reversal_of", "reversed_by", "posted_by")
+            .select_related("organisation", "reversal_of", "reversed_by", "posted_by", "created_by")
             .first()
         )
         if entry is None:
@@ -306,6 +353,8 @@ class JournalDetailView(APIView):
                 for o in entry.overrides.select_related("user")
             ],
             audit=_audit(entry),
+            created_by=_person(entry.created_by),
         )
+        body["approval"], body["viewer"] = _approval(entry, request.user)
         assert current_org() is not None  # noqa: S101 - RequiresPermission answered 404 otherwise
         return Response(body)

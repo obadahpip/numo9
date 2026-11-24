@@ -37,6 +37,11 @@ class LedgerConfig(AppConfig):
 
         SWEEP_FACTORIES["ledger.JournalEntry"] = _sweep_journal
         SWEEP_FACTORIES["ledger.Account"] = _sweep_account
+        SWEEP_FACTORIES["ledger.RecurringJournalTemplate"] = _sweep_recurring
+
+        from .approvables import register_journal_approvals
+
+        register_journal_approvals()  # manual journals in the approvals inbox (C-04-T08)
 
 
 def _seed_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
@@ -57,6 +62,36 @@ def _has_posted_lines(account: Any) -> bool:
             entry__status__in=LOCKED_STATUSES,
         ).exists()
     )
+
+
+def _sweep_recurring(organisation: Any) -> Any:
+    """A recurring journal of the organisation (C-04-T07), on the sweep journal's accounts."""
+    import datetime as dt
+
+    from numo9.tenancy.context import org_context
+
+    from .models import JournalLine, RecurringJournalTemplate
+
+    entry = _sweep_journal(organisation)
+    with org_context(organisation):
+        lines = list(JournalLine.objects.filter(entry=entry).select_related("account"))
+        template = RecurringJournalTemplate(
+            organisation=organisation,
+            name="Sweep",
+            rrule="FREQ=MONTHLY",
+            start_date=dt.date(2026, 1, 1),
+            lines=[
+                {
+                    "account": str(line.account.public_id),
+                    "debit": f"{line.debit:.2f}",
+                    "credit": f"{line.credit:.2f}",
+                }
+                for line in lines
+            ],
+        )
+        template.full_clean()
+        template.save()
+        return template
 
 
 def _sweep_journal(organisation: Any) -> Any:

@@ -18,13 +18,13 @@ import {
   newDocumentLine,
   type AppLocale,
   type DocumentGridLine,
-  type PickerAccount,
   type PickerTaxCode,
 } from "@numo9/ui";
 import { useLocale } from "next-intl";
 import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
 
 import { accountsApi, type Account } from "@/accounts/api";
+import { pickerAccount } from "@/accounts/picker";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useDocumentLinesLabels, useDocumentTotalsLabels } from "@/documents/labels";
 import { useDocumentCalculation, type MirrorTaxCode } from "@/documents/useDocumentCalculation";
@@ -47,21 +47,6 @@ import { money as mm } from "./messages";
 const today = () => new Date().toISOString().slice(0, 10);
 /** The shortest reason an adviser may give to take the account below zero (C-03-T08). */
 const MIN_REASON = 10;
-
-export function pickerAccount(a: Account): PickerAccount {
-  return {
-    id: a.id,
-    code: a.code,
-    name: a.name,
-    type: a.type,
-    subtype: a.subtype as PickerAccount["subtype"],
-    detail: a.subtype_label,
-    systemRole: a.system_role || undefined,
-    isBank: a.is_bank,
-    depth: a.depth,
-    postable: !a.has_children,
-  };
-}
 
 export function pickerTaxCode(code: TaxCode): PickerTaxCode {
   return {

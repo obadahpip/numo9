@@ -1,24 +1,48 @@
 "use client";
 
 /**
- * Manual journal screen (C-03-T11…T14; per-line contact column C-03-T12),
+ * Manual journal screen (C-03-T11…T14; per-line contact column C-03-T12; C-04-T09 grid: account
+ * autocomplete, a difference meter — "Out of balance by $12.50" — with Post disabled until it is
+ * $0.00, Tab past the last cell adds a line),
  * `/o/:org/accounting/journals/new`: the header (date,
  * journal type, narration, automatic reversal date), the lines (account, debit, credit,
  * description) and Post / Save as draft. As the journal is typed, the server is asked what it
  * would say (`journals/check`): problems are listed before posting.
  */
-import { Button, Dialog, ErrorState, Input, Tooltip } from "@numo9/ui";
-import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from "react";
+import {
+  AccountPicker,
+  Button,
+  Dialog,
+  ErrorState,
+  formatMoney,
+  Input,
+  Tooltip,
+  type AppLocale,
+} from "@numo9/ui";
+import { useLocale } from "next-intl";
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 
 import { accountsApi, type Account } from "@/accounts/api";
+import { pickerAccount } from "@/accounts/picker";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
+import { useDocumentLinesLabels } from "@/documents/labels";
 import { useDebounced } from "@/directory/useDebounced";
 import type { FileDocument } from "@/files/api";
 import { uploadFile } from "@/files/upload";
 import { useFormatMessage } from "@/i18n";
 
+import { getJournal } from "../api";
 import {
   filledLines,
+  SELECTABLE_TYPES,
   writeApi,
   type CheckResult,
   type JournalInput,
@@ -44,19 +68,31 @@ const emptyLine = (): LineInput => ({
 
 const today = () => new Date().toISOString().slice(0, 10);
 
+function cents(lines: LineInput[], side: "debit" | "credit"): number {
+  return lines.reduce((sum, line) => sum + Math.round(Number(line[side] || 0) * 100), 0);
+}
+
 function money(lines: LineInput[], side: "debit" | "credit"): string {
-  const cents = lines.reduce((sum, line) => sum + Math.round(Number(line[side] || 0) * 100), 0);
-  return (cents / 100).toFixed(2);
+  return (cents(lines, side) / 100).toFixed(2);
+}
+
+/** Debits − credits in cents (C-04-T09 difference meter): 0 = balanced. */
+export function difference(lines: LineInput[]): number {
+  return cents(lines, "debit") - cents(lines, "credit");
 }
 
 export interface JournalFormProps {
   org: string;
   /** Where a posted or saved journal opens (default: its page). */
   navigate?: (href: string) => void;
+  /** Copy journal (C-04-T10): start from this journal's type, narration and lines. */
+  copyOf?: string | null;
 }
 
-export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
+export function JournalForm({ org, navigate, copyOf }: Readonly<JournalFormProps>) {
   const fm = useFormatMessage();
+  const locale = useLocale() as AppLocale;
+  const { accountTypes, noAccounts } = useDocumentLinesLabels();
   const headingId = useId();
   const [accounts, setAccounts] = useState<Account[] | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -82,6 +118,9 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
   const [contacts, setContacts] = useState<ContactSummary[] | null>(null);
   const [focusContact, setFocusContact] = useState<number | null>(null);
   const contactRefs = useRef<(HTMLSelectElement | null)[]>([]);
+  // C-04-T09: Tab past the last cell of the last line adds a line and moves to its account.
+  const accountRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [focusAccount, setFocusAccount] = useState<number | null>(null);
 
   useEffect(() => {
     accountsApi
@@ -127,6 +166,7 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
     setLines((rows) => rows.map((row, i) => (i === index ? { ...row, ...changes } : row)));
 
   const accountOf = (id: string) => (accounts ?? []).find((account) => account.id === id);
+  const pickerAccounts = useMemo(() => (accounts ?? []).map(pickerAccount), [accounts]);
   // `needs.contact_lines` numbers the filled lines from 1 (the ones sent to the server).
   const filledIndexes = lines.flatMap((line, i) => (filledLines([line]).length ? [i] : []));
   const contactRequired = (line: LineInput, index: number) =>
@@ -149,12 +189,48 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
   }, [org, showContacts, contacts]);
 
   useEffect(() => {
+    if (focusAccount === null) return;
+    accountRefs.current[focusAccount]?.focus();
+    setFocusAccount(null);
+  }, [focusAccount, lines.length]);
+
+  const tabOut = (index: number) => (event: KeyboardEvent) => {
+    if (event.key !== "Tab" || event.shiftKey || index !== lines.length - 1) return;
+    event.preventDefault();
+    setLines((rows) => [...rows, emptyLine()]);
+    setFocusAccount(index + 1);
+  };
+
+  useEffect(() => {
     if (focusContact === null) return;
     contactRefs.current[focusContact]?.focus();
     setFocusContact(null);
   }, [focusContact, showContacts]);
 
-  const submit = async (post: boolean, overrideReason = "") => {
+  useEffect(() => {
+    if (!copyOf) return;
+    void getJournal(org, copyOf).then((result) => {
+      if (result.status !== 200) return;
+      const source = result.body;
+      const amount = (value: string) => (Number(value) > 0 ? value : "");
+      setLines(
+        source.lines.map((line) => ({
+          account: line.account.id,
+          debit: amount(line.debit),
+          credit: amount(line.credit),
+          book: line.book,
+          contact: line.contact?.id ?? null,
+          description: line.description,
+        })),
+      );
+      setNarration(source.narration);
+      const kind = source.journal_type as JournalTypeKey | undefined;
+      if (kind && (SELECTABLE_TYPES as readonly string[]).includes(kind)) setJournalType(kind);
+      if (source.lines.some((line) => line.contact)) setContactColumn(true);
+    });
+  }, [org, copyOf]);
+
+  const submit = async (post: boolean, overrideReason = "", forApproval = false) => {
     setBusy(true);
     setFailed(false);
     setRefusal(null);
@@ -162,6 +238,15 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       ? { ...input, post, override_reason: overrideReason }
       : { ...input, post };
     const result = await writeApi.create(org, body);
+    if (result.status === 201 && forApproval) {
+      // Submit for approval (C-04-T10): the draft just saved goes to an approver.
+      const sent = await writeApi.action(org, result.body.id, "submit");
+      if (sent.status !== 200) {
+        setBusy(false);
+        setRefusal(sent.body);
+        return;
+      }
+    }
     setBusy(false);
     if (result.status === 201) {
       const href = `/o/${org}/accounting/journals/${result.body.id}`;
@@ -193,6 +278,9 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
     }
   };
 
+  const off = difference(lines);
+  const used = lines.some((line) => Number(line.debit) > 0 || Number(line.credit) > 0);
+  const unbalanced = off !== 0 || !used;
   const shortfalls = refusal?.shortfalls ?? check?.shortfalls ?? [];
   const adviser = refusal?.adviser ?? check?.adviser ?? false;
   const blocked = shortfalls.length > 0 && !adviser;
@@ -203,7 +291,7 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (blocked || needsAttachment) return;
+    if (blocked || needsAttachment || unbalanced) return;
     if (shortfalls.length > 0 && adviser) {
       setOverrideOpen(true);
       return;
@@ -324,19 +412,19 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
             return (
               <tr key={index} className="border-t border-border align-top" data-line={n}>
                 <td className="py-2 pe-2">
-                  <select
+                  <AccountPicker
+                    ref={(element) => {
+                      accountRefs.current[index] = element;
+                    }}
                     aria-label={fm(wm.accountOfLine, { line: n })}
-                    value={line.account}
-                    onChange={(e) => chooseAccount(index, e.target.value)}
-                    className="min-h-touch-target w-full rounded-md border border-border bg-surface px-2 text-sm text-fg"
-                  >
-                    <option value="">{fm(wm.chooseAccount)}</option>
-                    {(accounts ?? []).map((account) => (
-                      <option key={account.id} value={account.id}>
-                        {fm(wm.accountOption, { code: account.code, name: account.name })}
-                      </option>
-                    ))}
-                  </select>
+                    accounts={pickerAccounts}
+                    context="journal"
+                    value={line.account || null}
+                    onChange={(accountId) => chooseAccount(index, accountId ?? "")}
+                    typeLabels={accountTypes}
+                    emptyMessage={noAccounts}
+                    placeholder={fm(wm.chooseAccount)}
+                  />
                   {line.account && chipFor(line.account) ? (
                     <p
                       data-chip="negative-cash"
@@ -369,6 +457,7 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
                     aria-label={fm(wm.descriptionOfLine, { line: n })}
                     value={line.description}
                     onChange={(e) => setLine(index, { description: e.target.value })}
+                    onKeyDown={showContacts ? undefined : tabOut(index)}
                   />
                 </td>
                 {showContacts ? (
@@ -383,6 +472,7 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
                       data-required={contactRequired(line, index) ? "true" : undefined}
                       value={line.contact ?? ""}
                       onChange={(e) => setLine(index, { contact: e.target.value || null })}
+                      onKeyDown={tabOut(index)}
                       className={`min-h-touch-target w-full rounded-md border bg-surface px-2 text-sm text-fg ${
                         contactRequired(line, index) && !line.contact
                           ? "border-border-danger"
@@ -432,9 +522,28 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
             {showContacts ? fm(wm.hideContacts) : fm(wm.showContacts)}
           </Button>
         </div>
-        <p className="text-sm text-fg-muted" data-totals="">
-          {fm(wm.totals, { debit: money(lines, "debit"), credit: money(lines, "credit") })}
-        </p>
+        <div className="flex flex-col items-end gap-1">
+          <p className="text-sm text-fg-muted" data-totals="">
+            {fm(wm.totals, { debit: money(lines, "debit"), credit: money(lines, "credit") })}
+          </p>
+          <p
+            role="status"
+            data-difference={(off / 100).toFixed(2)}
+            className={`rounded-md px-3 py-1 text-sm font-semibold ${
+              off === 0 && used
+                ? "bg-surface-success-subtle text-fg-success"
+                : "bg-surface-warning-subtle text-fg-warning"
+            }`}
+          >
+            {off === 0
+              ? used
+                ? fm(wm.balanced)
+                : fm(wm.enterAmounts)
+              : fm(wm.outOfBalance, {
+                  amount: formatMoney((Math.abs(off) / 100).toFixed(2), { locale }),
+                })}
+          </p>
+        </div>
       </div>
 
       {problems.length ? (
@@ -478,15 +587,25 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
             </span>
           </Tooltip>
         ) : (
-          <Button type="submit" disabled={busy || !accounts || blocked}>
+          <Button type="submit" disabled={busy || !accounts || blocked || unbalanced}>
             {busy ? fm(wm.posting) : fm(wm.post)}
           </Button>
         )}
         <Button
           variant="secondary"
           type="button"
+          disabled={busy || unbalanced || needsAttachment}
+          onClick={() => void submit(false, "", true)}
+          data-action="submit"
+        >
+          {fm(wm.submitForApproval)}
+        </Button>
+        <Button
+          variant="secondary"
+          type="button"
           disabled={busy}
           onClick={() => void submit(false)}
+          data-action="saveDraft"
         >
           {fm(wm.saveDraft)}
         </Button>

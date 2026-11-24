@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { expectAccessible, mockCsrf } from "./auth-helpers";
+import { pickAccount } from "./journal-helpers";
 
 /**
  * C-03-T13 / T14 — manual journal controls (T14: an attachment-required journal can't be posted until a document is attached). The teardown scenario (REFINED): Petty Cash at zero,
@@ -90,9 +91,9 @@ async function mockJournalApi(
 
 async function fillTeardownJournal(page: Page) {
   await page.goto(`/o/${ORG}/accounting/journals/new`);
-  await page.getByLabel("Account, line 1").selectOption(OFFICE);
+  await pickAccount(page, 1, "6100", /Office supplies/);
   await page.getByLabel("Debit, line 1").fill("994.17");
-  await page.getByLabel("Account, line 2").selectOption(PETTY);
+  await pickAccount(page, 2, "Petty", /Petty Cash/);
   await page.getByLabel("Credit, line 2").fill("994.17");
 }
 

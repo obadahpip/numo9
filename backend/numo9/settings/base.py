@@ -592,6 +592,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.ledger.auto_reversals",
         "schedule": crontab(minute=29),
     },
+    # Recurring journals (C-04-T06): hourly, each organisation on its own date; idempotent.
+    "numo9.ledger.recurring_journals": {
+        "task": "numo9.ledger.recurring_journals",
+        "schedule": crontab(minute=41),
+    },
     # Platform metrics (U-06-T05): the day's snapshot for the console's trend charts.
     "numo9.platform.snapshot_metrics": {
         "task": "numo9.platform.snapshot_metrics",

@@ -18,6 +18,7 @@ import { defineMessages, useFormatMessage } from "@/i18n";
 import type { AppLocale } from "@/i18n/locales";
 
 import { getJournal, type Book, type Journal, type JournalStatus } from "./api";
+import { JournalActions } from "./JournalActions";
 
 const m = defineMessages({
   title: {
@@ -296,6 +297,14 @@ export function JournalViewer({ org, id }: Readonly<{ org: string; id: string }>
           ))}
         </div>
         <p className="text-fg-muted">{fm(m.readOnly)}</p>
+        <JournalActions
+          org={org}
+          journal={journal}
+          onDone={(next) => {
+            if (next.id === journal.id) setState({ kind: "ready", journal: next });
+            else window.location.assign(`/o/${org}/accounting/journals/${next.id}`);
+          }}
+        />
         {journal.reversal_of ? (
           <p data-reverses>
             {withLink(fm(m.reverses, { link: MARK }), journalLink(journal.reversal_of))}

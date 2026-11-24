@@ -38,6 +38,19 @@ export interface Journal {
   posted_by: { id: string; name: string } | null;
   posted_at: string | null;
   audit: { action: string; by: string; at: string }[];
+  journal_type?: string;
+  created_by?: { id: string; name: string } | null;
+  /** The latest approval round (C-04). */
+  approval?: {
+    decision: "pending" | "approved" | "rejected" | "withdrawn";
+    submitted_by: { id: string; name: string } | null;
+    submitted_at: string | null;
+    decided_by: { id: string; name: string } | null;
+    decided_at: string | null;
+    reason: string;
+  } | null;
+  /** What the signed-in person may do with it (C-04-T10). */
+  viewer?: { is_author: boolean; can_approve: boolean; blocked: string | null };
 }
 
 export const journalsUrl = (org: string, suffix = "") =>

@@ -100,6 +100,7 @@ nav:
       - "Connection pooling (PgBouncer)": operations/pgbouncer.md
   - User guide:
       - "Manual journals: types and controls": user-guide/journal-types-and-controls.md
+      - "Manual journals: editor, approval and recurring": user-guide/journal-approval-and-recurring.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:
