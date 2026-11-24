@@ -266,3 +266,198 @@ def _dates(parsed: rrule, start: dt.date) -> Iterator[dt.date]:
             return
         if day >= start:
             yield day
+
+
+# ---- generation (C-04-T06) -------------------------------------------------------------------
+
+JOB = "numo9.ledger.recurring_journals"
+SOURCE_TYPE = "ledger.recurringjournal"
+
+
+def first_run(template: RecurringJournalTemplate) -> dt.date | None:
+    """The schedule's first occurrence (``next_run`` of a new or edited template)."""
+    dates = occurrences(template.rrule, template.start_date, template.end_date, limit=1)
+    return dates[0] if dates else None
+
+
+def spec_for(template: RecurringJournalTemplate, day: dt.date) -> Any:
+    """The journal of the occurrence on ``day``, its lines resolved by public id now — an
+    account archived or a contact removed since the template was saved is refused then."""
+    from numo9.contacts.models import Contact
+
+    from .models import Account
+    from .validation import JournalSpec, LineSpec
+
+    lines = template.lines
+    accounts = {
+        str(a.public_id): a
+        for a in Account.objects.filter(public_id__in=[line["account"] for line in lines])
+    }
+    contacts = {
+        str(c.public_id): c
+        for c in Contact.objects.filter(
+            public_id__in=[line["contact"] for line in lines if line.get("contact")],
+            deleted_at__isnull=True,
+        )
+    }
+    missing = [line["account"] for line in lines if line["account"] not in accounts]
+    missing += [
+        line["contact"] for line in lines if line.get("contact") and line["contact"] not in contacts
+    ]
+    if missing:
+        from .models import LedgerError
+
+        raise LedgerError(
+            _("The recurring journal refers to a record that no longer exists (%(id)s)."),
+            code="ledger.recurring.reference_missing",
+            params={"id": missing[0]},
+        )
+    return JournalSpec(
+        date=day,
+        journal_type=template.journal_type,
+        narration=template.narration or template.name,
+        source_type=SOURCE_TYPE,
+        source_id=str(template.public_id),
+        lines=tuple(
+            LineSpec(
+                account=accounts[line["account"]],
+                debit=Decimal(line["debit"]),
+                credit=Decimal(line["credit"]),
+                book=line["book"],
+                contact=contacts.get(line["contact"]) if line.get("contact") else None,
+                description=line.get("description") or "",
+            )
+            for line in lines
+        ),
+    )
+
+
+def _reason(error: Exception) -> tuple[str, str]:
+    """A refusal's code and message (ledger errors, lock / closed-period 409s)."""
+    detail = getattr(error, "detail", None)
+    if isinstance(detail, dict):
+        return str(detail.get("code") or "invalid"), str(detail.get("detail") or error)
+    messages = getattr(error, "messages", None) or [str(error)]
+    code = getattr(error, "code", None) or (
+        getattr(error, "error_list", [None])[0] and getattr(error.error_list[0], "code", None)  # type: ignore[attr-defined]
+    )
+    return str(code or "invalid"), " ".join(str(m) for m in messages)
+
+
+def run_occurrence(template: RecurringJournalTemplate, day: dt.date) -> Any:
+    """Generate the occurrence on ``day`` once: the template row is locked and the run row is
+    unique per (template, date), so a second tick (two workers, a restart) finds it and does
+    nothing (``None``). A refused journal is recorded as a skipped run with the reason — never
+    posted on another date. Above the approval threshold a "post" template's journal waits for
+    approval (submitted for its author) instead of being refused."""
+    from django.db import IntegrityError, transaction
+    from rest_framework.exceptions import APIException
+
+    from numo9.audit import service as audit
+    from numo9.orgsettings.models import LockModule
+
+    from .approvals import ApprovalRequired, submit_for_approval
+    from .models import (
+        LedgerError,
+        RecurringJournalRun,
+        RecurringMode,
+        RecurringRunStatus,
+    )
+    from .periods import assert_can_post
+    from .services import post_journal, save_draft
+
+    organisation = template.organisation
+    with transaction.atomic():
+        locked = RecurringJournalTemplate.objects.select_for_update().get(pk=template.pk)
+        if RecurringJournalRun.objects.filter(template=locked, occurrence_date=day).exists():
+            return None
+        entry = None
+        code = message = ""
+        try:
+            with transaction.atomic():
+                spec = spec_for(locked, day)
+                # A locked or closed date is skipped for drafts too (never dated elsewhere).
+                assert_can_post(organisation, day, None, LockModule.GL)
+                if locked.mode == RecurringMode.POST:
+                    try:
+                        with transaction.atomic():
+                            entry = post_journal(spec, organisation=organisation, user=None)
+                    except ApprovalRequired:
+                        draft = save_draft(spec, organisation=organisation, user=None)
+                        entry = submit_for_approval(draft, locked.created_by)
+                        code = "ledger.recurring.awaiting_approval"
+                else:
+                    entry = save_draft(spec, organisation=organisation, user=None)
+        except (LedgerError, ValidationError, APIException) as error:
+            entry = None
+            code, message = _reason(error)
+        try:
+            with transaction.atomic():
+                run = RecurringJournalRun.objects.create(
+                    organisation=organisation,
+                    template=locked,
+                    occurrence_date=day,
+                    template_version=locked.version,
+                    status=RecurringRunStatus.CREATED if entry else RecurringRunStatus.SKIPPED,
+                    entry=entry,
+                    code=code,
+                    message=message,
+                )
+        except IntegrityError:  # another worker won the insert: its journal stands
+            transaction.set_rollback(True)
+            return None
+        if entry is None:
+            audit.record(
+                "ledger.recurringjournaltemplate.skipped",
+                obj=locked,
+                changes={},
+                meta={"date": day.isoformat(), "code": code, "reason": message, "job": JOB},
+                actor=None,
+            )
+        return run
+
+
+def generate_due(organisation: Any, today: dt.date) -> list[Any]:
+    """Every due occurrence (``next_run`` ≤ ``today``) of the organisation's active templates,
+    oldest first; ``next_run`` moves to the first occurrence after ``today`` (``None`` when the
+    schedule is over)."""
+    from numo9.tenancy.context import org_context
+
+    runs: list[Any] = []
+    with org_context(organisation):
+        due = RecurringJournalTemplate.objects.filter(
+            paused=False, deleted_at__isnull=True, next_run__isnull=False, next_run__lte=today
+        ).order_by("next_run", "pk")
+        for template in due:
+            dates = occurrences(
+                template.rrule,
+                template.start_date,
+                template.end_date,
+                until=today,
+                after=template.next_run - dt.timedelta(days=1) if template.next_run else None,
+            )
+            for day in dates:
+                run = run_occurrence(template, day)
+                if run is not None:
+                    runs.append(run)
+            following = occurrences(
+                template.rrule, template.start_date, template.end_date, after=today, limit=1
+            )
+            RecurringJournalTemplate.objects.filter(pk=template.pk).update(
+                next_run=following[0] if following else None
+            )
+    return runs
+
+
+def generate_all(now: dt.datetime | None = None) -> int:
+    """The hourly job: every organisation, on its own date. The number of runs recorded."""
+    from django.utils import timezone
+
+    from numo9.orgsettings.locks import local_date
+    from numo9.tenancy.models import Organisation
+
+    now = now or timezone.now()
+    count = 0
+    for organisation in Organisation.objects.order_by("pk").iterator():
+        count += len(generate_due(organisation, local_date(organisation, now)))
+    return count

@@ -1199,6 +1199,13 @@ class RecurringJournalTemplate(AuditedModel, OrgOwnedModel):
 
         validate_template(self)
 
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self._state.adding and self.next_run is None:
+            from .recurring import first_run
+
+            self.next_run = first_run(self)
+        super().save(*args, **kwargs)
+
 
 class RecurringRunStatus(models.TextChoices):
     CREATED = "created", _("Created")

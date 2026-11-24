@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 04:30-0500\n"
+"POT-Creation-Date: 2026-11-24 04:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4447,6 +4447,54 @@ msgstr ""
 msgid "journal approvals"
 msgstr ""
 
+msgid "Save as a draft"
+msgstr ""
+
+msgid "Post"
+msgstr ""
+
+msgid "lines"
+msgstr ""
+
+msgid "schedule"
+msgstr ""
+
+msgid "An RFC 5545 recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
+msgstr ""
+
+msgid "start date"
+msgstr ""
+
+msgid "end date"
+msgstr ""
+
+msgid "mode"
+msgstr ""
+
+msgid "next run"
+msgstr ""
+
+msgid "paused"
+msgstr ""
+
+msgid "recurring journal"
+msgstr ""
+
+msgid "recurring journals"
+msgstr ""
+
+msgid "occurrence date"
+msgstr ""
+
+msgid "template version"
+msgstr ""
+
+msgid "recurring journal run"
+msgstr ""
+
+msgid "recurring journal runs"
+msgstr ""
+
 #, python-format
 msgid "%(journal)s is waiting for your approval"
 msgstr ""
@@ -4542,6 +4590,59 @@ msgstr ""
 
 #, python-format
 msgid "The automatic reversal date %(reverse)s is in a locked period (%(lock)s). Choose a date after the lock."
+msgstr ""
+
+msgid "Give the schedule as a recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
+msgstr ""
+
+#, python-format
+msgid "The schedule isn't a valid recurrence rule: %(reason)s"
+msgstr ""
+
+msgid "A journal can repeat daily, weekly, monthly or yearly."
+msgstr ""
+
+msgid "A recurring journal needs at least two lines."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)s isn't a journal line (account, debit, credit, book…)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)s needs a debit or a credit: a positive amount, two decimals."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)s: “%(book)s” isn't a book."
+msgstr ""
+
+#, python-format
+msgid "Debits (%(debits)s) and credits (%(credits)s) differ by %(difference)s."
+msgstr ""
+
+msgid "An account id isn't valid."
+msgstr ""
+
+#, python-format
+msgid "There's no account with id %(id)s in this organisation."
+msgstr ""
+
+msgid "A contact id isn't valid."
+msgstr ""
+
+#, python-format
+msgid "There's no contact with id %(id)s in this organisation."
+msgstr ""
+
+msgid "A recurring journal can't be of a system type."
+msgstr ""
+
+msgid "The end date is before the start date."
+msgstr ""
+
+#, python-format
+msgid "The recurring journal refers to a record that no longer exists (%(id)s)."
 msgstr ""
 
 #, python-format
@@ -5174,9 +5275,6 @@ msgid "tax registration"
 msgstr ""
 
 msgid "tax registrations"
-msgstr ""
-
-msgid "The end date is before the start date."
 msgstr ""
 
 #, python-format

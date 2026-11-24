@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 04:30-0500\n"
+"POT-Creation-Date: 2026-11-24 04:43-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4705,6 +4705,74 @@ msgstr "approbation d'écriture"
 msgid "journal approvals"
 msgstr "approbations d'écritures"
 
+msgid "Save as a draft"
+msgstr ""
+
+msgid "Post"
+msgstr ""
+
+#, fuzzy
+#| msgid "Declined"
+msgid "lines"
+msgstr "Refusée"
+
+msgid "schedule"
+msgstr ""
+
+msgid "An RFC 5545 recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "start date"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "Due date"
+msgid "end date"
+msgstr "Date d’échéance"
+
+#, fuzzy
+#| msgid "live mode"
+msgid "mode"
+msgstr "mode réel"
+
+#, fuzzy
+#| msgid "next try at"
+msgid "next run"
+msgstr "prochain essai le"
+
+#, fuzzy
+#| msgid "used at"
+msgid "paused"
+msgstr "utilisée le"
+
+#, fuzzy
+#| msgid "Manual journal"
+msgid "recurring journal"
+msgstr "Écriture de journal manuelle"
+
+#, fuzzy
+#| msgid "manual journals"
+msgid "recurring journals"
+msgstr "écritures de journal manuelles"
+
+#, fuzzy
+#| msgid "currency"
+msgid "occurrence date"
+msgstr "devise"
+
+#, fuzzy
+#| msgid "version"
+msgid "template version"
+msgstr "version"
+
+msgid "recurring journal run"
+msgstr ""
+
+msgid "recurring journal runs"
+msgstr ""
+
 #, python-format
 msgid "%(journal)s is waiting for your approval"
 msgstr "%(journal)s attend votre approbation"
@@ -4801,6 +4869,65 @@ msgstr "La contrepassation automatique (%(reverse)s) doit être datée après l'
 #, python-format
 msgid "The automatic reversal date %(reverse)s is in a locked period (%(lock)s). Choose a date after the lock."
 msgstr "La date de contrepassation automatique %(reverse)s tombe dans une période verrouillée (%(lock)s). Choisissez une date après le verrouillage."
+
+msgid "Give the schedule as a recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
+msgstr ""
+
+#, python-format
+msgid "The schedule isn't a valid recurrence rule: %(reason)s"
+msgstr ""
+
+msgid "A journal can repeat daily, weekly, monthly or yearly."
+msgstr ""
+
+msgid "A recurring journal needs at least two lines."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)s isn't a journal line (account, debit, credit, book…)."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)s needs a debit or a credit: a positive amount, two decimals."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)s: “%(book)s” isn't a book."
+msgstr ""
+
+#, python-format
+msgid "Debits (%(debits)s) and credits (%(credits)s) differ by %(difference)s."
+msgstr ""
+
+#, fuzzy
+#| msgid "That account doesn't exist."
+msgid "An account id isn't valid."
+msgstr "Ce compte n'existe pas."
+
+#, fuzzy, python-format
+#| msgid "There's no account with this id in this organisation."
+msgid "There's no account with id %(id)s in this organisation."
+msgstr "Aucun compte ne porte cet identifiant dans cette organisation."
+
+#, fuzzy
+#| msgid "That contact doesn't exist."
+msgid "A contact id isn't valid."
+msgstr "Ce contact n'existe pas."
+
+#, fuzzy, python-format
+#| msgid "There's no contact with this id in this organisation."
+msgid "There's no contact with id %(id)s in this organisation."
+msgstr "Aucun contact ne porte cet identifiant dans cette organisation."
+
+msgid "A recurring journal can't be of a system type."
+msgstr ""
+
+msgid "The end date is before the start date."
+msgstr "La date de fin est antérieure à la date de début."
+
+#, python-format
+msgid "The recurring journal refers to a record that no longer exists (%(id)s)."
+msgstr ""
 
 #, python-format
 msgid "Code %(code)s is already used by %(account)s. Choose another code."
@@ -5458,9 +5585,6 @@ msgstr "inscription fiscale"
 
 msgid "tax registrations"
 msgstr "inscriptions fiscales"
-
-msgid "The end date is before the start date."
-msgstr "La date de fin est antérieure à la date de début."
 
 #, python-format
 msgid "%(registration)s is already registered for these dates: end it before adding another."
