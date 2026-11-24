@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 584   Remaining: 2203   Progress: 20.95%
+TOTAL ATOMIC TASKS: 2787   Completed: 585   Remaining: 2202   Progress: 20.99%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -772,7 +772,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-02-T12 — UI: inline supplier-invoice-number check + duplicate warning panel
 ✅ E-02-T13 — UI: match panel (green/amber/red per line) + "Approve with variance"
 ✅ E-02-T14 — UI: routing explanation and approvals inbox registration
-❌ E-02-T16 — Search registration + quick-create N B
+✅ E-02-T16 — Search registration + quick-create N B
 ❌ E-02-T17 — Fixtures: 50 purchase documents across provinces incl. partial ITC
 
 [G-03]
