@@ -13,6 +13,15 @@ start by default), in one transaction:
 - the registration's periods are numbered again 1, 2, 3… in date order and get their status
   (``closed`` once ended, else ``open``; filed and paid unchanged).
 
+``switch_frequency(registration, frequency, effective_from, …)`` (G-03a-T11) — validates the
+change (``validate_switch``), records the new ``FilingCycle`` and regenerates from its date:
+
+- the effective date may not fall **inside a filed or paid period** (``tax.filing.inside_filed``)
+  nor before the registration starts;
+- a switch that doesn't start on a financial year start needs the CRA / Revenu Québec
+  **approval reference** (``tax.filing.approval_required`` — the API's 422), and is returned
+  with a warning (``tax.filing.not_fiscal_year_start``) even with one.
+
 Tax postings are never moved: a posting belongs to the period containing its date
 (``period_for``, G-03a-T14), so they follow the new periods by themselves.
 """
@@ -181,3 +190,113 @@ def regenerate(
             _fill(registration, start, end, kept, settings, today)
         renumber(registration, today)
         return list(FilingPeriod.objects.filter(registration=registration).order_by("start"))
+
+
+# ---- switch validation (G-03a-T11) ------------------------------------------------------------
+
+
+def is_fiscal_year_start(settings: Any, day: dt.date) -> bool:
+    from numo9.orgsettings.fiscal import fiscal_year
+
+    return fiscal_year(settings, day)[0] == day
+
+
+def validate_switch(
+    registration: Any, frequency: str, effective_from: dt.date, approval_ref: str = ""
+) -> list[dict[str, str]]:
+    """Refuse an invalid switch (``TaxError``); returns the warnings of a valid one."""
+    from .filing import MONTHS
+
+    if frequency not in MONTHS:
+        raise TaxError(_("Choose monthly, quarterly or annual."), code="tax.filing.frequency")
+    start = registration.start_date
+    if start is not None and effective_from < start:
+        raise TaxError(
+            _("The change can't take effect before the registration starts (%(start)s).")
+            % {"start": start.isoformat()},
+            code="tax.filing.before_start",
+        )
+    filed = FilingPeriod.objects.filter(
+        registration=registration,
+        start__lte=effective_from,
+        end__gte=effective_from,
+        status__in=(PeriodStatus.FILED, PeriodStatus.PAID),
+    ).first()
+    if filed is not None and filed.start != effective_from:
+        raise TaxError(
+            _(
+                "%(date)s is inside the filed period %(period)s: a filed period can't change. "
+                "Choose a date after %(end)s."
+            )
+            % {
+                "date": effective_from.isoformat(),
+                "period": str(filed),
+                "end": filed.end.isoformat(),
+            },
+            code="tax.filing.inside_filed",
+        )
+    if filed is not None:  # starts on a filed period's first day: it would be regenerated
+        raise TaxError(
+            _("%(period)s is filed: the change must take effect after it.")
+            % {"period": str(filed)},
+            code="tax.filing.inside_filed",
+        )
+    if FilingCycle.objects.filter(
+        registration=registration, effective_from=effective_from
+    ).exists():
+        raise TaxError(
+            _("A filing frequency already takes effect on %(date)s.")
+            % {"date": effective_from.isoformat()},
+            code="tax.filing.duplicate",
+        )
+    warnings: list[dict[str, str]] = []
+    has_cycles = FilingCycle.objects.filter(registration=registration).exists()
+    if has_cycles and not is_fiscal_year_start(_settings(registration), effective_from):
+        if not approval_ref.strip():
+            raise TaxError(
+                _(
+                    "A change during the financial year needs the CRA or Revenu Québec approval "
+                    "reference."
+                ),
+                code="tax.filing.approval_required",
+            )
+        warnings.append(
+            {
+                "code": "tax.filing.not_fiscal_year_start",
+                "message": _(
+                    "%(date)s isn't the start of your financial year. The switch is saved with "
+                    "approval %(ref)s."
+                )
+                % {"date": effective_from.isoformat(), "ref": approval_ref.strip()},
+            }
+        )
+    return warnings
+
+
+def switch_frequency(
+    registration: Any,
+    frequency: str,
+    effective_from: dt.date,
+    *,
+    approval_ref: str = "",
+    approval_date: dt.date | None = None,
+    note: str = "",
+    user: Any = None,
+    today: dt.date | None = None,
+) -> tuple[list[FilingPeriod], list[dict[str, str]]]:
+    """Validate, record the cycle and regenerate (module docstring)."""
+    from numo9.tenancy.context import org_context
+
+    with org_context(registration.organisation), transaction.atomic():
+        warnings = validate_switch(registration, frequency, effective_from, approval_ref)
+        FilingCycle.objects.create(
+            organisation=registration.organisation,
+            registration=registration,
+            frequency=frequency,
+            effective_from=effective_from,
+            approval_ref=approval_ref.strip(),
+            approval_date=approval_date,
+            note=note,
+            created_by=user if getattr(user, "is_authenticated", False) else None,
+        )
+        return regenerate(registration, effective_from, today=today), warnings
