@@ -86,6 +86,26 @@ def store_figures(invoice: Invoice, result: Any) -> None:
     invoice.total = result.total
 
 
+def recalculate(invoice: Invoice) -> Invoice:
+    """Store the calculator's figures on a draft (what the editor does on save): the totals the
+    lists, the duplicate check (D-03a-T08) and the exposure read."""
+    with org_context(invoice.organisation), transaction.atomic():
+        from numo9.documents.posting import result_for
+
+        result = result_for(
+            "invoice",
+            preview_lines(invoice),
+            tax_mode=invoice.tax_mode,
+            discount_type=invoice.discount_type,
+            discount_value=invoice.discount_value,
+        )
+        store_figures(invoice, result)
+        invoice.save(
+            update_fields=["subtotal", "discount_total", "tax_total", "total", "updated_at"]
+        )
+        return invoice
+
+
 def _refuse(message: str, code: str, **params: Any) -> InvoiceRefused:
     return InvoiceRefused(message, code=code, params=params or None)
 

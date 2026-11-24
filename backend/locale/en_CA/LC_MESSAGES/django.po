@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:56-0500\n"
+"POT-Creation-Date: 2026-11-24 05:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6073,6 +6073,13 @@ msgid "%(invoice)s isn't waiting for approval."
 msgstr ""
 
 msgid "You wrote or submitted this invoice: someone else must approve it."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
+msgstr ""
+
+msgid "A draft invoice"
 msgstr ""
 
 msgid "Partially paid"

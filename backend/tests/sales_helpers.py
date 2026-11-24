@@ -12,6 +12,7 @@ from numo9.ledger.models import Account
 from numo9.ledger.template import load_template
 from numo9.orgsettings.service import get_settings
 from numo9.sales.models import Invoice, InvoiceLine
+from numo9.sales.posting import recalculate
 from numo9.tax.resolver import code_for
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import Organisation
@@ -85,4 +86,4 @@ def draft(
                 account=books["revenue"],
                 tax_code=code_for(key, "sales", date, org) if key else None,
             ).save()
-        return invoice
+        return recalculate(invoice)  # the editor saves the server's figures
