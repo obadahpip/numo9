@@ -74,3 +74,22 @@ def test_comparisons_and_balance_check() -> None:
     assert values["cash_opening"] == [D("2450.00"), D("5000.00")]
     assert values["cash_closing"] == [D("5650.00"), D("2450.00")]
     assert result.alerts == []
+
+
+def test_direct_method_equals_the_indirect_total() -> None:
+    books = _books()
+    org = books["org"]
+    with org_context(org):
+        # a transfer between two cash accounts is no flow
+        post_journal(
+            pay(books["petty"], books["chequing"], "100.00", dt.date(2026, 7, 20)), user=None
+        )
+    params = {"date_from": "2026-05-01", "date_to": "2026-07-31"}
+    direct = _values(registry.get("cash_flow_direct").run(org, params))
+    indirect = _values(registry.get("cash_flow").run(org, params))
+    assert direct["flow:customers"] == [D("6200.00")]
+    assert direct["flow:suppliers"] == [D("-2550.00")]
+    assert direct["total:investing"] == [D("-6000.00")]
+    assert direct["total:financing"] == [D("8000.00")]
+    assert direct["net_change"] == indirect["net_change"] == [D("5650.00")]
+    assert "flow:payroll" not in direct

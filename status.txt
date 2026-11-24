@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 593   Remaining: 2194   Progress: 21.28%
+TOTAL ATOMIC TASKS: 2787   Completed: 594   Remaining: 2193   Progress: 21.31%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -785,7 +785,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-02-T05 — Integrity check: BS balances; NI = ΔRE + CYE; failure banner and S-04 event
 ✅ K-02-T06 — Trial Balance: sorted by code, opening/movement/closing Dr/Cr columns, totals equal
 ✅ K-02-T07 — Cash Flow indirect: NI + non-cash items + working-capital changes by account classification mapping
-❌ K-02-T08 — Cash Flow direct: classify cash lines by counterpart account (customers, suppliers, payroll, tax, financing, investing)
+✅ K-02-T08 — Cash Flow direct: classify cash lines by counterpart account (customers, suppliers, payroll, tax, financing, investing)
 ❌ K-02-T09 — Cash definition setting (which bank types count as cash) shared with K-05
 ❌ K-02-T10 — GL detail and Account transactions reports with running balance
 ❌ K-02-T11 — Journal report with order-by and direction control

@@ -13,6 +13,13 @@ sections always add up to the change in cash:
 - **financing** — long-term liabilities and equity (share capital, other equity, dividends, the
   retained and current-year earnings accounts).
 
+**Direct method** (K-02-T08): each cash movement is classified by the **other side** of its
+journal — every non-cash line of a journal that touches cash, its movement with the sign turned
+(a balanced journal's other lines add up to minus its cash lines, so the categories add up to the
+change in cash exactly): receipts from customers (AR, revenue, other income), payments to
+suppliers (AP, expenses, inventory, prepayments), payroll, sales taxes, income taxes, investing,
+financing, other. A transfer between two cash accounts has no other side and is no flow.
+
 The statement checks itself: net change in cash = cash at the end − cash at the start; a
 difference is an integrity alert (K-02-T05).
 """
@@ -264,4 +271,132 @@ class CashFlowIndirectReport(_CashFlowBase):
             [a for a in accounts if a.subtype in FINANCING],
             [],
         )
+        return rows
+
+
+#: Direct-method categories in order: (key, label).
+DIRECT_CATEGORIES: tuple[tuple[str, Any], ...] = (
+    ("customers", _lazy("Receipts from customers")),
+    ("suppliers", _lazy("Payments to suppliers")),
+    ("payroll", _lazy("Payroll")),
+    ("sales_taxes", _lazy("Sales taxes")),
+    ("income_taxes", _lazy("Income taxes")),
+    ("other_operating", _lazy("Other operating cash flows")),
+    ("investing", _lazy("Investing activities")),
+    ("financing", _lazy("Financing activities")),
+)
+CUSTOMER_SUBTYPES = ("revenue", "other_income")
+PAYROLL_ROLES = frozenset(
+    {
+        "wages_payable",
+        "cpp_payable",
+        "qpp_payable",
+        "ei_payable",
+        "qpip_payable",
+        "income_tax_withheld",
+        "vacation_payable",
+        "workers_comp_payable",
+        "eht_payable",
+    }
+)
+SUPPLIER_SUBTYPES = (
+    "cost_of_sales",
+    "operating_expense",
+    "amortisation",
+    "other_expense",
+    "inventory",
+    "prepayment",
+)
+
+
+def direct_category(account: Any) -> str:
+    role = account.system_role or ""
+    if role == "ar" or account.subtype in CUSTOMER_SUBTYPES:
+        return "customers"
+    if role == "ap" or account.subtype in SUPPLIER_SUBTYPES:
+        return "suppliers"
+    if account.subtype == "payroll_liability" or role in PAYROLL_ROLES:
+        return "payroll"
+    if account.subtype == "sales_tax_control":
+        return "sales_taxes"
+    if account.subtype == "income_tax":
+        return "income_taxes"
+    if account.subtype in (*INVESTING, CONTRA):
+        return "investing"
+    if account.subtype in FINANCING:
+        return "financing"
+    return "other_operating"
+
+
+def direct_flows(organisation: Any, ranges: list[DateRange], book: str) -> dict[str, list[Decimal]]:
+    from django.db.models import Sum
+
+    from .aggregation import _lines, _net
+
+    cash = cash_account_ids(organisation)
+    categories = {a.pk: direct_category(a) for a in _accounts()}
+    flows = {key: [ZERO] * len(ranges) for key, _label in DIRECT_CATEGORIES}
+    if not cash:
+        return flows
+    for i, span in enumerate(ranges):
+        lines = _lines(book, None, None).filter(date__gte=span.start, date__lte=span.end)
+        entries = lines.filter(account_id__in=cash).values("entry_id")
+        sums = (
+            lines.filter(entry_id__in=entries)
+            .exclude(account_id__in=cash)
+            .values("account_id")
+            .annotate(net=Sum(_net()))
+        )
+        for row in sums:
+            key = categories.get(row["account_id"], "other_operating")
+            flows[key][i] -= row["net"] or ZERO
+    return flows
+
+
+@register
+class CashFlowDirectReport(_CashFlowBase):
+    id = "cash_flow_direct"
+    slug = "cash-flow-direct"
+    name = _lazy("Cash flow statement (direct method)")
+    description = _lazy(
+        "Cash received and paid for a period by what it was for: customers, suppliers, payroll, "
+        "taxes, investing and financing."
+    )
+    keywords = (_lazy("direct method"), _lazy("receipts and payments"), "méthode directe")
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> dict[str, Any]:
+        ranges = _period_columns(params)
+        return {"ranges": ranges, "flows": direct_flows(organisation, ranges, params["book"])}
+
+    def rows(self, data: dict[str, Any], params: dict[str, Any]) -> list[ReportRow]:
+        flows: dict[str, list[Decimal]] = data["flows"]
+        width = len(data["ranges"])
+        operating = [key for key, _l in DIRECT_CATEGORIES if key not in ("investing", "financing")]
+        rows: list[ReportRow] = [
+            ReportRow("section:operating", str(_("Operating activities")), "section")
+        ]
+        labels = dict(DIRECT_CATEGORIES)
+        for key in operating:
+            if any(flows[key]):
+                rows.append(
+                    ReportRow(f"flow:{key}", str(labels[key]), values=_v(flows[key]), level=1)
+                )
+        rows.append(
+            ReportRow(
+                "total:operating",
+                _("Net cash from operating activities"),
+                "total",
+                _v(_sum([flows[k] for k in operating], width)),
+            )
+        )
+        for key in ("investing", "financing"):
+            rows.append(ReportRow(f"section:{key}", str(labels[key]), "section"))
+            rows.append(
+                ReportRow(
+                    f"total:{key}",
+                    _("Net cash from %(section)s") % {"section": str(labels[key]).lower()},
+                    "total",
+                    _v(flows[key]),
+                )
+            )
         return rows
