@@ -1916,6 +1916,27 @@
     }
   },
   "journals": {
+    "actions": {
+      "approve": "Approve and post",
+      "cancel": "Cancel",
+      "close": "Close",
+      "copy": "Copy journal",
+      "failed": "That didn't work. Try again.",
+      "post": "Post journal",
+      "reason": "Reason (at least {min} characters)",
+      "reject": "Send back",
+      "rejectTitle": "Send the journal back?",
+      "reverse": "Reverse journal",
+      "reverseBody": "A new journal with debits and credits swapped is posted on the date you choose.",
+      "reverseDate": "Reversal date",
+      "reverseTitle": "Reverse this journal?",
+      "saveDraft": "Save as draft",
+      "submit": "Submit for approval",
+      "toolbar": "Journal actions",
+      "withdraw": "Withdraw",
+      "working": "Working…",
+      "youCreated": "You created this: someone else must approve it."
+    },
     "type": {
       "adjusting": "Adjusting",
       "general": "General",
@@ -2014,6 +2035,7 @@
       "retry": "Try again",
       "saveDraft": "Save as draft",
       "showContacts": "Show contact column",
+      "submitForApproval": "Submit for approval",
       "title": "New manual journal",
       "totals": "Debits {debit} · Credits {credit}",
       "type": "Journal type",

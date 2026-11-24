@@ -209,3 +209,33 @@ def test_tenant_isolation(books: dict[str, Any]) -> None:
     )
     peek = client(stranger).get(f"/api/v1/o/{other.public_id}/journals/recurring/{made['id']}")
     assert peek.status_code == 404
+
+
+def test_detail_tells_the_viewer_what_they_may_do(books: dict[str, Any]) -> None:
+    """C-04-T10: the screen's actions come from ``viewer`` and ``approval``."""
+    entry = draft(books, "2400.00")
+    ava, bo = client(books["ava"]), client(books["bo"])
+    ava.post(url(books, f"{entry.public_id}/submit"))
+    mine = ava.get(url(books, str(entry.public_id))).json()
+    assert mine["viewer"] == {"is_author": True, "can_approve": False, "blocked": "self"}
+    assert mine["approval"]["decision"] == "pending"
+    assert mine["approval"]["submitted_by"]["name"] == "Ava"
+    assert mine["created_by"]["name"] == "Ava"
+    theirs = bo.get(url(books, str(entry.public_id))).json()
+    assert theirs["viewer"] == {"is_author": False, "can_approve": True, "blocked": None}
+
+
+def test_reverse_endpoint(books: dict[str, Any]) -> None:
+    with org_context(books["org"]):
+        posted = post_journal(pay(books["rent"], books["chequing"], "300.00"), user=books["ava"])
+    ava = client(books["ava"])
+    made = ava.post(
+        url(books, f"{posted.public_id}/reverse"),
+        {"date": "2026-06-30"},
+        content_type="application/json",
+    )
+    assert made.status_code == 201, made.json()
+    assert made.json()["reversal_of"]["id"] == str(posted.public_id)
+    assert made.json()["date"] == "2026-06-30"
+    again = ava.post(url(books, f"{posted.public_id}/reverse"), content_type="application/json")
+    assert again.status_code in (400, 409)

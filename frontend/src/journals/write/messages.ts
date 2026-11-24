@@ -231,4 +231,9 @@ export const wm = defineMessages({
     defaultMessage: "Enter the debits and credits",
     description: "Difference meter before any amount is typed",
   },
+  submitForApproval: {
+    id: "journals.write.submitForApproval",
+    defaultMessage: "Submit for approval",
+    description: "Button: save the journal and send it to an approver (C-04-T10)",
+  },
 });

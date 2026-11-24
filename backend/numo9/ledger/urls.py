@@ -61,6 +61,11 @@ urlpatterns = [
         name="journal-withdraw",
     ),
     path(
+        f"{ORG}journals/<uuid:public_id>/reverse",
+        workflow_api.JournalReverseView.as_view(),
+        name="journal-reverse",
+    ),
+    path(
         f"{ORG}journals/recurring",
         workflow_api.RecurringListView.as_view(),
         name="recurring-journals",

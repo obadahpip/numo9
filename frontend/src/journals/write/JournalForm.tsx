@@ -39,8 +39,10 @@ import type { FileDocument } from "@/files/api";
 import { uploadFile } from "@/files/upload";
 import { useFormatMessage } from "@/i18n";
 
+import { getJournal } from "../api";
 import {
   filledLines,
+  SELECTABLE_TYPES,
   writeApi,
   type CheckResult,
   type JournalInput,
@@ -83,9 +85,11 @@ export interface JournalFormProps {
   org: string;
   /** Where a posted or saved journal opens (default: its page). */
   navigate?: (href: string) => void;
+  /** Copy journal (C-04-T10): start from this journal's type, narration and lines. */
+  copyOf?: string | null;
 }
 
-export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
+export function JournalForm({ org, navigate, copyOf }: Readonly<JournalFormProps>) {
   const fm = useFormatMessage();
   const locale = useLocale() as AppLocale;
   const { accountTypes, noAccounts } = useDocumentLinesLabels();
@@ -203,7 +207,30 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
     setFocusContact(null);
   }, [focusContact, showContacts]);
 
-  const submit = async (post: boolean, overrideReason = "") => {
+  useEffect(() => {
+    if (!copyOf) return;
+    void getJournal(org, copyOf).then((result) => {
+      if (result.status !== 200) return;
+      const source = result.body;
+      const amount = (value: string) => (Number(value) > 0 ? value : "");
+      setLines(
+        source.lines.map((line) => ({
+          account: line.account.id,
+          debit: amount(line.debit),
+          credit: amount(line.credit),
+          book: line.book,
+          contact: line.contact?.id ?? null,
+          description: line.description,
+        })),
+      );
+      setNarration(source.narration);
+      const kind = source.journal_type as JournalTypeKey | undefined;
+      if (kind && (SELECTABLE_TYPES as readonly string[]).includes(kind)) setJournalType(kind);
+      if (source.lines.some((line) => line.contact)) setContactColumn(true);
+    });
+  }, [org, copyOf]);
+
+  const submit = async (post: boolean, overrideReason = "", forApproval = false) => {
     setBusy(true);
     setFailed(false);
     setRefusal(null);
@@ -211,6 +238,15 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
       ? { ...input, post, override_reason: overrideReason }
       : { ...input, post };
     const result = await writeApi.create(org, body);
+    if (result.status === 201 && forApproval) {
+      // Submit for approval (C-04-T10): the draft just saved goes to an approver.
+      const sent = await writeApi.action(org, result.body.id, "submit");
+      if (sent.status !== 200) {
+        setBusy(false);
+        setRefusal(sent.body);
+        return;
+      }
+    }
     setBusy(false);
     if (result.status === 201) {
       const href = `/o/${org}/accounting/journals/${result.body.id}`;
@@ -558,8 +594,18 @@ export function JournalForm({ org, navigate }: Readonly<JournalFormProps>) {
         <Button
           variant="secondary"
           type="button"
+          disabled={busy || unbalanced || needsAttachment}
+          onClick={() => void submit(false, "", true)}
+          data-action="submit"
+        >
+          {fm(wm.submitForApproval)}
+        </Button>
+        <Button
+          variant="secondary"
+          type="button"
           disabled={busy}
           onClick={() => void submit(false)}
+          data-action="saveDraft"
         >
           {fm(wm.saveDraft)}
         </Button>

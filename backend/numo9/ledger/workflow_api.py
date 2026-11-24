@@ -9,6 +9,7 @@ Approval (C-04-T02 rules, server-side whatever the screen shows):
   the approver's limit; every posting rule applies (lock dates, cash guard…).
 - ``POST journals/<id>/reject`` ``{reason}`` — back to Draft with the reason (≥ 3 characters).
 - ``POST journals/<id>/withdraw`` — the author takes it back to Draft.
+- ``POST journals/<id>/reverse`` ``{date}`` — reverse a posted journal (C-04-T10's Reverse).
 
 Recurring journals (C-04-T04…T06):
 
@@ -176,6 +177,38 @@ class JournalWithdrawView(_Action):
     )
     def post(self, request: Request, org: Any, public_id: Any) -> Response:
         return self.run(request, org, public_id)
+
+
+class ReverseSerializer(serializers.Serializer[Any]):
+    date = serializers.DateField(required=False, allow_null=True, default=None)
+
+
+class JournalReverseView(APIView):
+    """``POST journals/<id>/reverse`` ``{date}`` — post the mirror entry (C-02-T10) dated
+    ``date`` (the journal's own date by default); 409 for a lock or closed period."""
+
+    queryset = JournalEntry._base_manager.none()
+
+    @requires_permission(JOURNALS_POST.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="journals_reverse",
+        summary="Reverse a posted journal",
+        request=ReverseSerializer,
+        responses=JournalDetailSerializer,
+    )
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        from .services import reverse
+
+        payload = ReverseSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        try:
+            reversal = reverse(
+                _entry(public_id), date=payload.validated_data.get("date"), user=acting_user()
+            )
+        except LedgerError as error:
+            return _refused(error)
+        return _detail(request, org, reversal, status.HTTP_201_CREATED)
 
 
 # ---- recurring journals --------------------------------------------------------------------
