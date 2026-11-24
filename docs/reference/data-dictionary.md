@@ -189,6 +189,32 @@ written by `numo9.conversion.services.set_line` and the TB import (C-05-T08).
 | `debit` / `credit` | numeric(18,2) | no | One side only, positive (`conversion_line_one_side`) |
 | `description` | varchar(500) | no | Optional note |
 
+## Sales (`sales`) {#sales}
+
+### `sales_invoice` — Invoice {#sales-invoice}
+
+A sales invoice (D-03a-T01) on `DocumentBase` (D-01: contact, dates, terms, currency, tax mode,
+ship-to, discount, totals, version). `OrgOwnedModel` and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| *(document base columns)* | — | — | As `DocumentBase` (D-01) with its checks prefixed `sales_invoice_` |
+| `number` | varchar(40) | no | Empty on a draft; allocated at approval (D-03a-T02); unique per organisation when set (`sales_invoice_number_unique`) |
+| `status` | varchar(20) | no | `draft`, `awaiting_approval`, `approved`, `sent`, `partially_paid`, `paid`, `void` (`sales_invoice_status_valid`); a posted status needs a number and a journal (`sales_invoice_posted_numbered`) |
+| `notes` | text | no | Notes and terms printed on the invoice |
+| `amount_paid` | numeric(18,2) | no | ≥ 0; `amount_due` = total − paid |
+| `journal_entry_id` / `void_entry_id` | bigint → `ledger_journalentry` | yes | The approval's posting and the void's reversal |
+| `approved_by_id`, `approved_at`, `sent_at`, `viewed_at`, `voided_at` | — | yes | Lifecycle facts |
+| `current_revision_id` | bigint → `sales_invoicerevision` | yes | Filled by D-03b |
+
+### `sales_invoiceline` — Invoice line {#sales-invoiceline}
+
+`DocumentLineBase` (D-01) with `document_id` → `sales_invoice` (`CASCADE`).
+
+### `sales_invoicerevision` — Invoice revision {#sales-invoicerevision}
+
+A posted invoice's revision (D-03b): `invoice_id`, `revision` (unique per invoice), `snapshot`.
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

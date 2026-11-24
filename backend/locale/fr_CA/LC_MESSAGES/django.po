@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:47-0500\n"
+"POT-Creation-Date: 2026-11-24 05:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6401,6 +6401,80 @@ msgstr "Employés, congés et dossiers RH."
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 
+msgid "Partially paid"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount paid"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "Approved"
+msgid "approved by"
+msgstr "Approuvée"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "approved at"
+msgstr "appliqué le"
+
+#, fuzzy
+#| msgid "first seen"
+msgid "first viewed at"
+msgstr "vu pour la première fois"
+
+#, fuzzy
+#| msgid "journal"
+msgid "void journal"
+msgstr "écriture"
+
+msgid "current revision"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoices"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "Draft invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "invoice line"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "invoice lines"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "decision"
+msgid "revision"
+msgstr "décision"
+
+msgid "snapshot"
+msgstr ""
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "invoice revision"
+msgstr "Soumissions, factures et clients."
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "invoice revisions"
+msgstr "Soumissions, factures et clients."
+
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
 msgstr ""
@@ -6526,11 +6600,6 @@ msgstr "adresse courriel"
 #| msgid "subscription"
 msgid "Subscription and billing"
 msgstr "abonnement"
-
-#, fuzzy
-#| msgid "Invoice"
-msgid "invoice"
-msgstr "Facture"
 
 #, fuzzy
 #| msgid "trials"

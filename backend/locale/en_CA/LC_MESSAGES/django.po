@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:47-0500\n"
+"POT-Creation-Date: 2026-11-24 05:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6055,6 +6055,54 @@ msgstr ""
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr ""
 
+msgid "Partially paid"
+msgstr ""
+
+msgid "amount paid"
+msgstr ""
+
+msgid "approved by"
+msgstr ""
+
+msgid "approved at"
+msgstr ""
+
+msgid "first viewed at"
+msgstr ""
+
+msgid "void journal"
+msgstr ""
+
+msgid "current revision"
+msgstr ""
+
+msgid "invoice"
+msgstr ""
+
+msgid "invoices"
+msgstr ""
+
+msgid "Draft invoice"
+msgstr ""
+
+msgid "invoice line"
+msgstr ""
+
+msgid "invoice lines"
+msgstr ""
+
+msgid "revision"
+msgstr ""
+
+msgid "snapshot"
+msgstr ""
+
+msgid "invoice revision"
+msgstr ""
+
+msgid "invoice revisions"
+msgstr ""
+
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
 msgstr ""
@@ -6135,9 +6183,6 @@ msgid "email alerts"
 msgstr ""
 
 msgid "Subscription and billing"
-msgstr ""
-
-msgid "invoice"
 msgstr ""
 
 msgid "trial"
