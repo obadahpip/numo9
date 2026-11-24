@@ -56,9 +56,10 @@ def actions(client: Any, org: Organisation, item: Document) -> list[dict[str, An
 
 
 def test_planned_actions_are_listed_with_their_reason(client: Any, org: Organisation) -> None:
-    listed = actions(client, org, make(org, "bill.pdf", "application/pdf"))
+    pdf = make(org, "bill.pdf", "application/pdf")
+    listed = actions(client, org, pdf)
     assert [(a["key"], a["label"], a["available"], a["reason"]) for a in listed] == [
-        ("bill", "Create a bill", False, "Bills arrive with Purchases in Phase 1."),
+        ("bill", "Create a bill", True, ""),  # E-02-T11: the bill editor beside the document
         (
             "expense",
             "Create an expense claim",
@@ -67,6 +68,8 @@ def test_planned_actions_are_listed_with_their_reason(client: Any, org: Organisa
         ),
         ("asset", "Create a fixed asset", False, "The fixed asset register arrives in Phase 2."),
     ]
+    bill = listed[0]
+    assert bill["url"] == f"/o/{org.public_id}/purchases/bills/new?document={pdf.public_id}"
 
 
 @pytest.fixture
