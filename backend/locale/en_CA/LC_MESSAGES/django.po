@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:00-0500\n"
+"POT-Creation-Date: 2026-11-24 16:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6167,6 +6167,45 @@ msgstr ""
 msgid "approval routing rules"
 msgstr ""
 
+msgid "Partially applied"
+msgstr ""
+
+msgid "Applied"
+msgstr ""
+
+msgid "supplier's credit note number"
+msgstr ""
+
+msgid "credited bill"
+msgstr ""
+
+msgid "amount applied"
+msgstr ""
+
+msgid "amount refunded"
+msgstr ""
+
+msgid "supplier credit"
+msgstr ""
+
+msgid "supplier credits"
+msgstr ""
+
+msgid "Supplier credit"
+msgstr ""
+
+msgid "supplier credit line"
+msgstr ""
+
+msgid "supplier credit lines"
+msgstr ""
+
+msgid "supplier credit application"
+msgstr ""
+
+msgid "supplier credit applications"
+msgstr ""
+
 msgid "See purchase orders and goods receipts"
 msgstr ""
 
@@ -6239,6 +6278,23 @@ msgid "Routed to %(role)s approvers (%(band)s)"
 msgstr ""
 
 msgid "Only a draft bill can be submitted for approval."
+msgstr ""
+
+#, python-format
+msgid "This supplier credit is already %(status)s."
+msgstr ""
+
+msgid "A supplier credit can credit only an approved bill of the same supplier."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the credit is approved."
+msgstr ""
+
+msgid "A supplier credit's total must be more than zero."
+msgstr ""
+
+#, python-format
+msgid "Supplier credit %(reference)s — %(contact)s"
 msgstr ""
 
 msgid "PO number"
@@ -6848,19 +6904,7 @@ msgstr ""
 msgid "invoice emails"
 msgstr ""
 
-msgid "Partially applied"
-msgstr ""
-
-msgid "Applied"
-msgstr ""
-
 msgid "credited invoice"
-msgstr ""
-
-msgid "amount applied"
-msgstr ""
-
-msgid "amount refunded"
 msgstr ""
 
 msgid "credit note"

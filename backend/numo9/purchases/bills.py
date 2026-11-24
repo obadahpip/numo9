@@ -22,7 +22,7 @@ from django.db import transaction
 from numo9.documents.posting import Preview, PreviewLine, preview, result_for
 from numo9.tenancy.context import org_context
 
-from .models import Bill, HoldbackType
+from .models import Bill, HoldbackType, SupplierCredit
 
 ZERO = Decimal("0.00")
 CENT = Decimal("0.01")
@@ -38,7 +38,7 @@ def gst_registered(organisation: Any, day: Any) -> bool:
     )
 
 
-def preview_lines(bill: Bill) -> list[PreviewLine]:
+def preview_lines(bill: Bill | SupplierCredit) -> list[PreviewLine]:
     itc = None if gst_registered(bill.organisation, bill.date) else Decimal("0")
     return [
         PreviewLine(

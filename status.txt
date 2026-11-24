@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 602   Remaining: 2185   Progress: 21.60%
+TOTAL ATOMIC TASKS: 2787   Completed: 604   Remaining: 2183   Progress: 21.67%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -798,7 +798,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-06-T07 — PDF template for credit note
 
 [E-03]
-❌ E-03-T05 — Supplier credit posting (Dr AP / Cr expense / Cr ITC)
+✅ E-03-T05 — Supplier credit posting (Dr AP / Cr expense / Cr ITC)
 
 [F-05]
 ❌ F-05-T01 — Wireframes: two-pane reconcile, find & match modal, split modal, reconciliation report
@@ -1068,7 +1068,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [E-03]
 ❌ E-03-T01 — RecurringBillTemplate + lines models
-❌ E-03-T04 — SupplierCredit, lines, SupplierCreditApplication models
+✅ E-03-T04 — SupplierCredit, lines, SupplierCreditApplication models
 
 [E-04]
 ❌ E-04-T06 — Reimbursement bill creation on approval (employee contact, Unpaid expense claims control)
