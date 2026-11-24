@@ -67,3 +67,69 @@ def register_purchase_order_approvals() -> None:
             items=purchase_order_items,
         )
     )
+
+
+# ---- Bills (E-02-T14) ----------------------------------------------------------------------
+
+BILL_PERMISSION = "purchases.bills.approve"
+BILL_FEATURE = "accounting.bills.approve"
+
+
+def bill_items(user: Any, organisation: Any, may_approve: bool) -> list[dict[str, Any]]:
+    """Bills awaiting approval for ``user``: those **routed to a role they hold** (E-02-T07) — or
+    with no routing rule — and within their bill approval limit; plus the ones they wrote or
+    submitted ("You created this", never theirs to approve). The subtitle says why the bill is
+    theirs: the routing explanation."""
+    from .models import Bill, BillStatus
+    from .routing import may_approve as routed_to
+    from .routing import route
+
+    bills = Bill.objects.filter(
+        status=BillStatus.AWAITING_APPROVAL, deleted_at__isnull=True
+    ).select_related("contact", "created_by", "submitted_by", "organisation")
+    limit = effective_limit(user, ApprovalDocumentType.BILL, organisation=organisation)
+    out: list[dict[str, Any]] = []
+    for bill in bills.order_by("submitted_at", "pk"):
+        authors = {bill.created_by_id, bill.submitted_by_id} - {None}
+        mine = user.pk in authors
+        routing = route(bill)
+        within = limit is not None and Decimal(bill.total) <= limit
+        theirs = may_approve and within and routed_to(bill, user, routing)
+        if not (mine or theirs):
+            continue
+        out.append(
+            item(
+                kind="bill",
+                id=str(bill.public_id),
+                title=bill.contact.display_name,
+                subtitle=" · ".join(
+                    part
+                    for part in (
+                        bill.supplier_invoice_no or str(_("Bill without a supplier number")),
+                        routing.explanation,
+                    )
+                    if part
+                ),
+                amount=Decimal(bill.total),
+                date=bill.date,
+                url=f"/o/{organisation.public_id}/purchases/bills/{bill.public_id}",
+                submitted_by=bill.submitted_by,
+                submitted_at=bill.submitted_at,
+                created_by=bill.created_by,
+                blocked="self" if mine or not theirs else None,
+                limit=limit,
+            )
+        )
+    return out
+
+
+def register_bill_approvals() -> None:
+    approvables.register(
+        Approvable(
+            kind="bill",
+            label=_("Bills"),
+            permission=BILL_PERMISSION,
+            feature=BILL_FEATURE,
+            items=bill_items,
+        )
+    )

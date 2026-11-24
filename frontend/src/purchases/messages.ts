@@ -290,3 +290,22 @@ export const match = defineMessages({
     description: "Next to Approve with variance",
   },
 });
+
+/** Routing (E-02-T14). */
+export const routing = defineMessages({
+  title: {
+    id: "purchases.bill.routing.title",
+    defaultMessage: "Approval",
+    description: "Panel heading",
+  },
+  noRule: {
+    id: "purchases.bill.routing.noRule",
+    defaultMessage: "Anyone whose bill approval limit covers the total can approve it.",
+    description: "No routing rule matches the bill",
+  },
+  approveNow: {
+    id: "purchases.bill.routing.approveNow",
+    defaultMessage: "Approve",
+    description: "Button on a bill waiting for approval",
+  },
+});

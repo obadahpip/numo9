@@ -55,7 +55,7 @@ import {
   type Refusal,
   type TaxMode,
 } from "./api";
-import { match as matchMessages, m, statusLabels } from "./messages";
+import { match as matchMessages, m, routing as routingMessages, statusLabels } from "./messages";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -393,6 +393,19 @@ export function BillEditor({
     return null;
   };
 
+  const approveWaiting = async () => {
+    if (!bill || busy) return;
+    setBusy(true);
+    setRefusal(null);
+    const result = await billsApi.approve(org, bill.id);
+    if (result.status === 200) {
+      fill(result.body);
+      setStatus(fm(m.approved, { number: result.body.number }));
+    } else setRefusal(result.body && typeof result.body === "object" ? result.body : {});
+    setBusy(false);
+    setRefresh((n) => n + 1);
+  };
+
   const approveWithVariance = async () => {
     if (!bill || busy) return;
     setBusy(true);
@@ -665,6 +678,17 @@ export function BillEditor({
               onClick={() => void act("approve")}
             >
               {fm(m.approve)}
+            </Button>
+          </div>
+        ) : bill?.status === "awaiting_approval" ? (
+          <div className="flex flex-wrap gap-3">
+            <Button
+              type="button"
+              variant="primary"
+              disabled={busy}
+              onClick={() => void approveWaiting()}
+            >
+              {fm(routingMessages.approveNow)}
             </Button>
           </div>
         ) : null}
