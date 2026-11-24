@@ -238,3 +238,79 @@ def approve(bill: Bill, user: Any) -> Bill:
             actor=person,
         )
         return locked
+
+
+# ---- holdback release (E-02-T06) ---------------------------------------------------------------
+
+RELEASABLE = (BillStatus.AWAITING_PAYMENT, BillStatus.PARTIALLY_PAID, BillStatus.PAID)
+
+
+def release_holdback(
+    bill: Bill, user: Any, *, amount: Decimal | None = None, date: Any = None
+) -> Bill:
+    """Release all or part of a bill's holdback: **Dr Holdbacks payable / Cr Accounts payable**
+    (the supplier's contact on both), on ``date`` (today by default) through the posting engine
+    (AP lock, periods); the amount becomes payable on the bill (``amount_due``). Refused for a
+    bill that isn't posted, a void bill, nothing held, or more than is still held."""
+    from django.utils import timezone as tz
+
+    from numo9.audit import service as audit
+    from numo9.ledger.models import JournalType
+
+    person = _person(user)
+    with org_context(bill.organisation), transaction.atomic(), acting_as(person):
+        locked = Bill._base_manager.select_for_update().get(pk=bill.pk)
+        held = locked.holdback_outstanding
+        if locked.status not in RELEASABLE or held <= 0:
+            raise _refuse(
+                _("%(bill)s has no holdback to release."),
+                "purchases.bill.no_holdback",
+                bill=str(locked),
+            )
+        value = held if amount is None else Decimal(amount).quantize(Decimal("0.01"))
+        if value <= 0 or value > held:
+            raise _refuse(
+                _("Release between 0.01 and %(held)s: that is what is still held."),
+                "purchases.bill.holdback_amount",
+                held=f"{held:.2f}",
+            )
+        day = date or tz.localdate()
+        ap = Account.objects.get(system_role=SystemRole.AP)
+        entry = post_journal(
+            JournalSpec(
+                date=day,
+                type=JournalType.PURCHASE,
+                narration=_("Holdback released — bill %(number)s, %(contact)s")
+                % {"number": locked.number, "contact": locked.contact.display_name},
+                source_type=SOURCE_TYPE,
+                source_id=str(locked.public_id),
+                lines=(
+                    LineSpec(
+                        holdback_account(locked.organisation),
+                        debit=value,
+                        contact=locked.contact,
+                        description=_("Holdback released"),
+                    ),
+                    LineSpec(
+                        ap, credit=value, contact=locked.contact, description=_("Holdback released")
+                    ),
+                ),
+            ),
+            organisation=locked.organisation,
+            user=person,
+            module=LockModule.AP,
+        )
+        before = locked.holdback_released
+        locked.holdback_released = Decimal(locked.holdback_released) + value
+        if locked.status == BillStatus.PAID:
+            locked.status = BillStatus.PARTIALLY_PAID  # the released part is owed now
+        locked.version += 1
+        locked.save()
+        audit.record(
+            "purchases.bill.holdback_released",
+            obj=locked,
+            changes={"holdback_released": [f"{before:.2f}", f"{locked.holdback_released:.2f}"]},
+            meta={"number": locked.number, "amount": f"{value:.2f}", "journal": entry.number},
+            actor=person,
+        )
+        return locked

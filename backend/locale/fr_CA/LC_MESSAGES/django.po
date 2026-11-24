@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:13-0500\n"
+"POT-Creation-Date: 2026-11-24 14:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6261,6 +6261,24 @@ msgstr ""
 #| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
 msgid "You wrote or submitted this bill: someone else must approve it."
 msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, python-format
+msgid "%(bill)s has no holdback to release."
+msgstr ""
+
+#, python-format
+msgid "Release between 0.01 and %(held)s: that is what is still held."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Holdback released — bill %(number)s, %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Holdback released"
+msgstr "Comptable"
 
 #, python-format
 msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
