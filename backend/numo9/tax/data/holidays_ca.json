@@ -1,0 +1,123 @@
+{
+  "source": "Federal statutory holidays (CRA business days) and provincial statutory holidays; a holiday on a weekend is observed on the next weekday. G-03a-T06.",
+  "years": {
+    "2026": {
+      "CA": {
+        "new_years_day": "2026-01-01",
+        "good_friday": "2026-04-03",
+        "easter_monday": "2026-04-06",
+        "victoria_day": "2026-05-18",
+        "canada_day": "2026-07-01",
+        "labour_day": "2026-09-07",
+        "truth_and_reconciliation": "2026-09-30",
+        "thanksgiving": "2026-10-12",
+        "remembrance_day": "2026-11-11",
+        "christmas_day": "2026-12-25",
+        "boxing_day": "2026-12-28"
+      },
+      "AB": {
+        "family_day": "2026-02-16"
+      },
+      "BC": {
+        "family_day": "2026-02-16",
+        "bc_day": "2026-08-03"
+      },
+      "MB": {
+        "louis_riel_day": "2026-02-16"
+      },
+      "NB": {
+        "family_day": "2026-02-16",
+        "new_brunswick_day": "2026-08-03"
+      },
+      "NS": {
+        "heritage_day": "2026-02-16"
+      },
+      "ON": {
+        "family_day": "2026-02-16",
+        "civic_holiday": "2026-08-03"
+      },
+      "PE": {
+        "islander_day": "2026-02-16"
+      },
+      "SK": {
+        "family_day": "2026-02-16",
+        "saskatchewan_day": "2026-08-03"
+      },
+      "QC": {
+        "national_patriots_day": "2026-05-18",
+        "fete_nationale": "2026-06-24"
+      },
+      "NL": {
+        "st_patricks_day": "2026-03-09"
+      },
+      "YT": {
+        "discovery_day": "2026-08-17"
+      },
+      "NT": {
+        "national_indigenous_peoples_day": "2026-06-22"
+      },
+      "NU": {
+        "nunavut_day": "2026-07-09"
+      }
+    },
+    "2027": {
+      "CA": {
+        "new_years_day": "2027-01-01",
+        "good_friday": "2027-03-26",
+        "easter_monday": "2027-03-29",
+        "victoria_day": "2027-05-24",
+        "canada_day": "2027-07-01",
+        "labour_day": "2027-09-06",
+        "truth_and_reconciliation": "2027-09-30",
+        "thanksgiving": "2027-10-11",
+        "remembrance_day": "2027-11-11",
+        "christmas_day": "2027-12-27",
+        "boxing_day": "2027-12-28"
+      },
+      "AB": {
+        "family_day": "2027-02-15"
+      },
+      "BC": {
+        "family_day": "2027-02-15",
+        "bc_day": "2027-08-02"
+      },
+      "MB": {
+        "louis_riel_day": "2027-02-15"
+      },
+      "NB": {
+        "family_day": "2027-02-15",
+        "new_brunswick_day": "2027-08-02"
+      },
+      "NS": {
+        "heritage_day": "2027-02-15"
+      },
+      "ON": {
+        "family_day": "2027-02-15",
+        "civic_holiday": "2027-08-02"
+      },
+      "PE": {
+        "islander_day": "2027-02-15"
+      },
+      "SK": {
+        "family_day": "2027-02-15",
+        "saskatchewan_day": "2027-08-02"
+      },
+      "QC": {
+        "national_patriots_day": "2027-05-24",
+        "fete_nationale": "2027-06-24"
+      },
+      "NL": {
+        "st_patricks_day": "2027-03-08"
+      },
+      "YT": {
+        "discovery_day": "2027-08-16"
+      },
+      "NT": {
+        "national_indigenous_peoples_day": "2027-06-21"
+      },
+      "NU": {
+        "nunavut_day": "2027-07-09"
+      }
+    }
+  }
+}

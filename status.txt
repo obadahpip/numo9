@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 610   Remaining: 2177   Progress: 21.89%
+TOTAL ATOMIC TASKS: 2787   Completed: 611   Remaining: 2176   Progress: 21.92%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -809,7 +809,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-03a-T03 — TaxRegistration model (type GST_HST/QST, number, start_date, stop_date, status) if not already present from G-06
 ✅ G-03a-T04 — FilingCycle model (registration, frequency, effective_from, approval_ref, approval_date, note, created_by)
 ✅ G-03a-T05 — FilingPeriod model (registration, start, end, kind REGULAR/CUSTOM/STUB, sequence_no, due_date, payment_due_date, status) with an exclusion constraint (PostgreSQL daterange + GiST) preventing overlaps
-❌ G-03a-T06 — HolidayCalendar data (federal and provincial statutory holidays by year) and a business-day roll helper
+✅ G-03a-T06 — HolidayCalendar data (federal and provincial statutory holidays by year) and a business-day roll helper
 ❌ G-03a-T07 — Pure period generator: (cycles, fiscal anchor, from, to, custom periods) → list of periods (dateutil.rrule)
 ❌ G-03a-T08 — Due-date calculator (monthly/quarterly +1 month end; annual +3 months; individual 15 Jun rule as data) with holiday roll
 ❌ G-03a-T09 — Instalment schedule for annual filers (quarter-end-month+1 dates) with amount placeholder for G-09
