@@ -177,3 +177,37 @@ class InvoiceRevision(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.invoice} r{self.revision}"
+
+
+class InvoiceEmail(OrgOwnedModel):
+    """One send of an invoice by email (D-03a-T12): who it went to, what it said, the PDF that
+    was attached (in object storage) and the email log rows (A-07). ``viewed_at`` is the first
+    time the customer opened the invoice from the email's link."""
+
+    invoice = models.ForeignKey(
+        Invoice, on_delete=models.CASCADE, related_name="emails", verbose_name=_("invoice")
+    )
+    recipients = models.JSONField(_("recipients"), default=list)
+    subject = models.CharField(_("subject"), max_length=998)
+    message = models.TextField(_("message"), blank=True)
+    language = models.CharField(_("language"), max_length=10, blank=True)
+    file_key = models.CharField(_("PDF key"), max_length=500)
+    file_name = models.CharField(_("PDF file name"), max_length=255)
+    email_messages = models.JSONField(_("email messages"), default=list)
+    sent_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("sent by"),
+    )
+    viewed_at = models.DateTimeField(_("first viewed at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at", "-pk")
+        verbose_name = _("invoice email")
+        verbose_name_plural = _("invoice emails")
+
+    def __str__(self) -> str:
+        return f"{self.invoice} → {', '.join(self.recipients)}"

@@ -205,6 +205,8 @@ def path_for(declaration: Declaration, world: World) -> str:
         # allowed members get past the permission check to their 404.
         "statement_id": "00000000-0000-4000-8000-000000000000",
         "line_id": "00000000-0000-4000-8000-000000000000",
+        # Invoice "View invoice" link (D-03a-T12): a bad token — everyone gets its 404.
+        "token": "not-a-token",
     }
     acting = Practice.objects.filter(name="Matrix Practice").first()
     if acting is not None:

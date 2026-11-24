@@ -215,6 +215,13 @@ ship-to, discount, totals, version). `OrgOwnedModel` and `AuditedModel`.
 
 A posted invoice's revision (D-03b): `invoice_id`, `revision` (unique per invoice), `snapshot`.
 
+### `sales_invoiceemail` — Invoice email {#sales-invoiceemail}
+
+One send of an invoice by email (D-03a-T12): `invoice_id` (`CASCADE`), `recipients` (list of
+addresses), `subject`, `message`, `language`, `file_key` / `file_name` (the attached PDF in object
+storage), `email_messages` (public ids of the `notifications_emailmessage` rows, one per
+recipient), `sent_by_id`, `viewed_at` (first open of the email's "View invoice" link).
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

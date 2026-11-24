@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 06:00-0500\n"
+"POT-Creation-Date: 2026-11-24 06:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6064,6 +6064,12 @@ msgstr ""
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr ""
 
+msgid "There's no invoice with this id in this organisation."
+msgstr ""
+
+msgid "This invoice link isn't valid any more."
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s isn't a draft."
 msgstr ""
@@ -6080,6 +6086,25 @@ msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
 
 msgid "A draft invoice"
+msgstr ""
+
+#, python-format
+msgid "Invoice %(number)s from %(organisation)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Here is invoice %(number)s for %(amount_due)s, due %(due_date)s. The PDF is attached.\n"
+"\n"
+"Thank you for your business."
+msgstr ""
+
+msgid "Only an approved invoice can be sent."
+msgstr ""
+
+msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
 msgid "Partially paid"
@@ -6127,10 +6152,31 @@ msgstr ""
 msgid "invoice revisions"
 msgstr ""
 
+msgid "PDF key"
+msgstr ""
+
+msgid "PDF file name"
+msgstr ""
+
+msgid "invoice email"
+msgstr ""
+
+msgid "invoice emails"
+msgstr ""
+
 msgid "Net 30"
 msgstr ""
 
 msgid "Thank you for your business. Payment by cheque or e-Transfer."
+msgstr ""
+
+msgid "See invoices, their PDF and emails"
+msgstr ""
+
+msgid "Create and edit draft invoices"
+msgstr ""
+
+msgid "Email invoices to customers"
 msgstr ""
 
 #, python-format
