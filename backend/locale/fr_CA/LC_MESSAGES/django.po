@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 06:54-0500\n"
+"POT-Creation-Date: 2026-11-24 06:57-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6145,6 +6145,26 @@ msgstr "indicateur de fonctionnalité"
 msgid "feature flags"
 msgstr "indicateurs de fonctionnalité"
 
+#, fuzzy, python-format
+#| msgid "%(journal)s isn't waiting for approval."
+msgid "%(order)s isn't waiting for approval."
+msgstr "%(journal)s n'attend pas d'approbation."
+
+#, fuzzy
+#| msgid "Add at least one product before activating this package."
+msgid "Add at least one line with an amount before approving."
+msgstr "Ajoutez au moins un produit avant d’activer ce forfait."
+
+#, fuzzy
+#| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgid "You wrote or submitted this purchase order: someone else must approve it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(order)s isn't a draft."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
 #, fuzzy
 #| msgid "Email received"
 msgid "Partially received"
@@ -6228,6 +6248,22 @@ msgstr "bons de commande"
 #| msgid "purchase orders"
 msgid "purchase order lines"
 msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "See purchase orders and goods receipts"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "Create, edit, send and cancel purchase orders"
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+msgid "Approve purchase orders, within an approval limit"
+msgstr ""
+
+msgid "Record and reverse goods receipts"
+msgstr ""
 
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
