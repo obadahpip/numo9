@@ -4,6 +4,8 @@
 import { useRouter } from "next/navigation";
 
 import { BillEditor } from "./BillEditor";
+import { BillPanels } from "./BillPanels";
+import { SupplierInvoiceNumber } from "./SupplierInvoiceNumber";
 
 export function BillScreen({
   org,
@@ -21,6 +23,8 @@ export function BillScreen({
       id={id}
       documentId={documentId}
       navigate={(href) => router.replace(href)}
+      renderNumber={(props) => <SupplierInvoiceNumber org={org} {...props} />}
+      panels={(bill, refresh) => <BillPanels org={org} bill={bill} refresh={refresh} />}
     />
   );
 }

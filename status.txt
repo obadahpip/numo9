@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 581   Remaining: 2206   Progress: 20.85%
+TOTAL ATOMIC TASKS: 2787   Completed: 582   Remaining: 2205   Progress: 20.88%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -769,7 +769,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-02-T09 — Void & lock checks
 ✅ E-02-T10 — API /api/v1/bills/ CRUD + approve/void/release-holdback; feature key accounting.purchases.bills
 ✅ E-02-T11 — UI: bill editor split view (attachment preview + form)
-❌ E-02-T12 — UI: inline supplier-invoice-number check + duplicate warning panel
+✅ E-02-T12 — UI: inline supplier-invoice-number check + duplicate warning panel
 ❌ E-02-T13 — UI: match panel (green/amber/red per line) + "Approve with variance"
 ❌ E-02-T14 — UI: routing explanation and approvals inbox registration
 ❌ E-02-T16 — Search registration + quick-create N B
