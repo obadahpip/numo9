@@ -553,7 +553,7 @@ def test_limit_for_a_role_and_validation(org: Organisation, owner: User) -> None
     assert (
         client.post(
             url(org, "approval-limits"),
-            {"doc_type": "invoice", "max_amount": "1", "user": str(owner.public_id)},
+            {"doc_type": "quote", "max_amount": "1", "user": str(owner.public_id)},
             format="json",
         ).status_code
         == 400
@@ -608,6 +608,9 @@ def test_my_permissions(org: Organisation, owner: User) -> None:
             "documents.file.view",
             "organisation.profile.view",
             "sales.document.view",  # D-01-T09
+            "sales.invoices.send",  # D-03a-T12
+            "sales.invoices.view",
+            "sales.invoices.write",
         ]
     }
     other = Organisation.objects.create(name="Elsewhere Ltd.")

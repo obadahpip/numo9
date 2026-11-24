@@ -31,13 +31,27 @@ describe("quick-create registry (A-09-T06)", () => {
 
   it("offers what is available and permitted, locked when the package lacks it", () => {
     const all = offeredQuickCreates(null, () => null).map((o) => o.entry.id);
-    expect(all).toEqual(["contact", "journal", "spend", "receive", "bank-account", "user"]);
+    expect(all).toEqual([
+      "invoice",
+      "contact",
+      "journal",
+      "spend",
+      "receive",
+      "bank-account",
+      "user",
+    ]);
     const none = offeredQuickCreates(new Set(["contacts.contacts.view"]), () => null);
     expect(none).toEqual([]);
     const locked = offeredQuickCreates(new Set(["contacts.contacts.manage"]), (f) =>
       f.startsWith("accounting.") ? "Part of Accounting" : null,
     );
     expect(locked).toEqual([{ entry: QUICK_CREATE[2], reason: "Part of Accounting" }]);
+  });
+
+  it("invoices (D-03a-T17): New invoice N I for people who write invoices", () => {
+    expect(quickCreateFor("i")?.path).toBe("sales/invoices/new");
+    const seller = offeredQuickCreates(new Set(["sales.invoices.write"]), () => null);
+    expect(seller.map((o) => o.entry.id)).toEqual(["invoice"]);
   });
 
   it("banking (F-01-T13): Spend money N S, Receive money N R, Add bank account N A", () => {

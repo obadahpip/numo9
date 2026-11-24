@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:47-0500\n"
+"POT-Creation-Date: 2026-11-24 06:38-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5302,6 +5302,12 @@ msgstr ""
 msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
 msgstr ""
 
+msgid "invoices need approval from"
+msgstr ""
+
+msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr ""
 
@@ -5822,6 +5828,9 @@ msgstr ""
 msgid "manual journals"
 msgstr ""
 
+msgid "invoices"
+msgstr ""
+
 msgid "bills"
 msgstr ""
 
@@ -6055,6 +6064,188 @@ msgstr ""
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr ""
 
+msgid "There's no invoice with this id in this organisation."
+msgstr ""
+
+msgid "This invoice is within the customer's credit limit."
+msgstr ""
+
+msgid "This invoice link isn't valid any more."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s isn't a draft."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s isn't waiting for approval."
+msgstr ""
+
+msgid "You wrote or submitted this invoice: someone else must approve it."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
+msgstr ""
+
+msgid "A draft invoice"
+msgstr ""
+
+#, python-format
+msgid "Invoice %(number)s from %(organisation)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Here is invoice %(number)s for %(amount_due)s, due %(due_date)s. The PDF is attached.\n"
+"\n"
+"Thank you for your business."
+msgstr ""
+
+msgid "Only an approved invoice can be sent."
+msgstr ""
+
+msgid "Add at least one email address to send the invoice to."
+msgstr ""
+
+msgid "Partially paid"
+msgstr ""
+
+msgid "amount paid"
+msgstr ""
+
+msgid "approved by"
+msgstr ""
+
+msgid "approved at"
+msgstr ""
+
+msgid "first viewed at"
+msgstr ""
+
+msgid "void journal"
+msgstr ""
+
+msgid "current revision"
+msgstr ""
+
+msgid "invoice"
+msgstr ""
+
+msgid "Draft invoice"
+msgstr ""
+
+msgid "invoice line"
+msgstr ""
+
+msgid "invoice lines"
+msgstr ""
+
+msgid "revision"
+msgstr ""
+
+msgid "snapshot"
+msgstr ""
+
+msgid "invoice revision"
+msgstr ""
+
+msgid "invoice revisions"
+msgstr ""
+
+msgid "PDF key"
+msgstr ""
+
+msgid "PDF file name"
+msgstr ""
+
+msgid "invoice email"
+msgstr ""
+
+msgid "invoice emails"
+msgstr ""
+
+msgid "Net 30"
+msgstr ""
+
+msgid "Thank you for your business. Payment by cheque or e-Transfer."
+msgstr ""
+
+msgid "See invoices, their PDF and emails"
+msgstr ""
+
+msgid "Create and edit draft invoices"
+msgstr ""
+
+msgid "Email invoices to customers"
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s is already %(status)s."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the invoice is approved."
+msgstr ""
+
+msgid "An invoice's total must be more than zero: for money owed to the customer, issue a credit note."
+msgstr ""
+
+#, python-format
+msgid "Invoice %(number)s — %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s can't be voided: %(why)s"
+msgstr ""
+
+msgid "remove its payments first."
+msgstr ""
+
+msgid "only approved or sent invoices can be voided."
+msgstr ""
+
+#, python-format
+msgid "Void of invoice %(number)s"
+msgstr ""
+
+msgid "Invoice date"
+msgstr ""
+
+msgid "Terms"
+msgstr ""
+
+msgid "Discount"
+msgstr ""
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, python-format
+msgid "Total (%(currency)s)"
+msgstr ""
+
+msgid "Amount due"
+msgstr ""
+
+#, python-format
+msgid "QST registration: %(qst)s"
+msgstr ""
+
+msgid "Payment advice"
+msgstr ""
+
+msgid "Payment advice — detach and return with your payment"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Amount enclosed"
+msgstr ""
+
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
 msgstr ""
@@ -6135,9 +6326,6 @@ msgid "email alerts"
 msgstr ""
 
 msgid "Subscription and billing"
-msgstr ""
-
-msgid "invoice"
 msgstr ""
 
 msgid "trial"

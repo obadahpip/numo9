@@ -268,4 +268,10 @@ def test_limit_role_must_be_usable_in_the_organisation(
 
 
 def test_document_types() -> None:
-    assert set(ApprovalDocumentType.values) == {"journal", "bill", "purchase_order", "pay_run"}
+    assert set(ApprovalDocumentType.values) == {
+        "journal",
+        "invoice",
+        "bill",
+        "purchase_order",
+        "pay_run",
+    }

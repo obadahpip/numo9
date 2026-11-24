@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:47-0500\n"
+"POT-Creation-Date: 2026-11-24 06:38-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5640,6 +5640,14 @@ msgstr "les écritures doivent être approuvées à partir de"
 msgid "Manual journals of this total or more must be approved by someone other than their author before they post. Empty: journals never need approval (people's own approval limits still apply)."
 msgstr "Les écritures manuelles de ce total ou plus doivent être approuvées par une autre personne que leur auteur avant d'être comptabilisées. Vide : les écritures n'ont jamais besoin d'approbation (les limites d'approbation de chacun s'appliquent toujours)."
 
+#, fuzzy
+#| msgid "journals need approval from"
+msgid "invoices need approval from"
+msgstr "les écritures doivent être approuvées à partir de"
+
+msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"
 
@@ -6168,6 +6176,11 @@ msgstr "Sa note : %(note)s"
 msgid "manual journals"
 msgstr "écritures de journal manuelles"
 
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoices"
+msgstr "Facture"
+
 msgid "bills"
 msgstr "factures fournisseurs"
 
@@ -6401,6 +6414,251 @@ msgstr "Employés, congés et dossiers RH."
 msgid "Their own pay stubs, leave and expense claims (self-service)."
 msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 
+#, fuzzy
+#| msgid "There's no contact with this id in this organisation."
+msgid "There's no invoice with this id in this organisation."
+msgstr "Aucun contact ne porte cet identifiant dans cette organisation."
+
+#, fuzzy
+#| msgid "Approve sales over a customer's credit limit"
+msgid "This invoice is within the customer's credit limit."
+msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
+
+msgid "This invoice link isn't valid any more."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(invoice)s isn't a draft."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+#, fuzzy, python-format
+#| msgid "%(journal)s isn't waiting for approval."
+msgid "%(invoice)s isn't waiting for approval."
+msgstr "%(journal)s n'attend pas d'approbation."
+
+#, fuzzy
+#| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgid "You wrote or submitted this invoice: someone else must approve it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, python-format
+msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
+msgstr ""
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "A draft invoice"
+msgstr "Facture"
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Invoice %(number)s from %(organisation)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Here is invoice %(number)s for %(amount_due)s, due %(due_date)s. The PDF is attached.\n"
+"\n"
+"Thank you for your business."
+msgstr ""
+
+msgid "Only an approved invoice can be sent."
+msgstr ""
+
+msgid "Add at least one email address to send the invoice to."
+msgstr ""
+
+msgid "Partially paid"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount paid"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "Approved"
+msgid "approved by"
+msgstr "Approuvée"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "approved at"
+msgstr "appliqué le"
+
+#, fuzzy
+#| msgid "first seen"
+msgid "first viewed at"
+msgstr "vu pour la première fois"
+
+#, fuzzy
+#| msgid "journal"
+msgid "void journal"
+msgstr "écriture"
+
+msgid "current revision"
+msgstr ""
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "Draft invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "invoice line"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "invoice lines"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "decision"
+msgid "revision"
+msgstr "décision"
+
+msgid "snapshot"
+msgstr ""
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "invoice revision"
+msgstr "Soumissions, factures et clients."
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "invoice revisions"
+msgstr "Soumissions, factures et clients."
+
+msgid "PDF key"
+msgstr ""
+
+#, fuzzy
+#| msgid "Practice name"
+msgid "PDF file name"
+msgstr "Nom du cabinet"
+
+#, fuzzy
+#| msgid "invoice page"
+msgid "invoice email"
+msgstr "page de la facture"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "invoice emails"
+msgstr "numéro de facture"
+
+msgid "Net 30"
+msgstr ""
+
+msgid "Thank you for your business. Payment by cheque or e-Transfer."
+msgstr ""
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "See invoices, their PDF and emails"
+msgstr "Soumissions, factures et clients."
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "Create and edit draft invoices"
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+#, fuzzy
+#| msgid "Quotes, invoices and customers."
+msgid "Email invoices to customers"
+msgstr "Soumissions, factures et clients."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(invoice)s is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "Every line with an amount needs an account before the invoice is approved."
+msgstr ""
+
+msgid "An invoice's total must be more than zero: for money owed to the customer, issue a credit note."
+msgstr ""
+
+#, python-format
+msgid "Invoice %(number)s — %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s can't be voided: %(why)s"
+msgstr ""
+
+msgid "remove its payments first."
+msgstr ""
+
+msgid "only approved or sent invoices can be voided."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "invoice number"
+msgid "Void of invoice %(number)s"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "invoice page"
+msgid "Invoice date"
+msgstr "page de la facture"
+
+#, fuzzy
+#| msgid "terms"
+msgid "Terms"
+msgstr "modalités"
+
+#, fuzzy
+#| msgid "discount"
+msgid "Discount"
+msgstr "rabais"
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "Amount due"
+msgstr "montant dû"
+
+#, fuzzy, python-format
+#| msgid "GST/HST registration: %(bn)s"
+msgid "QST registration: %(qst)s"
+msgstr "Inscription TPS/TVH : %(bn)s"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "Payment advice"
+msgstr "arguments"
+
+msgid "Payment advice — detach and return with your payment"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount (cents)"
+msgid "Amount enclosed"
+msgstr "montant (cents)"
+
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
 msgstr ""
@@ -6526,11 +6784,6 @@ msgstr "adresse courriel"
 #| msgid "subscription"
 msgid "Subscription and billing"
 msgstr "abonnement"
-
-#, fuzzy
-#| msgid "Invoice"
-msgid "invoice"
-msgstr "Facture"
 
 #, fuzzy
 #| msgid "trials"

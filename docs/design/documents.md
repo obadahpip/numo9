@@ -25,6 +25,8 @@ New Zealand sample customer. Numo9 has **one** template system for every PDF it 
 | `backend/numo9/documents/pdf.py` | `render_pdf(template, context, locale=…)` → PDF bytes (WeasyPrint) |
 | `backend/numo9/documents/formatting.py` | `format_date`, `format_money` for documents |
 | `backend/numo9/documents/sample_data.py` | Canadian sample data for previews and tests |
+| `backend/numo9/sales/templates/sales/invoice.html` | Invoice (D-03a-T09): accent colour of the organisation's branding, tax per component, QST number, notes and terms, pay-advice slip |
+| `backend/numo9/sales/pdf.py` | `invoice_context`, `sample_invoice_context` (theme preview, Canadian sample), `render_invoice_pdf` |
 
 ## Adding a document (Phase 1: invoice, quote, credit note, PO, statement)
 
@@ -51,4 +53,7 @@ The backend image installs Pango, HarfBuzz and the Inter and DejaVu fonts that W
 `backend/tests/test_documents_pdf.py` (pytest; `gap-43`): every page measures 612 × 792 pt, all
 body text lies inside the 1 in margins, the sample data is Canadian, the French document uses
 French dates, money and page counter, the brand colours match the design tokens, and external
-resources are refused.
+resources are refused. `backend/tests/test_invoice_pdf.py` (`gap-43`): the invoice on Letter
+pages, its text against `tests/snapshots/invoice_pdf.txt` (compared without whitespace; refresh
+with `NUMO9_UPDATE_SNAPSHOTS=1`), GST and PST shown apart, French for a French-speaking customer,
+the Canadian sample in the theme preview.

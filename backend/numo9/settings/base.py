@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     "numo9.tax",
     "numo9.items",  # D-01-T02 stub; H-01
     "numo9.conversion",  # C-05 conversion balances
+    "numo9.sales",  # D-03 invoices
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
@@ -277,6 +278,9 @@ TENANT_SWEEP_EXEMPT = [
     # Email provider delivery webhooks (A-07-T08): basic auth with the webhook secret; events
     # are matched to the logged message, which names its organisation.
     r"^webhooks/email/",
+    # The "View invoice" link of an invoice email (D-03a-T12): the signed token names the
+    # organisation and the send; the view runs in that organisation's context.
+    r"^api/v1/invoice-view/",
     # Stripe webhooks (U-04-T06): signed by Stripe; events name their customer, whose
     # organisation the handlers then act on.
     r"^webhooks/stripe/",

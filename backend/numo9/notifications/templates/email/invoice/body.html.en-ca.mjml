@@ -1,0 +1,8 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Invoice {{ number }}</mj-text>
+        <mj-text padding="0 24px 12px">{{ message|linebreaksbr }}</mj-text>
+        <mj-text font-size="16px" font-weight="700" padding="0 24px 4px">Amount due: {{ amount_due }}</mj-text>{% if due_date %}
+        <mj-text padding="0 24px 12px">Due: {{ due_date }}</mj-text>{% endif %}
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">View invoice</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">The invoice is attached as a PDF.</mj-text>{% endblock %}
+{% block footer %}{{ organisation }}{% endblock %}

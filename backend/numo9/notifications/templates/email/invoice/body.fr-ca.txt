@@ -1,0 +1,11 @@
+{% autoescape off %}{{ message }}
+
+Facture {{ number }}
+Montant dû : {{ amount_due }}{% if due_date %}
+Échéance : {{ due_date }}{% endif %}
+
+Voir la facture : {{ link }}
+
+--
+{{ organisation }}
+{% endautoescape %}

@@ -73,9 +73,8 @@ export const QUICK_CREATE: readonly QuickCreate[] = [
     key: "I",
     label: m.invoice,
     path: "sales/invoices/new",
-    permission: "sales.invoices.manage",
+    permission: "sales.invoices.write",
     feature: "accounting.sales_invoices.write",
-    availableIn: "Phase 1",
   },
   {
     id: "bill",

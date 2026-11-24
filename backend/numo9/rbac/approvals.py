@@ -70,6 +70,7 @@ def _label(doc_type: str) -> str:
 
 _PLURALS: dict[str, Promise] = {
     ApprovalDocumentType.JOURNAL: _("manual journals"),
+    ApprovalDocumentType.INVOICE: _("invoices"),
     ApprovalDocumentType.BILL: _("bills"),
     ApprovalDocumentType.PURCHASE_ORDER: _("purchase orders"),
     ApprovalDocumentType.PAY_RUN: _("pay runs"),

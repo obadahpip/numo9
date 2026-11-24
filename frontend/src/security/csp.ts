@@ -63,7 +63,9 @@ export function cspDirectives({
       ...storageSrc,
       ...(dev ? ["ws:"] : []),
     ],
-    "frame-src": [...STRIPE_SOURCES.frame],
+    // blob: — PDF previews (D-03a-T15): the PDF is fetched from the API and shown from a blob
+    // URL, since the API's own responses can't be framed (frame-ancestors 'none').
+    "frame-src": ["blob:", ...STRIPE_SOURCES.frame],
     "worker-src": ["'self'", "blob:"],
     "manifest-src": ["'self'"],
     "object-src": ["'none'"],

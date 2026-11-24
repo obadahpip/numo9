@@ -1,0 +1,11 @@
+{% autoescape off %}{{ message }}
+
+Invoice {{ number }}
+Amount due: {{ amount_due }}{% if due_date %}
+Due: {{ due_date }}{% endif %}
+
+View the invoice: {{ link }}
+
+--
+{{ organisation }}
+{% endautoescape %}

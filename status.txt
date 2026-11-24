@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 529   Remaining: 2258   Progress: 18.98%
+TOTAL ATOMIC TASKS: 2787   Completed: 542   Remaining: 2245   Progress: 19.45%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -711,19 +711,19 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-05-T08 — TB import (CSV/XLSX) with column mapping + dry-run report
 
 [D-03a]
-❌ D-03a-T01 — Invoice, InvoiceLine concrete models (from DocumentBase), status enum, current_revision nullable FK (filled in D-03b)
-❌ D-03a-T02 — Numbering service: allocate at approval inside posting transaction; pattern from settings
-❌ D-03a-T03 — InvoicePostingService.approve(): build JE via calculator, separate tax control accounts, post atomically
-❌ D-03a-T05 — Optional approval rule (threshold / role) using A-03 limits; never product-gated
-❌ D-03a-T06 — Credit-limit check (warn/block) + override approval
-❌ D-03a-T07 — Void service: reversal JE, status Void, number retained, audit
-❌ D-03a-T08 — Duplicate-invoice soft warning (same contact + total ± 0 + date ± 7 days) [EXTRA]
-❌ D-03a-T09 — PDF template engine (WeasyPrint): branding theme, Letter/inch, BN/RT/QST numbers, tax per component, terms, pay-advice
-❌ D-03a-T12 — Email send with PDF attachment + "viewed" tracking pixel/link
-❌ D-03a-T15 — UI: email composer with PDF preview
-❌ D-03a-T16 — UI: credit-limit warning/block banners inside editor (not promotional)
-❌ D-03a-T17 — Search registration (number, contact, reference, amount) + quick-create N I
-❌ D-03a-T18 — Fixtures: 50 invoices across provinces + PDF fixtures from client samples
+✅ D-03a-T01 — Invoice, InvoiceLine concrete models (from DocumentBase), status enum, current_revision nullable FK (filled in D-03b)
+✅ D-03a-T02 — Numbering service: allocate at approval inside posting transaction; pattern from settings
+✅ D-03a-T03 — InvoicePostingService.approve(): build JE via calculator, separate tax control accounts, post atomically
+✅ D-03a-T05 — Optional approval rule (threshold / role) using A-03 limits; never product-gated
+✅ D-03a-T06 — Credit-limit check (warn/block) + override approval
+✅ D-03a-T07 — Void service: reversal JE, status Void, number retained, audit
+✅ D-03a-T08 — Duplicate-invoice soft warning (same contact + total ± 0 + date ± 7 days) [EXTRA]
+✅ D-03a-T09 — PDF template engine (WeasyPrint): branding theme, Letter/inch, BN/RT/QST numbers, tax per component, terms, pay-advice
+✅ D-03a-T12 — Email send with PDF attachment + "viewed" tracking pixel/link
+✅ D-03a-T15 — UI: email composer with PDF preview
+✅ D-03a-T16 — UI: credit-limit warning/block banners inside editor (not promotional)
+✅ D-03a-T17 — Search registration (number, contact, reference, amount) + quick-create N I
+✅ D-03a-T18 — Fixtures: 50 invoices across provinces + PDF fixtures from client samples
 
 [E-01]
 ❌ E-01-T01 — PurchaseOrder, PurchaseOrderLine models (from DocumentBase, purchase side) + status enum
