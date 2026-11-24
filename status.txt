@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 542   Remaining: 2245   Progress: 19.45%
+TOTAL ATOMIC TASKS: 2787   Completed: 551   Remaining: 2236   Progress: 19.77%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -726,15 +726,15 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-03a-T18 — Fixtures: 50 invoices across provinces + PDF fixtures from client samples
 
 [E-01]
-❌ E-01-T01 — PurchaseOrder, PurchaseOrderLine models (from DocumentBase, purchase side) + status enum
-❌ E-01-T02 — PO numbering PO-0001 + approval service using A-03 PO limits
-❌ E-01-T03 — Re-approval rule when approved PO total increases
-❌ E-01-T04 — GoodsReceipt, GoodsReceiptLine models; receipt service with tolerance rules
-❌ E-01-T05 — StockMovementSink interface + Phase-1 test double; receipt emits +qty
-❌ E-01-T06 — Receipt reversal
-❌ E-01-T08 — Commitment report query (open PO value by account/supplier/month)
-❌ E-01-T09 — PO PDF + email to supplier
-❌ E-01-T15 — Approvals inbox registration for POs
+✅ E-01-T01 — PurchaseOrder, PurchaseOrderLine models (from DocumentBase, purchase side) + status enum
+✅ E-01-T02 — PO numbering PO-0001 + approval service using A-03 PO limits
+✅ E-01-T03 — Re-approval rule when approved PO total increases
+✅ E-01-T04 — GoodsReceipt, GoodsReceiptLine models; receipt service with tolerance rules
+✅ E-01-T05 — StockMovementSink interface + Phase-1 test double; receipt emits +qty
+✅ E-01-T06 — Receipt reversal
+✅ E-01-T08 — Commitment report query (open PO value by account/supplier/month)
+✅ E-01-T09 — PO PDF + email to supplier
+✅ E-01-T15 — Approvals inbox registration for POs
 
 [K-01]
 ❌ K-01-T01 — Wireframes: report home, runner with parameter bar, drill drawer, layout editor panel, export menu, empty/no-activity states

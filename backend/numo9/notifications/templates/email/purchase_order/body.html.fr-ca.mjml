@@ -1,0 +1,7 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Bon de commande {{ number }}</mj-text>
+        <mj-text padding="0 24px 12px">{{ message|linebreaksbr }}</mj-text>
+        <mj-text font-size="16px" font-weight="700" padding="0 24px 4px">Total : {{ total }}</mj-text>{% if delivery_date %}
+        <mj-text padding="0 24px 12px">Date de livraison : {{ delivery_date }}</mj-text>{% endif %}
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">Le bon de commande est joint en PDF. Répondez à ce courriel pour toute question.</mj-text>{% endblock %}
+{% block footer %}{{ organisation }}{% endblock %}

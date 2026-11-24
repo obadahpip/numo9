@@ -109,7 +109,8 @@ def test_read_only_and_reviewer_change_nothing() -> None:
 def test_functional_roles_start_small() -> None:
     # Documents are read-only for the functional roles (A-06); their own modules arrive later.
     # Sales and purchasing keep contacts (B-01-T11): customers and suppliers are their work; each
-    # sees its own side's documents (D-01-T09); sales sees, writes and emails invoices (D-03a).
+    # sees its own side's documents (D-01-T09); sales sees, writes and emails invoices (D-03a);
+    # purchasing writes, approves (within a limit) and receives purchase orders (E-01).
     for key, own in (
         (
             "sales",
@@ -120,7 +121,16 @@ def test_functional_roles_start_small() -> None:
                 "sales.invoices.send",
             },
         ),
-        ("purchasing", {"purchases.document.view"}),
+        (
+            "purchasing",
+            {
+                "purchases.document.view",
+                "purchases.orders.view",
+                "purchases.orders.write",
+                "purchases.orders.approve",
+                "purchases.orders.receive",
+            },
+        ),
     ):
         assert grants("organisation", key) == {
             "organisation.profile.view",

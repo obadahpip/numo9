@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 06:38-0500\n"
+"POT-Creation-Date: 2026-11-24 07:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5648,6 +5648,21 @@ msgstr "les écritures doivent être approuvées à partir de"
 msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
 msgstr ""
 
+msgid "over-receipt tolerance (%)"
+msgstr ""
+
+msgid "How much more than ordered may be received on a purchase order line without a warning, as a percentage of the ordered quantity (E-01-T04)."
+msgstr ""
+
+msgid "receiving more than the tolerance"
+msgstr ""
+
+msgid "Block"
+msgstr ""
+
+msgid "Warn: allowed once confirmed. Block: refused (E-01-T04)."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"
 
@@ -6145,6 +6160,276 @@ msgstr "indicateur de fonctionnalité"
 msgid "feature flags"
 msgstr "indicateurs de fonctionnalité"
 
+#, fuzzy
+#| msgid "purchase orders"
+msgid "Draft purchase order"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "Purchase order"
+msgid "Purchase orders"
+msgstr "Bon de commande"
+
+#, fuzzy, python-format
+#| msgid "%(journal)s isn't waiting for approval."
+msgid "%(order)s isn't waiting for approval."
+msgstr "%(journal)s n'attend pas d'approbation."
+
+#, fuzzy
+#| msgid "Add at least one product before activating this package."
+msgid "Add at least one line with an amount before approving."
+msgstr "Ajoutez au moins un produit avant d’activer ce forfait."
+
+#, fuzzy
+#| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgid "You wrote or submitted this purchase order: someone else must approve it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(order)s isn't a draft."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Purchase order %(number)s from %(organisation)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, python-format
+msgid ""
+"Hello,\n"
+"\n"
+"Please find purchase order %(number)s attached. Thank you."
+msgstr ""
+
+msgid "Only an approved purchase order can be sent."
+msgstr ""
+
+msgid "Add at least one email address to send the purchase order to."
+msgstr ""
+
+#, fuzzy
+#| msgid "Email received"
+msgid "Partially received"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "Bill"
+msgid "Billed"
+msgstr "Facture fournisseur"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "delivery attention"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "email address"
+msgid "delivery address"
+msgstr "adresse courriel"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "delivery date"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "delivery instructions"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "Approved"
+msgid "approved by"
+msgstr "Approuvée"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "approved at"
+msgstr "appliqué le"
+
+msgid "total when approved"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "closed at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchase order"
+msgstr "bons de commande"
+
+msgid "purchase orders"
+msgstr "bons de commande"
+
+msgid "PO"
+msgstr ""
+
+#, fuzzy
+#| msgid "Received"
+msgid "received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "bills"
+msgid "billed"
+msgstr "factures fournisseurs"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchase order line"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchase order lines"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "Received"
+msgid "date received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "Received"
+msgid "received by"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "released at"
+msgid "reversed at"
+msgstr "libérée le"
+
+#, fuzzy
+#| msgid "Forever"
+msgid "reversed by"
+msgstr "Pour toujours"
+
+#, fuzzy
+#| msgid "release reason"
+msgid "reversal reason"
+msgstr "motif de libération"
+
+#, fuzzy
+#| msgid "receipt sent at"
+msgid "goods receipt"
+msgstr "reçu envoyé le"
+
+#, fuzzy
+#| msgid "receipt sent at"
+msgid "goods receipts"
+msgstr "reçu envoyé le"
+
+#, fuzzy
+#| msgid "receipt sent at"
+msgid "receipt"
+msgstr "reçu envoyé le"
+
+#, fuzzy
+#| msgid "Declined"
+msgid "PO line"
+msgstr "Refusée"
+
+#, fuzzy
+#| msgid "Email received"
+msgid "quantity received"
+msgstr "Courriel reçu"
+
+msgid "goods receipt line"
+msgstr ""
+
+msgid "goods receipt lines"
+msgstr ""
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "See purchase orders and goods receipts"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "Create, edit, send and cancel purchase orders"
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+msgid "Approve purchase orders, within an approval limit"
+msgstr ""
+
+msgid "Record and reverse goods receipts"
+msgstr ""
+
+#, python-format
+msgid "Only an approved purchase order can be received: %(order)s is %(status)s."
+msgstr ""
+
+msgid "Enter the quantity received on at least one line."
+msgstr ""
+
+#, python-format
+msgid "A line isn't on %(order)s."
+msgstr ""
+
+msgid "Quantities received can't be negative: reverse the receipt instead."
+msgstr ""
+
+msgid "More than ordered (beyond the tolerance) can't be received."
+msgstr ""
+
+msgid "This receives more than ordered: confirm to receive it anyway."
+msgstr ""
+
+#, fuzzy
+#| msgid "%(name)s is already uploaded."
+msgid "This receipt was already reversed."
+msgstr "%(name)s est déjà téléversé."
+
+#, fuzzy, python-format
+#| msgid "%(journal)s is %(status)s: only drafts can be edited."
+msgid "%(order)s is %(status)s: its receipts can't be reversed."
+msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent être modifiés."
+
+msgid "Say why the receipt is reversed."
+msgstr ""
+
+#, fuzzy
+#| msgid "Number"
+msgid "PO number"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "Delivery date"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "Deliver to"
+msgstr "événement de livraison le"
+
+#, python-format
+msgid "Attention: %(name)s"
+msgstr ""
+
+#, fuzzy
+#| msgid "institution"
+msgid "Instructions"
+msgstr "institution"
+
+#, fuzzy
+#| msgid "discount"
+msgid "Discount"
+msgstr "rabais"
+
+#, python-format
+msgid "Includes %(name)s"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr "%(name)s demande un accès dans %(organisation)s"
@@ -6183,9 +6468,6 @@ msgstr "Facture"
 
 msgid "bills"
 msgstr "factures fournisseurs"
-
-msgid "purchase orders"
-msgstr "bons de commande"
 
 msgid "pay runs"
 msgstr "paies"
@@ -6480,16 +6762,6 @@ msgid "amount paid"
 msgstr "montant dû"
 
 #, fuzzy
-#| msgid "Approved"
-msgid "approved by"
-msgstr "Approuvée"
-
-#, fuzzy
-#| msgid "applied at"
-msgid "approved at"
-msgstr "appliqué le"
-
-#, fuzzy
 #| msgid "first seen"
 msgid "first viewed at"
 msgstr "vu pour la première fois"
@@ -6618,20 +6890,6 @@ msgstr "page de la facture"
 #| msgid "terms"
 msgid "Terms"
 msgstr "modalités"
-
-#, fuzzy
-#| msgid "discount"
-msgid "Discount"
-msgstr "rabais"
-
-#, python-format
-msgid "Includes %(name)s"
-msgstr ""
-
-#, fuzzy, python-format
-#| msgid "Amount due (%(currency)s)"
-msgid "Total (%(currency)s)"
-msgstr "Montant dû (%(currency)s)"
 
 #, fuzzy
 #| msgid "amount due"

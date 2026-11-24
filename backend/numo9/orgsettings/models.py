@@ -247,6 +247,26 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         ),
     )
 
+    # ---- goods receipts (E-01-T04) -----------------------------------------------------------
+    po_receipt_tolerance_percent = models.DecimalField(
+        _("over-receipt tolerance (%)"),
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_(
+            "How much more than ordered may be received on a purchase order line without a "
+            "warning, as a percentage of the ordered quantity (E-01-T04)."
+        ),
+    )
+    po_over_receipt = models.CharField(
+        _("receiving more than the tolerance"),
+        max_length=8,
+        choices=[("warn", _("Warn")), ("block", _("Block"))],
+        default="warn",
+        help_text=_("Warn: allowed once confirmed. Block: refused (E-01-T04)."),
+    )
+
     # ---- default payment terms -------------------------------------------------------------
     sales_terms_type = models.CharField(
         _("sales: default due date"),

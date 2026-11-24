@@ -1,0 +1,11 @@
+{% autoescape off %}{{ message }}
+
+Purchase order {{ number }}
+Total: {{ total }}{% if delivery_date %}
+Delivery date: {{ delivery_date }}{% endif %}
+
+The purchase order is attached as a PDF. Reply to this email with any questions.
+
+--
+{{ organisation }}
+{% endautoescape %}

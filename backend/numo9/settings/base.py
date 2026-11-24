@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "numo9.items",  # D-01-T02 stub; H-01
     "numo9.conversion",  # C-05 conversion balances
     "numo9.sales",  # D-03 invoices
+    "numo9.purchases",  # E-01 purchase orders and receipts
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
