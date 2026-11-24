@@ -561,17 +561,11 @@ def _imbalance(label: str, assets: Decimal, other: Decimal) -> dict[str, Any] | 
 
 
 def _earnings_change(organisation: Any, span: DateRange, book: str) -> Decimal:
-    """Δ (retained earnings + current-year earnings) over the period, from the balance sheet."""
+    """Δ (retained earnings + current-year earnings) over the period, from the balance sheet's
+    balances. Entries posted straight to the retained earnings accounts (opening balances, a
+    conversion) are other movements in equity, not income, so they are left out."""
     data = balance_figures(organisation, [span.start - dt.timedelta(days=1), span.end], book)
-    closing_accounts = [
-        a for a in data.accounts if a.subtype in ("retained_earnings", "current_year_earnings")
-    ]
-
-    def total(i: int) -> Decimal:
-        posted = -sum((data.balances.get(a.pk, [ZERO, ZERO])[i] for a in closing_accounts), ZERO)
-        return data.retained[i] + data.current_year[i] + posted
-
-    return total(1) - total(0)
+    return (data.retained[1] + data.current_year[1]) - (data.retained[0] + data.current_year[0])
 
 
 def _earnings_mismatch(label: str, income: Decimal, change: Decimal) -> dict[str, Any] | None:
