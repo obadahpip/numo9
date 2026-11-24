@@ -10,9 +10,10 @@ class PurchasesConfig(AppConfig):
     verbose_name = "Purchases"
 
     def ready(self) -> None:
-        from .approvables import register_purchase_order_approvals
+        from .approvables import register_bill_approvals, register_purchase_order_approvals
 
         register_purchase_order_approvals()  # POs in the approvals inbox (E-01-T15)
+        register_bill_approvals()  # bills routed to the approver's role (E-02-T14)
         from numo9.reports.drill import register_source
 
         # A report figure's bill lines open the bill (K-01-T05 drill-down, E-02-T10).

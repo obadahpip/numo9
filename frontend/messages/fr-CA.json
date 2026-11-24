@@ -2445,6 +2445,11 @@
       "readOnly": "{status}: a posted bill isn't edited. Void it to correct it.",
       "reference": "Reference",
       "retry": "Try again",
+      "routing": {
+        "approveNow": "Approve",
+        "noRule": "Anyone whose bill approval limit covers the total can approve it.",
+        "title": "Approval"
+      },
       "saveDraft": "Save draft",
       "saved": "Saved as a draft.",
       "saving": "Saving…",

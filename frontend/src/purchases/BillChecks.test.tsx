@@ -5,7 +5,7 @@ import { vi } from "vitest";
 import { renderWithIntl } from "@/test/intl";
 
 import { BillScreen } from "./BillScreen";
-import { billHandler, BILL_ID, ORG, PREVIEW, serveJson } from "./fixtures";
+import { bill, billHandler, BILL_ID, ORG, PREVIEW, serveJson } from "./fixtures";
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ replace: vi.fn() }) }));
 
@@ -100,4 +100,42 @@ it("shows the duplicate warning panel", async () => {
     `/o/${ORG}/purchases/bills/${OTHER}`,
   );
   expect(within(panel).getByText("20 Jun 2026 · $508.00")).toBeVisible();
+});
+
+it("explains the routing and lets an approver approve a bill waiting for it (E-02-T14)", async () => {
+  const calls: { url: string; method: string; body: unknown }[] = [];
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      serveJson(
+        billHandler(calls, (url, method) => {
+          if (url.endsWith("/preview"))
+            return {
+              body: {
+                ...PREVIEW,
+                routing: {
+                  rule: "r1",
+                  role: "f1",
+                  role_name: "Finance",
+                  explanation: "Routed to Finance approvers (amount over $2,000.00)",
+                },
+              },
+            };
+          if (url.endsWith(`/bills/${BILL_ID}`) && method === "GET")
+            return {
+              body: bill({ status: "awaiting_approval", status_label: "Awaiting approval" }),
+            };
+          return undefined;
+        }),
+      ),
+    ),
+  );
+  renderWithIntl(<BillScreen org={ORG} id={BILL_ID} />);
+  const panel = await screen.findByRole("region", { name: "Approval" });
+  expect(
+    within(panel).getByText("Routed to Finance approvers (amount over $2,000.00)"),
+  ).toBeVisible();
+  await userEvent.click(screen.getByRole("button", { name: "Approve" }));
+  expect(await screen.findByText("BILL-0001 is approved and awaiting payment.")).toBeVisible();
+  expect(calls.some((c) => c.method === "PATCH")).toBe(false); // nothing to save: just approve
 });

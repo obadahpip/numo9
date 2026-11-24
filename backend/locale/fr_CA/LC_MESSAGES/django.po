@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:44-0500\n"
+"POT-Creation-Date: 2026-11-24 15:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6241,6 +6241,16 @@ msgstr "bons de commande"
 #| msgid "Purchase order"
 msgid "Purchase orders"
 msgstr "Bon de commande"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "Bill without a supplier number"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "Bill"
+msgid "Bills"
+msgstr "Facture fournisseur"
 
 #, fuzzy, python-format
 #| msgid "%(journal)s isn't waiting for approval."
