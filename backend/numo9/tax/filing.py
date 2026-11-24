@@ -20,6 +20,10 @@ individual with a 31 December year end; "N months after" a month-end period ends
 month's last day (30 Sep → 31 Oct). Each date then rolls to the next business day
 (``holidays.calendar().roll``: weekends and the registration's statutory holidays).
 
+**Instalments** (G-03a-T09) — ``instalments(period)``: an annual filer pays quarterly
+instalments, each due one month after the end of each fiscal quarter of the annual period
+(rolled like due dates); the amount is ``None`` until G-09 computes it.
+
 Boundaries are the anchor plus N months (``relativedelta``, which keeps month ends: a 31 Jan
 anchor gives 28/29 Feb, 31 Mar…), the way ``dateutil.rrule`` would count monthly steps without
 skipping short months.
@@ -217,3 +221,34 @@ def due_dates(
         return dates
     places = tuple(jurisdictions)
     return calendar().roll(dates[0], places), calendar().roll(dates[1], places)
+
+
+# ---- instalments (G-03a-T09) ------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Instalment:
+    quarter_start: dt.date
+    quarter_end: dt.date
+    due_date: dt.date
+    amount: Any = None  # G-09 fills it (the lesser of the prior-year and current-year methods)
+
+
+def instalments(period: Period, jurisdictions: Iterable[str] = ("CA",)) -> list[Instalment]:
+    """The quarterly instalment dates of an annual period (none for other frequencies)."""
+    from .holidays import calendar
+
+    if period.frequency != "annual":
+        return []
+    out = []
+    k = 0
+    while True:
+        q_start = period.start + relativedelta(months=3 * k)
+        if q_start > period.end:
+            break
+        q_end = min(period.start + relativedelta(months=3 * (k + 1)) - ONE_DAY, period.end)
+        later = q_end + relativedelta(months=1)
+        due = _month_end(later) if q_end == _month_end(q_end) else later
+        out.append(Instalment(q_start, q_end, calendar().roll(due, tuple(jurisdictions))))
+        k += 1
+    return out
