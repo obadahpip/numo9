@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("orgsettings", "0011_legal_name_letters"),
         ("tenancy", "0007_organisation_demo_fields"),

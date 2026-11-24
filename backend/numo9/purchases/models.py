@@ -404,3 +404,48 @@ class BillLine(DocumentLineBase):
         constraints: ClassVar[list[models.BaseConstraint]] = DocumentLineBase.line_constraints(
             "purchases_billline"
         )
+
+
+class ApprovalRoutingRule(AuditedModel, OrgOwnedModel):
+    """Who approves a bill (E-02-T07): bills whose total is in an **amount band** (``min_amount``
+    < total ≤ ``max_amount``; an empty bound is open) and, optionally, of one **department** go
+    to the people holding ``approver_role`` — "Routed to Finance approvers (amount > 2,000)".
+    Rules are tried in ``position`` order; the first that matches wins. ``doc_type`` is ``bill``
+    now (the approval document types of A-03), so other documents can route the same way later.
+    """
+
+    doc_type = models.CharField(_("document type"), max_length=32, default="bill")
+    name = models.CharField(_("name"), max_length=100)
+    position = models.PositiveIntegerField(_("order"), default=0)
+    min_amount = models.DecimalField(
+        _("more than"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    max_amount = models.DecimalField(
+        _("up to"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    department = models.CharField(_("department"), max_length=100, blank=True)
+    approver_role = models.ForeignKey(
+        "rbac.Role", on_delete=models.PROTECT, related_name="+", verbose_name=_("approvers")
+    )
+    is_active = models.BooleanField(_("active"), default=True)
+
+    class Meta:
+        ordering = ("doc_type", "position", "pk")
+        verbose_name = _("approval routing rule")
+        verbose_name_plural = _("approval routing rules")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(min_amount__isnull=True)
+                | models.Q(max_amount__isnull=True)
+                | models.Q(max_amount__gt=models.F("min_amount")),
+                name="purchases_routing_band_valid",
+            ),
+            models.CheckConstraint(
+                condition=(models.Q(min_amount__isnull=True) | models.Q(min_amount__gte=0))
+                & (models.Q(max_amount__isnull=True) | models.Q(max_amount__gte=0)),
+                name="purchases_routing_amounts_positive",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name

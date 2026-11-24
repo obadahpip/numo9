@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:16-0500\n"
+"POT-Creation-Date: 2026-11-24 14:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6263,6 +6263,10 @@ msgid "You wrote or submitted this bill: someone else must approve it."
 msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
 
 #, python-format
+msgid "%(why)s: you aren't one of them."
+msgstr ""
+
+#, python-format
 msgid "%(bill)s has no holdback to release."
 msgstr ""
 
@@ -6515,6 +6519,28 @@ msgstr "factures fournisseurs"
 msgid "bill lines"
 msgstr "Refusée"
 
+msgid "order"
+msgstr ""
+
+#, fuzzy
+#| msgid "Before tax"
+msgid "more than"
+msgstr "Avant taxes"
+
+msgid "up to"
+msgstr ""
+
+#, fuzzy
+#| msgid "Approved"
+msgid "approvers"
+msgstr "Approuvée"
+
+msgid "approval routing rule"
+msgstr ""
+
+msgid "approval routing rules"
+msgstr ""
+
 #, fuzzy
 #| msgid "purchase orders"
 msgid "See purchase orders and goods receipts"
@@ -6569,6 +6595,36 @@ msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent 
 
 msgid "Say why the receipt is reversed."
 msgstr ""
+
+#, python-format
+msgid "amount over %(low)s up to %(high)s"
+msgstr ""
+
+#, python-format
+msgid "amount over %(low)s"
+msgstr ""
+
+#, python-format
+msgid "amount up to %(high)s"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount"
+msgid "any amount"
+msgstr "montant"
+
+#, python-format
+msgid "%(band)s, department %(department)s"
+msgstr ""
+
+#, python-format
+msgid "Routed to %(role)s approvers (%(band)s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft bill can be submitted for approval."
+msgstr "Seul un brouillon peut être passé."
 
 #, fuzzy
 #| msgid "Number"
