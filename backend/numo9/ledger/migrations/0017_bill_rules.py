@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("ledger", "0016_journal_line_date"),
         ("tenancy", "0007_organisation_demo_fields"),

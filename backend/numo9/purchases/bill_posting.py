@@ -15,8 +15,9 @@ side (``numo9.documents.posting.preview`` via ``bills.bill_preview``):
 ``approve(bill, user)`` — in **one transaction**: lock the bill, refuse what can't be approved
 (not a draft or awaiting approval; no supplier invoice number when the organisation requires one;
 a number already on another bill of the same supplier, gap-24; a line with an amount but no
-account; a total of zero or below — that is a supplier credit), check the person's **bill
-approval limit** (A-03; the writer of a bill waiting for approval can't approve it), store the
+account; a total of zero or below — that is a supplier credit), check the **routing rule**
+(E-02-T07: only the routed role's holders) and the person's **bill approval limit** (A-03; the
+writer of a bill waiting for approval can't approve it), store the
 server's figures, take the number (``BILL-0001``) and post through the posting engine (C-02: AP
 lock date, closed periods, every journal rule) with the bill as source. All or nothing. What the
 preview showed is what posts.
@@ -204,6 +205,15 @@ def approve(bill: Bill, user: Any) -> Bill:
                     _("You wrote or submitted this bill: someone else must approve it."),
                     "purchases.bill.self_approval",
                 )
+        from .routing import may_approve, route
+
+        routing = route(locked, total=Decimal(shown.result.total))
+        if not may_approve(locked, person, routing):
+            raise _refuse(
+                _("%(why)s: you aren't one of them."),
+                "purchases.bill.not_routed_to_you",
+                why=routing.explanation,
+            )
         assert_can_approve(
             person,
             DOC_TYPE,

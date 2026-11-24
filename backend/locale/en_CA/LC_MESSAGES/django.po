@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:16-0500\n"
+"POT-Creation-Date: 2026-11-24 14:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5897,6 +5897,10 @@ msgid "You wrote or submitted this bill: someone else must approve it."
 msgstr ""
 
 #, python-format
+msgid "%(why)s: you aren't one of them."
+msgstr ""
+
+#, python-format
 msgid "%(bill)s has no holdback to release."
 msgstr ""
 
@@ -6073,6 +6077,24 @@ msgstr ""
 msgid "bill lines"
 msgstr ""
 
+msgid "order"
+msgstr ""
+
+msgid "more than"
+msgstr ""
+
+msgid "up to"
+msgstr ""
+
+msgid "approvers"
+msgstr ""
+
+msgid "approval routing rule"
+msgstr ""
+
+msgid "approval routing rules"
+msgstr ""
+
 msgid "See purchase orders and goods receipts"
 msgstr ""
 
@@ -6119,6 +6141,32 @@ msgid "%(order)s is %(status)s: its receipts can't be reversed."
 msgstr ""
 
 msgid "Say why the receipt is reversed."
+msgstr ""
+
+#, python-format
+msgid "amount over %(low)s up to %(high)s"
+msgstr ""
+
+#, python-format
+msgid "amount over %(low)s"
+msgstr ""
+
+#, python-format
+msgid "amount up to %(high)s"
+msgstr ""
+
+msgid "any amount"
+msgstr ""
+
+#, python-format
+msgid "%(band)s, department %(department)s"
+msgstr ""
+
+#, python-format
+msgid "Routed to %(role)s approvers (%(band)s)"
+msgstr ""
+
+msgid "Only a draft bill can be submitted for approval."
 msgstr ""
 
 msgid "PO number"
