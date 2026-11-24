@@ -113,6 +113,39 @@ update per posting); written only by `numo9.ledger.sequence.allocate_journal_num
 | `prefix` | varchar(10) | no | Display prefix, `JE-` by default |
 | `padding` | smallint | no | Display digits, 6 by default, ≤ 12 (`ledger_journalseq_padding_max`) |
 
+### `ledger_recurringjournaltemplate` — Recurring journal {#ledger-recurringjournaltemplate}
+
+A journal that repeats on a schedule (C-04-T04). `OrgOwnedModel` and `AuditedModel`; validated by
+`numo9.ledger.recurring.validate_template` (codes `ledger.recurring.*`).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `name` | varchar(200) | no | Shown in lists and on every generated journal's source |
+| `narration` | varchar(1000) | no | Narration of each generated journal |
+| `journal_type` | varchar(20) | no | A selectable type only (General, Adjusting, Reclass, Tax adjustment) |
+| `lines` | jsonb | no | `[{account, debit, credit, book, contact, description}]` — public ids, one side per line, two decimals, ≥ 2 lines, balanced |
+| `rrule` | varchar(500) | no | RFC 5545 rule (`FREQ=MONTHLY;INTERVAL=1`); daily, weekly, monthly or yearly; no `DTSTART` |
+| `start_date` / `end_date` | date | no / yes | First possible occurrence; last (inclusive); end ≥ start (`ledger_recur_end_after_start`) |
+| `mode` | varchar(10) | no | `draft` or `post` (`ledger_recur_mode_valid`) |
+| `next_run` | date | yes | Next occurrence still to generate; empty when the schedule is over |
+| `paused` | boolean | no | Paused templates generate nothing |
+| `version` | integer | no | +1 on every edit; stored on each run |
+
+### `ledger_recurringjournalrun` — Recurring journal run {#ledger-recurringjournalrun}
+
+One occurrence of a recurring journal (C-04-T06). `OrgOwnedModel`; written only by the generator.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `template_id` | bigint → `ledger_recurringjournaltemplate` | no | `CASCADE` |
+| `occurrence_date` | date | no | **Unique per template** (`ledger_recur_run_once`): the idempotency row of the tick |
+| `template_version` | integer | no | The template's version when generated |
+| `status` | varchar(10) | no | `created` or `skipped` (`ledger_recur_run_status_valid`) |
+| `entry_id` | bigint → `ledger_journalentry` | yes | The journal generated (one-to-one) |
+| `code` / `message` | varchar / text | no | Why an occurrence was skipped (e.g. `lock.violation`) |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

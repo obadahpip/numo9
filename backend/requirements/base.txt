@@ -56,3 +56,5 @@ python-magic==0.4.27
 pillow==13.0.0
 pillow-heif==1.8.1
 pypdfium2==5.15.2
+# Recurring journal schedules: RFC 5545 RRULE parsing and occurrences (C-04-T04, T05)
+python-dateutil==2.9.0.post0

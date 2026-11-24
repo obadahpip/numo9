@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 509   Remaining: 2278   Progress: 18.26%
+TOTAL ATOMIC TASKS: 2787   Completed: 510   Remaining: 2277   Progress: 18.30%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -683,7 +683,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-01-T14 — Audit-log hooks (create/archive/rename/statement-balance edits) and i18n keys en-CA/fr-CA for all strings
 
 [C-04]
-❌ C-04-T04 — RecurringJournalTemplate model (lines JSON validated, rrule string, start/end, mode, next_run, paused)
+✅ C-04-T04 — RecurringJournalTemplate model (lines JSON validated, rrule string, start/end, mode, next_run, paused)
 ❌ C-04-T05 — Recurrence generator using dateutil rrule with month-end clamp; returns occurrence dates
 ❌ C-04-T06 — Celery tick task with unique (template_id, occurrence_date) idempotency row; locked period → skip + exception record
 ❌ C-04-T07 — API endpoints: /journals/{id}/submit, /approve, /reject, /journals/recurring/ CRUD, /journals/recurring/{id}/preview
