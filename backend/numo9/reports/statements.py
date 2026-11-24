@@ -18,11 +18,13 @@ only, book filter ``book ∈ (both, X)``). Each figure drills down per column (`
 
 from __future__ import annotations
 
+import datetime as dt
 from collections.abc import Sequence
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy as _lazy
 
@@ -67,6 +69,29 @@ def _period_columns(params: dict[str, Any]) -> list[DateRange]:
     compare = params.get("compare") or "none"
     periods = max(1, min(int(params.get("periods") or 1), MAX_COMPARISONS))
     return [base, *comparison_ranges(base, compare, periods)] if compare != "none" else [base]
+
+
+def _date_columns(params: dict[str, Any]) -> list[dt.date]:
+    """The balance dates: the date (today by default), then N month-ends-style months back
+    (``previous``, the same day of each earlier month, a month end staying a month end) or the
+    same date N years back (``prior_year``)."""
+    from .parameters import _add_months, _month_end, _year_back
+
+    as_of: dt.date = params.get("as_of") or timezone.localdate()
+    compare = params.get("compare") or "none"
+    if compare == "none":
+        return [as_of]
+    periods = max(1, min(int(params.get("periods") or 1), MAX_COMPARISONS))
+    month_end = as_of == _month_end(as_of.year, as_of.month)
+    dates = [as_of]
+    for n in range(1, periods + 1):
+        if compare == "previous":
+            day = _add_months(as_of, -n)
+            dates.append(_month_end(day.year, day.month) if month_end else day)
+        else:
+            day = _year_back(as_of, n)
+            dates.append(_month_end(day.year, day.month) if month_end else day)
+    return dates
 
 
 def _range_label(span: DateRange) -> str:
@@ -201,3 +226,213 @@ class ProfitAndLossReport(ReportDefinition):
         taxes = by_key["total:income_taxes"].values
         net = [(b or ZERO) - (t or ZERO) for b, t in zip(before, taxes, strict=True)]
         return [ReportRow("net_income", _("Net income"), "total", _v(net))]
+
+
+# ---- balance sheet (K-02-T03) --------------------------------------------------------------
+
+
+def fiscal_start(organisation: Any, day: dt.date) -> dt.date:
+    from numo9.orgsettings.fiscal import fiscal_year
+    from numo9.orgsettings.service import get_settings
+
+    return fiscal_year(get_settings(organisation), day)[0]
+
+
+@dataclass
+class BalanceData:
+    dates: list[dt.date]
+    accounts: list[Any]
+    balances: dict[int, list[Decimal]]
+    retained: list[Decimal]
+    current_year: list[Decimal]
+
+
+def balance_figures(
+    organisation: Any, dates: list[dt.date], book: str = "accounting"
+) -> BalanceData:
+    """Balances at each date; retained earnings = the RE account(s) + revenue − expenses before
+    the financial year of the date; current-year earnings = revenue − expenses since its start."""
+    from .aggregation import balances_at
+
+    accounts = _accounts()
+    balances = balances_at(dates, book=book)
+    pnl = [a for a in accounts if a.type in PNL_TYPES]
+    starts = [fiscal_start(organisation, day) for day in dates]
+    before = balances_at([s - dt.timedelta(days=1) for s in starts], book=book)
+    retained, current = [], []
+    for i in range(len(dates)):
+        prior = -sum((before.get(a.pk, [ZERO] * len(dates))[i] for a in pnl), ZERO)
+        total = -sum((balances.get(a.pk, [ZERO] * len(dates))[i] for a in pnl), ZERO)
+        retained.append(prior)
+        current.append(total - prior)
+    return BalanceData(dates, accounts, balances, retained, current)
+
+
+def _ordered_non_current(accounts: list[Any]) -> list[Any]:
+    """Each contra account directly after its asset: after the parent it sits under, or after the
+    last of that parent's other sub-accounts ("Equipment — cost"); unparented contras after the
+    last fixed asset."""
+    contras = [a for a in accounts if a.subtype == "accumulated_amortisation"]
+    out = [a for a in accounts if a.subtype != "accumulated_amortisation"]
+    for contra in contras:
+        anchor = None
+        for i, item in enumerate(out):
+            parent = contra.parent_id
+            under = parent is not None and parent in (item.pk, item.parent_id)
+            if under or (parent is None and item.subtype == "fixed_asset"):
+                anchor = i
+        if anchor is None:
+            out.append(contra)
+        else:
+            out.insert(anchor + 1, contra)
+    return out
+
+
+@register
+class BalanceSheetReport(ReportDefinition):
+    id = "balance_sheet"
+    slug = "balance-sheet"
+    name = _lazy("Balance sheet")
+    description = _lazy("Assets, liabilities and equity on a date, with comparisons.")
+    category = "financial"
+    keywords = (_lazy("statement of financial position"), _lazy("BS"), "bilan")
+    params = (
+        ParamSpec("as_of", "date"),
+        ParamSpec("compare", "choice", "none", COMPARISONS),
+        ParamSpec("periods", "int", 1),
+        ParamSpec("book", "choice", "accounting", BOOKS),
+    )
+
+    def columns(self, params: dict[str, Any]) -> list[Column]:
+        from numo9.documents.formatting import format_date
+
+        return [Column(f"b{i}", format_date(day)) for i, day in enumerate(_date_columns(params))]
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> BalanceData:
+        return balance_figures(organisation, _date_columns(params), params["book"])
+
+    def rows(self, data: BalanceData, params: dict[str, Any]) -> list[ReportRow]:
+        width = len(data.dates)
+        rows: list[ReportRow] = []
+        drill_columns = [{"to": day} for day in data.dates]
+
+        def figures(account: Any, sign: int) -> list[Decimal]:
+            values = data.balances.get(account.pk, [ZERO] * width)
+            return [sign * v for v in values]
+
+        def group(
+            key: str, label: Any, subtypes: tuple[str, ...], sign: int, level: int = 1
+        ) -> list[Decimal]:
+            members = [a for a in data.accounts if a.subtype in subtypes]
+            if key == "non_current_assets":
+                members = _ordered_non_current(members)
+            shown = [a for a in members if any(figures(a, sign))]
+            rows.append(ReportRow(f"group:{key}", str(label), "section", level=level))
+            for account in shown:
+                rows.append(
+                    ReportRow(
+                        f"account:{account.code}",
+                        _label(account),
+                        values=_v(figures(account, sign)),
+                        level=level + (2 if account.subtype == "accumulated_amortisation" else 1),
+                        drill={
+                            "account": account.code,
+                            "book": params["book"],
+                            "columns": drill_columns,
+                        },
+                    )
+                )
+            total = _sum([figures(a, sign) for a in shown], width)
+            rows.append(
+                ReportRow(
+                    f"total:{key}",
+                    _("Total %(group)s") % {"group": str(label).lower()},
+                    "total",
+                    _v(total),
+                    level=level,
+                )
+            )
+            return total
+
+        rows.append(ReportRow("section:assets", _("Assets"), "section"))
+        current = group("current_assets", _("Current assets"), CURRENT_ASSETS, 1)
+        non_current = group("non_current_assets", _("Non-current assets"), NON_CURRENT_ASSETS, 1)
+        assets = [a + b for a, b in zip(current, non_current, strict=True)]
+        rows.append(ReportRow("total:assets", _("Total assets"), "total", _v(assets)))
+
+        rows.append(ReportRow("section:liabilities", _("Liabilities"), "section"))
+        short = group("current_liabilities", _("Current liabilities"), CURRENT_LIABILITIES, -1)
+        long = group("long_term_liabilities", _("Long-term liabilities"), LONG_TERM_LIABILITIES, -1)
+        liabilities = [a + b for a, b in zip(short, long, strict=True)]
+        rows.append(
+            ReportRow("total:liabilities", _("Total liabilities"), "total", _v(liabilities))
+        )
+
+        rows.append(ReportRow("section:equity", _("Equity"), "section"))
+        equity_accounts = [a for a in data.accounts if a.subtype in EQUITY]
+        for account in equity_accounts:
+            values = figures(account, -1)
+            if any(values):
+                rows.append(
+                    ReportRow(
+                        f"account:{account.code}",
+                        _label(account),
+                        values=_v(values),
+                        level=1,
+                        drill={
+                            "account": account.code,
+                            "book": params["book"],
+                            "columns": drill_columns,
+                        },
+                    )
+                )
+        re_accounts = [a for a in data.accounts if a.subtype == "retained_earnings"]
+        retained = [
+            r + sum((figures(a, -1)[i] for a in re_accounts), ZERO)
+            for i, r in enumerate(data.retained)
+        ]
+        rows.append(
+            ReportRow(
+                "retained_earnings",
+                _("Retained earnings"),
+                values=_v(retained),
+                level=1,
+                drill={
+                    "account": re_accounts[0].code,
+                    "book": params["book"],
+                    "columns": drill_columns,
+                }
+                if re_accounts
+                else None,
+            )
+        )
+        cye_accounts = [a for a in data.accounts if a.subtype == "current_year_earnings"]
+        current_year = [
+            c + sum((figures(a, -1)[i] for a in cye_accounts), ZERO)
+            for i, c in enumerate(data.current_year)
+        ]
+        rows.append(
+            ReportRow(
+                "current_year_earnings",
+                _("Current year earnings"),
+                values=_v(current_year),
+                level=1,
+            )
+        )
+        equity = [
+            sum((figures(a, -1)[i] for a in equity_accounts), ZERO) + retained[i] + current_year[i]
+            for i in range(width)
+        ]
+        rows.append(ReportRow("total:equity", _("Total equity"), "total", _v(equity)))
+        return rows
+
+    def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
+        by_key = {row.key: row for row in rows}
+        liabilities = by_key["total:liabilities"].values
+        equity = by_key["total:equity"].values
+        both = [(a or ZERO) + (b or ZERO) for a, b in zip(liabilities, equity, strict=True)]
+        return [
+            ReportRow(
+                "total:liabilities_and_equity", _("Total liabilities and equity"), "total", _v(both)
+            )
+        ]

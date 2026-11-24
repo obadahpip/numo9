@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:23-0500\n"
+"POT-Creation-Date: 2026-11-24 15:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7177,6 +7177,38 @@ msgid "Income before income taxes"
 msgstr ""
 
 msgid "Net income"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total %(group)s"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Assets"
+msgstr ""
+
+#, fuzzy
+#| msgid "currency"
+msgid "Non-current assets"
+msgstr "devise"
+
+#, fuzzy
+#| msgid "Amount due (%(currency)s)"
+msgid "Total assets"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Liabilities"
+msgstr ""
+
+#, fuzzy
+#| msgid "Payroll specialist"
+msgid "Total liabilities"
+msgstr "Spécialiste de la paie"
+
+msgid "Total equity"
+msgstr ""
+
+msgid "Total liabilities and equity"
 msgstr ""
 
 msgid "No activity in this period"
