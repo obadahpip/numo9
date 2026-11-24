@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 06:38-0500\n"
+"POT-Creation-Date: 2026-11-24 06:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6145,6 +6145,90 @@ msgstr "indicateur de fonctionnalité"
 msgid "feature flags"
 msgstr "indicateurs de fonctionnalité"
 
+#, fuzzy
+#| msgid "Email received"
+msgid "Partially received"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "Bill"
+msgid "Billed"
+msgstr "Facture fournisseur"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "delivery attention"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "email address"
+msgid "delivery address"
+msgstr "adresse courriel"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "delivery date"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "delivery event at"
+msgid "delivery instructions"
+msgstr "événement de livraison le"
+
+#, fuzzy
+#| msgid "Approved"
+msgid "approved by"
+msgstr "Approuvée"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "approved at"
+msgstr "appliqué le"
+
+msgid "total when approved"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "closed at"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchase order"
+msgstr "bons de commande"
+
+msgid "purchase orders"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "Draft purchase order"
+msgstr "bons de commande"
+
+msgid "PO"
+msgstr ""
+
+#, fuzzy
+#| msgid "Received"
+msgid "received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "bills"
+msgid "billed"
+msgstr "factures fournisseurs"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchase order line"
+msgstr "bons de commande"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "purchase order lines"
+msgstr "bons de commande"
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr "%(name)s demande un accès dans %(organisation)s"
@@ -6183,9 +6267,6 @@ msgstr "Facture"
 
 msgid "bills"
 msgstr "factures fournisseurs"
-
-msgid "purchase orders"
-msgstr "bons de commande"
 
 msgid "pay runs"
 msgstr "paies"
@@ -6478,16 +6559,6 @@ msgstr ""
 #| msgid "amount due"
 msgid "amount paid"
 msgstr "montant dû"
-
-#, fuzzy
-#| msgid "Approved"
-msgid "approved by"
-msgstr "Approuvée"
-
-#, fuzzy
-#| msgid "applied at"
-msgid "approved at"
-msgstr "appliqué le"
 
 #, fuzzy
 #| msgid "first seen"

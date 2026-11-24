@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 06:38-0500\n"
+"POT-Creation-Date: 2026-11-24 06:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5805,6 +5805,60 @@ msgstr ""
 msgid "feature flags"
 msgstr ""
 
+msgid "Partially received"
+msgstr ""
+
+msgid "Billed"
+msgstr ""
+
+msgid "delivery attention"
+msgstr ""
+
+msgid "delivery address"
+msgstr ""
+
+msgid "delivery date"
+msgstr ""
+
+msgid "delivery instructions"
+msgstr ""
+
+msgid "approved by"
+msgstr ""
+
+msgid "approved at"
+msgstr ""
+
+msgid "total when approved"
+msgstr ""
+
+msgid "closed at"
+msgstr ""
+
+msgid "purchase order"
+msgstr ""
+
+msgid "purchase orders"
+msgstr ""
+
+msgid "Draft purchase order"
+msgstr ""
+
+msgid "PO"
+msgstr ""
+
+msgid "received"
+msgstr ""
+
+msgid "billed"
+msgstr ""
+
+msgid "purchase order line"
+msgstr ""
+
+msgid "purchase order lines"
+msgstr ""
+
 #, python-format
 msgid "%(name)s asks for access in %(organisation)s"
 msgstr ""
@@ -5832,9 +5886,6 @@ msgid "invoices"
 msgstr ""
 
 msgid "bills"
-msgstr ""
-
-msgid "purchase orders"
 msgstr ""
 
 msgid "pay runs"
@@ -6114,12 +6165,6 @@ msgid "Partially paid"
 msgstr ""
 
 msgid "amount paid"
-msgstr ""
-
-msgid "approved by"
-msgstr ""
-
-msgid "approved at"
 msgstr ""
 
 msgid "first viewed at"

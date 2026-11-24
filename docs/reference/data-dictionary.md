@@ -222,6 +222,30 @@ addresses), `subject`, `message`, `language`, `file_key` / `file_name` (the atta
 storage), `email_messages` (public ids of the `notifications_emailmessage` rows, one per
 recipient), `sent_by_id`, `viewed_at` (first open of the email's "View invoice" link).
 
+## Purchases (`purchases`) {#purchases}
+
+Design: `numo9.purchases.models` (E-01). Purchase orders are **non-posting**: commitments only.
+
+### `purchases_purchaseorder` — Purchase order {#purchases-purchaseorder}
+
+`DocumentBase` (D-01) on the purchase side, plus:
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `number` | varchar(40) | no | `PO-0001`, taken at approval; unique per organisation when set (`purchases_po_number_unique`); required for approved, partially received, received, billed and closed POs (`purchases_po_approved_numbered`) |
+| `status` | varchar(20) | no | `draft`, `awaiting_approval`, `approved`, `partially_received`, `received`, `billed`, `closed`, `cancelled` (`purchases_po_status_valid`) |
+| `notes` | text | no | Printed on the PO |
+| `delivery_attention`, `delivery_address`, `delivery_date`, `delivery_instructions` | — | yes (date) | Delivery block |
+| `submitted_by_id`, `submitted_at`, `approved_by_id`, `approved_at` | — | yes | Approval trail (E-01-T02) |
+| `approved_total` | numeric(18,2) | yes | The total when last approved: above it → back to Awaiting approval (E-01-T03) |
+| `sent_at`, `closed_at`, `cancelled_at` | timestamptz | yes | When emailed, closed, cancelled |
+
+### `purchases_purchaseorderline` — Purchase order line {#purchases-purchaseorderline}
+
+`DocumentLineBase` (D-01) with `document_id` → `purchases_purchaseorder` (`CASCADE`), plus
+`quantity_received` and `quantity_billed` (numeric(18,4), ≥ 0, `purchases_poline_quantities_positive`).
+Outstanding = ordered − received (never below zero).
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
