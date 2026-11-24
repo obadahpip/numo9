@@ -169,8 +169,10 @@ def _check_supplier_invoice(locked: Bill) -> None:
         )
 
 
-def approve(bill: Bill, user: Any) -> Bill:
-    """Approve and post (module docstring); returns the bill awaiting payment."""
+def approve(bill: Bill, user: Any, *, with_variance: bool = False) -> Bill:
+    """Approve and post (module docstring); returns the bill awaiting payment. A bill whose PO
+    match panel (E-02-T08) has an amber or red line is approved only ``with_variance`` — "Approve
+    with variance" (E-02-T13), recorded in the audit event."""
     from numo9.audit import service as audit
 
     person = _person(user)
@@ -221,6 +223,17 @@ def approve(bill: Bill, user: Any) -> Bill:
             organisation=locked.organisation,
             exclude=[p for p in (locked.created_by, locked.submitted_by) if p is not None],
         )
+        from .bill_from_po import apply_billed, has_variance
+
+        variance = locked.purchase_order_id is not None and has_variance(locked)
+        if variance and not with_variance:
+            raise _refuse(
+                _(
+                    "The bill doesn't match its purchase order and receipts: review the match "
+                    "panel and approve with variance."
+                ),
+                "purchases.bill.variance",
+            )
         store_figures(locked, shown.result)
         locked.number = locked.number or allocate_number(DocType.BILL, locked.organisation)
         entry = post_journal(
@@ -229,6 +242,7 @@ def approve(bill: Bill, user: Any) -> Bill:
             user=person,
             module=LockModule.AP,
         )
+        apply_billed(locked, 1)
         previous = locked.status
         locked.status = BillStatus.AWAITING_PAYMENT
         locked.journal_entry = entry
@@ -244,6 +258,7 @@ def approve(bill: Bill, user: Any) -> Bill:
                 "number": locked.number,
                 "total": f"{locked.total:.2f}",
                 "holdback": f"{locked.holdback_amount:.2f}",
+                "with_variance": variance,
             },
             actor=person,
         )
