@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:17-0500\n"
+"POT-Creation-Date: 2026-11-24 13:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5948,6 +5948,57 @@ msgstr ""
 msgid "goods receipt lines"
 msgstr ""
 
+msgid "Awaiting payment"
+msgstr ""
+
+msgid "Partially paid"
+msgstr ""
+
+msgid "No holdback"
+msgstr ""
+
+msgid "Percent of the total"
+msgstr ""
+
+msgid "supplier invoice number"
+msgstr ""
+
+msgid "department"
+msgstr ""
+
+msgid "holdback"
+msgstr ""
+
+msgid "holdback value"
+msgstr ""
+
+msgid "holdback amount"
+msgstr ""
+
+msgid "holdback released"
+msgstr ""
+
+msgid "amount paid"
+msgstr ""
+
+msgid "void journal"
+msgstr ""
+
+msgid "bill"
+msgstr ""
+
+msgid "bills"
+msgstr ""
+
+msgid "Draft bill"
+msgstr ""
+
+msgid "bill line"
+msgstr ""
+
+msgid "bill lines"
+msgstr ""
+
 msgid "See purchase orders and goods receipts"
 msgstr ""
 
@@ -6041,9 +6092,6 @@ msgid "manual journals"
 msgstr ""
 
 msgid "invoices"
-msgstr ""
-
-msgid "bills"
 msgstr ""
 
 msgid "pay runs"
@@ -6432,16 +6480,7 @@ msgstr ""
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
-msgid "Partially paid"
-msgstr ""
-
-msgid "amount paid"
-msgstr ""
-
 msgid "first viewed at"
-msgstr ""
-
-msgid "void journal"
 msgstr ""
 
 msgid "current revision"

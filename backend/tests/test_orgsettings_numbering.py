@@ -130,7 +130,7 @@ def test_invalid_settings_are_refused(active: Organisation, field: str, value: o
 
 def test_database_refuses_out_of_range_values(active: Organisation) -> None:
     sequence = get_sequence(DocType.INVOICE)
-    for update in ({"next_number": 0}, {"padding": 0}, {"padding": 11}, {"doc_type": "bill"}):
+    for update in ({"next_number": 0}, {"padding": 0}, {"padding": 11}, {"doc_type": "receipt"}):
         with pytest.raises(IntegrityError), transaction.atomic():
             NumberingSequence.objects.filter(pk=sequence.pk).update(**update)
 

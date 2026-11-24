@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:17-0500\n"
+"POT-Creation-Date: 2026-11-24 13:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6349,6 +6349,79 @@ msgid "goods receipt lines"
 msgstr ""
 
 #, fuzzy
+#| msgid "first payment"
+msgid "Awaiting payment"
+msgstr "premier paiement"
+
+msgid "Partially paid"
+msgstr ""
+
+msgid "No holdback"
+msgstr ""
+
+#, fuzzy
+#| msgid "Percent off"
+msgid "Percent of the total"
+msgstr "Pourcentage de rabais"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "supplier invoice number"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "Statement"
+msgid "department"
+msgstr "Relevé"
+
+msgid "holdback"
+msgstr ""
+
+msgid "holdback value"
+msgstr ""
+
+#, fuzzy
+#| msgid "bank account"
+msgid "holdback amount"
+msgstr "compte bancaire"
+
+msgid "holdback released"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount paid"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "journal"
+msgid "void journal"
+msgstr "écriture"
+
+#, fuzzy
+#| msgid "bills"
+msgid "bill"
+msgstr "factures fournisseurs"
+
+msgid "bills"
+msgstr "factures fournisseurs"
+
+#, fuzzy
+#| msgid "Created"
+msgid "Draft bill"
+msgstr "Créé"
+
+#, fuzzy
+#| msgid "bills"
+msgid "bill line"
+msgstr "factures fournisseurs"
+
+#, fuzzy
+#| msgid "Declined"
+msgid "bill lines"
+msgstr "Refusée"
+
+#, fuzzy
 #| msgid "purchase orders"
 msgid "See purchase orders and goods receipts"
 msgstr "bons de commande"
@@ -6470,9 +6543,6 @@ msgstr "écritures de journal manuelles"
 #| msgid "Invoice"
 msgid "invoices"
 msgstr "Facture"
-
-msgid "bills"
-msgstr "factures fournisseurs"
 
 msgid "pay runs"
 msgstr "paies"
@@ -6907,23 +6977,10 @@ msgstr ""
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
-msgid "Partially paid"
-msgstr ""
-
-#, fuzzy
-#| msgid "amount due"
-msgid "amount paid"
-msgstr "montant dû"
-
 #, fuzzy
 #| msgid "first seen"
 msgid "first viewed at"
 msgstr "vu pour la première fois"
-
-#, fuzzy
-#| msgid "journal"
-msgid "void journal"
-msgstr "écriture"
 
 msgid "current revision"
 msgstr ""

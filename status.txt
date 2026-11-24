@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 570   Remaining: 2217   Progress: 20.45%
+TOTAL ATOMIC TASKS: 2787   Completed: 571   Remaining: 2216   Progress: 20.49%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -758,7 +758,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-01-T19 — Gap tests gap-46, gap-49, gap-54, gap-55; i18n
 
 [E-02]
-❌ E-02-T01 — Bill, BillLine models (supplier_invoice_no, holdback fields, department/tracking)
+✅ E-02-T01 — Bill, BillLine models (supplier_invoice_no, holdback fields, department/tracking)
 ❌ E-02-T02 — Live uniqueness endpoint /bills/check-number
 ❌ E-02-T03 — Duplicate-suspect finder (fuzzy amount/date) + review list
 ❌ E-02-T04 — Purchase-side calculator integration incl. partial ITC split
