@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { expectAccessible, mockCsrf } from "./auth-helpers";
+import { pickAccount } from "./journal-helpers";
 
 /**
  * C-03-T12 — contact column on journal lines: hidden by default; choosing an account that
@@ -26,7 +27,7 @@ const account = (
   description: "",
   type,
   type_label: type,
-  subtype: "",
+  subtype: type === "revenue" ? "revenue" : "current_asset",
   subtype_label: "",
   parent: null,
   depth: 0,
@@ -97,7 +98,7 @@ test("a require-contact account reveals and focuses the contact cell", async ({ 
   await expect(page.getByRole("columnheader", { name: "Contact" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Show contact column" })).toBeVisible();
 
-  await page.getByLabel("Account, line 1").selectOption(AR);
+  await pickAccount(page, 1, "1100", /Accounts receivable/);
   const contact = page.getByLabel("Contact, line 1");
   await expect(page.getByRole("columnheader", { name: "Contact" })).toBeVisible();
   await expect(contact).toBeFocused();
@@ -110,7 +111,7 @@ test("a require-contact account reveals and focuses the contact cell", async ({ 
 
   await contact.selectOption(CUSTOMER);
   await page.getByLabel("Debit, line 1").fill("113.00");
-  await page.getByLabel("Account, line 2").selectOption(SALES);
+  await pickAccount(page, 2, "Sales", /Sales/);
   await page.getByLabel("Credit, line 2").fill("113.00");
   await expect(page.locator("[data-contact-required]")).toHaveCount(0);
   await page.getByRole("button", { name: "Post journal" }).click();

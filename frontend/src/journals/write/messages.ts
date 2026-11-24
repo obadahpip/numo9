@@ -216,4 +216,19 @@ export const wm = defineMessages({
     defaultMessage: "Hide contact column",
     description: "Button: hides the per-line contact column",
   },
+  balanced: {
+    id: "journals.write.balanced",
+    defaultMessage: "Balanced",
+    description: "Difference meter: debits equal credits (C-04-T09)",
+  },
+  outOfBalance: {
+    id: "journals.write.outOfBalance",
+    defaultMessage: "Out of balance by {amount}",
+    description: "Difference meter: debits and credits differ by the amount",
+  },
+  enterAmounts: {
+    id: "journals.write.enterAmounts",
+    defaultMessage: "Enter the debits and credits",
+    description: "Difference meter before any amount is typed",
+  },
 });
