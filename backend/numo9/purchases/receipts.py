@@ -1,4 +1,4 @@
-"""Goods receipts (E-01-T04, T05): receive against an approved purchase order, partially or in full.
+"""Goods receipts (E-01-T04…T06): receive against an approved purchase order, partially or in full.
 
     result = receive(order, user, [(po_line, Decimal("6"))], date=…, notes="…")
 
@@ -14,6 +14,12 @@
   received → Approved, some → **Partially received**, every line in full → **Received**;
 - the receipt is audited ``purchases.goodsreceipt.received``; each line of a **tracked** item is
   sent to the stock movement sink (E-01-T05, ``numo9.purchases.stock``) as +quantity.
+
+``reverse_receipt(receipt, user, reason)`` (E-01-T06) undoes a receipt: its quantities come off
+the lines (outstanding restored), tracked items go to the sink as −quantity, the PO's status
+follows, and the receipt is kept with when, who and why (audited
+``purchases.goodsreceipt.reversed``). A receipt is reversed once; a closed, billed or cancelled
+PO's receipts stay as they are.
 """
 
 from __future__ import annotations
@@ -209,3 +215,55 @@ def receive(
         if movements:
             sink().record(movements)
         return ReceiptResult(receipt, over)
+
+
+def reverse_receipt(receipt: GoodsReceipt, user: Any, reason: str) -> GoodsReceipt:
+    from numo9.audit import service as audit
+
+    from .stock import Movement, sink, tracked
+
+    person = _person(user)
+    reason = " ".join((reason or "").split())
+    with org_context(receipt.organisation), transaction.atomic():
+        order = PurchaseOrder._base_manager.select_for_update().get(pk=receipt.purchase_order_id)
+        locked: GoodsReceipt = GoodsReceipt.objects.select_for_update().get(pk=receipt.pk)
+        if locked.reversed_at is not None:
+            raise PurchaseOrderRefused(
+                _("This receipt was already reversed."), code="purchases.receipt.reversed"
+            )
+        if order.status not in RECEIVABLE:
+            raise PurchaseOrderRefused(
+                _("%(order)s is %(status)s: its receipts can't be reversed."),
+                code="purchases.receipt.not_reversible",
+                params={
+                    "order": str(order),
+                    "status": str(PurchaseOrderStatus(order.status).label).lower(),
+                },
+            )
+        if len(reason) < 3:
+            raise PurchaseOrderRefused(
+                _("Say why the receipt is reversed."), code="purchases.receipt.reason"
+            )
+        movements: list[Movement] = []
+        for row in locked.lines.all():
+            line = PurchaseOrderLine.objects.select_for_update().get(pk=row.po_line_id)
+            line.quantity_received = max(
+                Decimal(line.quantity_received) - Decimal(row.quantity), Decimal("0")
+            )
+            line.save(update_fields=["quantity_received", "updated_at"])
+            if tracked(line):
+                movements.append(Movement.of(locked, line, -Decimal(row.quantity), "reversal"))
+        locked.reversed_at = timezone.now()
+        locked.reversed_by = person
+        locked.reversal_reason = reason[:500]
+        locked.save(update_fields=["reversed_at", "reversed_by", "reversal_reason", "updated_at"])
+        refresh_status(order)
+        audit.record(
+            "purchases.goodsreceipt.reversed",
+            obj=locked,
+            meta={"purchase_order": order.number, "reason": reason},
+            actor=person,
+        )
+        if movements:
+            sink().record(movements)
+        return locked

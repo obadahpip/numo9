@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:03-0500\n"
+"POT-Creation-Date: 2026-11-24 07:06-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6354,6 +6354,19 @@ msgid "More than ordered (beyond the tolerance) can't be received."
 msgstr ""
 
 msgid "This receives more than ordered: confirm to receive it anyway."
+msgstr ""
+
+#, fuzzy
+#| msgid "%(name)s is already uploaded."
+msgid "This receipt was already reversed."
+msgstr "%(name)s est déjà téléversé."
+
+#, fuzzy, python-format
+#| msgid "%(journal)s is %(status)s: only drafts can be edited."
+msgid "%(order)s is %(status)s: its receipts can't be reversed."
+msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent être modifiés."
+
+msgid "Say why the receipt is reversed."
 msgstr ""
 
 #, python-format
