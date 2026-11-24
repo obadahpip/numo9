@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 573   Remaining: 2214   Progress: 20.56%
+TOTAL ATOMIC TASKS: 2787   Completed: 574   Remaining: 2213   Progress: 20.60%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -761,7 +761,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-02-T01 — Bill, BillLine models (supplier_invoice_no, holdback fields, department/tracking)
 ✅ E-02-T02 — Live uniqueness endpoint /bills/check-number
 ✅ E-02-T03 — Duplicate-suspect finder (fuzzy amount/date) + review list
-❌ E-02-T04 — Purchase-side calculator integration incl. partial ITC split
+✅ E-02-T04 — Purchase-side calculator integration incl. partial ITC split
 ❌ E-02-T05 — Posting service (AP, ITC, non-recoverable, holdback)
 ❌ E-02-T06 — Holdback release service
 ❌ E-02-T07 — ApprovalRoutingRule (amount band, department → approver group) + evaluator
