@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 508   Remaining: 2279   Progress: 18.23%
+TOTAL ATOMIC TASKS: 2787   Completed: 509   Remaining: 2278   Progress: 18.26%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -680,7 +680,7 @@ Phase 1 Core Books  (572 atomic tasks)
 [F-01]
 ✅ F-01-T10 — Spend/Receive money form reusing the D-01 grid in bank mode (account/tax pickers filtered: purchase side for spend, sales side for receive); attachment drop zone; contact optional per rule
 ✅ F-01-T13 — Quick-create and global-search registration: Spend money, Receive money, Add bank account; shortcuts shown in the "+" menu
-❌ F-01-T14 — Audit-log hooks (create/archive/rename/statement-balance edits) and i18n keys en-CA/fr-CA for all strings
+✅ F-01-T14 — Audit-log hooks (create/archive/rename/statement-balance edits) and i18n keys en-CA/fr-CA for all strings
 
 [C-04]
 ❌ C-04-T04 — RecurringJournalTemplate model (lines JSON validated, rrule string, start/end, mode, next_run, paused)

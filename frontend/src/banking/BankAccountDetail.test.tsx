@@ -99,3 +99,66 @@ it("shows the empty state when the account has no transaction", async () => {
   renderWithIntl(<BankAccountDetail org={ORG} account={ID} />);
   expect(await screen.findByRole("heading", { name: "No transactions yet" })).toBeVisible();
 });
+
+it("History opens the account's audit trail (F-01-T14): who renamed it, old and new name", async () => {
+  const urls: string[] = [];
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      serveJson((url) => {
+        urls.push(url);
+        if (url.includes("/audit/records/"))
+          return {
+            body: {
+              record: {
+                type: "banking.BankAccount",
+                type_label: "Bank account",
+                id: ID,
+                label: "TD",
+              },
+              viewer: { time_format: "24h", time_zone: "America/Toronto" },
+              next: null,
+              results: [
+                {
+                  id: "e1",
+                  at: "2026-06-30T14:00:00Z",
+                  action: "banking.bankaccount.updated",
+                  action_label: "Edited",
+                  actor: {
+                    kind: "user",
+                    label: "Dana Lee",
+                    user: { id: "u1", name: "Dana Lee", email: "dana@refined.ca" },
+                    impersonator: null,
+                  },
+                  record: {
+                    type: "banking.BankAccount",
+                    type_label: "Bank account",
+                    id: ID,
+                    label: "TD",
+                  },
+                  changes: [
+                    {
+                      field: "display_name",
+                      label: "Name",
+                      old: "TD Chequing",
+                      new: "TD Business Chequing",
+                      masked: false,
+                    },
+                  ],
+                },
+              ],
+            },
+          };
+        return { body: { account: bankAccount({ id: ID }), results: [] } };
+      }),
+    ),
+  );
+  const user = userEvent.setup();
+  renderWithIntl(<BankAccountDetail org={ORG} account={ID} />);
+  await screen.findByRole("heading", { name: "TD Business Chequing" });
+  await user.click(screen.getByRole("button", { name: "History" }));
+  const drawer = await screen.findByRole("dialog");
+  expect(await within(drawer).findByText("Dana Lee")).toBeVisible();
+  expect(within(drawer).getByText("TD Chequing")).toBeVisible();
+  expect(urls.some((u) => u.includes(`/audit/records/banking.BankAccount/${ID}`))).toBe(true);
+});
