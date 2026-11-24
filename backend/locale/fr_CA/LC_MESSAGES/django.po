@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:35-0500\n"
+"POT-Creation-Date: 2026-11-24 15:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7020,6 +7020,47 @@ msgstr ""
 msgid "There's no such report layout."
 msgstr ""
 
+#, python-format
+msgid "The net change in cash for %(period)s (%(flow)s) doesn't equal the change in the cash accounts (%(cash)s) — the books need a look before this is used."
+msgstr ""
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Cash at the beginning of the period"
+msgstr "prend fin à la fin de la période"
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Cash at the end of the period"
+msgstr "prend fin à la fin de la période"
+
+msgid "Net change in cash"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Net cash from %(section)s"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Net income"
+msgstr ""
+
+#, fuzzy
+#| msgid "organisation"
+msgid "Add back amortization"
+msgstr "organisation"
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Operating activities"
+msgstr "Solde d’ouverture"
+
+msgid "Investing activities"
+msgstr ""
+
+msgid "Financing activities"
+msgstr ""
+
 #, fuzzy, python-format
 #| msgid "%(start)s to %(end)s · times in %(zone)s"
 msgid "%(start)s to %(end)s"
@@ -7194,9 +7235,6 @@ msgid "Operating income"
 msgstr "Solde d’ouverture"
 
 msgid "Income before income taxes"
-msgstr ""
-
-msgid "Net income"
 msgstr ""
 
 #, fuzzy, python-format

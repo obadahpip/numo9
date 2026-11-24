@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:35-0500\n"
+"POT-Creation-Date: 2026-11-24 15:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6519,6 +6519,38 @@ msgid "There's no such report layout."
 msgstr ""
 
 #, python-format
+msgid "The net change in cash for %(period)s (%(flow)s) doesn't equal the change in the cash accounts (%(cash)s) — the books need a look before this is used."
+msgstr ""
+
+msgid "Cash at the beginning of the period"
+msgstr ""
+
+msgid "Cash at the end of the period"
+msgstr ""
+
+msgid "Net change in cash"
+msgstr ""
+
+#, python-format
+msgid "Net cash from %(section)s"
+msgstr ""
+
+msgid "Net income"
+msgstr ""
+
+msgid "Add back amortization"
+msgstr ""
+
+msgid "Operating activities"
+msgstr ""
+
+msgid "Investing activities"
+msgstr ""
+
+msgid "Financing activities"
+msgstr ""
+
+#, python-format
 msgid "%(start)s to %(end)s"
 msgstr ""
 
@@ -6645,9 +6677,6 @@ msgid "Operating income"
 msgstr ""
 
 msgid "Income before income taxes"
-msgstr ""
-
-msgid "Net income"
 msgstr ""
 
 #, python-format
