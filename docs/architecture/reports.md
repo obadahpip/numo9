@@ -73,8 +73,8 @@ its source document link: a source type registers its URL builder (`register_sou
 and bank transactions now), anything else opens the journal.
 
 API: `GET /api/v1/o/<org>/reports/<report>/drill?account=5400&from=2026-06-01&to=2026-06-30
-&book=accounting&tracking=region:east&page=1` (`reports.reports.view`, feature
-`accounting.reports.read`); bad parameters → 400 with a `reports.*` code.
+&book=accounting&tracking=region:east&page=1` (`reports.reports.view`, gated by the report's
+feature key); bad parameters → 400 with a `reports.*` code.
 
 ## Header (K-01-T06)
 
@@ -114,3 +114,40 @@ Managing layouts needs `reports.layouts.manage`.
 (an empty text removes it), `notes_for`, and `annotate(result, notes)`, which puts each note on its
 row when the report runs again and lists the notes whose row isn't in this run under
 `unplaced_notes` (nothing is lost when a period has no activity).
+
+## Exports (K-01-T10)
+
+`numo9.reports.exports` renders the **report body** — what the runner shows (`report_body`,
+below): the same rows, labels, values, header and footnotes. Nothing is computed again.
+
+| Format | What it is |
+|---|---|
+| PDF | Letter, 1 in margins, on the printed-document baseline (`documents/base.html`); amounts formatted like the screen (`$1,234.56`, `1 234,56 $` in French); "No activity in this period" when there are no rows |
+| XLSX | Amounts as numbers (`#,##0.00`); each total is a `=SUM(…)` formula over the rows it adds up (the block above it, or every row) when they add up to it, otherwise its value; opens in Google Sheets as is |
+| CSV | UTF-8 with BOM; header lines, a blank line, then the table; plain decimals |
+
+The PDF text of the account activity report is a stored snapshot
+(`tests/snapshots/report_activity_pdf.txt`).
+
+## API (K-01-T11)
+
+Under `/api/v1/o/<org>/`:
+
+| Method and path | What |
+|---|---|
+| `GET reports` | The catalogue by category: each report's parameters, feature key, `available` (in the package), `favourite`; and the organisation's layouts as `drafts`, `published`, `custom` |
+| `GET reports/<report>/run` | The report body: `header`, `columns`, `rows`, `totals`, `notes`, cell notes on their rows; the report's parameters and `preset` (this_month … custom) in the query, `layout=<id>` to apply a layout (a published one answers its snapshot) |
+| `GET reports/<report>/export?file=pdf\|xlsx\|csv` | The same body as a file (`file`, because DRF keeps `format` for its renderers) |
+| `GET reports/<report>/drill` | The lines behind a figure (K-01-T05) |
+| `PUT`, `DELETE reports/<report>/favourite` | Star and unstar (per person) |
+| `GET`, `POST reports/<report>/layouts` | The report's layouts; save a `draft` or `custom` layout |
+| `GET`, `DELETE reports/layouts/<id>` | A layout with its snapshot; delete (a published layout is kept) |
+| `POST reports/layouts/<id>/publish` | Publish a draft (snapshot, immutable afterwards) |
+| `PUT reports/<report>/notes` | A cell note (`row`, `column`, `text`; empty removes it) |
+
+Every endpoint needs `reports.reports.view` (layouts and notes `reports.layouts.manage`). The
+views declare `@core`, and each request is gated by **the report's own feature key**
+(`require_feature(report.feature)`): an accounting report needs `accounting.reports.read`, a tax
+report `tax.reports.read`. A report outside the package answers **402**
+`entitlement.feature_not_in_package` naming the feature and its product; the catalogue still lists
+it, with `available: false`, so the report home can show the explicit gate.

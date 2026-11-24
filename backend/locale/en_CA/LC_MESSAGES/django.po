@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 12:14-0500\n"
+"POT-Creation-Date: 2026-11-24 12:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6276,6 +6276,9 @@ msgstr ""
 msgid "There's no such report."
 msgstr ""
 
+msgid "There's no such report layout."
+msgstr ""
+
 #, python-format
 msgid "%(start)s to %(end)s"
 msgstr ""
@@ -6327,6 +6330,15 @@ msgid "report note"
 msgstr ""
 
 msgid "report notes"
+msgstr ""
+
+msgid "added at"
+msgstr ""
+
+msgid "favourite report"
+msgstr ""
+
+msgid "favourite reports"
 msgstr ""
 
 msgid "Run reports and drill down to their lines"
@@ -7236,9 +7248,6 @@ msgid "organisation groups"
 msgstr ""
 
 msgid "group"
-msgstr ""
-
-msgid "added at"
 msgstr ""
 
 msgid "organisation in a group"

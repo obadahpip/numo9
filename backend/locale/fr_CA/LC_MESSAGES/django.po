@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 12:14-0500\n"
+"POT-Creation-Date: 2026-11-24 12:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6704,6 +6704,9 @@ msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 msgid "There's no such report."
 msgstr ""
 
+msgid "There's no such report layout."
+msgstr ""
+
 #, fuzzy, python-format
 #| msgid "%(start)s to %(end)s · times in %(zone)s"
 msgid "%(start)s to %(end)s"
@@ -6774,6 +6777,17 @@ msgstr "Note de crédit"
 #| msgid "Credit note"
 msgid "report notes"
 msgstr "Note de crédit"
+
+msgid "added at"
+msgstr "ajoutée le"
+
+msgid "favourite report"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reports"
+msgid "favourite reports"
+msgstr "Rapports"
 
 msgid "Run reports and drill down to their lines"
 msgstr ""
@@ -7846,9 +7860,6 @@ msgstr "groupes d’organisations"
 
 msgid "group"
 msgstr ""
-
-msgid "added at"
-msgstr "ajoutée le"
 
 msgid "organisation in a group"
 msgstr "organisation dans un groupe"
