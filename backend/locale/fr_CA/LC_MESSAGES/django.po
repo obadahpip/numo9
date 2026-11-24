@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:12-0500\n"
+"POT-Creation-Date: 2026-11-24 16:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8223,6 +8223,60 @@ msgstr "fréquence de facturation"
 #, fuzzy
 #| msgid "billing interval"
 msgid "filing cycles"
+msgstr "fréquence de facturation"
+
+msgid "Regular"
+msgstr ""
+
+#, fuzzy
+#| msgid "Out of scope"
+msgid "Out of cycle"
+msgstr "Hors champ"
+
+msgid "Stub"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed"
+msgid "Filed"
+msgstr "Échec"
+
+#, fuzzy
+#| msgid "started"
+msgid "start"
+msgstr "commencée"
+
+#, fuzzy
+#| msgid "ended"
+msgid "end"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "return due"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "payment due"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "finished at"
+msgid "filed at"
+msgstr "terminée le"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing period"
+msgstr "fréquence de facturation"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing periods"
 msgstr "fréquence de facturation"
 
 #, python-format

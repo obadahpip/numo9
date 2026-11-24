@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:12-0500\n"
+"POT-Creation-Date: 2026-11-24 16:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7426,6 +7426,42 @@ msgid "filing cycle"
 msgstr ""
 
 msgid "filing cycles"
+msgstr ""
+
+msgid "Regular"
+msgstr ""
+
+msgid "Out of cycle"
+msgstr ""
+
+msgid "Stub"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Filed"
+msgstr ""
+
+msgid "start"
+msgstr ""
+
+msgid "end"
+msgstr ""
+
+msgid "return due"
+msgstr ""
+
+msgid "payment due"
+msgstr ""
+
+msgid "filed at"
+msgstr ""
+
+msgid "filing period"
+msgstr ""
+
+msgid "filing periods"
 msgstr ""
 
 #, python-format
