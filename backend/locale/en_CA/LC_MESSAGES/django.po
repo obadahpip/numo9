@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:49-0500\n"
+"POT-Creation-Date: 2026-11-24 15:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6829,6 +6829,48 @@ msgid "invoice email"
 msgstr ""
 
 msgid "invoice emails"
+msgstr ""
+
+msgid "Partially applied"
+msgstr ""
+
+msgid "Applied"
+msgstr ""
+
+msgid "credited invoice"
+msgstr ""
+
+msgid "amount applied"
+msgstr ""
+
+msgid "amount refunded"
+msgstr ""
+
+msgid "credit note"
+msgstr ""
+
+msgid "credit notes"
+msgstr ""
+
+msgid "Draft credit note"
+msgstr ""
+
+msgid "credit note line"
+msgstr ""
+
+msgid "credit note lines"
+msgstr ""
+
+msgid "applied by"
+msgstr ""
+
+msgid "removed at"
+msgstr ""
+
+msgid "credit application"
+msgstr ""
+
+msgid "credit applications"
 msgstr ""
 
 msgid "Net 30"

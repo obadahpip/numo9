@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 599   Remaining: 2188   Progress: 21.49%
+TOTAL ATOMIC TASKS: 2787   Completed: 600   Remaining: 2187   Progress: 21.53%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -793,7 +793,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-02-T15 — Data validation script: for fixture orgs, BS balances, NI = ΔRE, TB = GL, CF = Δcash
 
 [D-06]
-❌ D-06-T01 — CreditNote, lines, CreditApplication models
+✅ D-06-T01 — CreditNote, lines, CreditApplication models
 ❌ D-06-T03 — Posting service (reverse revenue and tax, Cr AR)
 ❌ D-06-T07 — PDF template for credit note
 

@@ -6,6 +6,12 @@ transaction (D-03a-T02) — a draft has none and shows "Draft"; a void invoice k
 ``journal_entry`` is the posting of the approval (D-03a-T03), ``void_entry`` its reversal
 (D-03a-T07). ``current_revision`` is the latest ``InvoiceRevision`` once posted invoices become
 editable (D-03b fills it; empty until then).
+
+Credit notes (D-06-T01): ``CreditNote`` and ``CreditNoteLine`` on the same document base, numbered
+``CN-0001`` at approval; optionally the invoice it credits ("Credit this invoice", D-06-T02).
+Approval posts Dr revenue / Dr tax / Cr AR (D-06-T03). ``CreditApplication`` applies part of a
+credit note to an invoice (amount ≤ the invoice's open balance and ≤ the credit remaining,
+D-06-T04); ``amount_applied`` and ``amount_refunded`` are the credit used so far.
 """
 
 from __future__ import annotations
@@ -211,3 +217,174 @@ class InvoiceEmail(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.invoice} → {', '.join(self.recipients)}"
+
+
+class CreditNoteStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    AWAITING_APPROVAL = "awaiting_approval", _("Awaiting approval")
+    APPROVED = "approved", _("Approved")
+    PARTIALLY_APPLIED = "partially_applied", _("Partially applied")
+    APPLIED = "applied", _("Applied")
+    VOID = "void", _("Void")
+
+
+CREDIT_POSTED_STATUSES: frozenset[str] = frozenset(
+    {
+        CreditNoteStatus.APPROVED,
+        CreditNoteStatus.PARTIALLY_APPLIED,
+        CreditNoteStatus.APPLIED,
+        CreditNoteStatus.VOID,
+    }
+)
+
+
+class CreditNote(DocumentBase):
+    number = models.CharField(_("number"), max_length=40, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=20,
+        choices=CreditNoteStatus.choices,
+        default=CreditNoteStatus.DRAFT,
+    )
+    invoice = models.ForeignKey(
+        Invoice,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="credit_notes",
+        verbose_name=_("credited invoice"),
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    amount_applied = _money(_("amount applied"))
+    amount_refunded = _money(_("amount refunded"))
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="credit_note",
+        verbose_name=_("journal"),
+    )
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("approved by"),
+    )
+    approved_at = models.DateTimeField(_("approved at"), null=True, blank=True)
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+    void_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="voided_credit_note",
+        verbose_name=_("void journal"),
+    )
+
+    class Meta(DocumentBase.Meta):
+        abstract = False
+        ordering = ("-date", "-pk")
+        verbose_name = _("credit note")
+        verbose_name_plural = _("credit notes")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            *DocumentBase.header_constraints("sales_creditnote"),
+            models.CheckConstraint(
+                condition=models.Q(status__in=CreditNoteStatus.values),
+                name="sales_creditnote_status_valid",
+            ),
+            models.UniqueConstraint(
+                fields=["organisation", "number"],
+                condition=~models.Q(number=""),
+                name="sales_creditnote_number_unique",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status__in=sorted(CREDIT_POSTED_STATUSES))
+                | (~models.Q(number="") & models.Q(journal_entry__isnull=False)),
+                name="sales_creditnote_posted_numbered",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount_applied__gte=0, amount_refunded__gte=0)
+                & models.Q(total__gte=models.F("amount_applied") + models.F("amount_refunded")),
+                name="sales_creditnote_used_within_total",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "status"], name="sales_creditnote_status_idx"),
+            models.Index(
+                fields=["organisation", "contact", "date"], name="sales_creditnote_contact_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.number or str(_("Draft credit note"))
+
+    @property
+    def is_posted(self) -> bool:
+        return self.status in CREDIT_POSTED_STATUSES
+
+    @property
+    def remaining(self) -> Decimal:
+        return Decimal(self.total) - Decimal(self.amount_applied) - Decimal(self.amount_refunded)
+
+
+class CreditNoteLine(DocumentLineBase):
+    document = models.ForeignKey(
+        CreditNote, on_delete=models.CASCADE, related_name="lines", verbose_name=_("credit note")
+    )
+
+    class Meta(DocumentLineBase.Meta):
+        abstract = False
+        verbose_name = _("credit note line")
+        verbose_name_plural = _("credit note lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = DocumentLineBase.line_constraints(
+            "sales_creditnoteline"
+        )
+
+
+class CreditApplication(OrgOwnedModel):
+    """Part of a credit note applied to an invoice on a date (D-06-T04 checks the limits)."""
+
+    credit_note = models.ForeignKey(
+        CreditNote,
+        on_delete=models.PROTECT,
+        related_name="applications",
+        verbose_name=_("credit note"),
+    )
+    invoice = models.ForeignKey(
+        Invoice,
+        on_delete=models.PROTECT,
+        related_name="credit_applications",
+        verbose_name=_("invoice"),
+    )
+    amount = _money(_("amount"))
+    date = models.DateField(_("date"))
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("applied by"),
+    )
+    created_at = models.DateTimeField(_("applied at"), auto_now_add=True)
+    reversed_at = models.DateTimeField(_("removed at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("date", "pk")
+        verbose_name = _("credit application")
+        verbose_name_plural = _("credit applications")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="sales_creditapplication_positive"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "credit_note"], name="sales_creditapp_credit_idx"),
+            models.Index(fields=["organisation", "invoice"], name="sales_creditapp_invoice_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.credit_note} → {self.invoice}: {self.amount}"

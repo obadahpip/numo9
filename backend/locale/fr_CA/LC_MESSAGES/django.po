@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:49-0500\n"
+"POT-Creation-Date: 2026-11-24 15:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7441,6 +7441,76 @@ msgstr "page de la facture"
 #| msgid "invoice number"
 msgid "invoice emails"
 msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "Email received"
+msgid "Partially applied"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "Applied for"
+msgid "Applied"
+msgstr "Demande présentée"
+
+#, fuzzy
+#| msgid "Stripe invoice"
+msgid "credited invoice"
+msgstr "Facture Stripe"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount applied"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount refunded"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit note"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit notes"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "Draft credit note"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit note line"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit note lines"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "applied by"
+msgstr "appliqué le"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "removed at"
+msgstr "appliqué le"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "credit application"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "credit applications"
+msgstr "Créer des organisations clientes"
 
 msgid "Net 30"
 msgstr ""
