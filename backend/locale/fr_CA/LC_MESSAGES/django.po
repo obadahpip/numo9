@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:36-0500\n"
+"POT-Creation-Date: 2026-11-24 14:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4503,6 +4503,11 @@ msgstr ""
 msgid "Foreign exchange gain or loss"
 msgstr ""
 
+#, fuzzy
+#| msgid "Accountant"
+msgid "Holdbacks payable"
+msgstr "Comptable"
+
 msgid "Current assets"
 msgstr ""
 
@@ -5634,6 +5639,14 @@ msgstr "contact exigé sur les lignes de dépenses"
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr "Chaque ligne d'une écriture sur un compte de dépenses doit indiquer un contact."
 
+#, fuzzy
+#| msgid "invoice number"
+msgid "bills need the supplier's invoice number"
+msgstr "numéro de facture"
+
+msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
 msgid "journals need approval from"
 msgstr "les écritures doivent être approuvées à partir de"
 
@@ -6203,6 +6216,60 @@ msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'app
 #| msgid "This override request is already %(status)s."
 msgid "%(order)s isn't a draft."
 msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "Add a Holdbacks payable account to the chart of accounts to post holdbacks."
+msgstr ""
+
+#, fuzzy
+#| msgid "bank account"
+msgid "Holdback"
+msgstr "compte bancaire"
+
+msgid "The holdback is more than the amount owed on the bill."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Bill %(number)s — %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, fuzzy
+#| msgid "Draft"
+msgid "draft"
+msgstr "Brouillon"
+
+msgid "Enter the supplier's invoice number before approving the bill."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(supplier)s's invoice %(number)s is already on %(bill)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(bill)s is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "Every line with an amount needs an account before the bill is approved."
+msgstr ""
+
+msgid "A bill's total must be more than zero: for money the supplier owes you, enter a supplier credit."
+msgstr ""
+
+#, fuzzy
+#| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgid "You wrote or submitted this bill: someone else must approve it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, python-format
+msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
+msgstr ""
+
+#, fuzzy
+#| msgid "Created"
+msgid "A draft bill"
+msgstr "Créé"
 
 #, fuzzy, python-format
 #| msgid "Invite users to the organisation"
