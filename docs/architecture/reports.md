@@ -62,3 +62,16 @@ approval never count.
 
 Performance: a 12-month aggregation of a 100,000-line organisation runs in well under 1 s
 (`tests/test_report_aggregation_performance.py`; about 0.07 s on the CI database).
+
+## Drill-down (K-01-T05)
+
+`numo9.reports.drill.drill(org, account, date_to, date_from, book, tracking, page)` lists the
+posted lines behind a figure, oldest first, 50 a page; `total` is the sum of all of them (debits −
+credits) on every page and equals the figure — the same filter as the aggregation. Without
+`date_from` the lines run from the start of the books (balance-sheet figures). Each line carries
+its source document link: a source type registers its URL builder (`register_source`; invoices
+and bank transactions now), anything else opens the journal.
+
+API: `GET /api/v1/o/<org>/reports/<report>/drill?account=5400&from=2026-06-01&to=2026-06-30
+&book=accounting&tracking=region:east&page=1` (`reports.reports.view`, feature
+`accounting.reports.read`); bad parameters → 400 with a `reports.*` code.
