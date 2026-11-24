@@ -14,6 +14,7 @@ urlpatterns = [
         name="tax-component",
     ),
     path(f"{ORG}tax/codes", api.TaxCodeListView.as_view(), name="tax-codes"),
+    path(f"{ORG}tax/numbers/check", api.TaxNumberCheckView.as_view(), name="tax-number-check"),
     path(f"{ORG}tax/codes/<uuid:public_id>", api.TaxCodeDetailView.as_view(), name="tax-code"),
     path(
         f"{ORG}tax/codes/<uuid:public_id>/versions",

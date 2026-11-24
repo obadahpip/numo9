@@ -561,3 +561,32 @@ class TaxCalculateView(APIView):
                 ],
             }
         )
+
+
+class NumberCheckInputSerializer(serializers.Serializer[Any]):
+    type = serializers.CharField(max_length=16)
+    number = serializers.CharField(max_length=40, allow_blank=True)
+
+
+class TaxNumberCheckView(APIView):
+    """``POST tax/numbers/check`` ``{type, number}`` (G-06-T03) — checks a BN, program account
+    (RT/RP/RC), QST or provincial number as the tax settings page types it, writing nothing:
+    ``{valid, number, display, code, message, example}`` — the message of an invalid number
+    carries an example of the right format."""
+
+    queryset = TaxCode._base_manager.none()
+
+    @requires_permission(TAX_VIEW.key)
+    @requires_feature(CORE)
+    @extend_schema(
+        operation_id="tax_number_check",
+        request=NumberCheckInputSerializer,
+        responses={200: dict},
+    )
+    def post(self, request: Request, org: Any) -> Response:
+        from .numbers import check_number
+
+        payload = NumberCheckInputSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        data = payload.validated_data
+        return Response(check_number(data["type"], data["number"]).as_dict())
