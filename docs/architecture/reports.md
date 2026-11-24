@@ -83,3 +83,11 @@ display name; legal name (left out when the same as the display name); period la
 to 31 Mar 2027" or "As at 30 Jun 2026"); **"Year to date — unaudited"** when the period or the
 balance date ends after today; the basis label (G-06 default or the report's override); "Accounting
 book" / "Tax book".
+
+## Legal name (K-01-T07)
+
+The header prints the legal name, so the organisation settings refuse one that isn't a name
+(`validate_organisation_legal_name`, gap-55): a number ("1001633222" →
+`orgsettings.legal_name.numeric`) or fewer than two letters ("1001633222 A" →
+`orgsettings.legal_name.too_few_letters`). "1001633222 Ontario Inc." and "3M Canada" are fine.
+Contacts keep the plain "not only a number" rule.

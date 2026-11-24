@@ -87,6 +87,27 @@ def validate_legal_name(value: str) -> None:
         )
 
 
+#: Letters an organisation's legal name needs at least (K-01-T07): a name printed on every report
+#: and tax form is more than a number with a stray letter ("1001633222 A").
+MIN_LEGAL_NAME_LETTERS = 2
+
+
+def letter_count(value: str) -> int:
+    return sum(1 for character in value if character.isalpha())
+
+
+def validate_organisation_legal_name(value: str) -> None:
+    """The organisation's legal name (A-05, K-01-T07): not a number, and at least
+    ``MIN_LEGAL_NAME_LETTERS`` letters (accented letters count)."""
+    validate_legal_name(value)
+    if value and letter_count(value) < MIN_LEGAL_NAME_LETTERS:
+        raise ValidationError(
+            _("A legal name needs at least %(count)s letters: %(value)s is too short a name."),
+            code="orgsettings.legal_name.too_few_letters",
+            params={"value": value, "count": MIN_LEGAL_NAME_LETTERS},
+        )
+
+
 # ---- postal code -----------------------------------------------------------------------------
 
 
