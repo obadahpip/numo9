@@ -209,6 +209,26 @@ export const runner = defineMessages({
     defaultMessage: "Show the lines of {row}, {column}",
     description: "Drill button on a report figure",
   },
+  noActivity: {
+    id: "reports.runner.noActivity",
+    defaultMessage: "No activity in this period",
+    description: "Hint of a report with no postings in its period (never a dash)",
+  },
+  noActivityCell: {
+    id: "reports.runner.noActivityCell",
+    defaultMessage: "No activity",
+    description: "An empty cell of a report",
+  },
+  showZeroRows: {
+    id: "reports.runner.showZeroRows",
+    defaultMessage: "Show zero rows",
+    description: "Switch: show accounts with no activity",
+  },
+  runFinancialYear: {
+    id: "reports.runner.runFinancialYear",
+    defaultMessage: "Run this financial year",
+    description: "Action under the no-activity hint",
+  },
   note: {
     id: "reports.runner.note",
     defaultMessage: "Note:",

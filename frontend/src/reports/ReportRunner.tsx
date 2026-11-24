@@ -134,6 +134,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
   const [state, setState] = useState<"idle" | "running" | "failed" | "gated">("idle");
   const [gated, setGated] = useState("");
   const [compact, setCompact] = useState(false);
+  const [zeroRows, setZeroRows] = useState(false);
   const [drill, setDrill] = useState<DrillTarget | null>(null);
   const [editing, setEditing] = useState(false);
 
@@ -384,6 +385,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
           {fm(runner.update)}
         </Button>
         <Switch checked={compact} onCheckedChange={setCompact} label={fm(runner.compact)} />
+        <Switch checked={zeroRows} onCheckedChange={setZeroRows} label={fm(runner.showZeroRows)} />
       </form>
 
       {state === "gated" ? (
@@ -443,10 +445,29 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
             rows={toTableRows(body)}
             locale={locale}
             compact={compact}
+            showZeroRows={zeroRows}
             labels={{
               drill: (row, column) => fm(runner.drill, { row, column }),
               note: fm(runner.note),
+              noActivity: fm(runner.noActivity),
+              noActivityCell: fm(runner.noActivityCell),
             }}
+            emptyActions={
+              <div className="flex flex-wrap items-center gap-3">
+                {periodReport && params.preset !== "this_financial_year" ? (
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      const next = { ...params, preset: "this_financial_year" };
+                      setParams(next);
+                      void run(report, next);
+                    }}
+                  >
+                    {fm(runner.runFinancialYear)}
+                  </Button>
+                ) : null}
+              </div>
+            }
             onDrill={
               renderDrill
                 ? (row, column) => {

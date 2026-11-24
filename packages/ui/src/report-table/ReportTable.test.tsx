@@ -12,6 +12,8 @@ import { ReportTable, visibleWindow, type ReportTableRow } from "./ReportTable";
 const labels = {
   drill: (row: string, column: string) => `Show the lines of ${row}, ${column}`,
   note: "Note:",
+  noActivity: "No activity in this period",
+  noActivityCell: "No activity",
 };
 const columns = [{ key: "p0", label: "2026" }];
 const rows: ReportTableRow[] = [

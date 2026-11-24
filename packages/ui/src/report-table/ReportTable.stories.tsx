@@ -13,6 +13,8 @@ type Story = StoryObj<typeof ReportTable>;
 const labels = {
   drill: (row: string, column: string) => `Show the lines of ${row}, ${column}`,
   note: "Note:",
+  noActivity: "No activity in this period",
+  noActivityCell: "No activity",
 };
 
 const rows: ReportTableRow[] = [
@@ -64,5 +66,19 @@ export const TwelveComparisons: Story = {
     locale: "en-CA",
     labels,
     compact: true,
+  },
+};
+
+export const NoActivity: Story = {
+  args: {
+    caption: "Profit and loss",
+    columns: [{ key: "p0", label: "Jan–Dec 2026" }],
+    rows: [
+      { key: "section:income", label: "Income", kind: "section", values: [] },
+      { key: "account:4000", label: "4000 · Sales", kind: "row", level: 1, values: [null] },
+      { key: "net", label: "Net income", kind: "total", values: [null] },
+    ],
+    locale: "en-CA",
+    labels,
   },
 };

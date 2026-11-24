@@ -105,3 +105,18 @@ it("builds the run query from the schema: preset replaces dates unless custom", 
     date_to: "2026-03-31",
   });
 });
+
+it("an empty P&L shows the no-activity hint and offers the financial year (K-01-T16)", async () => {
+  const empty = {
+    ...BODY,
+    rows: [],
+    totals: [{ ...BODY.totals[0]!, values: [null] }],
+  };
+  serve({ body: empty });
+  renderWithIntl(<ReportRunner org={ORG} slug="account-activity" />);
+  const hint = await screen.findByRole("status");
+  expect(hint).toHaveTextContent("No activity in this period");
+  expect(screen.getByRole("table")).not.toHaveTextContent("–");
+  expect(within(screen.getByRole("table")).getByText("$0.00")).toBeVisible();
+  expect(within(hint).queryByRole("button", { name: "Run this financial year" })).toBeNull();
+});

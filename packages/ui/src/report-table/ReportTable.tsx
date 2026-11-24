@@ -7,7 +7,12 @@
  * reports (only the rows in view, plus a margin, are in the DOM; the scroll height is kept by
  * spacer rows). Wide reports (12 comparison columns) scroll inside the table, never the page.
  *
- * The table never prints "–": an empty cell is empty (K-01-T16 adds the no-activity rules).
+ * Zero rendering (K-01-T16) — a report never prints "–":
+ * - no row with a figure (an empty P&L): the **"No activity in this period"** hint, with the
+ *   caller's actions (run the financial year, enter opening balances), above the totals;
+ * - a plain row whose every figure is empty or zero is hidden unless **showZeroRows**;
+ * - an empty cell of a row that has figures elsewhere says "No activity" (muted);
+ * - an empty total prints $0.00.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
@@ -39,6 +44,31 @@ export interface ReportTableLabels {
   drill: (row: string, column: string) => string;
   /** Prefix read before a cell note. */
   note: string;
+  /** The hint of a report with no activity: "No activity in this period". */
+  noActivity: string;
+  /** An empty cell: "No activity". */
+  noActivityCell: string;
+}
+
+const ZERO = /^-?0*(\.0*)?$/;
+
+/** A figure that counts as activity: present and not zero. */
+export function hasActivity(value: string | null | undefined): boolean {
+  return value !== null && value !== undefined && value !== "" && !ZERO.test(value.trim());
+}
+
+/**
+ * The rows to show under the zero rules: plain rows with no activity in any column are hidden
+ * unless `showZeroRows`; sections, totals and text blocks stay.
+ */
+export function visibleRows(rows: ReportTableRow[], showZeroRows = false): ReportTableRow[] {
+  if (showZeroRows) return rows;
+  return rows.filter((row) => row.kind !== "row" || row.values.some(hasActivity));
+}
+
+/** No plain row has activity: the report shows the no-activity hint. */
+export function isEmptyReport(rows: ReportTableRow[]): boolean {
+  return !rows.some((row) => row.kind === "row" && row.values.some(hasActivity));
 }
 
 export interface ReportTableProps {
@@ -58,6 +88,10 @@ export interface ReportTableProps {
   className?: string;
   /** Rendered under the table (footnotes). */
   footer?: ReactNode;
+  /** Show plain rows with no activity in any column (K-01-T16). */
+  showZeroRows?: boolean;
+  /** Actions under the no-activity hint (run the financial year, opening balances). */
+  emptyActions?: ReactNode;
 }
 
 export const WINDOW_ABOVE = 200;
@@ -94,7 +128,7 @@ export function visibleWindow(
 export function ReportTable({
   caption,
   columns,
-  rows,
+  rows: all,
   locale,
   labels,
   onDrill,
@@ -104,8 +138,15 @@ export function ReportTable({
   maxHeight = 640,
   className,
   footer,
+  showZeroRows = false,
+  emptyActions,
 }: ReportTableProps) {
   const scroller = useRef<HTMLDivElement>(null);
+  const empty = isEmptyReport(all);
+  const rows = useMemo(
+    () => (empty ? all.filter((r) => r.kind !== "row") : visibleRows(all, showZeroRows)),
+    [all, empty, showZeroRows],
+  );
   const [scrollTop, setScrollTop] = useState(0);
   const windowed = rows.length > windowAbove;
   const rowHeight = compact ? ROW_HEIGHT.compact : ROW_HEIGHT.comfortable;
@@ -127,6 +168,16 @@ export function ReportTable({
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
+      {empty ? (
+        <div
+          role="status"
+          className="flex flex-col items-start gap-2 rounded-lg border border-border bg-surface-subtle p-4"
+          data-no-activity=""
+        >
+          <p className="text-sm font-semibold text-fg">{labels.noActivity}</p>
+          {emptyActions}
+        </div>
+      ) : null}
       <div
         ref={scroller}
         onScroll={onScroll}
@@ -203,7 +254,10 @@ export function ReportTable({
                   {row.kind === "text"
                     ? null
                     : columns.map((column, index) => {
-                        const value = row.values[index] ?? null;
+                        const raw = row.values[index] ?? null;
+                        // An empty total is a zero total: $0.00, never blank or "–".
+                        const value = raw === null && row.kind === "total" ? "0.00" : raw;
+                        const blank = value === null && row.kind === "row";
                         const note = row.notes?.[column.key];
                         return (
                           <td
@@ -227,7 +281,16 @@ export function ReportTable({
                                   <DrillIcon />
                                 </button>
                               ) : null}
-                              {value === null ? null : <span>{money(value)}</span>}
+                              {value !== null ? (
+                                <span>{money(value)}</span>
+                              ) : blank ? (
+                                <span
+                                  className="text-xs font-normal text-fg-muted"
+                                  data-no-activity-cell=""
+                                >
+                                  {labels.noActivityCell}
+                                </span>
+                              ) : null}
                             </span>
                             {note ? (
                               <span
