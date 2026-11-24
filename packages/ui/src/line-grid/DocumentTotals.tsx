@@ -47,6 +47,8 @@ export interface DocumentTotalsProps {
   /** True while a recalculation is in flight. */
   pending?: boolean;
   readOnly?: boolean;
+  /** No document discount row (spend / receive money, F-01-T10: a bank line has no discount). */
+  noDiscount?: boolean;
   className?: string;
 }
 
@@ -66,6 +68,7 @@ export function DocumentTotals({
   currency = "CAD",
   pending = false,
   readOnly = false,
+  noDiscount = false,
   className,
 }: DocumentTotalsProps) {
   const money = (amount: string) => formatMoney(amount, { locale, currency });
@@ -86,40 +89,42 @@ export function DocumentTotals({
             {money(value.subtotal)}
           </dd>
         </div>
-        <div className={cn(row, "flex-wrap")}>
-          <dt className="flex items-center gap-2">
-            {labels.discount}
-            {readOnly ? null : (
-              <>
-                <select
-                  aria-label={labels.discountType}
-                  value={discountType}
-                  onChange={(event) =>
-                    onDiscountChange?.(event.target.value as DocumentDiscountType, discountValue)
-                  }
-                  className="min-h-10 rounded-md border border-border bg-surface px-2 text-sm"
-                >
-                  <option value="none">{labels.discountNone}</option>
-                  <option value="amount">{labels.discountAmount}</option>
-                  <option value="percent">{labels.discountPercent}</option>
-                </select>
-                {discountType === "none" ? null : (
-                  <input
-                    aria-label={labels.discountValue}
-                    inputMode="decimal"
-                    autoComplete="off"
-                    value={discountValue}
-                    onChange={(event) => onDiscountChange?.(discountType, event.target.value)}
-                    className="min-h-10 w-24 rounded-md border border-border bg-surface px-2 text-end text-sm tabular-nums"
-                  />
-                )}
-              </>
-            )}
-          </dt>
-          <dd className="tabular-nums" data-total="discount">
-            {Number(value.discountTotal) ? `−${money(value.discountTotal)}` : money("0")}
-          </dd>
-        </div>
+        {noDiscount ? null : (
+          <div className={cn(row, "flex-wrap")}>
+            <dt className="flex items-center gap-2">
+              {labels.discount}
+              {readOnly ? null : (
+                <>
+                  <select
+                    aria-label={labels.discountType}
+                    value={discountType}
+                    onChange={(event) =>
+                      onDiscountChange?.(event.target.value as DocumentDiscountType, discountValue)
+                    }
+                    className="min-h-10 rounded-md border border-border bg-surface px-2 text-sm"
+                  >
+                    <option value="none">{labels.discountNone}</option>
+                    <option value="amount">{labels.discountAmount}</option>
+                    <option value="percent">{labels.discountPercent}</option>
+                  </select>
+                  {discountType === "none" ? null : (
+                    <input
+                      aria-label={labels.discountValue}
+                      inputMode="decimal"
+                      autoComplete="off"
+                      value={discountValue}
+                      onChange={(event) => onDiscountChange?.(discountType, event.target.value)}
+                      className="min-h-10 w-24 rounded-md border border-border bg-surface px-2 text-end text-sm tabular-nums"
+                    />
+                  )}
+                </>
+              )}
+            </dt>
+            <dd className="tabular-nums" data-total="discount">
+              {Number(value.discountTotal) ? `−${money(value.discountTotal)}` : money("0")}
+            </dd>
+          </div>
+        )}
         {value.taxIncluded
           ? null
           : value.taxes.map((tax) => (

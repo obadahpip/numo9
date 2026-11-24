@@ -251,3 +251,74 @@ def test_unknown_account_or_contact_is_400(org: Organisation, owner: Client) -> 
         url(org, f"bank-transactions/tax-default?kind=spend&date={D}&contact={missing}")
     )
     assert response.status_code == 400
+
+
+def test_explicit_code_without_portions_gets_them(org: Organisation, owner: Client) -> None:
+    """F-01-T10 — the spend/receive form sends the code it picked; the server works out the tax."""
+    bank_id = bank(owner, org)
+    with org_context(org):
+        office = Account.objects.filter(type="expense").order_by("code").first()
+        sales = Account.objects.filter(subtype="revenue").order_by("code").first()
+    spent = send(
+        owner,
+        url(org, "bank-transactions"),
+        {
+            "kind": "spend",
+            "bank_account": bank_id,
+            "date": D,
+            "tax_mode": "exclusive",
+            "lines": [
+                {
+                    "account": str(office.public_id),  # type: ignore[union-attr]
+                    "amount": "100.00",
+                    "tax_code": "purchase.BC.standard",
+                }
+            ],
+        },
+    )
+    assert spent.status_code == 201, spent.json()
+    body = spent.json()
+    # BC: GST 5 % recoverable (ITC), PST 7 % a cost on the expense line.
+    assert (body["subtotal"], body["tax_total"], body["total"]) == ("100.00", "12.00", "112.00")
+    assert body["lines"][0]["tax_code"] == "purchase.BC.standard"
+    received = send(
+        owner,
+        url(org, "bank-transactions"),
+        {
+            "kind": "receive",
+            "bank_account": bank_id,
+            "date": D,
+            "tax_mode": "inclusive",
+            "lines": [
+                {
+                    "account": str(sales.public_id),  # type: ignore[union-attr]
+                    "amount": "113.00",
+                    "tax_code": "sales.ON.standard",
+                }
+            ],
+        },
+    )
+    assert received.status_code == 201, received.json()
+    assert (received.json()["subtotal"], received.json()["tax_total"]) == ("100.00", "13.00")
+
+
+def test_code_of_the_other_side_or_unknown_is_400(org: Organisation, owner: Client) -> None:
+    """A spend line can't carry a sales code (gap-07): refused with the tax code error."""
+    bank_id = bank(owner, org)
+    with org_context(org):
+        office = Account.objects.filter(type="expense").order_by("code").first()
+    for code in ("sales.ON.standard", "nope.XX"):
+        refused = send(
+            owner,
+            url(org, "bank-transactions"),
+            {
+                "kind": "spend",
+                "bank_account": bank_id,
+                "date": D,
+                "lines": [
+                    {"account": str(office.public_id), "amount": "10.00", "tax_code": code}  # type: ignore[union-attr]
+                ],
+            },
+        )
+        assert refused.status_code == 400, refused.json()
+        assert refused.json()["code"] == "tax.code.unknown"
