@@ -19,7 +19,10 @@ stable code per field:
 
 from __future__ import annotations
 
+import calendar
 import datetime as dt
+import re
+from collections.abc import Iterator
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
@@ -208,3 +211,58 @@ def validate_template(template: RecurringJournalTemplate) -> None:
     parse_rule(template.rrule, template.start_date)
     template.lines = clean_lines(template.lines)
     _references(template.lines)
+
+
+# ---- occurrences (C-04-T05) ------------------------------------------------------------------
+
+
+def _clamped(parsed: rrule, start: dt.date) -> bool:
+    """Monthly / yearly rules without their own day rules land on the start's day, clamped."""
+    return (
+        frequency(parsed) in (MONTHLY, YEARLY)
+        and not re.search(r"BY(MONTH)?DAY|BYSETPOS|BYYEARDAY|BYWEEKNO", str(parsed).upper())
+        and start.day > 28
+    )
+
+
+def occurrences(
+    rule: str,
+    start: dt.date,
+    end: dt.date | None = None,
+    *,
+    after: dt.date | None = None,
+    until: dt.date | None = None,
+    limit: int | None = None,
+) -> list[dt.date]:
+    """The schedule's dates from ``start`` to ``end`` (inclusive), those after ``after`` and up
+    to ``until`` only, at most ``limit`` (and ``MAX_OCCURRENCES``)."""
+    parsed = parse_rule(rule, start)
+    cap = min(limit or MAX_OCCURRENCES, MAX_OCCURRENCES)
+    last = min(d for d in (end, until) if d is not None) if (end or until) else None
+    out: list[dt.date] = []
+    for day in _dates(parsed, start):
+        if last is not None and day > last:
+            break
+        if after is not None and day <= after:
+            continue
+        out.append(day)
+        if len(out) >= cap:
+            break
+    return out
+
+
+def _dates(parsed: rrule, start: dt.date) -> Iterator[dt.date]:
+    if not _clamped(parsed, start):
+        for moment in parsed:
+            yield moment.date()
+        return
+    # Step month by month from the first of the start's month, then clamp to the start's day.
+    first = parsed.replace(dtstart=dt.datetime(start.year, start.month, 1))
+    until = getattr(parsed, "_until", None)  # the rule's own UNTIL applies to the clamped day
+    for moment in first:
+        last_day = calendar.monthrange(moment.year, moment.month)[1]
+        day = moment.date().replace(day=min(start.day, last_day))
+        if until is not None and day > until.date():
+            return
+        if day >= start:
+            yield day
