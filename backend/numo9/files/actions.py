@@ -101,7 +101,9 @@ register_file_action(
         label=_("Create a bill"),
         module="purchases",
         deliverable="E-02",
-        unavailable_reason=_("Bills arrive with Purchases in Phase 1."),
+        # E-02-T11: the bill editor opens beside the document (split view).
+        available=True,
+        url="/o/{org}/purchases/bills/new?document={document}",
         mimes=READABLE,
     )
 )
