@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 527   Remaining: 2260   Progress: 18.91%
+TOTAL ATOMIC TASKS: 2787   Completed: 528   Remaining: 2259   Progress: 18.95%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -707,7 +707,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [C-05]
 ✅ C-05-T01 — ConversionSession model (conversion_date, status draft/finalised, created_by, finalised_by/at) one per org
-❌ C-05-T02 — ConversionLine (account, debit, credit) with validation (one side only)
+✅ C-05-T02 — ConversionLine (account, debit, credit) with validation (one side only)
 ❌ C-05-T08 — TB import (CSV/XLSX) with column mapping + dry-run report
 
 [D-03a]

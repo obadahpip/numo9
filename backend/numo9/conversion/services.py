@@ -34,3 +34,31 @@ def start_conversion(
         session.full_clean()
         session.save()
         return session
+
+
+def set_line(
+    session: ConversionSession,
+    account: Any,
+    *,
+    debit: Any = 0,
+    credit: Any = 0,
+    description: str = "",
+) -> Any:
+    """Create or replace the account's opening balance in the session (C-05-T02); validated —
+    one side only, positive, the session still a draft."""
+    from decimal import Decimal
+
+    from .models import ConversionLine
+
+    with org_context(session.organisation), transaction.atomic():
+        line = ConversionLine.objects.filter(
+            session=session, account=account, deleted_at__isnull=True
+        ).first() or ConversionLine(
+            organisation=session.organisation, session=session, account=account
+        )
+        line.debit = Decimal(str(debit or 0))
+        line.credit = Decimal(str(credit or 0))
+        line.description = description
+        line.full_clean(exclude=["organisation", "session", "account"])
+        line.save()
+        return line

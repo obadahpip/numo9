@@ -4,6 +4,8 @@
   finalised), who finalised it and when. **One per organisation** (a second is refused by the
   database, ``conversion_one_per_org``); corrections after finalising are correcting opening
   journals (C-05-T07), never a second session.
+- ``ConversionLine`` (C-05-T02) — one account's opening balance: a debit **or** a credit
+  (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``).
 """
 
 from __future__ import annotations
@@ -19,7 +21,6 @@ from django.utils.translation import gettext_lazy as _
 from numo9.audit.mixins import AuditedModel
 from numo9.tenancy.models import OrgOwnedModel
 
-MONEY = {"max_digits": 18, "decimal_places": 2}
 ZERO = Decimal("0.00")
 
 
@@ -80,4 +81,61 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
             raise ValidationError(
                 _("This organisation already has a conversion: continue that one."),
                 code="conversion.session.exists",
+            )
+
+
+class ConversionLine(AuditedModel, OrgOwnedModel):
+    session = models.ForeignKey(
+        ConversionSession,
+        on_delete=models.CASCADE,
+        related_name="lines",
+        verbose_name=_("conversion"),
+    )
+    account = models.ForeignKey(
+        "ledger.Account", on_delete=models.PROTECT, related_name="+", verbose_name=_("account")
+    )
+    debit = models.DecimalField(_("debit"), max_digits=18, decimal_places=2, default=ZERO)
+    credit = models.DecimalField(_("credit"), max_digits=18, decimal_places=2, default=ZERO)
+    description = models.CharField(_("description"), max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("session", "account__code", "pk")
+        verbose_name = _("conversion line")
+        verbose_name_plural = _("conversion lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=(models.Q(debit__gt=0) & models.Q(credit=0))
+                | (models.Q(debit=0) & models.Q(credit__gt=0)),
+                name="conversion_line_one_side",
+            ),
+            models.UniqueConstraint(
+                fields=["session", "account"],
+                condition=models.Q(deleted_at__isnull=True),
+                name="conversion_line_one_per_account",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.account} · {self.debit or self.credit}"
+
+    def clean(self) -> None:
+        debit, credit = self.debit or ZERO, self.credit or ZERO
+        if debit < 0 or credit < 0:
+            raise ValidationError(
+                _("Enter a positive amount: a credit balance goes in the Credit column."),
+                code="conversion.line.negative",
+            )
+        if debit > 0 and credit > 0:
+            raise ValidationError(
+                _("A line has a debit or a credit, not both."), code="conversion.line.both_sides"
+            )
+        if debit == 0 and credit == 0:
+            raise ValidationError(
+                _("Enter the account's balance as a debit or a credit."),
+                code="conversion.line.empty",
+            )
+        if self.session_id and self.session.is_finalised:
+            raise ValidationError(
+                _("The conversion is finalised: correct it with a correcting opening journal."),
+                code="conversion.session.finalised",
             )

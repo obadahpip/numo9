@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 05:44-0500\n"
+"POT-Creation-Date: 2026-11-24 05:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2423,6 +2423,30 @@ msgstr ""
 msgid "This organisation already has a conversion: continue that one."
 msgstr ""
 
+msgid "debit"
+msgstr ""
+
+msgid "credit"
+msgstr ""
+
+msgid "conversion line"
+msgstr ""
+
+msgid "conversion lines"
+msgstr ""
+
+msgid "Enter a positive amount: a credit balance goes in the Credit column."
+msgstr ""
+
+msgid "A line has a debit or a credit, not both."
+msgstr ""
+
+msgid "Enter the account's balance as a debit or a credit."
+msgstr ""
+
+msgid "The conversion is finalised: correct it with a correcting opening journal."
+msgstr ""
+
 msgid "No open demo organisation with this id."
 msgstr ""
 
@@ -4416,12 +4440,6 @@ msgid "Draft journal"
 msgstr ""
 
 msgid "line ID"
-msgstr ""
-
-msgid "debit"
-msgstr ""
-
-msgid "credit"
 msgstr ""
 
 msgid "book"

@@ -176,6 +176,19 @@ by `numo9.conversion.services.start_conversion`.
 | `status` | varchar(10) | no | `draft` or `finalised` (`conversion_status_valid`) |
 | `finalised_by_id`, `finalised_at` | bigint → `accounts_user`, timestamptz | yes | Who finalised and when; a finalised session is dated (`conversion_finalised_dated`) |
 
+### `conversion_conversionline` — Conversion line {#conversion-conversionline}
+
+One account's opening balance in the conversion (C-05-T02). `OrgOwnedModel` and `AuditedModel`;
+written by `numo9.conversion.services.set_line` and the TB import (C-05-T08).
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `session_id` | bigint → `conversion_conversionsession` | no | `CASCADE`; a finalised session takes no new line |
+| `account_id` | bigint → `ledger_account` | no | `PROTECT`; one line per account per session (`conversion_line_one_per_account`) |
+| `debit` / `credit` | numeric(18,2) | no | One side only, positive (`conversion_line_one_side`) |
+| `description` | varchar(500) | no | Optional note |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).
