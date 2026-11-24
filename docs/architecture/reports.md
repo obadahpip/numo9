@@ -27,3 +27,21 @@ either.
 Registered now: **Trial balance** (`trial_balance`) and **Account activity**
 (`account_activity`). Reports read posted (and reversed) lines only — drafts and journals awaiting
 approval never count.
+
+## Parameters (K-01-T03)
+
+`numo9.reports.parameters`:
+
+- **Date ranges** — `resolve_range(preset, today, settings)`: this/last month, this/last quarter,
+  this/last financial year, month/quarter/year to date, custom. Quarters and years follow the
+  organisation's year end (`fye_month`/`fye_day`): with a 31 March year end, *last financial
+  year* on 15 June 2026 is 1 April 2025 – 31 March 2026 and the first quarter is April–June.
+- **Comparisons** — `comparison_ranges(base, "previous" | "prior_year", n)`: up to 12 columns.
+  *Previous* steps back by whole months when the range is whole months (a month, a quarter, a
+  year), otherwise by the same number of days; *prior year* is the same dates a year earlier
+  (29 February → 28 February).
+- **Basis** — `resolve_basis(org, override)`: the G-06 default unless the report overrides it,
+  with the header label (`Basis: Cash (organisation default)` / `(this report)`).
+- **Book** — `book_filter(book)`: `["both", book]`; `accounting` or `tax`.
+- **Tracking** — `tracking_filter({category: [options]})`: lines whose option is one of those
+  chosen, for every category chosen.
