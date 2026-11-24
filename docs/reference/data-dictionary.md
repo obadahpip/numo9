@@ -146,6 +146,22 @@ One occurrence of a recurring journal (C-04-T06). `OrgOwnedModel`; written only 
 | `entry_id` | bigint → `ledger_journalentry` | yes | The journal generated (one-to-one) |
 | `code` / `message` | varchar / text | no | Why an occurrence was skipped (e.g. `lock.violation`) |
 
+## Sales tax settings (`tax`) {#tax-settings}
+
+### `tax_taxsettings` — Tax settings {#tax-taxsettings}
+
+The organisation's sales-tax settings (G-06-T02), one row per organisation
+(`tax_settings_one_per_org`), read and created by `numo9.tax.settings.tax_settings`.
+`OrgOwnedModel` and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `basis` | varchar(10) | no | `accrual` (default) or `cash` — the default basis of tax reports (`tax_settings_basis_valid`) |
+| `rounding_mode` | varchar(10) | no | `line` (default) or `document` (`tax_settings_rounding_valid`) |
+| `quick_method` / `quick_method_from` | boolean / date | no / yes | GST/HST quick-method election; dated when elected (`tax_settings_quick_method_dated`) |
+| `default_codes` | jsonb | no | `{"sales": {"revenue": code}, "purchase": {"expense": code, …}}` — code keys of this organisation on that side |
+
 ## Organisation settings (`orgsettings`)
 
 Design: [Organisation settings and lock dates](../architecture/organisation-settings.md).

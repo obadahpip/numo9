@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 04:58-0500\n"
+"POT-Creation-Date: 2026-11-24 05:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6704,6 +6704,67 @@ msgstr "Un code exonéré ou hors champ n'a aucune composante de taxe."
 msgid "A zero-rated code only holds components with a rate of zero."
 msgstr "Un code détaxé ne contient que des composantes au taux zéro."
 
+msgid "Accrual"
+msgstr ""
+
+msgid "Cash"
+msgstr ""
+
+#, fuzzy
+#| msgid "Declined"
+msgid "Per line"
+msgstr "Refusée"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "Per document"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "tax behaviour"
+msgid "tax basis"
+msgstr "traitement des taxes"
+
+#, fuzzy
+#| msgid "founding slot"
+msgid "rounding"
+msgstr "place de membre fondateur"
+
+msgid "quick method elected"
+msgstr ""
+
+msgid "quick method from"
+msgstr ""
+
+#, fuzzy
+#| msgid "error code"
+msgid "default codes"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "trial settings"
+msgid "tax settings"
+msgstr "paramètres de l’essai"
+
+#, fuzzy
+#| msgid "trial settings"
+msgid "Tax settings"
+msgstr "paramètres de l’essai"
+
+msgid "Give the date the quick method starts."
+msgstr ""
+
+msgid "Default codes are kept for the sales and purchase sides only."
+msgstr ""
+
+#, python-format
+msgid "No default %(side)s code is kept for %(type)s accounts."
+msgstr ""
+
+#, python-format
+msgid "There's no %(side)s tax code %(code)s."
+msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
+
 msgid "See tax codes, rates and their history"
 msgstr "Voir les codes de taxe, les taux et leur historique"
 
@@ -6717,10 +6778,6 @@ msgstr "%(component)s n'a pas de compte de contrôle : ajoutez d'abord le compte
 #, python-format
 msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."
 msgstr "%(code)s (%(name)s) est en vigueur %(range)s, pas le %(date)s : choisissez de nouveau le code pour cette date."
-
-#, python-format
-msgid "There's no %(side)s tax code %(code)s."
-msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
 
 #, python-format
 msgid "%(code)s is archived: restore it or pick another code."
