@@ -15,6 +15,7 @@ SaaS built by Gray Matter AI for Profitex.
 | [Packages, prices and promo codes](architecture/packages-pricing.md) | Packages of products, effective-dated prices, promo codes, public pricing, Stripe price sync (U-02) |
 | [Manual journals — user guide](user-guide/journal-types-and-controls.md) | Journal types, contacts on lines, attachment/contact rules, cash-below-zero control, automatic reversal (C-03) |
 | [Journal approval and recurring journals — user guide](user-guide/journal-approval-and-recurring.md) | Editor, actions by state, approval and the approvals inbox, recurring journals (C-04) |
+| [Emailing invoices — user guide](user-guide/emailing-invoices.md) | Email composer, PDF preview, sent and viewed, bounces (D-03a) |
 | [Data-residency register](security/data-residency-register.md) | Where every data class lives and every sub-processor (ADR-0002) |
 | [Project plan](Numo9_Project_Plan.md) | Scope, components, acceptance and the gap analysis against Xero |
 | [Phase plans](phase_plans/Phase_0_Foundation_and_SaaS_Core.md) | Deliverables and atomic tasks, phase by phase |

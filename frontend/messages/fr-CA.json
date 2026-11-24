@@ -2425,6 +2425,34 @@
     "settingsTaxCodes": "Settings: Tax codes",
     "settingsUsersRoles": "Paramètres : Utilisateurs et rôles"
   },
+  "sales": {
+    "email": {
+      "attachment": "Attached: {file}",
+      "failed": "The invoice wasn't sent: {reason}",
+      "hidePreview": "Hide preview",
+      "history": "Sent before",
+      "historyLine": "{date} to {to}",
+      "invalid": "Check these addresses: {addresses}",
+      "loadFailed": "The email couldn't load.",
+      "message": "Message",
+      "noRecipient": "Add at least one email address.",
+      "notSendable": "Approve the invoice before you email it.",
+      "notViewed": "Not viewed yet",
+      "previewFailed": "The PDF couldn't load.",
+      "previewTitle": "Invoice PDF preview",
+      "retry": "Try again",
+      "send": "Send",
+      "sending": "Sending…",
+      "sent": "Invoice sent to {to}.",
+      "showPreview": "Preview PDF",
+      "subject": "Subject",
+      "subjectRequired": "Add a subject.",
+      "title": "Email invoice",
+      "to": "To",
+      "toHint": "Separate addresses with commas.",
+      "viewed": "Viewed {date}"
+    }
+  },
   "security": {
     "actions": "Actions",
     "activate": "Vérifier et activer",
