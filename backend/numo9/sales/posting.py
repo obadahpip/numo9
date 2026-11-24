@@ -1,0 +1,136 @@
+"""Invoice approval and posting (D-03a-T03).
+
+``invoice_preview(invoice)`` — the journal the invoice will post: the D-01 posting preview of its
+lines (``numo9.documents.posting.preview``) — Dr Accounts receivable, Cr each line's revenue
+account, Cr **each tax control account separately** (GST/HST payable, PST payable, QST payable).
+
+``approve(invoice, user)`` — in **one transaction**: lock the invoice, refuse what can't be
+approved (not a draft or awaiting approval; a line with an amount but no account; a total of
+zero or below — a negative invoice is a credit note), store the server's figures on the header
+and lines, take the number (D-03a-T02), and post the preview's journal through the posting
+engine (C-02: lock dates of the AR module, closed periods, every journal rule) with the invoice
+as its source. All or nothing: a refused posting leaves the invoice a draft without a number.
+The posted journal **is** the preview's lines — what the screen showed is what posts.
+"""
+
+from __future__ import annotations
+
+from decimal import Decimal
+from typing import Any
+
+from django.db import transaction
+from django.utils import timezone
+from django.utils.translation import gettext as _
+
+from numo9.documents.posting import Preview, PreviewLine, preview
+from numo9.ledger.models import LedgerError
+from numo9.ledger.renumber import acting_as
+from numo9.ledger.services import post_journal
+from numo9.orgsettings.models import LockModule
+from numo9.tenancy.context import org_context
+
+from .models import Invoice, InvoiceStatus
+from .numbering import assign_number
+
+SOURCE_TYPE = "sales.invoice"
+ZERO = Decimal("0.00")
+
+
+class InvoiceRefused(LedgerError):
+    """An invoice action the rules refuse (``code`` names the rule)."""
+
+
+def preview_lines(invoice: Invoice) -> list[PreviewLine]:
+    return [
+        PreviewLine(
+            account=line.account,
+            quantity=line.quantity,
+            unit_price=line.unit_price,
+            discount_type=line.discount_type,
+            discount_value=line.discount_value,
+            tax_code=line.tax_code,
+            description=line.description,
+            tracking=dict(line.tracking or {}),
+        )
+        for line in invoice.lines.select_related("account", "tax_code").order_by("position", "pk")
+    ]
+
+
+def invoice_preview(invoice: Invoice) -> Preview:
+    with org_context(invoice.organisation):
+        return preview(
+            "invoice",
+            invoice.date,
+            preview_lines(invoice),
+            tax_mode=invoice.tax_mode,
+            discount_type=invoice.discount_type,
+            discount_value=invoice.discount_value,
+            contact=invoice.contact,
+        )
+
+
+def store_figures(invoice: Invoice, result: Any) -> None:
+    """The calculator's figures on the header and each line (server-authoritative)."""
+    lines = list(invoice.lines.order_by("position", "pk"))
+    for line, figures in zip(lines, result.lines, strict=True):
+        line.net = figures.exclusive  # before tax, after every discount
+        line.tax_amount = figures.tax
+        line.amount = figures.net  # the line's Amount column (gross − line discount)
+        line.save(update_fields=["net", "tax_amount", "amount", "updated_at"])
+    invoice.subtotal = result.subtotal
+    invoice.discount_total = result.discount_total
+    invoice.tax_total = result.tax_total
+    invoice.total = result.total
+
+
+def _refuse(message: str, code: str, **params: Any) -> InvoiceRefused:
+    return InvoiceRefused(message, code=code, params=params or None)
+
+
+def approve(invoice: Invoice, user: Any) -> Invoice:
+    """Approve and post (module docstring); returns the approved invoice."""
+    person = user if getattr(user, "is_authenticated", False) else None
+    with org_context(invoice.organisation), transaction.atomic(), acting_as(person):
+        locked = Invoice._base_manager.select_for_update().get(pk=invoice.pk)
+        if locked.status not in (InvoiceStatus.DRAFT, InvoiceStatus.AWAITING_APPROVAL):
+            raise _refuse(
+                _("%(invoice)s is already %(status)s."),
+                "sales.invoice.not_draft",
+                invoice=str(locked),
+                status=str(InvoiceStatus(locked.status).label).lower(),
+            )
+        shown = invoice_preview(locked)
+        if not shown.complete:
+            raise _refuse(
+                _("Every line with an amount needs an account before the invoice is approved."),
+                "sales.invoice.incomplete",
+            )
+        if shown.result.total <= ZERO:
+            raise _refuse(
+                _(
+                    "An invoice's total must be more than zero: for money owed to the customer, "
+                    "issue a credit note."
+                ),
+                "sales.invoice.total_not_positive",
+            )
+        store_figures(locked, shown.result)
+        number = assign_number(locked)
+        entry = post_journal(
+            shown.spec(
+                source_type=SOURCE_TYPE,
+                source_id=str(locked.public_id),
+                narration=_("Invoice %(number)s — %(contact)s")
+                % {"number": number, "contact": locked.contact.display_name},
+            ),
+            organisation=locked.organisation,
+            user=person,
+            module=LockModule.AR,
+        )
+        locked.number = number
+        locked.status = InvoiceStatus.APPROVED
+        locked.journal_entry = entry
+        locked.approved_by = person
+        locked.approved_at = timezone.now()
+        locked.version += 1
+        locked.save()
+        return locked
