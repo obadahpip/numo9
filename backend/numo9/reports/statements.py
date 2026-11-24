@@ -461,6 +461,87 @@ class BalanceSheetReport(ReportDefinition):
         return found
 
 
+# ---- movements in equity (K-02-T12) -------------------------------------------------------
+
+
+def earnings_at(organisation: Any, dates: list[dt.date], book: str) -> list[Decimal]:
+    """Retained earnings + current-year earnings + dividends on each date, as the balance sheet
+    shows them (credit positive; dividends, a debit, reduce it)."""
+    data = balance_figures(organisation, dates, book)
+    held = [
+        a
+        for a in data.accounts
+        if a.subtype in ("retained_earnings", "current_year_earnings", "dividends")
+    ]
+    return [
+        data.retained[i]
+        + data.current_year[i]
+        - sum((data.balances.get(a.pk, [ZERO] * len(dates))[i] for a in held), ZERO)
+        for i in range(len(dates))
+    ]
+
+
+@register
+class MovementsInEquityReport(ReportDefinition):
+    id = "retained_earnings"
+    slug = "retained-earnings"
+    name = _lazy("Statement of retained earnings")
+    description = _lazy(
+        "Opening retained earnings, net income, dividends, other movements and closing retained "
+        "earnings for a period, with comparisons."
+    )
+    category = "financial"
+    keywords = (_lazy("movements in equity"), _lazy("retained earnings"), "bénéfices non répartis")
+    params = ProfitAndLossReport.params
+
+    def columns(self, params: dict[str, Any]) -> list[Column]:
+        return [Column(f"p{i}", _range_label(r)) for i, r in enumerate(_period_columns(params))]
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> dict[str, Any]:
+        from .aggregation import period_movements
+
+        ranges = _period_columns(params)
+        book = params["book"]
+        accounts = _accounts()
+        dividends = [a.pk for a in accounts if a.subtype == "dividends"]
+        moves = period_movements(ranges, book=book, accounts=dividends) if dividends else {}
+        return {
+            "ranges": ranges,
+            "opening": earnings_at(
+                organisation, [r.start - dt.timedelta(days=1) for r in ranges], book
+            ),
+            "closing": earnings_at(organisation, [r.end for r in ranges], book),
+            "net_income": net_income(pnl_figures(ranges, book)),
+            "dividends": [-v for v in _sum(list(moves.values()), len(ranges))],
+        }
+
+    def rows(self, data: dict[str, Any], params: dict[str, Any]) -> list[ReportRow]:
+        opening, closing = data["opening"], data["closing"]
+        income, dividends = data["net_income"], data["dividends"]
+        other = [
+            c - o - n - d for c, o, n, d in zip(closing, opening, income, dividends, strict=True)
+        ]
+        rows = [
+            ReportRow(
+                "opening", _("Retained earnings at the beginning of the period"), values=_v(opening)
+            ),
+            ReportRow("net_income", _("Net income"), values=_v(income), level=1),
+            ReportRow("dividends", _("Dividends"), values=_v(dividends), level=1),
+        ]
+        if any(other):
+            rows.append(ReportRow("other", _("Other movements"), values=_v(other), level=1))
+        return rows
+
+    def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
+        width = len(rows[0].values)
+        closing = _sum([r.values for r in rows], width)
+        return [
+            ReportRow(
+                "closing", _("Retained earnings at the end of the period"), "total", _v(closing)
+            )
+        ]
+
+
 # ---- integrity (K-02-T05) ------------------------------------------------------------------
 
 

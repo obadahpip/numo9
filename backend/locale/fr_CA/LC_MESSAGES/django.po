@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:45-0500\n"
+"POT-Creation-Date: 2026-11-24 15:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7294,6 +7294,21 @@ msgstr ""
 
 msgid "Total liabilities and equity"
 msgstr ""
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Retained earnings at the beginning of the period"
+msgstr "prend fin à la fin de la période"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "Other movements"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Retained earnings at the end of the period"
+msgstr "prend fin à la fin de la période"
 
 #, python-format
 msgid "The balance sheet at %(date)s doesn't balance by %(difference)s — the books need a look before this is used."
