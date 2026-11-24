@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 14:20-0500\n"
+"POT-Creation-Date: 2026-11-24 14:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5860,6 +5860,15 @@ msgstr ""
 msgid "%(order)s isn't a draft."
 msgstr ""
 
+msgid "Only an approved purchase order can be billed."
+msgstr ""
+
+msgid "That receipt isn't one of this purchase order's."
+msgstr ""
+
+msgid "Everything received on this purchase order is billed already."
+msgstr ""
+
 msgid "Add a Holdbacks payable account to the chart of accounts to post holdbacks."
 msgstr ""
 
@@ -5898,6 +5907,9 @@ msgstr ""
 
 #, python-format
 msgid "%(why)s: you aren't one of them."
+msgstr ""
+
+msgid "The bill doesn't match its purchase order and receipts: review the match panel and approve with variance."
 msgstr ""
 
 #, python-format
