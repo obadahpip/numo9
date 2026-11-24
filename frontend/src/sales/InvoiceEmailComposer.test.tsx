@@ -91,7 +91,7 @@ describe("InvoiceEmailComposer", () => {
     await userEvent.clear(to);
     await userEvent.type(to, "ap@cedar.ca, not-an-email");
     await userEvent.click(screen.getByRole("button", { name: "Send" }));
-    expect(screen.getByText("Check these addresses: not-an-email")).toBeInTheDocument();
+    expect(screen.getByText("Review these addresses: not-an-email")).toBeInTheDocument();
     expect(to).toHaveAttribute("aria-invalid", "true");
     expect(posted).toEqual([]);
   });

@@ -27,3 +27,17 @@ stops emailing that address for 30 days. Fix the address on the contact and send
 
 Every send and the first view are in the invoice's history (audit log: *sales.invoice.sent*,
 *sales.invoice.viewed*).
+
+## Credit limits in the invoice editor
+
+When the customer has a credit limit, the editor shows where the invoice leaves them:
+
+- **Over the credit limit** (warn mode): the amount they would owe and by how much it's over.
+  You can still approve the invoice.
+- **Credit limit reached** (block mode): the invoice can't be approved until an override is
+  approved for it. **Request override** asks for a reason and notifies the people who may approve
+  overrides; the banner then says the request is waiting. Someone else approves it from the
+  contact — never the person who asked.
+- **Override approved**: an approved override covers the invoice and is used when it's approved.
+
+Within the limit, or with no limit, nothing is shown.

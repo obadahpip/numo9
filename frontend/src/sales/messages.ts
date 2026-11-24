@@ -11,7 +11,7 @@ export const em = defineMessages({
   },
   invalid: {
     id: "sales.email.invalid",
-    defaultMessage: "Check these addresses: {addresses}",
+    defaultMessage: "Review these addresses: {addresses}",
     description: "Recipients field error",
   },
   noRecipient: {

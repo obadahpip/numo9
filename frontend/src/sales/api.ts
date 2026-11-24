@@ -70,3 +70,29 @@ export function parseRecipients(text: string): { valid: string[]; invalid: strin
     invalid: unique.filter((part) => !EMAIL.test(part)),
   };
 }
+
+export type CreditOutcome = "no_limit" | "within" | "warn" | "block" | "override";
+
+export interface InvoiceCredit {
+  outcome: CreditOutcome;
+  mode: "warn" | "block";
+  limit: string | null;
+  exposure: string;
+  amount: string;
+  projected: string;
+  over_by: string;
+  message: string;
+  contact: { id: string; name: string };
+  pending_override: { id: string; amount: string; requested_at: string } | null;
+}
+
+export const invoiceCreditApi = {
+  check: (org: string, id: string): Promise<ApiResult<InvoiceCredit>> =>
+    apiRequest(`${base(org, id)}/credit`),
+  requestOverride: (
+    org: string,
+    id: string,
+    reason: string,
+  ): Promise<ApiResult<InvoiceCredit | { code?: string; detail?: string; reason?: string[] }>> =>
+    apiRequest(`${base(org, id)}/credit/override`, { method: "POST", body: { reason } }),
+};

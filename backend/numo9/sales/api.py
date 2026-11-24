@@ -6,6 +6,11 @@
   (``sales.invoices.send``; feature ``accounting.sales_invoices.write``): 201 with the logged
   send; 400 ``sales.invoice.not_sendable`` / ``sales.invoice.no_recipient``.
 - ``GET o/<org>/invoices/<id>/pdf`` — the PDF as the customer gets it (preview in the composer).
+- ``GET o/<org>/invoices/<id>/credit`` — the customer's credit check for the invoice as it
+  stands (D-03a-T16 editor banner): ``outcome`` ``no_limit`` / ``within`` / ``warn`` / ``block`` /
+  ``override``, the figures, the warning ``message`` and any override request still waiting.
+- ``POST o/<org>/invoices/<id>/credit/override`` ``{reason}`` — ask to go over the limit for this
+  invoice (``sales.invoices.write``); the people who may approve overrides are notified (B-01).
 - ``GET invoice-view/<token>`` — public: the "View invoice" link of an email; records the first
   view and answers the PDF; 404 for a bad, expired or voided link.
 """
@@ -32,7 +37,7 @@ from numo9.rbac.drf import PUBLIC, RequiresPermission, requires_permission
 
 from . import email as service
 from .models import Invoice, InvoiceEmail
-from .permissions import INVOICES_SEND, INVOICES_VIEW
+from .permissions import INVOICES_SEND, INVOICES_VIEW, INVOICES_WRITE
 from .posting import InvoiceRefused
 
 READ = "accounting.sales_invoices.read"
@@ -131,6 +136,112 @@ class InvoiceEmailView(APIView):
         except InvoiceRefused as error:
             return _refused(error)
         return Response(send_row(row), status=status.HTTP_201_CREATED)
+
+
+def _money(value: Any) -> str | None:
+    return None if value is None else f"{value:.2f}"
+
+
+def credit_payload(invoice: Invoice) -> dict[str, Any]:
+    from django.utils import timezone
+
+    from numo9.contacts.models import CreditOverride, CreditOverrideStatus
+
+    from .credit import DOCUMENT_TYPE, invoice_credit
+
+    check = invoice_credit(invoice)
+    pending = (
+        CreditOverride.objects.filter(
+            contact=invoice.contact,
+            document_type=DOCUMENT_TYPE,
+            document_ref=str(invoice.public_id),
+            status=CreditOverrideStatus.PENDING,
+            expires_at__gt=timezone.now(),
+            deleted_at__isnull=True,
+        )
+        .order_by("-created_at")
+        .first()
+    )
+    return {
+        "outcome": check.outcome,
+        "mode": check.mode,
+        "limit": _money(check.limit),
+        "exposure": _money(check.exposure),
+        "amount": _money(check.amount),
+        "projected": _money(check.projected),
+        "over_by": _money(check.over_by),
+        "message": check.message,
+        "contact": {"id": str(invoice.contact.public_id), "name": invoice.contact.display_name},
+        "pending_override": (
+            {
+                "id": str(pending.public_id),
+                "amount": _money(pending.amount),
+                "requested_at": pending.created_at.isoformat(),
+            }
+            if pending
+            else None
+        ),
+    }
+
+
+class InvoiceCreditView(APIView):
+    queryset = Invoice._base_manager.none()
+
+    @requires_permission(INVOICES_VIEW.key)
+    @requires_feature(READ)
+    @extend_schema(operation_id="invoice_credit_check", responses={200: dict})
+    def get(self, request: Request, org: Any, public_id: Any) -> Response:
+        invoice = _invoice(public_id)
+        try:
+            return Response(credit_payload(invoice))
+        except LedgerError as error:
+            return Response(
+                {"code": error.code, "detail": " ".join(str(m) for m in error.messages)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class OverrideRequestSerializer(serializers.Serializer[Any]):
+    reason = serializers.CharField(max_length=500)
+
+
+class InvoiceCreditOverrideView(APIView):
+    queryset = Invoice._base_manager.none()
+
+    @requires_permission(INVOICES_WRITE.key)
+    @requires_feature(WRITE)
+    @extend_schema(
+        operation_id="invoice_credit_override_request",
+        request=OverrideRequestSerializer,
+        responses={201: dict},
+    )
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        from numo9.contacts.credit import request_override
+
+        from .credit import DOCUMENT_TYPE, invoice_credit
+
+        invoice = _invoice(public_id)
+        data = OverrideRequestSerializer(data=request.data)
+        data.is_valid(raise_exception=True)
+        check = invoice_credit(invoice)
+        if check.outcome != "block":
+            return Response(
+                {
+                    "code": "sales.invoice.override_not_needed",
+                    "detail": _("This invoice is within the customer's credit limit."),
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        with transaction.atomic():
+            request_override(
+                invoice.contact,
+                check.amount,
+                user=request.user,
+                reason=data.validated_data["reason"],
+                document_type=DOCUMENT_TYPE,
+                document_ref=str(invoice.public_id),
+            )
+        return Response(credit_payload(invoice), status=status.HTTP_201_CREATED)
 
 
 class InvoicePdfView(APIView):

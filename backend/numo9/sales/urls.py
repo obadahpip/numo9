@@ -12,6 +12,16 @@ urlpatterns = [
         api.InvoiceEmailView.as_view(),
         name="invoice-email",
     ),
+    path(
+        f"{ORG}invoices/<uuid:public_id>/credit",
+        api.InvoiceCreditView.as_view(),
+        name="invoice-credit",
+    ),
+    path(
+        f"{ORG}invoices/<uuid:public_id>/credit/override",
+        api.InvoiceCreditOverrideView.as_view(),
+        name="invoice-credit-override",
+    ),
     path(f"{ORG}invoices/<uuid:public_id>/pdf", api.InvoicePdfView.as_view(), name="invoice-pdf"),
     path("invoice-view/<str:token>", api.InvoiceViewLinkView.as_view(), name="invoice-view"),
 ]

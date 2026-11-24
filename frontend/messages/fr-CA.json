@@ -2426,13 +2426,31 @@
     "settingsUsersRoles": "Paramètres : Utilisateurs et rôles"
   },
   "sales": {
+    "credit": {
+      "blockBody": "This invoice can't be approved unless an override is approved for it.",
+      "blockTitle": "Credit limit reached",
+      "cancel": "Cancel",
+      "dialogBody": "{contact} would owe {projected}, {over} over the limit of {limit}. The people who approve overrides are notified.",
+      "dialogTitle": "Request a credit limit override",
+      "failed": "The request wasn't sent: {reason}",
+      "overrideBody": "An approved override covers this invoice; it's used when you approve it.",
+      "overrideTitle": "Override approved",
+      "pending": "Override requested {date}: waiting for approval.",
+      "reason": "Reason",
+      "reasonRequired": "Say why the sale should go ahead over the credit limit.",
+      "request": "Request override",
+      "requested": "Override requested.",
+      "send": "Send request",
+      "warnBody": "You can still approve this invoice.",
+      "warnTitle": "Over the credit limit"
+    },
     "email": {
       "attachment": "Attached: {file}",
       "failed": "The invoice wasn't sent: {reason}",
       "hidePreview": "Hide preview",
       "history": "Sent before",
       "historyLine": "{date} to {to}",
-      "invalid": "Check these addresses: {addresses}",
+      "invalid": "Review these addresses: {addresses}",
       "loadFailed": "The email couldn't load.",
       "message": "Message",
       "noRecipient": "Add at least one email address.",
