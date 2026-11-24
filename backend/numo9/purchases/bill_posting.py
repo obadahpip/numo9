@@ -339,3 +339,62 @@ def release_holdback(
             actor=person,
         )
         return locked
+
+
+# ---- void (E-02-T09) ---------------------------------------------------------------------------
+
+VOIDABLE = (BillStatus.AWAITING_PAYMENT,)
+
+
+def void(bill: Bill, user: Any, *, date: Any = None, reason: str = "") -> Bill:
+    """Void a posted bill: its journal is reversed (C-02 ``reverse``) on ``date`` — the bill's
+    own date by default — through the AP lock date and closed periods (a date in a locked period
+    is refused naming the lock, ``lock.violation``); the status becomes Void, the number is kept,
+    the PO's billed quantities come back, the supplier invoice number is free again, and the void
+    is audited with the reason. A bill with payments or a released holdback can't be voided
+    (remove those first); a draft is deleted, not voided."""
+    from numo9.audit import service as audit
+    from numo9.ledger.services import reverse
+
+    from .bill_from_po import apply_billed
+
+    person = _person(user)
+    with org_context(bill.organisation), transaction.atomic(), acting_as(person):
+        locked = Bill._base_manager.select_for_update().get(pk=bill.pk)
+        if locked.status not in VOIDABLE or locked.amount_paid or locked.holdback_released:
+            why = (
+                _("remove its payments first.")
+                if locked.amount_paid
+                else _("reverse the holdback release first.")
+                if locked.holdback_released
+                else _("only bills awaiting payment can be voided; delete a draft instead.")
+            )
+            raise _refuse(
+                _("%(bill)s can't be voided: %(why)s"),
+                "purchases.bill.not_voidable",
+                bill=str(locked),
+                why=why,
+            )
+        assert locked.journal_entry is not None  # noqa: S101 — posted statuses have one (DB check)
+        reversal = reverse(
+            locked.journal_entry,
+            date=date or locked.date,
+            narration=_("Void of bill %(number)s") % {"number": locked.number},
+            user=person,
+            module=LockModule.AP,
+        )
+        apply_billed(locked, -1)
+        previous = locked.status
+        locked.status = BillStatus.VOID
+        locked.void_entry = reversal
+        locked.voided_at = timezone.now()
+        locked.version += 1
+        locked.save()
+        audit.record(
+            "purchases.bill.voided",
+            obj=locked,
+            changes={"status": [previous, BillStatus.VOID]},
+            meta={"number": locked.number, "reason": " ".join((reason or "").split())},
+            actor=person,
+        )
+        return locked
