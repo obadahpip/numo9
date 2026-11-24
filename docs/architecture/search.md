@@ -65,3 +65,13 @@ k6 run -e PASSWORD="$SEED_PASSWORD" tools/perf/k6/search.js               # or: 
 `backend/tests/test_search_performance.py` runs the same queries over 200,000 documents in CI.
 Measured on the development machine with 1,000,000 documents: p95 110 ms through the Django
 stack (single client), slowest queries the multi-word typos.
+
+## Invoices (D-03a-T17)
+
+`numo9.sales.search` indexes each invoice: title `INV-0001 — Customer` (`Draft invoice — …`
+before approval), code = the number (exact and prefix matches rank first), subtitle = status and
+reference, body = the reference (also split into its parts — the text parser reads `-77812` in
+`PO-77812` as a negative number) and the line descriptions, amount = the total. Permission
+`sales.invoices.view`, feature `accounting.sales_invoices.read`. Line changes re-index the invoice
+(`register_dependent`). Quick-create **N I** opens `/o/<org>/sales/invoices/new` for people with
+`sales.invoices.write`.

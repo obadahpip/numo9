@@ -2469,6 +2469,10 @@
       "to": "To",
       "toHint": "Separate addresses with commas.",
       "viewed": "Viewed {date}"
+    },
+    "newInvoice": {
+      "placeholder": "The invoice editor arrives with the next release of Sales.",
+      "title": "New invoice"
     }
   },
   "security": {

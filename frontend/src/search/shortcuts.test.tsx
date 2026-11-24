@@ -27,8 +27,10 @@ describe("keyboard shortcuts (A-09-T08)", () => {
     const create = shortcutFor(key("c"), 1000, 1000 + SEQUENCE_MS);
     expect(create.kind === "create" && create.entry.id).toBe("contact");
     expect(shortcutFor(key("c"), 1000, 1001 + SEQUENCE_MS)).toEqual({ kind: "none" });
-    // N I: documented, its screen comes later — nothing happens yet.
-    expect(shortcutFor(key("i"), 0, 10)).toEqual({ kind: "none" });
+    // N B: documented, its screen comes later — nothing happens yet.
+    expect(shortcutFor(key("b"), 0, 10)).toEqual({ kind: "none" });
+    const invoice = shortcutFor(key("i"), 0, 10); // N I: New invoice (D-03a-T17)
+    expect(invoice.kind === "create" && invoice.entry.id).toBe("invoice");
     expect(shortcutFor(key("n", { ctrlKey: true }), null, 0)).toEqual({ kind: "none" });
     expect(shortcutFor(key("c"), null, 0)).toEqual({ kind: "none" });
   });
@@ -60,7 +62,9 @@ describe("keyboard shortcuts (A-09-T08)", () => {
     ]);
     expect(rows[2]).toHaveTextContent("New contact");
     expect(rows[2]).not.toHaveTextContent("Coming soon");
-    expect(rows[0]).toHaveTextContent("New invoiceComing soon");
+    expect(rows[0]).toHaveTextContent("New invoice");
+    expect(rows[0]).not.toHaveTextContent("Coming soon");
+    expect(rows[1]).toHaveTextContent("New billComing soon");
     const general = within(dialog).getByRole("table", { name: "Everywhere" });
     expect(general).toHaveTextContent("Ctrl+K");
     expect(general).toHaveTextContent("?");
