@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:05-0500\n"
+"POT-Creation-Date: 2026-11-24 16:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8191,6 +8191,40 @@ msgstr ""
 msgid "There's no %(side)s tax code %(code)s."
 msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
 
+msgid "Quarterly"
+msgstr "Trimestriel"
+
+#, fuzzy
+#| msgid "tax registration"
+msgid "registration"
+msgstr "inscription fiscale"
+
+msgid "frequency"
+msgstr ""
+
+#, fuzzy
+#| msgid "CRA approval reference"
+msgid "approval reference"
+msgstr "Référence d’approbation de l’ARC"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "approval date"
+msgstr "appliqué le"
+
+msgid "created by"
+msgstr ""
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing cycle"
+msgstr "fréquence de facturation"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing cycles"
+msgstr "fréquence de facturation"
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -8320,9 +8354,6 @@ msgid "practice assignments"
 msgstr ""
 
 msgid "Assigned staff must be members of the assigned practice."
-msgstr ""
-
-msgid "created by"
 msgstr ""
 
 msgid "deleted at"
@@ -8464,9 +8495,6 @@ msgstr "Confortable"
 
 msgid "Compact"
 msgstr "Compacte"
-
-msgid "Quarterly"
-msgstr "Trimestriel"
 
 msgid "owner"
 msgstr "propriétaire"

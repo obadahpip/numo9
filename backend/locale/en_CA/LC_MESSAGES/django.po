@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:05-0500\n"
+"POT-Creation-Date: 2026-11-24 16:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7404,6 +7404,30 @@ msgstr ""
 msgid "There's no %(side)s tax code %(code)s."
 msgstr ""
 
+msgid "Quarterly"
+msgstr ""
+
+msgid "registration"
+msgstr ""
+
+msgid "frequency"
+msgstr ""
+
+msgid "approval reference"
+msgstr ""
+
+msgid "approval date"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "filing cycle"
+msgstr ""
+
+msgid "filing cycles"
+msgstr ""
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -7524,9 +7548,6 @@ msgid "practice assignments"
 msgstr ""
 
 msgid "Assigned staff must be members of the assigned practice."
-msgstr ""
-
-msgid "created by"
 msgstr ""
 
 msgid "deleted at"
@@ -7667,9 +7688,6 @@ msgid "Comfortable"
 msgstr ""
 
 msgid "Compact"
-msgstr ""
-
-msgid "Quarterly"
 msgstr ""
 
 msgid "owner"
