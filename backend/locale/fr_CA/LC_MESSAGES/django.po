@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:20-0500\n"
+"POT-Creation-Date: 2026-11-24 16:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8038,6 +8038,27 @@ msgstr ""
 
 #, python-format
 msgid "%(date)s isn't the start of your financial year. The switch is saved with approval %(ref)s."
+msgstr ""
+
+#, fuzzy
+#| msgid "A tax code can't end before it starts."
+msgid "The period ends before it starts."
+msgstr "Un code de taxe ne peut pas se terminer avant de commencer."
+
+#, fuzzy, python-format
+#| msgid "The end date is before the start date."
+msgid "The period starts before the registration (%(start)s)."
+msgstr "La date de fin est antérieure à la date de début."
+
+#, python-format
+msgid "The period overlaps the filed period %(period)s."
+msgstr ""
+
+#, python-format
+msgid "The period overlaps the out-of-cycle period %(period)s."
+msgstr ""
+
+msgid "Only an out-of-cycle period that isn't filed can be deleted."
 msgstr ""
 
 msgid "tax authority"

@@ -22,6 +22,12 @@ change (``validate_switch``), records the new ``FilingCycle`` and regenerates fr
   **approval reference** (``tax.filing.approval_required`` — the API's 422), and is returned
   with a warning (``tax.filing.not_fiscal_year_start``) even with one.
 
+``add_custom_period(registration, start, end, …)`` (G-03a-T12) — an out-of-cycle period: it may
+not overlap a filed or paid period (``tax.filing.custom_overlaps_filed``) nor another custom
+period; the unfiled periods it overlaps are removed (one crossing its start is cut to a stub)
+and the regular periods realign from the day after its end. ``delete_custom_period`` removes an
+unfiled one and regenerates its dates.
+
 Tax postings are never moved: a posting belongs to the period containing its date
 (``period_for``, G-03a-T14), so they follow the new periods by themselves.
 """
@@ -300,3 +306,90 @@ def switch_frequency(
             created_by=user if getattr(user, "is_authenticated", False) else None,
         )
         return regenerate(registration, effective_from, today=today), warnings
+
+
+# ---- custom periods (G-03a-T12) ---------------------------------------------------------------
+
+
+def add_custom_period(
+    registration: Any,
+    start: dt.date,
+    end: dt.date,
+    *,
+    note: str = "",
+    today: dt.date | None = None,
+) -> list[FilingPeriod]:
+    """Insert an out-of-cycle period (module docstring); returns every period."""
+    from numo9.tenancy.context import org_context
+
+    with org_context(registration.organisation), transaction.atomic():
+        if end < start:
+            raise TaxError(_("The period ends before it starts."), code="tax.filing.custom_dates")
+        if registration.start_date is not None and start < registration.start_date:
+            raise TaxError(
+                _("The period starts before the registration (%(start)s).")
+                % {"start": registration.start_date.isoformat()},
+                code="tax.filing.before_start",
+            )
+        periods = FilingPeriod.objects.select_for_update().filter(registration=registration)
+        overlapping = periods.filter(start__lte=end, end__gte=start)
+        filed = overlapping.filter(status__in=(PeriodStatus.FILED, PeriodStatus.PAID)).first()
+        if filed is not None:
+            raise TaxError(
+                _("The period overlaps the filed period %(period)s.") % {"period": str(filed)},
+                code="tax.filing.custom_overlaps_filed",
+            )
+        other = overlapping.filter(kind=PeriodKind.CUSTOM).first()
+        if other is not None:
+            raise TaxError(
+                _("The period overlaps the out-of-cycle period %(period)s.")
+                % {"period": str(other)},
+                code="tax.filing.custom_overlap",
+            )
+        settings = _settings(registration)
+        crossing = periods.filter(start__lt=start, end__gte=start).first()
+        if crossing is not None:
+            crossing.end = start - ONE_DAY
+            crossing.kind = PeriodKind.STUB
+            crossing.__dict__.update(
+                dated(
+                    registration,
+                    Period(crossing.start, crossing.end, "stub", crossing.frequency),
+                    settings,
+                )
+            )
+            crossing.save()
+        periods.filter(start__gte=start).exclude(kind=PeriodKind.CUSTOM).exclude(
+            status__in=(PeriodStatus.FILED, PeriodStatus.PAID)
+        ).delete()
+        frequency = _frequency_at(registration, start)
+        FilingPeriod.objects.create(
+            organisation=registration.organisation,
+            registration=registration,
+            start=start,
+            end=end,
+            kind=PeriodKind.CUSTOM,
+            frequency=frequency,
+            sequence_no=0,
+            note=note,
+            **dated(registration, Period(start, end, "custom", frequency), settings),
+        )
+        return regenerate(registration, start, today=today)
+
+
+def delete_custom_period(
+    period: FilingPeriod, *, today: dt.date | None = None
+) -> list[FilingPeriod]:
+    """Remove an unfiled out-of-cycle period; the regular periods are regenerated over it."""
+    from numo9.tenancy.context import org_context
+
+    registration = period.registration
+    with org_context(registration.organisation), transaction.atomic():
+        if period.kind != PeriodKind.CUSTOM or period.is_locked:
+            raise TaxError(
+                _("Only an out-of-cycle period that isn't filed can be deleted."),
+                code="tax.filing.custom_locked",
+            )
+        start = period.start
+        period.delete()
+        return regenerate(registration, start, today=today)
