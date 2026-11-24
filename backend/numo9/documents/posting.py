@@ -62,6 +62,9 @@ class PreviewLine:
     tax_code: Any = None
     description: str = ""
     tracking: dict[str, Any] = field(default_factory=dict)
+    #: The line's own claimable share of input tax (0–100), before the account's and the tax
+    #: code's (G-01-T05 order); a bill of an organisation not registered on its date passes 0.
+    itc_pct: Decimal | None = None
 
 
 @dataclass(frozen=True)
@@ -174,7 +177,7 @@ def _document_input(
                         link.component.key,
                         Decimal(link.component.rate),
                         link.component.kind,
-                        claimable_pct(link, account=line.account)
+                        claimable_pct(link, line_pct=line.itc_pct, account=line.account)
                         if side == "purchase"
                         else Decimal("100"),
                     )
