@@ -84,7 +84,7 @@ def test_the_approver_sees_what_they_may_approve_with_the_limit(books: dict[str,
     assert (rows["Equipment"]["can_approve"], rows["Equipment"]["blocked"]) == (False, "limit")
     assert rows["Kingsway lease"]["submitted_by"]["name"] == "Ava"
     assert body["counts"] == {"total": 2, "can_approve": 1}
-    (kind,) = body["kinds"]
+    kind = next(k for k in body["kinds"] if k["kind"] == "journal")
     assert (kind["kind"], kind["count"], kind["can_approve"]) == ("journal", 2, 1)
     assert inbox(books, books["bo"], kind="bill")["results"] == []
 

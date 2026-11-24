@@ -8,3 +8,8 @@ class PurchasesConfig(AppConfig):
     name = "numo9.purchases"
     label = "purchases"
     verbose_name = "Purchases"
+
+    def ready(self) -> None:
+        from .approvables import register_purchase_order_approvals
+
+        register_purchase_order_approvals()  # POs in the approvals inbox (E-01-T15)

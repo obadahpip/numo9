@@ -103,6 +103,7 @@ nav:
       - "Manual journals: types and controls": user-guide/journal-types-and-controls.md
       - "Manual journals: editor, approval and recurring": user-guide/journal-approval-and-recurring.md
       - "Emailing invoices": user-guide/emailing-invoices.md
+      - "Purchase orders and receipts": user-guide/purchase-orders.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

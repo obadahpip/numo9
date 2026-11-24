@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 550   Remaining: 2237   Progress: 19.73%
+TOTAL ATOMIC TASKS: 2787   Completed: 551   Remaining: 2236   Progress: 19.77%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -734,7 +734,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-01-T06 — Receipt reversal
 ✅ E-01-T08 — Commitment report query (open PO value by account/supplier/month)
 ✅ E-01-T09 — PO PDF + email to supplier
-❌ E-01-T15 — Approvals inbox registration for POs
+✅ E-01-T15 — Approvals inbox registration for POs
 
 [K-01]
 ❌ K-01-T01 — Wireframes: report home, runner with parameter bar, drill drawer, layout editor panel, export menu, empty/no-activity states
