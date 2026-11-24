@@ -1,0 +1,15 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+Account activity
+Refined Interiors Inc.
+1 May 2026 to 31 Jul 2026
+Basis: Accrual (organisation default) · Accounting book
+DEBITS CREDITS NET MOVEMENT
+1000 · Chequing $6,200.00 $2,550.00 $3,650.00
+4000 · Sales $0.00 $6,200.00 -$6,200.00
+5400 · Rent $2,400.00 $0.00 $2,400.00
+6100 · Office supplies $150.00 $0.00 $150.00
+Total $8,750.00 $8,750.00 $0.00
+Unaudited — prepared for management.
+Prepared with Numo9 Page 1 of 1
