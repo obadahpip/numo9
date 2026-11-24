@@ -181,3 +181,43 @@ export const statusLabels: Record<BillStatus, MessageDescriptor> = defineMessage
   paid: { id: "purchases.bill.status.paid", defaultMessage: "Paid", description: "Bill status" },
   void: { id: "purchases.bill.status.void", defaultMessage: "Void", description: "Bill status" },
 });
+
+/** Supplier invoice number check and duplicate warnings (E-02-T12). */
+export const checks = defineMessages({
+  checking: {
+    id: "purchases.bill.checking",
+    defaultMessage: "Checking the number…",
+    description: "Live check in progress",
+  },
+  open: {
+    id: "purchases.bill.openConflict",
+    defaultMessage: "Open it",
+    description: "Link to the bill that has the number",
+  },
+  duplicatesTitle: {
+    id: "purchases.bill.duplicatesTitle",
+    defaultMessage: "This bill looks like one already entered",
+    description: "Duplicate warning panel heading",
+  },
+  duplicatesBody: {
+    id: "purchases.bill.duplicatesBody",
+    defaultMessage:
+      "Same supplier, an amount within 1 % and a date within 10 days. It is only a warning: check before approving.",
+    description: "Duplicate warning panel text",
+  },
+  openSuspect: {
+    id: "purchases.bill.openSuspect",
+    defaultMessage: "Open {bill}",
+    description: "Link to a look-alike bill",
+  },
+  suspectLine: {
+    id: "purchases.bill.suspectLine",
+    defaultMessage: "{date} · {total}",
+    description: "A look-alike bill: its date and total",
+  },
+  draftBill: {
+    id: "purchases.bill.draftBill",
+    defaultMessage: "the draft bill",
+    description: "A bill without a number",
+  },
+});
