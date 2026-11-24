@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 04:43-0500\n"
+"POT-Creation-Date: 2026-11-24 04:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4807,6 +4807,9 @@ msgstr "Voir les écritures de journal et toutes les écritures comptabilisées"
 msgid "Write and post manual journals"
 msgstr "Rédiger et passer des écritures manuelles"
 
+msgid "Approve or send back manual journals waiting for approval (within an approval limit)"
+msgstr ""
+
 msgid "See the chart of accounts and account balances"
 msgstr ""
 
@@ -5055,6 +5058,11 @@ msgstr ""
 #, python-format
 msgid "Debits %(debits)s ≠ credits %(credits)s in the %(book)s (difference %(difference)s)."
 msgstr ""
+
+#, fuzzy
+#| msgid "There's no journal with this id in this organisation."
+msgid "There's no recurring journal with this id in this organisation."
+msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
 
 msgid "meter"
 msgstr ""

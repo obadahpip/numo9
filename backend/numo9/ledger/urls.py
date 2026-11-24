@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import accounts_api, api, journals_api
+from . import accounts_api, api, journals_api, workflow_api
 
 ORG = "o/<uuid:org>/"
 
@@ -38,6 +38,47 @@ urlpatterns = [
         f"{ORG}journals/<uuid:public_id>/post",
         journals_api.JournalPostView.as_view(),
         name="journal-post",
+    ),
+    # Approval and recurring journals (C-04-T07)
+    path(
+        f"{ORG}journals/<uuid:public_id>/submit",
+        workflow_api.JournalSubmitView.as_view(),
+        name="journal-submit",
+    ),
+    path(
+        f"{ORG}journals/<uuid:public_id>/approve",
+        workflow_api.JournalApproveView.as_view(),
+        name="journal-approve",
+    ),
+    path(
+        f"{ORG}journals/<uuid:public_id>/reject",
+        workflow_api.JournalRejectView.as_view(),
+        name="journal-reject",
+    ),
+    path(
+        f"{ORG}journals/<uuid:public_id>/withdraw",
+        workflow_api.JournalWithdrawView.as_view(),
+        name="journal-withdraw",
+    ),
+    path(
+        f"{ORG}journals/recurring",
+        workflow_api.RecurringListView.as_view(),
+        name="recurring-journals",
+    ),
+    path(
+        f"{ORG}journals/recurring/preview",
+        workflow_api.RecurringSchedulePreviewView.as_view(),
+        name="recurring-journals-preview",
+    ),
+    path(
+        f"{ORG}journals/recurring/<uuid:public_id>",
+        workflow_api.RecurringDetailView.as_view(),
+        name="recurring-journal",
+    ),
+    path(
+        f"{ORG}journals/recurring/<uuid:public_id>/preview",
+        workflow_api.RecurringPreviewView.as_view(),
+        name="recurring-journal-preview",
     ),
     path(f"{ORG}journals/<uuid:public_id>", api.JournalDetailView.as_view(), name="journal"),
 ]

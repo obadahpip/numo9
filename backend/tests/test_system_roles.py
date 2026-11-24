@@ -97,7 +97,12 @@ def test_read_only_and_reviewer_change_nothing() -> None:
     }
     assert grants("practice", "read_only") == read_only
     reviewer = grants("practice", "reviewer")
-    assert all(catalogue.get(k).read_only for k in reviewer)
+    # The reviewer reads and approves (journals, C-04-T07) — and changes nothing else.
+    assert all(
+        catalogue.get(k).read_only or catalogue.get(k).action in {"approve", "review"}
+        for k in reviewer
+    )
+    assert "accounting.journals.approve" in reviewer
     assert "practice.staff.view" in reviewer
 
 

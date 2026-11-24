@@ -24,6 +24,15 @@ JOURNALS_POST = register(
     )
 )
 
+JOURNALS_APPROVE = register(
+    Permission(
+        "accounting.journals.approve",
+        _("Approve or send back manual journals waiting for approval (within an approval limit)"),
+        "accounting",
+        Risk.MEDIUM,
+    )
+)
+
 ACCOUNTS_VIEW = register(
     Permission(
         "accounting.accounts.view",

@@ -87,9 +87,7 @@ def test_a_valid_template_saves_normalised_and_audited(
         "not a rule",
     ],
 )
-def test_invalid_rules_are_refused(
-    org: Organisation, accounts: dict[str, Any], rule: str
-) -> None:
+def test_invalid_rules_are_refused(org: Organisation, accounts: dict[str, Any], rule: str) -> None:
     with org_context(org), pytest.raises(ValidationError) as caught:
         template(org, rrule=rule, lines=lines(accounts)).full_clean()
     assert "ledger.recurring.rrule_invalid" in codes(caught.value)
