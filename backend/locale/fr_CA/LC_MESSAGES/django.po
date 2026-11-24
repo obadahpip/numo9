@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 04:55-0500\n"
+"POT-Creation-Date: 2026-11-24 04:58-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4088,6 +4088,14 @@ msgstr "Utilisez accounting (comptable) ou tax (fiscal)."
 msgid "There's no journal with this id in this organisation."
 msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
 
+msgid "Manual journal"
+msgstr "Écriture de journal manuelle"
+
+#, fuzzy
+#| msgid "Manual journal"
+msgid "Manual journals"
+msgstr "Écriture de journal manuelle"
+
 #, python-format
 msgid "%(journal)s isn't waiting for approval."
 msgstr "%(journal)s n'attend pas d'approbation."
@@ -4532,9 +4540,6 @@ msgstr "Comptabilité"
 
 msgid "Tax book"
 msgstr ""
-
-msgid "Manual journal"
-msgstr "Écriture de journal manuelle"
 
 msgid "Sales"
 msgstr "Ventes"

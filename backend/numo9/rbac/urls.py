@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import api
+from . import api, inbox_api
 
 ORG = "o/<uuid:org>/"
 
@@ -26,6 +26,8 @@ urlpatterns = [
         name="member-role",
     ),
     path(f"{ORG}my-permissions", api.MyPermissionsView.as_view(), name="my-permissions"),
+    # Approvals inbox (C-04-T08)
+    path(f"{ORG}approvals", inbox_api.ApprovalsInboxView.as_view(), name="approvals-inbox"),
     path(f"{ORG}invitations", api.PendingInvitationsView.as_view(), name="pending-invitations"),
     path(f"{ORG}access-requests", api.AccessRequestListView.as_view(), name="access-requests"),
     path(

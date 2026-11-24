@@ -39,6 +39,10 @@ class LedgerConfig(AppConfig):
         SWEEP_FACTORIES["ledger.Account"] = _sweep_account
         SWEEP_FACTORIES["ledger.RecurringJournalTemplate"] = _sweep_recurring
 
+        from .approvables import register_journal_approvals
+
+        register_journal_approvals()  # manual journals in the approvals inbox (C-04-T08)
+
 
 def _seed_after_migrate(sender: AppConfig, **kwargs: Any) -> None:
     from django.apps import apps as global_apps
