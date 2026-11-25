@@ -461,6 +461,17 @@ def add_custom_period(
                 % {"start": registration.start_date.isoformat()},
                 code="tax.filing.before_start",
             )
+        stop = registration.stop_date
+        inside_gap = any(
+            g_start <= end and (g_end is None or start <= g_end)
+            for g_start, g_end in gaps(registration)
+        )
+        if inside_gap or (stop is not None and end > stop):
+            # G-03b: an out-of-cycle period can't cover days the registration isn't registered.
+            raise TaxError(
+                _("The period covers days the registration isn't registered."),
+                code="tax.filing.not_registered",
+            )
         periods = FilingPeriod.objects.select_for_update().filter(registration=registration)
         overlapping = periods.filter(start__lte=end, end__gte=start)
         filed = overlapping.filter(status__in=(PeriodStatus.FILED, PeriodStatus.PAID)).first()
