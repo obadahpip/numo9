@@ -1,0 +1,11 @@
+{% autoescape off %}{{ message }}
+
+Quote {{ number }}{% if title %} — {{ title }}{% endif %}
+Total: {{ total }}
+Valid until: {{ expiry_date }}
+
+View and accept the quote: {{ link }}
+
+--
+{{ organisation }}
+{% endautoescape %}

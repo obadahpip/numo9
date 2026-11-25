@@ -1,0 +1,11 @@
+{% autoescape off %}{{ message }}
+
+Soumission {{ number }}{% if title %} — {{ title }}{% endif %}
+Total : {{ total }}
+Valide jusqu'au : {{ expiry_date }}
+
+Consulter et accepter la soumission : {{ link }}
+
+--
+{{ organisation }}
+{% endautoescape %}

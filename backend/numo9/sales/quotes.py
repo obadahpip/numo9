@@ -197,6 +197,10 @@ def _transition(
                 meta={"number": locked.number, "total": f"{locked.total:.2f}"},
                 actor=user if getattr(user, "is_authenticated", False) else None,
             )
+            if target in ("accepted", "declined"):  # one notification per decision (T15)
+                from .quote_email import notify_decision
+
+                transaction.on_commit(lambda: notify_decision(locked))
         return locked
 
 
