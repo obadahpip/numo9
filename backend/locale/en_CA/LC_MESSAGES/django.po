@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 15:07-0500\n"
+"POT-Creation-Date: 2026-11-25 15:45-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5333,6 +5333,22 @@ msgid "%(body)s"
 msgstr ""
 
 #, python-format
+msgid "Quote %(number)s accepted"
+msgstr ""
+
+#, python-format
+msgid "%(customer)s accepted quote %(number)s (%(total)s)."
+msgstr ""
+
+#, python-format
+msgid "Quote %(number)s declined"
+msgstr ""
+
+#, python-format
+msgid "%(customer)s declined quote %(number)s: %(reason)s"
+msgstr ""
+
+#, python-format
 msgid "%(registration)s return due %(due_date)s"
 msgstr ""
 
@@ -7076,6 +7092,12 @@ msgstr ""
 msgid "This invoice link isn't valid any more."
 msgstr ""
 
+msgid "This quote link was withdrawn."
+msgstr ""
+
+msgid "This quote link isn't valid."
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s isn't a draft."
 msgstr ""
@@ -7202,6 +7224,114 @@ msgstr ""
 msgid "credit applications"
 msgstr ""
 
+msgid "Viewed"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Invoiced"
+msgstr ""
+
+msgid "No deposit"
+msgstr ""
+
+msgid "Percentage"
+msgstr ""
+
+msgid "summary"
+msgstr ""
+
+msgid "expiry date"
+msgstr ""
+
+msgid "deposit"
+msgstr ""
+
+msgid "deposit amount or %"
+msgstr ""
+
+msgid "accepted at"
+msgstr ""
+
+msgid "declined at"
+msgstr ""
+
+msgid "reason for declining"
+msgstr ""
+
+msgid "expired at"
+msgstr ""
+
+msgid "invoiced at"
+msgstr ""
+
+msgid "revision of"
+msgstr ""
+
+msgid "quote"
+msgstr ""
+
+msgid "quotes"
+msgstr ""
+
+msgid "optional"
+msgstr ""
+
+msgid "alternative group"
+msgstr ""
+
+msgid "selected"
+msgstr ""
+
+msgid "quote line"
+msgstr ""
+
+msgid "quote lines"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "revoked at"
+msgstr ""
+
+msgid "views"
+msgstr ""
+
+msgid "last viewed at"
+msgstr ""
+
+msgid "quote link"
+msgstr ""
+
+msgid "quote links"
+msgstr ""
+
+msgid "name typed"
+msgstr ""
+
+msgid "signature (PNG) key"
+msgstr ""
+
+msgid "browser"
+msgstr ""
+
+msgid "lines chosen"
+msgstr ""
+
+msgid "accepted PDF key"
+msgstr ""
+
+msgid "accepted PDF SHA-256"
+msgstr ""
+
+msgid "quote acceptance"
+msgstr ""
+
+msgid "quote acceptances"
+msgstr ""
+
 msgid "Net 30"
 msgstr ""
 
@@ -7215,6 +7345,12 @@ msgid "Create and edit draft invoices"
 msgstr ""
 
 msgid "Email invoices to customers"
+msgstr ""
+
+msgid "See quotes and their PDF"
+msgstr ""
+
+msgid "Create, edit and send quotes, and turn accepted quotes into invoices"
 msgstr ""
 
 #, python-format
@@ -7240,6 +7376,29 @@ msgstr ""
 
 #, python-format
 msgid "Void of invoice %(number)s"
+msgstr ""
+
+msgid "Add at least one email address to send the quote to."
+msgstr ""
+
+msgid "no reason given"
+msgstr ""
+
+msgid "Type your name to accept the quote."
+msgstr ""
+
+msgid "The signature must be a PNG image."
+msgstr ""
+
+#, python-format
+msgid "%(quote)s is %(status)s: it can't be %(action)s."
+msgstr ""
+
+#, python-format
+msgid "This quote expired on %(date)s: ask for a new quote."
+msgstr ""
+
+msgid "Add at least one line before sending the quote."
 msgstr ""
 
 msgid "Superseded"
@@ -7300,6 +7459,37 @@ msgid "To"
 msgstr ""
 
 msgid "Amount enclosed"
+msgstr ""
+
+msgid "Prepared for"
+msgstr ""
+
+msgid "Quote number"
+msgstr ""
+
+msgid "Quote date"
+msgstr ""
+
+msgid "Valid until"
+msgstr ""
+
+msgid "Tax amount"
+msgstr ""
+
+msgid "(optional)"
+msgstr ""
+
+#, python-format
+msgid "(option %(group)s)"
+msgstr ""
+
+msgid "Optional lines and options not chosen are shown in grey and aren't in the total."
+msgstr ""
+
+msgid "Total tax"
+msgstr ""
+
+msgid "Deposit on acceptance"
 msgstr ""
 
 #, python-format
@@ -7766,9 +7956,6 @@ msgstr ""
 msgid "approval date"
 msgstr ""
 
-msgid "created by"
-msgstr ""
-
 msgid "filing cycle"
 msgstr ""
 
@@ -8140,9 +8327,6 @@ msgstr ""
 msgid "Pending"
 msgstr ""
 
-msgid "Accepted"
-msgstr ""
-
 msgid "Revoked"
 msgstr ""
 
@@ -8152,13 +8336,7 @@ msgstr ""
 msgid "token hash"
 msgstr ""
 
-msgid "accepted at"
-msgstr ""
-
 msgid "accepted by"
-msgstr ""
-
-msgid "revoked at"
 msgstr ""
 
 msgid "times sent"
