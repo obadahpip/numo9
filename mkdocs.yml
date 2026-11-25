@@ -68,6 +68,7 @@ nav:
       - "ADR-0003 — Posting engine and book dimension": adr/0003-posting-engine-and-book-dimension.md
       - "ADR-0004 — Entitlement resolution and caching": adr/0004-entitlement-resolution-and-caching.md
       - "ADR-0005 — Partitioning strategy": adr/0005-partitioning-strategy.md
+      - "ADR-0006 — Invoice revisions": adr/0006-invoice-revisions.md
       - ADR template: adr/template.md
   - Architecture:
       - "Tenancy model": architecture/tenancy.md

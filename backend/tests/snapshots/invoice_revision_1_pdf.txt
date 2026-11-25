@@ -1,0 +1,24 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+ON
+Invoice
+Revision 1 of invoice INV-0001 — supersedes the version issued on 26 Oct 2026
+Bill to
+ON Customer Ltd
+Somewhere ON
+Invoice number INV-0001-1
+Invoice date 15 Jun 2026
+DESCRIPTION QUANTITY UNIT PRICE DISCOUNTTAX AMOUNT
+Line 1 1 $900.00 HST 13 % (Ontario) on sales $900.00
+Subtotal $900.00
+HST (ON) $117.00
+Total (CAD) $1,017.00
+Amount due $1,017.00
+Payment advice — detach and return with your payment
+To Refined Interiors Inc.
+Customer ON Customer Ltd
+Invoice number INV-0001-1
+Amount due $1,017 .00
+Amount enclosed ______________________
+Prepared with Numo9 Page 1 of 1
