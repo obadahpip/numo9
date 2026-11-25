@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 654   Remaining: 2133   Progress: 23.47%
+TOTAL ATOMIC TASKS: 2787   Completed: 655   Remaining: 2132   Progress: 23.50%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -864,7 +864,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-03b-T04 — Generator guard: no periods after stop_date until a restart event exists
 ✅ G-03b-T05 — Post-stop document checker: lists documents after the stop date with tax codes of that registration; returns a warning on new documents
 ✅ G-03b-T06 — Configurable default flip (org setting) wired into the G-02 resolver
-❌ G-03b-T07 — Restart service: create a cycle with frequency from the restart date, status ACTIVE, regenerate periods, record event
+✅ G-03b-T07 — Restart service: create a cycle with frequency from the restart date, status ACTIVE, regenerate periods, record event
 ❌ G-03b-T08 — Impact preview endpoint for stop and restart
 ❌ G-03b-T09 — API endpoints /stop, /restart, /events; permission tax.manage; audit
 ❌ G-03b-T10 — Danger-zone stop UI with a typed confirmation of the registration number, and the restart wizard
