@@ -133,3 +133,58 @@ def register_bill_approvals() -> None:
             items=bill_items,
         )
     )
+
+
+# ---- Expense claims (E-04-T11) -------------------------------------------------------------
+
+EXPENSE_PERMISSION = "purchases.expenses.approve"
+EXPENSE_FEATURE = "accounting.expense_claims.approve"
+
+
+def expense_claim_items(user: Any, organisation: Any, may_approve: bool) -> list[dict[str, Any]]:
+    """Expense claims awaiting approval: within the approver's expense-claim limit (A-03), plus
+    the claims they made or submitted ("You created this" — never theirs to approve, E-04-T05)."""
+    from .models import ExpenseClaim, ExpenseClaimStatus
+
+    claims = ExpenseClaim.objects.filter(
+        status=ExpenseClaimStatus.SUBMITTED, deleted_at__isnull=True
+    ).select_related("claimant", "created_by", "submitted_by")
+    own = Q(claimant=user) | Q(created_by=user) | Q(submitted_by=user)
+    limit = effective_limit(user, ApprovalDocumentType.EXPENSE_CLAIM, organisation=organisation)
+    if not may_approve or limit is None:
+        claims = claims.filter(own)
+    else:
+        claims = claims.filter(own | Q(total__lte=limit))
+    out: list[dict[str, Any]] = []
+    for claim in claims.order_by("submitted_at", "pk"):
+        authors = {claim.claimant_id, claim.created_by_id, claim.submitted_by_id} - {None}
+        mine = user.pk in authors
+        out.append(
+            item(
+                kind="expense_claim",
+                id=str(claim.public_id),
+                title=claim.claimant.name or claim.claimant.email,
+                subtitle=f"{claim.number} · {claim.title}",
+                amount=Decimal(claim.total),
+                date=claim.submitted_at.date() if claim.submitted_at else None,
+                url=f"/o/{organisation.public_id}/purchases/expense-claims/{claim.public_id}",
+                submitted_by=claim.submitted_by,
+                submitted_at=claim.submitted_at,
+                created_by=claim.created_by,
+                blocked="self" if mine or not may_approve else None,
+                limit=limit,
+            )
+        )
+    return out
+
+
+def register_expense_claim_approvals() -> None:
+    approvables.register(
+        Approvable(
+            kind="expense_claim",
+            label=_("Expense claims"),
+            permission=EXPENSE_PERMISSION,
+            feature=EXPENSE_FEATURE,
+            items=expense_claim_items,
+        )
+    )

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 12:31-0500\n"
+"POT-Creation-Date: 2026-11-25 13:30-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5685,6 +5685,12 @@ msgstr "les écritures doivent être approuvées à partir de"
 msgid "Invoices of this total or more wait for approval by someone other than the person who submitted them (D-03a-T05). Empty: no threshold (approval limits for invoices still route larger invoices to an approver)."
 msgstr ""
 
+msgid "receipt required above (CAD)"
+msgstr ""
+
+msgid "An expense claim line above this amount can't be submitted without its receipt attached (E-04-T05). Empty: a receipt is never required."
+msgstr ""
+
 msgid "over-receipt tolerance (%)"
 msgstr ""
 
@@ -5824,6 +5830,9 @@ msgstr "Soumission"
 
 msgid "Purchase order"
 msgstr "Bon de commande"
+
+msgid "Expense claim"
+msgstr ""
 
 msgid "Minimum digits of the number, padded with zeros (4: 0001)."
 msgstr "Nombre minimal de chiffres, complété par des zéros (4 : 0001)."
@@ -6279,6 +6288,9 @@ msgstr "numéro de facture"
 msgid "Bills"
 msgstr "Facture fournisseur"
 
+msgid "Expense claims"
+msgstr ""
+
 #, fuzzy, python-format
 #| msgid "%(journal)s isn't waiting for approval."
 msgid "%(order)s isn't waiting for approval."
@@ -6423,6 +6435,37 @@ msgid "Only an approved purchase order can be sent."
 msgstr ""
 
 msgid "Add at least one email address to send the purchase order to."
+msgstr ""
+
+msgid "There's no expense claim with this id in this organisation."
+msgstr ""
+
+msgid "Add at least one receipt or trip with an amount before submitting."
+msgstr ""
+
+msgid "Choose a category for every receipt."
+msgstr ""
+
+#, python-format
+msgid "Attach the receipt for %(line)s: receipts are required above %(limit)s."
+msgstr ""
+
+#, python-format
+msgid "%(claim)s has already been submitted."
+msgstr ""
+
+#, python-format
+msgid "%(claim)s isn't waiting for approval."
+msgstr ""
+
+msgid "This is your own expense claim: someone else must approve or reject it."
+msgstr ""
+
+msgid "Say why the claim is rejected."
+msgstr ""
+
+#, python-format
+msgid "No mileage rate is set for %(day)s."
 msgstr ""
 
 #, fuzzy
@@ -6729,6 +6772,27 @@ msgstr "Reçu"
 msgid "Mileage"
 msgstr "Kilométrage"
 
+msgid "Provinces"
+msgstr ""
+
+msgid "Territories (YT, NT, NU)"
+msgstr ""
+
+msgid "rate per km, first tier"
+msgstr ""
+
+msgid "rate per km, after the threshold"
+msgstr ""
+
+msgid "tier threshold (km per year)"
+msgstr ""
+
+msgid "mileage rate"
+msgstr ""
+
+msgid "mileage rates"
+msgstr ""
+
 msgid "claimant"
 msgstr "demandeur"
 
@@ -6797,6 +6861,19 @@ msgid "Enter, edit and void supplier bills and release holdbacks"
 msgstr ""
 
 msgid "Approve supplier bills for payment, within an approval limit"
+msgstr ""
+
+msgid "See expense claims and their receipts"
+msgstr ""
+
+msgid "Enter and submit expense claims for others"
+msgstr ""
+
+msgid "Approve or reject expense claims, within an approval limit"
+msgstr ""
+
+#, python-format
+msgid "This receipt was already claimed on %(claims)s."
 msgstr ""
 
 #, python-format

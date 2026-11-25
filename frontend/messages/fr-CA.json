@@ -2474,6 +2474,40 @@
       "uploadFailed": "{name} couldn't be uploaded. Try again.",
       "uploading": "Uploading {name}…",
       "varianceHint": "Approving with variance is recorded in the audit log with your name. Only approvers can do it."
+    },
+    "expense": {
+      "account": "{code} {name}",
+      "approve": "Approve",
+      "approved": "Claim approved.",
+      "blocked": "{why, select, self {This is your claim, or you entered or submitted it: someone else approves it.} permission {You can't approve expense claims.} limit {This claim is above your expense-claim approval limit.} other {}}",
+      "cancel": "Cancel",
+      "claimant": "Claimed by {name}",
+      "close": "Close",
+      "col": {
+        "amount": "Amount",
+        "category": "Category",
+        "date": "Date",
+        "tax": "Tax (claimable)",
+        "what": "Receipt or trip"
+      },
+      "draftTitle": "Draft expense claim",
+      "duplicates": "Possible duplicate receipts",
+      "failed": "That didn't work and nothing was changed. Try again in a moment.",
+      "lines": "Claim lines",
+      "loading": "Loading the claim…",
+      "noReceipt": "No receipt attached",
+      "reason": "Why is it rejected? The claimant sees this.",
+      "receipt": "Receipt: {name}",
+      "reject": "Reject",
+      "rejectTitle": "Reject this claim",
+      "rejected": "Claim rejected: the claimant can correct it and submit it again.",
+      "rejectedBecause": "Rejected by {name}: {reason}",
+      "submitted": "Submitted by {name} on {date}",
+      "taxCell": "{tax} ({claimable})",
+      "tiers": "{km} km × {rate}",
+      "title": "Expense claim {number}",
+      "total": "Total",
+      "trip": "{from} → {to}, {km} km"
     }
   },
   "quickCreate": {

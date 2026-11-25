@@ -24,6 +24,7 @@ import { useCallback, useEffect, useId, useState, type KeyboardEvent } from "rea
 import { useFormatMessage } from "@/i18n";
 import { getJournal, type Journal } from "@/journals/api";
 import { writeApi } from "@/journals/write/api";
+import { expenseClaimsApi } from "@/purchases/expenses/api";
 
 import { approvalsApi, type ApprovalItem, type ApprovalsInbox as Inbox } from "./api";
 import { im } from "./messages";
@@ -78,7 +79,15 @@ export function ApprovalsInbox({ org }: Readonly<{ org: string }>) {
   const act = async (item: ApprovalItem, action: "approve" | "reject", body = {}) => {
     setBusy(true);
     setError(null);
-    const result = await writeApi.action(org, item.id, action, body).catch(() => null);
+    const reason = (body as { reason?: string }).reason ?? "";
+    // Expense claims have their own endpoints (E-04-T11); journals the C-04 workflow's.
+    const request =
+      item.kind === "expense_claim"
+        ? action === "approve"
+          ? expenseClaimsApi.approve(org, item.id)
+          : expenseClaimsApi.reject(org, item.id, reason)
+        : writeApi.action(org, item.id, action, body);
+    const result = await request.catch(() => null);
     setBusy(false);
     if (result?.status === 200) {
       setNotice(fm(action === "approve" ? im.approved : im.rejected));

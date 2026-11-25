@@ -67,12 +67,7 @@ export interface Catalogue {
 }
 
 export type DocType =
-  | "journal"
-  | "invoice"
-  | "bill"
-  | "purchase_order"
-  | "pay_run"
-  | "expense_claim";
+  "journal" | "invoice" | "bill" | "purchase_order" | "pay_run" | "expense_claim";
 
 export const DOC_TYPES: readonly DocType[] = [
   "journal",
