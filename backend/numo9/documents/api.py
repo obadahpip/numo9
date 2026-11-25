@@ -2,7 +2,9 @@
 
 - ``POST documents/<side>/calculate`` — stateless: the ``DocumentCalculator`` result for the
   lines as typed (every line, totals, tax per component with its name) and the side validator's
-  ``problems`` (D-01-T06) for the editor to flag, without refusing;
+  ``problems`` (D-01-T06) for the editor to flag, without refusing, and document ``warnings``
+  (``REGISTRATION_STOPPED``: dated after a GST/HST or QST stop with that registration's codes,
+  G-03b-T12);
 - ``POST documents/<side>/posting-preview`` — the journal the document will post (D-01-T08);
   lines that don't fit are refused: 400 ``documents.lines.invalid`` with ``problems`` naming each
   line and field.
@@ -158,6 +160,20 @@ def result_dict(result: DocumentResult, names: dict[str, str]) -> dict[str, Any]
     }
 
 
+def document_warnings(date: Any, lines: list[PreviewLine]) -> list[dict[str, Any]]:
+    """Document-level warnings shown in the editor, never blocking: ``REGISTRATION_STOPPED`` —
+    the date falls after a GST/HST or QST stop and a line uses that registration's tax codes
+    (G-03b-T12)."""
+    from numo9.tax.post_stop import stop_warning
+    from numo9.tenancy.context import current_org
+
+    organisation = current_org()
+    if organisation is None:
+        return []
+    found = stop_warning(organisation, date, [line.tax_code for line in lines])
+    return [found] if found else []
+
+
 def _names(lines: list[PreviewLine]) -> dict[str, str]:
     names: dict[str, str] = {}
     for line in lines:
@@ -208,6 +224,7 @@ class _Calculate(APIView):
                 "kind": kind,
                 **result_dict(result, _names(lines)),
                 "problems": [p.as_dict() for p in found],
+                "warnings": document_warnings(values["date"], lines),
             }
         )
 

@@ -47,6 +47,13 @@ export interface LineProblem {
   message: string;
 }
 
+/** A document-level warning, never blocking (G-03b-T12: `REGISTRATION_STOPPED`). */
+export interface DocumentWarning {
+  code: string;
+  message: string;
+  registration?: string;
+}
+
 export interface CalculateResponse {
   kind: string;
   tax_mode: TaxMode;
@@ -59,6 +66,7 @@ export interface CalculateResponse {
   tax_included: boolean;
   tax_by_component: { key: string; name: string; amount: string }[];
   problems: LineProblem[];
+  warnings?: DocumentWarning[];
 }
 
 export interface PostingPreviewResponse extends Omit<CalculateResponse, "problems"> {
