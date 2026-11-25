@@ -219,7 +219,7 @@ async function mock(page: Page) {
 
 test.use({ viewport: { width: 1440, height: 900 } });
 
-test("tie-out card green on the fixture; red with the journal named", async ({ page }) => {
+test("gap-54: tie-out card green on the fixture; red with the journal named", async ({ page }) => {
   const runs = await mock(page);
   await page.goto(`/o/${ORG}/reports/tax-tie-out?period=current`);
   const card = page.locator("[data-tie-out]");
