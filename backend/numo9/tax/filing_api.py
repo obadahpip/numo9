@@ -5,8 +5,8 @@
   effective_from, approval_ref, approval_date, note}`` — set or switch the frequency: 201 with
   the diff (``removed`` / ``added`` / ``changed``), every period and the warnings.
 - ``GET periods`` ``?from=&to=`` — the filing periods in date order with their due dates,
-  status and what needs attention (``due_soon`` / ``overdue``), and the instalment dates of
-  annual periods.
+  status, what needs attention (``due_soon`` / ``overdue``), whether the return due date was
+  moved to the next business day (``due_rolled``), and the instalment dates of annual periods.
 - ``POST custom-periods`` ``{start, end, note}`` — add an out-of-cycle period;
   ``DELETE custom-periods/<period>`` — remove an unfiled one.
 - ``POST preview`` ``{action: switch | custom | delete_custom, …}`` — the diff the change would
@@ -34,6 +34,7 @@ from rest_framework.views import APIView
 from numo9.catalogue.drf import CORE, requires_feature
 from numo9.orgsettings.locks import local_date
 from numo9.orgsettings.models import TaxRegistration
+from numo9.orgsettings.service import get_settings
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
@@ -176,10 +177,12 @@ class FilingPeriodListView(FilingView):
             raise serializers.ValidationError({"from": ["Use YYYY-MM-DD dates."]}) from None
         today = _today()
         places = jurisdictions_for(registration.type)
+        settings = get_settings(registration.organisation)
         rows = []
         for period in periods:
             row = filing_service.period_row(period)
             row["attention"] = filing_service.attention(period, today)
+            row["due_rolled"] = filing_service.is_rolled(registration, period, settings)
             row["instalments"] = [
                 {
                     "quarter_start": i.quarter_start.isoformat(),

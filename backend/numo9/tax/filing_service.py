@@ -125,6 +125,18 @@ def dated(registration: Any, period: Period, settings: Any) -> dict[str, Any]:
     return {"due_date": due, "payment_due_date": payment}
 
 
+def is_rolled(registration: Any, period: FilingPeriod, settings: Any) -> bool:
+    """Was the return due date moved to the next business day (a weekend or holiday)?"""
+    plain, _payment = due_dates(
+        period.end,
+        period.frequency or _frequency_at(registration, period.start),
+        structure=settings.structure,
+        fye=(int(settings.fye_month), int(settings.fye_day)),
+        rolled=False,
+    )
+    return bool(period.due_date != plain)
+
+
 def _frequency_at(registration: Any, day: dt.date) -> str:
     cycles = cycles_of(registration)
     current = cycles[0].frequency if cycles else "quarterly"

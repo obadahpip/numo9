@@ -106,6 +106,15 @@ def test_set_switch_and_read_back(org: Organisation, reg: TaxRegistration, owner
         ("2026-08-01", "2026-08-31", "regular"),
     ]
     assert periods["registration"]["number"] and periods["results"][0]["due_date"] == "2026-07-31"
+    assert [(r["due_date"], r["due_rolled"]) for r in periods["results"]] == [
+        ("2026-07-31", False),
+        ("2026-08-31", False),
+        ("2026-10-01", True),  # 30 Sep is a federal holiday
+    ]
+    october = owner.get(url(org, reg, "periods?from=2026-10-01&to=2026-10-31")).json()["results"]
+    assert (october[0]["due_date"], october[0]["due_rolled"]) == ("2026-11-30", False)
+    january = owner.get(url(org, reg, "periods?from=2027-01-01&to=2027-01-31")).json()["results"]
+    assert (january[0]["due_date"], january[0]["due_rolled"]) == ("2027-03-01", True)  # 28 Feb: Sun
     assert owner.get(url(org, reg, "periods?from=nope")).status_code == 400
     with org_context(org):
         events = AuditEvent.objects.filter(action="tax.filing.frequency_changed").order_by("pk")
