@@ -65,6 +65,10 @@ export interface DocumentLinesLabels extends LineGridLabels {
   taxExpired: string;
   /** Accessible name of the "why this tax" button: (line) → "Why this tax code, line 2". */
   taxWhy: (line: number) => string;
+  /** The "auto" chip of a line whose tax code is the default (G-02-T07). */
+  taxAuto?: string;
+  /** The override dot's action: (line) → "Changed from the default, line 2: reset it". */
+  taxReset?: (line: number) => string;
   duplicated: (line: number) => string;
   /** Undo toast after a delete: (line) → "Line 3 deleted". */
   lineRemoved: (line: number) => string;
@@ -87,6 +91,12 @@ export interface DocumentLinesProps {
   taxWhy?: Readonly<Record<string, string>>;
   /** Each line account's default tax code key (G-01-T09), listed first in the tax picker. */
   accountDefaults?: Readonly<Record<string, string>>;
+  /** Lines whose tax code is the resolver's default, per line id: the "auto" chip (G-02-T07). */
+  taxAuto?: Readonly<Record<string, boolean>>;
+  /** Lines whose tax code was changed from the default: the override dot (G-02-T07). */
+  taxOverridden?: Readonly<Record<string, boolean>>;
+  /** The override dot resets the line to its default tax code. */
+  onResetTax?: (lineId: string) => void;
   labels: DocumentLinesLabels;
   locale: AppLocale;
   currency?: string;
@@ -295,6 +305,9 @@ export function DocumentLines({
   amounts = {},
   taxWhy = {},
   accountDefaults = {},
+  taxAuto = {},
+  taxOverridden = {},
+  onResetTax,
   labels,
   locale,
   currency = "CAD",
@@ -408,6 +421,25 @@ export function DocumentLines({
                 onKeyDownCapture={onKeyDown}
               />
             </div>
+            {taxAuto[line.id] && labels.taxAuto ? (
+              <span
+                data-tax-auto=""
+                className="mt-2 inline-flex shrink-0 items-center rounded-sm bg-surface-muted px-1 text-[10px] font-semibold text-fg-muted uppercase"
+              >
+                {labels.taxAuto}
+              </span>
+            ) : null}
+            {taxOverridden[line.id] && onResetTax && labels.taxReset && !readOnly ? (
+              <button
+                type="button"
+                data-tax-overridden=""
+                aria-label={labels.taxReset(index + 1)}
+                onClick={() => onResetTax(line.id)}
+                className="mt-2 inline-flex size-6 shrink-0 items-center justify-center rounded-full hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-border-focus"
+              >
+                <span aria-hidden="true" className="size-2 rounded-full bg-fg-warning" />
+              </button>
+            ) : null}
             {why ? (
               <Tooltip content={why}>
                 <button

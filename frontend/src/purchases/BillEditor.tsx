@@ -41,7 +41,9 @@ import { pickerTaxCode } from "@/banking/MoneyForm";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useDocumentLinesLabels, useDocumentTotalsLabels } from "@/documents/labels";
 import { DocumentWarnings } from "@/documents/DocumentWarnings";
+import { TaxNotices } from "@/documents/TaxNotices";
 import { useDocumentCalculation, type MirrorTaxCode } from "@/documents/useDocumentCalculation";
+import { useTaxDefaults } from "@/documents/useTaxDefaults";
 import { filesApi, type FileDocument } from "@/files/api";
 import { uploadFile } from "@/files/upload";
 import { useFormatMessage } from "@/i18n";
@@ -350,6 +352,16 @@ export function BillEditor({
   });
 
   const editable = !bill || bill.status === "draft";
+  // Default tax codes from the supplier and the accounts (G-02-T07): auto chip, override dot.
+  const taxDefaults = useTaxDefaults({
+    org,
+    side: "purchase",
+    date,
+    contact: supplier || null,
+    lines,
+    setLines,
+    enabled: editable,
+  });
   const attach = async (files: FileList | null) => {
     const file = files?.[0];
     if (!file) return;
@@ -602,6 +614,10 @@ export function BillEditor({
           taxCodes={pickerCodes}
           amounts={calculation.amounts}
           accountDefaults={accountDefaults}
+          taxWhy={taxDefaults.taxWhy}
+          taxAuto={taxDefaults.taxAuto}
+          taxOverridden={taxDefaults.taxOverridden}
+          onResetTax={taxDefaults.reset}
           labels={linesLabels}
           locale={locale}
           readOnly={!editable}
@@ -620,6 +636,7 @@ export function BillEditor({
           </label>
           <div className="flex flex-col gap-2 xl:w-96">
             <DocumentWarnings warnings={calculation.warnings} />
+            <TaxNotices notices={taxDefaults.notices} />
             <DocumentTotals
               value={calculation.totals}
               discountType="none"

@@ -27,6 +27,8 @@ import { accountsApi, type Account } from "@/accounts/api";
 import { pickerAccount } from "@/accounts/picker";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useDocumentLinesLabels, useDocumentTotalsLabels } from "@/documents/labels";
+import { TaxNotices } from "@/documents/TaxNotices";
+import { useTaxDefaults } from "@/documents/useTaxDefaults";
 import { useDocumentCalculation, type MirrorTaxCode } from "@/documents/useDocumentCalculation";
 import type { FileDocument } from "@/files/api";
 import { uploadFile } from "@/files/upload";
@@ -206,6 +208,16 @@ export function MoneyForm({ org, kind, account: initial, navigate }: Readonly<Mo
   });
 
   const accountOf = (id: string | null) => accounts.find((a) => a.id === id);
+  // The inline PST / missing-province warnings (G-02-T08); this form keeps its own defaults.
+  const taxNotices = useTaxDefaults({
+    org,
+    side,
+    date,
+    contact: contact || null,
+    lines,
+    setLines,
+    apply: false,
+  });
   const contactRequired = lines.some((line) => accountOf(line.account)?.require_contact);
   const attachmentRequired = lines.some((line) => accountOf(line.account)?.require_attachment);
   const sent = moneyLines(lines, codes, taxMode);
@@ -342,6 +354,7 @@ export function MoneyForm({ org, kind, account: initial, navigate }: Readonly<Mo
         </label>
       </div>
 
+      <TaxNotices notices={taxNotices.notices} />
       <DocumentLines
         bank
         lines={lines}

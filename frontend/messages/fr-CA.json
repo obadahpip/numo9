@@ -1551,10 +1551,12 @@
       "removeLine": "Supprimer la ligne {line}",
       "showHidden": "Afficher",
       "taxAmount": "Montant de taxe",
+      "taxAuto": "auto",
       "taxCode": "Code de taxe",
       "taxDefault": "Valeur par défaut du compte",
       "taxExpired": "Pas en vigueur à cette date",
       "taxOthers": "Tous les codes",
+      "taxReset": "Changed from the default, line {line}: reset to the default",
       "taxTypes": {
         "exempt": "Exonéré",
         "outOfScope": "Hors champ",
@@ -1567,6 +1569,11 @@
       "undoAlt": "Ajouter la ligne de nouveau",
       "unitCost": "Coût unitaire",
       "unitPrice": "Prix unitaire"
+    },
+    "taxNotices": {
+      "missingProvince": "The contact has no province on file, so your organisation's province is used for {count, plural, one {line {lines}} other {lines {lines}}}. Add their address for the right tax.",
+      "pst": "{count, plural, one {Line {lines} is a taxable sale} other {Lines {lines} are taxable sales}} into {province}, where you aren't registered for its PST: only GST is charged. Register for the PST to collect it.",
+      "title": "Tax notes"
     },
     "totals": {
       "announce": "Total {total}",
@@ -3436,6 +3443,23 @@
         "stepPreview": "Preview",
         "title": "Change filing frequency"
       }
+    },
+    "pos": {
+      "account": "The account's default tax code",
+      "contact": "The contact's default tax code",
+      "export": "Supplied outside Canada ({country}): zero-rated export",
+      "gst": "Supplied in {province}: GST",
+      "gstPst": "Supplied in {province}, PST-registered: GST and PST",
+      "gstQst": "Supplied in Quebec, QST-registered: GST and QST",
+      "gstUnregisteredPst": "Supplied in {province}, not registered for its PST: GST only",
+      "gstUnregisteredQst": "Supplied in Quebec, not QST-registered: GST only",
+      "hst": "Supplied in {province}: HST",
+      "import": "Supplier outside Canada ({country}): out of scope",
+      "item": "The item's tax setting",
+      "none": "No default: choose a tax code",
+      "override": "Chosen on this line",
+      "registrationStopped": "GST/HST filing stopped after {date}: out of scope",
+      "supplierProvince": "Supplier in {province}: its standard rate"
     },
     "settings": {
       "basis": {
