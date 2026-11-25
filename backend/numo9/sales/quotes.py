@@ -232,3 +232,26 @@ def expire(quote: Quote, *, now: dt.datetime | None = None) -> Quote:
 
 def mark_invoiced(quote: Quote, invoice: Any, user: Any = None) -> Quote:
     return _transition(quote, "invoice", user=user, invoice=invoice)
+
+
+# ---- expiry job (T05) --------------------------------------------------------------------------
+
+
+def expire_due(now: dt.datetime | None = None) -> int:
+    """Every organisation's sent or viewed quotes past their expiry date **in the
+    organisation's time zone** become Expired — a quote expiring today stays acceptable until
+    local midnight (the hourly job catches each organisation's midnight). Returns how many."""
+    from numo9.tenancy.models import Organisation
+
+    moment = now or timezone.now()
+    done = 0
+    for organisation in Organisation.objects.order_by("pk").iterator():
+        today = local_today(organisation, moment)
+        with org_context(organisation):
+            due = Quote.objects.filter(
+                status__in=("sent", "viewed"), expiry_date__lt=today
+            ).order_by("pk")
+            for item in due:
+                expire(item, now=moment)
+                done += 1
+    return done

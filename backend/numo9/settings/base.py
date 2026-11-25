@@ -607,6 +607,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.ledger.auto_reversals",
         "schedule": crontab(minute=29),
     },
+    # Quote expiry (D-02-T05): hourly — each organisation's local midnight; idempotent.
+    "numo9.sales.expire_quotes": {
+        "task": "numo9.sales.expire_quotes",
+        "schedule": crontab(minute=3),
+    },
     # Recurring journals (C-04-T06): hourly, each organisation on its own date; idempotent.
     "numo9.ledger.recurring_journals": {
         "task": "numo9.ledger.recurring_journals",

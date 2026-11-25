@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 681   Remaining: 2106   Progress: 24.43%
+TOTAL ATOMIC TASKS: 2787   Completed: 682   Remaining: 2105   Progress: 24.47%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -898,7 +898,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-02-T02 — Quote numbering QU-0001 via org numbering service inside transaction
 ✅ D-02-T03 — Calculator extension: totals exclude unselected optional/alternative lines
 ✅ D-02-T04 — Lifecycle service (send, view tracking, accept, decline, expire, invoice) with transitions guarded
-❌ D-02-T05 — Expiry job (org-local midnight) moving to Expired
+✅ D-02-T05 — Expiry job (org-local midnight) moving to Expired
 ❌ D-02-T06 — Public token link (signed, revocable) + view tracking
 ❌ D-02-T07 — Acceptance evidence record (typed name, signature PNG, IP, UA, hash of rendered PDF)
 ❌ D-02-T10 — PDF template (Letter, inches) with tax column and optional-line markers
