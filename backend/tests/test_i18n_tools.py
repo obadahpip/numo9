@@ -279,3 +279,80 @@ def test_glossary_terms_markdown() -> None:
 def test_glossary_doc_page_is_current() -> None:
     page = (check_glossary.REPO_ROOT / "docs" / "design" / "glossary.md").read_text("utf-8")
     assert check_glossary.glossary_markdown() in page, "run check_glossary.py --terms"
+
+
+# ---- E-06-T15: "cheque", not "check", in money contexts (gap-26) -----------------------------
+
+
+@pytest.mark.gap("gap-26")
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Next check number",
+        "check no. 1042",
+        "Open the check register",
+        "Print the check stub",
+        "Start a check run",
+        "Void a check",
+        "voided checks",
+        "Stale-dated checks are flagged after 180 days",
+        "outstanding checks",
+        "Deposit the check",
+        "Write a check",
+        "Pay by check",
+        "paid with check",
+        "Make the check payable to Numo9",
+        "check-printing layout",
+    ],
+)
+def test_glossary_flags_check_in_money_contexts(text: str) -> None:
+    terms = check_glossary.load_glossary()
+    problems = check_glossary.scan({"k.x": text}, terms, "t")
+    assert problems and any("gap-26" in p for p in problems), text
+
+
+@pytest.mark.gap("gap-26")
+@pytest.mark.parametrize(
+    "text",
+    [
+        "check your email",
+        "check amounts before saving",
+        "check stock levels",
+        "double-check the payment date",
+        "check that the bank account is right",
+        "spot check",
+        "Print cheques",
+        "Void a cheque",
+        "Pay by cheque",
+        "Cheque number",
+        "Payer par chèque",
+    ],
+)
+def test_glossary_accepts_verb_check_and_cheque(text: str) -> None:
+    terms = check_glossary.load_glossary()
+    assert check_glossary.scan({"k.x": text}, terms, "t") == [], text
+
+
+@pytest.mark.gap("gap-26")
+def test_lint_fails_on_check_in_a_money_context(tmp_path: Path) -> None:
+    import json
+
+    catalogue = tmp_path / "en-CA.json"
+    catalogue.write_text(
+        json.dumps({"purchases.cheques.void": "Void this check"}), encoding="utf-8"
+    )
+    assert (
+        check_glossary.main(
+            ["--json", str(catalogue), "--po", str(tmp_path / "none.po"), "--no-ui"]
+        )
+        == 1
+    )
+    catalogue.write_text(
+        json.dumps({"purchases.cheques.void": "Void this cheque"}), encoding="utf-8"
+    )
+    assert (
+        check_glossary.main(
+            ["--json", str(catalogue), "--po", str(tmp_path / "none.po"), "--no-ui"]
+        )
+        == 0
+    )

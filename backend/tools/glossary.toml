@@ -81,6 +81,30 @@ pattern = '\bcheck ?books?\b'
 use = "chequebook"
 gap = "gap-31"
 
+# ---- E-06-T15: "cheque", not "check", in money contexts (gap-26) ---------------------------
+# The capitalised "Check" is banned above; the lower-case word is fine as a verb ("check your
+# email"). These catch the lower-case noun next to the words that make it a payment instrument:
+# a cheque number / register / stub / run, voided / printed / stale-dated / cleared cheques, paying
+# by cheque, writing or depositing one. Verb uses ("check amounts", "check stock") don't match.
+
+[[banned]]
+term = "check (payment, before a cheque word)"
+pattern = '\bchecks?[ -](?:numbers?|no\b\.?|#|registers?|stubs?|runs?|printing|printers?|layouts?|batch(?:es)?|images?|writers?|templates?|vouchers?|clearing)\b'
+use = "cheque (cheque number, cheque register, cheque run)"
+gap = "gap-26"
+
+[[banned]]
+term = "check (payment, after a money word)"
+pattern = '\b(?:void(?:ed|ing)?|print(?:ed|ing)?|reprint(?:ed|ing)?|stale(?:-dated)?|cancel(?:l)?ed|uncleared|cleared|bounced|returned|NSF|blank|post-?dated|personal|certified|paper|outstanding|issued?|reissued?|write|writing|wrote|written|deposit(?:ed|ing)?|cash(?:ed|ing)?|mail(?:ed)?|endorsed?|sign(?:ed)?)\s+(?:a\s+|an\s+|the\s+|this\s+|each\s+)?checks?\b'
+use = "cheque (void a cheque, stale-dated cheques, deposit the cheque)"
+gap = "gap-26"
+
+[[banned]]
+term = "check (payment method)"
+pattern = '\b(?:pay(?:s|ing|ment|ments)?|paid|refund(?:ed)?|settled?)\s+(?:by|with|via)\s+checks?\b|\bchecks?\s+(?:payable|to\s+the\s+order|for\s+\$)'
+use = "cheque (pay by cheque, cheque payable to)"
+gap = "gap-26"
+
 # ---- Preferred en-CA terms (A-10-T15) ------------------------------------------------------
 # The words to use; each banned entry above points to one of these. `check_glossary.py --terms`
 # prints this list for docs/design (the glossary the French reviewer extends in Phase 6).

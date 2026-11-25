@@ -29,3 +29,6 @@ frontend and backend catalogues and the design system's stories and sample data.
 | Postal Code (title case) | Postal code | gap-31 |
 | HST/GST, GST-HST | GST/HST | gap-31 |
 | Checkbook | chequebook | gap-31 |
+| check (payment, before a cheque word) | cheque (cheque number, cheque register, cheque run) | gap-26 |
+| check (payment, after a money word) | cheque (void a cheque, stale-dated cheques, deposit the cheque) | gap-26 |
+| check (payment method) | cheque (pay by cheque, cheque payable to) | gap-26 |
