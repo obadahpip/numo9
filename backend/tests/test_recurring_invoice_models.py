@@ -46,6 +46,7 @@ def test_template_and_lines() -> None:
             False,
         )
         assert t.lines.count() == 1 and str(t) == "Monthly retainer"
+        assert t.next_run == dt.date(2026, 1, 31)
 
 
 @pytest.mark.parametrize(

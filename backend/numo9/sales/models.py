@@ -17,7 +17,7 @@ D-06-T04); ``amount_applied`` and ``amount_refunded`` are the credit used so far
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.db import models
@@ -702,6 +702,18 @@ class RecurringInvoiceTemplate(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return self.name
+
+    def clean(self) -> None:
+        from .recurring_invoices import validate_schedule
+
+        validate_schedule(self)
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self._state.adding and self.next_run is None:
+            from .recurring_invoices import first_run
+
+            self.next_run = first_run(self)
+        super().save(*args, **kwargs)
 
 
 class RecurringInvoiceLine(DocumentLineBase):
