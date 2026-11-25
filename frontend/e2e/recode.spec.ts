@@ -260,3 +260,86 @@ test("a tax change asks for the acknowledgement", async ({ page }) => {
   await dialog.getByRole("checkbox", { name: /tax these lines carry changes by/ }).click();
   await expect(confirm).toBeEnabled();
 });
+
+function historyBatch(id: string, overrides: Record<string, unknown>) {
+  return {
+    id,
+    name: id,
+    label: id,
+    status: "completed",
+    criteria: {},
+    changes: {},
+    line_count: 2,
+    excluded_count: 0,
+    progress: 2,
+    problem_count: 0,
+    created_at: "2026-11-26T10:00:00Z",
+    executed_by: { id: "u1", name: "Dana Lee" },
+    executed_at: "2026-11-26T10:00:00Z",
+    undone_by: null,
+    undone_at: null,
+    undo_reason: "",
+    job: null,
+    error: "",
+    ...overrides,
+  };
+}
+
+test("history: undo disabled with the reason when a period is locked; undo and report", async ({
+  page,
+}) => {
+  await mockRecode(page);
+  const undos: Record<string, unknown>[] = [];
+  let undone = false;
+  const open = historyBatch("Q2 tidy-up", { undo: { allowed: true, blocked: [] } });
+  const locked = historyBatch("Q1 clean-up", {
+    undo: {
+      allowed: false,
+      blocked: [
+        {
+          entry: "e-1",
+          number: "JE-000012",
+          date: "2026-03-20",
+          code: "locked",
+          message: "Locked: 31 Mar 2026 (general ledger)",
+        },
+      ],
+    },
+  });
+  await page.route(`${API}/batches`, (r) =>
+    r.fulfill({
+      json: {
+        batches: [undone ? { ...open, status: "undone", undo: undefined } : open, locked],
+      },
+    }),
+  );
+  await page.route(`${API}/batches/Q2%20tidy-up`, (r) => r.fulfill({ json: open }));
+  await page.route(`${API}/batches/Q1%20clean-up`, (r) => r.fulfill({ json: locked }));
+  await page.route(`${API}/batches/*/undo`, (r) => {
+    undos.push(jsonBody(r));
+    undone = true;
+    return r.fulfill({ json: { ...open, status: "undone" } });
+  });
+  await page.goto(`/o/${ORG}/accounting/recode`);
+  const history = page.locator("[data-recode-history]");
+  const lockedRow = history.locator('[data-batch="Q1 clean-up"]');
+  await expect(lockedRow.getByRole("button", { name: "Undo" })).toBeDisabled();
+  await expect(lockedRow.locator("[data-undo-why]")).toHaveText(
+    "Undo isn't available: JE-000012 — Locked: 31 Mar 2026 (general ledger)",
+  );
+  await expect(lockedRow.getByRole("link", { name: "Report (CSV)" })).toHaveAttribute(
+    "href",
+    `/api/v1/o/${ORG}/recode/batches/Q1%20clean-up/report?export=csv`,
+  );
+  await expectAccessible(page);
+
+  const openRow = history.locator('[data-batch="Q2 tidy-up"]');
+  await openRow.getByRole("button", { name: "Undo" }).click();
+  const dialog = page.getByRole("dialog", { name: "Undo “Q2 tidy-up”?" });
+  await dialog.getByLabel("Reason (optional)").fill("Wrong account");
+  await dialog.getByRole("button", { name: "Undo" }).click();
+  await expect(dialog).toBeHidden();
+  expect(undos).toEqual([{ reason: "Wrong account" }]);
+  await expect(openRow.getByText("Undone")).toBeVisible();
+  await expect(openRow.getByRole("button", { name: "Undo" })).toHaveCount(0);
+});

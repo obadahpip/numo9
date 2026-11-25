@@ -5,7 +5,8 @@
  * the left (condition builder, C-07-T10), the lines found on the right (results grid with
  * select-all across pages and the Excluded tab, C-07-T11); then the new coding, the preview
  * diff and the confirm dialog with the numbers (C-07-T12). A recode of more than 200 lines runs
- * in the background: its progress shows in a status toast until it finishes.
+ * in the background: its progress shows in a status toast until it finishes. Below, the
+ * history of recodes with Undo and the audit report (C-07-T13).
  */
 import { Button, INPUT_BASE, useOptionalToast } from "@numo9/ui";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -24,6 +25,7 @@ import {
 import { ConditionBuilder, type AccountOption } from "./ConditionBuilder";
 import { emptyRows, newRow, serialise, type Row } from "./conditions";
 import { rm } from "./messages";
+import { BatchHistory } from "./BatchHistory";
 import {
   ChangesForm,
   ConfirmRecode,
@@ -55,6 +57,7 @@ export function RecodeScreen({ org }: { org: string }) {
   const [confirming, setConfirming] = useState(false);
   const [running, setRunning] = useState<Batch | null>(null);
   const [notice, setNotice] = useState("");
+  const [history, setHistory] = useState(0);
   const toast = useOptionalToast();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -130,6 +133,7 @@ export function RecodeScreen({ org }: { org: string }) {
     toast?.toast({ title: text, tone: "success" });
     setPreview(null);
     setSelected(new Set());
+    setHistory((n) => n + 1);
     if (criteria) void run(criteria, 1);
   };
 
@@ -281,6 +285,7 @@ export function RecodeScreen({ org }: { org: string }) {
           ) : null}
         </section>
       </div>
+      <BatchHistory org={org} refresh={history} />
     </div>
   );
 }

@@ -309,6 +309,7 @@ export const rm = defineMessages({
   colBatch: { id: "recode.colBatch", defaultMessage: "Recode", description: "Column" },
   colRun: { id: "recode.colRun", defaultMessage: "Run by", description: "Column" },
   colLines: { id: "recode.colLines", defaultMessage: "Lines", description: "Column" },
+  colActions: { id: "recode.colActions", defaultMessage: "Actions", description: "Column" },
   colStatus: { id: "recode.colStatus", defaultMessage: "Status", description: "Column" },
   status: {
     id: "recode.status",
