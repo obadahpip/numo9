@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 645   Remaining: 2142   Progress: 23.14%
+TOTAL ATOMIC TASKS: 2787   Completed: 646   Remaining: 2141   Progress: 23.18%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -853,7 +853,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-04-T02 — MileageRate effective-dated table seeded with CRA rates (data) incl. tier threshold
 ✅ E-04-T03 — Mileage calculator with tier crossing (YTD km per employee)
 ✅ E-04-T04 — Tax split for inclusive receipt amounts + partial ITC
-❌ E-04-T05 — Workflow: submit/approve/reject; submitter ≠ approver; limits
+✅ E-04-T05 — Workflow: submit/approve/reject; submitter ≠ approver; limits
 ❌ E-04-T07 — Receipt duplicate hash warning
 ❌ E-04-T11 — UI: approver view + inbox registration
 

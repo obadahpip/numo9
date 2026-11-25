@@ -298,6 +298,7 @@ class ApprovalDocumentType(models.TextChoices):
     BILL = "bill", _("Bill")
     PURCHASE_ORDER = "purchase_order", _("Purchase order")
     PAY_RUN = "pay_run", _("Pay run")
+    EXPENSE_CLAIM = "expense_claim", _("Expense claim")
 
 
 class ApprovalLimit(OrgOwnedModel):

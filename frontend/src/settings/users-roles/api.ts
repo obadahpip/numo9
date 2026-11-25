@@ -66,7 +66,13 @@ export interface Catalogue {
   permissions: CataloguePermission[];
 }
 
-export type DocType = "journal" | "invoice" | "bill" | "purchase_order" | "pay_run";
+export type DocType =
+  | "journal"
+  | "invoice"
+  | "bill"
+  | "purchase_order"
+  | "pay_run"
+  | "expense_claim";
 
 export const DOC_TYPES: readonly DocType[] = [
   "journal",
@@ -74,6 +80,7 @@ export const DOC_TYPES: readonly DocType[] = [
   "bill",
   "purchase_order",
   "pay_run",
+  "expense_claim",
 ];
 
 export interface ApprovalLimit {
