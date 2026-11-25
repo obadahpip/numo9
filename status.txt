@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 629   Remaining: 2158   Progress: 22.57%
+TOTAL ATOMIC TASKS: 2787   Completed: 630   Remaining: 2157   Progress: 22.60%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -830,7 +830,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [G-06]
 ✅ G-06-T04 — Registration CRUD service bound to G-03a/G-03b (create triggers initial cycle and periods)
-❌ G-06-T07 — API /api/v1/tax/settings, /registrations; permission tax.manage
+✅ G-06-T07 — API /api/v1/tax/settings, /registrations; permission tax.manage
 ❌ G-06-T08 — Single page UI: cards (BN and programs, registrations, basis, defaults, quick method, restricted ITC), inline edit, history drawer
 ❌ G-06-T09 — Deep links from module settings and from the G-03 worksheet; remove/redirect any other tax-setting entry points
 ❌ G-06-T10 — CI check: settings registry asserts every tax setting key has exactly one editing route
