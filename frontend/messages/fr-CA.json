@@ -1556,7 +1556,7 @@
       "taxDefault": "Valeur par défaut du compte",
       "taxExpired": "Pas en vigueur à cette date",
       "taxOthers": "Tous les codes",
-      "taxReset": "Changed from the default, line {line}: reset to the default",
+      "taxReset": "Modifié par rapport au code par défaut, ligne {line} : rétablir le code par défaut",
       "taxTypes": {
         "exempt": "Exonéré",
         "outOfScope": "Hors champ",
@@ -1571,9 +1571,9 @@
       "unitPrice": "Prix unitaire"
     },
     "taxNotices": {
-      "missingProvince": "The contact has no province on file, so your organisation's province is used for {count, plural, one {line {lines}} other {lines {lines}}}. Add their address for the right tax.",
-      "pst": "{count, plural, one {Line {lines} is a taxable sale} other {Lines {lines} are taxable sales}} into {province}, where you aren't registered for its PST: only GST is charged. Register for the PST to collect it.",
-      "title": "Tax notes"
+      "missingProvince": "Le contact n'a pas de province au dossier : la province de votre organisation est utilisée pour {count, plural, one {la ligne {lines}} other {les lignes {lines}}}. Ajoutez son adresse pour la bonne taxe.",
+      "pst": "{count, plural, one {La ligne {lines} est une vente taxable} other {Les lignes {lines} sont des ventes taxables}} en {province}, où vous n'êtes pas inscrit à la TVP : seule la TPS est facturée. Inscrivez-vous à la TVP pour la percevoir.",
+      "title": "Notes sur les taxes"
     },
     "totals": {
       "announce": "Total {total}",
@@ -3445,21 +3445,21 @@
       }
     },
     "pos": {
-      "account": "The account's default tax code",
-      "contact": "The contact's default tax code",
-      "export": "Supplied outside Canada ({country}): zero-rated export",
-      "gst": "Supplied in {province}: GST",
-      "gstPst": "Supplied in {province}, PST-registered: GST and PST",
-      "gstQst": "Supplied in Quebec, QST-registered: GST and QST",
-      "gstUnregisteredPst": "Supplied in {province}, not registered for its PST: GST only",
-      "gstUnregisteredQst": "Supplied in Quebec, not QST-registered: GST only",
-      "hst": "Supplied in {province}: HST",
-      "import": "Supplier outside Canada ({country}): out of scope",
-      "item": "The item's tax setting",
-      "none": "No default: choose a tax code",
-      "override": "Chosen on this line",
-      "registrationStopped": "GST/HST filing stopped after {date}: out of scope",
-      "supplierProvince": "Supplier in {province}: its standard rate"
+      "account": "Le code de taxe par défaut du compte",
+      "contact": "Le code de taxe par défaut du contact",
+      "export": "Fourniture hors du Canada ({country}) : exportation détaxée",
+      "gst": "Fourniture en {province} : TPS",
+      "gstPst": "Fourniture en {province}, inscrit à la TVP : TPS et TVP",
+      "gstQst": "Fourniture au Québec, inscrit à la TVQ : TPS et TVQ",
+      "gstUnregisteredPst": "Fourniture en {province}, non inscrit à sa TVP : TPS seulement",
+      "gstUnregisteredQst": "Fourniture au Québec, non inscrit à la TVQ : TPS seulement",
+      "hst": "Fourniture en {province} : TVH",
+      "import": "Fournisseur hors du Canada ({country}) : hors champ",
+      "item": "Le paramètre de taxe de l'article",
+      "none": "Aucun code par défaut : choisissez un code de taxe",
+      "override": "Choisi sur cette ligne",
+      "registrationStopped": "Production TPS/TVH arrêtée après le {date} : hors champ",
+      "supplierProvince": "Fournisseur en {province} : son taux standard"
     },
     "settings": {
       "basis": {
