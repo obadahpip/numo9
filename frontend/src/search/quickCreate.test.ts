@@ -35,6 +35,7 @@ describe("quick-create registry (A-09-T06)", () => {
       "invoice",
       "bill",
       "contact",
+      "quote",
       "journal",
       "spend",
       "receive",

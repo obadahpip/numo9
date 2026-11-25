@@ -19,6 +19,9 @@ class SalesConfig(AppConfig):
         from .search import register_sales_search
 
         register_sales_search()  # invoices in the global search (D-03a-T17)
+        from .search import register_quote_search
+
+        register_quote_search()  # quotes in the global search (D-02-T16)
 
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 

@@ -66,3 +66,54 @@ def register_sales_search() -> None:
 
     register_provider(Invoice, invoice_document)
     register_dependent(InvoiceLine, lambda line: line.document)
+
+
+# ---- quotes (D-02-T16) -------------------------------------------------------------------------
+
+QUOTE_VIEW = "sales.quotes.view"
+QUOTE_READ = "accounting.sales_quotes.read"
+
+
+def quote_url(quote: Any) -> str:
+    return f"/o/{quote.organisation.public_id}/sales/quotes/{quote.public_id}"
+
+
+def quote_document(quote: Any) -> Doc | None:
+    """A quote is found by its **number** (``QU-0001``, a code), its **contact**, its title, its
+    reference, its total and the words of its lines; the subtitle says its status."""
+    if quote.deleted_at is not None:
+        return None
+    contact = quote.contact.display_name if quote.contact_id else ""
+    return Doc(
+        title=" — ".join(x for x in (quote.number, contact) if x),
+        subtitle=" · ".join(str(x) for x in (quote.get_status_display(), quote.title) if x),
+        code=quote.number,
+        body=" ".join(
+            x
+            for x in (
+                quote.title,
+                quote.reference,
+                _words(quote.reference),
+                *(
+                    (line.description for line in quote.lines.all() if line.description)
+                    if quote.pk
+                    else ()
+                ),
+            )
+            if x
+        ),
+        amount=quote.total,
+        date=quote.date,
+        url=quote_url(quote),
+        permission_key=QUOTE_VIEW,
+        feature_key=QUOTE_READ,
+    )
+
+
+def register_quote_search() -> None:
+    from numo9.search.registry import register_dependent, register_provider
+
+    from .models import Quote, QuoteLine
+
+    register_provider(Quote, quote_document)
+    register_dependent(QuoteLine, lambda line: line.document)

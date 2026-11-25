@@ -2797,6 +2797,10 @@
     "newInvoice": {
       "placeholder": "The invoice editor arrives with the next release of Sales.",
       "title": "New invoice"
+    },
+    "newQuote": {
+      "placeholder": "The quote editor arrives with the next release of Sales.",
+      "title": "New quote"
     }
   },
   "security": {

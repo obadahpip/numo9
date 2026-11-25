@@ -98,8 +98,7 @@ export const QUICK_CREATE: readonly QuickCreate[] = [
     label: m.quote,
     path: "sales/quotes/new",
     permission: "sales.quotes.manage",
-    feature: "accounting.quotes.write",
-    availableIn: "Phase 1",
+    feature: "accounting.sales_quotes.write",
   },
   {
     id: "purchase-order",
