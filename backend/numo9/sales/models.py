@@ -17,13 +17,20 @@ D-06-T04); ``amount_applied`` and ``amount_refunded`` are the credit used so far
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from numo9.documents.models import DocumentBase, DocumentLineBase, _money
+from numo9.audit.mixins import AuditedModel
+from numo9.documents.models import (
+    DiscountType,
+    DocumentBase,
+    DocumentLineBase,
+    TaxMode,
+    _money,
+)
 from numo9.tenancy.models import OrgOwnedModel
 
 
@@ -586,3 +593,144 @@ class QuoteAcceptance(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.quote} accepted by {self.typed_name}"
+
+
+class RecurringInvoiceMode(models.TextChoices):
+    """What each occurrence of a recurring invoice becomes (D-04)."""
+
+    DRAFT = "draft", _("Save as a draft")
+    APPROVE = "approve", _("Approve")
+    APPROVE_SEND = "approve_send", _("Approve and send")
+
+
+class RecurringInvoiceTemplate(AuditedModel, OrgOwnedModel):
+    """An invoice that repeats on a schedule (D-04-T01): the header and lines of the invoice, an
+    RFC 5545 rule (the recurring-journal engine, C-04-T05: a 31st clamps to the month's last
+    day), a start and an optional end date, the due-date rule (``terms`` — the contact's or the
+    organisation's default when empty) and the mode (draft / approve / approve and send).
+
+    Text in the reference, the notes and the line descriptions may carry the placeholders
+    ``{{period_start}}``, ``{{period_end}}``, ``{{month}}`` and ``{{year}}`` (D-04-T03); ``prorate``
+    charges a first or last partial period by days (D-04-T04). ``next_run`` is the next occurrence
+    to generate (``None``: finished), ``last_run`` the latest generated; ``paused`` templates skip;
+    ``version`` goes up on every edit — changes apply to future occurrences only."""
+
+    name = models.CharField(_("name"), max_length=200)
+    contact = models.ForeignKey(
+        "contacts.Contact", on_delete=models.PROTECT, related_name="+", verbose_name=_("contact")
+    )
+    terms = models.ForeignKey(
+        "contacts.PaymentTerm",
+        on_delete=models.PROTECT,
+        related_name="+",
+        null=True,
+        blank=True,
+        verbose_name=_("terms"),
+    )
+    reference = models.CharField(_("reference"), max_length=255, blank=True)
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    tax_mode = models.CharField(
+        _("amounts are"), max_length=16, choices=TaxMode.choices, default=TaxMode.EXCLUSIVE
+    )
+    ship_to_country = models.CharField(_("ship-to country"), max_length=2, blank=True)
+    ship_to_province = models.CharField(_("ship-to province"), max_length=2, blank=True)
+    discount_type = models.CharField(
+        _("discount"), max_length=8, choices=DiscountType.choices, default=DiscountType.NONE
+    )
+    discount_value = models.DecimalField(
+        _("discount value"), max_digits=18, decimal_places=4, default=Decimal("0")
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    rrule = models.CharField(
+        _("schedule"),
+        max_length=500,
+        help_text=_("An RFC 5545 recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."),
+    )
+    start_date = models.DateField(_("start date"))
+    end_date = models.DateField(_("end date"), null=True, blank=True)
+    mode = models.CharField(
+        _("mode"),
+        max_length=12,
+        choices=RecurringInvoiceMode.choices,
+        default=RecurringInvoiceMode.DRAFT,
+    )
+    prorate = models.BooleanField(_("prorate partial periods"), default=False)
+    service_start = models.DateField(_("service starts"), null=True, blank=True)
+    service_end = models.DateField(_("service ends"), null=True, blank=True)
+    next_run = models.DateField(_("next run"), null=True, blank=True)
+    last_run = models.DateField(_("last run"), null=True, blank=True)
+    paused = models.BooleanField(_("paused"), default=False)
+    version = models.PositiveIntegerField(_("version"), default=1)
+
+    class Meta:
+        ordering = ("name", "pk")
+        verbose_name = _("recurring invoice")
+        verbose_name_plural = _("recurring invoices")
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "paused", "next_run"], name="sales_recur_due"),
+        ]
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(mode__in=RecurringInvoiceMode.values),
+                name="sales_recur_mode_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(tax_mode__in=TaxMode.values),
+                name="sales_recur_tax_mode_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(discount_type__in=DiscountType.values)
+                & models.Q(discount_value__gte=0)
+                & (
+                    ~models.Q(discount_type=DiscountType.PERCENT)
+                    | models.Q(discount_value__lte=100)
+                ),
+                name="sales_recur_discount_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(end_date__isnull=True)
+                | models.Q(end_date__gte=models.F("start_date")),
+                name="sales_recur_end_after_start",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(service_start__isnull=True)
+                | models.Q(service_end__isnull=True)
+                | models.Q(service_end__gte=models.F("service_start")),
+                name="sales_recur_service_end_after_start",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+    def clean(self) -> None:
+        from .recurring_invoices import validate_schedule
+
+        validate_schedule(self)
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if self._state.adding and self.next_run is None:
+            from .recurring_invoices import first_run
+
+            self.next_run = first_run(self)
+        super().save(*args, **kwargs)
+
+
+class RecurringInvoiceLine(DocumentLineBase):
+    """A line of a recurring invoice template — the invoice line's fields (D-01), copied onto
+    each generated invoice with placeholders resolved and, when prorated, a partial quantity."""
+
+    document = models.ForeignKey(
+        RecurringInvoiceTemplate,
+        on_delete=models.CASCADE,
+        related_name="lines",
+        verbose_name=_("recurring invoice"),
+    )
+
+    class Meta(DocumentLineBase.Meta):
+        abstract = False
+        verbose_name = _("recurring invoice line")
+        verbose_name_plural = _("recurring invoice lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            *DocumentLineBase.line_constraints("sales_recurline"),
+        ]
