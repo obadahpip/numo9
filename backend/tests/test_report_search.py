@@ -59,8 +59,10 @@ def test_registered_reports_are_search_entries(samples: None) -> None:
         "reports.account_activity",
         "reports.balance_sheet_sample",
     } <= keys
-    assert [e.key for e in match_static("balance sheet")] == ["reports.balance_sheet_sample"]
-    assert [e.key for e in match_static("bilan")] == ["reports.balance_sheet_sample"]
+    found = [e.key for e in match_static("balance sheet")]
+    assert {"reports.balance_sheet", "reports.balance_sheet_sample"} <= set(found)
+    assert "reports.balance_sheet" in [e.key for e in match_static("bilan")]
+    assert "reports.profit_and_loss" in [e.key for e in match_static("income statement")]
     assert "reports.trial_balance" in [e.key for e in match_static("TB")]
     registry.unregister(TaxSample.id)
     assert "reports.tax_search_sample" not in {e.key for e in static_entries()}
@@ -72,11 +74,11 @@ def test_balance_sheet_search_opens_the_runner(
 ) -> None:
     client, org = client_org
     body = client.get(f"/api/v1/o/{org.public_id}/search", {"q": "balance sheet"}).json()
-    [found] = body["reports"]
+    found = next(r for r in body["reports"] if r["key"] == "reports.balance_sheet")
     assert found == {
-        "key": "reports.balance_sheet_sample",
+        "key": "reports.balance_sheet",
         "title": "Balance sheet",
-        "url": f"/o/{org.public_id}/reports/balance-sheet-sample",
+        "url": f"/o/{org.public_id}/reports/balance-sheet",
         "locked": False,
         "reason": "",
     }

@@ -110,6 +110,26 @@ def _in(field: str, choices: type[models.TextChoices]) -> models.Q:
     return models.Q(**{f"{field}__in": choices.values})
 
 
+CASH_TYPES = ("chequing", "savings", "credit_card", "line_of_credit", "loan", "cash", "clearing")
+
+
+def default_cash_definition() -> list[str]:
+    return ["chequing", "savings", "cash"]
+
+
+def validate_cash_definition(value: object) -> None:
+    if (
+        not isinstance(value, list)
+        or not value
+        or len(set(value)) != len(value)
+        or any(item not in CASH_TYPES for item in value)
+    ):
+        raise ValidationError(
+            _("Choose one or more bank account types, each once."),
+            code="orgsettings.cash_definition.invalid",
+        )
+
+
 class OrganisationSettings(AuditedModel, OrgOwnedModel):
     # ---- who -----------------------------------------------------------------------------
     legal_name = models.CharField(
@@ -226,6 +246,17 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         help_text=_(
             "A bill can be approved only with the supplier's invoice number, which must not be "
             "on another bill from the same supplier."
+        ),
+    )
+    # ---- reports (K-02-T09) -----------------------------------------------------------------
+    cash_definition = models.JSONField(
+        _("cash for the cash flow statement"),
+        default=default_cash_definition,
+        validators=[validate_cash_definition],
+        help_text=_(
+            "The bank account types the cash flow statement counts as cash: chequing, savings "
+            "and cash by default; credit cards, lines of credit, loans and clearing accounts only "
+            "when chosen."
         ),
     )
     # ---- journal approval (C-04-T01) --------------------------------------------------------

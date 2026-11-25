@@ -20,7 +20,9 @@ A report is a ``ReportDefinition`` subclass registered in the catalogue (``regis
   fills the defaults; kinds: ``date``, ``choice``, ``bool``, ``int``, ``text``;
 - ``columns(params)`` — the value columns (key and label); one by default;
 - ``run(organisation, raw_params)`` → ``ReportResult(definition, params, columns, rows, totals)``:
-  ``query`` → ``rows`` → ``totals``, every value a ``Decimal`` or ``None`` per column.
+  ``query`` → ``rows`` → ``totals``, every value a ``Decimal`` or ``None`` per column; then
+  ``alerts(organisation, result)`` (K-02-T05): an ``error`` alert is a red banner on the run and
+  a ``reports.integrity_failed`` event (S-04 monitoring).
 
 The registry refuses two reports with the same id or slug, finds one by id or slug, and lists
 them by category (the report home, K-01-T12). Every registered report is also an entry of the
@@ -30,16 +32,19 @@ opens the runner (``/o/<org>/reports/<slug>``), gated by its feature key like th
 
 from __future__ import annotations
 
+import dataclasses
 import datetime as dt
 from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any, ClassVar
 
+import structlog
 from django.utils.functional import Promise
 
 PARAM_KINDS = ("date", "choice", "bool", "int", "text")
 ROW_KINDS = ("section", "row", "total", "text")
+log = structlog.get_logger("numo9.reports")
 
 
 class ReportError(ValueError):
@@ -137,6 +142,9 @@ class ReportResult:
     columns: list[Column]
     rows: list[ReportRow]
     totals: list[ReportRow]
+    #: Problems found while running (K-02-T05): ``{"code", "level", "message"}`` — an ``error``
+    #: is the red banner on the statement.
+    alerts: list[dict[str, Any]] = field(default_factory=list)
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -147,6 +155,7 @@ class ReportResult:
             "columns": [{"key": c.key, "label": c.label} for c in self.columns],
             "rows": [r.as_dict() for r in self.rows],
             "totals": [r.as_dict() for r in self.totals],
+            "alerts": list(self.alerts),
         }
 
 
@@ -185,6 +194,10 @@ class ReportDefinition:
     def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
         return []
 
+    def alerts(self, organisation: Any, result: ReportResult) -> list[dict[str, Any]]:
+        """Checks on the finished run (K-02-T05 integrity); none by default."""
+        return []
+
     def run(self, organisation: Any, raw: Mapping[str, Any] | None = None) -> ReportResult:
         from numo9.tenancy.context import org_context
 
@@ -193,7 +206,18 @@ class ReportDefinition:
             data = self.query(organisation, params)
             rows = self.rows(data, params)
             totals = self.totals(rows, params)
-        return ReportResult(self, params, self.columns(params), rows, totals)
+            result = ReportResult(self, params, self.columns(params), rows, totals)
+            alerts = self.alerts(organisation, result)
+        for alert in alerts:
+            if alert.get("level") == "error":
+                log.error(
+                    "reports.integrity_failed",
+                    report=self.id,
+                    organisation=str(getattr(organisation, "public_id", "")),
+                    code=alert.get("code"),
+                    detail=alert.get("detail"),
+                )
+        return dataclasses.replace(result, alerts=alerts) if alerts else result
 
     def summary(self) -> dict[str, Any]:
         return {

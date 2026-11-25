@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:03-0500\n"
+"POT-Creation-Date: 2026-11-24 15:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5251,6 +5251,9 @@ msgstr ""
 msgid "of the current month"
 msgstr ""
 
+msgid "Choose one or more bank account types, each once."
+msgstr ""
+
 msgid "As registered; printed on statements, invoices and tax forms."
 msgstr ""
 
@@ -5300,6 +5303,12 @@ msgid "bills need the supplier's invoice number"
 msgstr ""
 
 msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
+msgid "cash for the cash flow statement"
+msgstr ""
+
+msgid "The bank account types the cash flow statement counts as cash: chequing, savings and cash by default; credit cards, lines of credit, loans and clearing accounts only when chosen."
 msgstr ""
 
 msgid "journals need approval from"
@@ -6519,6 +6528,41 @@ msgid "There's no such report layout."
 msgstr ""
 
 #, python-format
+msgid "The net change in cash for %(period)s (%(flow)s) doesn't equal the change in the cash accounts (%(cash)s) — the books need a look before this is used."
+msgstr ""
+
+msgid "Cash at the beginning of the period"
+msgstr ""
+
+msgid "Cash at the end of the period"
+msgstr ""
+
+msgid "Net change in cash"
+msgstr ""
+
+#, python-format
+msgid "Net cash from %(section)s"
+msgstr ""
+
+msgid "Net income"
+msgstr ""
+
+msgid "Add back amortization"
+msgstr ""
+
+msgid "Operating activities"
+msgstr ""
+
+msgid "Investing activities"
+msgstr ""
+
+msgid "Financing activities"
+msgstr ""
+
+msgid "Net cash from operating activities"
+msgstr ""
+
+#, python-format
 msgid "%(start)s to %(end)s"
 msgstr ""
 
@@ -6527,6 +6571,16 @@ msgid "As at %(date)s"
 msgstr ""
 
 msgid "Year to date — unaudited"
+msgstr ""
+
+msgid "Closing balance"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+#, python-format
+msgid "There's no account %(code)s."
 msgstr ""
 
 msgid "Published"
@@ -6598,7 +6652,22 @@ msgstr ""
 msgid "balances"
 msgstr ""
 
-msgid "Total"
+msgid "Opening debit"
+msgstr ""
+
+msgid "Opening credit"
+msgstr ""
+
+msgid "Debits"
+msgstr ""
+
+msgid "Credits"
+msgstr ""
+
+msgid "Closing debit"
+msgstr ""
+
+msgid "Closing credit"
 msgstr ""
 
 msgid "Account activity"
@@ -6613,13 +6682,62 @@ msgstr ""
 msgid "account summary"
 msgstr ""
 
-msgid "Debits"
-msgstr ""
-
-msgid "Credits"
-msgstr ""
-
 msgid "Net movement"
+msgstr ""
+
+#, python-format
+msgid "Total %(section)s"
+msgstr ""
+
+msgid "Gross profit"
+msgstr ""
+
+msgid "Operating income"
+msgstr ""
+
+msgid "Income before income taxes"
+msgstr ""
+
+#, python-format
+msgid "Total %(group)s"
+msgstr ""
+
+msgid "Assets"
+msgstr ""
+
+msgid "Non-current assets"
+msgstr ""
+
+msgid "Total assets"
+msgstr ""
+
+msgid "Liabilities"
+msgstr ""
+
+msgid "Total liabilities"
+msgstr ""
+
+msgid "Total equity"
+msgstr ""
+
+msgid "Total liabilities and equity"
+msgstr ""
+
+msgid "Retained earnings at the beginning of the period"
+msgstr ""
+
+msgid "Other movements"
+msgstr ""
+
+msgid "Retained earnings at the end of the period"
+msgstr ""
+
+#, python-format
+msgid "The balance sheet at %(date)s doesn't balance by %(difference)s — the books need a look before this is used."
+msgstr ""
+
+#, python-format
+msgid "Net income for %(period)s (%(income)s) doesn't equal the change in retained and current year earnings (%(change)s) — the books need a look before this is used."
 msgstr ""
 
 msgid "No activity in this period"

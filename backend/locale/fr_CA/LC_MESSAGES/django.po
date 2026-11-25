@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:03-0500\n"
+"POT-Creation-Date: 2026-11-24 15:49-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5591,6 +5591,11 @@ msgstr "du mois suivant"
 msgid "of the current month"
 msgstr "du mois courant"
 
+#, fuzzy
+#| msgid "Choose one of the bulk actions."
+msgid "Choose one or more bank account types, each once."
+msgstr "Choisissez l’une des actions groupées."
+
 msgid "As registered; printed on statements, invoices and tax forms."
 msgstr "Telle qu’enregistrée; imprimée sur les relevés, les factures et les formulaires fiscaux."
 
@@ -5642,6 +5647,12 @@ msgid "bills need the supplier's invoice number"
 msgstr "numéro de facture"
 
 msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
+msgid "cash for the cash flow statement"
+msgstr ""
+
+msgid "The bank account types the cash flow statement counts as cash: chequing, savings and cash by default; credit cards, lines of credit, loans and clearing accounts only when chosen."
 msgstr ""
 
 msgid "journals need approval from"
@@ -7020,6 +7031,52 @@ msgstr ""
 msgid "There's no such report layout."
 msgstr ""
 
+#, python-format
+msgid "The net change in cash for %(period)s (%(flow)s) doesn't equal the change in the cash accounts (%(cash)s) — the books need a look before this is used."
+msgstr ""
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Cash at the beginning of the period"
+msgstr "prend fin à la fin de la période"
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Cash at the end of the period"
+msgstr "prend fin à la fin de la période"
+
+msgid "Net change in cash"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Net cash from %(section)s"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Net income"
+msgstr ""
+
+#, fuzzy
+#| msgid "organisation"
+msgid "Add back amortization"
+msgstr "organisation"
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Operating activities"
+msgstr "Solde d’ouverture"
+
+msgid "Investing activities"
+msgstr ""
+
+msgid "Financing activities"
+msgstr ""
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Net cash from operating activities"
+msgstr "Solde d’ouverture"
+
 #, fuzzy, python-format
 #| msgid "%(start)s to %(end)s · times in %(zone)s"
 msgid "%(start)s to %(end)s"
@@ -7032,6 +7089,21 @@ msgstr "taux de conversion (30 jours)"
 
 msgid "Year to date — unaudited"
 msgstr ""
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Closing balance"
+msgstr "Solde d’ouverture"
+
+#, fuzzy
+#| msgid "total"
+msgid "Total"
+msgstr "total"
+
+#, fuzzy, python-format
+#| msgid "There's no %(side)s tax code %(code)s."
+msgid "There's no account %(code)s."
+msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
 
 msgid "Published"
 msgstr ""
@@ -7125,9 +7197,34 @@ msgid "balances"
 msgstr "Solde"
 
 #, fuzzy
-#| msgid "total"
-msgid "Total"
-msgstr "total"
+#| msgid "Opening balance"
+msgid "Opening debit"
+msgstr "Solde d’ouverture"
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Opening credit"
+msgstr "Solde d’ouverture"
+
+#, fuzzy
+#| msgid "Debit"
+msgid "Debits"
+msgstr "Débit"
+
+#, fuzzy
+#| msgid "Credit"
+msgid "Credits"
+msgstr "Crédit"
+
+#, fuzzy
+#| msgid "Closing"
+msgid "Closing debit"
+msgstr "Clôture"
+
+#, fuzzy
+#| msgid "Closing"
+msgid "Closing credit"
+msgstr "Clôture"
 
 #, fuzzy
 #| msgid "Accountant"
@@ -7147,17 +7244,78 @@ msgstr "Documents"
 msgid "account summary"
 msgstr "Comptabilité"
 
-#, fuzzy
-#| msgid "Debit"
-msgid "Debits"
-msgstr "Débit"
-
-#, fuzzy
-#| msgid "Credit"
-msgid "Credits"
-msgstr "Crédit"
-
 msgid "Net movement"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total %(section)s"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Gross profit"
+msgstr ""
+
+#, fuzzy
+#| msgid "Opening balance"
+msgid "Operating income"
+msgstr "Solde d’ouverture"
+
+msgid "Income before income taxes"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total %(group)s"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Assets"
+msgstr ""
+
+#, fuzzy
+#| msgid "currency"
+msgid "Non-current assets"
+msgstr "devise"
+
+#, fuzzy
+#| msgid "Amount due (%(currency)s)"
+msgid "Total assets"
+msgstr "Montant dû (%(currency)s)"
+
+msgid "Liabilities"
+msgstr ""
+
+#, fuzzy
+#| msgid "Payroll specialist"
+msgid "Total liabilities"
+msgstr "Spécialiste de la paie"
+
+msgid "Total equity"
+msgstr ""
+
+msgid "Total liabilities and equity"
+msgstr ""
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Retained earnings at the beginning of the period"
+msgstr "prend fin à la fin de la période"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "Other movements"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "cancels at the end of the period"
+msgid "Retained earnings at the end of the period"
+msgstr "prend fin à la fin de la période"
+
+#, python-format
+msgid "The balance sheet at %(date)s doesn't balance by %(difference)s — the books need a look before this is used."
+msgstr ""
+
+#, python-format
+msgid "Net income for %(period)s (%(income)s) doesn't equal the change in retained and current year earnings (%(change)s) — the books need a look before this is used."
 msgstr ""
 
 msgid "No activity in this period"

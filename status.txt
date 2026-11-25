@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 586   Remaining: 2201   Progress: 21.03%
+TOTAL ATOMIC TASKS: 2787   Completed: 599   Remaining: 2188   Progress: 21.49%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -776,21 +776,21 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-02-T17 — Fixtures: 50 purchase documents across provinces incl. partial ITC
 
 [G-03]
-❌ G-03-T01 — Line-mapping specification (which tax types/components feed lines 101–115), signed off by the client
+✅ G-03-T01 — Line-mapping specification (which tax types/components feed lines 101–115), signed off by the client
 
 [K-02]
-❌ K-02-T01 — Statement presentation spec (ASPE-style sections, sub-totals, contra placement, overdraft reclassification note) reviewed by the client
-❌ K-02-T02 — P&L definition: sections by account type, gross profit, operating income, net income; comparatives
-❌ K-02-T03 — Balance Sheet definition: A/L/E always printed, current-year earnings line, contra accounts under parents
-❌ K-02-T05 — Integrity check: BS balances; NI = ΔRE + CYE; failure banner and S-04 event
-❌ K-02-T06 — Trial Balance: sorted by code, opening/movement/closing Dr/Cr columns, totals equal
-❌ K-02-T07 — Cash Flow indirect: NI + non-cash items + working-capital changes by account classification mapping
-❌ K-02-T08 — Cash Flow direct: classify cash lines by counterpart account (customers, suppliers, payroll, tax, financing, investing)
-❌ K-02-T09 — Cash definition setting (which bank types count as cash) shared with K-05
-❌ K-02-T10 — GL detail and Account transactions reports with running balance
-❌ K-02-T11 — Journal report with order-by and direction control
-❌ K-02-T12 — Movements in Equity / retained earnings with comparative
-❌ K-02-T15 — Data validation script: for fixture orgs, BS balances, NI = ΔRE, TB = GL, CF = Δcash
+✅ K-02-T01 — Statement presentation spec (ASPE-style sections, sub-totals, contra placement, overdraft reclassification note) reviewed by the client
+✅ K-02-T02 — P&L definition: sections by account type, gross profit, operating income, net income; comparatives
+✅ K-02-T03 — Balance Sheet definition: A/L/E always printed, current-year earnings line, contra accounts under parents
+✅ K-02-T05 — Integrity check: BS balances; NI = ΔRE + CYE; failure banner and S-04 event
+✅ K-02-T06 — Trial Balance: sorted by code, opening/movement/closing Dr/Cr columns, totals equal
+✅ K-02-T07 — Cash Flow indirect: NI + non-cash items + working-capital changes by account classification mapping
+✅ K-02-T08 — Cash Flow direct: classify cash lines by counterpart account (customers, suppliers, payroll, tax, financing, investing)
+✅ K-02-T09 — Cash definition setting (which bank types count as cash) shared with K-05
+✅ K-02-T10 — GL detail and Account transactions reports with running balance
+✅ K-02-T11 — Journal report with order-by and direction control
+✅ K-02-T12 — Movements in Equity / retained earnings with comparative
+✅ K-02-T15 — Data validation script: for fixture orgs, BS balances, NI = ΔRE, TB = GL, CF = Δcash
 
 [D-06]
 ❌ D-06-T01 — CreditNote, lines, CreditApplication models
