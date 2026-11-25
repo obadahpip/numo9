@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 716   Remaining: 2071   Progress: 25.69%
+TOTAL ATOMIC TASKS: 2787   Completed: 717   Remaining: 2070   Progress: 25.73%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -948,7 +948,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [G-05]
 ✅ G-05-T01 — Report specs (columns, filters, grouping) for summary, detail, audit, ITC/ITR detail, tie-out
-❌ G-05-T02 — Tax line query layer (SQL view/materialised view of posted tax lines with code, component, period, basis amounts, current revision only)
+✅ G-05-T02 — Tax line query layer (SQL view/materialised view of posted tax lines with code, component, period, basis amounts, current revision only)
 ❌ G-05-T03 — Cash-basis allocator: tax recognised proportionally to payments in range
 ❌ G-05-T04 — Tax summary by code/component report definition in K-01
 ❌ G-05-T05 — Tax detail by document report

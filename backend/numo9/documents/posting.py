@@ -248,6 +248,7 @@ def preview(
                 description=line.description,
                 tracking=dict(line.tracking),
                 tax_code=line.tax_code.code if line.tax_code is not None else "",
+                overridden=bool(getattr(line, "tax_overridden", False)),
             )
         )
     journal = journal_lines(taxed, side=side, counter=_counter(side), contact=contact)

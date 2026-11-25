@@ -42,7 +42,7 @@ from .models import (
     RecodeStatus,
 )
 from .recode_exclusions import MODULE_OF_TYPE, reasons
-from .recode_execute import _documents, repoint_documents
+from .recode_execute import _documents, post_repost, repoint_documents
 from .sequence import format_journal_number
 from .validation import JournalSpec, LineSpec
 
@@ -183,7 +183,7 @@ def _restore(
     batch: RecodeBatch, repost: JournalEntry, rows: list[RecodeLineChange], person: Any
 ) -> None:
     """Reverse ``repost`` and post it again with ``rows`` back to their coding ``before``."""
-    from .services import RECODE_CALLER, post_journal, reverse
+    from .services import reverse
 
     organisation = batch.organisation
     locked = JournalEntry.objects.select_for_update().get(pk=repost.pk)
@@ -230,7 +230,7 @@ def _restore(
                 tax_code=coding.get("tax_code") or "",
             )
         )
-    restored = post_journal(
+    restored = post_repost(
         JournalSpec(
             date=locked.date,
             type=locked.type,
@@ -241,15 +241,29 @@ def _restore(
             auto_reverse_on=locked.auto_reverse_on,
             lines=tuple(specs),
         ),
+        locked,
+        {
+            no: coding.get("tax_code") or ""
+            for no, coding in before.items()
+            if coding.get("tax_code") != _tax_code(locked, no)
+        },
         organisation=organisation,
         user=person,
         module=module,
-        caller=RECODE_CALLER,
         attachments=_documents(locked),
     )
     repoint_documents(locked, restored)
     RecodeLineChange.objects.filter(pk__in=[row.pk for row in rows]).update(
         undo_reversal_entry=reversal, undo_repost_entry=restored
+    )
+
+
+def _tax_code(entry: JournalEntry, line_no: int) -> str:
+    return str(
+        JournalLine.objects.filter(entry=entry, line_no=line_no)
+        .values_list("tax_code", flat=True)
+        .first()
+        or ""
     )
 
 

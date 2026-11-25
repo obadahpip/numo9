@@ -1004,3 +1004,78 @@ class LateAdjustment(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.document_date:%Y-%m-%d} → {self.line}: {self.amount}"
+
+
+class TaxLineSource(models.TextChoices):
+    """Where a posted tax line comes from (G-05-T02)."""
+
+    DOCUMENT = "document", _("Document")
+    JOURNAL = "journal", _("Journal")
+
+
+class TaxLine(OrgOwnedModel):
+    """One posted line's tax for one component (G-05-T02): what the tax reports read.
+
+    Written in the posting transaction (a ledger posted hook) from the tax the line carried
+    (``ledger.validation.TaxPart``): ``basis`` (net amount taxed), ``tax``, ``recoverable``
+    (ITC / ITR) and ``non_recoverable`` (added to the cost), signed like the document. A reversal
+    copies its original's lines negated (``reverses``). ``source`` is ``journal`` for a manual
+    journal's tax-coded line (no calculated tax); ``late`` marks a posting into a filed period
+    (G-03-T08)."""
+
+    entry = models.ForeignKey(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        related_name="tax_lines",
+        verbose_name=_("journal entry"),
+    )
+    line_no = models.PositiveSmallIntegerField(_("line"))
+    date = models.DateField(_("tax point"))
+    side = models.CharField(_("side"), max_length=8, choices=TaxSide.choices)
+    code = models.CharField(_("tax code"), max_length=60, blank=True)
+    component = models.CharField(_("component"), max_length=40, blank=True)
+    kind = models.CharField(_("tax"), max_length=4, blank=True)
+    rate = models.DecimalField(_("rate"), max_digits=7, decimal_places=4, null=True, blank=True)
+    basis = models.DecimalField(_("basis"), max_digits=18, decimal_places=2, default=Decimal("0"))
+    tax = models.DecimalField(_("tax"), max_digits=18, decimal_places=2, default=Decimal("0"))
+    recoverable = models.DecimalField(
+        _("recoverable"), max_digits=18, decimal_places=2, default=Decimal("0")
+    )
+    non_recoverable = models.DecimalField(
+        _("non-recoverable"), max_digits=18, decimal_places=2, default=Decimal("0")
+    )
+    source = models.CharField(
+        _("source"), max_length=8, choices=TaxLineSource.choices, default=TaxLineSource.DOCUMENT
+    )
+    overridden = models.BooleanField(_("code changed from the default"), default=False)
+    restricted = models.BooleanField(_("restricted ITC/ITR"), default=False)
+    late = models.BooleanField(_("late adjustment"), default=False)
+    reverses = models.ForeignKey(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("reverses"),
+    )
+
+    class Meta:
+        ordering = ("date", "entry_id", "line_no", "pk")
+        verbose_name = _("posted tax line")
+        verbose_name_plural = _("posted tax lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(side__in=TaxSide.values), name="tax_taxline_side_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(source__in=TaxLineSource.values),
+                name="tax_taxline_source_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "date"), name="tax_taxline_date_idx"),
+            models.Index(fields=("organisation", "entry"), name="tax_taxline_entry_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.date:%Y-%m-%d} {self.code} {self.component} {self.tax}"

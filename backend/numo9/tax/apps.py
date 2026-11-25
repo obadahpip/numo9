@@ -33,6 +33,17 @@ class TaxConfig(AppConfig):
             ledger.POSTING_GUARDS.append(tax_lock_guard)  # the Tax lock on postings (G-03-T07)
         if record_late_adjustment not in ledger.POSTED_HOOKS:
             ledger.POSTED_HOOKS.append(record_late_adjustment)  # late adjustments (G-03-T08)
+        from .tax_lines import record_tax_lines
+
+        if record_tax_lines not in ledger.POSTED_HOOKS:
+            ledger.POSTED_HOOKS.append(record_tax_lines)  # the posted tax lines (G-05-T02)
+
+        from numo9.ledger import recode_execute
+
+        from .tax_lines import copy_for_repost, reposting
+
+        recode_execute.REPOST_CONTEXT.append(reposting)
+        recode_execute.REPOSTED_HOOKS.append(copy_for_repost)
 
         from .history import register_history
 

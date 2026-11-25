@@ -67,6 +67,28 @@ from .validation import JournalSpec, LineSpec
 ASYNC_THRESHOLD = 200
 JOB = "numo9.ledger.recode"
 
+#: Context managers entered around each re-post and undo restore (the tax app: its posted tax
+#: lines are copied, not rebuilt from lines that carry no calculated tax — G-05-T02).
+REPOST_CONTEXT: list[Any] = []
+#: ``hook(original, repost, codes)`` after each re-post — ``codes``: the new tax code of each
+#: recoded line by line number.
+REPOSTED_HOOKS: list[Any] = []
+
+
+def post_repost(spec: Any, original: JournalEntry, codes: dict[int, str], **options: Any) -> Any:
+    """``post_journal`` for a re-post of ``original`` (recode or undo), with the apps' hooks."""
+    from contextlib import ExitStack
+
+    from .services import RECODE_CALLER, post_journal
+
+    with ExitStack() as stack:
+        for context in REPOST_CONTEXT:
+            stack.enter_context(context())
+        repost = post_journal(spec, caller=RECODE_CALLER, **options)
+    for hook in REPOSTED_HOOKS:
+        hook(original, repost, codes)
+    return repost
+
 
 class RecodeRefused(ValidationError):
     """The batch can't run (not a draft, nothing to recode, tax change not confirmed…)."""
@@ -251,7 +273,7 @@ def recode_entry(
     fingerprints: dict[tuple[str, int], str] | None = None,
 ) -> list[RecodeLineChange]:
     """Reverse ``entry`` and post it again with ``rows`` recoded — one transaction."""
-    from .services import RECODE_CALLER, post_journal, reverse
+    from .services import reverse
 
     organisation = batch.organisation
     with transaction.atomic():
@@ -293,12 +315,17 @@ def recode_entry(
                 for line in lines
             ),
         )
-        repost = post_journal(
+        repost = post_repost(
             spec,
+            locked,
+            {
+                no: row.after.get("tax_code") or ""
+                for no, row in recoded.items()
+                if row.after.get("tax_code") != row.before.get("tax_code")
+            },
             organisation=organisation,
             user=person,
             module=module,
-            caller=RECODE_CALLER,
             attachments=_documents(locked),
         )
         repoint_documents(locked, repost)

@@ -33,7 +33,7 @@ from typing import Any
 from django.utils.translation import gettext as _
 
 from numo9.ledger.models import Account, SystemRole
-from numo9.ledger.validation import LineSpec
+from numo9.ledger.validation import LineSpec, TaxPart
 
 from .calculator import ComponentTax, LineTax
 from .models import TaxError, TaxKind, TaxSide
@@ -112,6 +112,31 @@ class TaxedLine:
     contact: Any = None
     tracking: dict[str, Any] = field(default_factory=dict)
     tax_code: str = ""
+    #: The document line's code was changed from its default (G-02; the tax audit flag).
+    overridden: bool = False
+
+
+def tax_parts(line_tax: LineTax, *, overridden: bool = False) -> tuple[TaxPart, ...]:
+    """The line's tax per component as the ledger carries it to the tax lines (G-05-T02)."""
+    code = line_tax.code
+    side = code.side if code is not None else TaxSide.SALES
+    purchase = side == TaxSide.PURCHASE
+    return tuple(
+        TaxPart(
+            component=part.key,
+            kind=part.kind,
+            side=side,
+            basis=line_tax.net,
+            tax=part.amount,
+            recoverable=part.claimable if purchase else ZERO,
+            non_recoverable=part.cost if purchase else ZERO,
+            rate=part.rate,
+            code=code.code if code is not None else "",
+            overridden=overridden,
+            restricted=purchase and part.cost != 0 and bool(part.link.component.recoverable),
+        )
+        for part in line_tax.components
+    )
 
 
 def journal_lines(
@@ -148,6 +173,7 @@ def journal_lines(
                     tracking=dict(entry.tracking),
                     description=entry.description,
                     tax_code=entry.tax_code,
+                    tax_parts=tax_parts(entry.tax, overridden=entry.overridden),
                 )
             )
         for posting in mapped.postings:
