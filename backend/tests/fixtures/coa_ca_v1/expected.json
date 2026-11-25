@@ -3,7 +3,7 @@
   "template": "ca_v1",
   "provinces": {
     "AB": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.AB.standard",
       "home_purchase_tax": "GST 5 %",
@@ -19,8 +19,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -30,7 +32,7 @@
       "province_only_codes": []
     },
     "BC": {
-      "accounts": 115,
+      "accounts": 117,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.BC.standard",
       "home_purchase_tax": "GST 5 % + PST 7 %",
@@ -48,8 +50,10 @@
         "inventory",
         "itc_receivable",
         "pst_payable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -63,7 +67,7 @@
       ]
     },
     "MB": {
-      "accounts": 115,
+      "accounts": 117,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.MB.standard",
       "home_purchase_tax": "GST 5 % + RST 7 %",
@@ -81,8 +85,10 @@
         "inventory",
         "itc_receivable",
         "pst_payable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -96,7 +102,7 @@
       ]
     },
     "NB": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NB.standard",
       "home_purchase_tax": "HST 15 %",
@@ -112,8 +118,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -123,7 +131,7 @@
       "province_only_codes": []
     },
     "NL": {
-      "accounts": 114,
+      "accounts": 116,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NL.standard",
       "home_purchase_tax": "HST 15 %",
@@ -140,8 +148,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -154,7 +164,7 @@
       ]
     },
     "NS": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NS.standard",
       "home_purchase_tax": "HST 14 %",
@@ -170,8 +180,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -181,7 +193,7 @@
       "province_only_codes": []
     },
     "NT": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NT.standard",
       "home_purchase_tax": "GST 5 %",
@@ -197,8 +209,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -208,7 +222,7 @@
       "province_only_codes": []
     },
     "NU": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.NU.standard",
       "home_purchase_tax": "GST 5 %",
@@ -224,8 +238,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -235,7 +251,7 @@
       "province_only_codes": []
     },
     "ON": {
-      "accounts": 114,
+      "accounts": 116,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.ON.standard",
       "home_purchase_tax": "HST 13 %",
@@ -252,8 +268,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -266,7 +284,7 @@
       ]
     },
     "PE": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.PE.standard",
       "home_purchase_tax": "HST 15 %",
@@ -282,8 +300,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -293,7 +313,7 @@
       "province_only_codes": []
     },
     "QC": {
-      "accounts": 118,
+      "accounts": 120,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.QC.standard",
       "home_purchase_tax": "GST 5 % + QST 9.975 %",
@@ -310,12 +330,14 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "qpip_payable",
         "qpp_payable",
         "qst_itr",
         "qst_payable",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -332,7 +354,7 @@
       ]
     },
     "SK": {
-      "accounts": 113,
+      "accounts": 115,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.SK.standard",
       "home_purchase_tax": "GST 5 % + PST 6 %",
@@ -349,8 +371,10 @@
         "inventory",
         "itc_receivable",
         "pst_payable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
@@ -362,7 +386,7 @@
       ]
     },
     "YT": {
-      "accounts": 112,
+      "accounts": 114,
       "unmapped_gifi": 0,
       "purchase_key": "purchase.YT.standard",
       "home_purchase_tax": "GST 5 %",
@@ -378,8 +402,10 @@
         "income_tax_withheld",
         "inventory",
         "itc_receivable",
+        "purchase_discounts",
         "retained_earnings",
         "rounding",
+        "sales_discounts",
         "suspense_conversion",
         "unpaid_expense_claims",
         "vacation_payable",
