@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 675   Remaining: 2112   Progress: 24.22%
+TOTAL ATOMIC TASKS: 2787   Completed: 676   Remaining: 2111   Progress: 24.26%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -890,7 +890,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-06-T07 — API /api/v1/period-close/ (timeline, checklist, close, reopen, year-end)
 ✅ C-06-T08 — UI: module × month timeline with status pills
 ✅ C-06-T09 — UI: checklist panel with deep links; close and reopen dialogs with consequences text
-❌ C-06-T10 — Fixtures: full-year fixture with known RE roll in both books
+✅ C-06-T10 — Fixtures: full-year fixture with known RE roll in both books
 ❌ C-06-T11 — Docs + i18n
 
 [D-02]
