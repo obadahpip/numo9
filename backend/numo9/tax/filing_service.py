@@ -338,6 +338,14 @@ def validate_switch(
     if frequency not in MONTHS:
         raise TaxError(_("Choose monthly, quarterly or annual."), code="tax.filing.frequency")
     start = registration.start_date
+    stop = registration.stop_date
+    if in_gap(registration, effective_from) or (stop is not None and effective_from > stop):
+        # G-03b-T04: no frequency (and so no period) while not registered; restart instead.
+        raise TaxError(
+            _("The registration isn't registered on %(date)s: restart filing instead.")
+            % {"date": effective_from.isoformat()},
+            code="tax.filing.not_registered",
+        )
     if start is not None and effective_from < start:
         raise TaxError(
             _("The change can't take effect before the registration starts (%(start)s).")
