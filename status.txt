@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 694   Remaining: 2093   Progress: 24.90%
+TOTAL ATOMIC TASKS: 2787   Completed: 695   Remaining: 2092   Progress: 24.94%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -920,7 +920,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [C-07]
 ✅ C-07-T01 — RecodeBatch and RecodeLineChange models (criteria JSON, before/after, status, undone_by/at)
-❌ C-07-T02 — Query builder: conditions → ORM filter over JournalLine with org scope and indexes
+✅ C-07-T02 — Query builder: conditions → ORM filter over JournalLine with org scope and indexes
 ❌ C-07-T03 — Exclusion engine: locked/closed/filed periods, voided docs, superseded revisions → excluded with reason
 ❌ C-07-T04 — Preview service: before/after per line, totals unchanged assertion, tax impact recalculation
 ❌ C-07-T05 — Execute service (Celery job for > 200 lines): per document reverse + re-post with new coding inside transaction; batch status/progress
