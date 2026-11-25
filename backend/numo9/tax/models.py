@@ -501,6 +501,14 @@ class TaxSettings(AuditedModel, OrgOwnedModel):
         _("rounding"), max_length=10, choices=RoundingMode.choices, default=RoundingMode.LINE
     )
     quick_method = models.BooleanField(_("quick method elected"), default=False)
+    out_of_scope_after_stop = models.BooleanField(
+        _("sales after a GST/HST stop default to out of scope"),
+        default=True,
+        help_text=_(
+            "After filing stops (G-03b), new sales lines default to Out of scope instead of "
+            "charging GST/HST."
+        ),
+    )
     quick_method_from = models.DateField(_("quick method from"), null=True, blank=True)
     default_codes = models.JSONField(_("default codes"), default=dict, blank=True)
 

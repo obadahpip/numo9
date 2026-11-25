@@ -3394,6 +3394,8 @@
       "cancel": "Cancel",
       "close": "Close",
       "defaults": {
+        "afterStop": "Sales after filing stops",
+        "afterStopValue": "{on, select, true {Out of scope} other {Keep the usual default}}",
         "for": "{side, select, sales {Sales} other {Purchases}} on {type, select, revenue {revenue} expense {expense} asset {asset} liability {liability} other {other}} accounts",
         "help": "The tax code a new line starts with, by the type of its account. An account's own code and the place of supply come first.",
         "none": "No default",

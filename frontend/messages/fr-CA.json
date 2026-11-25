@@ -3394,6 +3394,8 @@
       "cancel": "Annuler",
       "close": "Fermer",
       "defaults": {
+        "afterStop": "Sales after filing stops",
+        "afterStopValue": "{on, select, true {Out of scope} other {Keep the usual default}}",
         "for": "{side, select, sales {Ventes} other {Achats}} sur les comptes {type, select, revenue {de produits} expense {de charges} asset {d’actif} liability {de passif} other {autres}}",
         "help": "Le code de taxe d’une nouvelle ligne, selon le type de son compte. Le code propre au compte et le lieu de fourniture passent en premier.",
         "none": "Aucun code par défaut",

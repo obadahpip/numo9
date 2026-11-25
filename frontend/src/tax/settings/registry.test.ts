@@ -45,6 +45,7 @@ it("registers every setting the page edits, each on one card", () => {
     "registration.rt",
     "tax.basis",
     "tax.default_codes",
+    "tax.out_of_scope_after_stop",
     "tax.quick_method",
     "tax.quick_method_from",
     "tax.restricted_itc",

@@ -54,11 +54,20 @@ def supply_address(value: Any) -> SupplyAddress | None:
 def registrations(organisation: Any) -> tuple[Registration, ...]:
     from numo9.orgsettings.models import TaxRegistration
 
+    from .filing_service import gaps
+
     with org_context(organisation):
-        rows = TaxRegistration.objects.filter(organisation=organisation).values_list(
-            "type", "status", "effective_from", "effective_to"
+        rows = TaxRegistration.objects.filter(organisation=organisation)
+        return tuple(
+            Registration(
+                row.type,
+                row.status,
+                row.effective_from,
+                row.effective_to,
+                tuple(gaps(row)) if row.files_returns else (),
+            )
+            for row in rows
         )
-        return tuple(Registration(*row) for row in rows)
 
 
 def contact_addresses(contact: Any) -> tuple[SupplyAddress | None, SupplyAddress | None]:
@@ -128,7 +137,14 @@ def build_context(
         contact_default=contact_default,
         account_default=_account_key(account, side, home),
         taxable=bool(getattr(item, "is_taxable", True)) if item is not None else True,
+        out_of_scope_after_stop=_out_of_scope_after_stop(organisation),
     )
+
+
+def _out_of_scope_after_stop(organisation: Any) -> bool:
+    from .settings import tax_settings
+
+    return bool(tax_settings(organisation).out_of_scope_after_stop)
 
 
 def resolve_line(
