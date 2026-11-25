@@ -53,3 +53,34 @@ def filed_periods(
 
 def register_recode_exclusions() -> None:
     register_exclusion(filed_periods)
+    register_recode_rates()
+
+
+def tax_amounts(organisation: Any, code: str, day: Any, base: Any) -> dict[str, Any]:
+    """The tax ``base`` carries under ``code`` on ``day``: {component key: amount} — the version
+    of the code and the components in force that day, rounded per component (G-01)."""
+    from decimal import ROUND_HALF_UP, Decimal
+
+    from .models import TaxCode
+
+    versions = TaxCode._base_manager.filter(
+        organisation=organisation, code=code, deleted_at__isnull=True
+    ).order_by("version")
+    version = next((v for v in versions if v.is_active_on(day)), None)
+    if version is None:
+        return {}
+    out: dict[str, Any] = {}
+    for link in version.components.select_related("component").order_by("position"):
+        component = link.component
+        if component.is_active_on(day):
+            amount = (Decimal(base) * Decimal(component.rate) / 100).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
+            out[component.key] = out.get(component.key, Decimal("0.00")) + amount
+    return out
+
+
+def register_recode_rates() -> None:
+    from numo9.ledger.recode_preview import register_tax_rates
+
+    register_tax_rates(tax_amounts)
