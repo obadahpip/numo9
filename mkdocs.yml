@@ -108,6 +108,7 @@ nav:
       - "Purchase orders and receipts": user-guide/purchase-orders.md
       - "Changing your GST/HST filing frequency": user-guide/changing-filing-frequency.md
       - "Stopping and restarting GST/HST or QST filing": user-guide/stopping-and-restarting-filing.md
+      - "Closing periods and the fiscal year": user-guide/period-close-and-year-end.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

@@ -2,11 +2,31 @@
 
 from django.urls import path
 
-from . import accounts_api, api, journals_api, workflow_api
+from . import accounts_api, api, close_api, journals_api, workflow_api
 
 ORG = "o/<uuid:org>/"
 
 urlpatterns = [
+    # Period close and year-end (C-06-T07)
+    path(f"{ORG}period-close/", close_api.PeriodCloseTimelineView.as_view(), name="period-close"),
+    path(
+        f"{ORG}period-close/checklist",
+        close_api.PeriodCloseChecklistView.as_view(),
+        name="period-close-checklist",
+    ),
+    path(
+        f"{ORG}period-close/close", close_api.PeriodCloseView.as_view(), name="period-close-close"
+    ),
+    path(
+        f"{ORG}period-close/year-end",
+        close_api.PeriodYearEndView.as_view(),
+        name="period-close-year-end",
+    ),
+    path(
+        f"{ORG}period-close/<uuid:public_id>/reopen",
+        close_api.PeriodReopenView.as_view(),
+        name="period-close-reopen",
+    ),
     # Chart of accounts (C-01-T09)
     path(f"{ORG}accounts", accounts_api.AccountListView.as_view(), name="accounts"),
     path(f"{ORG}accounts/tree", accounts_api.AccountTreeView.as_view(), name="accounts-tree"),

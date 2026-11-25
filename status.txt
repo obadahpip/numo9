@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 666   Remaining: 2121   Progress: 23.90%
+TOTAL ATOMIC TASKS: 2787   Completed: 677   Remaining: 2110   Progress: 24.29%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -881,17 +881,17 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-02-T10 — i18n of explanation strings en/fr; gap tests gap-09, gap-45
 
 [C-06]
-❌ C-06-T01 — PeriodClose model (org, module, period_end, closed_by/at, reopened_by/at, reason)
-❌ C-06-T02 — Close service: sets module lock to period_end; validates no later period already closed out of order
-❌ C-06-T03 — Checklist service: counts drafts, awaiting approval, unfiled tax periods, open exceptions for the period
-❌ C-06-T04 — Year-end roll: per book, sum P&L accounts → closing JE to Retained Earnings dated FYE
-❌ C-06-T05 — Reopen service: adviser only, reason required, reverses closing JE if year-end
-❌ C-06-T06 — Recurring/auto jobs respect closed periods (skip + exception)
-❌ C-06-T07 — API /api/v1/period-close/ (timeline, checklist, close, reopen, year-end)
-❌ C-06-T08 — UI: module × month timeline with status pills
-❌ C-06-T09 — UI: checklist panel with deep links; close and reopen dialogs with consequences text
-❌ C-06-T10 — Fixtures: full-year fixture with known RE roll in both books
-❌ C-06-T11 — Docs + i18n
+✅ C-06-T01 — PeriodClose model (org, module, period_end, closed_by/at, reopened_by/at, reason)
+✅ C-06-T02 — Close service: sets module lock to period_end; validates no later period already closed out of order
+✅ C-06-T03 — Checklist service: counts drafts, awaiting approval, unfiled tax periods, open exceptions for the period
+✅ C-06-T04 — Year-end roll: per book, sum P&L accounts → closing JE to Retained Earnings dated FYE
+✅ C-06-T05 — Reopen service: adviser only, reason required, reverses closing JE if year-end
+✅ C-06-T06 — Recurring/auto jobs respect closed periods (skip + exception)
+✅ C-06-T07 — API /api/v1/period-close/ (timeline, checklist, close, reopen, year-end)
+✅ C-06-T08 — UI: module × month timeline with status pills
+✅ C-06-T09 — UI: checklist panel with deep links; close and reopen dialogs with consequences text
+✅ C-06-T10 — Fixtures: full-year fixture with known RE roll in both books
+✅ C-06-T11 — Docs + i18n
 
 [D-02]
 ❌ D-02-T01 — Quote, QuoteLine (is_optional, alternative_group, selected) models + QuoteStatus enum shared

@@ -14,10 +14,12 @@ from __future__ import annotations
 
 import datetime as dt
 import logging
+from typing import Any
 
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from numo9.audit import models as audit_models
 from numo9.audit import service as audit
 from numo9.jobs.queues import DEFAULT
 from numo9.jobs.runtime import platform_job
@@ -45,6 +47,30 @@ def due(organisation: Organisation, today: dt.date | None = None) -> list[Journa
     )
 
 
+def _exception(entry: Any, number: str, error: Exception) -> None:
+    """An automatic reversal that couldn't be posted (its date locked or closed, C-06-T06) is an
+    exception: audited once per entry and reason (``ledger.journalentry.auto_reversal_skipped``)
+    and counted by the period-close checklist until it is posted."""
+    detail = getattr(error, "detail", None)
+    code = getattr(error, "code", "") or (
+        detail.get("code", "") if isinstance(detail, dict) else getattr(error, "default_code", "")
+    )
+    code = str(code)
+    seen = audit_models.AuditEvent.objects.filter(
+        action="ledger.journalentry.auto_reversal_skipped",
+        object_id=str(entry.public_id),
+        meta__code=code,
+    ).exists()
+    if seen:
+        return
+    audit.record(
+        "ledger.journalentry.auto_reversal_skipped",
+        obj=entry,
+        meta={"number": number, "code": code, "reason": str(error)[:500]},
+        actor=None,
+    )
+
+
 def post_due_reversals(now: dt.datetime | None = None) -> int:
     """Reverse every due journal of every organisation; the number of reversals posted."""
     from .services import reverse
@@ -64,9 +90,11 @@ def post_due_reversals(now: dt.datetime | None = None) -> int:
                     )
                 except LedgerError as error:  # reversed meanwhile, or its date locked since
                     logger.warning("auto-reversal of %s skipped: %s", number, error)
+                    _exception(entry, number, error)
                     continue
                 except Exception as error:  # a lock or closed period (409s are APIExceptions)
                     logger.warning("auto-reversal of %s skipped: %s", number, error)
+                    _exception(entry, number, error)
                     continue
                 audit.record(
                     "ledger.journalentry.auto_reversed",
