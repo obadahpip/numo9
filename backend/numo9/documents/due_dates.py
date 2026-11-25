@@ -95,6 +95,8 @@ class Terms:
     term: Any = None
     discount_pct: Decimal = Decimal("0")
     discount_days: int = 0
+    #: ``total`` (with tax) or ``pre_tax`` (E-07-T01).
+    discount_base: str = "total"
 
 
 def document_terms(side: str, contact: Any, organisation: Any) -> Terms:
@@ -102,7 +104,14 @@ def document_terms(side: str, contact: Any, organisation: Any) -> Terms:
     if contact is not None:
         term = contact.sales_payment_term if side == SALES else contact.purchase_payment_term
     if term is not None and getattr(term, "status", "active") == "active":
-        return Terms(term.terms_type, term.days, term, term.discount_pct, term.discount_days)
+        return Terms(
+            term.terms_type,
+            term.days,
+            term,
+            term.discount_pct,
+            term.discount_days,
+            getattr(term, "discount_base", "total"),
+        )
     from numo9.orgsettings.service import get_settings
 
     settings = get_settings(organisation)
