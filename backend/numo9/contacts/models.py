@@ -1839,3 +1839,77 @@ class ActivityEvent(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.contact_id} {self.type} {self.occurred_at:%Y-%m-%d}"
+
+
+class StatementRunStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    RUNNING = "running", _("Sending")
+    DONE = "done", _("Sent")
+    FAILED = "failed", _("Failed")
+
+
+class StatementRun(AuditedModel, OrgOwnedModel):
+    """A bulk statement run (D-07-T08): one statement of ``kind`` (outstanding as at ``as_at``,
+    or activity from ``period_start`` to ``as_at``) for each chosen contact — ``contacts`` (public
+    ids) or, when empty, every customer with a balance whose statement preference is email —
+    emailed as a PDF (B-02). ``results`` keeps, per contact, what happened: ``sent`` (with the
+    ``StatementSend``), ``skipped`` (no balance, no one to email, statements off) or ``failed``."""
+
+    kind = models.CharField(_("type"), max_length=12, choices=StatementSendKind.choices)
+    as_at = models.DateField(_("as at"))
+    period_start = models.DateField(_("period start"), null=True, blank=True)
+    contacts = models.JSONField(_("contacts"), default=list, blank=True)
+    include_zero = models.BooleanField(_("include contacts with no balance"), default=False)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=StatementRunStatus.choices,
+        default=StatementRunStatus.DRAFT,
+    )
+    results = models.JSONField(_("results"), default=list, blank=True)
+    sent_count = models.PositiveIntegerField(_("sent"), default=0)
+    skipped_count = models.PositiveIntegerField(_("skipped"), default=0)
+    failed_count = models.PositiveIntegerField(_("failed"), default=0)
+    job_run = models.ForeignKey(
+        "jobs.JobRun",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("background job"),
+    )
+    run_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("run by"),
+    )
+    run_at = models.DateTimeField(_("run at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at", "-pk")
+        verbose_name = _("statement run")
+        verbose_name_plural = _("statement runs")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(kind__in=StatementSendKind.values),
+                name="contacts_statementrun_kind_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(kind=StatementSendKind.ACTIVITY)
+                | (
+                    models.Q(period_start__isnull=False)
+                    & models.Q(period_start__lte=models.F("as_at"))
+                ),
+                name="contacts_statementrun_activity_period",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=StatementRunStatus.values),
+                name="contacts_statementrun_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_kind_display()} {self.as_at:%Y-%m-%d}"
