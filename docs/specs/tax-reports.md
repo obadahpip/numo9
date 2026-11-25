@@ -28,7 +28,7 @@ flags read by the audit report. Amounts are signed: a credit note or a reversal 
 |---|---|---|
 | `date_from`, `date_to` | a range | the current filing period |
 | `period` | a filing period (sets the range) | — |
-| `basis` | `settings` (G-06), `accrual`, `cash` — an explicit override per run | `settings` |
+| `basis` | empty (the organisation's, G-06), `accrual`, `cash` — an explicit override per run | empty |
 | `kind` | `all`, `gst_hst`, `qst`, `pst` | `all` |
 | `side` | `all`, `sales`, `purchase` | `all` |
 

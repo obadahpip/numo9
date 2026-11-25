@@ -2,7 +2,7 @@
 the organisation's basis or an explicit override (G-05-T03). Specs: ``docs/specs/tax-reports.md``.
 
 Every report takes ``date_from`` / ``date_to`` or a filing ``period`` (its public id, which sets
-the range), ``basis`` (``settings`` — the organisation's, G-06 — ``accrual`` or ``cash``),
+the range), ``basis`` (empty — the organisation's, G-06 — or ``accrual`` / ``cash``),
 ``kind`` (``all``, ``gst_hst``, ``qst``, ``pst``) and ``side`` (``all``, ``sales``,
 ``purchase``). Feature key ``tax.reports.read``.
 
@@ -36,7 +36,8 @@ from .cash_basis import RecognisedLine, recognised_lines
 
 ZERO = Decimal("0.00")
 FEATURE = "tax.reports.read"
-BASES = ("settings", "accrual", "cash")
+#: "" — the organisation's basis (G-06); or an explicit override for this run.
+BASES = ("", "accrual", "cash")
 TAX_KINDS = ("all", "gst_hst", "qst", "pst")
 SIDES = ("all", "sales", "purchase")
 SIDE_LABELS = {"sales": _("Sales — tax collected"), "purchase": _("Purchases — ITCs and ITRs")}
@@ -45,7 +46,7 @@ COMMON_PARAMS: tuple[ParamSpec, ...] = (
     ParamSpec("date_from", "date"),
     ParamSpec("date_to", "date"),
     ParamSpec("period", "text", ""),
-    ParamSpec("basis", "choice", "settings", BASES),
+    ParamSpec("basis", "choice", "", BASES),
     ParamSpec("kind", "choice", "all", TAX_KINDS),
     ParamSpec("side", "choice", "all", SIDES),
 )
@@ -92,11 +93,9 @@ class TaxReport(ReportDefinition):
         return start, end
 
     def basis(self, organisation: Any, params: dict[str, Any]) -> str:
-        if params["basis"] != "settings":
-            return str(params["basis"])
-        from .settings import tax_settings
+        from .settings import report_basis
 
-        return "cash" if tax_settings(organisation).basis == "cash" else "accrual"
+        return report_basis(organisation, params["basis"] or None)[0]
 
     def load(
         self, organisation: Any, params: dict[str, Any], *, current_only: bool = False
