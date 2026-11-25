@@ -504,6 +504,7 @@ class TaxSettings(AuditedModel, OrgOwnedModel):
     out_of_scope_after_stop = models.BooleanField(
         _("sales after a GST/HST stop default to out of scope"),
         default=True,
+        db_default=True,
         help_text=_(
             "After filing stops (G-03b), new sales lines default to Out of scope instead of "
             "charging GST/HST."

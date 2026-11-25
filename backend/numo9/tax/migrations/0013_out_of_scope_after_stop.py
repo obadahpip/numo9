@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
             name="out_of_scope_after_stop",
             field=models.BooleanField(
                 default=True,
+                db_default=True,
                 help_text="After filing stops (G-03b), new sales lines default to Out of scope instead of charging GST/HST.",
                 verbose_name="sales after a GST/HST stop default to out of scope",
             ),
