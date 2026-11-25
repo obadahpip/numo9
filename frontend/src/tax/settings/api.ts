@@ -70,8 +70,8 @@ export function firstError(body: unknown): string | undefined {
 
 /** Account types that keep a default code, per side (as `tax.defaults` on the server). */
 export const DEFAULT_TYPES: Record<Side, string[]> = {
-  sales: ["revenue"],
-  purchase: ["expense", "asset"],
+  sales: ["revenue", "asset"],
+  purchase: ["expense", "asset", "liability"],
 };
 
 /** Anchors of the page: deep links from other modules land on them (G-06-T09). */
