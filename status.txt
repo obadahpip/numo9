@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 707   Remaining: 2080   Progress: 25.37%
+TOTAL ATOMIC TASKS: 2787   Completed: 708   Remaining: 2079   Progress: 25.40%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -933,7 +933,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-07-T12 — UI: preview diff + confirm dialog with numbers; progress toast for async
 ✅ C-07-T13 — UI: batch history with Undo + report download
 ✅ C-07-T14 — Performance test: 10,000-line recode under 2 min on staging-size data
-❌ C-07-T15 — Docs + i18n
+✅ C-07-T15 — Docs + i18n
 
 [D-07]
 ❌ D-07-T01 — ReminderSchedule, ReminderStep (offset days, template, channel, min amount, escalation) models
