@@ -75,6 +75,17 @@ def test_restart_rules() -> None:
     assert err.value.code == "tax.filing.no_actor"
 
 
+def test_stop_before_the_last_restart_is_refused() -> None:
+    reg, user = quarterly()
+    stop(reg, day(2026, 1, 1), "other", user=user, today=TODAY)
+    restart(reg, day(2026, 1, 3), "monthly", user=user, today=TODAY)
+    for date in (day(2026, 1, 1), day(2026, 1, 2)):
+        with pytest.raises(TaxError) as err:
+            stop(reg, date, "other", user=user, today=TODAY)
+        assert err.value.code == "tax.filing.stop_before_restart"
+    stop(reg, day(2026, 1, 3), "other", user=user, today=TODAY)  # registered for one day
+
+
 def test_stop_again_after_a_restart() -> None:
     reg, user = quarterly()
     stop(reg, day(2026, 3, 31), "other", user=user, today=TODAY)

@@ -3,8 +3,9 @@ without corrupting history.
 
 ``stop(registration, date, reason_code, …, user)`` — ``date`` is the **last day registered**:
 
-- it may not be before the registration starts nor before the end of the last filed or paid
-  period (``tax.filing.stop_before_filed``), and the registration must not already be stopped;
+- it may not be before the registration starts, before the end of the last filed or paid
+  period (``tax.filing.stop_before_filed``) nor before the last restart
+  (``tax.filing.stop_before_restart``), and the registration must not already be stopped;
 - the open period crossing ``date`` is cut to end on it (a stub — the **final return**), the
   unfiled periods after it are deleted (custom ones too), and none is generated after it until a
   restart (the stop date is the generator's horizon, G-03b-T04);
@@ -90,6 +91,20 @@ def validate_stop(registration: Any, date: dt.date, reason_code: str) -> None:
         raise TaxError(
             _("The last day registered can't be before the registration starts."),
             code="tax.filing.stop_before_start",
+        )
+    restarted = (
+        RegistrationStatusEvent.objects.filter(
+            registration=registration, action=RegistrationAction.RESTART
+        )
+        .order_by("-date")
+        .values_list("date", flat=True)
+        .first()
+    )
+    if restarted is not None and date < restarted:
+        raise TaxError(
+            _("Filing restarted on %(day)s: the last day registered can't be before it.")
+            % {"day": restarted.isoformat()},
+            code="tax.filing.stop_before_restart",
         )
     filed = last_filed_end(registration)
     if filed is not None and date < filed:

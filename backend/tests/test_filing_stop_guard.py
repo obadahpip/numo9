@@ -50,3 +50,19 @@ def test_switch_after_the_stop_is_refused() -> None:
     with org_context(reg.organisation), pytest.raises(TaxError) as err:
         switch_frequency(reg, "monthly", day(2026, 7, 1), today=TODAY)
     assert err.value.code == "tax.filing.not_registered"
+
+
+def test_out_of_cycle_period_into_the_gap_is_refused() -> None:
+    from numo9.tax.filing_service import add_custom_period
+    from numo9.tax.stop_restart import restart
+
+    reg, user = quarterly()
+    stop(reg, day(2026, 6, 30), "other", user=user, today=TODAY)
+    with org_context(reg.organisation), pytest.raises(TaxError) as err:
+        add_custom_period(reg, day(2026, 6, 1), day(2026, 7, 15), today=TODAY)
+    assert err.value.code == "tax.filing.not_registered"
+    restart(reg, day(2026, 10, 1), "quarterly", user=user, today=TODAY)
+    reg.refresh_from_db()
+    with org_context(reg.organisation), pytest.raises(TaxError) as err:
+        add_custom_period(reg, day(2026, 9, 20), day(2026, 10, 15), today=TODAY)
+    assert err.value.code == "tax.filing.not_registered"
