@@ -50,3 +50,23 @@ ACCOUNTS_MANAGE = register(
         Risk.MEDIUM,
     )
 )
+
+# ---- Period close and year-end (C-06) -----------------------------------------------------------
+
+PERIOD_CLOSE_VIEW = register(
+    Permission(
+        "accounting.period_close.view",
+        _("See closed periods and the close checklist"),
+        "accounting",
+        Risk.LOW,
+    )
+)
+
+PERIOD_CLOSE_MANAGE = register(
+    Permission(
+        "accounting.period_close.manage",
+        _("Close periods and the fiscal year (advisers reopen them)"),
+        "accounting",
+        Risk.HIGH,
+    )
+)
