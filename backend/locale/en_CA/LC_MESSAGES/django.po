@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:17-0500\n"
+"POT-Creation-Date: 2026-11-24 15:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2860,9 +2860,6 @@ msgstr ""
 msgid "Create a bill"
 msgstr ""
 
-msgid "Bills arrive with Purchases in Phase 1."
-msgstr ""
-
 msgid "Create an expense claim"
 msgstr ""
 
@@ -4249,6 +4246,9 @@ msgstr ""
 msgid "Foreign exchange gain or loss"
 msgstr ""
 
+msgid "Holdbacks payable"
+msgstr ""
+
 msgid "Current assets"
 msgstr ""
 
@@ -5296,6 +5296,12 @@ msgstr ""
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr ""
 
+msgid "bills need the supplier's invoice number"
+msgstr ""
+
+msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
 msgid "journals need approval from"
 msgstr ""
 
@@ -5824,10 +5830,54 @@ msgstr ""
 msgid "feature flags"
 msgstr ""
 
+msgid "a draft bill"
+msgstr ""
+
+#, python-format
+msgid "Already used on %(bill)s (%(date)s)"
+msgstr ""
+
+msgid "There's no bill with this id in this organisation."
+msgstr ""
+
+msgid "That supplier doesn't exist."
+msgstr ""
+
+msgid "Those payment terms don't exist."
+msgstr ""
+
+#, python-format
+msgid "That %(field)s doesn't exist."
+msgstr ""
+
+msgid "The due date is before the bill date."
+msgstr ""
+
+msgid "Only a draft bill can be edited: void it to correct it."
+msgstr ""
+
+msgid "Someone else saved this bill: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft bill can be deleted: void a posted bill."
+msgstr ""
+
+msgid "There's no such purchase order."
+msgstr ""
+
+msgid "There's no such goods receipt."
+msgstr ""
+
 msgid "Draft purchase order"
 msgstr ""
 
 msgid "Purchase orders"
+msgstr ""
+
+msgid "Bill without a supplier number"
+msgstr ""
+
+msgid "Bills"
 msgstr ""
 
 #, python-format
@@ -5842,6 +5892,97 @@ msgstr ""
 
 #, python-format
 msgid "%(order)s isn't a draft."
+msgstr ""
+
+msgid "Only an approved purchase order can be billed."
+msgstr ""
+
+msgid "That receipt isn't one of this purchase order's."
+msgstr ""
+
+msgid "Everything received on this purchase order is billed already."
+msgstr ""
+
+msgid "Add a Holdbacks payable account to the chart of accounts to post holdbacks."
+msgstr ""
+
+msgid "Holdback"
+msgstr ""
+
+msgid "The holdback is more than the amount owed on the bill."
+msgstr ""
+
+#, python-format
+msgid "Bill %(number)s — %(contact)s"
+msgstr ""
+
+msgid "draft"
+msgstr ""
+
+msgid "Enter the supplier's invoice number before approving the bill."
+msgstr ""
+
+#, python-format
+msgid "%(supplier)s's invoice %(number)s is already on %(bill)s."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s is already %(status)s."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the bill is approved."
+msgstr ""
+
+msgid "A bill's total must be more than zero: for money the supplier owes you, enter a supplier credit."
+msgstr ""
+
+msgid "You wrote or submitted this bill: someone else must approve it."
+msgstr ""
+
+#, python-format
+msgid "%(why)s: you aren't one of them."
+msgstr ""
+
+msgid "The bill doesn't match its purchase order and receipts: review the match panel and approve with variance."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s has no holdback to release."
+msgstr ""
+
+#, python-format
+msgid "Release between 0.01 and %(held)s: that is what is still held."
+msgstr ""
+
+#, python-format
+msgid "Holdback released — bill %(number)s, %(contact)s"
+msgstr ""
+
+msgid "Holdback released"
+msgstr ""
+
+msgid "remove its payments first."
+msgstr ""
+
+msgid "reverse the holdback release first."
+msgstr ""
+
+msgid "only bills awaiting payment can be voided; delete a draft instead."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s can't be voided: %(why)s"
+msgstr ""
+
+#, python-format
+msgid "Void of bill %(number)s"
+msgstr ""
+
+#, python-format
+msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
+msgstr ""
+
+msgid "A draft bill"
 msgstr ""
 
 #, python-format
@@ -5948,6 +6089,75 @@ msgstr ""
 msgid "goods receipt lines"
 msgstr ""
 
+msgid "Awaiting payment"
+msgstr ""
+
+msgid "Partially paid"
+msgstr ""
+
+msgid "No holdback"
+msgstr ""
+
+msgid "Percent of the total"
+msgstr ""
+
+msgid "supplier invoice number"
+msgstr ""
+
+msgid "department"
+msgstr ""
+
+msgid "holdback"
+msgstr ""
+
+msgid "holdback value"
+msgstr ""
+
+msgid "holdback amount"
+msgstr ""
+
+msgid "holdback released"
+msgstr ""
+
+msgid "amount paid"
+msgstr ""
+
+msgid "void journal"
+msgstr ""
+
+msgid "bill"
+msgstr ""
+
+msgid "bills"
+msgstr ""
+
+msgid "Draft bill"
+msgstr ""
+
+msgid "bill line"
+msgstr ""
+
+msgid "bill lines"
+msgstr ""
+
+msgid "order"
+msgstr ""
+
+msgid "more than"
+msgstr ""
+
+msgid "up to"
+msgstr ""
+
+msgid "approvers"
+msgstr ""
+
+msgid "approval routing rule"
+msgstr ""
+
+msgid "approval routing rules"
+msgstr ""
+
 msgid "See purchase orders and goods receipts"
 msgstr ""
 
@@ -5958,6 +6168,12 @@ msgid "Approve purchase orders, within an approval limit"
 msgstr ""
 
 msgid "Record and reverse goods receipts"
+msgstr ""
+
+msgid "Enter, edit and void supplier bills and release holdbacks"
+msgstr ""
+
+msgid "Approve supplier bills for payment, within an approval limit"
 msgstr ""
 
 #, python-format
@@ -5988,6 +6204,32 @@ msgid "%(order)s is %(status)s: its receipts can't be reversed."
 msgstr ""
 
 msgid "Say why the receipt is reversed."
+msgstr ""
+
+#, python-format
+msgid "amount over %(low)s up to %(high)s"
+msgstr ""
+
+#, python-format
+msgid "amount over %(low)s"
+msgstr ""
+
+#, python-format
+msgid "amount up to %(high)s"
+msgstr ""
+
+msgid "any amount"
+msgstr ""
+
+#, python-format
+msgid "%(band)s, department %(department)s"
+msgstr ""
+
+#, python-format
+msgid "Routed to %(role)s approvers (%(band)s)"
+msgstr ""
+
+msgid "Only a draft bill can be submitted for approval."
 msgstr ""
 
 msgid "PO number"
@@ -6041,9 +6283,6 @@ msgid "manual journals"
 msgstr ""
 
 msgid "invoices"
-msgstr ""
-
-msgid "bills"
 msgstr ""
 
 msgid "pay runs"
@@ -6432,16 +6671,7 @@ msgstr ""
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
-msgid "Partially paid"
-msgstr ""
-
-msgid "amount paid"
-msgstr ""
-
 msgid "first viewed at"
-msgstr ""
-
-msgid "void journal"
 msgstr ""
 
 msgid "current revision"
@@ -6514,9 +6744,6 @@ msgstr ""
 
 #, python-format
 msgid "%(invoice)s can't be voided: %(why)s"
-msgstr ""
-
-msgid "remove its payments first."
 msgstr ""
 
 msgid "only approved or sent invoices can be voided."

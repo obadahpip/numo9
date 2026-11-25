@@ -218,6 +218,16 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         db_default=False,
         help_text=_("Every line of a journal on an expense account must name a contact."),
     )
+    # ---- bills (E-02) -------------------------------------------------------------------------
+    bill_requires_supplier_invoice_no = models.BooleanField(
+        _("bills need the supplier's invoice number"),
+        default=True,
+        db_default=True,
+        help_text=_(
+            "A bill can be approved only with the supplier's invoice number, which must not be "
+            "on another bill from the same supplier."
+        ),
+    )
     # ---- journal approval (C-04-T01) --------------------------------------------------------
     journal_approval_threshold = models.DecimalField(
         _("journals need approval from"),
@@ -847,13 +857,14 @@ class LockDate(AuditedModel, OrgOwnedModel):
 
 class DocType(models.TextChoices):
     """Documents numbered by the organisation's sequences (D-02 quotes, D-03 invoices, D-04
-    credit notes, E-01 purchase orders) and contacts (B-01-T02: the contact number). Journals have
-    their own gap-free sequence (C-02) and cheques one per bank account (E-06)."""
+    credit notes, E-01 purchase orders, E-02 bills) and contacts (B-01-T02: the contact number).
+    Journals have their own gap-free sequence (C-02) and cheques one per bank account (E-06)."""
 
     INVOICE = "invoice", _("Invoice")
     CREDIT_NOTE = "credit_note", _("Credit note")
     QUOTE = "quote", _("Quote")
     PURCHASE_ORDER = "purchase_order", _("Purchase order")
+    BILL = "bill", _("Bill")
     CONTACT = "contact", _("Contact")
 
 
@@ -864,6 +875,7 @@ DEFAULT_PREFIXES: dict[str, str] = {
     DocType.CREDIT_NOTE: "CN-",
     DocType.QUOTE: "QU-",
     DocType.PURCHASE_ORDER: "PO-",
+    DocType.BILL: "BILL-",
     DocType.CONTACT: "C-",
 }
 DEFAULT_PADDING = 4

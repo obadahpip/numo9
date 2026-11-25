@@ -34,6 +34,7 @@ const labels = defineMessages({
   documents: { id: "routes.documents", defaultMessage: "Documents", description: "Module name" },
   banking: { id: "routes.banking", defaultMessage: "Banking", description: "Module name" },
   reports: { id: "routes.reports", defaultMessage: "Reports", description: "Module name (K-01)" },
+  bills: { id: "routes.bills", defaultMessage: "Bills", description: "Module name (E-02)" },
   settingsGeneral: {
     id: "routes.settingsGeneral",
     defaultMessage: "Settings: General",
@@ -256,6 +257,13 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.banking,
     settings: "settings/lock-dates",
     aliases: ["bank", "bank-accounts", "bankaccounts", "bank/bankaccounts.aspx", "cash"],
+  },
+  {
+    path: "purchases/bills",
+    feature: "accounting.bills.read",
+    label: labels.bills,
+    settings: "settings/lock-dates",
+    aliases: ["bills", "bill", "payables", "accounts-payable", "accountspayable/search.aspx"],
   },
   {
     // K-01: the report home lists every report, gated ones too (named, never hidden), so the

@@ -171,6 +171,7 @@ class SystemRole(models.TextChoices):
     EHT_PAYABLE = "eht_payable", _("Employer health tax payable")
     INVENTORY = "inventory", _("Inventory")
     FX_GAIN_LOSS = "fx_gain_loss", _("Foreign exchange gain or loss")
+    HOLDBACK_PAYABLE = "holdback_payable", _("Holdbacks payable")
 
 
 R = SystemRole
@@ -200,6 +201,7 @@ ROLE_SUBTYPES: dict[str, frozenset[str]] = {
     R.EHT_PAYABLE: frozenset({S.PAYROLL_LIABILITY}),
     R.INVENTORY: frozenset({S.INVENTORY}),
     R.FX_GAIN_LOSS: frozenset({S.OTHER_INCOME, S.OTHER_EXPENSE}),
+    R.HOLDBACK_PAYABLE: frozenset({S.CURRENT_LIABILITY}),
 }
 
 

@@ -304,6 +304,16 @@
    "tax": "none"
   },
   {
+   "code": "2030",
+   "name": "Holdbacks payable",
+   "subtype": "current_liability",
+   "gifi": "2623",
+   "tax": "none",
+   "system_role": "holdback_payable",
+   "require_contact": true,
+   "note": "Construction holdbacks retained on bills until released (E-02)."
+  },
+  {
    "code": "2050",
    "name": "Unpaid expense claims",
    "subtype": "current_liability",

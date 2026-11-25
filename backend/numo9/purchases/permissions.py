@@ -1,4 +1,4 @@
-"""Permissions of purchase orders and receipts (E-01)."""
+"""Permissions of purchase orders and receipts (E-01) and bills (E-02)."""
 
 from __future__ import annotations
 
@@ -33,5 +33,27 @@ PO_RECEIVE = register(
         _("Record and reverse goods receipts"),
         "purchases",
         Risk.MEDIUM,
+    )
+)
+
+# ---- Bills (E-02) ------------------------------------------------------------------------------
+
+BILLS_VIEW = register(
+    Permission("purchases.bills.view", _("See supplier bills"), "purchases", Risk.LOW)
+)
+BILLS_WRITE = register(
+    Permission(
+        "purchases.bills.write",
+        _("Enter, edit and void supplier bills and release holdbacks"),
+        "purchases",
+        Risk.MEDIUM,
+    )
+)
+BILLS_APPROVE = register(
+    Permission(
+        "purchases.bills.approve",
+        _("Approve supplier bills for payment, within an approval limit"),
+        "purchases",
+        Risk.HIGH,
     )
 )

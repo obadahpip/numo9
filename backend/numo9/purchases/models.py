@@ -209,3 +209,243 @@ class GoodsReceiptLine(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.po_line} × {self.quantity}"
+
+
+# ---- Bills (E-02) ------------------------------------------------------------------------------
+
+
+class BillStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    AWAITING_APPROVAL = "awaiting_approval", _("Awaiting approval")
+    AWAITING_PAYMENT = "awaiting_payment", _("Awaiting payment")
+    PARTIALLY_PAID = "partially_paid", _("Partially paid")
+    PAID = "paid", _("Paid")
+    VOID = "void", _("Void")
+
+
+#: Statuses of a bill that has posted to the ledger (it has its number and journal).
+BILL_POSTED_STATUSES: frozenset[str] = frozenset(
+    {
+        BillStatus.AWAITING_PAYMENT,
+        BillStatus.PARTIALLY_PAID,
+        BillStatus.PAID,
+        BillStatus.VOID,
+    }
+)
+
+
+class HoldbackType(models.TextChoices):
+    NONE = "none", _("No holdback")
+    AMOUNT = "amount", _("Amount")
+    PERCENT = "percent", _("Percent of the total")
+
+
+class Bill(DocumentBase):
+    """A supplier's bill (E-02-T01) on the shared document base, purchase side.
+
+    Status: Draft → (Awaiting approval, when a routing rule or the approver's limit asks,
+    E-02-T07) → Awaiting payment (approved and posted: Dr expense / asset, Dr ITC, Cr AP, Cr
+    holdback, E-02-T05) → Partially paid → Paid, or Void (E-02-T09).
+
+    - ``number`` — Numo9's own number (``BILL-0001``), taken at approval; a draft has none;
+    - ``supplier_invoice_no`` — the supplier's invoice number, **unique per supplier** among the
+      bills that aren't void (the same number from two suppliers is fine, gap-24);
+    - ``department`` — the department (a tracking option) the routing rules read (E-02-T07);
+    - holdback (construction): ``holdback_type`` none / amount / percent of the total and
+      ``holdback_value``; ``holdback_amount`` is posted to Holdback payable instead of AP and
+      ``holdback_released`` is what has been released to AP since (E-02-T06);
+    - ``purchase_order`` — the PO it bills (E-02-T08), if any.
+    """
+
+    number = models.CharField(_("number"), max_length=40, blank=True)
+    supplier_invoice_no = models.CharField(_("supplier invoice number"), max_length=100, blank=True)
+    status = models.CharField(
+        _("status"), max_length=20, choices=BillStatus.choices, default=BillStatus.DRAFT
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    department = models.CharField(_("department"), max_length=100, blank=True)
+    purchase_order = models.ForeignKey(
+        PurchaseOrder,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bills",
+        verbose_name=_("purchase order"),
+    )
+    holdback_type = models.CharField(
+        _("holdback"), max_length=8, choices=HoldbackType.choices, default=HoldbackType.NONE
+    )
+    holdback_value = models.DecimalField(
+        _("holdback value"), max_digits=18, decimal_places=4, default=Decimal("0")
+    )
+    holdback_amount = models.DecimalField(
+        _("holdback amount"), max_digits=18, decimal_places=2, default=Decimal("0")
+    )
+    holdback_released = models.DecimalField(
+        _("holdback released"), max_digits=18, decimal_places=2, default=Decimal("0")
+    )
+    amount_paid = models.DecimalField(
+        _("amount paid"), max_digits=18, decimal_places=2, default=Decimal("0")
+    )
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bill",
+        verbose_name=_("journal"),
+    )
+    void_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="voided_bill",
+        verbose_name=_("void journal"),
+    )
+    submitted_by = _user(_("submitted by"))
+    submitted_at = models.DateTimeField(_("submitted at"), null=True, blank=True)
+    approved_by = _user(_("approved by"))
+    approved_at = models.DateTimeField(_("approved at"), null=True, blank=True)
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+
+    class Meta(DocumentBase.Meta):
+        abstract = False
+        ordering = ("-date", "-pk")
+        verbose_name = _("bill")
+        verbose_name_plural = _("bills")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            *DocumentBase.header_constraints("purchases_bill"),
+            models.CheckConstraint(
+                condition=models.Q(status__in=BillStatus.values),
+                name="purchases_bill_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(holdback_type__in=HoldbackType.values),
+                name="purchases_bill_holdback_type_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(holdback_value__gte=0)
+                & models.Q(holdback_amount__gte=0)
+                & models.Q(holdback_released__gte=0)
+                & models.Q(holdback_released__lte=models.F("holdback_amount")),
+                name="purchases_bill_holdback_amounts",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(holdback_type=HoldbackType.PERCENT)
+                | models.Q(holdback_value__lte=100),
+                name="purchases_bill_holdback_pct_max",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount_paid__gte=0), name="purchases_bill_paid_positive"
+            ),
+            models.UniqueConstraint(
+                fields=["organisation", "number"],
+                condition=~models.Q(number=""),
+                name="purchases_bill_number_unique",
+            ),
+            # gap-24: one supplier invoice number per supplier, among bills that aren't void.
+            models.UniqueConstraint(
+                fields=["organisation", "contact", "supplier_invoice_no"],
+                condition=~models.Q(supplier_invoice_no="")
+                & ~models.Q(status="void")
+                & models.Q(deleted_at__isnull=True),
+                name="purchases_bill_supplier_invoice_unique",
+            ),
+            # A posted bill has its number and its journal; a draft has neither.
+            models.CheckConstraint(
+                condition=~models.Q(status__in=sorted(BILL_POSTED_STATUSES))
+                | (~models.Q(number="") & models.Q(journal_entry__isnull=False)),
+                name="purchases_bill_posted_numbered",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "status"], name="purchases_bill_status_idx"),
+            models.Index(
+                fields=["organisation", "contact", "date"], name="purchases_bill_contact_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.number or str(_("Draft bill"))
+
+    @property
+    def is_posted(self) -> bool:
+        return self.status in BILL_POSTED_STATUSES
+
+    @property
+    def amount_due(self) -> Decimal:
+        """What is owed now (AP): the total less the holdback still held and the payments."""
+        held = Decimal(self.holdback_amount) - Decimal(self.holdback_released)
+        return Decimal(self.total) - held - Decimal(self.amount_paid)
+
+    @property
+    def holdback_outstanding(self) -> Decimal:
+        return Decimal(self.holdback_amount) - Decimal(self.holdback_released)
+
+
+class BillLine(DocumentLineBase):
+    document = models.ForeignKey(
+        Bill, on_delete=models.CASCADE, related_name="lines", verbose_name=_("bill")
+    )
+    po_line = models.ForeignKey(
+        PurchaseOrderLine,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bill_lines",
+        verbose_name=_("PO line"),
+    )
+
+    class Meta(DocumentLineBase.Meta):
+        abstract = False
+        verbose_name = _("bill line")
+        verbose_name_plural = _("bill lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = DocumentLineBase.line_constraints(
+            "purchases_billline"
+        )
+
+
+class ApprovalRoutingRule(AuditedModel, OrgOwnedModel):
+    """Who approves a bill (E-02-T07): bills whose total is in an **amount band** (``min_amount``
+    < total ≤ ``max_amount``; an empty bound is open) and, optionally, of one **department** go
+    to the people holding ``approver_role`` — "Routed to Finance approvers (amount > 2,000)".
+    Rules are tried in ``position`` order; the first that matches wins. ``doc_type`` is ``bill``
+    now (the approval document types of A-03), so other documents can route the same way later.
+    """
+
+    doc_type = models.CharField(_("document type"), max_length=32, default="bill")
+    name = models.CharField(_("name"), max_length=100)
+    position = models.PositiveIntegerField(_("order"), default=0)
+    min_amount = models.DecimalField(
+        _("more than"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    max_amount = models.DecimalField(
+        _("up to"), max_digits=18, decimal_places=2, null=True, blank=True
+    )
+    department = models.CharField(_("department"), max_length=100, blank=True)
+    approver_role = models.ForeignKey(
+        "rbac.Role", on_delete=models.PROTECT, related_name="+", verbose_name=_("approvers")
+    )
+    is_active = models.BooleanField(_("active"), default=True)
+
+    class Meta:
+        ordering = ("doc_type", "position", "pk")
+        verbose_name = _("approval routing rule")
+        verbose_name_plural = _("approval routing rules")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(min_amount__isnull=True)
+                | models.Q(max_amount__isnull=True)
+                | models.Q(max_amount__gt=models.F("min_amount")),
+                name="purchases_routing_band_valid",
+            ),
+            models.CheckConstraint(
+                condition=(models.Q(min_amount__isnull=True) | models.Q(min_amount__gte=0))
+                & (models.Q(max_amount__isnull=True) | models.Q(max_amount__gte=0)),
+                name="purchases_routing_amounts_positive",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 570   Remaining: 2217   Progress: 20.45%
+TOTAL ATOMIC TASKS: 2787   Completed: 586   Remaining: 2201   Progress: 21.03%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -758,22 +758,22 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-01-T19 — Gap tests gap-46, gap-49, gap-54, gap-55; i18n
 
 [E-02]
-❌ E-02-T01 — Bill, BillLine models (supplier_invoice_no, holdback fields, department/tracking)
-❌ E-02-T02 — Live uniqueness endpoint /bills/check-number
-❌ E-02-T03 — Duplicate-suspect finder (fuzzy amount/date) + review list
-❌ E-02-T04 — Purchase-side calculator integration incl. partial ITC split
-❌ E-02-T05 — Posting service (AP, ITC, non-recoverable, holdback)
-❌ E-02-T06 — Holdback release service
-❌ E-02-T07 — ApprovalRoutingRule (amount band, department → approver group) + evaluator
-❌ E-02-T08 — Bill from PO/receipt + match panel data (uses E-01-T07)
-❌ E-02-T09 — Void & lock checks
-❌ E-02-T10 — API /api/v1/bills/ CRUD + approve/void/release-holdback; feature key accounting.purchases.bills
-❌ E-02-T11 — UI: bill editor split view (attachment preview + form)
-❌ E-02-T12 — UI: inline supplier-invoice-number check + duplicate warning panel
-❌ E-02-T13 — UI: match panel (green/amber/red per line) + "Approve with variance"
-❌ E-02-T14 — UI: routing explanation and approvals inbox registration
-❌ E-02-T16 — Search registration + quick-create N B
-❌ E-02-T17 — Fixtures: 50 purchase documents across provinces incl. partial ITC
+✅ E-02-T01 — Bill, BillLine models (supplier_invoice_no, holdback fields, department/tracking)
+✅ E-02-T02 — Live uniqueness endpoint /bills/check-number
+✅ E-02-T03 — Duplicate-suspect finder (fuzzy amount/date) + review list
+✅ E-02-T04 — Purchase-side calculator integration incl. partial ITC split
+✅ E-02-T05 — Posting service (AP, ITC, non-recoverable, holdback)
+✅ E-02-T06 — Holdback release service
+✅ E-02-T07 — ApprovalRoutingRule (amount band, department → approver group) + evaluator
+✅ E-02-T08 — Bill from PO/receipt + match panel data (uses E-01-T07)
+✅ E-02-T09 — Void & lock checks
+✅ E-02-T10 — API /api/v1/bills/ CRUD + approve/void/release-holdback; feature key accounting.purchases.bills
+✅ E-02-T11 — UI: bill editor split view (attachment preview + form)
+✅ E-02-T12 — UI: inline supplier-invoice-number check + duplicate warning panel
+✅ E-02-T13 — UI: match panel (green/amber/red per line) + "Approve with variance"
+✅ E-02-T14 — UI: routing explanation and approvals inbox registration
+✅ E-02-T16 — Search registration + quick-create N B
+✅ E-02-T17 — Fixtures: 50 purchase documents across provinces incl. partial ITC
 
 [G-03]
 ❌ G-03-T01 — Line-mapping specification (which tax types/components feed lines 101–115), signed off by the client

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 13:17-0500\n"
+"POT-Creation-Date: 2026-11-24 15:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3047,9 +3047,6 @@ msgstr ""
 msgid "Create a bill"
 msgstr "Créé"
 
-msgid "Bills arrive with Purchases in Phase 1."
-msgstr ""
-
 msgid "Create an expense claim"
 msgstr ""
 
@@ -4503,6 +4500,11 @@ msgstr ""
 msgid "Foreign exchange gain or loss"
 msgstr ""
 
+#, fuzzy
+#| msgid "Accountant"
+msgid "Holdbacks payable"
+msgstr "Comptable"
+
 msgid "Current assets"
 msgstr ""
 
@@ -5634,6 +5636,14 @@ msgstr "contact exigé sur les lignes de dépenses"
 msgid "Every line of a journal on an expense account must name a contact."
 msgstr "Chaque ligne d'une écriture sur un compte de dépenses doit indiquer un contact."
 
+#, fuzzy
+#| msgid "invoice number"
+msgid "bills need the supplier's invoice number"
+msgstr "numéro de facture"
+
+msgid "A bill can be approved only with the supplier's invoice number, which must not be on another bill from the same supplier."
+msgstr ""
+
 msgid "journals need approval from"
 msgstr "les écritures doivent être approuvées à partir de"
 
@@ -6166,6 +6176,63 @@ msgid "feature flags"
 msgstr "indicateurs de fonctionnalité"
 
 #, fuzzy
+#| msgid "Created"
+msgid "a draft bill"
+msgstr "Créé"
+
+#, python-format
+msgid "Already used on %(bill)s (%(date)s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "There's no journal with this id in this organisation."
+msgid "There's no bill with this id in this organisation."
+msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisation."
+
+#, fuzzy
+#| msgid "That document doesn't exist."
+msgid "That supplier doesn't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy
+#| msgid "That document doesn't exist."
+msgid "Those payment terms don't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy, python-format
+#| msgid "That document doesn't exist."
+msgid "That %(field)s doesn't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy
+#| msgid "The end date is before the start date."
+msgid "The due date is before the bill date."
+msgstr "La date de fin est antérieure à la date de début."
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft bill can be edited: void it to correct it."
+msgstr "Seul un brouillon peut être passé."
+
+msgid "Someone else saved this bill: reload it to see their changes."
+msgstr ""
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft bill can be deleted: void a posted bill."
+msgstr "Seul un brouillon peut être passé."
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "There's no such purchase order."
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+#, fuzzy
+#| msgid "purchase orders"
+msgid "There's no such goods receipt."
+msgstr "bons de commande"
+
+#, fuzzy
 #| msgid "purchase orders"
 msgid "Draft purchase order"
 msgstr "bons de commande"
@@ -6174,6 +6241,16 @@ msgstr "bons de commande"
 #| msgid "Purchase order"
 msgid "Purchase orders"
 msgstr "Bon de commande"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "Bill without a supplier number"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "Bill"
+msgid "Bills"
+msgstr "Facture fournisseur"
 
 #, fuzzy, python-format
 #| msgid "%(journal)s isn't waiting for approval."
@@ -6194,6 +6271,114 @@ msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'app
 #| msgid "This override request is already %(status)s."
 msgid "%(order)s isn't a draft."
 msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "Only an approved purchase order can be billed."
+msgstr ""
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "That receipt isn't one of this purchase order's."
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+msgid "Everything received on this purchase order is billed already."
+msgstr ""
+
+msgid "Add a Holdbacks payable account to the chart of accounts to post holdbacks."
+msgstr ""
+
+#, fuzzy
+#| msgid "bank account"
+msgid "Holdback"
+msgstr "compte bancaire"
+
+msgid "The holdback is more than the amount owed on the bill."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Bill %(number)s — %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, fuzzy
+#| msgid "Draft"
+msgid "draft"
+msgstr "Brouillon"
+
+msgid "Enter the supplier's invoice number before approving the bill."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(supplier)s's invoice %(number)s is already on %(bill)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(bill)s is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "Every line with an amount needs an account before the bill is approved."
+msgstr ""
+
+msgid "A bill's total must be more than zero: for money the supplier owes you, enter a supplier credit."
+msgstr ""
+
+#, fuzzy
+#| msgid "You wrote or submitted %(journal)s: someone else must approve or reject it."
+msgid "You wrote or submitted this bill: someone else must approve it."
+msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
+
+#, python-format
+msgid "%(why)s: you aren't one of them."
+msgstr ""
+
+msgid "The bill doesn't match its purchase order and receipts: review the match panel and approve with variance."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s has no holdback to release."
+msgstr ""
+
+#, python-format
+msgid "Release between 0.01 and %(held)s: that is what is still held."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Holdback released — bill %(number)s, %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Holdback released"
+msgstr "Comptable"
+
+msgid "remove its payments first."
+msgstr ""
+
+msgid "reverse the holdback release first."
+msgstr ""
+
+msgid "only bills awaiting payment can be voided; delete a draft instead."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s can't be voided: %(why)s"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "invoice number"
+msgid "Void of bill %(number)s"
+msgstr "numéro de facture"
+
+#, python-format
+msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
+msgstr ""
+
+#, fuzzy
+#| msgid "Created"
+msgid "A draft bill"
+msgstr "Créé"
 
 #, fuzzy, python-format
 #| msgid "Invite users to the organisation"
@@ -6349,6 +6534,101 @@ msgid "goods receipt lines"
 msgstr ""
 
 #, fuzzy
+#| msgid "first payment"
+msgid "Awaiting payment"
+msgstr "premier paiement"
+
+msgid "Partially paid"
+msgstr ""
+
+msgid "No holdback"
+msgstr ""
+
+#, fuzzy
+#| msgid "Percent off"
+msgid "Percent of the total"
+msgstr "Pourcentage de rabais"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "supplier invoice number"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "Statement"
+msgid "department"
+msgstr "Relevé"
+
+msgid "holdback"
+msgstr ""
+
+msgid "holdback value"
+msgstr ""
+
+#, fuzzy
+#| msgid "bank account"
+msgid "holdback amount"
+msgstr "compte bancaire"
+
+msgid "holdback released"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount paid"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "journal"
+msgid "void journal"
+msgstr "écriture"
+
+#, fuzzy
+#| msgid "bills"
+msgid "bill"
+msgstr "factures fournisseurs"
+
+msgid "bills"
+msgstr "factures fournisseurs"
+
+#, fuzzy
+#| msgid "Created"
+msgid "Draft bill"
+msgstr "Créé"
+
+#, fuzzy
+#| msgid "bills"
+msgid "bill line"
+msgstr "factures fournisseurs"
+
+#, fuzzy
+#| msgid "Declined"
+msgid "bill lines"
+msgstr "Refusée"
+
+msgid "order"
+msgstr ""
+
+#, fuzzy
+#| msgid "Before tax"
+msgid "more than"
+msgstr "Avant taxes"
+
+msgid "up to"
+msgstr ""
+
+#, fuzzy
+#| msgid "Approved"
+msgid "approvers"
+msgstr "Approuvée"
+
+msgid "approval routing rule"
+msgstr ""
+
+msgid "approval routing rules"
+msgstr ""
+
+#, fuzzy
 #| msgid "purchase orders"
 msgid "See purchase orders and goods receipts"
 msgstr "bons de commande"
@@ -6362,6 +6642,12 @@ msgid "Approve purchase orders, within an approval limit"
 msgstr ""
 
 msgid "Record and reverse goods receipts"
+msgstr ""
+
+msgid "Enter, edit and void supplier bills and release holdbacks"
+msgstr ""
+
+msgid "Approve supplier bills for payment, within an approval limit"
 msgstr ""
 
 #, python-format
@@ -6396,6 +6682,36 @@ msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent 
 
 msgid "Say why the receipt is reversed."
 msgstr ""
+
+#, python-format
+msgid "amount over %(low)s up to %(high)s"
+msgstr ""
+
+#, python-format
+msgid "amount over %(low)s"
+msgstr ""
+
+#, python-format
+msgid "amount up to %(high)s"
+msgstr ""
+
+#, fuzzy
+#| msgid "amount"
+msgid "any amount"
+msgstr "montant"
+
+#, python-format
+msgid "%(band)s, department %(department)s"
+msgstr ""
+
+#, python-format
+msgid "Routed to %(role)s approvers (%(band)s)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft bill can be submitted for approval."
+msgstr "Seul un brouillon peut être passé."
 
 #, fuzzy
 #| msgid "Number"
@@ -6470,9 +6786,6 @@ msgstr "écritures de journal manuelles"
 #| msgid "Invoice"
 msgid "invoices"
 msgstr "Facture"
-
-msgid "bills"
-msgstr "factures fournisseurs"
 
 msgid "pay runs"
 msgstr "paies"
@@ -6907,23 +7220,10 @@ msgstr ""
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
-msgid "Partially paid"
-msgstr ""
-
-#, fuzzy
-#| msgid "amount due"
-msgid "amount paid"
-msgstr "montant dû"
-
 #, fuzzy
 #| msgid "first seen"
 msgid "first viewed at"
 msgstr "vu pour la première fois"
-
-#, fuzzy
-#| msgid "journal"
-msgid "void journal"
-msgstr "écriture"
 
 msgid "current revision"
 msgstr ""
@@ -7022,9 +7322,6 @@ msgstr ""
 
 #, python-format
 msgid "%(invoice)s can't be voided: %(why)s"
-msgstr ""
-
-msgid "remove its payments first."
 msgstr ""
 
 msgid "only approved or sent invoices can be voided."
