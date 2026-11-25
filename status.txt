@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 625   Remaining: 2162   Progress: 22.43%
+TOTAL ATOMIC TASKS: 2787   Completed: 626   Remaining: 2161   Progress: 22.46%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -824,7 +824,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-03a-T18 — Timeline UI component (period blocks, status colours, switch markers, hover cards with due dates)
 ✅ G-03a-T19 — Change-frequency wizard with preview diff
 ✅ G-03a-T20 — Out-of-cycle period dialog with overlap preview and realignment explanation
-❌ G-03a-T21 — Cycle change history panel (who, when, approval ref)
+✅ G-03a-T21 — Cycle change history panel (who, when, approval ref)
 ❌ G-03a-T22 — Compliance fixtures: switch Q→M 1 Jul; A→Q mid-year stub; FYE 31 Mar; leap year; two switches in a year
 ❌ G-03a-T23 — i18n, docs "Changing your GST/HST filing frequency"
 
