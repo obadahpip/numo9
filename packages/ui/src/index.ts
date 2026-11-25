@@ -33,3 +33,4 @@ export * from "./line-grid";
 export * from "./states";
 export * from "./entitlements";
 export * from "./charts";
+export * from "./report-table";

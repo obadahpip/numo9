@@ -423,7 +423,9 @@ export function LineGrid({
               </th>
             </tr>
           </thead>
-          <tbody className={cn(stacked && "max-[1025px]:block max-[1025px]:space-y-3 max-[1025px]:p-2")}>
+          <tbody
+            className={cn(stacked && "max-[1025px]:block max-[1025px]:space-y-3 max-[1025px]:p-2")}
+          >
             {lines.map((line, index) => (
               <tr
                 key={line.id}
@@ -606,7 +608,9 @@ export function LineGrid({
               <tr
                 data-totals=""
                 role="row"
-                className={cn(stacked && "max-[1025px]:flex max-[1025px]:flex-wrap max-[1025px]:justify-end")}
+                className={cn(
+                  stacked && "max-[1025px]:flex max-[1025px]:flex-wrap max-[1025px]:justify-end",
+                )}
               >
                 <th
                   scope="row"

@@ -140,8 +140,7 @@ def save_custom(
 def publish(layout: ReportLayout, user: Any, today: dt.date) -> ReportLayout:
     from numo9.tenancy.context import org_context
 
-    from .header import report_header
-    from .parameters import DateRange
+    from .header import header_for
 
     with org_context(layout.organisation), transaction.atomic():
         locked: ReportLayout = ReportLayout.objects.select_for_update().get(pk=layout.pk)
@@ -152,23 +151,7 @@ def publish(layout: ReportLayout, user: Any, today: dt.date) -> ReportLayout:
             )
         report = registry.get(locked.report_id)
         result = report.run(locked.organisation, locked.params)
-        params = result.params
-        if params.get("date_from") and params.get("date_to"):
-            header = report_header(
-                locked.organisation,
-                title=str(report.name),
-                today=today,
-                period=DateRange(params["date_from"], params["date_to"]),
-                book=params.get("book", "accounting"),
-            )
-        else:
-            header = report_header(
-                locked.organisation,
-                title=str(report.name),
-                today=today,
-                as_of=params.get("as_of") or today,
-                book=params.get("book", "accounting"),
-            )
+        header = header_for(locked.organisation, report, result.params, today=today)
         body = result.as_dict()
         body["rows"] = [row.as_dict() for row in apply_layout(result, locked.config)]
         body["header"] = header.as_dict()

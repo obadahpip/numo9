@@ -4,12 +4,13 @@ import { findOrgModule } from "./routes";
 import { navEntryFor, practiceNav, PRIMARY_NAV, primaryNav } from "./navigation";
 
 describe("primary navigation (A-10-T05)", () => {
-  it("lists the modules in task order (Banking from F-01)", () => {
+  it("lists the modules in task order (Banking from F-01, Reports from K-01)", () => {
     expect(PRIMARY_NAV.map((entry) => entry.id)).toEqual([
       "home",
       "contacts",
       "accounting",
       "banking",
+      "reports",
       "documents",
       "settings",
     ]);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:35-0500\n"
+"POT-Creation-Date: 2026-11-24 13:17-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6276,6 +6276,9 @@ msgstr ""
 msgid "There's no such report."
 msgstr ""
 
+msgid "There's no such report layout."
+msgstr ""
+
 #, python-format
 msgid "%(start)s to %(end)s"
 msgstr ""
@@ -6329,6 +6332,15 @@ msgstr ""
 msgid "report notes"
 msgstr ""
 
+msgid "added at"
+msgstr ""
+
+msgid "favourite report"
+msgstr ""
+
+msgid "favourite reports"
+msgstr ""
+
 msgid "Run reports and drill down to their lines"
 msgstr ""
 
@@ -6341,6 +6353,12 @@ msgstr ""
 msgid "Every account's debit or credit balance on a date, in one book."
 msgstr ""
 
+msgid "TB"
+msgstr ""
+
+msgid "balances"
+msgstr ""
+
 msgid "Total"
 msgstr ""
 
@@ -6350,6 +6368,12 @@ msgstr ""
 msgid "Debits, credits and net movement of each account for a period."
 msgstr ""
 
+msgid "movements"
+msgstr ""
+
+msgid "account summary"
+msgstr ""
+
 msgid "Debits"
 msgstr ""
 
@@ -6357,6 +6381,9 @@ msgid "Credits"
 msgstr ""
 
 msgid "Net movement"
+msgstr ""
+
+msgid "No activity in this period"
 msgstr ""
 
 msgid "There's no invoice with this id in this organisation."
@@ -6637,6 +6664,9 @@ msgid "aging"
 msgstr ""
 
 msgid "dashboard"
+msgstr ""
+
+msgid "report home"
 msgstr ""
 
 msgid "customers"
@@ -7235,9 +7265,6 @@ msgstr ""
 msgid "group"
 msgstr ""
 
-msgid "added at"
-msgstr ""
-
 msgid "organisation in a group"
 msgstr ""
 
@@ -7358,4 +7385,10 @@ msgid "Workload"
 msgstr ""
 
 msgid "Organisations per staff member and their open tasks."
+msgstr ""
+
+msgid "Balance sheet"
+msgstr ""
+
+msgid "statement of financial position"
 msgstr ""

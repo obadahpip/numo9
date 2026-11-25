@@ -55,3 +55,22 @@ page), same host as above, `NUMO9_DEMO_OPEN_PER_HOUR` raised for the run.
 | Requests | p50 | p95 | p99 | max | Threshold |
 |---:|---:|---:|---:|---:|---|
 | 344 demos opened | 352 ms | 575 ms | 2,090 ms | 2,210 ms | ✅ p95 < 10 s, 344/344 opened |
+
+## Report engine — 2026-11-24 (K-01-T17)
+
+`tools/perf/k6/reports.js` on the `seed_report_books` organisation (100,000 posted journal lines
+over the last 12 months, 40 accounts): 5 people run reports for 60 s with 0.5–1.5 s think time —
+account activity for the last 12 months, the trial balance as at today, a drill-down of one figure
+and the 12-month report as XLSX, in turn. PostgreSQL 16, gunicorn 4 sync workers, k6 v0.54.0 on
+the same 2-vCPU host.
+
+| Endpoint | Requests | p50 | p95 | p99 | max | Threshold |
+|---|---:|---:|---:|---:|---:|---|
+| Report run (`/run`) | 128 | 138 ms | 259 ms | 667 ms | 1,380 ms | ✅ p95 < 3 s |
+| Export XLSX (`/export`) | 64 | 125 ms | 373 ms | 914 ms | 1,670 ms | ✅ p95 < 3 s |
+| Drill-down (`/drill`) | 63 | 141 ms | 211 ms | 414 ms | 629 ms | ✅ p95 < 1 s |
+
+269 requests, none failed; every run answered rows and totals.
+
+    python backend/manage.py seed_report_books --lines 100000 --password "$SEED_PASSWORD"
+    k6 run -e BASE_URL=http://127.0.0.1:8000 -e PASSWORD="$SEED_PASSWORD" tools/perf/k6/reports.js

@@ -87,3 +87,36 @@ def report_header(
         basis_label=basis_label,
         book_label=book_label,
     )
+
+
+def header_for(
+    organisation: Any,
+    report: Any,
+    params: dict[str, Any],
+    *,
+    today: dt.date,
+    language: str | None = None,
+) -> ReportHeader:
+    """The header of a run of ``report`` with its cleaned ``params``: a period when the report
+    takes ``date_from``/``date_to``, a balance date (``as_of``, today when empty) otherwise."""
+    book = params.get("book") or "accounting"
+    basis = params.get("basis")
+    if params.get("date_from") and params.get("date_to"):
+        return report_header(
+            organisation,
+            title=str(report.name),
+            today=today,
+            period=DateRange(params["date_from"], params["date_to"]),
+            basis=basis,
+            book=book,
+            language=language,
+        )
+    return report_header(
+        organisation,
+        title=str(report.name),
+        today=today,
+        as_of=params.get("as_of") or today,
+        basis=basis,
+        book=book,
+        language=language,
+    )

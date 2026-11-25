@@ -128,3 +128,29 @@ class ReportNote(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.report_id} · {self.row_key}/{self.column_key}"
+
+
+class ReportFavourite(OrgOwnedModel):
+    """A report a person starred on the report home (K-01-T11/T12): per person, per organisation."""
+
+    report_id = models.CharField(_("report"), max_length=60)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("person"),
+    )
+    created_at = models.DateTimeField(_("added at"), auto_now_add=True)
+
+    class Meta:
+        ordering = ("report_id",)
+        verbose_name = _("favourite report")
+        verbose_name_plural = _("favourite reports")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "user", "report_id"], name="reports_favourite_unique"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.report_id} ★ {self.user_id}"

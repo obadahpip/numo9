@@ -102,15 +102,27 @@ class RequiresFeature(BasePermission):
             return True
         if get_resolver().allows(current_org(), key):
             return True
-        product = product_of(key)
-        error = api_error(errors.FEATURE_NOT_IN_PACKAGE, product=product_name(product))
-        error.extra = {
-            "feature": key,
-            "product": product,
-            "product_name": product_name(product),
-            "packages": packages_with(product),
-        }
-        raise error
+        raise not_in_package(key)
+
+
+def not_in_package(key: str) -> Exception:
+    """The 402 ``entitlement.feature_not_in_package`` error for ``key`` — for a view that checks
+    a key it only knows at run time (the report being run, K-01-T11)."""
+    product = product_of(key)
+    error = api_error(errors.FEATURE_NOT_IN_PACKAGE, product=product_name(product))
+    error.extra = {
+        "feature": key,
+        "product": product,
+        "product_name": product_name(product),
+        "packages": packages_with(product),
+    }
+    return error
+
+
+def require_feature(key: str) -> None:
+    """Raise the 402 unless the current organisation's package includes ``key``."""
+    if key != CORE and not get_resolver().allows(current_org(), key):
+        raise not_in_package(key)
 
 
 def packages_with(product: str) -> list[dict[str, str]]:

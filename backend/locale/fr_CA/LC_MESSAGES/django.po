@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 07:35-0500\n"
+"POT-Creation-Date: 2026-11-24 13:17-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6704,6 +6704,9 @@ msgstr "Ses propres talons de paie, congés et notes de frais (libre-service)."
 msgid "There's no such report."
 msgstr ""
 
+msgid "There's no such report layout."
+msgstr ""
+
 #, fuzzy, python-format
 #| msgid "%(start)s to %(end)s · times in %(zone)s"
 msgid "%(start)s to %(end)s"
@@ -6775,6 +6778,17 @@ msgstr "Note de crédit"
 msgid "report notes"
 msgstr "Note de crédit"
 
+msgid "added at"
+msgstr "ajoutée le"
+
+msgid "favourite report"
+msgstr ""
+
+#, fuzzy
+#| msgid "Reports"
+msgid "favourite reports"
+msgstr "Rapports"
+
 msgid "Run reports and drill down to their lines"
 msgstr ""
 
@@ -6788,6 +6802,14 @@ msgstr "leur solde"
 
 msgid "Every account's debit or credit balance on a date, in one book."
 msgstr ""
+
+msgid "TB"
+msgstr ""
+
+#, fuzzy
+#| msgid "Balance"
+msgid "balances"
+msgstr "Solde"
 
 #, fuzzy
 #| msgid "total"
@@ -6803,6 +6825,16 @@ msgid "Debits, credits and net movement of each account for a period."
 msgstr ""
 
 #, fuzzy
+#| msgid "Documents"
+msgid "movements"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "account summary"
+msgstr "Comptabilité"
+
+#, fuzzy
 #| msgid "Debit"
 msgid "Debits"
 msgstr "Débit"
@@ -6813,6 +6845,9 @@ msgid "Credits"
 msgstr "Crédit"
 
 msgid "Net movement"
+msgstr ""
+
+msgid "No activity in this period"
 msgstr ""
 
 #, fuzzy
@@ -7208,6 +7243,11 @@ msgstr ""
 
 msgid "dashboard"
 msgstr ""
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "report home"
+msgstr "Note de crédit"
 
 #, fuzzy
 #| msgid "Stripe customer"
@@ -7844,9 +7884,6 @@ msgstr "groupes d’organisations"
 msgid "group"
 msgstr ""
 
-msgid "added at"
-msgstr "ajoutée le"
-
 msgid "organisation in a group"
 msgstr "organisation dans un groupe"
 
@@ -7978,6 +8015,16 @@ msgstr ""
 
 msgid "Organisations per staff member and their open tasks."
 msgstr ""
+
+#, fuzzy
+#| msgid "Balance"
+msgid "Balance sheet"
+msgstr "Solde"
+
+#, fuzzy
+#| msgid "Statement of activity"
+msgid "statement of financial position"
+msgstr "Relevé des opérations"
 
 #~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
 #~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."
