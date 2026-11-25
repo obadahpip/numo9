@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import api, filing_api, settings_api
+from . import api, filing_api, resolve_api, settings_api
 
 ORG = "o/<uuid:org>/"
 REG = f"{ORG}tax/registrations/<uuid:public_id>/"
@@ -15,6 +15,7 @@ urlpatterns = [
         name="tax-component",
     ),
     path(f"{ORG}tax/codes", api.TaxCodeListView.as_view(), name="tax-codes"),
+    path(f"{ORG}tax/resolve", resolve_api.TaxResolveView.as_view(), name="tax-resolve"),
     path(f"{ORG}tax/numbers/check", api.TaxNumberCheckView.as_view(), name="tax-number-check"),
     path(f"{ORG}tax/codes/<uuid:public_id>", api.TaxCodeDetailView.as_view(), name="tax-code"),
     path(

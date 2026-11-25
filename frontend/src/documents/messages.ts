@@ -137,6 +137,16 @@ export const lines = defineMessages({
     defaultMessage: "Why this tax code, line {line}",
     description: "Button with the reason for the line's tax code",
   },
+  taxAuto: {
+    id: "documents.lines.taxAuto",
+    defaultMessage: "auto",
+    description: "Chip: the line's tax code is the default (G-02-T07)",
+  },
+  taxReset: {
+    id: "documents.lines.taxReset",
+    defaultMessage: "Changed from the default, line {line}: reset to the default",
+    description: "Override dot button (G-02-T07)",
+  },
 });
 
 export const accountTypes = defineMessages({

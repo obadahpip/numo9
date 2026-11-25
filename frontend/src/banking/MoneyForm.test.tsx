@@ -108,6 +108,25 @@ function serve() {
             },
           };
         if (url.includes("/calculate")) return { status: 503, body: {} };
+        if (url.includes("/tax/resolve")) {
+          // G-02-T08: a sale placed in BC without a PST registration.
+          const body = JSON.parse(String(init?.body)) as { side: string; lines: unknown[] };
+          return {
+            body: {
+              lines: body.lines.map(() => ({
+                key: body.side === "sales" ? "sales.BC.gst" : "purchase.ON.standard",
+                tax_code: null,
+                source: "place_of_supply",
+                auto: true,
+                explanation: "tax.pos.gst_unregistered_pst",
+                params: { province: "BC" },
+                province: "BC",
+                flags: [],
+                warnings: body.side === "sales" ? ["tax.pos.pst_unregistered"] : [],
+              })),
+            },
+          };
+        }
         if (url.endsWith("/bank-transactions") && init?.method === "POST") {
           posted.push(JSON.parse(String(init.body)) as Record<string, unknown>);
           return { status: 201, body: { id: "t1" } };
@@ -208,4 +227,16 @@ it("moneyLines keeps lines with an account and an amount; no-tax mode sends no c
     { account: OFFICE, amount: "10.00", description: "Paper", tax_code: "purchase.ON.standard" },
   ]);
   expect(moneyLines([line({})], codes, "no_tax")[0]?.tax_code).toBe("");
+});
+
+it("receive: the PST warning shows inline and doesn't block (G-02-T08)", async () => {
+  serve();
+  renderWithIntl(<MoneyForm org={ORG} kind="receive" account={ACCOUNTS[0]?.id} />);
+  expect(
+    await screen.findByText(
+      /Line 1 is a taxable sale into BC, where you aren't registered for its PST/,
+    ),
+  ).toBeVisible();
+  await chooseAccount(/Sales/);
+  expect(screen.getByRole("combobox", { name: "Tax code, line 1" })).toBeEnabled();
 });

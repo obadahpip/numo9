@@ -58,6 +58,8 @@ export function useDocumentLinesLabels(side: "sales" | "purchase" = "sales"): Do
     taxOthers: fm(lines.taxOthers),
     taxExpired: fm(lines.taxExpired),
     taxWhy: (line) => fm(lines.taxWhy, { line }),
+    taxAuto: fm(lines.taxAuto),
+    taxReset: (line) => fm(lines.taxReset, { line }),
   };
 }
 

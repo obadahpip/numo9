@@ -1551,10 +1551,12 @@
       "removeLine": "Supprimer la ligne {line}",
       "showHidden": "Afficher",
       "taxAmount": "Montant de taxe",
+      "taxAuto": "auto",
       "taxCode": "Code de taxe",
       "taxDefault": "Valeur par défaut du compte",
       "taxExpired": "Pas en vigueur à cette date",
       "taxOthers": "Tous les codes",
+      "taxReset": "Modifié par rapport au code par défaut, ligne {line} : rétablir le code par défaut",
       "taxTypes": {
         "exempt": "Exonéré",
         "outOfScope": "Hors champ",
@@ -1567,6 +1569,11 @@
       "undoAlt": "Ajouter la ligne de nouveau",
       "unitCost": "Coût unitaire",
       "unitPrice": "Prix unitaire"
+    },
+    "taxNotices": {
+      "missingProvince": "Le contact n'a pas de province au dossier : la province de votre organisation est utilisée pour {count, plural, one {la ligne {lines}} other {les lignes {lines}}}. Ajoutez son adresse pour la bonne taxe.",
+      "pst": "{count, plural, one {La ligne {lines} est une vente taxable} other {Les lignes {lines} sont des ventes taxables}} en {province}, où vous n'êtes pas inscrit à la TVP : seule la TPS est facturée. Inscrivez-vous à la TVP pour la percevoir.",
+      "title": "Notes sur les taxes"
     },
     "totals": {
       "announce": "Total {total}",
@@ -3436,6 +3443,23 @@
         "stepPreview": "Preview",
         "title": "Change filing frequency"
       }
+    },
+    "pos": {
+      "account": "Le code de taxe par défaut du compte",
+      "contact": "Le code de taxe par défaut du contact",
+      "export": "Fourniture hors du Canada ({country}) : exportation détaxée",
+      "gst": "Fourniture en {province} : TPS",
+      "gstPst": "Fourniture en {province}, inscrit à la TVP : TPS et TVP",
+      "gstQst": "Fourniture au Québec, inscrit à la TVQ : TPS et TVQ",
+      "gstUnregisteredPst": "Fourniture en {province}, non inscrit à sa TVP : TPS seulement",
+      "gstUnregisteredQst": "Fourniture au Québec, non inscrit à la TVQ : TPS seulement",
+      "hst": "Fourniture en {province} : TVH",
+      "import": "Fournisseur hors du Canada ({country}) : hors champ",
+      "item": "Le paramètre de taxe de l'article",
+      "none": "Aucun code par défaut : choisissez un code de taxe",
+      "override": "Choisi sur cette ligne",
+      "registrationStopped": "Production TPS/TVH arrêtée après le {date} : hors champ",
+      "supplierProvince": "Fournisseur en {province} : son taux standard"
     },
     "settings": {
       "basis": {
