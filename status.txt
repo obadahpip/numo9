@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 639   Remaining: 2148   Progress: 22.93%
+TOTAL ATOMIC TASKS: 2787   Completed: 640   Remaining: 2147   Progress: 22.96%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -845,7 +845,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [D-03b]
 ✅ D-03b-T01 — ADR-002 "Invoice revisions" (model, posting, numbering, filed-period rule, alternatives rejected)
-❌ D-03b-T14 — PDF stamp: "Revision n of invoice 101 — supersedes the version issued on …"; superseded PDFs watermarked "Superseded"
+✅ D-03b-T14 — PDF stamp: "Revision n of invoice 101 — supersedes the version issued on …"; superseded PDFs watermarked "Superseded"
 ❌ D-03b-T15 — Audit events: revision created with field diffs, reason, JE ids
 
 [E-04]

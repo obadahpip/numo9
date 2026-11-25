@@ -16,9 +16,13 @@
   .pay-advice { break-inside: avoid; margin-block-start: 24pt; border-block-start: 1pt dashed #5B6472; padding-block-start: 10pt; }
   .pay-advice h2 { font-size: 11pt; margin: 0 0 6pt; }
   .pay-advice td { border: 0; padding: 2pt 12pt 2pt 0; }
+  .revision-stamp { font-size: 9pt; font-weight: 700; margin: 2pt 0 10pt; }
+  .superseded { position: fixed; inset-block-start: 38%; inset-inline: 0; text-align: center; font-size: 64pt; font-weight: 700; color: #B42318; opacity: 0.18; transform: rotate(-24deg); }
 {% endblock %}
 {% block content %}
+  {% if superseded %}<div class="superseded">{{ superseded_label }}</div>{% endif %}
   <h1>{% translate "Invoice" %}</h1>
+  {% if revision_stamp %}<p class="revision-stamp">{{ revision_stamp }}{% if revision_superseded_on %} — {% translate "supersedes the version issued on" %} {{ revision_superseded_on|docdate:document_locale }}{% endif %}</p>{% endif %}
   <div class="parties">
     <div>
       <div class="muted">{% translate "Bill to" %}</div>

@@ -212,7 +212,34 @@ def sample_invoice_context() -> dict[str, Any]:
 
 
 def render_invoice_pdf(invoice: Invoice) -> bytes:
-    return render_pdf(TEMPLATE, invoice_context(invoice), locale=invoice.contact.language)
+    """The invoice as it stands: its current revision, stamped when it is a revision (≥ 1)."""
+    from .revisions import stamp_context
+
+    context = invoice_context(invoice)
+    with org_context(invoice.organisation):
+        current = invoice.current_revision if invoice.current_revision_id else None
+        if current is not None:
+            context.update(stamp_context(invoice, current))
+    return render_pdf(TEMPLATE, context, locale=invoice.contact.language)
+
+
+def revision_context(revision: Any) -> dict[str, Any]:
+    """The PDF context of one revision, from its snapshot (D-03b-T14): exactly what was issued,
+    with the revision stamp and, once a later revision exists, the "Superseded" watermark."""
+    from .revisions import restore, stamp_context
+
+    with org_context(revision.organisation):
+        invoice = Invoice.objects.get(pk=revision.invoice_id)  # its current revision, as now
+        kept = (revision.snapshot or {}).get("pdf")
+        context = restore(kept) if kept else invoice_context(invoice)
+        context.update(stamp_context(invoice, revision))
+    return dict(context)
+
+
+def render_revision_pdf(revision: Any) -> bytes:
+    return render_pdf(
+        TEMPLATE, revision_context(revision), locale=revision.invoice.contact.language
+    )
 
 
 def render_credit_note_pdf(note: CreditNote) -> bytes:
