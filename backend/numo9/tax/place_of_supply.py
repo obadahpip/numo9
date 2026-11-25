@@ -216,21 +216,27 @@ def gst_stopped(context: SupplyContext) -> dt.date | None:
 
 
 def _after_stop(context: SupplyContext, resolution: Resolution) -> Resolution:
-    """Sales default to out of scope while the GST/HST registration is stopped (G-03b-T06) —
-    every default; a line override is kept (and warned about, G-03b-T05)."""
-    if context.side != SALES or not context.out_of_scope_after_stop:
-        return resolution
-    if resolution.source == SOURCE_OVERRIDE:
+    """Registration-end awareness (G-03b-T06, G-02-T05): while the GST/HST registration is
+    stopped on a sale's date, every default becomes out of scope (when the tax setting is on)
+    and the line carries the warning ``tax.pos.registration_stopped`` — also a line override,
+    which is kept (an out-of-scope override needs no warning)."""
+    if context.side != SALES:
         return resolution
     stopped = gst_stopped(context)
     if stopped is None:
         return resolution
-    return replace(
-        resolution,
-        code="sales.out_of_scope",
-        explanation=REGISTRATION_STOPPED,
-        params={**resolution.params, "date": stopped.isoformat()},
-    )
+    params = {**resolution.params, "date": stopped.isoformat()}
+    if resolution.source != SOURCE_OVERRIDE and context.out_of_scope_after_stop:
+        return replace(
+            resolution,
+            code="sales.out_of_scope",
+            explanation=REGISTRATION_STOPPED,
+            params=params,
+            warnings=(*resolution.warnings, REGISTRATION_STOPPED),
+        )
+    if resolution.code in ("sales.out_of_scope", ""):
+        return resolution
+    return replace(resolution, params=params, warnings=(*resolution.warnings, REGISTRATION_STOPPED))
 
 
 def resolve(context: SupplyContext) -> Resolution:
@@ -239,7 +245,7 @@ def resolve(context: SupplyContext) -> Resolution:
     found = warnings_for(context)
     if not found:
         return resolution
-    return replace(resolution, warnings=found)
+    return replace(resolution, warnings=(*found, *resolution.warnings))
 
 
 def _resolve(context: SupplyContext) -> Resolution:
