@@ -1,0 +1,9 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Soumission {{ number }}</mj-text>{% if title %}
+        <mj-text font-size="16px" padding="0 24px 8px">{{ title }}</mj-text>{% endif %}
+        <mj-text padding="0 24px 12px">{{ message|linebreaksbr }}</mj-text>
+        <mj-text font-size="16px" font-weight="700" padding="0 24px 4px">Total : {{ total }}</mj-text>
+        <mj-text padding="0 24px 12px">Valide jusqu'au : {{ expiry_date }}</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Consulter et accepter</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">La soumission est jointe en PDF.</mj-text>{% endblock %}
+{% block footer %}{{ organisation }}{% endblock %}

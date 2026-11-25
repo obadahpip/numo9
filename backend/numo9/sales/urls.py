@@ -24,4 +24,5 @@ urlpatterns = [
     ),
     path(f"{ORG}invoices/<uuid:public_id>/pdf", api.InvoicePdfView.as_view(), name="invoice-pdf"),
     path("invoice-view/<str:token>", api.InvoiceViewLinkView.as_view(), name="invoice-view"),
+    path("q/<str:token>", api.PublicQuoteView.as_view(), name="quote-public"),
 ]

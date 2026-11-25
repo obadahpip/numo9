@@ -88,7 +88,7 @@ def _issuer(organisation: Any, day: dt.date) -> dict[str, Any]:
     }
 
 
-def _customer(invoice: Invoice | CreditNote) -> dict[str, Any]:
+def _customer(invoice: Any) -> dict[str, Any]:
     from numo9.contacts.models import AddressKind
 
     contact = invoice.contact
@@ -106,7 +106,7 @@ def _customer(invoice: Invoice | CreditNote) -> dict[str, Any]:
     }
 
 
-def _body(document: Invoice | CreditNote, result: Any) -> dict[str, Any]:
+def _body(document: Any, result: Any) -> dict[str, Any]:
     """The lines, tax per component and totals both templates print."""
     lines = list(document.lines.select_related("tax_code").order_by("position", "pk"))
     names = {}
@@ -244,3 +244,79 @@ def render_revision_pdf(revision: Any) -> bytes:
 
 def render_credit_note_pdf(note: CreditNote) -> bytes:
     return render_pdf(CREDIT_NOTE_TEMPLATE, credit_note_context(note), locale=note.contact.language)
+
+
+# ---- quotes (D-02-T10) -------------------------------------------------------------------------
+
+QUOTE_TEMPLATE = "sales/quote.html"
+
+
+def deposit_amount(quote: Any) -> Decimal:
+    """The deposit asked on acceptance: the amount, or the % of the total, to the cent."""
+    from numo9.tax.calculator import cents
+
+    if quote.deposit_type == "amount":
+        return cents(Decimal(quote.deposit_value))
+    if quote.deposit_type == "percent":
+        return cents(Decimal(quote.total) * Decimal(quote.deposit_value) / 100)
+    return Decimal("0.00")
+
+
+def quote_context(quote: Any) -> dict[str, Any]:
+    """The quote PDF's data: the baseline parts, every line (optional ones and alternatives
+    marked; those not counted greyed), the tax column and the totals of the counted lines."""
+    from numo9.documents.posting import result_for
+
+    from .quotes import _preview_line, counted
+
+    with org_context(quote.organisation):
+        lines = list(quote.lines.select_related("tax_code").order_by("position", "pk"))
+        flags = counted(lines)
+        included = [line for line, take in zip(lines, flags, strict=True) if take]
+        result = result_for(
+            "quote",
+            [_preview_line(line) for line in included],
+            tax_mode=quote.tax_mode,
+            discount_type=quote.discount_type,
+            discount_value=quote.discount_value,
+        )
+        base = _body(
+            quote, result_for("quote", [_preview_line(x) for x in lines], tax_mode=quote.tax_mode)
+        )
+        base.update(
+            {
+                "lines": [
+                    {
+                        "description": line.description,
+                        "quantity": f"{line.quantity.normalize():f}",
+                        "unit": line.unit_price,
+                        "tax_code": line.tax_code.name if line.tax_code else "",
+                        "tax": line.tax_amount,
+                        "amount": line.amount,
+                        "is_optional": line.is_optional,
+                        "alternative_group": line.alternative_group,
+                        "counted": take,
+                    }
+                    for line, take in zip(lines, flags, strict=True)
+                ],
+                "has_choices": any(line.is_optional or line.alternative_group for line in lines),
+                "subtotal": result.subtotal,
+                "discount_total": result.discount_total,
+                "tax_total": result.tax_total,
+                "total": result.total,
+                "taxes": [
+                    {"key": key, "name": tax["name"], "amount": result.tax_by_component.get(key)}
+                    for tax in base["taxes"]
+                    if (key := tax["key"]) and result.tax_by_component.get(key)
+                ],
+                "title": quote.title,
+                "summary": quote.summary,
+                "expiry_date": quote.expiry_date,
+                "deposit": deposit_amount(quote) if quote.deposit_type != "none" else None,
+            }
+        )
+        return base
+
+
+def render_quote_pdf(quote: Any) -> bytes:
+    return render_pdf(QUOTE_TEMPLATE, quote_context(quote), locale=quote.contact.language)

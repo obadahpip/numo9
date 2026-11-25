@@ -57,7 +57,7 @@ class DefaultEmail:
     language: str
 
 
-def invoice_recipients(invoice: Invoice) -> list[str]:
+def invoice_recipients(invoice: Any) -> list[str]:
     """The customer's people marked "include in emails" that have an address (primary first)."""
     people = invoice.contact.people.filter(include_in_emails=True, deleted_at__isnull=True)
     rows = people.exclude(email="").order_by("-is_primary", "pk").values_list("email", flat=True)

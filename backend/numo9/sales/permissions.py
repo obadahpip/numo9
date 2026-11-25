@@ -17,3 +17,17 @@ INVOICES_WRITE = register(
 INVOICES_SEND = register(
     Permission("sales.invoices.send", _("Email invoices to customers"), "sales", Risk.MEDIUM)
 )
+
+# ---- Quotes (D-02) -----------------------------------------------------------------------------
+
+QUOTES_VIEW = register(
+    Permission("sales.quotes.view", _("See quotes and their PDF"), "sales", Risk.LOW)
+)
+QUOTES_MANAGE = register(
+    Permission(
+        "sales.quotes.manage",
+        _("Create, edit and send quotes, and turn accepted quotes into invoices"),
+        "sales",
+        Risk.MEDIUM,
+    )
+)

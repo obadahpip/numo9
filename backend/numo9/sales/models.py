@@ -388,3 +388,201 @@ class CreditApplication(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.credit_note} → {self.invoice}: {self.amount}"
+
+
+# ---- quotes (D-02) -----------------------------------------------------------------------------
+
+
+class QuoteStatus(models.TextChoices):
+    """The one status vocabulary of quotes (D-02-T01, gap-05): the same enum in the overview,
+    the list tabs and the filters (exported to the frontend as ``QUOTE_STATUSES``)."""
+
+    DRAFT = "draft", _("Draft")
+    SENT = "sent", _("Sent")
+    VIEWED = "viewed", _("Viewed")
+    ACCEPTED = "accepted", _("Accepted")
+    DECLINED = "declined", _("Declined")
+    EXPIRED = "expired", _("Expired")
+    INVOICED = "invoiced", _("Invoiced")
+
+
+class DepositType(models.TextChoices):
+    NONE = "none", _("No deposit")
+    AMOUNT = "amount", _("Amount")
+    PERCENT = "percent", _("Percentage")
+
+
+class Quote(DocumentBase):
+    """A quote (D-02-T01) on the shared document base: ``title`` and ``summary``; ``expiry_date``
+    (required — the customer can't accept after it, D-02-T05); optional lines and alternative
+    groups (``QuoteLine``); a deposit request (``deposit_type`` amount or percent of the
+    accepted total); the lifecycle dates (sent, first viewed, accepted, declined, expired,
+    invoiced) and the invoice it became.
+
+    ``number`` — ``QU-0001``, taken when the quote is created (D-02-T02). An accepted quote is
+    immutable; a revision is a new quote (``revises``), the old link shows "superseded".
+    """
+
+    number = models.CharField(_("number"), max_length=40)
+    status = models.CharField(
+        _("status"), max_length=10, choices=QuoteStatus.choices, default=QuoteStatus.DRAFT
+    )
+    title = models.CharField(_("title"), max_length=200, blank=True)
+    summary = models.TextField(_("summary"), blank=True)
+    expiry_date = models.DateField(_("expiry date"))
+    deposit_type = models.CharField(
+        _("deposit"), max_length=8, choices=DepositType.choices, default=DepositType.NONE
+    )
+    deposit_value = models.DecimalField(
+        _("deposit amount or %"), max_digits=18, decimal_places=4, default=Decimal("0")
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
+    viewed_at = models.DateTimeField(_("first viewed at"), null=True, blank=True)
+    accepted_at = models.DateTimeField(_("accepted at"), null=True, blank=True)
+    declined_at = models.DateTimeField(_("declined at"), null=True, blank=True)
+    decline_reason = models.TextField(_("reason for declining"), blank=True)
+    expired_at = models.DateTimeField(_("expired at"), null=True, blank=True)
+    invoiced_at = models.DateTimeField(_("invoiced at"), null=True, blank=True)
+    invoice = models.OneToOneField(
+        Invoice,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="quote",
+        verbose_name=_("invoice"),
+    )
+    revises = models.ForeignKey(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="revisions",
+        verbose_name=_("revision of"),
+    )
+
+    class Meta(DocumentBase.Meta):
+        abstract = False
+        ordering = ("-date", "-pk")
+        verbose_name = _("quote")
+        verbose_name_plural = _("quotes")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            *DocumentBase.header_constraints("sales_quote"),
+            models.CheckConstraint(
+                condition=models.Q(status__in=QuoteStatus.values), name="sales_quote_status_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(deposit_type__in=DepositType.values),
+                name="sales_quote_deposit_type_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(deposit_value__gte=0)
+                & (~models.Q(deposit_type=DepositType.PERCENT) | models.Q(deposit_value__lte=100)),
+                name="sales_quote_deposit_value_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(expiry_date__gte=models.F("date")),
+                name="sales_quote_expiry_after_date",
+            ),
+            models.CheckConstraint(condition=~models.Q(number=""), name="sales_quote_numbered"),
+            models.UniqueConstraint(
+                fields=["organisation", "number"], name="sales_quote_number_unique"
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=QuoteStatus.INVOICED) | models.Q(invoice__isnull=False),
+                name="sales_quote_invoiced_linked",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "status"], name="sales_quote_status_idx"),
+            models.Index(fields=["organisation", "expiry_date"], name="sales_quote_expiry_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.number
+
+
+class QuoteLine(DocumentLineBase):
+    """A line of a quote: ``is_optional`` — the customer may tick it (``selected``, default off
+    for optional lines); ``alternative_group`` — lines of the same group are alternatives, the
+    customer chooses one (``selected``). Unselected optional or alternative lines are left out of
+    the totals (D-02-T03)."""
+
+    document = models.ForeignKey(
+        Quote, on_delete=models.CASCADE, related_name="lines", verbose_name=_("quote")
+    )
+    is_optional = models.BooleanField(_("optional"), default=False)
+    alternative_group = models.CharField(_("alternative group"), max_length=40, blank=True)
+    selected = models.BooleanField(_("selected"), default=True)
+
+    class Meta(DocumentLineBase.Meta):
+        abstract = False
+        verbose_name = _("quote line")
+        verbose_name_plural = _("quote lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            *DocumentLineBase.line_constraints("sales_quoteline"),
+            models.CheckConstraint(
+                condition=~(models.Q(is_optional=True) & ~models.Q(alternative_group="")),
+                name="sales_quoteline_optional_or_alternative",
+            ),
+        ]
+
+
+class QuoteLink(OrgOwnedModel):
+    """A public link to a quote (D-02-T06): the customer opens it without signing in. The URL
+    carries a **signed** token naming the quote and this row; revoking the row (``revoked_at``)
+    makes the link answer 410 Gone. ``views`` / ``last_viewed_at`` — the view tracking."""
+
+    quote = models.ForeignKey(
+        Quote, on_delete=models.CASCADE, related_name="links", verbose_name=_("quote")
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("created by"),
+    )
+    revoked_at = models.DateTimeField(_("revoked at"), null=True, blank=True)
+    views = models.PositiveIntegerField(_("views"), default=0)
+    last_viewed_at = models.DateTimeField(_("last viewed at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("quote", "-created_at")
+        verbose_name = _("quote link")
+        verbose_name_plural = _("quote links")
+
+    def __str__(self) -> str:
+        return f"{self.quote} link"
+
+
+class QuoteAcceptance(OrgOwnedModel):
+    """The evidence of a customer's acceptance (D-02-T07): who typed their name, the drawn
+    signature (a PNG in object storage — optional: typing the name alone is the accessible way),
+    the IP address and browser, the lines chosen, and the **SHA-256 of the PDF as accepted**
+    (the PDF itself is stored too, so the hash can be checked against it)."""
+
+    quote = models.OneToOneField(
+        Quote, on_delete=models.PROTECT, related_name="acceptance", verbose_name=_("quote")
+    )
+    typed_name = models.CharField(_("name typed"), max_length=200)
+    signature_key = models.CharField(_("signature (PNG) key"), max_length=500, blank=True)
+    ip = models.GenericIPAddressField(_("IP address"), null=True, blank=True)
+    user_agent = models.CharField(_("browser"), max_length=512, blank=True)
+    selections = models.JSONField(_("lines chosen"), default=dict, blank=True)
+    pdf_key = models.CharField(_("accepted PDF key"), max_length=500)
+    pdf_sha256 = models.CharField(_("accepted PDF SHA-256"), max_length=64)
+    accepted_at = models.DateTimeField(_("accepted at"))
+
+    class Meta:
+        verbose_name = _("quote acceptance")
+        verbose_name_plural = _("quote acceptances")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=~models.Q(typed_name=""), name="sales_quoteacceptance_named"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.quote} accepted by {self.typed_name}"

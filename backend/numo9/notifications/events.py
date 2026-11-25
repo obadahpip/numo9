@@ -136,6 +136,10 @@ register_event(
 # ---- practice messages (V-03-T06) --------------------------------------------------------------
 register_event("practice.message", C.SYSTEM, title_key="notifications.practice.message")
 
+# ---- quotes (D-02-T15) ----------------------------------------------------------------------
+register_event("sales.quote.accepted", C.APPROVALS, title_key="notifications.sales.quote.accepted")
+register_event("sales.quote.declined", C.APPROVALS, title_key="notifications.sales.quote.declined")
+
 # ---- filing periods (G-03a-T17) ---------------------------------------------------------------
 register_event("tax.filing.due_soon", C.REMINDERS, title_key="notifications.tax.filing.due_soon")
 register_event("tax.filing.overdue", C.REMINDERS, title_key="notifications.tax.filing.overdue")

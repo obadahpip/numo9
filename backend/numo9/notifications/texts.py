@@ -141,6 +141,19 @@ register_text(
     _("%(body)s"),
 )
 
+# ---- quotes (D-02-T15) -------------------------------------------------------------------------
+
+register_text(
+    "notifications.sales.quote.accepted",
+    _("Quote %(number)s accepted"),
+    _("%(customer)s accepted quote %(number)s (%(total)s)."),
+)
+register_text(
+    "notifications.sales.quote.declined",
+    _("Quote %(number)s declined"),
+    _("%(customer)s declined quote %(number)s: %(reason)s"),
+)
+
 # ---- filing periods (G-03a-T17) ---------------------------------------------------------------
 
 register_text(

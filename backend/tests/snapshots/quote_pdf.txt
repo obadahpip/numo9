@@ -1,0 +1,37 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+200 King Street West, Suite 1200
+Toronto ON  M5V 2T6
+GST/HST registration: 123456782 RT 0001
+Quote
+Prepared for
+ON Customer Ltd
+Somewhere ON
+Quote number QU-0001
+Quote date 15 Jun 2026
+Valid until 15 Jul 2026
+Kitchen renovation
+Supply and install, 6 weeks.
+DESCRIPTION QUANTITY UNIT PRICETAX TAXAMOUNT AMOUNT
+Kitchen cabinets 1$8,000.00HST 13 % (Ontario) on
+sales
+$1,040.00$8,000.00
+Under-cabinet lighting
+(optional)
+1 $600.00HST 13 % (Ontario) on
+sales
+$78.00 $600.00
+Quartz counter (option A) 1$3,000.00HST 13 % (Ontario) on
+sales
+$390.00$3,000.00
+Granite counter (option A) 1$2,500.00HST 13 % (Ontario) on
+sales
+$325.00$2,500.00
+Optional lines and options not chosen are shown in grey and aren't in the total.
+Subtotal $11,000.00
+HST (ON) $1,430.00
+Total tax $1,430.00
+Total (CAD) $12,430.00
+Deposit on acceptance $3,107.50
+Prepared with Numo9 Page 1 of 1

@@ -60,7 +60,7 @@ def purchase_order_context(order: PurchaseOrder) -> dict[str, Any]:
         return {
             "accent": _accent(order.organisation),
             "issuer": _issuer(order.organisation, order.date),
-            "supplier": _customer(order),  # type: ignore[arg-type]  # any document with a contact
+            "supplier": _customer(order),  # any document with a contact
             "document_number": order.number or _("Draft"),
             "draft": not order.number,
             "issue_date": order.date,

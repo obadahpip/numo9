@@ -27,9 +27,10 @@ describe("keyboard shortcuts (A-09-T08)", () => {
     const create = shortcutFor(key("c"), 1000, 1000 + SEQUENCE_MS);
     expect(create.kind === "create" && create.entry.id).toBe("contact");
     expect(shortcutFor(key("c"), 1000, 1001 + SEQUENCE_MS)).toEqual({ kind: "none" });
-    // N B: the bill editor (E-02-T16); N Q: documented, its screen comes later.
+    // N B: the bill editor (E-02-T16); N Q: a new quote (D-02-T16).
     expect(shortcutFor(key("b"), 0, 10)).toMatchObject({ kind: "create" });
-    expect(shortcutFor(key("q"), 0, 10)).toEqual({ kind: "none" });
+    const newQuote = shortcutFor(key("q"), 0, 10);
+    expect(newQuote.kind === "create" && newQuote.entry.path).toBe("sales/quotes/new");
     const invoice = shortcutFor(key("i"), 0, 10); // N I: New invoice (D-03a-T17)
     expect(invoice.kind === "create" && invoice.entry.id).toBe("invoice");
     expect(shortcutFor(key("n", { ctrlKey: true }), null, 0)).toEqual({ kind: "none" });

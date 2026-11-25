@@ -286,6 +286,8 @@ TENANT_SWEEP_EXEMPT = [
     # The "View invoice" link of an invoice email (D-03a-T12): the signed token names the
     # organisation and the send; the view runs in that organisation's context.
     r"^api/v1/invoice-view/",
+    # The public quote link (D-02-T06): the signed token names one quote; no organisation in it.
+    r"^api/v1/q/",
     # Stripe webhooks (U-04-T06): signed by Stripe; events name their customer, whose
     # organisation the handlers then act on.
     r"^webhooks/stripe/",
@@ -606,6 +608,11 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.ledger.auto_reversals": {
         "task": "numo9.ledger.auto_reversals",
         "schedule": crontab(minute=29),
+    },
+    # Quote expiry (D-02-T05): hourly — each organisation's local midnight; idempotent.
+    "numo9.sales.expire_quotes": {
+        "task": "numo9.sales.expire_quotes",
+        "schedule": crontab(minute=3),
     },
     # Recurring journals (C-04-T06): hourly, each organisation on its own date; idempotent.
     "numo9.ledger.recurring_journals": {
