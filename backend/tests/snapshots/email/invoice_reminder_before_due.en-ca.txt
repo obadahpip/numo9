@@ -1,0 +1,12 @@
+Hello Maple Leaf Supply Ltd.,
+
+This is a friendly reminder that invoice INV-0042 for $1,130.00 CAD is due on 1 Jul 2026, in 7 days.
+
+Amount owing: $1,130.00 CAD
+
+View the invoice: https://app.numo9.ca/api/v1/invoice-view/tok-abc
+
+If you have already paid, thank you — please disregard this reminder.
+
+--
+Refined Interiors Inc.

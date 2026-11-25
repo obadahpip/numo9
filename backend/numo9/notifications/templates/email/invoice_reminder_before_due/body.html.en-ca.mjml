@@ -1,0 +1,8 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Reminder: invoice {{ number }} is due on {{ due_date }}</mj-text>
+        <mj-text padding="0 24px 12px">Hello {{ contact }},</mj-text>
+        <mj-text padding="0 24px 12px">This is a friendly reminder that invoice {{ number }} for {{ amount_due }} is due on {{ due_date }}, in {{ days }} day{{ days|pluralize }}.</mj-text>
+        <mj-text font-size="16px" font-weight="700" padding="0 24px 12px">Amount owing: {{ amount_due }}</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">View the invoice</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">If you have already paid, thank you — please disregard this reminder.</mj-text>{% endblock %}
+{% block footer %}{{ organisation }}{% endblock %}

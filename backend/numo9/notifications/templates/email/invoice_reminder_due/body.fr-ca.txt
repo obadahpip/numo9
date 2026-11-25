@@ -1,0 +1,13 @@
+{% autoescape off %}Bonjour {{ contact }},
+
+La facture {{ number }} de {{ amount_due }} est payable aujourd'hui, le {{ due_date }}.
+
+Montant dû : {{ amount_due }}
+
+Consulter et payer la facture : {{ link }}
+
+Si vous l'avez déjà payée, merci — vous pouvez ignorer ce rappel.
+
+--
+{{ organisation }}
+{% endautoescape %}

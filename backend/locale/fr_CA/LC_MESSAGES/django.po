@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 17:44-0500\n"
+"POT-Creation-Date: 2026-11-25 18:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2406,6 +2406,51 @@ msgstr ""
 msgid "contact activity"
 msgstr ""
 
+msgid "Sending"
+msgstr "Envoi en cours"
+
+msgid "Sent"
+msgstr "Envoyé"
+
+msgid "include contacts with no balance"
+msgstr ""
+
+#, fuzzy
+#| msgid "result"
+msgid "results"
+msgstr "résultat"
+
+#, fuzzy
+#| msgid "sent at"
+msgid "sent"
+msgstr "envoyé le"
+
+#, fuzzy
+#| msgid "Skipped"
+msgid "skipped"
+msgstr "Ignoré"
+
+#, fuzzy
+#| msgid "Failed"
+msgid "failed"
+msgstr "Échec"
+
+msgid "run by"
+msgstr ""
+
+msgid "run at"
+msgstr ""
+
+#, fuzzy
+#| msgid "audit events"
+msgid "statement run"
+msgstr "événements du journal d’audit"
+
+#, fuzzy
+#| msgid "audit events"
+msgid "statement runs"
+msgstr "événements du journal d’audit"
+
 msgid "Approve sales over a customer's credit limit"
 msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
 
@@ -2414,6 +2459,24 @@ msgstr ""
 
 msgid "Add, edit, archive and merge contacts"
 msgstr ""
+
+msgid "Choose an outstanding or an activity statement."
+msgstr ""
+
+#, fuzzy
+#| msgid "The start date must be on or before the end date."
+msgid "An activity statement needs a start date on or before its end date."
+msgstr "La date de début doit être égale ou antérieure à la date de fin."
+
+#, fuzzy
+#| msgid "Choose a role used in this organisation."
+msgid "Choose contacts from the list."
+msgstr "Choisissez un rôle utilisé dans cette organisation."
+
+#, fuzzy
+#| msgid "%(name)s is already uploaded."
+msgid "This statement run has been sent already."
+msgstr "%(name)s est déjà téléversé."
 
 msgid "Supplier statement lines"
 msgstr "Lignes de relevé du fournisseur"
@@ -4946,12 +5009,6 @@ msgstr ""
 msgid "lines done"
 msgstr ""
 
-msgid "run by"
-msgstr ""
-
-msgid "run at"
-msgstr ""
-
 msgid "undone by"
 msgstr ""
 
@@ -5674,12 +5731,6 @@ msgstr "préférences de notification"
 
 msgid "Waiting to send"
 msgstr "En attente d’envoi"
-
-msgid "Sending"
-msgstr "Envoi en cours"
-
-msgid "Sent"
-msgstr "Envoyé"
 
 msgid "Not sent"
 msgstr "Non envoyé"
@@ -8296,6 +8347,99 @@ msgstr ""
 msgid "recurring invoice lines"
 msgstr ""
 
+msgid "Text message (SMS)"
+msgstr ""
+
+msgid "WhatsApp"
+msgstr ""
+
+#, fuzzy
+#| msgid "See the organisation's users"
+msgid "Notify the organisation's owner"
+msgstr "Voir les utilisateurs de l’organisation"
+
+msgid "Notify the invoice's salesperson"
+msgstr ""
+
+msgid "Put the customer on credit hold"
+msgstr ""
+
+#, fuzzy
+#| msgid "error code"
+msgid "default"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "period from"
+msgid "send from"
+msgstr "période du"
+
+#, fuzzy
+#| msgid "until"
+msgid "send until"
+msgstr "jusqu’au"
+
+#, fuzzy
+#| msgid "sales: days or day"
+msgid "business days only"
+msgstr "ventes : jours ou jour"
+
+#, fuzzy
+#| msgid "See the organisation's users"
+msgid "reminders a day per customer"
+msgstr "Voir les utilisateurs de l’organisation"
+
+#, fuzzy
+#| msgid "trial reminders"
+msgid "reminder schedule"
+msgstr "rappels d’essai"
+
+msgid "reminder schedules"
+msgstr ""
+
+#, fuzzy
+#| msgid "days after the document date"
+msgid "days from the due date"
+msgstr "jours après la date du document"
+
+msgid "Negative before the due date, 0 on the day, positive after it."
+msgstr ""
+
+#, fuzzy
+#| msgid "version"
+msgid "template"
+msgstr "version"
+
+#, fuzzy
+#| msgid "changes"
+msgid "channel"
+msgstr "modifications"
+
+msgid "minimum amount owing"
+msgstr ""
+
+#, fuzzy
+#| msgid "Action"
+msgid "escalation"
+msgstr "Action"
+
+#, fuzzy
+#| msgid "trial reminders"
+msgid "reminder step"
+msgstr "rappels d’essai"
+
+#, fuzzy
+#| msgid "trial reminders"
+msgid "reminder steps"
+msgstr "rappels d’essai"
+
+#, python-format
+msgid "Escalation is a list of: %(actions)s."
+msgstr ""
+
+msgid "Each escalation action is listed once."
+msgstr ""
+
 msgid "Net 30"
 msgstr ""
 
@@ -8372,6 +8516,11 @@ msgstr ""
 
 msgid "Add at least one line before sending the quote."
 msgstr ""
+
+#, fuzzy
+#| msgid "trial reminders"
+msgid "Standard reminders"
+msgstr "rappels d’essai"
 
 msgid "Superseded"
 msgstr "Remplacée"

@@ -1,0 +1,1 @@
+{% autoescape off %}Dernier rappel : la facture {{ number }} est en retard de {{ days }} jour{{ days|pluralize }}{% endautoescape %}

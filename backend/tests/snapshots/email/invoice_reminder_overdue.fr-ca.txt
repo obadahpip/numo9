@@ -1,0 +1,12 @@
+Bonjour Maple Leaf Supply Ltd.,
+
+La facture INV-0042 était payable le 1 Jul 2026 et $1,130.00 CAD reste à payer (7 jours de retard).
+
+Montant dû : $1,130.00 CAD
+
+Consulter et payer la facture : https://app.numo9.ca/api/v1/invoice-view/tok-abc
+
+Si vous l'avez déjà payée, merci — vous pouvez ignorer ce rappel. Si la facture comporte une erreur, répondez à ce courriel et nous la corrigerons.
+
+--
+Refined Interiors Inc.

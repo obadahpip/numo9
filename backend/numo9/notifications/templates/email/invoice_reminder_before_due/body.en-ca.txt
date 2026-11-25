@@ -1,0 +1,13 @@
+{% autoescape off %}Hello {{ contact }},
+
+This is a friendly reminder that invoice {{ number }} for {{ amount_due }} is due on {{ due_date }}, in {{ days }} day{{ days|pluralize }}.
+
+Amount owing: {{ amount_due }}
+
+View the invoice: {{ link }}
+
+If you have already paid, thank you — please disregard this reminder.
+
+--
+{{ organisation }}
+{% endautoescape %}

@@ -1,0 +1,1 @@
+{% autoescape off %}Rappel : la facture {{ number }} est payable le {{ due_date }}{% endautoescape %}

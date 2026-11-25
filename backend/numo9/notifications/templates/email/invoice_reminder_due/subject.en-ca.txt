@@ -1,0 +1,1 @@
+{% autoescape off %}Invoice {{ number }} is due today{% endautoescape %}

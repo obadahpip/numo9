@@ -1,0 +1,13 @@
+{% autoescape off %}Bonjour {{ contact }},
+
+La facture {{ number }} était payable le {{ due_date }} et {{ amount_due }} reste à payer ({{ days }} jour{{ days|pluralize }} de retard).
+
+Montant dû : {{ amount_due }}
+
+Consulter et payer la facture : {{ link }}
+
+Si vous l'avez déjà payée, merci — vous pouvez ignorer ce rappel. Si la facture comporte une erreur, répondez à ce courriel et nous la corrigerons.
+
+--
+{{ organisation }}
+{% endautoescape %}

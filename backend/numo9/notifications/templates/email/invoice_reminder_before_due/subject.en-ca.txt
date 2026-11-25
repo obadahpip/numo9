@@ -1,0 +1,1 @@
+{% autoescape off %}Reminder: invoice {{ number }} is due on {{ due_date }}{% endautoescape %}

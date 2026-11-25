@@ -1,0 +1,1 @@
+{% autoescape off %}Invoice {{ number }} is {{ days }} day{{ days|pluralize }} overdue{% endautoescape %}
