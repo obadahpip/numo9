@@ -714,6 +714,88 @@ class FilingPeriod(OrgOwnedModel):
         return self.status in LOCKED_PERIOD_STATUSES
 
 
+# ---- stop & restart filing (G-03b) ---------------------------------------------------------------
+
+
+class RegistrationAction(models.TextChoices):
+    STOP = "stop", _("Stopped filing")
+    RESTART = "restart", _("Restarted filing")
+
+
+class StopReason(models.TextChoices):
+    DEREGISTRATION = "deregistration", _("Registration cancelled")
+    SMALL_SUPPLIER = "small_supplier", _("Small supplier")
+    SUSPENSION = "suspension", _("Suspended by the CRA or Revenu Québec")
+    OTHER = "other", _("Other")
+
+
+class RegistrationStatusEvent(OrgOwnedModel):
+    """A stop or restart of a filing registration (G-03b-T02), always by a person (gap-44: never
+    "System Generated").
+
+    - ``action`` — ``stop``: ``date`` is the **last day registered**; ``restart``: ``date`` is the
+      first day registered again, with the ``frequency`` it files from then;
+    - ``reason_code`` (stops: deregistration, small supplier, suspension, other) and
+      ``reason_text``.
+
+    The events of a registration alternate stop, restart, stop… in date order; between a stop and
+    the next restart the registration has no periods (the "Not registered" gap).
+    """
+
+    registration = models.ForeignKey(
+        "orgsettings.TaxRegistration",
+        on_delete=models.CASCADE,
+        related_name="status_events",
+        verbose_name=_("registration"),
+    )
+    action = models.CharField(_("action"), max_length=8, choices=RegistrationAction.choices)
+    date = models.DateField(_("date"))
+    reason_code = models.CharField(
+        _("reason"), max_length=16, choices=StopReason.choices, blank=True
+    )
+    reason_text = models.TextField(_("note"), blank=True)
+    frequency = models.CharField(
+        _("frequency"), max_length=10, choices=FilingFrequency.choices, blank=True
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="+",
+        verbose_name=_("by"),
+    )
+    created_at = models.DateTimeField(_("recorded at"), auto_now_add=True)
+
+    class Meta:
+        ordering = ("registration", "date", "created_at", "pk")
+        verbose_name = _("registration status change")
+        verbose_name_plural = _("registration status changes")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(action__in=RegistrationAction.values),
+                name="tax_regevent_action_valid",
+            ),
+            # A stop has a reason; a restart has a frequency.
+            models.CheckConstraint(
+                condition=(
+                    models.Q(action=RegistrationAction.STOP, reason_code__in=StopReason.values)
+                    | models.Q(
+                        action=RegistrationAction.RESTART, frequency__in=FilingFrequency.values
+                    )
+                ),
+                name="tax_regevent_fields_match_action",
+            ),
+            models.UniqueConstraint(
+                fields=("registration", "action", "date"), name="tax_regevent_unique_day"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("registration", "date"), name="tax_regevent_reg_date_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_action_display()} {self.date:%Y-%m-%d}"
+
+
 # ---- GST/HST return (G-03) ---------------------------------------------------------------------
 
 
