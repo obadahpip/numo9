@@ -1,14 +1,17 @@
 """Tax reports in the K-01 engine (G-05): every figure from the posted tax lines (G-05-T02), on
 the organisation's basis or an explicit override (G-05-T03). Specs: ``docs/specs/tax-reports.md``.
 
-Every report takes ``date_from`` / ``date_to`` or a filing ``period`` (its public id, which sets
-the range), ``basis`` (empty — the organisation's, G-06 — or ``accrual`` / ``cash``),
-``kind`` (``all``, ``gst_hst``, ``qst``, ``pst``) and ``side`` (``all``, ``sales``,
-``purchase``). Feature key ``tax.reports.read``.
+Every report takes ``date_from`` / ``date_to`` or a filing ``period`` — its public id, or the
+presets ``current`` and ``last_filed`` (G-05-T10) — which sets the range; ``basis`` (empty: the
+organisation's, G-06; or ``accrual`` / ``cash``); ``kind`` (``all``, ``gst_hst``, ``qst``,
+``pst``) and ``side`` (``all``, ``sales``, ``purchase``). Feature key ``tax.reports.read``.
 
-- ``tax_detail`` (G-05-T05) — per component, one row per document with its link;
 - ``tax_summary`` (G-05-T04) — per side, component and tax code: basis, tax, recoverable,
-  non-recoverable; totals per side and the net tax (collected − recoverable).
+  non-recoverable; totals per side and the net tax (collected − recoverable);
+- ``tax_detail`` (G-05-T05) — per component, one row per document with its link;
+- ``tax_audit`` (G-05-T06) — every tax line with its flags;
+- ``itc_detail`` (G-05-T07) — purchases: recoverable and non-recoverable tax per line;
+- ``tax_tie_out`` (G-05-T08) — each control account's GL movement against the tax lines.
 """
 
 from __future__ import annotations
@@ -66,6 +69,38 @@ def component_label(kind: str, component: str) -> str:
     return f"{label} ({component})" if component and component != kind else label
 
 
+#: Tax presets of ``period`` (G-05-T10): the filing period containing today, the latest filed.
+PERIOD_PRESETS = ("current", "last_filed")
+
+
+def preset_period(organisation: Any, preset: str) -> tuple[dt.date, dt.date]:
+    """The range of a tax preset: GST/HST periods first (then QST); ``ReportError`` when the
+    organisation has none."""
+    from django.utils import timezone
+
+    from numo9.orgsettings.locks import local_date
+
+    from .models import FilingPeriod, PeriodStatus
+
+    today = local_date(organisation, timezone.now())
+    periods = FilingPeriod.objects.filter(registration__deleted_at__isnull=True).order_by(
+        "registration__type", "-start"
+    )
+    if preset == "current":
+        found = periods.filter(start__lte=today, end__gte=today).first()
+    else:
+        found = (
+            periods.filter(status__in=(PeriodStatus.FILED, PeriodStatus.PAID))
+            .order_by("-end", "registration__type")
+            .first()
+        )
+    if found is None:
+        raise ReportError(
+            "There's no such filing period yet: choose dates.", code="tax.reports.no_period"
+        )
+    return found.start, found.end
+
+
 class TaxReport(ReportDefinition):
     """What every tax report shares: the range, the basis, the filters."""
 
@@ -74,6 +109,8 @@ class TaxReport(ReportDefinition):
     params: ClassVar[tuple[ParamSpec, ...]] = COMMON_PARAMS
 
     def range(self, organisation: Any, params: dict[str, Any]) -> tuple[dt.date, dt.date]:
+        if params.get("period") in PERIOD_PRESETS:
+            return preset_period(organisation, str(params["period"]))
         if params.get("period"):
             from .models import FilingPeriod
 

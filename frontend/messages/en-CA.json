@@ -3673,5 +3673,19 @@
       "taxable": "Taxable",
       "zeroRated": "Zero-rated"
     }
+  },
+  "taxReports": {
+    "difference": "Doesn't tie to GL: difference {amount}",
+    "differenceBody": "These journals posted to a tax control account without tax lines. Fix them with a journal that carries the tax code, or reverse them.",
+    "documentsTitle": "Documents",
+    "flag": "{flag, select, override {Code changed} late_adjustment {Late adjustment} journal_source {Journal} restricted_itc {Restricted ITC} superseded {Superseded} other {{flag}}}",
+    "flagsTitle": "Flagged lines",
+    "journalLine": "{journal} · {date} · {narration} · {amount}",
+    "journalsTitle": "Journals affecting tax accounts — {account}",
+    "openDocument": "Open {number}",
+    "period": "Tax period",
+    "periodOption": "{period, select, current {Current filing period} last_filed {Last filed period} other {Dates above}}",
+    "ties": "✓ Ties to GL",
+    "tiesBody": "Every tax control account's movement equals the tax reports' total."
   }
 }

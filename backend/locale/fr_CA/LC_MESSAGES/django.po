@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 18:29-0500\n"
+"POT-Creation-Date: 2026-11-25 18:52-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9385,6 +9385,49 @@ msgstr "redressement tardif"
 msgid "late adjustments"
 msgstr "redressements tardifs"
 
+#, fuzzy
+#| msgid "tax portions"
+msgid "tax point"
+msgstr "parts de taxe"
+
+#, fuzzy
+#| msgid "rate (%)"
+msgid "rate"
+msgstr "taux (%)"
+
+#, fuzzy
+#| msgid "tax behaviour"
+msgid "basis"
+msgstr "traitement des taxes"
+
+#, fuzzy
+#| msgid "recoverable %"
+msgid "recoverable"
+msgstr "% récupérable"
+
+#, fuzzy
+#| msgid "recoverable %"
+msgid "non-recoverable"
+msgstr "% récupérable"
+
+#, fuzzy
+#| msgid "tax changed from the default"
+msgid "code changed from the default"
+msgstr "taxe modifiée par rapport à la valeur par défaut"
+
+msgid "restricted ITC/ITR"
+msgstr ""
+
+#, fuzzy
+#| msgid "started at"
+msgid "posted tax line"
+msgstr "commencée le"
+
+#, fuzzy
+#| msgid "version"
+msgid "posted tax lines"
+msgstr "version"
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -9416,6 +9459,174 @@ msgstr "La période se terminant le %(end)s est produite : l’inscription ne pe
 
 msgid "Returns are filed under this registration: end it instead of removing it."
 msgstr "Des déclarations sont produites sous cette inscription : mettez-y fin au lieu de la supprimer."
+
+#, fuzzy
+#| msgid "sales tax code"
+msgid "Sales — tax collected"
+msgstr "code de taxe de vente"
+
+msgid "Purchases — ITCs and ITRs"
+msgstr ""
+
+msgid "Basis"
+msgstr ""
+
+#, fuzzy
+#| msgid "recoverable %"
+msgid "Recoverable"
+msgstr "% récupérable"
+
+#, fuzzy
+#| msgid "recoverable %"
+msgid "Non-recoverable"
+msgstr "% récupérable"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "Tax summary"
+msgstr "Comptabilité"
+
+msgid "Tax collected and claimed by component and tax code, tied to the ledger."
+msgstr ""
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "GST summary"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "Reports"
+msgid "HST report"
+msgstr "Rapports"
+
+#, fuzzy
+#| msgid "Sales tax"
+msgid "sales tax"
+msgstr "Taxes de vente"
+
+#, fuzzy
+#| msgid "error code"
+msgid "No tax code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "sales tax code"
+msgid "Total tax collected"
+msgstr "code de taxe de vente"
+
+msgid "Total ITCs and ITRs"
+msgstr ""
+
+msgid "Net tax (collected − recoverable)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Tax adjustment"
+msgid "Tax detail by document"
+msgstr "Ajustement fiscal"
+
+msgid "Every document's tax, by component, with a link to the document."
+msgstr ""
+
+#, fuzzy
+#| msgid "detail"
+msgid "GST detail"
+msgstr "détail"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "tax by invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "Reports"
+msgid "Tax audit report"
+msgstr "Rapports"
+
+msgid "Every tax line with its code, rate and who posted it, flags as chips."
+msgstr ""
+
+msgid "GST audit"
+msgstr ""
+
+#, fuzzy
+#| msgid "tax authority"
+msgid "tax audit trail"
+msgstr "autorité fiscale"
+
+#, fuzzy
+#| msgid "rate (%)"
+msgid "Rate %"
+msgstr "taux (%)"
+
+msgid "ITC and ITR detail"
+msgstr ""
+
+msgid "Input tax credits and refunds by line, with restricted and non-recoverable tax."
+msgstr ""
+
+#, fuzzy
+#| msgid "Line of credit"
+msgid "input tax credits"
+msgstr "Marge de crédit"
+
+msgid "ITC"
+msgstr ""
+
+msgid "ITR"
+msgstr ""
+
+#, python-format
+msgid "%(share)s %% claimable"
+msgstr ""
+
+#, fuzzy
+#| msgid "recoverable %"
+msgid "Not recoverable"
+msgstr "% récupérable"
+
+msgid "Tax-to-GL tie-out"
+msgstr ""
+
+msgid "Each tax control account's movement against the tax reports, and why not."
+msgstr ""
+
+#, fuzzy
+#| msgid "tax registration"
+msgid "tax reconciliation"
+msgstr "inscription fiscale"
+
+#, fuzzy
+#| msgid "reconciliation tracked"
+msgid "GST reconciliation"
+msgstr "rapprochement suivi"
+
+#, fuzzy
+#| msgid "Documents"
+msgid "GL movement"
+msgstr "Documents"
+
+#, fuzzy
+#| msgid "Reports"
+msgid "Tax report"
+msgstr "Rapports"
+
+#, fuzzy
+#| msgid "reference"
+msgid "Difference"
+msgstr "référence"
+
+#, fuzzy
+#| msgid "CRA approval reference"
+msgid "Total difference"
+msgstr "Référence d’approbation de l’ARC"
+
+msgid "Ties to GL"
+msgstr ""
+
+#, python-format
+msgid "The tax reports don't tie to the ledger: %(accounts)s."
+msgstr ""
 
 #, python-format
 msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."

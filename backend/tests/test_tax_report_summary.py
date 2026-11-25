@@ -72,3 +72,24 @@ def test_filing_period_sets_the_range(books: dict[str, Any]) -> None:
     q2 = next(p for p in periods if p.start == Q2[0])
     result = registry.get("tax_summary").run(books["org"], {"period": str(q2.public_id)})
     assert result.totals[0].values[1] == D("195.00")
+
+
+def test_tax_period_presets(books: dict[str, Any]) -> None:
+    import datetime as dt
+
+    from freezegun import freeze_time
+
+    from numo9.orgsettings.models import TaxRegistration
+    from numo9.tax.filing_service import switch_frequency
+    from numo9.tax.models import FilingPeriod
+
+    with org_context(books["org"]):
+        reg = TaxRegistration.objects.get()
+    switch_frequency(reg, "quarterly", dt.date(2026, 1, 1), today=dt.date(2026, 6, 1))
+    with org_context(books["org"]):
+        FilingPeriod.objects.filter(start=dt.date(2026, 1, 1)).update(status="filed")
+    with freeze_time("2026-05-20"):
+        current = registry.get("tax_summary").run(books["org"], {"period": "current"})
+        filed = registry.get("tax_summary").run(books["org"], {"period": "last_filed"})
+    assert current.totals[0].values[1] == D("195.00")
+    assert filed.totals[0].values[1] == D("0")
