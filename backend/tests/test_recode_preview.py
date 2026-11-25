@@ -66,6 +66,7 @@ def test_account_recode_before_after(books: dict[str, Any]) -> None:
     assert moves[pid(books, "expense2")] == {"before": Decimal("0.00"), "after": Decimal("275.00")}
     assert result.tax_impact == [] and not result.needs_confirmation
     assert result.summary()["lines"] == 2
+    assert result.summary()["entries"] == 2
 
 
 def test_tax_recode_recalculates_the_split(books: dict[str, Any]) -> None:

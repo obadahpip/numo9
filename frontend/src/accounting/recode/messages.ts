@@ -233,8 +233,8 @@ export const rm = defineMessages({
   after: { id: "recode.after", defaultMessage: "After", description: "Diff column" },
   changedField: {
     id: "recode.changedField",
-    defaultMessage: "{field} changes",
-    description: "Accessible marker of a changed value",
+    defaultMessage: "{field}: {before} changes to {after}",
+    description: "Screen-reader text of a changed value in the preview diff",
   },
   none: { id: "recode.none", defaultMessage: "None", description: "An empty coding value" },
   taxImpact: {

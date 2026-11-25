@@ -227,6 +227,7 @@ class Preview:
     def summary(self) -> dict[str, Any]:
         return {
             "lines": len(self.lines),
+            "entries": len({p.line.entry_id for p in self.lines}),
             "accounts": len({p.before["account"] for p in self.lines}),
             "excluded": len(self.excluded),
             "unchanged": self.unchanged,

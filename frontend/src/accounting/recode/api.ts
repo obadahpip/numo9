@@ -105,6 +105,8 @@ export interface TaxImpact {
 
 export interface PreviewSummary {
   lines: number;
+  /** Entries reversed and posted again. */
+  entries: number;
   accounts: number;
   excluded: number;
   unchanged: number;

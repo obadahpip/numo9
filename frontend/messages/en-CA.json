@@ -2577,7 +2577,7 @@
     "booksTotals": "{book}: debits {debit} · credits {credit}",
     "cancel": "Cancel",
     "category": "Category",
-    "changedField": "{field} changes",
+    "changedField": "{field}: {before} changes to {after}",
     "choice": "{value, select, manual {Manual journal} sales {Sales} purchase {Purchases} payment {Payment} payroll {Payroll} opening {Opening balance} adjustment {Adjustment} bank {Bank transaction} posted {Posted} reversed {Reversed} both {Both books} accounting {Accounting book} tax {Tax book} other {{value}}}",
     "chooseAccount": "Choose an account",
     "clearContact": "Remove the contact",
