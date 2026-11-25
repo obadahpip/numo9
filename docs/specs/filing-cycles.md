@@ -89,6 +89,11 @@ filled by G-09 (the lesser of the prior-year and current-year methods).
 3. A custom period can be deleted only while unfiled with no locked tax postings; the regular
    periods are regenerated over its dates.
 
+**Horizon** — an open-ended registration has periods 24 months ahead; the period containing the
+24-month date is generated whole (the horizon never cuts a period into a stub). The nightly job
+(`numo9.tax.roll_filing_periods`, G-03a-T17) rolls them forward, marks a period **due soon** in
+the 14 days before its return is due and **overdue** after, and emits each change once.
+
 ## 7. Edge cases the tests cover
 
 Switch on the 1st vs mid-month · annual → quarterly mid-year (a stub) · two switches in a year ·
