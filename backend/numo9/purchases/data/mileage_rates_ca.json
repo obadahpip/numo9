@@ -1,0 +1,16 @@
+{
+  "source": "Income Tax Regulations s. 7306 — reasonable per-kilometre allowance rates, announced each January by the Department of Finance Canada",
+  "tier_threshold_km": 5000,
+  "rates": [
+    {"year": 2022, "region": "provinces", "first": "0.61", "after": "0.55"},
+    {"year": 2022, "region": "territories", "first": "0.65", "after": "0.59"},
+    {"year": 2023, "region": "provinces", "first": "0.68", "after": "0.62"},
+    {"year": 2023, "region": "territories", "first": "0.72", "after": "0.66"},
+    {"year": 2024, "region": "provinces", "first": "0.70", "after": "0.64"},
+    {"year": 2024, "region": "territories", "first": "0.74", "after": "0.68"},
+    {"year": 2025, "region": "provinces", "first": "0.72", "after": "0.66"},
+    {"year": 2025, "region": "territories", "first": "0.76", "after": "0.70"},
+    {"year": 2026, "region": "provinces", "first": "0.73", "after": "0.67"},
+    {"year": 2026, "region": "territories", "first": "0.77", "after": "0.71"}
+  ]
+}
