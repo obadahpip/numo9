@@ -615,6 +615,72 @@ class ExpenseLineKind(models.TextChoices):
     MILEAGE = "mileage", _("Mileage")
 
 
+class MileageRegion(models.TextChoices):
+    PROVINCES = "provinces", _("Provinces")
+    TERRITORIES = "territories", _("Territories (YT, NT, NU)")
+
+
+class MileageRate(models.Model):
+    """The CRA reasonable per-kilometre allowance (E-04-T02), as **data**: effective-dated rows,
+    the same for every organisation (Income Tax Regulations s. 7306), seeded from
+    ``data/mileage_rates_ca.json`` and updated by a data migration when Finance Canada announces
+    the next year's rates.
+
+    - ``region`` — provinces, or the territories (4 ¢ more);
+    - ``effective_from`` / ``effective_to`` — first and **last** day in force (``effective_to``
+      null = open);
+    - ``first_tier_rate`` per km up to ``tier_threshold_km`` business kilometres in the calendar
+      year (5,000), ``second_tier_rate`` per km after (the crossing is E-04-T03).
+    """
+
+    region = models.CharField(
+        _("region"), max_length=12, choices=MileageRegion.choices, default=MileageRegion.PROVINCES
+    )
+    effective_from = models.DateField(_("effective from"))
+    effective_to = models.DateField(_("effective to"), null=True, blank=True)
+    first_tier_rate = models.DecimalField(
+        _("rate per km, first tier"), max_digits=6, decimal_places=4
+    )
+    second_tier_rate = models.DecimalField(
+        _("rate per km, after the threshold"), max_digits=6, decimal_places=4
+    )
+    tier_threshold_km = models.PositiveIntegerField(_("tier threshold (km per year)"), default=5000)
+    source = models.CharField(_("source"), max_length=300, blank=True)
+
+    class Meta:
+        ordering = ("region", "effective_from")
+        verbose_name = _("mileage rate")
+        verbose_name_plural = _("mileage rates")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("region", "effective_from"), name="purchases_mileagerate_unique_start"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(region__in=MileageRegion.values),
+                name="purchases_mileagerate_region_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(effective_to__isnull=True)
+                | models.Q(effective_to__gte=models.F("effective_from")),
+                name="purchases_mileagerate_dates_ordered",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(first_tier_rate__gt=0, second_tier_rate__gt=0),
+                name="purchases_mileagerate_positive",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(tier_threshold_km__gt=0),
+                name="purchases_mileagerate_threshold_positive",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return (
+            f"{self.get_region_display()} from {self.effective_from:%Y-%m-%d}: "
+            f"{self.first_tier_rate} / {self.second_tier_rate}"
+        )
+
+
 class ExpenseClaim(AuditedModel, OrgOwnedModel):
     """An employee's claim for what they paid for the business (E-04-T01): receipts and mileage
     (``ExpenseClaimLine``), submitted by the claimant, approved by someone else (E-04-T05), then

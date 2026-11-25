@@ -74,6 +74,7 @@ _PLURALS: dict[str, Promise] = {
     ApprovalDocumentType.BILL: _("bills"),
     ApprovalDocumentType.PURCHASE_ORDER: _("purchase orders"),
     ApprovalDocumentType.PAY_RUN: _("pay runs"),
+    ApprovalDocumentType.EXPENSE_CLAIM: _("expense claims"),
 }
 
 

@@ -72,6 +72,8 @@ PLATFORM_MODELS: frozenset[str] = frozenset(
         "packages.PromoCode",
         # CRA GIFI codes (C-01-T04): the published list, the same for every organisation.
         "ledger.GifiCode",
+        # CRA per-kilometre allowance rates (E-04-T02): published rates, the same for everyone.
+        "purchases.MileageRate",
         # Organisation directory (V-01-T02): a derived, cross-organisation read model of directory
         # facts per practice × organisation (name, BN, province, package, status…), rebuilt from
         # the source records; read only through numo9.workspace.search, which limits it to the

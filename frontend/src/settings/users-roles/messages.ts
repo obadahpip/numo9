@@ -422,7 +422,7 @@ export const lm = defineMessages({
   docType: {
     id: "settings.usersRoles.limits.docType",
     defaultMessage:
-      "{type, select, journal {Manual journals} invoice {Invoices} bill {Bills} purchase_order {Purchase orders} pay_run {Pay runs} other {{type}}}",
+      "{type, select, journal {Manual journals} invoice {Invoices} bill {Bills} purchase_order {Purchase orders} pay_run {Pay runs} expense_claim {Expense claims} other {{type}}}",
     description: "Document type of an approval limit (plural, as a heading or option)",
   },
   table: {

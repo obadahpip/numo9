@@ -288,6 +288,20 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         ),
     )
 
+    # ---- expense claims (E-04-T05) -----------------------------------------------------------
+    expense_receipt_required_above = models.DecimalField(
+        _("receipt required above (CAD)"),
+        max_digits=18,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_(
+            "An expense claim line above this amount can't be submitted without its receipt "
+            "attached (E-04-T05). Empty: a receipt is never required."
+        ),
+    )
+
     # ---- goods receipts (E-01-T04) -----------------------------------------------------------
     po_receipt_tolerance_percent = models.DecimalField(
         _("over-receipt tolerance (%)"),
@@ -917,6 +931,7 @@ class DocType(models.TextChoices):
     PURCHASE_ORDER = "purchase_order", _("Purchase order")
     BILL = "bill", _("Bill")
     CONTACT = "contact", _("Contact")
+    EXPENSE_CLAIM = "expense_claim", _("Expense claim")
 
 
 #: The pattern each sequence starts with: ``INV-0001``, ``CN-0001``, ``QU-0001``, ``PO-0001``,
@@ -928,6 +943,7 @@ DEFAULT_PREFIXES: dict[str, str] = {
     DocType.PURCHASE_ORDER: "PO-",
     DocType.BILL: "BILL-",
     DocType.CONTACT: "C-",
+    DocType.EXPENSE_CLAIM: "EXP-",
 }
 DEFAULT_PADDING = 4
 MAX_PADDING = 10

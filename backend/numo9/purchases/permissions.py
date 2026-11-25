@@ -1,4 +1,4 @@
-"""Permissions of purchase orders and receipts (E-01) and bills (E-02)."""
+"""Permissions of purchase orders and receipts (E-01), bills (E-02) and expense claims (E-04)."""
 
 from __future__ import annotations
 
@@ -53,6 +53,30 @@ BILLS_APPROVE = register(
     Permission(
         "purchases.bills.approve",
         _("Approve supplier bills for payment, within an approval limit"),
+        "purchases",
+        Risk.HIGH,
+    )
+)
+
+# ---- Expense claims (E-04) ---------------------------------------------------------------------
+
+EXPENSES_VIEW = register(
+    Permission(
+        "purchases.expenses.view", _("See expense claims and their receipts"), "purchases", Risk.LOW
+    )
+)
+EXPENSES_WRITE = register(
+    Permission(
+        "purchases.expenses.write",
+        _("Enter and submit expense claims for others"),
+        "purchases",
+        Risk.MEDIUM,
+    )
+)
+EXPENSES_APPROVE = register(
+    Permission(
+        "purchases.expenses.approve",
+        _("Approve or reject expense claims, within an approval limit"),
         "purchases",
         Risk.HIGH,
     )
