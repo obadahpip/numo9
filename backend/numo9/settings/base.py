@@ -203,6 +203,9 @@ SPECTACULAR_SETTINGS = {
         "ApprovalDocTypeEnum": "numo9.rbac.models.ApprovalDocumentType",  # A-03-T09
         "NumberingDocTypeEnum": "numo9.orgsettings.models.DocType",  # A-05-T09
         "TermsTypeEnum": "numo9.orgsettings.models.TermsType",  # A-05-T09
+        # The registration serializer and its tax-settings input (G-06-T07) share these.
+        "RegistrationTypeEnum": "numo9.orgsettings.models.RegistrationType",
+        "RegistrationStatusEnum": "numo9.orgsettings.models.RegistrationStatus",
         "BillingIntervalEnum": "numo9.packages.models.BillingInterval",  # U-02-T07
         "PromoKindEnum": "numo9.packages.models.PromoKind",  # U-02-T07
         "PromoDurationEnum": "numo9.packages.models.PromoDuration",  # U-02-T07

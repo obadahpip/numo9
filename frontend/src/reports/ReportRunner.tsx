@@ -28,6 +28,7 @@ import { useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 
 import { useFormatMessage } from "@/i18n";
+import { taxSettingsUrl } from "@/tax/settings/links";
 
 import {
   EXPORT_FILES,
@@ -427,7 +428,15 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
               <p className="text-sm font-semibold text-fg">{header.status_label}</p>
             ) : null}
             <div className="mt-1 flex flex-wrap gap-2">
-              {header.basis_label ? <Badge tone="neutral">{header.basis_label}</Badge> : null}
+              {header.basis_label ? (
+                <Link
+                  href={taxSettingsUrl(org, "tax-basis")}
+                  data-tax-settings-link="tax-basis"
+                  className="rounded-full"
+                >
+                  <Badge tone="neutral">{header.basis_label}</Badge>
+                </Link>
+              ) : null}
               <Badge tone="neutral">{header.book_label}</Badge>
             </div>
             {(body.alerts ?? []).map((alert) => (

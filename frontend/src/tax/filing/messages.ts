@@ -19,6 +19,11 @@ export const fmsg = defineMessages({
     defaultMessage: "Registration {number}",
     description: "Sub-heading with the registration number",
   },
+  backToSettings: {
+    id: "tax.filing.backToSettings",
+    defaultMessage: "Tax registrations and settings",
+    description: "Link from the filing periods back to the tax settings page (G-06-T09)",
+  },
   timeline: {
     id: "tax.filing.timeline",
     defaultMessage: "Filing periods timeline",

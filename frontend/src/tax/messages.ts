@@ -23,6 +23,11 @@ export const m = defineMessages({
     defaultMessage: "Search codes",
     description: "Search box label",
   },
+  defaultsLink: {
+    id: "tax.codes.defaultsLink",
+    defaultMessage: "Default codes and rounding",
+    description: "Link from the tax codes list to the tax settings page (G-06-T09)",
+  },
   newCode: { id: "tax.codes.newCode", defaultMessage: "New tax code", description: "Button" },
   table: {
     id: "tax.codes.table",

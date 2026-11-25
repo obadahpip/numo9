@@ -23,6 +23,7 @@ class TaxConfig(AppConfig):
 
         SWEEP_FACTORIES["tax.TaxCode"] = _sweep_code
         SWEEP_FACTORIES["tax.TaxComponent"] = _sweep_component
+        SWEEP_FACTORIES["tax.TaxSettings"] = _sweep_settings
 
         from .history import register_history
 
@@ -43,3 +44,9 @@ def _sweep_component(organisation: Any) -> Any:
 
     ensure_tax_table(organisation)
     return TaxComponent._base_manager.filter(organisation=organisation, key="gst").first()
+
+
+def _sweep_settings(organisation: Any) -> Any:
+    from .settings import tax_settings
+
+    return tax_settings(organisation)

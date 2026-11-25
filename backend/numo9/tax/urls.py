@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import api, filing_api
+from . import api, filing_api, settings_api
 
 ORG = "o/<uuid:org>/"
 REG = f"{ORG}tax/registrations/<uuid:public_id>/"
@@ -33,6 +33,27 @@ urlpatterns = [
         name="tax-code-restore",
     ),
     path(f"{ORG}tax/calculate", api.TaxCalculateView.as_view(), name="tax-calculate"),
+    path(f"{ORG}tax/settings", settings_api.TaxSettingsView.as_view(), name="tax-settings"),
+    path(
+        f"{ORG}tax/settings/basis-check",
+        settings_api.TaxBasisCheckView.as_view(),
+        name="tax-settings-basis-check",
+    ),
+    path(
+        f"{ORG}tax/settings/restricted-itc/<uuid:public_id>",
+        settings_api.TaxRestrictedItcView.as_view(),
+        name="tax-settings-restricted-itc",
+    ),
+    path(
+        f"{ORG}tax/registrations",
+        settings_api.TaxRegistrationListView.as_view(),
+        name="tax-registrations",
+    ),
+    path(
+        f"{ORG}tax/registrations/<uuid:public_id>",
+        settings_api.TaxRegistrationDetailView.as_view(),
+        name="tax-registration",
+    ),
     path(f"{REG}cycles", filing_api.FilingCycleListView.as_view(), name="tax-filing-cycles"),
     path(f"{REG}periods", filing_api.FilingPeriodListView.as_view(), name="tax-filing-periods"),
     path(
