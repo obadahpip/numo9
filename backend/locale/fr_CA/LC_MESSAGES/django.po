@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 16:18-0500\n"
+"POT-Creation-Date: 2026-11-25 17:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4961,6 +4961,14 @@ msgstr ""
 msgid "reason for undoing"
 msgstr ""
 
+#, fuzzy
+#| msgid "version"
+msgid "chosen lines"
+msgstr "version"
+
+msgid "problems"
+msgstr ""
+
 msgid "recode batch"
 msgstr ""
 
@@ -4975,6 +4983,16 @@ msgstr ""
 
 msgid "re-post"
 msgstr ""
+
+#, fuzzy
+#| msgid "Journal reversed"
+msgid "undo reversal"
+msgstr "Écriture contrepassée"
+
+#, fuzzy
+#| msgid "started at"
+msgid "restored entry"
+msgstr "commencée le"
 
 msgid "recoded line"
 msgstr ""
@@ -5107,6 +5125,9 @@ msgstr ""
 msgid "Close periods and the fiscal year (advisers reopen them)"
 msgstr ""
 
+msgid "Find and recode posted transactions in bulk, and undo a recode"
+msgstr ""
+
 #, python-format
 msgid "Line %(line)d (%(account)s): a tax adjustment posts to the tax book only — set the line's book to Tax."
 msgstr "Ligne %(line)d (%(account)s) : un ajustement fiscal se comptabilise dans le livre fiscal seulement — choisissez le livre Fiscal pour cette ligne."
@@ -5182,6 +5203,32 @@ msgstr ""
 msgid "%(document)s %(number)s is void: its entries can't be recoded."
 msgstr ""
 
+msgid "Choose the lines as the preview lists them (entry and line)."
+msgstr ""
+
+msgid "Nothing to recode: no chosen line would change."
+msgstr ""
+
+#, python-format
+msgid "Changing the tax code changes the tax these lines carry by %(delta)s: confirm the tax change to go on."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Automatic reversal of %(number)s"
+msgid "Recode %(batch)s: reversal of %(number)s"
+msgstr "Contrepassation automatique de %(number)s"
+
+msgid "This entry changed after the preview: its lines were not recoded. Preview again to include them."
+msgstr ""
+
+msgid "This line can't be recoded any more (it changed, or is excluded now) — preview again."
+msgstr ""
+
+#, fuzzy
+#| msgid "%(name)s is already uploaded."
+msgid "This recode has run already."
+msgstr "%(name)s est déjà téléversé."
+
 msgid "Choose the new account, tax code, tracking or contact."
 msgstr ""
 
@@ -5205,6 +5252,121 @@ msgstr ""
 
 #, python-format
 msgid "Condition %(condition)s isn't a search we can run."
+msgstr ""
+
+msgid "Line"
+msgstr ""
+
+msgid "Book"
+msgstr ""
+
+#, fuzzy
+#| msgid "Changes"
+msgid "Changed"
+msgstr "Modifications"
+
+#, fuzzy
+#| msgid "Accounting"
+msgid "Account before"
+msgstr "Comptabilité"
+
+#, fuzzy
+#| msgid "Accountant"
+msgid "Account after"
+msgstr "Comptable"
+
+#, fuzzy
+#| msgid "error code"
+msgid "Tax code before"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "error code"
+msgid "Tax code after"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "Banking"
+msgid "Tracking before"
+msgstr "Banque"
+
+#, fuzzy
+#| msgid "Banking"
+msgid "Tracking after"
+msgstr "Banque"
+
+#, fuzzy
+#| msgid "Number"
+msgid "Contact before"
+msgstr "Numéro"
+
+#, fuzzy
+#| msgid "Number"
+msgid "Contact after"
+msgstr "Numéro"
+
+msgid "Re-post"
+msgstr ""
+
+msgid "Undone by"
+msgstr ""
+
+#, fuzzy
+#| msgid "error code"
+msgid "Tax code"
+msgstr "code d’erreur"
+
+#, fuzzy
+#| msgid "Banking"
+msgid "Tracking"
+msgstr "Banque"
+
+#, fuzzy, python-format
+#| msgid "Void: %(label)s"
+msgid "Recode: %(name)s"
+msgstr "Annulation : %(label)s"
+
+#, fuzzy, python-format
+#| msgid "staff status"
+msgid "Status: %(status)s"
+msgstr "statut d’employé"
+
+#, python-format
+msgid "Run by %(who)s on %(when)s"
+msgstr ""
+
+msgid "Numo9"
+msgstr ""
+
+#, python-format
+msgid "%(lines)d lines recoded · %(excluded)d excluded · %(problems)d not recoded"
+msgstr ""
+
+#, python-format
+msgid "Undone by %(who)s on %(when)s: %(reason)s"
+msgstr ""
+
+#, fuzzy
+#| msgid "Record"
+msgid "Recode"
+msgstr "Fiche"
+
+#, python-format
+msgid "Lines of this recode were recoded again by “%(batch)s”: undo it first."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Automatic reversal of %(number)s"
+msgid "Undo of recode %(batch)s: reversal of %(number)s"
+msgstr "Contrepassation automatique de %(number)s"
+
+#, fuzzy
+#| msgid "Only a filed return can be amended."
+msgid "Only a recode that ran can be undone, once."
+msgstr "Seule une déclaration produite peut être modifiée."
+
+#, python-format
+msgid "This recode can't be undone: %(count)d entries are in locked, closed or filed periods, or changed since — %(entries)s."
 msgstr ""
 
 msgid "Give the schedule as a recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
@@ -5303,6 +5465,16 @@ msgstr ""
 
 msgid "No free code for the account: renumber an account and try again."
 msgstr ""
+
+#, fuzzy
+#| msgid "Reports"
+msgid "Recode audit report"
+msgstr "Rapports"
+
+#, fuzzy
+#| msgid "The file has no lines."
+msgid "This recode changed no lines."
+msgstr "Le fichier ne contient aucune ligne."
 
 #, python-format
 msgid "%(account)s has sub-accounts: its type can't change."
