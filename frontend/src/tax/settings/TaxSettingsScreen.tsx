@@ -204,12 +204,32 @@ export function TaxSettingsScreen({ org, canManage = false }: Readonly<TaxSettin
     } else setError(firstError(answer.body) ?? fm(sm.failed));
   }
 
-  if (failed) {
+  // The heading is always there: while loading and when the settings can't be read too.
+  const header = (
+    <header className="flex flex-wrap items-start justify-between gap-3">
+      <div className="max-w-3xl">
+        <h1 className="text-2xl font-semibold">{fm(sm.title)}</h1>
+        <p className="text-fg-muted">{fm(sm.intro)}</p>
+      </div>
+      <TaxHistory org={org} />
+    </header>
+  );
+  if (failed || !settings) {
     return (
-      <ErrorState title={fm(sm.loadFailed)} retryLabel={fm(sm.retry)} onRetry={() => void load()} />
+      <div className="flex flex-col gap-6" data-tax-settings="">
+        {header}
+        {failed ? (
+          <ErrorState
+            title={fm(sm.loadFailed)}
+            retryLabel={fm(sm.retry)}
+            onRetry={() => void load()}
+          />
+        ) : (
+          <SkeletonText lines={6} />
+        )}
+      </div>
     );
   }
-  if (!settings) return <SkeletonText lines={6} />;
 
   const actions = (onSave: () => void, disabled = false) => (
     <div className="flex gap-2">
@@ -233,13 +253,7 @@ export function TaxSettingsScreen({ org, canManage = false }: Readonly<TaxSettin
 
   return (
     <div className="flex flex-col gap-6" data-tax-settings="">
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div className="max-w-3xl">
-          <h1 className="text-2xl font-semibold">{fm(sm.title)}</h1>
-          <p className="text-fg-muted">{fm(sm.intro)}</p>
-        </div>
-        <TaxHistory org={org} />
-      </header>
+      {header}
       <nav aria-label={fm(sm.nav)}>
         <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           {ANCHORS.map((anchor) => (
