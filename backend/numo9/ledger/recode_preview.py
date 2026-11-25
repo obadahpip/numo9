@@ -327,8 +327,19 @@ def build(
     return built
 
 
-def preview(organisation: Any, criteria: Any, changes: Any, user: Any = None) -> Preview:
+def preview(
+    organisation: Any,
+    criteria: Any,
+    changes: Any,
+    user: Any = None,
+    *,
+    keys: set[tuple[str, int]] | None = None,
+) -> Preview:
+    """The preview of the search; ``keys`` — ``{(entry public id, line no)}`` chosen in the
+    results grid — narrows it to those lines (``None``: every line found)."""
     resolved = clean_changes(organisation, changes)
     found = list(find_lines(organisation, criteria))
     included, excluded = split(organisation, found, resolved.values, user)
+    if keys is not None:
+        included = [line for line in included if (str(line.entry.public_id), line.line_no) in keys]
     return build(organisation, included, resolved, excluded)

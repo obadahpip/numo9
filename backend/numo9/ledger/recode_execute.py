@@ -59,9 +59,8 @@ from .models import (
     RecodeLineChange,
     RecodeStatus,
 )
-from .recode_exclusions import MODULE_OF_TYPE, split
-from .recode_preview import Changes, PreviewLine, build, clean_changes, fingerprint
-from .recode_query import find_lines
+from .recode_exclusions import MODULE_OF_TYPE
+from .recode_preview import Changes, PreviewLine, clean_changes, fingerprint, preview
 from .sequence import format_journal_number
 from .validation import JournalSpec, LineSpec
 
@@ -124,14 +123,9 @@ def _plan(batch: RecodeBatch, user: Any) -> tuple[Changes, list[PreviewLine], li
     """The preview of the batch as the books are now, narrowed to the chosen lines."""
     organisation = batch.organisation
     changes = clean_changes(organisation, batch.changes)
-    found = list(find_lines(organisation, batch.criteria))
-    included, excluded = split(organisation, found, changes.values, user)
-    built = build(organisation, included, changes, excluded)
-    rows = built.lines
-    if batch.selection is not None:
-        chosen = {_key_of(row) for row in batch.selection}
-        rows = [r for r in rows if (str(r.line.entry.public_id), r.line.line_no) in chosen]
-    return changes, rows, built.excluded
+    keys = {_key_of(row) for row in batch.selection} if batch.selection is not None else None
+    built = preview(organisation, batch.criteria, batch.changes, user, keys=keys)
+    return changes, built.lines, built.excluded
 
 
 def create_batch(
@@ -146,15 +140,10 @@ def create_batch(
 ) -> RecodeBatch:
     """A draft batch, checked like the preview (raises when nothing would be recoded)."""
     with org_context(organisation):
-        resolved = clean_changes(organisation, changes)
         chosen = clean_selection(selection)
-        found = list(find_lines(organisation, criteria))
-        included, excluded = split(organisation, found, resolved.values, user)
-        built = build(organisation, included, resolved, excluded)
+        keys = {_key_of(row) for row in chosen} if chosen is not None else None
+        built = preview(organisation, criteria, changes, user, keys=keys)
         rows = built.lines
-        if chosen is not None:
-            keys = {_key_of(row) for row in chosen}
-            rows = [r for r in rows if (str(r.line.entry.public_id), r.line.line_no) in keys]
         if not rows:
             raise _refused(
                 _("Nothing to recode: no chosen line would change."), "ledger.recode.nothing"
