@@ -1265,3 +1265,110 @@ class RecurringJournalRun(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.template} · {self.occurrence_date}"
+
+
+# ---- period close and year-end (C-06) ----------------------------------------------------------
+
+
+class CloseKind(models.TextChoices):
+    MONTH = "month", _("Period close")
+    YEAR_END = "year_end", _("Year-end close")
+
+
+class PeriodClose(OrgOwnedModel):
+    """One close of one module up to ``period_end`` (C-06-T01).
+
+    - ``module`` — the lock module closed (``gl``, ``ar``, ``ap``, ``bank``, ``payroll``,
+      ``tax``); closing sets its lock date to ``period_end`` (C-06-T02);
+    - ``kind`` — a month close, or the **year-end** close of the general ledger: its closing
+      journals (one per book: ``accounting_entry``, ``tax_entry``, C-06-T04) move the year's
+      profit or loss to retained earnings;
+    - ``closed_by`` / ``closed_at``; ``reopened_by`` / ``reopened_at`` and ``reason`` once
+      reopened (C-06-T05; the row stays, as history);
+    - ``previous_lock`` — the module's lock dates before the close (``{"everyone": …,
+      "advisers_only": …}``), restored when it is reopened.
+
+    At most one **open** (not reopened) close per organisation, module and period end; at most
+    one open year-end close per organisation and fiscal year end (no double closing journal).
+    """
+
+    module = models.CharField(_("module"), max_length=16)
+    period_end = models.DateField(_("period end"))
+    kind = models.CharField(
+        _("kind"), max_length=10, choices=CloseKind.choices, default=CloseKind.MONTH
+    )
+    closed_by = models.ForeignKey(
+        "accounts.User", on_delete=models.PROTECT, related_name="+", verbose_name=_("closed by")
+    )
+    closed_at = models.DateTimeField(_("closed at"), default=timezone.now)
+    reopened_by = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("reopened by"),
+    )
+    reopened_at = models.DateTimeField(_("reopened at"), null=True, blank=True)
+    reason = models.TextField(_("reason for reopening"), blank=True)
+    previous_lock = models.JSONField(_("lock dates before the close"), default=dict, blank=True)
+    accounting_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("closing journal, accounting book"),
+    )
+    tax_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("closing journal, tax book"),
+    )
+
+    class Meta:
+        ordering = ("module", "period_end", "closed_at")
+        verbose_name = _("period close")
+        verbose_name_plural = _("period closes")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(kind__in=CloseKind.values), name="ledger_close_kind_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(module__in=["gl", "ar", "ap", "bank", "payroll", "tax"]),
+                name="ledger_close_module_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(kind=CloseKind.YEAR_END) | models.Q(module="gl"),
+                name="ledger_close_year_end_gl",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(reopened_at__isnull=True)
+                | (models.Q(reopened_by__isnull=False) & ~models.Q(reason="")),
+                name="ledger_close_reopen_reasoned",
+            ),
+            models.UniqueConstraint(
+                fields=("organisation", "module", "period_end"),
+                condition=models.Q(reopened_at__isnull=True),
+                name="ledger_close_one_open",
+            ),
+            models.UniqueConstraint(
+                fields=("organisation", "period_end"),
+                condition=models.Q(reopened_at__isnull=True, kind="year_end"),
+                name="ledger_close_one_year_end",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "module", "period_end"), name="ledger_close_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_kind_display()} {self.module} {self.period_end:%Y-%m-%d}"
+
+    @property
+    def is_open(self) -> bool:
+        """Still closed (not reopened)."""
+        return self.reopened_at is None
