@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 725   Remaining: 2062   Progress: 26.01%
+TOTAL ATOMIC TASKS: 2787   Completed: 726   Remaining: 2061   Progress: 26.05%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -957,7 +957,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-05-T08 — Tax-to-GL tie-out: control account movement vs report total per component; lists journals hitting tax accounts directly
 ✅ G-05-T09 — API registrations in the K-01 catalogue; feature key tax.reports available on every Tax package
 ✅ G-05-T10 — UI: report presets, tie-out status card, drill-down, flags as chips
-❌ G-05-T11 — Exports PDF/XLSX/CSV equal to screen
+✅ G-05-T11 — Exports PDF/XLSX/CSV equal to screen
 ❌ G-05-T12 — Gap tests gap-54, gap-49; i18n
 
 [G-03]

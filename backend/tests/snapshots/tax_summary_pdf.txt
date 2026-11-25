@@ -1,0 +1,18 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+Tax summary
+Refined Interiors Inc.
+1 Apr 2026 to 30 Jun 2026
+Basis: Accrual (organisation default) · Accounting book
+BASIS TAX RECOVERABLE NON-RECOVERABLE
+Sales — tax collected
+HST (hst_on)
+sales.ON.standard $1,500.00 $195.00 $0.00 $0.00
+Purchases — ITCs and ITRs
+HST (hst_on)
+purchase.ON.standard $1,200.00 $156.00 $143.00 $13.00
+Total tax collected $1,500.00 $195.00 $0.00 $0.00
+Total ITCs and ITRs $1,200.00 $156.00 $143.00 $13.00
+Net tax (collected − recoverable) $52.00
+Prepared with Numo9 Page 1 of 1
