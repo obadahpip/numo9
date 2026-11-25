@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 14:25-0500\n"
+"POT-Creation-Date: 2026-11-25 15:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4577,6 +4577,48 @@ msgstr ""
 msgid "recurring journal runs"
 msgstr ""
 
+msgid "Period close"
+msgstr ""
+
+msgid "Year-end close"
+msgstr ""
+
+msgid "module"
+msgstr ""
+
+msgid "period end"
+msgstr ""
+
+msgid "closed by"
+msgstr ""
+
+msgid "closed at"
+msgstr ""
+
+msgid "reopened by"
+msgstr ""
+
+msgid "reopened at"
+msgstr ""
+
+msgid "reason for reopening"
+msgstr ""
+
+msgid "lock dates before the close"
+msgstr ""
+
+msgid "closing journal, accounting book"
+msgstr ""
+
+msgid "closing journal, tax book"
+msgstr ""
+
+msgid "period close"
+msgstr ""
+
+msgid "period closes"
+msgstr ""
+
 #, python-format
 msgid "%(journal)s is waiting for your approval"
 msgstr ""
@@ -4601,6 +4643,82 @@ msgstr ""
 msgid "%(person)s sent your journal back: %(reason)s"
 msgstr ""
 
+msgid "A person must close or reopen a period: it is recorded with their name."
+msgstr ""
+
+msgid "Unknown module."
+msgstr ""
+
+#, python-format
+msgid "Close a period at the end of a month (%(date)s isn't one)."
+msgstr ""
+
+#, python-format
+msgid "%(date)s is already closed: periods close in order."
+msgstr ""
+
+#, python-format
+msgid "The period up to %(date)s is already locked."
+msgstr ""
+
+#, python-format
+msgid "Period closed to %(date)s."
+msgstr ""
+
+msgid "The chart has no Retained earnings account to close the year to."
+msgstr ""
+
+msgid "Net income to retained earnings"
+msgstr ""
+
+#, python-format
+msgid "Year-end close %(year)s — %(book)s"
+msgstr ""
+
+#, python-format
+msgid "%(date)s isn't a fiscal year end (the year ends on %(end)s)."
+msgstr ""
+
+#, python-format
+msgid "The year ending %(date)s is already closed."
+msgstr ""
+
+msgid "Year-end close."
+msgstr ""
+
+msgid "Replaced by the year-end close."
+msgstr ""
+
+#, python-format
+msgid "Fiscal year ending %(date)s"
+msgstr ""
+
+msgid "Only an adviser (the organisation's accountant) can reopen a closed period."
+msgstr ""
+
+msgid "Say why the period is reopened."
+msgstr ""
+
+msgid "This period is already open."
+msgstr ""
+
+#, python-format
+msgid "Reopen %(date)s first: the latest close is reopened first."
+msgstr ""
+
+#, python-format
+msgid "Year-end close reopened: %(reason)s"
+msgstr ""
+
+msgid "Drafts dated in the period"
+msgstr ""
+
+msgid "Tax periods ended and not filed"
+msgstr ""
+
+msgid "Recurring journals skipped and automatic reversals not posted"
+msgstr ""
+
 #, python-format
 msgid "%(period)s (%(start)s to %(end)s) is closed: nothing can be posted in it. Date the entry after %(end)s, or ask an adviser to reopen the period."
 msgstr ""
@@ -4618,6 +4736,12 @@ msgid "See the chart of accounts and account balances"
 msgstr ""
 
 msgid "Add, edit, renumber, archive and restore accounts"
+msgstr ""
+
+msgid "See closed periods and the close checklist"
+msgstr ""
+
+msgid "Close periods and the fiscal year (advisers reopen them)"
 msgstr ""
 
 #, python-format
@@ -5453,9 +5577,6 @@ msgstr ""
 msgid "Everyone"
 msgstr ""
 
-msgid "module"
-msgstr ""
-
 msgid "level"
 msgstr ""
 
@@ -6095,9 +6216,6 @@ msgid "approved at"
 msgstr ""
 
 msgid "total when approved"
-msgstr ""
-
-msgid "closed at"
 msgstr ""
 
 msgid "purchase order"
