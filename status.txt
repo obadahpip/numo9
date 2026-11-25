@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 714   Remaining: 2073   Progress: 25.62%
+TOTAL ATOMIC TASKS: 2787   Completed: 715   Remaining: 2072   Progress: 25.65%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -944,7 +944,7 @@ Phase 1 Core Books  (572 atomic tasks)
 [E-07]
 ✅ E-07-T01 — Extend PaymentTerms with discount_pct, discount_days, discount_base
 ✅ E-07-T02 — Discount calculator (window, base, partial pro-rata)
-❌ E-07-T03 — Default discount accounts in CoA template (Purchase discounts received, Sales discounts given)
+✅ E-07-T03 — Default discount accounts in CoA template (Purchase discounts received, Sales discounts given)
 
 [G-05]
 ❌ G-05-T01 — Report specs (columns, filters, grouping) for summary, detail, audit, ITC/ITR detail, tie-out

@@ -172,6 +172,8 @@ class SystemRole(models.TextChoices):
     INVENTORY = "inventory", _("Inventory")
     FX_GAIN_LOSS = "fx_gain_loss", _("Foreign exchange gain or loss")
     HOLDBACK_PAYABLE = "holdback_payable", _("Holdbacks payable")
+    SALES_DISCOUNTS = "sales_discounts", _("Sales discounts given")
+    PURCHASE_DISCOUNTS = "purchase_discounts", _("Purchase discounts received")
 
 
 R = SystemRole
@@ -202,6 +204,9 @@ ROLE_SUBTYPES: dict[str, frozenset[str]] = {
     R.INVENTORY: frozenset({S.INVENTORY}),
     R.FX_GAIN_LOSS: frozenset({S.OTHER_INCOME, S.OTHER_EXPENSE}),
     R.HOLDBACK_PAYABLE: frozenset({S.CURRENT_LIABILITY}),
+    # Early-payment discounts (E-07-T03): a contra-revenue and a contra-purchases account.
+    R.SALES_DISCOUNTS: frozenset({S.REVENUE, S.OTHER_INCOME}),
+    R.PURCHASE_DISCOUNTS: frozenset({S.COST_OF_SALES, S.OTHER_INCOME}),
 }
 
 
