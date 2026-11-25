@@ -33,7 +33,7 @@ from decimal import Decimal
 from typing import Any
 
 from django.db import transaction
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.db.models.functions import Coalesce
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -419,3 +419,136 @@ def reopen(
             },
         )
         return row
+
+
+# ---- checklist (T03) ---------------------------------------------------------------------------
+
+
+def _month_start(period_end: dt.date) -> dt.date:
+    return period_end.replace(day=1)
+
+
+def checklist(
+    organisation: Any, period_end: dt.date, start: dt.date | None = None
+) -> list[dict[str, Any]]:
+    """What is still open in ``start``…``period_end`` (the month by default) before closing it
+    (C-06-T03): each item ``{key, label, count, link, blocking}`` —
+
+    - ``drafts`` — journals, invoices, credit notes, bills, supplier credits and expense claims
+      still in draft, dated in the period;
+    - ``awaiting_approval`` — journals, invoices, credit notes, bills awaiting approval and
+      expense claims submitted, dated in the period;
+    - ``unfiled_tax`` — GST/HST and QST filing periods ended by the period end and not filed;
+    - ``exceptions`` — recurring journals skipped and automatic reversals not posted, dated in
+      the period (a locked or closed date, an approval missing…).
+
+    Counts are information: the close isn't refused because of them (the screen links each to
+    the list that fixes it).
+    """
+    from numo9.purchases.models import Bill, ExpenseClaim, SupplierCredit
+    from numo9.sales.models import CreditNote, Invoice
+    from numo9.tax.models import LOCKED_PERIOD_STATUSES, FilingPeriod
+
+    from .models import JournalStatus, RecurringJournalRun, RecurringRunStatus
+
+    start = start or _month_start(period_end)
+    base = f"/o/{organisation.public_id}"
+    span = f"from={start.isoformat()}&to={period_end.isoformat()}"
+    dated = Q(date__gte=start, date__lte=period_end)
+    live = Q(deleted_at__isnull=True)
+
+    def count(model: Any, *filters: Q) -> int:
+        query = model.objects.filter(organisation=organisation)
+        for f in filters:
+            query = query.filter(f)
+        return int(query.count())
+
+    claims_dated = Q(lines__date__gte=start, lines__date__lte=period_end)
+    drafts = {
+        "journals": count(JournalEntry, dated, Q(status=JournalStatus.DRAFT)),
+        "invoices": count(Invoice, dated, live, Q(status="draft")),
+        "credit_notes": count(CreditNote, dated, live, Q(status="draft")),
+        "bills": count(Bill, dated, live, Q(status="draft")),
+        "supplier_credits": count(SupplierCredit, dated, live, Q(status="draft")),
+        "expense_claims": ExpenseClaim.objects.filter(
+            organisation=organisation, status="draft", deleted_at__isnull=True
+        )
+        .filter(claims_dated)
+        .distinct()
+        .count(),
+    }
+    waiting = {
+        "journals": count(JournalEntry, dated, Q(status=JournalStatus.AWAITING_APPROVAL)),
+        "invoices": count(Invoice, dated, live, Q(status="awaiting_approval")),
+        "credit_notes": count(CreditNote, dated, live, Q(status="awaiting_approval")),
+        "bills": count(Bill, dated, live, Q(status="awaiting_approval")),
+        "expense_claims": ExpenseClaim.objects.filter(
+            organisation=organisation, status="submitted", deleted_at__isnull=True
+        )
+        .filter(claims_dated)
+        .distinct()
+        .count(),
+    }
+    unfiled = list(
+        FilingPeriod.objects.filter(organisation=organisation, end__lte=period_end)
+        .exclude(status__in=LOCKED_PERIOD_STATUSES)
+        .select_related("registration")
+        .order_by("end")
+    )
+    skipped = RecurringJournalRun.objects.filter(
+        organisation=organisation,
+        status=RecurringRunStatus.SKIPPED,
+        occurrence_date__gte=start,
+        occurrence_date__lte=period_end,
+    ).count()
+    stuck = JournalEntry.objects.filter(
+        organisation=organisation,
+        status=JournalStatus.POSTED,
+        auto_reverse_on__gte=start,
+        auto_reverse_on__lte=period_end,
+        auto_reverse_on__lt=timezone.localdate(),
+    ).count()
+    tax_link = (
+        f"{base}/settings/tax/registrations/{unfiled[0].registration.public_id}/filing"
+        if unfiled
+        else f"{base}/settings/tax"
+    )
+    return [
+        {
+            "key": "drafts",
+            "label": _("Drafts dated in the period"),
+            "count": sum(drafts.values()),
+            "detail": drafts,
+            "link": f"{base}/accounting/journals?status=draft&{span}",
+        },
+        {
+            "key": "awaiting_approval",
+            "label": _("Waiting for approval"),
+            "count": sum(waiting.values()),
+            "detail": waiting,
+            "link": f"{base}/approvals",
+        },
+        {
+            "key": "unfiled_tax",
+            "label": _("Tax periods ended and not filed"),
+            "count": len(unfiled),
+            "detail": {
+                "periods": [
+                    {
+                        "registration": str(p.registration),
+                        "start": p.start.isoformat(),
+                        "end": p.end.isoformat(),
+                    }
+                    for p in unfiled
+                ]
+            },
+            "link": tax_link,
+        },
+        {
+            "key": "exceptions",
+            "label": _("Recurring journals skipped and automatic reversals not posted"),
+            "count": skipped + stuck,
+            "detail": {"recurring_skipped": skipped, "reversals_pending": stuck},
+            "link": f"{base}/accounting/journals/recurring",
+        },
+    ]
