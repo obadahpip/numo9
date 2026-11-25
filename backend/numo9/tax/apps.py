@@ -25,6 +25,13 @@ class TaxConfig(AppConfig):
         SWEEP_FACTORIES["tax.TaxComponent"] = _sweep_component
         SWEEP_FACTORIES["tax.TaxSettings"] = _sweep_settings
 
+        from numo9.ledger import services as ledger
+
+        from .returns import tax_lock_guard
+
+        if tax_lock_guard not in ledger.POSTING_GUARDS:
+            ledger.POSTING_GUARDS.append(tax_lock_guard)  # the Tax lock on postings (G-03-T07)
+
         from .history import register_history
 
         register_history()  # one attributed history of every tax object (G-06-T06)

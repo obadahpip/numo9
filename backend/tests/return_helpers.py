@@ -30,16 +30,18 @@ def quarterly_books(name: str = "Returns Ltd.") -> tuple[Any, list[FilingPeriod]
 def account(org: Any, role: str = "", **lookup: Any) -> Account:
     with org_context(org):
         query = (
-            Account.objects.filter(system_role=role) if role else Account.objects.filter(**lookup)
+            Account.objects.filter(system_role=role)
+            if role
+            else Account.objects.filter(system_role="", **lookup)
         )
         return query.order_by("code")[0]
 
 
 def post_sale(org: Any, date: dt.date, user: Any, tax: str = "13.00", **spec: Any) -> Any:
-    """A sale of 100.00 plus ``tax`` of GST/HST: Dr AR, Cr revenue, Cr GST/HST payable."""
+    """A sale of 100.00 plus ``tax`` of GST/HST: Dr a clearing liability, Cr revenue, Cr GST/HST payable (no contact needed)."""
     amount = Decimal(tax)
     lines = [
-        LineSpec(account(org, "accounts_receivable"), debit=Decimal("100.00") + amount),
+        LineSpec(account(org, type="liability"), debit=Decimal("100.00") + amount),
         LineSpec(account(org, type="revenue"), credit=Decimal("100.00")),
         LineSpec(account(org, "gst_hst_payable"), credit=amount),
     ]
@@ -50,12 +52,12 @@ def post_sale(org: Any, date: dt.date, user: Any, tax: str = "13.00", **spec: An
 
 
 def post_purchase(org: Any, date: dt.date, user: Any, tax: str = "13.00", **spec: Any) -> Any:
-    """A purchase of 100.00 plus ``tax`` of claimable GST/HST: Dr expense, Dr ITC, Cr AP."""
+    """A purchase of 100.00 plus ``tax`` of claimable GST/HST: Dr expense, Dr ITC, Cr a clearing liability."""
     amount = Decimal(tax)
     lines = [
         LineSpec(account(org, type="expense"), debit=Decimal("100.00")),
         LineSpec(account(org, "itc_receivable"), debit=amount),
-        LineSpec(account(org, "accounts_payable"), credit=Decimal("100.00") + amount),
+        LineSpec(account(org, type="liability"), credit=Decimal("100.00") + amount),
     ]
     with org_context(org):
         return post_journal(

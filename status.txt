@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 635   Remaining: 2152   Progress: 22.78%
+TOTAL ATOMIC TASKS: 2787   Completed: 636   Remaining: 2151   Progress: 22.82%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -839,7 +839,7 @@ Phase 1 Core Books  (572 atomic tasks)
 [G-03]
 ✅ G-03-T02 — TaxReturn (registration, period FK, version, status DRAFT/REVIEWED/FILED/AMENDED, method REGULAR/QUICK, line values JSON, filed_at, confirmation_no, prepared_by, reviewed_by)
 ✅ G-03-T06 — Workflow: prepare → review (reviewer ≠ preparer, A-03) → file with confirmation number; audit entries
-❌ G-03-T07 — On FILED: set the Tax lock for the period end (A-05) and the period status FILED in G-03a
+✅ G-03-T07 — On FILED: set the Tax lock for the period end (A-05) and the period status FILED in G-03a
 ❌ G-03-T08 — Late-adjustment flow: a document with late_adjustment=true in a filed period posts its tax delta to the next open period's line 104/107 and is listed on that return
 ❌ G-03-T09 — Amendment: create version n+1 from a filed return with a reason; the original remains viewable
 

@@ -178,6 +178,12 @@ def _number_and_post(
     return _written(entry)
 
 
+#: Checks run on every posting after the lock and period checks, before anything is written:
+#: ``guard(validated_journal, spec, organisation, person)`` raises to refuse. Other apps append
+#: theirs in ``AppConfig.ready`` (the tax app: the Tax lock, G-03-T07).
+POSTING_GUARDS: list[Any] = []
+
+
 def post_journal(
     spec: JournalSpec,
     *,
@@ -200,6 +206,8 @@ def post_journal(
     with org_context(organisation, acting_practice()), transaction.atomic():
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, spec.date, person, module)
+        for guard in POSTING_GUARDS:  # e.g. the Tax lock on journals with tax (G-03-T07)
+            guard(checked, spec, organisation, person)
         if reversal_of is None:  # C-04-T03: a manual journal over the threshold needs approval
             assert_approved(None, organisation, _total(checked), spec.type)
         documents = list({document.pk: document for document in attachments}.values())
@@ -446,6 +454,8 @@ def post_entry(
         spec = _spec_of(entry)
         checked = validate_journal(spec, organisation)
         assert_can_post(organisation, entry.date, person, module)
+        for guard in POSTING_GUARDS:
+            guard(checked, spec, organisation, person)
         assert_approved(entry, organisation, _total(checked), entry.type)
         check_policy(
             checked,
