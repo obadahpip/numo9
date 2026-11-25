@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 662   Remaining: 2125   Progress: 23.75%
+TOTAL ATOMIC TASKS: 2787   Completed: 663   Remaining: 2124   Progress: 23.79%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -875,7 +875,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [G-02]
 ✅ G-02-T05 — Registration-end awareness: after a G-03b stop date, sales default to OUT_OF_SCOPE (configurable)
-❌ G-02-T06 — API POST /api/v1/tax/resolve (batch lines) used by editors; response includes explanation keys
+✅ G-02-T06 — API POST /api/v1/tax/resolve (batch lines) used by editors; response includes explanation keys
 ❌ G-02-T07 — Editor integration: tax cell auto-fills, "auto" chip, tooltip reason, override dot, reset-to-default action
 ❌ G-02-T08 — Inline PST/missing-province warnings in sales and purchase editors
 ❌ G-02-T10 — i18n of explanation strings en/fr; gap tests gap-09, gap-45
