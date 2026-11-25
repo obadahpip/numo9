@@ -60,6 +60,8 @@ export interface ExcludedLine extends FoundLine {
 
 export interface SearchResult {
   count: number;
+  /** Distinct accounts of the lines found. */
+  accounts: number;
   page: number;
   page_size: number;
   lines: FoundLine[];

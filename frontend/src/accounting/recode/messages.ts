@@ -127,6 +127,11 @@ export const rm = defineMessages({
     description: "Row checkbox",
   },
   colJournal: { id: "recode.colJournal", defaultMessage: "Journal", description: "Column" },
+  journalLine: {
+    id: "recode.journalLine",
+    defaultMessage: "{number} · line {line}",
+    description: "A journal line in the grids",
+  },
   colDate: { id: "recode.colDate", defaultMessage: "Date", description: "Column" },
   colAccount: { id: "recode.colAccount", defaultMessage: "Account", description: "Column" },
   colDescription: {

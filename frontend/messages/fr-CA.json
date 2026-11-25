@@ -2613,6 +2613,7 @@
     "inHint": "Separate values with commas",
     "incomplete": "Give a value to every condition, or remove it.",
     "intro": "Find posted lines by any mix of conditions, then change their account, tax code, tracking or contact in one go. Amounts never change: each entry is reversed and posted again with the new coding, and the whole recode can be undone while its periods are open.",
+    "journalLine": "{number} · line {line}",
     "keepAccount": "Keep the account",
     "loading": "Loading…",
     "match": "Find lines matching",

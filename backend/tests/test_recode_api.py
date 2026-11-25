@@ -53,6 +53,7 @@ def test_search_preview_execute_undo_report(ctx: dict[str, Any]) -> None:
     assert found.status_code == 200, found.content
     body = found.json()
     assert body["count"] == 2 and len(body["lines"]) == 1 and len(body["keys"]) == 2
+    assert body["accounts"] == 1
     assert body["lines"][0]["account"]["label"] == str(ctx["expense"])
     assert body["lines"][0]["fingerprint"] == body["keys"][0]["fingerprint"]
 

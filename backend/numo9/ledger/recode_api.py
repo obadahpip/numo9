@@ -3,9 +3,10 @@
 roles — accountants, accountant delegates; not sales, purchasing or employees).
 
 - ``POST recode/search`` ``{criteria, page, page_size}`` — the lines found (C-07-T02), paged,
-  with ``count``; ``excluded`` — the lines the exclusion engine leaves out, each with its
-  ``reason`` (C-07-T03); ``keys`` — every included line's ``{entry, line_no, fingerprint}``, so a
-  grid can **select all across pages** without loading them;
+  with ``count`` and ``accounts`` (distinct accounts found); ``excluded`` — the lines the
+  exclusion engine leaves out, each with its ``reason`` (C-07-T03); ``keys`` — every included
+  line's ``{entry, line_no, fingerprint}``, so a grid can **select all across pages** without
+  loading them;
 - ``POST recode/preview`` ``{criteria, changes, selection?, page, page_size}`` — before / after
   per line (paged), the summary (``lines · accounts · totals unchanged · excluded``), totals per
   book, account movements and the tax impact (C-07-T04);
@@ -187,6 +188,7 @@ class RecodeSearchView(APIView):
         return Response(
             {
                 "count": len(included),
+                "accounts": len({line.account_id for line in included}),
                 "page": page,
                 "page_size": size,
                 "lines": [line_row(line) for line in included[start : start + size]],
