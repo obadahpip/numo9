@@ -613,10 +613,14 @@ class BillApproveView(_ActionView):
         return self.run(request, public_id)
 
     def act(self, bill: Bill, request: Request) -> Bill:
+        from numo9.tax.returns import late_adjustments
+
         from .bill_posting import approve
 
         data = request.data if isinstance(request.data, dict) else {}
-        return approve(bill, request.user, with_variance=bool(data.get("with_variance")))
+        # ``late_adjustment``: a bill dated in a filed tax period, reported on the next return.
+        with late_adjustments(bool(data.get("late_adjustment"))):
+            return approve(bill, request.user, with_variance=bool(data.get("with_variance")))
 
 
 class BillVoidView(_ActionView):

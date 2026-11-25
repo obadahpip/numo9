@@ -24,6 +24,7 @@ TAX_OBJECT_TYPES: tuple[str, ...] = (
     "tax.TaxComponent",
     "tax.TaxCodeComponent",
     "tax.TaxAuthority",
+    "tax.TaxReturn",
     "orgsettings.TaxRegistration",
 )
 

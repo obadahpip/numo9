@@ -712,3 +712,204 @@ class FilingPeriod(OrgOwnedModel):
     @property
     def is_locked(self) -> bool:
         return self.status in LOCKED_PERIOD_STATUSES
+
+
+# ---- GST/HST return (G-03) ---------------------------------------------------------------------
+
+
+class ReturnStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    REVIEWED = "reviewed", _("Reviewed")
+    FILED = "filed", _("Filed")
+    #: A filed return replaced by a later version (G-03-T09); it stays viewable.
+    AMENDED = "amended", _("Amended")
+
+
+class ReturnMethod(models.TextChoices):
+    REGULAR = "regular", _("Regular method")
+    QUICK = "quick", _("Quick method")
+
+
+#: A return being worked on (one at a time per period).
+OPEN_RETURN_STATUSES: frozenset[str] = frozenset({ReturnStatus.DRAFT, ReturnStatus.REVIEWED})
+
+
+class TaxReturn(AuditedModel, OrgOwnedModel):
+    """The return of one filing period of a registration (G-03-T02): its line values (101–115,
+    as text amounts keyed by line), its method, and the preparer → reviewer → filed workflow
+    (G-03-T06). ``version`` counts from 1; an amendment is the next version, and the filed
+    return it replaces becomes ``amended`` (G-03-T09).
+
+    Per period: versions are unique, **one filed return that isn't amended**, and one return in
+    progress (draft or reviewed) at a time.
+    """
+
+    registration = models.ForeignKey(
+        "orgsettings.TaxRegistration",
+        on_delete=models.PROTECT,
+        related_name="tax_returns",
+        verbose_name=_("registration"),
+    )
+    period = models.ForeignKey(
+        FilingPeriod, on_delete=models.PROTECT, related_name="returns", verbose_name=_("period")
+    )
+    version = models.PositiveIntegerField(_("version"), default=1)
+    status = models.CharField(
+        _("status"), max_length=10, choices=ReturnStatus.choices, default=ReturnStatus.DRAFT
+    )
+    method = models.CharField(
+        _("method"), max_length=10, choices=ReturnMethod.choices, default=ReturnMethod.REGULAR
+    )
+    lines = models.JSONField(_("line values"), default=dict, blank=True)
+    prepared_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("prepared by"),
+    )
+    prepared_at = models.DateTimeField(_("prepared at"), null=True, blank=True)
+    reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("reviewed by"),
+    )
+    reviewed_at = models.DateTimeField(_("reviewed at"), null=True, blank=True)
+    filed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("filed by"),
+    )
+    filed_at = models.DateTimeField(_("filed at"), null=True, blank=True)
+    filed_on = models.DateField(_("filed on"), null=True, blank=True)
+    confirmation_no = models.CharField(_("confirmation number"), max_length=40, blank=True)
+    amends = models.ForeignKey(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="amendments",
+        verbose_name=_("amends"),
+    )
+    amend_reason = models.TextField(_("reason for the amendment"), blank=True)
+
+    class Meta:
+        ordering = ("registration", "period", "version")
+        verbose_name = _("tax return")
+        verbose_name_plural = _("tax returns")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(fields=("period", "version"), name="tax_return_version_unique"),
+            models.UniqueConstraint(
+                fields=("period",),
+                condition=models.Q(status=ReturnStatus.FILED),
+                name="tax_return_one_filed_per_period",
+            ),
+            models.UniqueConstraint(
+                fields=("period",),
+                condition=models.Q(status__in=sorted(OPEN_RETURN_STATUSES)),
+                name="tax_return_one_open_per_period",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=ReturnStatus.values), name="tax_return_status_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(method__in=ReturnMethod.values), name="tax_return_method_valid"
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=ReturnStatus.FILED)
+                | (models.Q(filed_on__isnull=False) & ~models.Q(confirmation_no="")),
+                name="tax_return_filed_has_confirmation",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.period} v{self.version}"
+
+    def audit_label(self) -> str:
+        return str(self)
+
+    @property
+    def is_current(self) -> bool:
+        """The latest version of its period."""
+        latest = (
+            TaxReturn._base_manager.filter(period_id=self.period_id, deleted_at__isnull=True)
+            .order_by("-version")
+            .values_list("version", flat=True)
+            .first()
+        )
+        return latest == self.version
+
+    def clean(self) -> None:
+        if self.period_id and self.registration_id:
+            period = FilingPeriod._base_manager.filter(pk=self.period_id).first()
+            if period is not None and period.registration_id != self.registration_id:
+                raise ValidationError(
+                    {
+                        "period": ValidationError(
+                            _("The period belongs to another registration."),
+                            code="tax.return.period",
+                        )
+                    }
+                )
+
+    def save(self, *args: Any, **kwargs: Any) -> None:
+        if not kwargs.get("update_fields"):
+            self.clean()
+        super().save(*args, **kwargs)
+
+
+class LateAdjustment(OrgOwnedModel):
+    """The tax of a document dated inside a **filed** period (G-03-T08): it could not change the
+    filed return, so its net tax — positive on line 104, negative as a positive amount on line
+    107 — is carried by ``target_period``, the registration's next period that isn't filed."""
+
+    registration = models.ForeignKey(
+        "orgsettings.TaxRegistration",
+        on_delete=models.PROTECT,
+        related_name="late_adjustments",
+        verbose_name=_("registration"),
+    )
+    journal = models.ForeignKey(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        related_name="late_adjustments",
+        verbose_name=_("journal"),
+    )
+    document_date = models.DateField(_("document date"))
+    filed_period = models.ForeignKey(
+        FilingPeriod, on_delete=models.PROTECT, related_name="+", verbose_name=_("filed period")
+    )
+    target_period = models.ForeignKey(
+        FilingPeriod,
+        on_delete=models.PROTECT,
+        related_name="late_adjustments",
+        verbose_name=_("reported in"),
+    )
+    line = models.CharField(_("return line"), max_length=3)
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+
+    class Meta:
+        ordering = ("target_period", "document_date", "pk")
+        verbose_name = _("late adjustment")
+        verbose_name_plural = _("late adjustments")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("journal", "registration"), name="tax_lateadjustment_once_per_journal"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(line__in=("104", "107")), name="tax_lateadjustment_line_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="tax_lateadjustment_amount_positive"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.document_date:%Y-%m-%d} → {self.line}: {self.amount}"
