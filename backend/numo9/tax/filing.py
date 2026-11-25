@@ -1,0 +1,254 @@
+"""Filing-period engine (G-03a), as ``docs/specs/filing-cycles.md``.
+
+**Generator** (G-03a-T07) — ``generate_periods(cycles, fye_month, fye_day, start, end, custom)``
+is pure (no database): from the registration's filing cycles (frequency from a date), the
+financial year end, the dates to cover and the out-of-cycle periods, it returns the periods that
+cover **every day from ``start`` to ``end`` exactly once**, in date order:
+
+- a cycle's regular periods are months (calendar months), fiscal quarters or financial years,
+  counted from its **anchor**: the first of a month for monthly, the financial year start for
+  quarterly and annual — then, after an out-of-cycle period, the day after it ends (the regular
+  periods realign from there until the next cycle change);
+- a period cut short — the registration starting or stopping mid-period, a switch taking effect
+  mid-period, a custom period starting — is a ``stub``;
+- custom periods are emitted as they are (``custom``).
+
+**Due dates** (G-03a-T08) — ``due_dates(end, frequency, …)`` → (return due, payment due) from the
+rules in ``data/filing_due_rules.json`` (data, not code): one month after the period end for
+monthly and quarterly filers, three months for annual, and 15 June (payment 30 April) for an
+individual with a 31 December year end; "N months after" a month-end period ends on that later
+month's last day (30 Sep → 31 Oct). Each date then rolls to the next business day
+(``holidays.calendar().roll``: weekends and the registration's statutory holidays).
+
+**Instalments** (G-03a-T09) — ``instalments(period)``: an annual filer pays quarterly
+instalments, each due one month after the end of each fiscal quarter of the annual period
+(rolled like due dates); the amount is ``None`` until G-09 computes it.
+
+Boundaries are the anchor plus N months (``relativedelta``, which keeps month ends: a 31 Jan
+anchor gives 28/29 Feb, 31 Mar…), the way ``dateutil.rrule`` would count monthly steps without
+skipping short months.
+"""
+
+from __future__ import annotations
+
+import calendar as _calendar
+import datetime as dt
+import json
+from collections.abc import Iterable, Iterator, Sequence
+from dataclasses import dataclass
+from functools import cache
+from pathlib import Path
+from typing import Any
+
+from dateutil.relativedelta import relativedelta
+
+ONE_DAY = dt.timedelta(days=1)
+MONTHS = {"monthly": 1, "quarterly": 3, "annual": 12}
+
+
+@dataclass(frozen=True)
+class Cycle:
+    frequency: str
+    effective_from: dt.date
+
+
+@dataclass(frozen=True)
+class Span:
+    start: dt.date
+    end: dt.date
+
+    def __contains__(self, day: object) -> bool:
+        return isinstance(day, dt.date) and self.start <= day <= self.end
+
+
+@dataclass(frozen=True)
+class Period:
+    start: dt.date
+    end: dt.date
+    kind: str  # regular / stub / custom
+    frequency: str = ""
+
+
+def fiscal_anchor(fye_month: int, fye_day: int) -> dt.date:
+    """A financial year start (the day after the year end), in a non-leap year."""
+    last = _calendar.monthrange(2001, fye_month)[1]
+    if fye_day >= last:
+        return dt.date(2001, fye_month, last) + ONE_DAY
+    return dt.date(2001, fye_month, fye_day) + ONE_DAY
+
+
+def _anchor(frequency: str, fye_month: int, fye_day: int) -> dt.date:
+    return dt.date(2001, 1, 1) if frequency == "monthly" else fiscal_anchor(fye_month, fye_day)
+
+
+def _boundary(anchor: dt.date, months: int, k: int) -> dt.date:
+    # Always counted from the anchor: a day-29+ anchor keeps its day where the month has it.
+    return anchor + relativedelta(months=months * k)
+
+
+def regular_span(anchor: dt.date, frequency: str, day: dt.date) -> Span:
+    """The regular period of ``frequency`` counted from ``anchor`` that contains ``day``."""
+    months = MONTHS[frequency]
+    diff = (day.year - anchor.year) * 12 + day.month - anchor.month
+    k = diff // months
+    while _boundary(anchor, months, k) > day:
+        k -= 1
+    while _boundary(anchor, months, k + 1) <= day:
+        k += 1
+    return Span(_boundary(anchor, months, k), _boundary(anchor, months, k + 1) - ONE_DAY)
+
+
+def _cycle_at(cycles: Sequence[Cycle], day: dt.date) -> Cycle:
+    current = cycles[0]
+    for cycle in cycles:
+        if cycle.effective_from <= day:
+            current = cycle
+    return current
+
+
+def _validate(cycles: Sequence[Cycle], custom: Sequence[Span]) -> None:
+    if not cycles:
+        raise ValueError("A registration needs at least one filing cycle.")
+    for cycle in cycles:
+        if cycle.frequency not in MONTHS:
+            raise ValueError(f"Unknown frequency {cycle.frequency!r}.")
+    ordered = sorted(custom, key=lambda s: s.start)
+    for span in ordered:
+        if span.end < span.start:
+            raise ValueError("A custom period ends before it starts.")
+    for a, b in zip(ordered, ordered[1:], strict=False):
+        if b.start <= a.end:
+            raise ValueError("Custom periods overlap.")
+
+
+def generate_periods(
+    cycles: Sequence[Cycle],
+    fye_month: int,
+    fye_day: int,
+    start: dt.date,
+    end: dt.date,
+    custom: Sequence[Span] = (),
+) -> list[Period]:
+    """The periods covering ``start``…``end`` (module docstring)."""
+    _validate(cycles, custom)
+    cycles = sorted(cycles, key=lambda c: c.effective_from)
+    customs = sorted(
+        (c for c in custom if c.end >= start and c.start <= end), key=lambda s: s.start
+    )
+    return list(_walk(cycles, fye_month, fye_day, start, end, customs))
+
+
+def _walk(
+    cycles: list[Cycle],
+    fye_month: int,
+    fye_day: int,
+    start: dt.date,
+    end: dt.date,
+    customs: list[Span],
+) -> Iterator[Period]:
+    cursor = start
+    realigned: dt.date | None = None  # anchor after a custom period, until the next cycle
+    realigned_for: Cycle | None = None
+    while cursor <= end:
+        custom = next((c for c in customs if cursor in c), None)
+        if custom is not None:
+            yield Period(max(custom.start, cursor), min(custom.end, end), "custom")
+            cursor = custom.end + ONE_DAY
+            realigned, realigned_for = cursor, _cycle_at(cycles, cursor)
+            continue
+        cycle = _cycle_at(cycles, cursor)
+        if realigned_for is not None and cycle != realigned_for:
+            realigned = realigned_for = None
+        anchor = realigned or _anchor(cycle.frequency, fye_month, fye_day)
+        span = regular_span(anchor, cycle.frequency, cursor)
+        breaks = [end + ONE_DAY, span.end + ONE_DAY]
+        breaks += [c.effective_from for c in cycles if c.effective_from > cursor]
+        breaks += [c.start for c in customs if c.start > cursor]
+        stop = min(breaks) - ONE_DAY
+        kind = "regular" if (cursor, stop) == (span.start, span.end) else "stub"
+        yield Period(cursor, stop, kind, cycle.frequency)
+        cursor = stop + ONE_DAY
+
+
+# ---- due dates (G-03a-T08) ----------------------------------------------------------------------
+
+DUE_RULES = Path(__file__).parent / "data" / "filing_due_rules.json"
+
+
+@cache
+def due_rules() -> tuple[dict[str, Any], ...]:
+    return tuple(json.loads(DUE_RULES.read_text(encoding="utf-8"))["rules"])
+
+
+def _month_end(day: dt.date) -> dt.date:
+    return day.replace(day=_calendar.monthrange(day.year, day.month)[1])
+
+
+def _apply(rule: dict[str, Any], end: dt.date) -> dt.date:
+    if "fixed" in rule:
+        month, day = (int(x) for x in rule["fixed"].split("-"))
+        return dt.date(end.year + 1, month, day)
+    later = end + relativedelta(months=int(rule["months_after"]))
+    return _month_end(later) if end == _month_end(end) else later
+
+
+def _matches(rule: dict[str, Any], frequency: str, structure: str, fye: tuple[int, int]) -> bool:
+    if rule["frequency"] != frequency:
+        return False
+    if "structures" in rule and structure not in rule["structures"]:
+        return False
+    if "fiscal_year_end" in rule:
+        month, day = (int(x) for x in rule["fiscal_year_end"].split("-"))
+        return (month, day) == fye
+    return True
+
+
+def due_dates(
+    end: dt.date,
+    frequency: str,
+    *,
+    structure: str = "",
+    fye: tuple[int, int] = (12, 31),
+    jurisdictions: Iterable[str] = ("CA",),
+    rolled: bool = True,
+) -> tuple[dt.date, dt.date]:
+    """(return due, payment due) of a period ending ``end`` (module docstring)."""
+    from .holidays import calendar
+
+    rule = next(r for r in due_rules() if _matches(r, frequency, structure, fye))
+    dates = (_apply(rule["return"], end), _apply(rule["payment"], end))
+    if not rolled:
+        return dates
+    places = tuple(jurisdictions)
+    return calendar().roll(dates[0], places), calendar().roll(dates[1], places)
+
+
+# ---- instalments (G-03a-T09) ------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class Instalment:
+    quarter_start: dt.date
+    quarter_end: dt.date
+    due_date: dt.date
+    amount: Any = None  # G-09 fills it (the lesser of the prior-year and current-year methods)
+
+
+def instalments(period: Period, jurisdictions: Iterable[str] = ("CA",)) -> list[Instalment]:
+    """The quarterly instalment dates of an annual period (none for other frequencies)."""
+    from .holidays import calendar
+
+    if period.frequency != "annual":
+        return []
+    out = []
+    k = 0
+    while True:
+        q_start = period.start + relativedelta(months=3 * k)
+        if q_start > period.end:
+            break
+        q_end = min(period.start + relativedelta(months=3 * (k + 1)) - ONE_DAY, period.end)
+        later = q_end + relativedelta(months=1)
+        due = _month_end(later) if q_end == _month_end(q_end) else later
+        out.append(Instalment(q_start, q_end, calendar().roll(due, tuple(jurisdictions))))
+        k += 1
+    return out

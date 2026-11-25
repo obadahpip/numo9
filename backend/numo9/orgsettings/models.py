@@ -542,6 +542,10 @@ def _periods_overlap(a: TaxRegistration, b: TaxRegistration) -> bool:
     return a_starts_before_b_ends and b_starts_before_a_ends
 
 
+#: Registrations with reporting periods and returns (G-03a): GST/HST and Quebec QST.
+FILING_TYPES: frozenset[str] = frozenset({RegistrationType.RT, RegistrationType.QST})
+
+
 class TaxRegistration(AuditedModel, OrgOwnedModel):
     """One statutory registration of the organisation (A-05-T03): its Business Number, a CRA
     program account (RT GST/HST, RP payroll, RC corporate income tax), its Quebec QST number or a
@@ -604,6 +608,22 @@ class TaxRegistration(AuditedModel, OrgOwnedModel):
     @property
     def display_number(self) -> str:
         return display_registration_number(self.type, self.number)
+
+    # ---- filing (G-03a-T03): the GST/HST (RT) and QST registrations file returns ----------
+
+    @property
+    def files_returns(self) -> bool:
+        return self.type in FILING_TYPES
+
+    @property
+    def start_date(self) -> Any:
+        """The day periods start (the registration's effective date)."""
+        return self.effective_from
+
+    @property
+    def stop_date(self) -> Any:
+        """The last day of periods (None: open-ended)."""
+        return self.effective_to
 
     @property
     def business_number(self) -> str:

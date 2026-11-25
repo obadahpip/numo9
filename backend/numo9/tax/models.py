@@ -22,6 +22,16 @@ Columbia, Manitoba and Saskatchewan (PST / RST).
 - ``side`` — the documents it may appear on: both, sales only or purchases only;
 - ``control_account_sales`` / ``control_account_purchase`` — the organisation's accounts the
   collected / paid tax posts to (null → the system account of the kind's role).
+
+Filing cycles (G-03a, ``docs/specs/filing-cycles.md``):
+
+- ``FilingCycle`` (G-03a-T04) — a registration's filing frequency (monthly / quarterly / annual)
+  from ``effective_from`` until the next cycle, with the CRA or Revenu Québec approval reference
+  and date, a note and its author; unique per (registration, effective_from);
+- ``FilingPeriod`` (G-03a-T05) — one reporting period: start and end (both inclusive), kind
+  (regular / custom / stub), sequence number, return and payment due dates, status (open /
+  closed / filed / paid). The periods of a registration **never overlap** — a PostgreSQL
+  ``daterange`` exclusion constraint (GiST) refuses an overlapping row.
 """
 
 from __future__ import annotations
@@ -29,6 +39,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any, ClassVar
 
+from django.conf import settings
 from django.contrib.postgres.constraints import ExclusionConstraint
 from django.contrib.postgres.fields import DateRangeField, RangeOperators
 from django.core.exceptions import ValidationError
@@ -563,3 +574,126 @@ class TaxSettings(AuditedModel, OrgOwnedModel):
     def default_code(self, side: str, account_type: str) -> str:
         """The default code key of ``side`` for ``account_type`` ('' when none is set)."""
         return str(((self.default_codes or {}).get(side) or {}).get(account_type) or "")
+
+
+# ---- filing cycles (G-03a) ---------------------------------------------------------------------
+
+
+class FilingFrequency(models.TextChoices):
+    MONTHLY = "monthly", _("Monthly")
+    QUARTERLY = "quarterly", _("Quarterly")
+    ANNUAL = "annual", _("Annual")
+
+
+class FilingCycle(OrgOwnedModel):
+    registration = models.ForeignKey(
+        "orgsettings.TaxRegistration",
+        on_delete=models.CASCADE,
+        related_name="filing_cycles",
+        verbose_name=_("registration"),
+    )
+    frequency = models.CharField(_("frequency"), max_length=10, choices=FilingFrequency.choices)
+    effective_from = models.DateField(_("effective from"))
+    approval_ref = models.CharField(_("approval reference"), max_length=100, blank=True)
+    approval_date = models.DateField(_("approval date"), null=True, blank=True)
+    note = models.TextField(_("note"), blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("created by"),
+    )
+    created_at = models.DateTimeField(_("created at"), auto_now_add=True)
+
+    class Meta:
+        ordering = ("registration", "effective_from")
+        verbose_name = _("filing cycle")
+        verbose_name_plural = _("filing cycles")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("registration", "effective_from"), name="tax_filingcycle_unique_start"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(frequency__in=FilingFrequency.values),
+                name="tax_filingcycle_frequency_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.get_frequency_display()} from {self.effective_from:%Y-%m-%d}"
+
+
+class PeriodKind(models.TextChoices):
+    REGULAR = "regular", _("Regular")
+    CUSTOM = "custom", _("Out of cycle")
+    STUB = "stub", _("Stub")
+
+
+class PeriodStatus(models.TextChoices):
+    OPEN = "open", _("Open")
+    CLOSED = "closed", _("Closed")
+    FILED = "filed", _("Filed")
+    PAID = "paid", _("Paid")
+
+
+#: Filed and paid periods are immutable (never deleted, moved or regenerated).
+LOCKED_PERIOD_STATUSES: frozenset[str] = frozenset({PeriodStatus.FILED, PeriodStatus.PAID})
+
+
+class FilingPeriod(OrgOwnedModel):
+    registration = models.ForeignKey(
+        "orgsettings.TaxRegistration",
+        on_delete=models.CASCADE,
+        related_name="filing_periods",
+        verbose_name=_("registration"),
+    )
+    start = models.DateField(_("start"))
+    end = models.DateField(_("end"))
+    kind = models.CharField(
+        _("kind"), max_length=10, choices=PeriodKind.choices, default=PeriodKind.REGULAR
+    )
+    frequency = models.CharField(
+        _("frequency"), max_length=10, choices=FilingFrequency.choices, blank=True
+    )
+    sequence_no = models.PositiveIntegerField(_("sequence number"))
+    due_date = models.DateField(_("return due"))
+    payment_due_date = models.DateField(_("payment due"))
+    status = models.CharField(
+        _("status"), max_length=10, choices=PeriodStatus.choices, default=PeriodStatus.OPEN
+    )
+    note = models.TextField(_("note"), blank=True)
+    filed_at = models.DateTimeField(_("filed at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("registration", "start")
+        verbose_name = _("filing period")
+        verbose_name_plural = _("filing periods")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(end__gte=models.F("start")), name="tax_filingperiod_dates"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(kind__in=PeriodKind.values), name="tax_filingperiod_kind_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=PeriodStatus.values),
+                name="tax_filingperiod_status_valid",
+            ),
+            ExclusionConstraint(
+                name="tax_filingperiod_no_overlap",
+                index_type="GIST",
+                expressions=[
+                    ("registration", RangeOperators.EQUAL),
+                    (DateRange("start", "end", models.Value("[]")), RangeOperators.OVERLAPS),
+                ],
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.start:%Y-%m-%d} – {self.end:%Y-%m-%d}"
+
+    @property
+    def is_locked(self) -> bool:
+        return self.status in LOCKED_PERIOD_STATUSES

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:05-0500\n"
+"POT-Creation-Date: 2026-11-24 16:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8008,6 +8008,59 @@ msgstr "Un code taxable doit avoir au moins une composante de taxe."
 msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
 msgstr "Choisissez une date après le %(start)s, pendant la version en vigueur : la nouvelle version commence à cette date et la version actuelle se termine la veille."
 
+msgid "Choose the registration's filing frequency first."
+msgstr ""
+
+msgid "Enter the registration's effective date first."
+msgstr ""
+
+msgid "Choose monthly, quarterly or annual."
+msgstr ""
+
+#, python-format
+msgid "The change can't take effect before the registration starts (%(start)s)."
+msgstr ""
+
+#, python-format
+msgid "%(date)s is inside the filed period %(period)s: a filed period can't change. Choose a date after %(end)s."
+msgstr ""
+
+#, python-format
+msgid "%(period)s is filed: the change must take effect after it."
+msgstr ""
+
+#, python-format
+msgid "A filing frequency already takes effect on %(date)s."
+msgstr ""
+
+msgid "A change during the financial year needs the CRA or Revenu Québec approval reference."
+msgstr ""
+
+#, python-format
+msgid "%(date)s isn't the start of your financial year. The switch is saved with approval %(ref)s."
+msgstr ""
+
+#, fuzzy
+#| msgid "A tax code can't end before it starts."
+msgid "The period ends before it starts."
+msgstr "Un code de taxe ne peut pas se terminer avant de commencer."
+
+#, fuzzy, python-format
+#| msgid "The end date is before the start date."
+msgid "The period starts before the registration (%(start)s)."
+msgstr "La date de fin est antérieure à la date de début."
+
+#, python-format
+msgid "The period overlaps the filed period %(period)s."
+msgstr ""
+
+#, python-format
+msgid "The period overlaps the out-of-cycle period %(period)s."
+msgstr ""
+
+msgid "Only an out-of-cycle period that isn't filed can be deleted."
+msgstr ""
+
 msgid "tax authority"
 msgstr "autorité fiscale"
 
@@ -8191,6 +8244,94 @@ msgstr ""
 msgid "There's no %(side)s tax code %(code)s."
 msgstr "Il n'y a pas de code de taxe %(code)s (%(side)s)."
 
+msgid "Quarterly"
+msgstr "Trimestriel"
+
+#, fuzzy
+#| msgid "tax registration"
+msgid "registration"
+msgstr "inscription fiscale"
+
+msgid "frequency"
+msgstr ""
+
+#, fuzzy
+#| msgid "CRA approval reference"
+msgid "approval reference"
+msgstr "Référence d’approbation de l’ARC"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "approval date"
+msgstr "appliqué le"
+
+msgid "created by"
+msgstr ""
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing cycle"
+msgstr "fréquence de facturation"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing cycles"
+msgstr "fréquence de facturation"
+
+msgid "Regular"
+msgstr ""
+
+#, fuzzy
+#| msgid "Out of scope"
+msgid "Out of cycle"
+msgstr "Hors champ"
+
+msgid "Stub"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+#, fuzzy
+#| msgid "Failed"
+msgid "Filed"
+msgstr "Échec"
+
+#, fuzzy
+#| msgid "started"
+msgid "start"
+msgstr "commencée"
+
+#, fuzzy
+#| msgid "ended"
+msgid "end"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "return due"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "payment due"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "finished at"
+msgid "filed at"
+msgstr "terminée le"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing period"
+msgstr "fréquence de facturation"
+
+#, fuzzy
+#| msgid "billing interval"
+msgid "filing periods"
+msgstr "fréquence de facturation"
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -8320,9 +8461,6 @@ msgid "practice assignments"
 msgstr ""
 
 msgid "Assigned staff must be members of the assigned practice."
-msgstr ""
-
-msgid "created by"
 msgstr ""
 
 msgid "deleted at"
@@ -8464,9 +8602,6 @@ msgstr "Confortable"
 
 msgid "Compact"
 msgstr "Compacte"
-
-msgid "Quarterly"
-msgstr "Trimestriel"
 
 msgid "owner"
 msgstr "propriétaire"

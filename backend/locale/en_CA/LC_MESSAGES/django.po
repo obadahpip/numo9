@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:05-0500\n"
+"POT-Creation-Date: 2026-11-24 16:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7235,6 +7235,56 @@ msgstr ""
 msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
 msgstr ""
 
+msgid "Choose the registration's filing frequency first."
+msgstr ""
+
+msgid "Enter the registration's effective date first."
+msgstr ""
+
+msgid "Choose monthly, quarterly or annual."
+msgstr ""
+
+#, python-format
+msgid "The change can't take effect before the registration starts (%(start)s)."
+msgstr ""
+
+#, python-format
+msgid "%(date)s is inside the filed period %(period)s: a filed period can't change. Choose a date after %(end)s."
+msgstr ""
+
+#, python-format
+msgid "%(period)s is filed: the change must take effect after it."
+msgstr ""
+
+#, python-format
+msgid "A filing frequency already takes effect on %(date)s."
+msgstr ""
+
+msgid "A change during the financial year needs the CRA or Revenu Québec approval reference."
+msgstr ""
+
+#, python-format
+msgid "%(date)s isn't the start of your financial year. The switch is saved with approval %(ref)s."
+msgstr ""
+
+msgid "The period ends before it starts."
+msgstr ""
+
+#, python-format
+msgid "The period starts before the registration (%(start)s)."
+msgstr ""
+
+#, python-format
+msgid "The period overlaps the filed period %(period)s."
+msgstr ""
+
+#, python-format
+msgid "The period overlaps the out-of-cycle period %(period)s."
+msgstr ""
+
+msgid "Only an out-of-cycle period that isn't filed can be deleted."
+msgstr ""
+
 msgid "tax authority"
 msgstr ""
 
@@ -7404,6 +7454,66 @@ msgstr ""
 msgid "There's no %(side)s tax code %(code)s."
 msgstr ""
 
+msgid "Quarterly"
+msgstr ""
+
+msgid "registration"
+msgstr ""
+
+msgid "frequency"
+msgstr ""
+
+msgid "approval reference"
+msgstr ""
+
+msgid "approval date"
+msgstr ""
+
+msgid "created by"
+msgstr ""
+
+msgid "filing cycle"
+msgstr ""
+
+msgid "filing cycles"
+msgstr ""
+
+msgid "Regular"
+msgstr ""
+
+msgid "Out of cycle"
+msgstr ""
+
+msgid "Stub"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Filed"
+msgstr ""
+
+msgid "start"
+msgstr ""
+
+msgid "end"
+msgstr ""
+
+msgid "return due"
+msgstr ""
+
+msgid "payment due"
+msgstr ""
+
+msgid "filed at"
+msgstr ""
+
+msgid "filing period"
+msgstr ""
+
+msgid "filing periods"
+msgstr ""
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -7524,9 +7634,6 @@ msgid "practice assignments"
 msgstr ""
 
 msgid "Assigned staff must be members of the assigned practice."
-msgstr ""
-
-msgid "created by"
 msgstr ""
 
 msgid "deleted at"
@@ -7667,9 +7774,6 @@ msgid "Comfortable"
 msgstr ""
 
 msgid "Compact"
-msgstr ""
-
-msgid "Quarterly"
 msgstr ""
 
 msgid "owner"
