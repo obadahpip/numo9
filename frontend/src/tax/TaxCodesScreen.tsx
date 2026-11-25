@@ -27,6 +27,7 @@ import { useFormatMessage } from "@/i18n";
 
 import { taxApi, type TaxCode, type TaxCodeType, type TaxSide } from "./api";
 import { m, typeLabels } from "./messages";
+import { taxSettingsUrl } from "./settings/links";
 
 const TIME_ZONE = "America/Toronto";
 const TONES: Record<TaxCodeType, BadgeTone> = {
@@ -89,6 +90,13 @@ export function TaxCodesScreen({ org, canManage = false, editUrl }: TaxCodesScre
       <div className="flex max-w-3xl flex-col gap-1">
         <h1 className="text-2xl font-bold text-fg">{fm(m.title)}</h1>
         <p className="text-sm text-fg-muted">{fm(m.intro)}</p>
+        <Link
+          href={taxSettingsUrl(org, "default-codes")}
+          className="text-sm text-fg underline"
+          data-tax-settings-link="default-codes"
+        >
+          {fm(m.defaultsLink)}
+        </Link>
       </div>
       {canManage ? (
         <Link

@@ -73,16 +73,3 @@ export const DEFAULT_TYPES: Record<Side, string[]> = {
   sales: ["revenue", "asset"],
   purchase: ["expense", "asset", "liability"],
 };
-
-/** Anchors of the page: deep links from other modules land on them (G-06-T09). */
-export const ANCHORS = [
-  "registrations",
-  "tax-basis",
-  "default-codes",
-  "quick-method",
-  "restricted-itc",
-] as const;
-export type Anchor = (typeof ANCHORS)[number];
-
-export const taxSettingsUrl = (org: string, anchor?: Anchor) =>
-  `/o/${org}/settings/registrations${anchor ? `#${anchor}` : ""}`;

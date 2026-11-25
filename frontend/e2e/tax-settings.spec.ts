@@ -250,3 +250,53 @@ test("T08 not registered: the small-supplier explanation", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Not registered for GST/HST?" })).toBeVisible();
   await expect(page.getByText(/small supplier/)).toBeVisible();
 });
+
+test("T09 deep links land on the card they name", async ({ page }) => {
+  await mockTax(page);
+  // From Settings → Tax codes: default codes and rounding.
+  await page.route(`${API}/tax/codes*`, (r) => r.fulfill({ json: { results: [] } }));
+  await page.goto(`/o/${ORG}/settings/tax-codes`);
+  const defaults = page.locator("[data-tax-settings-link='default-codes']");
+  await expect(defaults).toHaveAttribute("href", `${PAGE}#default-codes`);
+  await defaults.click();
+  await expect(page).toHaveURL(`${PAGE}#default-codes`);
+  await expect(card(page, "default-codes")).toBeInViewport();
+
+  // From a registration's filing periods: back to the registrations card.
+  await page.route(`${API}/tax/registrations/${RT.id}/periods`, (r) =>
+    r.fulfill({
+      json: {
+        registration: {
+          id: RT.id,
+          type: "rt",
+          number: RT.display_number,
+          start_date: "2026-01-01",
+          stop_date: null,
+        },
+        today: "2026-06-01",
+        results: [],
+      },
+    }),
+  );
+  await page.route(`${API}/tax/registrations/${RT.id}/cycles`, (r) =>
+    r.fulfill({ json: { results: [] } }),
+  );
+  await page.goto(`/o/${ORG}/settings/tax/registrations/${RT.id}/filing`);
+  const back = page.locator("[data-tax-settings-link='registrations']");
+  await expect(back).toHaveAttribute("href", `${PAGE}#registrations`);
+  await back.click();
+  await expect(page).toHaveURL(`${PAGE}#registrations`);
+  await expect(card(page, "registrations")).toBeInViewport();
+
+  // Every anchor of the page is a card, and landing on it shows the card (short viewport).
+  await page.setViewportSize({ width: 1280, height: 500 });
+  for (const anchor of ["tax-basis", "quick-method", "restricted-itc"]) {
+    await page.goto(`${PAGE}#${anchor}`);
+    await expect(card(page, anchor)).toBeInViewport();
+  }
+  // The old entry points redirect to the one page.
+  for (const alias of ["settings/tax", "tax-settings"]) {
+    await page.goto(`/o/${ORG}/${alias}`);
+    await expect(page).toHaveURL(new RegExp(`${PAGE}$`)); // the redirect may change the host name
+  }
+});

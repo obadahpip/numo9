@@ -2,7 +2,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
-import { ANCHORS } from "./api";
+import { ANCHORS } from "./links";
 import { checkTaxSettings, TAX_SETTINGS, TAX_SETTINGS_ROUTE, type SourceFile } from "./registry";
 
 /**

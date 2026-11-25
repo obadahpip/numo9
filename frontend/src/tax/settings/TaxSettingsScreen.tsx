@@ -26,17 +26,16 @@ import { RegistrationsScreen } from "@/settings/general/RegistrationsScreen";
 
 import { taxApi, type TaxCode } from "../api";
 import {
-  ANCHORS,
   DEFAULT_TYPES,
   firstError,
   taxSettingsApi,
-  type Anchor,
   type BasisCheck,
   type SettingsChange,
   type Side,
   type TaxBasis,
   type TaxSettings,
 } from "./api";
+import { ANCHORS, type Anchor } from "./links";
 import { sm } from "./messages";
 import { TaxHistory } from "./TaxHistory";
 

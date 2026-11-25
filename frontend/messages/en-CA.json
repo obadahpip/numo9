@@ -3190,6 +3190,7 @@
       "colName": "Name",
       "colType": "Type",
       "colUsage": "Used on",
+      "defaultsLink": "Default codes and rounding",
       "edit": "Edit {name}",
       "empty": "No code matches",
       "expired": "Expired",
@@ -3252,6 +3253,7 @@
     "filing": {
       "addCustom": "Add out-of-cycle period",
       "back": "Back",
+      "backToSettings": "Tax registrations and settings",
       "cancel": "Cancel",
       "changeFrequency": "Change frequency",
       "close": "Close",

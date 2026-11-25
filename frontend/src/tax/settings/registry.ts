@@ -10,7 +10,7 @@
  *
  * To add a tax setting: add its key here, edit it in a card of `TaxSettingsScreen`, nowhere else.
  */
-import type { Anchor } from "./api";
+import type { Anchor } from "./links";
 
 export interface TaxSettingEntry {
   /** The card (anchor) of the tax settings page that edits it. */

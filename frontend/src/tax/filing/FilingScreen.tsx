@@ -6,6 +6,7 @@
  * is previewed before it is saved; after a change the periods and the history are read again.
  */
 import { Button, EmptyState, ErrorState, SkeletonText } from "@numo9/ui";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
@@ -16,6 +17,7 @@ import { CycleHistory } from "./CycleHistory";
 import { FilingTimeline } from "./FilingTimeline";
 import { fmsg } from "./messages";
 import { OutOfCycleDialog } from "./OutOfCycleDialog";
+import { taxSettingsUrl } from "../settings/links";
 
 export interface FilingScreenProps {
   org: string;
@@ -83,6 +85,13 @@ export function FilingScreen({ org, registration, canManage = false }: FilingScr
     <div className="flex flex-col gap-6" data-filing-screen="">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
+          <Link
+            href={taxSettingsUrl(org, "registrations")}
+            className="text-sm text-fg underline"
+            data-tax-settings-link="registrations"
+          >
+            {fm(fmsg.backToSettings)}
+          </Link>
           <h1 className="text-xl font-semibold text-fg">{fm(fmsg.title)}</h1>
           <p className="text-sm font-medium text-fg">
             {fm(fmsg.registration, { number: data.registration.number })}

@@ -7,7 +7,8 @@ import { renderWithIntl } from "@/test/intl";
 
 import { expectNoAxeViolations } from "../../../../packages/ui/src/test/axe";
 import type { TaxSettings } from "./api";
-import { firstError, taxSettingsUrl } from "./api";
+import { firstError } from "./api";
+import { taxSettingsUrl } from "./links";
 import { TaxSettingsScreen } from "./TaxSettingsScreen";
 
 /**
