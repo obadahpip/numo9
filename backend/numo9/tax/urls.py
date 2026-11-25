@@ -67,4 +67,7 @@ urlpatterns = [
         name="tax-filing-custom-period",
     ),
     path(f"{REG}preview", filing_api.FilingPreviewView.as_view(), name="tax-filing-preview"),
+    path(f"{REG}stop", filing_api.FilingStopView.as_view(), name="tax-filing-stop"),
+    path(f"{REG}restart", filing_api.FilingRestartView.as_view(), name="tax-filing-restart"),
+    path(f"{REG}events", filing_api.FilingEventListView.as_view(), name="tax-filing-events"),
 ]

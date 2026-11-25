@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Restart filing wizard">
+<title>Numo9 wireframe — Restart filing wizard</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" fill="#111111"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700">Maple &amp; Pine Supply Co.</text>
+<text x="716" y="33" font-size="13" fill="#FFD100" font-weight="700">Accounting</text>
+<text x="24" y="92" font-size="12" fill="#5B6472">Settings › Tax › GST/HST 123456782 RT 0001</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700">GST/HST filing periods</text>
+<rect x="0" y="0" width="1440" height="900" rx="0" fill="#111111" stroke="#111111" stroke-width="1" fill-opacity="0.35"/>
+<rect x="270" y="110" width="900" height="660" rx="8" fill="#FFFFFF" stroke="#111111" stroke-width="1"/>
+<text x="294" y="150" font-size="20" fill="#111111" font-weight="700" text-anchor="start">Restart filing</text>
+<circle cx="1140" cy="142" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="1140" y="146" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<text x="294" y="176" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">Step 1 of 3 · Date and frequency → Preview → Confirm</text>
+<text x="294" y="214" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Registered again from</text>
+<rect x="294" y="222" width="400" height="34" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="306" y="244" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Jan 2027</text>
+<text x="726" y="214" font-size="12" fill="#344054" font-weight="600" text-anchor="start">Filing frequency</text>
+<rect x="726" y="222" width="400" height="34" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="738" y="244" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Quarterly ▾</text>
+<text x="294" y="286" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">The date must be after the last day registered (30 Jun 2026).</text>
+<circle cx="282" cy="330" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="282" y="334" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<rect x="294" y="316" width="832" height="260" rx="6" fill="#F9FAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="314" y="344" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Preview</text>
+<rect x="314" y="364" width="600" height="36" rx="4" fill="#FFFFFF" stroke="#12B76A" stroke-width="1"/>
+<text x="326" y="387" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Apr – 30 Jun 2026</text>
+<text x="930" y="387" font-size="13" fill="#12B76A" font-weight="600" text-anchor="start">Filed</text>
+<rect x="314" y="412" width="600" height="36" rx="4" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="326" y="435" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Jul – 31 Dec 2026</text>
+<text x="930" y="435" font-size="13" fill="#98A2B3" font-weight="600" text-anchor="start">Not registered</text>
+<rect x="314" y="460" width="600" height="36" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="326" y="483" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Jan – 31 Mar 2027</text>
+<text x="930" y="483" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Added</text>
+<rect x="314" y="508" width="600" height="36" rx="4" fill="#FFFFFF" stroke="#111111" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="326" y="531" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Apr – 30 Jun 2027</text>
+<text x="930" y="531" font-size="13" fill="#111111" font-weight="600" text-anchor="start">Added</text>
+<text x="314" y="560" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Same dates as saving: confirm writes exactly this.</text>
+<circle cx="282" cy="630" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="282" y="634" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="1006" y="700" width="140" height="40" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1076" y="725" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="middle">Restart</text>
+<rect x="866" y="700" width="124" height="40" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="928" y="725" font-size="14" fill="#111111" font-weight="600" text-anchor="middle">Back</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Filing timeline with a Not registered band">
+<title>Numo9 wireframe — Filing timeline with a Not registered band</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" fill="#111111"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700">Maple &amp; Pine Supply Co.</text>
+<text x="716" y="33" font-size="13" fill="#FFD100" font-weight="700">Accounting</text>
+<text x="24" y="92" font-size="12" fill="#5B6472">Settings › Tax › GST/HST 123456782 RT 0001</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700">GST/HST filing periods</text>
+<circle cx="36" cy="200" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="36" y="204" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="48" y="180" width="220" height="60" rx="4" fill="#ECFDF3" stroke="#12B76A" stroke-width="1"/>
+<text x="58" y="215" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Q1 2026</text>
+<rect x="276" y="180" width="220" height="60" rx="4" fill="#ECFDF3" stroke="#12B76A" stroke-width="1"/>
+<text x="286" y="215" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Q2 2026 (final)</text>
+<rect x="504" y="180" width="452" height="60" rx="4" fill="#F2F4F7" stroke="#98A2B3" stroke-width="1" stroke-dasharray="6 4"/>
+<text x="730" y="208" font-size="14" fill="#344054" font-weight="700" text-anchor="middle">Not registered</text>
+<text x="730" y="228" font-size="12" fill="#5B6472" font-weight="400" text-anchor="middle">1 Jul – 31 Dec 2026</text>
+<circle cx="730" cy="264" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="730" y="268" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<rect x="964" y="180" width="200" height="60" rx="4" fill="#EFF8FF" stroke="#2E90FA" stroke-width="1"/>
+<text x="974" y="215" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Q1 2027</text>
+<rect x="1172" y="180" width="200" height="60" rx="4" fill="#EFF8FF" stroke="#2E90FA" stroke-width="1"/>
+<text x="1182" y="215" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Q2 2027</text>
+<line x1="504" y1="160" x2="504" y2="260" stroke="#B42318" stroke-width="2"/>
+<text x="510" y="158" font-size="12" fill="#B42318" font-weight="600" text-anchor="start">⏹ Stopped 30 Jun 2026 · Deregistration · Dana Lee</text>
+<line x1="972" y1="160" x2="972" y2="260" stroke="#12B76A" stroke-width="2"/>
+<text x="978" y="300" font-size="12" fill="#12B76A" font-weight="600" text-anchor="start">▶ Restarted 1 Jan 2027 · Quarterly · Dana Lee</text>
+<circle cx="36" cy="380" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="36" y="384" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="48" y="360" width="1340" height="140" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="64" y="390" font-size="14" fill="#111111" font-weight="700" text-anchor="start">Registration history</text>
+<text x="64" y="420" font-size="13" fill="#111111" font-weight="400" text-anchor="start">30 Jun 2026  Stopped — Deregistration — “Business sold to Northern Tile Ltd.” — Dana Lee, 2 Jul 2026 10:14</text>
+<text x="64" y="446" font-size="13" fill="#111111" font-weight="400" text-anchor="start">1 Jan 2027   Restarted — Quarterly — “Registered again (new location)” — Dana Lee, 4 Jan 2027 09:02</text>
+<circle cx="36" cy="560" r="11" fill="#FFD100" stroke="#111111"/>
+<text x="36" y="564" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<rect x="48" y="540" width="1340" height="64" rx="6" fill="#FFFAEB" stroke="#FEC84B" stroke-width="1"/>
+<text x="64" y="578" font-size="13" fill="#B54708" font-weight="600" text-anchor="start">Invoice 1043 is dated 15 Jul 2026 and charges HST while the registration was stopped. Review it.</text>
+</svg>

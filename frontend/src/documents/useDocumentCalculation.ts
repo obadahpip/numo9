@@ -14,6 +14,7 @@ import {
   type CalculateRequest,
   type CalculateResponse,
   type DocumentSide,
+  type DocumentWarning,
   type LineProblem,
 } from "./api";
 import { calculateDocument, type DiscountType, type DocResult, type TaxMode } from "./calculator";
@@ -43,6 +44,8 @@ export interface DocumentCalculation {
   amounts: Record<string, DocumentLineAmounts>;
   totals: DocumentTotalsValue;
   problems: LineProblem[];
+  /** Document-level warnings from the server (G-03b-T12), never blocking. */
+  warnings: DocumentWarning[];
   /** True between an edit and the server's answer to it. */
   pending: boolean;
   /** Whose figures are on screen. */
@@ -118,6 +121,7 @@ function mirror(input: DocumentCalculationInput, names: Map<string, string>): Do
       taxIncluded: input.taxMode === "inclusive",
     },
     problems: [],
+    warnings: [],
     pending: true,
     source: "mirror",
   };
@@ -143,6 +147,7 @@ function fromServer(
       taxIncluded: response.tax_included,
     },
     problems: response.problems,
+    warnings: response.warnings ?? [],
     pending: false,
     source: "server",
   };

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 13:30-0500\n"
+"POT-Creation-Date: 2026-11-25 14:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8163,6 +8163,9 @@ msgstr "Un code taxable doit avoir au moins une composante de taxe."
 msgid "Choose a date after %(start)s, inside the version in force: the new version starts there and the current one ends the day before."
 msgstr "Choisissez une date après le %(start)s, pendant la version en vigueur : la nouvelle version commence à cette date et la version actuelle se termine la veille."
 
+msgid "Type the registration number exactly to confirm."
+msgstr ""
+
 msgid "Choose the registration's filing frequency first."
 msgstr ""
 
@@ -8170,6 +8173,10 @@ msgid "Enter the registration's effective date first."
 msgstr ""
 
 msgid "Choose monthly, quarterly or annual."
+msgstr ""
+
+#, python-format
+msgid "The registration isn't registered on %(date)s: restart filing instead."
 msgstr ""
 
 #, python-format
@@ -8204,6 +8211,9 @@ msgstr "Un code de taxe ne peut pas se terminer avant de commencer."
 #| msgid "The end date is before the start date."
 msgid "The period starts before the registration (%(start)s)."
 msgstr "La date de fin est antérieure à la date de début."
+
+msgid "The period covers days the registration isn't registered."
+msgstr ""
 
 #, python-format
 msgid "The period overlaps the filed period %(period)s."
@@ -8373,6 +8383,12 @@ msgstr "place de membre fondateur"
 msgid "quick method elected"
 msgstr ""
 
+msgid "sales after a GST/HST stop default to out of scope"
+msgstr ""
+
+msgid "After filing stops (G-03b), new sales lines default to Out of scope instead of charging GST/HST."
+msgstr ""
+
 msgid "quick method from"
 msgstr ""
 
@@ -8499,6 +8515,30 @@ msgstr "fréquence de facturation"
 msgid "filing periods"
 msgstr "fréquence de facturation"
 
+msgid "Stopped filing"
+msgstr ""
+
+msgid "Restarted filing"
+msgstr ""
+
+msgid "Registration cancelled"
+msgstr ""
+
+msgid "Small supplier"
+msgstr ""
+
+msgid "Suspended by the CRA or Revenu Québec"
+msgstr ""
+
+msgid "recorded at"
+msgstr ""
+
+msgid "registration status change"
+msgstr ""
+
+msgid "registration status changes"
+msgstr ""
+
 msgid "Reviewed"
 msgstr "Révisée"
 
@@ -8580,6 +8620,10 @@ msgstr "Voir les codes de taxe, les taux et leur historique"
 
 msgid "Add, version, archive and restore tax codes and rates"
 msgstr "Ajouter, versionner, archiver et restaurer des codes de taxe et des taux"
+
+#, python-format
+msgid "%(registration)s wasn't registered on %(date)s (filing stopped after %(stop)s): this document shouldn't use its tax codes."
+msgstr ""
 
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."
@@ -8665,6 +8709,37 @@ msgstr ""
 
 #, python-format
 msgid "Basis: %(basis)s (this report)"
+msgstr ""
+
+msgid "A person must make this change: it is recorded with their name."
+msgstr ""
+
+msgid "Only GST/HST and QST registrations file returns."
+msgstr ""
+
+msgid "Choose why filing stops."
+msgstr ""
+
+#, python-format
+msgid "Filing is already stopped (last day %(day)s): restart it first."
+msgstr ""
+
+msgid "The last day registered can't be before the registration starts."
+msgstr ""
+
+#, python-format
+msgid "Filing restarted on %(day)s: the last day registered can't be before it."
+msgstr ""
+
+#, python-format
+msgid "The period up to %(end)s is already filed: the last day registered can't be before it."
+msgstr ""
+
+msgid "Filing isn't stopped."
+msgstr ""
+
+#, python-format
+msgid "Registered again from must be after the last day registered (%(day)s)."
 msgstr ""
 
 msgid "Tenancy"

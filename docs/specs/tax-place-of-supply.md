@@ -97,6 +97,17 @@ codes — a supplier charges PST whether or not the buyer is registered.
 | Meals bill from Ontario | purchase, meals account itc50 key, ON supplier | `purchase.ON.standard.itc50` |
 | Expense account, ON supplier | purchase, account key `purchase.ON.standard` | `purchase.ON.standard` |
 
+## After a GST/HST stop (G-03b-T06)
+
+While the organisation's GST/HST (RT) registration is **stopped** on the line's date — after the
+last day registered and before a restart (a "Not registered" gap) — every sales default (place of
+supply, item, contact, account) becomes `sales.out_of_scope` with the explanation
+`tax.pos.registration_stopped` (parameter `date`: the last day registered). A line override is
+kept; the editor warns about it (`REGISTRATION_STOPPED`, G-03b-T05). Purchases are unchanged.
+The tax setting **Sales after filing stops** (`out_of_scope_after_stop`, on by default, card
+Default codes) turns the flip off.
+
+
 ## Sign-off
 
 | Role | Name | Date |

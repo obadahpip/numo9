@@ -43,6 +43,7 @@ export const TAX_SETTINGS: Record<string, TaxSettingEntry> = {
   "tax.basis": { anchor: "tax-basis", ...SETTINGS },
   "tax.default_codes": { anchor: "default-codes", ...SETTINGS },
   "tax.rounding_mode": { anchor: "default-codes", ...SETTINGS },
+  "tax.out_of_scope_after_stop": { anchor: "default-codes", ...SETTINGS },
   "tax.quick_method": { anchor: "quick-method", ...SETTINGS },
   "tax.quick_method_from": { anchor: "quick-method", ...SETTINGS },
   "tax.restricted_itc": {

@@ -83,6 +83,8 @@ from .models import (
     PeriodAttention,
     PeriodKind,
     PeriodStatus,
+    RegistrationAction,
+    RegistrationStatusEvent,
     TaxError,
 )
 
@@ -137,6 +139,54 @@ def is_rolled(registration: Any, period: FilingPeriod, settings: Any) -> bool:
     return bool(period.due_date != plain)
 
 
+# ---- not-registered gaps (G-03b) ----------------------------------------------------------------
+
+
+def gaps(registration: Any) -> list[tuple[dt.date, dt.date | None]]:
+    """The spans the registration was **not registered** (G-03b): from the day after each stop to
+    the day before the restart that follows it (``None``: still stopped)."""
+    out: list[tuple[dt.date, dt.date | None]] = []
+    stopped: dt.date | None = None
+    events = RegistrationStatusEvent.objects.filter(registration=registration).order_by(
+        "date", "created_at", "pk"
+    )
+    for event in events:
+        if event.action == RegistrationAction.STOP and stopped is None:
+            stopped = event.date
+        elif event.action == RegistrationAction.RESTART and stopped is not None:
+            out.append((stopped + ONE_DAY, event.date - ONE_DAY))
+            stopped = None
+    if stopped is not None:
+        out.append((stopped + ONE_DAY, None))
+    return out
+
+
+def in_gap(registration: Any, day: dt.date, spans: Any = None) -> bool:
+    spans = gaps(registration) if spans is None else spans
+    return any(start <= day and (end is None or day <= end) for start, end in spans)
+
+
+def registered_segments(
+    registration: Any, start: dt.date, end: dt.date
+) -> list[tuple[dt.date, dt.date]]:
+    """``start``…``end`` without the not-registered gaps, as consecutive registered segments."""
+    segments: list[tuple[dt.date, dt.date]] = []
+    cursor = start
+    for gap_start, gap_end in sorted(gaps(registration)):
+        if gap_end is not None and gap_end < cursor:
+            continue
+        if gap_start > end:
+            break
+        if gap_start > cursor:
+            segments.append((cursor, min(end, gap_start - ONE_DAY)))
+        if gap_end is None:
+            return segments
+        cursor = gap_end + ONE_DAY
+    if cursor <= end:
+        segments.append((cursor, end))
+    return segments
+
+
 def _frequency_at(registration: Any, day: dt.date) -> str:
     cycles = cycles_of(registration)
     current = cycles[0].frequency if cycles else "quarterly"
@@ -185,20 +235,29 @@ def _fill(
     # An open-ended registration's horizon is not a boundary: its last period is generated
     # whole (to its own end), never cut at the horizon into a stub.
     whole = registration.stop_date is None
-    generated = generate_periods(
-        cycles,
-        int(settings.fye_month),
-        int(settings.fye_day),
-        start,
-        end + relativedelta(years=1) if whole else end,
-        spans,
-    )
+    generated: list[tuple[Period, dt.date]] = []
+    # No period in a not-registered gap (G-03b): each registered segment is generated on its
+    # own, a segment ending at a stop ends with a stub, the one after a restart starts with one.
+    segments = registered_segments(registration, start, end)
+    for n, (seg_start, seg_end) in enumerate(segments):
+        last = n == len(segments) - 1 and seg_end == end
+        generated += [
+            (period, seg_end)
+            for period in generate_periods(
+                cycles,
+                int(settings.fye_month),
+                int(settings.fye_day),
+                seg_start,
+                seg_end + relativedelta(years=1) if whole and last else seg_end,
+                [span for span in spans if span.end >= seg_start and span.start <= seg_end],
+            )
+        ]
     created = []
-    for period in generated:
+    for period, seg_end in generated:
         if period.kind == "custom":  # one of the periods kept
             continue
-        if period.start > end:
-            break
+        if period.start > seg_end:
+            continue
         item = FilingPeriod(
             organisation=registration.organisation,
             registration=registration,
@@ -279,6 +338,14 @@ def validate_switch(
     if frequency not in MONTHS:
         raise TaxError(_("Choose monthly, quarterly or annual."), code="tax.filing.frequency")
     start = registration.start_date
+    stop = registration.stop_date
+    if in_gap(registration, effective_from) or (stop is not None and effective_from > stop):
+        # G-03b-T04: no frequency (and so no period) while not registered; restart instead.
+        raise TaxError(
+            _("The registration isn't registered on %(date)s: restart filing instead.")
+            % {"date": effective_from.isoformat()},
+            code="tax.filing.not_registered",
+        )
     if start is not None and effective_from < start:
         raise TaxError(
             _("The change can't take effect before the registration starts (%(start)s).")
@@ -394,6 +461,17 @@ def add_custom_period(
                 % {"start": registration.start_date.isoformat()},
                 code="tax.filing.before_start",
             )
+        stop = registration.stop_date
+        inside_gap = any(
+            g_start <= end and (g_end is None or start <= g_end)
+            for g_start, g_end in gaps(registration)
+        )
+        if inside_gap or (stop is not None and end > stop):
+            # G-03b: an out-of-cycle period can't cover days the registration isn't registered.
+            raise TaxError(
+                _("The period covers days the registration isn't registered."),
+                code="tax.filing.not_registered",
+            )
         periods = FilingPeriod.objects.select_for_update().filter(registration=registration)
         overlapping = periods.filter(start__lte=end, end__gte=start)
         filed = overlapping.filter(status__in=(PeriodStatus.FILED, PeriodStatus.PAID)).first()
@@ -465,6 +543,8 @@ def _covered(registration: Any, day: dt.date) -> bool:
     """Is ``day`` a date the registration files for (started, not stopped, has a frequency)?"""
     start, stop = registration.start_date, registration.stop_date
     if start is None or day < start or (stop is not None and day > stop):
+        return False
+    if in_gap(registration, day):  # not registered then (G-03b)
         return False
     return FilingCycle.objects.filter(registration=registration).exists()
 

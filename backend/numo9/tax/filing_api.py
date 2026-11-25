@@ -10,7 +10,16 @@
 - ``POST custom-periods`` ``{start, end, note}`` — add an out-of-cycle period;
   ``DELETE custom-periods/<period>`` — remove an unfiled one.
 - ``POST preview`` ``{action: switch | custom | delete_custom, …}`` — the diff the change would
-  make, writing nothing (G-03a-T15).
+  make, writing nothing (G-03a-T15); ``{action: stop, date, reason_code, reason_text}`` and
+  ``{action: restart, date, frequency, reason_text}`` the impact of a stop or restart (G-03b-T08):
+  the diff, the documents dated while not registered with the registration's tax codes, and
+  whether new sales default to out of scope.
+- ``POST stop`` ``{date, reason_code, reason_text, confirm_number}`` — stop filing after
+  ``date`` (the last day registered); ``confirm_number`` must be the registration number
+  (``tax.filing.confirm_number``). ``POST restart`` ``{date, frequency, reason_text}`` — file
+  again from ``date``. Both 201 with the preview's fields and the history below (G-03b-T09).
+- ``GET events`` — the stop/restart history (each with its person), the not-registered gaps,
+  ``stopped``, ``stop_date``, ``last_filed_end`` and the post-stop documents.
 
 A change the rules refuse is a **422** with its ``code`` (``tax.filing.approval_required``,
 ``tax.filing.inside_filed``, ``tax.filing.custom_overlaps_filed``…). Reading needs
@@ -24,6 +33,7 @@ import datetime as dt
 from typing import Any
 
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from drf_spectacular.utils import extend_schema
 from rest_framework import serializers, status
 from rest_framework.exceptions import NotFound
@@ -38,11 +48,12 @@ from numo9.orgsettings.service import get_settings
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
-from . import filing_service
+from . import filing_service, stop_restart
 from .filing import MONTHS, Period, instalments
 from .holidays import jurisdictions_for
-from .models import FilingCycle, FilingPeriod, TaxError
+from .models import FilingCycle, FilingPeriod, StopReason, TaxError
 from .permissions import TAX_MANAGE, TAX_VIEW
+from .post_stop import post_stop_documents
 
 
 def _today() -> dt.date:
@@ -105,7 +116,9 @@ class CustomPeriodSerializer(serializers.Serializer[Any]):
 
 
 class PreviewSerializer(serializers.Serializer[Any]):
-    action = serializers.ChoiceField(choices=["switch", "custom", "delete_custom"])
+    action = serializers.ChoiceField(
+        choices=["switch", "custom", "delete_custom", "stop", "restart"]
+    )
     frequency = serializers.ChoiceField(choices=sorted(MONTHS), required=False)
     effective_from = serializers.DateField(required=False)
     approval_ref = serializers.CharField(max_length=100, required=False, allow_blank=True)
@@ -114,12 +127,18 @@ class PreviewSerializer(serializers.Serializer[Any]):
     end = serializers.DateField(required=False)
     period = serializers.UUIDField(required=False)
     note = serializers.CharField(required=False, allow_blank=True)
+    # stop / restart (G-03b-T08)
+    date = serializers.DateField(required=False)
+    reason_code = serializers.CharField(max_length=16, required=False, allow_blank=True)
+    reason_text = serializers.CharField(required=False, allow_blank=True)
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         needs = {
             "switch": ("frequency", "effective_from"),
             "custom": ("start", "end"),
             "delete_custom": ("period",),
+            "stop": ("date", "reason_code"),
+            "restart": ("date", "frequency"),
         }[attrs["action"]]
         missing = {name: [self.error_messages["required"]] for name in needs if name not in attrs}
         if missing:
@@ -263,9 +282,102 @@ class FilingPreviewView(FilingView):
         registration = _registration(public_id)
         payload = PreviewSerializer(data=request.data)
         payload.is_valid(raise_exception=True)
+        change = dict(payload.validated_data)
         try:
-            return Response(
-                filing_service.preview(registration, dict(payload.validated_data), today=_today())
+            if change["action"] in ("stop", "restart"):  # G-03b-T08
+                return Response(
+                    stop_restart.preview(registration, change, user=request.user, today=_today())
+                )
+            return Response(filing_service.preview(registration, change, today=_today()))
+        except TaxError as error:
+            return _refused(error)
+
+
+# ---- stop & restart (G-03b-T09) ----------------------------------------------------------------
+
+
+class StopSerializer(serializers.Serializer[Any]):
+    date = serializers.DateField()
+    reason_code = serializers.ChoiceField(choices=StopReason.choices)
+    reason_text = serializers.CharField(required=False, allow_blank=True, default="")
+    #: The registration number typed to confirm (the danger zone's check, G-03b-T10).
+    confirm_number = serializers.CharField()
+
+
+class RestartSerializer(serializers.Serializer[Any]):
+    date = serializers.DateField()
+    frequency = serializers.ChoiceField(choices=sorted(MONTHS))
+    reason_text = serializers.CharField(required=False, allow_blank=True, default="")
+
+
+def _same_number(registration: TaxRegistration, typed: str) -> bool:
+    def bare(value: str) -> str:
+        return "".join(ch for ch in value.upper() if ch.isalnum())
+
+    return bare(typed) == bare(registration.number)
+
+
+class FilingStopView(FilingView):
+    @requires_permission(TAX_MANAGE.key)
+    @requires_feature(CORE)
+    @extend_schema(operation_id="tax_filing_stop", request=StopSerializer, responses={201: dict})
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        registration = _registration(public_id)
+        payload = StopSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        data = dict(payload.validated_data)
+        if not _same_number(registration, data.pop("confirm_number")):
+            return _refused(
+                TaxError(
+                    _("Type the registration number exactly to confirm."),
+                    code="tax.filing.confirm_number",
+                )
+            )
+        try:
+            result = stop_restart.apply(
+                registration, {"action": "stop", **data}, user=request.user, today=_today()
             )
         except TaxError as error:
             return _refused(error)
+        return Response(
+            {**result, **stop_restart.status_of(registration)}, status=status.HTTP_201_CREATED
+        )
+
+
+class FilingRestartView(FilingView):
+    @requires_permission(TAX_MANAGE.key)
+    @requires_feature(CORE)
+    @extend_schema(
+        operation_id="tax_filing_restart", request=RestartSerializer, responses={201: dict}
+    )
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        registration = _registration(public_id)
+        payload = RestartSerializer(data=request.data)
+        payload.is_valid(raise_exception=True)
+        try:
+            result = stop_restart.apply(
+                registration,
+                {"action": "restart", **payload.validated_data},
+                user=request.user,
+                today=_today(),
+            )
+        except TaxError as error:
+            return _refused(error)
+        return Response(
+            {**result, **stop_restart.status_of(registration), "cycles": _cycles(registration)},
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class FilingEventListView(FilingView):
+    @requires_permission(TAX_VIEW.key)
+    @requires_feature(CORE)
+    @extend_schema(operation_id="tax_filing_events", responses={200: dict})
+    def get(self, request: Request, org: Any, public_id: Any) -> Response:
+        registration = _registration(public_id)
+        return Response(
+            {
+                **stop_restart.status_of(registration),
+                "documents": post_stop_documents(registration),
+            }
+        )

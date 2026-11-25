@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 648   Remaining: 2139   Progress: 23.25%
+TOTAL ATOMIC TASKS: 2787   Completed: 661   Remaining: 2126   Progress: 23.72%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -858,20 +858,20 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-04-T11 — UI: approver view + inbox registration
 
 [G-03b]
-❌ G-03b-T01 — Wireframes: danger-zone stop card with impact preview, restart wizard, timeline gap band
-❌ G-03b-T02 — RegistrationStatusEvent model (registration, action STOP/RESTART, date, reason_code, reason_text, user)
-❌ G-03b-T03 — Stop service: validate date, truncate the open period, delete later unfiled periods, set stop_date, status INACTIVE, record event
-❌ G-03b-T04 — Generator guard: no periods after stop_date until a restart event exists
-❌ G-03b-T05 — Post-stop document checker: lists documents after the stop date with tax codes of that registration; returns a warning on new documents
-❌ G-03b-T06 — Configurable default flip (org setting) wired into the G-02 resolver
-❌ G-03b-T07 — Restart service: create a cycle with frequency from the restart date, status ACTIVE, regenerate periods, record event
-❌ G-03b-T08 — Impact preview endpoint for stop and restart
-❌ G-03b-T09 — API endpoints /stop, /restart, /events; permission tax.manage; audit
-❌ G-03b-T10 — Danger-zone stop UI with a typed confirmation of the registration number, and the restart wizard
-❌ G-03b-T11 — Timeline "Not registered" gap band and event markers
-❌ G-03b-T12 — Inline editor warning for post-stop documents
-❌ G-03b-T13 — Fixtures and property test extension (stop/restart sequences keep no-overlap invariants)
-❌ G-03b-T14 — i18n, docs
+✅ G-03b-T01 — Wireframes: danger-zone stop card with impact preview, restart wizard, timeline gap band
+✅ G-03b-T02 — RegistrationStatusEvent model (registration, action STOP/RESTART, date, reason_code, reason_text, user)
+✅ G-03b-T03 — Stop service: validate date, truncate the open period, delete later unfiled periods, set stop_date, status INACTIVE, record event
+✅ G-03b-T04 — Generator guard: no periods after stop_date until a restart event exists
+✅ G-03b-T05 — Post-stop document checker: lists documents after the stop date with tax codes of that registration; returns a warning on new documents
+✅ G-03b-T06 — Configurable default flip (org setting) wired into the G-02 resolver
+✅ G-03b-T07 — Restart service: create a cycle with frequency from the restart date, status ACTIVE, regenerate periods, record event
+✅ G-03b-T08 — Impact preview endpoint for stop and restart
+✅ G-03b-T09 — API endpoints /stop, /restart, /events; permission tax.manage; audit
+✅ G-03b-T10 — Danger-zone stop UI with a typed confirmation of the registration number, and the restart wizard
+✅ G-03b-T11 — Timeline "Not registered" gap band and event markers
+❌ G-03b-T12 — Inline editor warning for post-stop documents   [REGISTRATION_STOPPED in the documents calculate answer for both sides (backend/tests/test_documents_stop_warning.py) and shown inline by the shared live calculation (DocumentWarnings) in the bill editor (Playwright e2e/document-stop-warning.spec.ts); ✅ once the invoice editor (D-03a-T13) exists and shows it on a 15 Jul invoice]
+✅ G-03b-T13 — Fixtures and property test extension (stop/restart sequences keep no-overlap invariants)
+✅ G-03b-T14 — i18n, docs
 
 [G-02]
 ❌ G-02-T05 — Registration-end awareness: after a G-03b stop date, sales default to OUT_OF_SCOPE (configurable)

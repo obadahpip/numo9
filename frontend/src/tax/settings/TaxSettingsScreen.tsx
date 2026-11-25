@@ -108,6 +108,7 @@ export function TaxSettingsScreen({ org, canManage = false }: Readonly<TaxSettin
   const [check, setCheck] = useState<BasisCheck | null>(null);
   const [codes, setCodes] = useState<TaxSettings["default_codes"]>({});
   const [rounding, setRounding] = useState<TaxSettings["rounding_mode"]>("line");
+  const [afterStop, setAfterStop] = useState(true);
   const [quick, setQuick] = useState(false);
   const [quickFrom, setQuickFrom] = useState("");
   const [options, setOptions] = useState<Record<Side, TaxCode[]>>({ sales: [], purchase: [] });
@@ -147,6 +148,7 @@ export function TaxSettingsScreen({ org, canManage = false }: Readonly<TaxSettin
     } else if (anchor === "default-codes") {
       setCodes(settings.default_codes);
       setRounding(settings.rounding_mode);
+      setAfterStop(settings.out_of_scope_after_stop);
       for (const side of SIDES) {
         void taxApi.codes(org, { side }).then((answer) => {
           if (answer.status === 200 && Array.isArray(answer.body?.results)) {
@@ -385,12 +387,30 @@ export function TaxSettingsScreen({ org, canManage = false }: Readonly<TaxSettin
               )}
             </dd>
           </div>
+          <div className="contents" data-default="after-stop">
+            <dt>{fm(sm.afterStop)}</dt>
+            <dd>
+              {editing === "default-codes" ? (
+                <Switch
+                  checked={afterStop}
+                  onCheckedChange={setAfterStop}
+                  aria-label={fm(sm.afterStop)}
+                />
+              ) : (
+                fm(sm.afterStopValue, { on: String(settings.out_of_scope_after_stop) })
+              )}
+            </dd>
+          </div>
         </dl>
         {problem("default-codes")}
         {editing === "default-codes"
           ? actions(
               () =>
-                void save(fm(sm.defaultsTitle), { default_codes: codes, rounding_mode: rounding }),
+                void save(fm(sm.defaultsTitle), {
+                  default_codes: codes,
+                  rounding_mode: rounding,
+                  out_of_scope_after_stop: afterStop,
+                }),
             )
           : null}
       </Card>

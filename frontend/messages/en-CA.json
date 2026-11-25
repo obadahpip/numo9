@@ -1581,6 +1581,9 @@
       "region": "Totals",
       "subtotal": "Subtotal",
       "total": "Total"
+    },
+    "warnings": {
+      "title": "Review before saving"
     }
   },
   "emailDomain": {
@@ -3313,11 +3316,22 @@
         "table": "Periods removed, added and shortened",
         "title": "What changes"
       },
+      "events": {
+        "restart": "{date}: restarted — {frequency}{hasNote, select, yes { — “{note}”} other {}} — {name}, {at}",
+        "stop": "{date}: stopped — {reason}{hasNote, select, yes { — “{note}”} other {}} — {name}, {at}",
+        "title": "Registration history"
+      },
       "failed": "The change couldn't be saved. Try again.",
       "frequency": {
         "annual": "Annual",
         "monthly": "Monthly",
         "quarterly": "Quarterly"
+      },
+      "gap": {
+        "dates": "{start} – {end}",
+        "label": "Not registered",
+        "name": "Not registered: {dates}",
+        "open": "From {start}"
       },
       "history": {
         "approval": "Approval",
@@ -3341,6 +3355,10 @@
       "kindState": "{kind} · {state}",
       "legend": "Legend",
       "loadFailed": "The filing periods couldn't be loaded.",
+      "marker": {
+        "restart": "Restarted {date}",
+        "stop": "Stopped {date}"
+      },
       "next": "Next",
       "noPeriods": "No filing periods yet",
       "noPeriodsBody": "Choose how often this registration files to create its periods.",
@@ -3349,7 +3367,23 @@
       "period": "Period {n}: {start} – {end}, {state}",
       "periodDates": "{start} – {end}",
       "previewButton": "Preview",
+      "reason": {
+        "deregistration": "Registration cancelled",
+        "other": "Other",
+        "smallSupplier": "Small supplier",
+        "suspension": "Suspended by the CRA or Revenu Québec"
+      },
       "registration": "Registration {number}",
+      "restart": {
+        "back": "Back",
+        "button": "Restart filing",
+        "confirm": "Restart",
+        "date": "Registered again from",
+        "frequency": "Filing frequency",
+        "hint": "The date must be after the last day registered ({date}).",
+        "preview": "Preview",
+        "title": "Restart filing"
+      },
       "retry": "Try again",
       "returnDue": "Return due {date}",
       "returnDueRolled": "Return due {date} *",
@@ -3362,6 +3396,28 @@
         "filed": "Filed",
         "open": "Open",
         "overdue": "Overdue"
+      },
+      "stop": {
+        "cancel": "Cancel",
+        "close": "Close",
+        "confirm": "Stop filing",
+        "confirmHint": "The button stays disabled until the number matches.",
+        "confirmLabel": "Type the registration number {number} to confirm",
+        "documentLink": "{number} ({date})",
+        "draft": "Draft",
+        "failed": "That didn't work and nothing was changed. Try again in a moment.",
+        "impactDocuments": "{count, plural, one {# document dated after {date} uses GST/HST or QST codes: review it.} other {# documents dated after {date} use GST/HST or QST codes: review them.}}",
+        "impactFinal": "Your final return covers {start} – {end}.",
+        "impactOutOfScope": "New sales after {date} default to Out of scope.",
+        "impactRemoved": "{count, plural, =0 {No period after {date} to remove.} one {# period after {date} will be removed.} other {# periods after {date} will be removed.}}",
+        "impactTitle": "What happens",
+        "intro": "Use this when the registration is cancelled, you become a small supplier, or it is suspended. Filed periods are never changed.",
+        "lastDay": "Last day registered",
+        "note": "Note (kept in the history)",
+        "reason": "Reason",
+        "review": "Review the impact",
+        "stopped": "Filing stopped: the last day registered is {date}.",
+        "title": "Stop filing"
       },
       "switchMarker": "{frequency} from {date}",
       "timeline": "Filing periods timeline",
@@ -3394,6 +3450,8 @@
       "cancel": "Cancel",
       "close": "Close",
       "defaults": {
+        "afterStop": "Sales after filing stops",
+        "afterStopValue": "{on, select, true {Out of scope} other {Keep the usual default}}",
         "for": "{side, select, sales {Sales} other {Purchases}} on {type, select, revenue {revenue} expense {expense} asset {asset} liability {liability} other {other}} accounts",
         "help": "The tax code a new line starts with, by the type of its account. An account's own code and the place of supply come first.",
         "none": "No default",

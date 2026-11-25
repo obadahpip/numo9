@@ -865,3 +865,34 @@ old system with French headers, saved in Windows-1252.
 | 1 | Dates and note | The custom period's start and end, and why (kept in the history) |
 | 2 | Overlap preview | Unfiled periods it overlaps are removed; regular periods realign from the day after its end |
 | 3 | Check | Green when no filed period overlaps; an overlap with a filed period is refused with the period named |
+
+## 67. Stop filing — danger zone (G-03b-T01)
+
+![Stop filing](wireframes/68-filing-stop.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Danger-zone card | On the registration's filing page, below the timeline: last day registered (≥ the end of the last filed period), reason (deregistration, small supplier, suspension, other) and a note |
+| 2 | Impact preview | From the server's preview (the same result as saving): the open period cut to end on the stop date (the final return), the unfiled periods after it removed, the documents dated after it that use the registration's tax codes (link to review), the out-of-scope default for new sales |
+| 3 | Typed confirmation | Stop filing stays disabled until the registration number is typed exactly; the action is audited with the person and the reason |
+
+## 68. Restart filing wizard (G-03b-T01)
+
+![Restart filing](wireframes/69-filing-restart.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Steps | Date (after the stop date) and frequency → preview → confirm; shown only while the registration is stopped |
+| 2 | Preview | The G-03a diff list: filed periods unchanged, the "Not registered" gap, periods added from the restart date (a stub up to the next regular boundary when the date is mid-period) |
+| 3 | Confirm | Saves exactly the previewed result; audited with the person, the date and the frequency |
+
+## 69. Timeline gap band and event markers (G-03b-T01)
+
+![Timeline gap band](wireframes/70-filing-gap-band.svg)
+
+| Marker | Region | Behaviour |
+|---|---|---|
+| 1 | Final period | The period crossing the stop date ends on it (a stub) and is the final return |
+| 2 | Gap band | Dashed grey "Not registered" band from the day after the stop to the day before the restart (open-ended while stopped); no period in it |
+| 3 | Event markers and history | A stop (red) and restart (green) marker at their dates; the list names the reason, note, person and time — never "System" |
+| 4 | Editor warning | A document dated in the gap that uses the registration's tax codes warns `REGISTRATION_STOPPED` inline (G-03b-T12) |
