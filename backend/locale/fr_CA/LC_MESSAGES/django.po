@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:23-0500\n"
+"POT-Creation-Date: 2026-11-25 10:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5548,6 +5548,22 @@ msgstr "%(practice)s : %(subject)s"
 msgid "%(body)s"
 msgstr "%(body)s"
 
+#, python-format
+msgid "%(registration)s return due %(due_date)s"
+msgstr "Déclaration %(registration)s à produire le %(due_date)s"
+
+#, python-format
+msgid "The return for %(period)s is due on %(due_date)s."
+msgstr "La déclaration de la période %(period)s est à produire le %(due_date)s."
+
+#, python-format
+msgid "%(registration)s return overdue"
+msgstr "Déclaration %(registration)s en retard"
+
+#, python-format
+msgid "The return for %(period)s was due on %(due_date)s and isn't filed."
+msgstr "La déclaration de la période %(period)s devait être produite le %(due_date)s et ne l'est pas encore."
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr "Écritures de journal non comptabilisées (brouillon ou en attente d’approbation)"
 
@@ -8061,6 +8077,12 @@ msgstr ""
 msgid "Only an out-of-cycle period that isn't filed can be deleted."
 msgstr ""
 
+msgid "That period no longer exists."
+msgstr "Cette période n'existe plus."
+
+msgid "Unknown change."
+msgstr "Modification inconnue."
+
 msgid "tax authority"
 msgstr "autorité fiscale"
 
@@ -8296,6 +8318,12 @@ msgstr ""
 #| msgid "Failed"
 msgid "Filed"
 msgstr "Échec"
+
+msgid "Due soon"
+msgstr "À produire bientôt"
+
+msgid "Overdue"
+msgstr "En retard"
 
 #, fuzzy
 #| msgid "started"

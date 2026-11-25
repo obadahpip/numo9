@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:23-0500\n"
+"POT-Creation-Date: 2026-11-25 10:24-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5208,6 +5208,22 @@ msgstr ""
 msgid "%(body)s"
 msgstr ""
 
+#, python-format
+msgid "%(registration)s return due %(due_date)s"
+msgstr ""
+
+#, python-format
+msgid "The return for %(period)s is due on %(due_date)s."
+msgstr ""
+
+#, python-format
+msgid "%(registration)s return overdue"
+msgstr ""
+
+#, python-format
+msgid "The return for %(period)s was due on %(due_date)s and isn't filed."
+msgstr ""
+
 msgid "Journal entries not posted (draft or awaiting approval)"
 msgstr ""
 
@@ -7285,6 +7301,12 @@ msgstr ""
 msgid "Only an out-of-cycle period that isn't filed can be deleted."
 msgstr ""
 
+msgid "That period no longer exists."
+msgstr ""
+
+msgid "Unknown change."
+msgstr ""
+
 msgid "tax authority"
 msgstr ""
 
@@ -7491,6 +7513,12 @@ msgid "Open"
 msgstr ""
 
 msgid "Filed"
+msgstr ""
+
+msgid "Due soon"
+msgstr ""
+
+msgid "Overdue"
 msgstr ""
 
 msgid "start"

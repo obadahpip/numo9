@@ -572,6 +572,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.billing.run_dunning",
         "schedule": crontab(minute="7,22,37,52"),
     },
+    # Filing periods (G-03a-T17): 24 months ahead, due soon / overdue recomputed, events emitted.
+    "numo9.tax.roll_filing_periods": {
+        "task": "numo9.tax.roll_filing_periods",
+        "schedule": crontab(minute=29, hour=9),  # 09:29 UTC = 04:29 / 05:29 Toronto
+    },
     # Free trial reminders (U-05-T07): 7, 3, 1 days before the end and when it ended — hourly,
     # because organisations' days start at different UTC hours; once per milestone.
     "numo9.entitlements.trial_reminders": {

@@ -1,0 +1,76 @@
+# G-03a-T22 — filing-cycle compliance fixtures. Expected periods are written by hand from
+# docs/specs/filing-cycles.md (not produced by the engine); edit only with the accountant's sign-off.
+description: 'Filing periods for the scenarios of G-03a: quarterly to monthly from 1 July; annual
+  to quarterly mid-year (a stub); a financial year ending 31 March; a leap year; two switches in one
+  year. Each step is a frequency switch, an out-of-cycle period or filing the first N periods.
+  Due dates listed are the return due dates after the business-day roll (2026–2027 holiday data).'
+today: '2026-06-01'
+scenarios:
+- name: quarterly_to_monthly_1_july
+  registration: {start: '2026-01-01', stop: '2026-12-31', fye: '12-31'}
+  steps:
+  - {switch: quarterly, from: '2026-01-01'}
+  - {file: 2}
+  - {switch: monthly, from: '2026-07-01', approval_ref: '2026-GST-48812'}
+  periods:
+  - {start: '2026-01-01', end: '2026-03-31', kind: regular, status: filed, due: '2026-04-30'}
+  - {start: '2026-04-01', end: '2026-06-30', kind: regular, status: filed, due: '2026-07-31'}
+  - {start: '2026-07-01', end: '2026-07-31', kind: regular, due: '2026-08-31'}
+  - {start: '2026-08-01', end: '2026-08-31', kind: regular, due: '2026-10-01'}  # 30 Sep: holiday
+  - {start: '2026-09-01', end: '2026-09-30', kind: regular, due: '2026-11-02'}  # 31 Oct: Saturday
+  - {start: '2026-10-01', end: '2026-10-31', kind: regular, due: '2026-11-30'}
+  - {start: '2026-11-01', end: '2026-11-30', kind: regular, due: '2026-12-31'}
+  - {start: '2026-12-01', end: '2026-12-31', kind: regular, due: '2027-02-01'}  # 31 Jan: Sunday
+- name: annual_to_quarterly_mid_year_stub
+  registration: {start: '2026-01-01', stop: '2027-12-31', fye: '12-31'}
+  steps:
+  - {switch: annual, from: '2026-01-01'}
+  - {switch: quarterly, from: '2026-05-15', approval_ref: 'CRA-2026-0517'}
+  periods:
+  - {start: '2026-01-01', end: '2026-05-14', kind: stub}
+  - {start: '2026-05-15', end: '2026-06-30', kind: stub, due: '2026-07-31'}
+  - {start: '2026-07-01', end: '2026-09-30', kind: regular, due: '2026-11-02'}
+  - {start: '2026-10-01', end: '2026-12-31', kind: regular, due: '2027-02-01'}
+  - {start: '2027-01-01', end: '2027-03-31', kind: regular, due: '2027-04-30'}
+  - {start: '2027-04-01', end: '2027-06-30', kind: regular, due: '2027-08-02'}  # 31 Jul: Saturday
+  - {start: '2027-07-01', end: '2027-09-30', kind: regular}
+  - {start: '2027-10-01', end: '2027-12-31', kind: regular}
+- name: financial_year_ending_31_march
+  registration: {start: '2026-01-01', stop: '2028-03-31', fye: '03-31'}
+  steps:
+  - {switch: annual, from: '2026-01-01'}
+  - {switch: quarterly, from: '2027-04-01'}  # a financial year start: no approval needed
+  periods:
+  - {start: '2026-01-01', end: '2026-03-31', kind: stub, due: '2026-06-30'}
+  - {start: '2026-04-01', end: '2027-03-31', kind: regular, due: '2027-06-30'}
+  - {start: '2027-04-01', end: '2027-06-30', kind: regular}
+  - {start: '2027-07-01', end: '2027-09-30', kind: regular}
+  - {start: '2027-10-01', end: '2027-12-31', kind: regular}
+  - {start: '2028-01-01', end: '2028-03-31', kind: regular}
+- name: leap_year
+  registration: {start: '2028-01-01', stop: '2028-06-30', fye: '12-31'}
+  steps:
+  - {switch: monthly, from: '2028-01-01'}
+  - {custom: ['2028-02-29', '2028-03-10']}
+  periods:
+  - {start: '2028-01-01', end: '2028-01-31', kind: regular, due: '2028-02-29'}
+  - {start: '2028-02-01', end: '2028-02-28', kind: stub}
+  - {start: '2028-02-29', end: '2028-03-10', kind: custom}
+  - {start: '2028-03-11', end: '2028-04-10', kind: regular}
+  - {start: '2028-04-11', end: '2028-05-10', kind: regular}
+  - {start: '2028-05-11', end: '2028-06-10', kind: regular}
+  - {start: '2028-06-11', end: '2028-06-30', kind: stub}
+- name: two_switches_in_a_year
+  registration: {start: '2026-01-01', stop: '2026-12-31', fye: '12-31'}
+  steps:
+  - {switch: quarterly, from: '2026-01-01'}
+  - {switch: monthly, from: '2026-04-01', approval_ref: 'CRA-2026-0401'}
+  - {switch: quarterly, from: '2026-08-01', approval_ref: 'CRA-2026-0801'}
+  periods:
+  - {start: '2026-01-01', end: '2026-03-31', kind: regular}
+  - {start: '2026-04-01', end: '2026-04-30', kind: regular}
+  - {start: '2026-05-01', end: '2026-05-31', kind: regular}
+  - {start: '2026-06-01', end: '2026-06-30', kind: regular}
+  - {start: '2026-07-01', end: '2026-07-31', kind: regular}
+  - {start: '2026-08-01', end: '2026-09-30', kind: stub}
+  - {start: '2026-10-01', end: '2026-12-31', kind: regular}

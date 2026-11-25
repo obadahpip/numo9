@@ -135,3 +135,7 @@ register_event(
 
 # ---- practice messages (V-03-T06) --------------------------------------------------------------
 register_event("practice.message", C.SYSTEM, title_key="notifications.practice.message")
+
+# ---- filing periods (G-03a-T17) ---------------------------------------------------------------
+register_event("tax.filing.due_soon", C.REMINDERS, title_key="notifications.tax.filing.due_soon")
+register_event("tax.filing.overdue", C.REMINDERS, title_key="notifications.tax.filing.overdue")

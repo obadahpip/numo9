@@ -638,6 +638,13 @@ class PeriodStatus(models.TextChoices):
     PAID = "paid", _("Paid")
 
 
+class PeriodAttention(models.TextChoices):
+    """What an unfiled period needs (recomputed nightly, G-03a-T17)."""
+
+    DUE_SOON = "due_soon", _("Due soon")
+    OVERDUE = "overdue", _("Overdue")
+
+
 #: Filed and paid periods are immutable (never deleted, moved or regenerated).
 LOCKED_PERIOD_STATUSES: frozenset[str] = frozenset({PeriodStatus.FILED, PeriodStatus.PAID})
 
@@ -662,6 +669,14 @@ class FilingPeriod(OrgOwnedModel):
     payment_due_date = models.DateField(_("payment due"))
     status = models.CharField(
         _("status"), max_length=10, choices=PeriodStatus.choices, default=PeriodStatus.OPEN
+    )
+    attention = models.CharField(
+        _("attention"),
+        max_length=10,
+        choices=PeriodAttention.choices,
+        blank=True,
+        default="",
+        db_default="",  # a database default: rows written by the previous release stay valid
     )
     note = models.TextField(_("note"), blank=True)
     filed_at = models.DateTimeField(_("filed at"), null=True, blank=True)
