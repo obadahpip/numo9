@@ -7,12 +7,16 @@ import datetime as dt
 from typing import Any
 
 from django.db import transaction
+from django.utils import timezone
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _lazy
 
+from numo9.ledger.models import LedgerError
 from numo9.orgsettings.models import DocType
 from numo9.orgsettings.numbering import allocate_number
 from numo9.tenancy.context import org_context
 
-from .models import Quote
+from .models import Quote, QuoteStatus
 
 
 def create_quote(organisation: Any, *, number: str = "", **fields: Any) -> Quote:
@@ -101,4 +105,130 @@ def recalculate(quote: Quote) -> Quote:
         return quote
 
 
-__all__ = ["create_quote", "dt", "recalculate"]
+# ---- lifecycle (T04) ---------------------------------------------------------------------------
+
+#: The transitions: action → (statuses it may start from, status it leads to).
+TRANSITIONS: dict[str, tuple[frozenset[str], str]] = {
+    "send": (frozenset({"draft", "sent", "viewed"}), "sent"),
+    "view": (frozenset({"sent", "viewed"}), "viewed"),
+    "accept": (frozenset({"sent", "viewed"}), "accepted"),
+    "decline": (frozenset({"sent", "viewed"}), "declined"),
+    "expire": (frozenset({"sent", "viewed"}), "expired"),
+    "invoice": (frozenset({"accepted"}), "invoiced"),
+}
+
+
+class QuoteRefused(LedgerError):
+    """A quote action the rules refuse (``code`` names the rule)."""
+
+
+def local_today(organisation: Any, now: dt.datetime | None = None) -> dt.date:
+    from numo9.contacts.models import organisation_today
+
+    today: dt.date = organisation_today(organisation, now=now or timezone.now())
+    return today
+
+
+def is_expired(quote: Quote, now: dt.datetime | None = None) -> bool:
+    """Past its expiry date in the organisation's time zone: accepting at 23:59 local on the
+    expiry day is in time, at 00:00 the next day it isn't (D-02-T05)."""
+    return local_today(quote.organisation, now) > quote.expiry_date
+
+
+def _transition(
+    quote: Quote,
+    action: str,
+    *,
+    user: Any = None,
+    now: dt.datetime | None = None,
+    **fields: Any,
+) -> Quote:
+    from numo9.audit import service as audit
+
+    sources, target = TRANSITIONS[action]
+    moment = now or timezone.now()
+    with org_context(quote.organisation), transaction.atomic():
+        locked = Quote._base_manager.select_for_update().get(pk=quote.pk)
+        if action == "accept" and locked.status == "accepted":
+            return locked  # accepting twice: the first acceptance stands (idempotent)
+        if action == "view" and locked.status not in sources:
+            return locked  # opened after a decision: nothing to track
+        if locked.status not in sources:
+            raise QuoteRefused(
+                _("%(quote)s is %(status)s: it can't be %(action)s.")
+                % {
+                    "quote": locked.number,
+                    "status": str(QuoteStatus(locked.status).label).lower(),
+                    "action": str(ACTION_LABELS[action]),
+                },
+                code="sales.quote.transition",
+            )
+        if action == "accept" and is_expired(locked, moment):
+            raise QuoteRefused(
+                _("This quote expired on %(date)s: ask for a new quote.")
+                % {"date": locked.expiry_date.isoformat()},
+                code="sales.quote.expired",
+            )
+        if action == "send" and not locked.lines.exists():
+            raise QuoteRefused(
+                _("Add at least one line before sending the quote."), code="sales.quote.empty"
+            )
+        previous = locked.status
+        locked.status = target
+        stamp = {
+            "send": "sent_at",
+            "accept": "accepted_at",
+            "decline": "declined_at",
+            "expire": "expired_at",
+            "invoice": "invoiced_at",
+        }.get(action)
+        if stamp:
+            setattr(locked, stamp, moment)
+        if action == "view" and locked.viewed_at is None:
+            locked.viewed_at = moment
+        for name, value in fields.items():
+            setattr(locked, name, value)
+        locked.save()
+        if previous != target:
+            audit.record(
+                f"sales.quote.{target}",
+                obj=locked,
+                changes={"status": [previous, target]},
+                meta={"number": locked.number, "total": f"{locked.total:.2f}"},
+                actor=user if getattr(user, "is_authenticated", False) else None,
+            )
+        return locked
+
+
+ACTION_LABELS = {
+    "send": _lazy("sent"),
+    "view": _lazy("viewed"),
+    "accept": _lazy("accepted"),
+    "decline": _lazy("declined"),
+    "expire": _lazy("expired"),
+    "invoice": _lazy("invoiced"),
+}
+
+
+def send(quote: Quote, user: Any = None, *, now: dt.datetime | None = None) -> Quote:
+    return _transition(quote, "send", user=user, now=now)
+
+
+def mark_viewed(quote: Quote, *, now: dt.datetime | None = None) -> Quote:
+    return _transition(quote, "view", now=now)
+
+
+def accept(quote: Quote, *, now: dt.datetime | None = None, user: Any = None) -> Quote:
+    return _transition(quote, "accept", user=user, now=now)
+
+
+def decline(quote: Quote, reason: str = "", *, now: dt.datetime | None = None) -> Quote:
+    return _transition(quote, "decline", now=now, decline_reason=(reason or "").strip()[:2000])
+
+
+def expire(quote: Quote, *, now: dt.datetime | None = None) -> Quote:
+    return _transition(quote, "expire", now=now)
+
+
+def mark_invoiced(quote: Quote, invoice: Any, user: Any = None) -> Quote:
+    return _transition(quote, "invoice", user=user, invoice=invoice)
