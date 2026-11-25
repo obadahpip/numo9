@@ -671,7 +671,12 @@ class FilingPeriod(OrgOwnedModel):
         _("status"), max_length=10, choices=PeriodStatus.choices, default=PeriodStatus.OPEN
     )
     attention = models.CharField(
-        _("attention"), max_length=10, choices=PeriodAttention.choices, blank=True, default=""
+        _("attention"),
+        max_length=10,
+        choices=PeriodAttention.choices,
+        blank=True,
+        default="",
+        db_default="",  # a database default: rows written by the previous release stay valid
     )
     note = models.TextField(_("note"), blank=True)
     filed_at = models.DateTimeField(_("filed at"), null=True, blank=True)
