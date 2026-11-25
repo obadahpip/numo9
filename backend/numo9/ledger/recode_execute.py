@@ -18,6 +18,11 @@ tray). Either way ``run_batch`` does the work:
    attachments and automatic reversal; ``caller="recode"`` — no approval gate, no cash guard);
    the documents that pointed at the entry (an invoice's ``journal_entry``…) point at the
    re-post; one ``RecodeLineChange`` per recoded line (before / after / amounts / both entries);
+2b. **optimistic re-validation** (C-07-T06) — each chosen line carries the ``fingerprint`` the
+   preview showed; a line that changed since (recoded or reversed by someone else, its document
+   voided…) is a **conflict**: its entry is not recoded and is listed in ``batch.problems``
+   (``ledger.recode.conflict``), whether the run no longer finds the line or finds it changed
+   once the entry row is locked;
 3. an entry whose posting is refused (a rule of the new account, a lock set meanwhile…) keeps
    its coding and is listed in ``batch.problems``; the others go on;
 4. ``progress`` counts the lines done (the job tray too); the batch ends **Completed** with
@@ -29,8 +34,6 @@ Recoding never changes an amount: each re-post carries the original's debits and
 
 from __future__ import annotations
 
-import hashlib
-import json
 from collections import defaultdict
 from collections.abc import Iterable
 from typing import Any
@@ -57,7 +60,7 @@ from .models import (
     RecodeStatus,
 )
 from .recode_exclusions import MODULE_OF_TYPE, split
-from .recode_preview import Changes, PreviewLine, build, clean_changes
+from .recode_preview import Changes, PreviewLine, build, clean_changes, fingerprint
 from .recode_query import find_lines
 from .sequence import format_journal_number
 from .validation import JournalSpec, LineSpec
@@ -72,29 +75,6 @@ class RecodeRefused(ValidationError):
 
 def _refused(message: str, code: str, **params: Any) -> RecodeRefused:
     return RecodeRefused(message, code=code, params=params)
-
-
-# ---- fingerprints (C-07-T06) ------------------------------------------------------------------
-
-
-def fingerprint(line: Any) -> str:
-    """The line as the preview saw it: its entry's state and the line's coding and amounts. Any
-    change between the preview and the run (another recode, a reversal, a void) changes it."""
-    entry = line.entry
-    payload = [
-        entry.pk,
-        entry.status,
-        entry.reversal_of_id,
-        line.line_no,
-        line.account_id,
-        f"{line.debit:.2f}",
-        f"{line.credit:.2f}",
-        line.book,
-        line.tax_code or "",
-        line.contact_id,
-        sorted((line.tracking or {}).items()),
-    ]
-    return hashlib.sha256(json.dumps(payload, default=str).encode()).hexdigest()
 
 
 def _key_of(row: dict[str, Any]) -> tuple[str, int]:
