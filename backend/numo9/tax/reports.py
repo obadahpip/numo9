@@ -543,3 +543,132 @@ class ItcDetailReport(TaxReport):
                 [sum((r.values[i] or ZERO for r in mine), ZERO) for i in range(3)],
             )
         ]
+
+
+#: The control accounts tied out (G-05-T08): role → (tax kinds, side, the tax line amount, sign of
+#: the GL movement — payables are credits, receivables debits).
+CONTROLS: tuple[tuple[str, tuple[str, ...], str, str, int], ...] = (
+    ("gst_hst_payable", ("gst", "hst"), "sales", "tax", -1),
+    ("itc_receivable", ("gst", "hst"), "purchase", "recoverable", 1),
+    ("qst_payable", ("qst",), "sales", "tax", -1),
+    ("qst_itr", ("qst",), "purchase", "recoverable", 1),
+    ("pst_payable", ("pst",), "sales", "tax", -1),
+)
+
+
+@register
+class TaxTieOutReport(TaxReport):
+    """``tax_tie_out`` (G-05-T08) — per tax control account: its GL movement in the range, the
+    tax lines' total for it and the difference; every journal that posted to a control account
+    without tax lines is listed (*Journals affecting tax accounts*) — the usual cause of a
+    difference. A difference other than 0.00 is an ``error`` alert (the red card). Always on the
+    accrual basis: the ledger is."""
+
+    id = "tax_tie_out"
+    slug = "tax-tie-out"
+    name = _("Tax-to-GL tie-out")
+    description = _("Each tax control account's movement against the tax reports, and why not.")
+    keywords = (_("tax reconciliation"), _("GST reconciliation"))
+
+    def columns(self, params: dict[str, Any]) -> list[Column]:
+        return [
+            Column("gl", str(_("GL movement"))),
+            Column("report", str(_("Tax report"))),
+            Column("difference", str(_("Difference"))),
+        ]
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> Any:
+        from django.db.models import Sum
+        from django.db.models.functions import Coalesce
+
+        from numo9.ledger.models import LOCKED_STATUSES, Account, JournalLine
+        from numo9.ledger.sequence import format_journal_number
+
+        from .models import TaxLine
+
+        start, end = self.range(organisation, params)
+        accounts = {
+            a.system_role: a
+            for a in Account.objects.filter(system_role__in=[c[0] for c in CONTROLS])
+        }
+        lines = TaxLine.objects.filter(organisation=organisation, date__gte=start, date__lte=end)
+        out = []
+        for role, kinds, side, amount, sign in CONTROLS:
+            account = accounts.get(role)
+            if account is None:
+                continue
+            moved = JournalLine.objects.filter(
+                account=account,
+                entry__status__in=LOCKED_STATUSES,
+                entry__date__gte=start,
+                entry__date__lte=end,
+                book__in=("both", "accounting"),
+            ).aggregate(d=Coalesce(Sum("debit"), ZERO), c=Coalesce(Sum("credit"), ZERO))
+            gl = (moved["d"] - moved["c"]) * sign
+            report = lines.filter(kind__in=kinds, side=side).aggregate(
+                v=Coalesce(Sum(amount), ZERO)
+            )["v"]
+            journals = []
+            hitting = (
+                JournalLine.objects.filter(
+                    account=account,
+                    entry__status__in=LOCKED_STATUSES,
+                    entry__date__gte=start,
+                    entry__date__lte=end,
+                )
+                .exclude(entry__in=TaxLine.objects.values("entry"))
+                .select_related("entry")
+                .order_by("entry__date", "entry_id", "line_no")
+            )
+            for line in hitting:
+                entry = line.entry
+                journals.append(
+                    {
+                        "journal": format_journal_number(organisation, entry.number),
+                        "entry": str(entry.public_id),
+                        "date": entry.date.isoformat(),
+                        "narration": entry.narration,
+                        "amount": f"{(line.debit - line.credit) * sign:.2f}",
+                        "url": f"/o/{organisation.public_id}/accounting/journals/{entry.public_id}",
+                    }
+                )
+            out.append((role, account, gl, report, journals))
+        return start, end, out
+
+    def rows(self, data: Any, params: dict[str, Any]) -> list[ReportRow]:
+        start, end, controls = data
+        return [
+            ReportRow(
+                f"control:{role}",
+                str(account),
+                values=[gl, report, gl - report],
+                drill={
+                    "account": account.code,
+                    "from": start,
+                    "to": end,
+                    "ties": gl == report,
+                    "journals": journals,
+                },
+            )
+            for role, account, gl, report, journals in controls
+        ]
+
+    def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
+        difference = sum((r.values[2] or ZERO for r in rows), ZERO)
+        return [ReportRow("total", str(_("Total difference")), "total", [None, None, difference])]
+
+    def alerts(self, organisation: Any, result: Any) -> list[dict[str, Any]]:
+        off = [r for r in result.rows if r.values[2]]
+        if not off:
+            return [{"code": "tax.tie_out.ties", "level": "info", "message": str(_("Ties to GL"))}]
+        return [
+            {
+                "code": "tax.tie_out.difference",
+                "level": "error",
+                "message": str(
+                    _("The tax reports don't tie to the ledger: %(accounts)s.")
+                    % {"accounts": "; ".join(f"{r.label} {r.values[2]:.2f}" for r in off)}
+                ),
+                "detail": {r.key: f"{r.values[2]:.2f}" for r in off},
+            }
+        ]
