@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 648   Remaining: 2139   Progress: 23.25%
+TOTAL ATOMIC TASKS: 2787   Completed: 649   Remaining: 2138   Progress: 23.29%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -858,7 +858,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-04-T11 — UI: approver view + inbox registration
 
 [G-03b]
-❌ G-03b-T01 — Wireframes: danger-zone stop card with impact preview, restart wizard, timeline gap band
+✅ G-03b-T01 — Wireframes: danger-zone stop card with impact preview, restart wizard, timeline gap band
 ❌ G-03b-T02 — RegistrationStatusEvent model (registration, action STOP/RESTART, date, reason_code, reason_text, user)
 ❌ G-03b-T03 — Stop service: validate date, truncate the open period, delete later unfiled periods, set stop_date, status INACTIVE, record event
 ❌ G-03b-T04 — Generator guard: no periods after stop_date until a restart event exists
