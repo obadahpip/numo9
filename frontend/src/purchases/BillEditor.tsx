@@ -40,6 +40,7 @@ import { apiRequest } from "@/auth/client";
 import { pickerTaxCode } from "@/banking/MoneyForm";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useDocumentLinesLabels, useDocumentTotalsLabels } from "@/documents/labels";
+import { DocumentWarnings } from "@/documents/DocumentWarnings";
 import { useDocumentCalculation, type MirrorTaxCode } from "@/documents/useDocumentCalculation";
 import { filesApi, type FileDocument } from "@/files/api";
 import { uploadFile } from "@/files/upload";
@@ -618,6 +619,7 @@ export function BillEditor({
             />
           </label>
           <div className="flex flex-col gap-2 xl:w-96">
+            <DocumentWarnings warnings={calculation.warnings} />
             <DocumentTotals
               value={calculation.totals}
               discountType="none"

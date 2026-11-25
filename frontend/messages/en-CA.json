@@ -1581,6 +1581,9 @@
       "region": "Totals",
       "subtotal": "Subtotal",
       "total": "Total"
+    },
+    "warnings": {
+      "title": "Check before saving"
     }
   },
   "emailDomain": {
