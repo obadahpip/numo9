@@ -863,3 +863,53 @@ class TaxReturn(AuditedModel, OrgOwnedModel):
         if not kwargs.get("update_fields"):
             self.clean()
         super().save(*args, **kwargs)
+
+
+class LateAdjustment(OrgOwnedModel):
+    """The tax of a document dated inside a **filed** period (G-03-T08): it could not change the
+    filed return, so its net tax — positive on line 104, negative as a positive amount on line
+    107 — is carried by ``target_period``, the registration's next period that isn't filed."""
+
+    registration = models.ForeignKey(
+        "orgsettings.TaxRegistration",
+        on_delete=models.PROTECT,
+        related_name="late_adjustments",
+        verbose_name=_("registration"),
+    )
+    journal = models.ForeignKey(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        related_name="late_adjustments",
+        verbose_name=_("journal"),
+    )
+    document_date = models.DateField(_("document date"))
+    filed_period = models.ForeignKey(
+        FilingPeriod, on_delete=models.PROTECT, related_name="+", verbose_name=_("filed period")
+    )
+    target_period = models.ForeignKey(
+        FilingPeriod,
+        on_delete=models.PROTECT,
+        related_name="late_adjustments",
+        verbose_name=_("reported in"),
+    )
+    line = models.CharField(_("return line"), max_length=3)
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+
+    class Meta:
+        ordering = ("target_period", "document_date", "pk")
+        verbose_name = _("late adjustment")
+        verbose_name_plural = _("late adjustments")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("journal", "registration"), name="tax_lateadjustment_once_per_journal"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(line__in=("104", "107")), name="tax_lateadjustment_line_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="tax_lateadjustment_amount_positive"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.document_date:%Y-%m-%d} → {self.line}: {self.amount}"

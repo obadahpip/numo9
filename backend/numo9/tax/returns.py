@@ -21,6 +21,8 @@
 Every step writes an audit event on the return (``tax.return.prepared`` / ``reviewed`` /
 ``sent_back`` / ``filed`` / ``amended``) with the person.
 
+Late adjustments (G-03-T08) are described where they are implemented, below.
+
 ``tax_lock_guard`` is registered as a ledger posting guard (``ledger.services.POSTING_GUARDS``):
 a journal that posts to a sales-tax control account, or carries a tax code, is checked against
 the Tax lock as well as its own module's.
@@ -123,6 +125,7 @@ def prepare(period: FilingPeriod, user: Any = None, *, method: str = "regular") 
             prepared_at=timezone.now(),
             created_by=_person(user),
         )
+        tax_return.lines = {**(tax_return.lines or {}), **adjustment_lines(period)}
         tax_return.save()
         _record("tax.return.prepared", tax_return, user, version=tax_return.version)
         return tax_return
@@ -277,10 +280,214 @@ def touches_tax(checked: Any) -> bool:
     )
 
 
+# ---- late adjustments (G-03-T08) --------------------------------------------------------------
+#
+# A document dated inside a filed period is refused by the Tax lock — unless it is posted as a
+# **late adjustment** (``JournalSpec(late_adjustment=True)``, or inside ``late_adjustments()``
+# for a document's own posting service; the bills API takes ``late_adjustment: true``). The
+# journal posts on its own date; its net GST/HST (or QST) is recorded as a ``LateAdjustment`` of
+# the registration's **next period that isn't filed** — an increase of net tax on line 104, a
+# decrease on line 107 — and written on that period's return in progress. A flagged journal
+# whose date is not in a filed period is treated like any other. The module's own lock and the
+# general-ledger lock still apply.
+
+_LATE: Any = None
+
+
+def _late_flag() -> Any:
+    global _LATE  # noqa: PLW0603 - created once, on first use
+    if _LATE is None:
+        from contextvars import ContextVar
+
+        _LATE = ContextVar("numo9_tax_late_adjustment", default=False)
+    return _LATE
+
+
+class late_adjustments:  # noqa: N801 - used as ``with late_adjustments():``
+    """Postings inside the block are late adjustments when their date is in a filed period."""
+
+    def __init__(self, enabled: bool = True) -> None:
+        self.enabled = enabled
+        self.token: Any = None
+
+    def __enter__(self) -> None:
+        self.token = _late_flag().set(bool(self.enabled))
+
+    def __exit__(self, *exc: object) -> None:
+        _late_flag().reset(self.token)
+
+
+#: Control-account roles of each filing registration type: (payable, receivable).
+REGISTRATION_ROLES = {
+    "rt": ("gst_hst_payable", "itc_receivable"),
+    "qst": ("qst_payable", "qst_itr"),
+}
+
+
+def _is_late(spec: Any) -> bool:
+    return bool(getattr(spec, "late_adjustment", False) or _late_flag().get())
+
+
+def _filed_period(organisation: Any, kind: str, day: dt.date) -> FilingPeriod | None:
+    """The filed period of the organisation's ``kind`` registration containing ``day``."""
+    found: FilingPeriod | None = (
+        FilingPeriod.objects.filter(
+            registration__type=kind,
+            registration__deleted_at__isnull=True,
+            start__lte=day,
+            end__gte=day,
+            status__in=(PeriodStatus.FILED, PeriodStatus.PAID),
+        )
+        .select_related("registration")
+        .first()
+    )
+    return found
+
+
+def _net_tax(checked: Any, kind: str) -> Any:
+    """Net tax the journal adds for a registration type: collected − claimable."""
+    from decimal import Decimal
+
+    payable, receivable = REGISTRATION_ROLES[kind]
+    total = Decimal("0.00")
+    for line in checked.lines:
+        role = line.account.system_role
+        if role == payable:
+            total += line.credit - line.debit
+        elif role == receivable:
+            total -= line.debit - line.credit
+    return total
+
+
+def _late_targets(
+    checked: Any, spec: Any, organisation: Any
+) -> list[tuple[str, FilingPeriod, Any]]:
+    """(registration type, filed period, net tax) for each registration the journal is late for."""
+    out = []
+    for kind in REGISTRATION_ROLES:
+        delta = _net_tax(checked, kind)
+        if not delta:
+            continue
+        period = _filed_period(organisation, kind, spec.date)
+        if period is not None:
+            out.append((kind, period, delta))
+    return out
+
+
 def tax_lock_guard(checked: Any, spec: Any, organisation: Any, person: Any) -> None:
-    """Ledger posting guard: a journal with tax is refused in a Tax-locked period."""
+    """Ledger posting guard: a journal with tax is refused in a Tax-locked period, unless it is
+    posted as a late adjustment of a filed period (then the next open period must exist)."""
     from numo9.orgsettings.locks import assert_not_locked
     from numo9.orgsettings.models import LockModule
 
-    if touches_tax(checked):
-        assert_not_locked(organisation, LockModule.TAX, spec.date, person)
+    if not touches_tax(checked):
+        return
+    if _is_late(spec):
+        targets = _late_targets(checked, spec, organisation)
+        if targets:
+            for _kind, period, _delta in targets:
+                next_open(period)  # refuses when no period can carry it
+            return
+    assert_not_locked(organisation, LockModule.TAX, spec.date, person)
+
+
+def next_open(period: FilingPeriod) -> FilingPeriod:
+    """The registration's first period after ``period`` that isn't filed."""
+    found: FilingPeriod | None = (
+        FilingPeriod.objects.filter(registration_id=period.registration_id, start__gt=period.end)
+        .exclude(status__in=(PeriodStatus.FILED, PeriodStatus.PAID))
+        .order_by("start")
+        .first()
+    )
+    if found is None:
+        raise TaxError(
+            _("No open period after %(period)s can carry the adjustment.")
+            % {"period": str(period)},
+            code="tax.return.no_open_period",
+        )
+    return found
+
+
+def adjustment_lines(period: FilingPeriod) -> dict[str, str]:
+    """Lines 104 and 107 of ``period`` from its late adjustments."""
+    from decimal import Decimal
+
+    from .models import LateAdjustment
+
+    totals = {"104": Decimal("0.00"), "107": Decimal("0.00")}
+    with _org(period):
+        for row in LateAdjustment.objects.filter(target_period=period):
+            totals[row.line] += row.amount
+    return {line: f"{amount:.2f}" for line, amount in totals.items()}
+
+
+def late_adjustment_rows(period: FilingPeriod) -> list[dict[str, Any]]:
+    """The late adjustments listed on ``period``'s return, in document-date order."""
+    from .models import LateAdjustment
+
+    with _org(period):
+        rows = LateAdjustment.objects.filter(target_period=period).select_related(
+            "journal", "filed_period"
+        )
+        return [
+            {
+                "journal": str(row.journal.public_id),
+                "journal_number": row.journal.number,
+                "source_type": row.journal.source_type,
+                "source_id": row.journal.source_id,
+                "document_date": row.document_date.isoformat(),
+                "filed_period": str(row.filed_period),
+                "line": row.line,
+                "amount": f"{row.amount:.2f}",
+            }
+            for row in rows
+        ]
+
+
+def _write_adjustments(period: FilingPeriod) -> None:
+    """Put lines 104 / 107 on the period's return in progress (if any)."""
+    open_one = TaxReturn.objects.filter(
+        period=period, status__in=OPEN_RETURN_STATUSES, deleted_at__isnull=True
+    ).first()
+    if open_one is not None:
+        open_one.lines = {**(open_one.lines or {}), **adjustment_lines(period)}
+        open_one.save()
+
+
+def record_late_adjustment(
+    entry: Any, checked: Any, spec: Any, organisation: Any, person: Any
+) -> None:
+    """Ledger posted hook: record the late adjustments of a flagged journal (docstring above)."""
+    from .models import LateAdjustment
+
+    if not _is_late(spec) or not touches_tax(checked):
+        return
+    for _kind, period, delta in _late_targets(checked, spec, organisation):
+        target = next_open(period)
+        LateAdjustment.objects.create(
+            organisation=organisation,
+            registration=period.registration,
+            journal=entry,
+            document_date=spec.date,
+            filed_period=period,
+            target_period=target,
+            line="104" if delta > 0 else "107",
+            amount=abs(delta),
+            created_by=_person(person),
+        )
+        _write_adjustments(target)
+        from numo9.audit.service import record
+
+        record(
+            "tax.return.late_adjustment",
+            obj=period.registration,
+            actor=_person(person),
+            meta={
+                "journal": str(entry.public_id),
+                "document_date": spec.date.isoformat(),
+                "filed_period": str(period),
+                "reported_in": str(target),
+                "line": "104" if delta > 0 else "107",
+                "amount": f"{abs(delta):.2f}",
+            },
+        )

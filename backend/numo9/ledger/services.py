@@ -182,6 +182,10 @@ def _number_and_post(
 #: ``guard(validated_journal, spec, organisation, person)`` raises to refuse. Other apps append
 #: theirs in ``AppConfig.ready`` (the tax app: the Tax lock, G-03-T07).
 POSTING_GUARDS: list[Any] = []
+#: Called after an entry is posted, in the same transaction:
+#: ``hook(entry, validated_journal, spec, organisation, person)`` (the tax app records late
+#: adjustments, G-03-T08).
+POSTED_HOOKS: list[Any] = []
 
 
 def post_journal(
@@ -244,6 +248,8 @@ def post_journal(
         _attach(entry, documents, person)
         posted = _number_and_post(entry, lines, person, JournalStatus.DRAFT)
         _record_override(posted, overridden, override_reason, person)
+        for hook in POSTED_HOOKS:
+            hook(posted, checked, spec, organisation, person)
         return posted
 
 
@@ -473,6 +479,8 @@ def post_entry(
         lines = list(entry.lines.order_by("line_no").select_related("account"))
         posted = _number_and_post(entry, lines, person, entry.status)
         _record_override(posted, overridden, override_reason, person)
+        for hook in POSTED_HOOKS:
+            hook(posted, checked, spec, organisation, person)
         return posted
 
 

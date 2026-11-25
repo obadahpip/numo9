@@ -27,10 +27,12 @@ class TaxConfig(AppConfig):
 
         from numo9.ledger import services as ledger
 
-        from .returns import tax_lock_guard
+        from .returns import record_late_adjustment, tax_lock_guard
 
         if tax_lock_guard not in ledger.POSTING_GUARDS:
             ledger.POSTING_GUARDS.append(tax_lock_guard)  # the Tax lock on postings (G-03-T07)
+        if record_late_adjustment not in ledger.POSTED_HOOKS:
+            ledger.POSTED_HOOKS.append(record_late_adjustment)  # late adjustments (G-03-T08)
 
         from .history import register_history
 

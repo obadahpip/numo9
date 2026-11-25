@@ -103,6 +103,9 @@ class JournalSpec:
     journal_type: str = JournalCategory.GENERAL
     #: Post the reversal by itself on this date (C-03-T09).
     auto_reverse_on: dt.date | None = None
+    #: A document dated inside a filed tax period, posted knowingly: its tax goes to the next
+    #: open return as an adjustment instead of being refused by the Tax lock (G-03-T08).
+    late_adjustment: bool = False
 
 
 @dataclass(frozen=True)
