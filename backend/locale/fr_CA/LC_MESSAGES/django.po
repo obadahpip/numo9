@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 16:00-0500\n"
+"POT-Creation-Date: 2026-11-24 16:05-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6640,6 +6640,71 @@ msgid "approval routing rules"
 msgstr ""
 
 #, fuzzy
+#| msgid "Email received"
+msgid "Partially applied"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "Applied for"
+msgid "Applied"
+msgstr "Demande présentée"
+
+#, fuzzy
+#| msgid "invoice number"
+msgid "supplier's credit note number"
+msgstr "numéro de facture"
+
+#, fuzzy
+#| msgid "Created"
+msgid "credited bill"
+msgstr "Créé"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount applied"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount refunded"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "supplier credit"
+msgstr "fournisseur"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "supplier credits"
+msgstr "fournisseur"
+
+#, fuzzy
+#| msgid "Line of credit"
+msgid "Supplier credit"
+msgstr "Marge de crédit"
+
+#, fuzzy
+#| msgid "supplier statement line"
+msgid "supplier credit line"
+msgstr "ligne de relevé du fournisseur"
+
+#, fuzzy
+#| msgid "supplier statement lines"
+msgid "supplier credit lines"
+msgstr "lignes de relevé du fournisseur"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "supplier credit application"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "supplier credit applications"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy
 #| msgid "purchase orders"
 msgid "See purchase orders and goods receipts"
 msgstr "bons de commande"
@@ -6723,6 +6788,27 @@ msgstr ""
 #| msgid "Only a draft can be posted."
 msgid "Only a draft bill can be submitted for approval."
 msgstr "Seul un brouillon peut être passé."
+
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "This supplier credit is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "A supplier credit can credit only an approved bill of the same supplier."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the credit is approved."
+msgstr ""
+
+#, fuzzy
+#| msgid "The total must be more than 0.00."
+msgid "A supplier credit's total must be more than zero."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Supplier credit %(reference)s — %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
 
 #, fuzzy
 #| msgid "Number"
@@ -7464,29 +7550,9 @@ msgid "invoice emails"
 msgstr "numéro de facture"
 
 #, fuzzy
-#| msgid "Email received"
-msgid "Partially applied"
-msgstr "Courriel reçu"
-
-#, fuzzy
-#| msgid "Applied for"
-msgid "Applied"
-msgstr "Demande présentée"
-
-#, fuzzy
 #| msgid "Stripe invoice"
 msgid "credited invoice"
 msgstr "Facture Stripe"
-
-#, fuzzy
-#| msgid "amount due"
-msgid "amount applied"
-msgstr "montant dû"
-
-#, fuzzy
-#| msgid "amount due"
-msgid "amount refunded"
-msgstr "montant dû"
 
 #, fuzzy
 #| msgid "Credit note"

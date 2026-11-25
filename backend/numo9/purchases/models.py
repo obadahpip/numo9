@@ -15,6 +15,12 @@ it goes back to Awaiting approval (E-01-T03). Delivery block: ``delivery_attenti
 
 A line (``PurchaseOrderLine``) adds ``quantity_received`` and ``quantity_billed`` (kept by the
 receipt and bill services); outstanding = ordered − received.
+
+Supplier credits (E-03-T04): ``SupplierCredit`` and ``SupplierCreditLine`` — money a supplier
+owes back (a returned item, an overcharge) — on the same document base, the supplier's own credit
+note number in ``supplier_reference``, optionally the bill it credits. Approval posts Dr AP /
+Cr expense / Cr ITC (E-03-T05). ``SupplierCreditApplication`` applies part of a credit to a bill
+(≤ the bill's open balance and the credit remaining, E-03-T06).
 """
 
 from __future__ import annotations
@@ -449,3 +455,145 @@ class ApprovalRoutingRule(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return self.name
+
+
+class SupplierCreditStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    APPROVED = "approved", _("Approved")
+    PARTIALLY_APPLIED = "partially_applied", _("Partially applied")
+    APPLIED = "applied", _("Applied")
+    VOID = "void", _("Void")
+
+
+SUPPLIER_CREDIT_POSTED: frozenset[str] = frozenset(
+    {
+        SupplierCreditStatus.APPROVED,
+        SupplierCreditStatus.PARTIALLY_APPLIED,
+        SupplierCreditStatus.APPLIED,
+        SupplierCreditStatus.VOID,
+    }
+)
+
+
+def _amount(label: Any) -> models.DecimalField[Any, Any]:
+    return models.DecimalField(label, max_digits=18, decimal_places=2, default=Decimal("0"))
+
+
+class SupplierCredit(DocumentBase):
+    status = models.CharField(
+        _("status"),
+        max_length=20,
+        choices=SupplierCreditStatus.choices,
+        default=SupplierCreditStatus.DRAFT,
+    )
+    supplier_reference = models.CharField(
+        _("supplier's credit note number"), max_length=100, blank=True
+    )
+    bill = models.ForeignKey(
+        Bill,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="supplier_credits",
+        verbose_name=_("credited bill"),
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    amount_applied = _amount(_("amount applied"))
+    amount_refunded = _amount(_("amount refunded"))
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="supplier_credit",
+        verbose_name=_("journal"),
+    )
+    approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("approved by"),
+    )
+    approved_at = models.DateTimeField(_("approved at"), null=True, blank=True)
+
+    class Meta(DocumentBase.Meta):
+        abstract = False
+        ordering = ("-date", "-pk")
+        verbose_name = _("supplier credit")
+        verbose_name_plural = _("supplier credits")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            *DocumentBase.header_constraints("purchases_suppliercredit"),
+            models.CheckConstraint(
+                condition=models.Q(status__in=SupplierCreditStatus.values),
+                name="purchases_suppliercredit_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status__in=sorted(SUPPLIER_CREDIT_POSTED))
+                | models.Q(journal_entry__isnull=False),
+                name="purchases_suppliercredit_posted_journal",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount_applied__gte=0, amount_refunded__gte=0)
+                & models.Q(total__gte=models.F("amount_applied") + models.F("amount_refunded")),
+                name="purchases_suppliercredit_used_within_total",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=["organisation", "contact", "date"], name="purch_supcredit_contact_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.supplier_reference or str(_("Supplier credit"))
+
+    @property
+    def remaining(self) -> Decimal:
+        return Decimal(self.total) - Decimal(self.amount_applied) - Decimal(self.amount_refunded)
+
+
+class SupplierCreditLine(DocumentLineBase):
+    document = models.ForeignKey(
+        SupplierCredit,
+        on_delete=models.CASCADE,
+        related_name="lines",
+        verbose_name=_("supplier credit"),
+    )
+
+    class Meta(DocumentLineBase.Meta):
+        abstract = False
+        verbose_name = _("supplier credit line")
+        verbose_name_plural = _("supplier credit lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = DocumentLineBase.line_constraints(
+            "purchases_suppliercreditline"
+        )
+
+
+class SupplierCreditApplication(OrgOwnedModel):
+    credit = models.ForeignKey(
+        SupplierCredit,
+        on_delete=models.PROTECT,
+        related_name="applications",
+        verbose_name=_("supplier credit"),
+    )
+    bill = models.ForeignKey(
+        Bill, on_delete=models.PROTECT, related_name="credit_applications", verbose_name=_("bill")
+    )
+    amount = _amount(_("amount"))
+    date = models.DateField(_("date"))
+    created_at = models.DateTimeField(_("applied at"), auto_now_add=True)
+
+    class Meta:
+        ordering = ("date", "pk")
+        verbose_name = _("supplier credit application")
+        verbose_name_plural = _("supplier credit applications")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="purchases_supcreditapp_positive"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.credit} → {self.bill}: {self.amount}"
