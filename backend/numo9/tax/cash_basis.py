@@ -43,6 +43,14 @@ class PaymentSource(Protocol):
 
 
 _sources: list[PaymentSource] = []
+#: Journals of documents paid later: their tax waits for payments, source or not.
+DOCUMENT_TYPES = frozenset(
+    {"sales.invoice", "sales.credit_note", "purchases.bill", "purchases.supplier_credit"}
+)
+
+
+def _document_types() -> set[str]:
+    return set(DOCUMENT_TYPES) | {t for s in _sources for t in s.source_types}
 
 
 def register_payment_source(source: PaymentSource) -> PaymentSource:
@@ -87,7 +95,7 @@ def _cents(value: Decimal) -> Decimal:
 
 
 def _documents(organisation: Any, end: dt.date, kind: str | None, side: str | None) -> Any:
-    types = sorted({t for s in _sources for t in s.source_types})
+    types = sorted(_document_types())
     rows = TaxLine.objects.filter(
         organisation=organisation, date__lte=end, entry__source_type__in=types
     ).select_related("entry")
@@ -107,7 +115,7 @@ def cash_basis_lines(
     side: str | None = None,
 ) -> list[RecognisedLine]:
     """The range's tax under the cash basis (module docstring)."""
-    types = {t for s in _sources for t in s.source_types}
+    types = _document_types()
     out: list[RecognisedLine] = []
     # lines that aren't a paid document's: on their own date
     others = posted_tax_lines(organisation, start, end, kind=kind, side=side).exclude(
