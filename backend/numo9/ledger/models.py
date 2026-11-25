@@ -1506,6 +1506,24 @@ class RecodeLineChange(OrgOwnedModel):
         related_name="+",
         verbose_name=_("re-post"),
     )
+    #: Undo (C-07-T07): the reversal of the re-post and the entry posted again with the coding
+    #: ``before``.
+    undo_reversal_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("undo reversal"),
+    )
+    undo_repost_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("restored entry"),
+    )
 
     class Meta:
         ordering = ("batch_id", "entry_id", "line_no")
