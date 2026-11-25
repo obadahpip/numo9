@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Reconciliation report">
+<title>Numo9 wireframe — Reconciliation report</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Reports › Banking</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Bank reconciliation — Business Chequing</text>
+<text x="24" y="152" font-size="13" fill="#5B6472" font-weight="400" text-anchor="start">As at 31 May 2026 · statement balance entered 31 May 2026</text>
+<rect x="24" y="172" width="1392" height="150" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="200" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Statement balance</text>
+<text x="1400" y="200" font-size="13" fill="#111111" font-weight="400" text-anchor="end">$18,402.11</text>
+<text x="40" y="226" font-size="13" fill="#111111" font-weight="400" text-anchor="start">+ Outstanding deposits (2)</text>
+<text x="1400" y="226" font-size="13" fill="#111111" font-weight="400" text-anchor="end">$1,200.00</text>
+<text x="40" y="252" font-size="13" fill="#111111" font-weight="400" text-anchor="start">− Outstanding payments (3)</text>
+<text x="1400" y="252" font-size="13" fill="#111111" font-weight="400" text-anchor="end">−$2,140.37</text>
+<text x="40" y="278" font-size="13" fill="#111111" font-weight="700" text-anchor="start">= Adjusted statement balance</text>
+<text x="1400" y="278" font-size="13" fill="#111111" font-weight="700" text-anchor="end">$17,461.74</text>
+<text x="40" y="304" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Reconciled ledger balance</text>
+<text x="1400" y="304" font-size="13" fill="#111111" font-weight="700" text-anchor="end">$17,461.74</text>
+<circle cx="12" cy="184" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="12" y="188" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<rect x="1290" y="330" width="124" height="22" rx="11" fill="#E7F6EC" stroke="#E7F6EC" stroke-width="1"/>
+<text x="1352.0" y="345" font-size="11" fill="#0B6E4F" font-weight="600" text-anchor="middle">Difference $0.00</text>
+<text x="24" y="360" font-size="16" fill="#111111" font-weight="700" text-anchor="start">Unreconciled items</text>
+<rect x="24" y="372" width="1392" height="36" rx="6" fill="#F9FAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="395" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Date</text>
+<text x="180" y="395" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Side</text>
+<text x="360" y="395" font-size="12" fill="#5B6472" font-weight="600" text-anchor="start">Description</text>
+<text x="1400" y="395" font-size="12" fill="#5B6472" font-weight="600" text-anchor="end">Amount</text>
+<text x="40" y="434" font-size="13" fill="#111111" font-weight="400" text-anchor="start">29 May</text>
+<text x="180" y="434" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Ledger</text>
+<text x="360" y="434" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Cheque 1042 · Harbour Movers</text>
+<text x="1400" y="434" font-size="13" fill="#111111" font-weight="400" text-anchor="end">−$1,640.37</text>
+<line x1="24" y1="448" x2="1416" y2="448" stroke="#D0D5DD"/>
+<text x="40" y="474" font-size="13" fill="#111111" font-weight="400" text-anchor="start">30 May</text>
+<text x="180" y="474" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Ledger</text>
+<text x="360" y="474" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Deposit · Birch &amp; Co.</text>
+<text x="1400" y="474" font-size="13" fill="#111111" font-weight="400" text-anchor="end">$1,200.00</text>
+<line x1="24" y1="488" x2="1416" y2="488" stroke="#D0D5DD"/>
+<text x="40" y="514" font-size="13" fill="#111111" font-weight="400" text-anchor="start">31 May</text>
+<text x="180" y="514" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Ledger</text>
+<text x="360" y="514" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Cheque 1043 · City of Toronto</text>
+<text x="1400" y="514" font-size="13" fill="#111111" font-weight="400" text-anchor="end">−$500.00</text>
+<line x1="24" y1="528" x2="1416" y2="528" stroke="#D0D5DD"/>
+<text x="40" y="554" font-size="13" fill="#111111" font-weight="400" text-anchor="start">31 May</text>
+<text x="180" y="554" font-size="13" fill="#111111" font-weight="400" text-anchor="start">Statement</text>
+<text x="360" y="554" font-size="13" fill="#111111" font-weight="400" text-anchor="start">INTEREST PAID</text>
+<text x="1400" y="554" font-size="13" fill="#111111" font-weight="400" text-anchor="end">$0.00</text>
+<line x1="24" y1="568" x2="1416" y2="568" stroke="#D0D5DD"/>
+<circle cx="12" cy="390" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="12" y="394" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<text x="24" y="600" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Reconciled since the opening reconciled balance ($9,880.00 on 1 Jan 2026) · Unreconcile asks for a reason and is audited</text>
+<circle cx="12" cy="596" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="12" y="600" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<rect x="1176" y="640" width="112" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1232.0" y="663" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Export</text>
+<rect x="1304" y="640" width="112" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1360.0" y="663" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">Print</text>
+</svg>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="Inter, Segoe UI, Arial, sans-serif" role="img" aria-label="Numo9 wireframe — Reconcile a bank account (two panes)">
+<title>Numo9 wireframe — Reconcile a bank account (two panes)</title>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<rect x="0" y="0" width="1440" height="56" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<rect x="16" y="12" width="32" height="32" rx="6" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="32" y="33" font-size="13" fill="#111111" font-weight="800" text-anchor="middle">N9</text>
+<text x="60" y="33" font-size="14" fill="#FFFFFF" font-weight="700" text-anchor="start">Maple &amp; Pine Supply Co.</text>
+<text x="300" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Home</text>
+<text x="404" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Sales</text>
+<text x="508" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Purchases</text>
+<text x="612" y="33" font-size="13" fill="#FFD100" font-weight="700" text-anchor="start">Banking</text>
+<rect x="612" y="52" width="56" height="4" rx="0" fill="#FFD100" stroke="#FFD100" stroke-width="1"/>
+<text x="716" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Accounting</text>
+<text x="820" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Contacts</text>
+<text x="924" y="33" font-size="13" fill="#D0D5DD" font-weight="500" text-anchor="start">Reports</text>
+<rect x="1100" y="14" width="240" height="28" rx="6" fill="#2A2F36" stroke="#3A4049" stroke-width="1"/>
+<text x="1112" y="33" font-size="12" fill="#98A2B3" font-weight="400" text-anchor="start">Search or jump to…   Ctrl+K</text>
+<text x="24" y="92" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Banking › Business Chequing</text>
+<text x="24" y="124" font-size="22" fill="#111111" font-weight="700" text-anchor="start">Reconcile Business Chequing</text>
+<rect x="24" y="140" width="1392" height="40" rx="6" fill="#F9FAFB" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="165" font-size="13" fill="#344054" font-weight="400" text-anchor="start">Reconciliation is optional: it never blocks posting, reports, payroll or payments.</text>
+<text x="1400" y="165" font-size="12" fill="#5B6472" font-weight="500" text-anchor="end">Mark account as not reconciled</text>
+<circle cx="36" cy="156" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="36" y="160" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">1</text>
+<text x="24" y="210" font-size="13" fill="#111111" font-weight="600" text-anchor="start">38 of 52 lines reconciled</text>
+<rect x="24" y="220" width="1392" height="8" rx="4" fill="#EAECF0" stroke="#EAECF0" stroke-width="1"/>
+<rect x="24" y="220" width="1010" height="8" rx="4" fill="#0B6E4F" stroke="#0B6E4F" stroke-width="1"/>
+<circle cx="1404" cy="214" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1404" y="218" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">2</text>
+<rect x="24" y="250" width="640" height="180" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+<text x="40" y="278" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">12 May 2026</text>
+<text x="40" y="304" font-size="15" fill="#111111" font-weight="700" text-anchor="start">E-TRANSFER  NORTHWIND DESIGN</text>
+<text x="40" y="328" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Ref 8812-4410</text>
+<text x="648" y="304" font-size="16" fill="#111111" font-weight="700" text-anchor="end">$1,130.00</text>
+<text x="40" y="400" font-size="11" fill="#98A2B3" font-weight="400" text-anchor="start">Statement line (left)</text>
+<rect x="680" y="250" width="736" height="180" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+<text x="696" y="278" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Match</text>
+<rect x="696" y="284" width="48" height="3" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="816" y="278" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Create</text>
+<text x="936" y="278" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Find &amp; match</text>
+<text x="1056" y="278" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Split</text>
+<text x="696" y="320" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Payment INV-0217 · Northwind Design Ltd.</text>
+<text x="696" y="344" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">11 May 2026 · $1,130.00</text>
+<rect x="696" y="358" width="82" height="22" rx="11" fill="#E7F6EC" stroke="#E7F6EC" stroke-width="1"/>
+<text x="737.0" y="373" font-size="11" fill="#0B6E4F" font-weight="600" text-anchor="middle">98 % match</text>
+<rect x="1268" y="378" width="132" height="36" rx="6" fill="#FFD100" stroke="#111111" stroke-width="1"/>
+<text x="1334.0" y="401" font-size="13" fill="#111111" font-weight="700" text-anchor="middle">OK  (Enter)</text>
+<rect x="24" y="450" width="640" height="180" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="478" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">13 May 2026</text>
+<text x="40" y="504" font-size="15" fill="#111111" font-weight="700" text-anchor="start">POS  STAPLES #2231</text>
+<text x="40" y="528" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Card ****4417</text>
+<text x="648" y="504" font-size="16" fill="#111111" font-weight="700" text-anchor="end">−$86.92</text>
+<text x="40" y="600" font-size="11" fill="#98A2B3" font-weight="400" text-anchor="start">Statement line (left)</text>
+<rect x="680" y="450" width="736" height="180" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="696" y="478" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Match</text>
+<rect x="696" y="484" width="48" height="3" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="816" y="478" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Create</text>
+<text x="936" y="478" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Find &amp; match</text>
+<text x="1056" y="478" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Split</text>
+<text x="696" y="520" font-size="14" fill="#111111" font-weight="600" text-anchor="start">Spend money · Office supplies (rule)</text>
+<text x="696" y="544" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Create from the line with the Staples rule</text>
+<rect x="696" y="558" width="40" height="22" rx="11" fill="#EEF2FF" stroke="#EEF2FF" stroke-width="1"/>
+<text x="716.0" y="573" font-size="11" fill="#3538CD" font-weight="600" text-anchor="middle">Rule</text>
+<rect x="1268" y="578" width="132" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1334.0" y="601" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">OK  (Enter)</text>
+<rect x="24" y="650" width="640" height="180" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="40" y="678" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">14 May 2026</text>
+<text x="40" y="704" font-size="15" fill="#111111" font-weight="700" text-anchor="start">DEPOSIT  3 CHEQUES</text>
+<text x="40" y="728" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Branch 00412</text>
+<text x="648" y="704" font-size="16" fill="#111111" font-weight="700" text-anchor="end">$4,402.50</text>
+<text x="40" y="800" font-size="11" fill="#98A2B3" font-weight="400" text-anchor="start">Statement line (left)</text>
+<rect x="680" y="650" width="736" height="180" rx="6" fill="#FFFFFF" stroke="#D0D5DD" stroke-width="1"/>
+<text x="696" y="678" font-size="13" fill="#111111" font-weight="700" text-anchor="start">Match</text>
+<rect x="696" y="684" width="48" height="3" rx="0" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="816" y="678" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Create</text>
+<text x="936" y="678" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Find &amp; match</text>
+<text x="1056" y="678" font-size="13" fill="#5B6472" font-weight="500" text-anchor="start">Split</text>
+<text x="696" y="720" font-size="14" fill="#111111" font-weight="600" text-anchor="start">3 invoices · INV-0201, 0204, 0209</text>
+<text x="696" y="744" font-size="12" fill="#5B6472" font-weight="400" text-anchor="start">Total $4,402.50 · many-to-one</text>
+<rect x="696" y="758" width="89" height="22" rx="11" fill="#E7F6EC" stroke="#E7F6EC" stroke-width="1"/>
+<text x="740.5" y="773" font-size="11" fill="#0B6E4F" font-weight="600" text-anchor="middle">Exact total</text>
+<rect x="1268" y="778" width="132" height="36" rx="6" fill="#FFFFFF" stroke="#98A2B3" stroke-width="1"/>
+<text x="1334.0" y="801" font-size="13" fill="#111111" font-weight="500" text-anchor="middle">OK  (Enter)</text>
+<circle cx="36" cy="266" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="36" y="270" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">3</text>
+<circle cx="692" cy="266" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="692" y="270" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">4</text>
+<circle cx="692" cy="352" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="692" y="356" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">5</text>
+<circle cx="1280" cy="374" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1280" y="378" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">6</text>
+<rect x="1080" y="840" width="336" height="44" rx="6" fill="#111111" stroke="#111111" stroke-width="1"/>
+<text x="1096" y="867" font-size="13" fill="#FFFFFF" font-weight="500" text-anchor="start">Matched to INV-0217</text>
+<text x="1400" y="867" font-size="13" fill="#FFD100" font-weight="700" text-anchor="end">Undo (Ctrl+Z)</text>
+<circle cx="1092" cy="846" r="11" fill="#FFD100" stroke="#111111" stroke-width="1.5"/>
+<text x="1092" y="850" font-size="12" fill="#111111" font-weight="800" text-anchor="middle">7</text>
+</svg>
