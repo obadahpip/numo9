@@ -597,3 +597,217 @@ class SupplierCreditApplication(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.credit} → {self.bill}: {self.amount}"
+
+
+# ---- expense claims (E-04) ---------------------------------------------------------------------
+
+
+class ExpenseClaimStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    SUBMITTED = "submitted", _("Awaiting approval")
+    APPROVED = "approved", _("Approved")
+    REJECTED = "rejected", _("Rejected")
+    PAID = "paid", _("Reimbursed")
+
+
+class ExpenseLineKind(models.TextChoices):
+    RECEIPT = "receipt", _("Receipt")
+    MILEAGE = "mileage", _("Mileage")
+
+
+class ExpenseClaim(AuditedModel, OrgOwnedModel):
+    """An employee's claim for what they paid for the business (E-04-T01): receipts and mileage
+    (``ExpenseClaimLine``), submitted by the claimant, approved by someone else (E-04-T05), then
+    reimbursed through a bill to the employee's contact (E-04-T06).
+
+    - ``claimant`` — the person the money is owed to (the claim's author unless entered for
+      them); ``contact`` — their supplier-side contact, set when the reimbursement bill is made;
+    - ``number`` — ``EXP-0001``, taken when the claim is submitted; a draft has none;
+    - ``total`` — Σ line amounts (tax included), kept on the row for lists;
+    - ``bill`` — the reimbursement bill once approved.
+    """
+
+    claimant = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="expense_claims",
+        verbose_name=_("claimant"),
+    )
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("employee contact"),
+    )
+    number = models.CharField(_("number"), max_length=40, blank=True)
+    title = models.CharField(_("title"), max_length=200)
+    status = models.CharField(
+        _("status"),
+        max_length=12,
+        choices=ExpenseClaimStatus.choices,
+        default=ExpenseClaimStatus.DRAFT,
+    )
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    total = models.DecimalField(
+        _("total"), max_digits=18, decimal_places=2, default=Decimal("0.00")
+    )
+    notes = models.TextField(_("notes"), blank=True)
+    submitted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("submitted by"),
+    )
+    submitted_at = models.DateTimeField(_("submitted at"), null=True, blank=True)
+    decided_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("approved or rejected by"),
+    )
+    decided_at = models.DateTimeField(_("approved or rejected at"), null=True, blank=True)
+    rejection_reason = models.TextField(_("reason for rejection"), blank=True)
+    bill = models.OneToOneField(
+        "purchases.Bill",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="expense_claim",
+        verbose_name=_("reimbursement bill"),
+    )
+
+    class Meta:
+        ordering = ("-created_at", "-pk")
+        verbose_name = _("expense claim")
+        verbose_name_plural = _("expense claims")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(status__in=ExpenseClaimStatus.values),
+                name="purchases_expenseclaim_status_valid",
+            ),
+            models.UniqueConstraint(
+                fields=("organisation", "number"),
+                condition=~models.Q(number=""),
+                name="purchases_expenseclaim_number_unique",
+            ),
+            # A draft has no number; a submitted claim has one and who submitted it.
+            models.CheckConstraint(
+                condition=models.Q(status=ExpenseClaimStatus.DRAFT)
+                | (~models.Q(number="") & models.Q(submitted_at__isnull=False)),
+                name="purchases_expenseclaim_submitted_numbered",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(total__gte=0), name="purchases_expenseclaim_total_positive"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=("organisation", "claimant", "status"), name="purchases_claim_owner_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.number or str(_("Draft expense claim"))
+
+    def audit_label(self) -> str:
+        return f"{self} — {self.title}"
+
+    def recalculate(self) -> Decimal:
+        """Set ``total`` to the sum of the lines' amounts (not saved)."""
+        amounts = self.lines.values_list("amount", flat=True)
+        self.total = sum(amounts, Decimal("0.00"))
+        return self.total
+
+
+class ExpenseClaimLine(OrgOwnedModel):
+    """One line of a claim (E-04-T01).
+
+    - a **receipt**: ``date``, ``merchant``, the expense ``account`` (its category), ``amount``
+      **tax included** with its ``tax_code`` (the split and the claimable part are E-04-T04), and
+      the receipt itself (``receipt``, a stored document, A-06; its hash finds duplicates,
+      E-04-T07);
+    - **mileage**: ``date``, ``from_place`` → ``to_place``, ``distance_km``; ``amount`` is the
+      kilometres at the CRA rate (E-04-T03) and ``rate_detail`` keeps the tiers applied.
+    """
+
+    claim = models.ForeignKey(
+        ExpenseClaim, on_delete=models.CASCADE, related_name="lines", verbose_name=_("claim")
+    )
+    position = models.PositiveIntegerField(_("position"), default=0)
+    kind = models.CharField(
+        _("type"), max_length=10, choices=ExpenseLineKind.choices, default=ExpenseLineKind.RECEIPT
+    )
+    date = models.DateField(_("date"))
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    account = models.ForeignKey(
+        "ledger.Account",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("category"),
+    )
+    amount = models.DecimalField(
+        _("amount"), max_digits=18, decimal_places=2, default=Decimal("0.00")
+    )
+    tracking = models.JSONField(_("tracking"), default=dict, blank=True)
+    # receipt
+    merchant = models.CharField(_("merchant"), max_length=200, blank=True)
+    tax_code = models.ForeignKey(
+        "tax.TaxCode",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("tax code"),
+    )
+    receipt = models.ForeignKey(
+        "files.Document",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("receipt"),
+    )
+    # mileage
+    from_place = models.CharField(_("from"), max_length=200, blank=True)
+    to_place = models.CharField(_("to"), max_length=200, blank=True)
+    distance_km = models.DecimalField(
+        _("distance (km)"), max_digits=9, decimal_places=1, null=True, blank=True
+    )
+    rate_detail = models.JSONField(_("rate applied"), default=list, blank=True)
+
+    class Meta:
+        ordering = ("claim", "position", "pk")
+        verbose_name = _("expense claim line")
+        verbose_name_plural = _("expense claim lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(kind__in=ExpenseLineKind.values),
+                name="purchases_expenseline_kind_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gte=0), name="purchases_expenseline_amount_positive"
+            ),
+            # Mileage has kilometres and no receipt fields; a receipt has no kilometres.
+            models.CheckConstraint(
+                condition=(
+                    models.Q(kind=ExpenseLineKind.MILEAGE, distance_km__isnull=False)
+                    & models.Q(distance_km__gt=0, merchant="")
+                    & models.Q(tax_code__isnull=True, receipt__isnull=True)
+                )
+                | models.Q(kind=ExpenseLineKind.RECEIPT, distance_km__isnull=True),
+                name="purchases_expenseline_fields_match_kind",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        if self.kind == ExpenseLineKind.MILEAGE:
+            return f"{self.distance_km} km {self.from_place} → {self.to_place}".strip()
+        return f"{self.merchant or self.description} {self.amount}".strip()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 10:24-0500\n"
+"POT-Creation-Date: 2026-11-25 12:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6222,6 +6222,63 @@ msgstr ""
 msgid "supplier credit applications"
 msgstr ""
 
+msgid "Reimbursed"
+msgstr ""
+
+msgid "Receipt"
+msgstr ""
+
+msgid "Mileage"
+msgstr ""
+
+msgid "claimant"
+msgstr ""
+
+msgid "employee contact"
+msgstr ""
+
+msgid "title"
+msgstr ""
+
+msgid "approved or rejected by"
+msgstr ""
+
+msgid "approved or rejected at"
+msgstr ""
+
+msgid "reason for rejection"
+msgstr ""
+
+msgid "reimbursement bill"
+msgstr ""
+
+msgid "expense claim"
+msgstr ""
+
+msgid "expense claims"
+msgstr ""
+
+msgid "Draft expense claim"
+msgstr ""
+
+msgid "claim"
+msgstr ""
+
+msgid "merchant"
+msgstr ""
+
+msgid "distance (km)"
+msgstr ""
+
+msgid "rate applied"
+msgstr ""
+
+msgid "expense claim line"
+msgstr ""
+
+msgid "expense claim lines"
+msgstr ""
+
 msgid "See purchase orders and goods receipts"
 msgstr ""
 
@@ -6990,6 +7047,13 @@ msgstr ""
 msgid "Void of invoice %(number)s"
 msgstr ""
 
+msgid "Superseded"
+msgstr ""
+
+#, python-format
+msgid "Revision %(n)d of invoice %(number)s"
+msgstr ""
+
 msgid "Credit to"
 msgstr ""
 
@@ -7017,6 +7081,9 @@ msgstr ""
 
 #, python-format
 msgid "QST registration: %(qst)s"
+msgstr ""
+
+msgid "supersedes the version issued on"
 msgstr ""
 
 msgid "Invoice date"
@@ -7048,9 +7115,6 @@ msgid "Not in this organisation's package."
 msgstr ""
 
 msgid "record id"
-msgstr ""
-
-msgid "title"
 msgstr ""
 
 msgid "subtitle"
@@ -7542,6 +7606,78 @@ msgstr ""
 msgid "filing periods"
 msgstr ""
 
+msgid "Reviewed"
+msgstr ""
+
+msgid "Amended"
+msgstr ""
+
+msgid "Regular method"
+msgstr ""
+
+msgid "Quick method"
+msgstr ""
+
+msgid "method"
+msgstr ""
+
+msgid "line values"
+msgstr ""
+
+msgid "prepared by"
+msgstr ""
+
+msgid "prepared at"
+msgstr ""
+
+msgid "reviewed by"
+msgstr ""
+
+msgid "reviewed at"
+msgstr ""
+
+msgid "filed by"
+msgstr ""
+
+msgid "filed on"
+msgstr ""
+
+msgid "confirmation number"
+msgstr ""
+
+msgid "amends"
+msgstr ""
+
+msgid "reason for the amendment"
+msgstr ""
+
+msgid "tax return"
+msgstr ""
+
+msgid "tax returns"
+msgstr ""
+
+msgid "The period belongs to another registration."
+msgstr ""
+
+msgid "document date"
+msgstr ""
+
+msgid "filed period"
+msgstr ""
+
+msgid "reported in"
+msgstr ""
+
+msgid "return line"
+msgstr ""
+
+msgid "late adjustment"
+msgstr ""
+
+msgid "late adjustments"
+msgstr ""
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -7556,12 +7692,64 @@ msgstr ""
 msgid "%(component)s has no control account: add the %(role)s account first."
 msgstr ""
 
+msgid "Returns are already filed: the effective date can't change any more."
+msgstr ""
+
+#, python-format
+msgid "The period ending %(end)s is filed: the registration can't end before it."
+msgstr ""
+
+msgid "Returns are filed under this registration: end it instead of removing it."
+msgstr ""
+
 #, python-format
 msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."
 msgstr ""
 
 #, python-format
 msgid "%(code)s is archived: restore it or pick another code."
+msgstr ""
+
+msgid "No return is prepared for this period."
+msgstr ""
+
+#, python-format
+msgid "The return for %(period)s is filed. Amend it to change it."
+msgstr ""
+
+msgid "Only a draft return can be reviewed."
+msgstr ""
+
+msgid "return"
+msgstr ""
+
+msgid "Only a reviewed return can be sent back."
+msgstr ""
+
+msgid "Say why the return goes back."
+msgstr ""
+
+#, python-format
+msgid "Return for %(period)s filed (confirmation %(number)s)."
+msgstr ""
+
+msgid "Review the return before filing it."
+msgstr ""
+
+msgid "Enter the confirmation number the CRA or Revenu Québec gave when you filed."
+msgstr ""
+
+msgid "Only a filed return can be amended."
+msgstr ""
+
+msgid "Say why the return is amended."
+msgstr ""
+
+msgid "An amendment of this return is already in progress."
+msgstr ""
+
+#, python-format
+msgid "No open period after %(period)s can carry the adjustment."
 msgstr ""
 
 #, python-format
