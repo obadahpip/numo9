@@ -38,7 +38,8 @@ def account(org: Any, role: str = "", **lookup: Any) -> Account:
 
 
 def post_sale(org: Any, date: dt.date, user: Any, tax: str = "13.00", **spec: Any) -> Any:
-    """A sale of 100.00 plus ``tax`` of GST/HST: Dr a clearing liability, Cr revenue, Cr GST/HST payable (no contact needed)."""
+    """A sale of 100.00 plus ``tax`` of GST/HST: Dr a clearing liability (no contact needed),
+    Cr revenue, Cr GST/HST payable."""
     amount = Decimal(tax)
     lines = [
         LineSpec(account(org, type="liability"), debit=Decimal("100.00") + amount),
@@ -52,7 +53,8 @@ def post_sale(org: Any, date: dt.date, user: Any, tax: str = "13.00", **spec: An
 
 
 def post_purchase(org: Any, date: dt.date, user: Any, tax: str = "13.00", **spec: Any) -> Any:
-    """A purchase of 100.00 plus ``tax`` of claimable GST/HST: Dr expense, Dr ITC, Cr a clearing liability."""
+    """A purchase of 100.00 plus ``tax`` of claimable GST/HST: Dr expense, Dr ITC, Cr a clearing
+    liability."""
     amount = Decimal(tax)
     lines = [
         LineSpec(account(org, type="expense"), debit=Decimal("100.00")),
