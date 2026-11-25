@@ -445,3 +445,101 @@ class TaxAuditReport(TaxReport):
                 [None, *(sum((r.values[i] or ZERO for r in rows), ZERO) for i in (1, 2, 3))],
             )
         ]
+
+
+@register
+class ItcDetailReport(TaxReport):
+    """``itc_detail`` (G-05-T07) — purchases only: each line's tax with what comes back (ITC /
+    ITR) and what doesn't (added to the cost), and the restriction that keeps part of it (the
+    account's or the code's claimable %, e.g. *Meals and entertainment — 50 % claimable*).
+    Totals per component; the recoverable total is the return's ITCs / ITRs."""
+
+    id = "itc_detail"
+    slug = "itc-detail"
+    name = _("ITC and ITR detail")
+    description = _(
+        "Input tax credits and refunds by line, with restricted and non-recoverable tax."
+    )
+    keywords = (_("input tax credits"), _("ITC"), _("ITR"), "CTI", "RTI")
+    params = DETAIL_PARAMS
+
+    def columns(self, params: dict[str, Any]) -> list[Column]:
+        return [
+            Column("tax", str(_("Tax"))),
+            Column("recoverable", str(_("Recoverable"))),
+            Column("non_recoverable", str(_("Non-recoverable"))),
+        ]
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> Any:
+        from numo9.ledger.models import JournalLine
+
+        params = {**params, "side": "purchase"}
+        data = self.load(organisation, params, current_only=True)
+        lines = [
+            r
+            for r in data.lines
+            if (not params["component"] or r.component == params["component"])
+            and (not params["code"] or r.code == params["code"])
+        ]
+        entries = {r.line.entry_id: r.line.entry for r in lines}
+        accounts = {
+            (j.entry_id, j.line_no): j.account
+            for j in JournalLine.objects.filter(entry_id__in=entries).select_related("account")
+        }
+        return lines, documents_of(organisation, list(entries.values())), accounts
+
+    def rows(self, data: Any, params: dict[str, Any]) -> list[ReportRow]:
+        lines, documents, accounts = data
+        grouped: dict[tuple[str, str], list[RecognisedLine]] = defaultdict(list)
+        for line in lines:
+            grouped[(line.kind, line.component)].append(line)
+        out: list[ReportRow] = []
+        for (kind, component), mine in sorted(grouped.items()):
+            out.append(
+                ReportRow(f"component:{component}", component_label(kind, component), "section")
+            )
+            for line in mine:
+                stored = line.line
+                account = accounts.get((stored.entry_id, stored.line_no))
+                doc = documents[stored.entry_id]
+                restriction = ""
+                if stored.restricted and line.tax:
+                    share = (line.recoverable / line.tax * 100).quantize(Decimal("1"))
+                    restriction = str(_("%(share)s %% claimable")) % {"share": share}
+                elif line.tax and not line.recoverable:
+                    restriction = str(_("Not recoverable"))
+                out.append(
+                    ReportRow(
+                        f"line:{stored.pk}",
+                        " · ".join(
+                            part
+                            for part in (
+                                stored.date.isoformat(),
+                                doc["number"],
+                                doc["contact"],
+                                str(account) if account else "",
+                            )
+                            if part
+                        ),
+                        values=[line.tax, line.recoverable, line.non_recoverable],
+                        level=1,
+                        drill={
+                            "url": doc["url"],
+                            "restriction": restriction,
+                            "restricted": stored.restricted,
+                            "code": stored.code,
+                        },
+                    )
+                )
+        return out
+
+    def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
+        mine = [r for r in rows if r.kind == "row"]
+        return [
+            ReportRow(
+                "total",
+                str(_("Total")),
+                "total",
+                [sum((r.values[i] or ZERO for r in mine), ZERO) for i in range(3)],
+            )
+        ]
