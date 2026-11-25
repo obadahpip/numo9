@@ -191,7 +191,10 @@ def _documents(entry: JournalEntry) -> list[Any]:
 def repoint_documents(original: JournalEntry, repost: JournalEntry) -> None:
     """Documents whose posting is ``original`` (an invoice's, a bill's, a bank transaction's
     ``journal_entry``) now point at ``repost``: voiding the document later reverses the live
-    entry, not the one the recode reversed."""
+    entry, not the one the recode reversed. Every document posts with its ``source_type``, so an
+    entry without one (a manual journal) has none to repoint."""
+    if not original.source_type:
+        return
     for relation in JournalEntry._meta.related_objects:
         if relation.one_to_one and relation.field.name == "journal_entry":
             model = relation.related_model
