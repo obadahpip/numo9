@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, ErrorState, Input, LoadingRegion, Select, SkeletonTable } from "@numo9/ui";
+import Link from "next/link";
 import { useCallback, useEffect, useId, useState } from "react";
 
 import { RecordHistory } from "@/audit/RecordHistory";
@@ -14,6 +15,7 @@ import {
   updateRegistration,
   type Registration,
   type RegistrationInput,
+  type RegistrationRefusal,
 } from "./registrations";
 
 const m = defineMessages({
@@ -140,6 +142,52 @@ const m = defineMessages({
   },
 });
 
+const fm2 = defineMessages({
+  frequency: {
+    id: "settings.registrations.frequency",
+    defaultMessage: "Filing frequency",
+    description: "Field on a new GST/HST or QST registration",
+  },
+  frequencyOption: {
+    id: "settings.registrations.frequencyOption",
+    defaultMessage: "{value, select, monthly {Monthly} quarterly {Quarterly} other {Annual}}",
+    description: "Filing frequency option",
+  },
+  filing: {
+    id: "settings.registrations.filing",
+    defaultMessage:
+      "{frequency, select, monthly {Files monthly} quarterly {Files quarterly} annual {Files annually} other {No filing frequency yet}}",
+    description: "Filing summary on a registration",
+  },
+  nextDue: {
+    id: "settings.registrations.nextDue",
+    defaultMessage: "Next return due {date}",
+    description: "Filing summary: next return due date",
+  },
+  overdue: {
+    id: "settings.registrations.overdue",
+    defaultMessage: "{count, plural, one {# return overdue} other {# returns overdue}}",
+    description: "Filing summary: overdue returns",
+  },
+  filingLink: {
+    id: "settings.registrations.filingLink",
+    defaultMessage: "Filing periods",
+    description: "Link to the registration's filing timeline (G-03a)",
+  },
+  filingLinkName: {
+    id: "settings.registrations.filingLinkName",
+    defaultMessage: "Filing periods of {registration}",
+    description: "Accessible name of the filing periods link",
+  },
+  sectionTitle: {
+    id: "settings.registrations.sectionTitle",
+    defaultMessage: "Business number and registrations",
+    description: "Card heading on the tax settings page",
+  },
+});
+
+const FILING = ["rt", "qst"];
+const FREQUENCIES = ["monthly", "quarterly", "annual"];
 const TYPES = ["bn", "rt", "rp", "rc", "qst", "pst_bc", "pst_sk", "rst_mb"];
 const STATUSES = ["pending", "active", "closed"];
 const EMPTY: RegistrationInput = {
@@ -157,7 +205,17 @@ const EMPTY: RegistrationInput = {
  * its own with the server's rules shown on the row, removed, and with its history drawer
  * (A-04-T10). No tax registration is edited anywhere else.
  */
-export function RegistrationsScreen({ org }: Readonly<{ org: string }>) {
+export function RegistrationsScreen({
+  org,
+  embedded = false,
+  onChanged,
+}: Readonly<{
+  org: string;
+  /** Inside the tax settings page (G-06-T08): a card with an h2, not a page with an h1. */
+  embedded?: boolean;
+  /** Called after a registration is added, saved or removed. */
+  onChanged?: () => void;
+}>) {
   const fm = useFormatMessage();
   const [rows, setRows] = useState<Registration[] | null>(null);
   const [failed, setFailed] = useState(false);
@@ -177,7 +235,11 @@ export function RegistrationsScreen({ org }: Readonly<{ org: string }>) {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex max-w-3xl flex-col gap-2">
-        <h1 className="text-2xl font-semibold">{fm(m.title)}</h1>
+        {embedded ? (
+          <h2 className="text-lg font-semibold">{fm(fm2.sectionTitle)}</h2>
+        ) : (
+          <h1 className="text-2xl font-semibold">{fm(m.title)}</h1>
+        )}
         <p className="text-fg-muted">{fm(m.intro)}</p>
       </header>
       <p role="status" aria-live="polite" className="text-fg-muted" data-registrations-status>
@@ -208,10 +270,12 @@ export function RegistrationsScreen({ org }: Readonly<{ org: string }>) {
                     (current) => current?.map((r) => (r.id === saved.id ? saved : r)) ?? null,
                   );
                   setStatus(fm(m.saved, { registration: saved.type_label }));
+                  onChanged?.();
                 }}
                 onRemoved={() => {
                   setRows((current) => current?.filter((r) => r.id !== row.id) ?? null);
                   setStatus(fm(m.removed, { registration: row.type_label }));
+                  onChanged?.();
                 }}
               />
             ))}
@@ -223,6 +287,7 @@ export function RegistrationsScreen({ org }: Readonly<{ org: string }>) {
                   setRows((current) => [...(current ?? []), saved]);
                   setAdding(false);
                   setStatus(fm(m.saved, { registration: saved.type_label }));
+                  onChanged?.();
                 }}
                 onRemoved={() => setAdding(false)}
               />
@@ -278,14 +343,16 @@ function RegistrationRow({
     if ((answer.status === 200 || answer.status === 201) && "id" in answer.body)
       onSaved(answer.body as Registration);
     else if (answer.status === 400) setErrors(answer.body as FieldErrors);
-    else setErrors({ non_field_errors: [fm(m.failed)] });
+    else setErrors({ non_field_errors: [refusal(answer.body) ?? fm(m.failed)] });
   };
   const remove = async () => {
     if (!row) return onRemoved();
     const answer = await removeRegistration(org, row.id);
     if (answer.status === 204) onRemoved();
-    else setErrors({ non_field_errors: [fm(m.failed)] });
+    else setErrors({ non_field_errors: [refusal(answer.body) ?? fm(m.failed)] });
   };
+  const refusal = (body: unknown) => (body as RegistrationRefusal | null)?.detail || undefined;
+  const files = FILING.includes(value.type);
   const error = (field: string) =>
     errors[field]?.[0] ? (
       <span id={`${id}-${field}-error`} className="text-sm text-fg-danger">
@@ -368,6 +435,43 @@ function RegistrationRow({
           options={STATUSES.map((s) => ({ value: s, label: fm(m.statusOption, { value: s }) }))}
         />
       </div>
+      {!row && files ? (
+        <div className="flex flex-col gap-1">
+          <label htmlFor={`${id}-frequency`} className="text-sm font-medium">
+            {fm(fm2.frequency)}
+          </label>
+          <Select
+            id={`${id}-frequency`}
+            value={value.frequency ?? "annual"}
+            onValueChange={(v) => set("frequency", v)}
+            options={FREQUENCIES.map((f) => ({
+              value: f,
+              label: fm(fm2.frequencyOption, { value: f }),
+            }))}
+          />
+        </div>
+      ) : null}
+      {row?.files_returns ? (
+        <p
+          className="flex flex-wrap items-center gap-x-3 text-sm text-fg-muted md:col-span-5"
+          data-filing
+        >
+          <span>{fm(fm2.filing, { frequency: row.filing?.frequency || "none" })}</span>
+          {row.filing?.next_due ? (
+            <span>{fm(fm2.nextDue, { date: row.filing.next_due.due_date })}</span>
+          ) : null}
+          {row.filing?.overdue ? (
+            <span className="text-fg-danger">{fm(fm2.overdue, { count: row.filing.overdue })}</span>
+          ) : null}
+          <Link
+            href={`/o/${org}/settings/tax/registrations/${row.id}/filing`}
+            className="text-fg underline"
+            aria-label={fm(fm2.filingLinkName, { registration: name })}
+          >
+            {fm(fm2.filingLink)}
+          </Link>
+        </p>
+      ) : null}
       <div className="flex flex-wrap items-center gap-2 md:col-span-5">
         <Button
           size="sm"

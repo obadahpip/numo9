@@ -3,14 +3,15 @@ import { expect, test, type Page } from "@playwright/test";
 import { expectAccessible, jsonBody, mockCsrf } from "./auth-helpers";
 
 /**
- * A-05-T12 — Settings → Tax registrations: one page, a repeater, a history drawer per row.
+ * A-05-T12 — Settings → Tax registrations: one page, a repeater, a history drawer per row
+ * (since G-06-T08 the first card of the tax settings page; the API is tax/registrations).
  * Acceptance: every statutory number is on this one page — BN, program accounts and provincial
  * numbers listed together and edited here; the server's rules land on the row's field (invalid
  * BN); add, save, remove; each row opens its history (A-04-T10); axe clean. ("No tax setting
  * elsewhere": the settings navigation has exactly one tax entry, this page.)
  */
 const ORG = "7f3c2a10-1b2c-4d5e-8f90-a1b2c3d4e5f6";
-const API = `**/api/v1/o/${ORG}/settings/registrations`;
+const API = `**/api/v1/o/${ORG}/tax/registrations`;
 
 const BN = {
   id: "aaaaaaaa-0000-4000-8000-000000000001",
@@ -52,8 +53,22 @@ async function mock(page: Page) {
         },
       });
     }
-    return route.fulfill({ json: [BN] });
+    return route.fulfill({ json: { results: [BN] } });
   });
+  // The page is the tax settings hub (G-06-T08): the registrations are its first card.
+  await page.route(`**/api/v1/o/${ORG}/tax/settings`, (route) =>
+    route.fulfill({
+      json: {
+        basis: "accrual",
+        rounding_mode: "line",
+        quick_method: false,
+        quick_method_from: null,
+        default_codes: {},
+        restricted_itc_accounts: [],
+        registered: true,
+      },
+    }),
+  );
   await page.route(`${API}/*`, (route) => {
     calls.push({ method: route.request().method(), url: route.request().url() });
     return route.request().method() === "DELETE"
@@ -78,7 +93,9 @@ test.use({ viewport: { width: 1280, height: 1000 } });
 test("repeater: add with server validation, save, remove, history", async ({ page }) => {
   const calls = await mock(page);
   await page.goto(`/o/${ORG}/settings/registrations`);
-  await expect(page.getByRole("heading", { level: 1, name: "Tax registrations" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Tax registrations and settings" }),
+  ).toBeVisible();
   await expect(
     page.locator('[data-registration="aaaaaaaa-0000-4000-8000-000000000001"]'),
   ).toBeVisible();

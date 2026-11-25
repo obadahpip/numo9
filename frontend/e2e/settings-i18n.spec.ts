@@ -48,10 +48,25 @@ test("settings pages in French", async ({ page }) => {
   const nav = page.getByRole("navigation", { name: "Sections des paramètres" });
   await expect(nav.getByRole("link", { name: "Inscriptions fiscales" })).toBeVisible();
 
-  await page.route(`**/api/v1/o/${ORG}/settings/registrations`, (r) => r.fulfill({ json: [] }));
+  await page.route(`**/api/v1/o/${ORG}/tax/registrations`, (r) =>
+    r.fulfill({ json: { results: [] } }),
+  );
+  await page.route(`**/api/v1/o/${ORG}/tax/settings`, (r) =>
+    r.fulfill({
+      json: {
+        basis: "accrual",
+        rounding_mode: "line",
+        quick_method: false,
+        quick_method_from: null,
+        default_codes: {},
+        restricted_itc_accounts: [],
+        registered: false,
+      },
+    }),
+  );
   await page.goto(`/o/${ORG}/settings/registrations`);
   await expect(
-    page.getByRole("heading", { level: 1, name: "Inscriptions fiscales" }),
+    page.getByRole("heading", { level: 1, name: "Inscriptions et paramètres fiscaux" }),
   ).toBeVisible();
   await expect(page.getByText(/numéro d’entreprise \(NE\).*TPS\/TVH/)).toBeVisible();
 
