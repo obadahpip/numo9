@@ -41,6 +41,11 @@ test("gap-49: the basis chip names its source, an override is labelled", async (
   });
   await page.goto("/o/acme/reports/profit-and-loss");
   await expect(page.getByText("Basis: Accrual (organisation default)")).toBeVisible();
+  // The default is set in one place: the chip links to the Tax basis card (G-06-T09, T11).
+  await expect(page.locator("[data-tax-settings-link='tax-basis']")).toHaveAttribute(
+    "href",
+    "/o/acme/settings/registrations#tax-basis",
+  );
   await page.getByRole("combobox", { name: "Basis" }).click();
   await page.getByRole("option", { name: "Cash" }).click();
   await page.getByRole("button", { name: "Update" }).click();

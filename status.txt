@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 632   Remaining: 2155   Progress: 22.68%
+TOTAL ATOMIC TASKS: 2787   Completed: 633   Remaining: 2154   Progress: 22.71%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -834,7 +834,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-06-T08 — Single page UI: cards (BN and programs, registrations, basis, defaults, quick method, restricted ITC), inline edit, history drawer
 ❌ G-06-T09 — Deep links from module settings and from the G-03 worksheet; remove/redirect any other tax-setting entry points   [links built (frontend/src/tax/settings/links.ts) from Tax codes, the filing timeline and the report basis label; each lands on its card, settings/tax and tax-settings redirect (Playwright e2e/tax-settings.spec.ts); ✅ once the G-03 worksheet page and the Sales/Purchases settings pages exist and link here]
 ✅ G-06-T10 — CI check: settings registry asserts every tax setting key has exactly one editing route
-❌ G-06-T11 — Gap tests gap-03, gap-44, gap-49, gap-39; i18n
+✅ G-06-T11 — Gap tests gap-03, gap-44, gap-49, gap-39; i18n
 
 [G-03]
 ❌ G-03-T02 — TaxReturn (registration, period FK, version, status DRAFT/REVIEWED/FILED/AMENDED, method REGULAR/QUICK, line values JSON, filed_at, confirmation_no, prepared_by, reviewed_by)
