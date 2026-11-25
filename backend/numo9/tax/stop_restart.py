@@ -217,3 +217,110 @@ def restart(
         )
         after = period_rows(registration)
         return {**diff(before, after), "periods": after, "warnings": []}
+
+
+# ---- impact preview and the API's change runner (G-03b-T08, T09) --------------------------------
+
+
+def apply(
+    registration: Any, change: dict[str, Any], *, user: Any, today: dt.date | None = None
+) -> dict[str, Any]:
+    """Run ``{"action": "stop", "date", "reason_code", "reason_text"}`` or ``{"action":
+    "restart", "date", "frequency", "reason_text"}`` → the diff, the periods, and the impact:
+    ``documents`` dated while not registered with the registration's tax codes (G-03b-T05),
+    ``out_of_scope_default`` (new sales default to out of scope after a GST/HST stop, G-03b-T06).
+    """
+    from .post_stop import post_stop_documents
+    from .settings import tax_settings
+
+    action = change.get("action")
+    if action == "stop":
+        result = stop(
+            registration,
+            change["date"],
+            change.get("reason_code") or "",
+            change.get("reason_text") or "",
+            user=user,
+            today=today,
+        )
+    elif action == "restart":
+        result = restart(
+            registration,
+            change["date"],
+            change.get("frequency") or "",
+            change.get("reason_text") or "",
+            user=user,
+            today=today,
+        )
+    else:
+        raise TaxError(_("Unknown change."), code="tax.filing.action")
+    registration.refresh_from_db()
+    stopped = is_stopped(registration)
+    return {
+        **result,
+        "documents": post_stop_documents(registration),
+        "out_of_scope_default": bool(
+            stopped
+            and registration.type == "rt"
+            and tax_settings(registration.organisation).out_of_scope_after_stop
+        ),
+        "stopped": stopped,
+    }
+
+
+class _Undo(Exception):
+    """Rolls a preview's transaction back."""
+
+
+def preview(
+    registration: Any, change: dict[str, Any], *, user: Any, today: dt.date | None = None
+) -> dict[str, Any]:
+    """``apply``'s result with nothing written: the change runs in a transaction rolled back,
+    so the preview is exactly what saving gives (a refused change raises the same error)."""
+    from numo9.orgsettings.models import TaxRegistration
+
+    result: dict[str, Any] = {}
+    try:
+        with transaction.atomic():
+            result = apply(registration, change, user=user, today=today)
+            raise _Undo
+    except _Undo:
+        pass
+    # the in-memory row was refreshed inside the rolled-back transaction
+    fresh = TaxRegistration.objects.get(pk=registration.pk)
+    registration.effective_to, registration.status = fresh.effective_to, fresh.status
+    return result
+
+
+def event_row(event: RegistrationStatusEvent) -> dict[str, Any]:
+    return {
+        "id": str(event.public_id),
+        "action": event.action,
+        "date": event.date.isoformat(),
+        "reason_code": event.reason_code,
+        "reason_label": event.get_reason_code_display() if event.reason_code else "",
+        "reason_text": event.reason_text,
+        "frequency": event.frequency,
+        "by": {"id": str(event.user.public_id), "name": event.user.name or event.user.email},
+        "at": event.created_at.isoformat(),
+    }
+
+
+def status_of(registration: Any) -> dict[str, Any]:
+    """The registration's stop/restart history (G-03b-T09 ``events``): the events, the gaps,
+    whether it is stopped now and its last day registered."""
+    from .filing_service import gaps
+
+    events = RegistrationStatusEvent.objects.filter(registration=registration).select_related(
+        "user"
+    )
+    return {
+        "events": [event_row(e) for e in events.order_by("date", "created_at", "pk")],
+        "gaps": [
+            {"start": start.isoformat(), "end": end.isoformat() if end else None}
+            for start, end in gaps(registration)
+        ],
+        "stopped": is_stopped(registration),
+        "stop_date": registration.effective_to.isoformat() if registration.effective_to else None,
+        "last_filed_end": (filed.isoformat() if (filed := last_filed_end(registration)) else None),
+    }
