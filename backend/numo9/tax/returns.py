@@ -79,6 +79,15 @@ def current_return(period: FilingPeriod) -> TaxReturn | None:
     return found
 
 
+def current_return_of(period: FilingPeriod) -> TaxReturn:
+    """``current_return`` inside the period's organisation; refuses a period without a return."""
+    with _org(period):
+        found = current_return(period)
+    if found is None:
+        raise TaxError(_("No return is prepared for this period."), code="tax.return.none")
+    return found
+
+
 def versions(period: FilingPeriod) -> list[dict[str, Any]]:
     """Every version of the period's return, newest first; the latest is ``current``."""
     with _org(period):
