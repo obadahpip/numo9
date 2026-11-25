@@ -43,9 +43,6 @@ from .holidays import jurisdictions_for
 from .models import FilingCycle, FilingPeriod, TaxError
 from .permissions import TAX_MANAGE, TAX_VIEW
 
-#: A period is "due soon" from this many days before its return is due.
-DUE_SOON_DAYS = 30
-
 
 def _today() -> dt.date:
     organisation = current_org()
@@ -71,17 +68,6 @@ def _refused(error: TaxError) -> Response:
         },
         status=status.HTTP_422_UNPROCESSABLE_ENTITY,
     )
-
-
-def attention(period: FilingPeriod, today: dt.date) -> str:
-    """``overdue`` once the return is past due, ``due_soon`` in its last 30 days, else ''."""
-    if period.is_locked or period.end >= today:
-        return ""
-    if period.due_date < today:
-        return "overdue"
-    if (period.due_date - today).days <= DUE_SOON_DAYS:
-        return "due_soon"
-    return ""
 
 
 def cycle_row(cycle: FilingCycle) -> dict[str, Any]:
@@ -193,7 +179,7 @@ class FilingPeriodListView(FilingView):
         rows = []
         for period in periods:
             row = filing_service.period_row(period)
-            row["attention"] = attention(period, today)
+            row["attention"] = filing_service.attention(period, today)
             row["instalments"] = [
                 {
                     "quarter_start": i.quarter_start.isoformat(),

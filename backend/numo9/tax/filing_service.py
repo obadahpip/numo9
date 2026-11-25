@@ -9,7 +9,8 @@ start by default), in one transaction:
   dates recomputed);
 - every other unfiled period from ``from_date`` on is deleted, except the custom (out-of-cycle)
   ones, and the generator fills the dates from ``from_date`` to the horizon (the registration's
-  stop date, else 24 months from today) around the periods kept;
+  stop date, else 24 months from today — the period containing that day is made whole, the
+  horizon never cuts a period) around the periods kept;
 - the registration's periods are numbered again 1, 2, 3… in date order and get their status
   (``closed`` once ended, else ``open``; filed and paid unchanged).
 
@@ -49,6 +50,17 @@ the change runs in a transaction that is rolled back, so the preview is the serv
 result — ``{"removed", "added", "changed": [{"before", "after"}], "periods", "warnings"}``
 (``diff``: a period is *changed* when the same period gets other dates, kind or due dates —
 renumbering alone isn't a change). A refused change raises the same ``TaxError`` as saving it.
+
+``roll_forward()`` (G-03a-T17, the nightly job ``numo9.tax.roll_filing_periods``) — for every
+registration that files: keeps **24 months of periods ahead** (regenerating from the last
+unfiled regular period, so a period once cut at the horizon is made whole), sets ``closed`` on
+the periods that ended, and recomputes what needs **attention** — ``due_soon`` in the 14 days
+before a return is due, ``overdue`` after (``attention``; filed and paid periods need none).
+When a period's attention changes to due soon or overdue, the job **emits an event once**: each
+hook of ``FILING_EVENTS`` (the O-04 deadline calendar subscribes) and a notification to the
+organisation's owners and admins (``tax.filing.due_soon`` / ``tax.filing.overdue``). The
+registration row is locked while its periods are rolled, so two workers running the job at once
+do the work — and send each event — once.
 """
 
 from __future__ import annotations
@@ -64,9 +76,19 @@ from django.utils.translation import gettext as _
 
 from .filing import ONE_DAY, Cycle, Period, Span, due_dates, generate_periods
 from .holidays import jurisdictions_for
-from .models import FilingCycle, FilingPeriod, PeriodKind, PeriodStatus, TaxError
+from .models import (
+    LOCKED_PERIOD_STATUSES,
+    FilingCycle,
+    FilingPeriod,
+    PeriodAttention,
+    PeriodKind,
+    PeriodStatus,
+    TaxError,
+)
 
 HORIZON_MONTHS = 24
+#: A period is "due soon" from this many days before its return is due.
+DUE_SOON_DAYS = 14
 
 
 def _settings(registration: Any) -> Any:
@@ -148,13 +170,23 @@ def _fill(
         )
     taken = sorted(occupied, key=lambda p: p.start)
     spans = [Span(p.start, p.end) for p in taken if p.end >= start and p.start <= end]
+    # An open-ended registration's horizon is not a boundary: its last period is generated
+    # whole (to its own end), never cut at the horizon into a stub.
+    whole = registration.stop_date is None
     generated = generate_periods(
-        cycles, int(settings.fye_month), int(settings.fye_day), start, end, spans
+        cycles,
+        int(settings.fye_month),
+        int(settings.fye_day),
+        start,
+        end + relativedelta(years=1) if whole else end,
+        spans,
     )
     created = []
     for period in generated:
         if period.kind == "custom":  # one of the periods kept
             continue
+        if period.start > end:
+            break
         item = FilingPeriod(
             organisation=registration.organisation,
             registration=registration,
@@ -435,14 +467,8 @@ def _extend(registration: Any, day: dt.date, today: dt.date) -> None:
         start = last.end + ONE_DAY if last is not None else registration.start_date
         if day < start:  # another transaction extended them meanwhile
             return
-        settings = _settings(registration)
-        # A regular period is at most a year long: a year past ``day`` ends its period.
-        end = day + relativedelta(years=1)
-        generated = generate_periods(
-            cycles_of(registration), int(settings.fye_month), int(settings.fye_day), start, end
-        )
-        through = next(p.end for p in generated if p.start <= day <= p.end)
-        _fill(registration, start, through, [], settings, today)
+        end = registration.stop_date or day  # a stopped registration is filled to its stop
+        _fill(registration, start, end, [], _settings(registration), today)
         renumber(registration, today)
 
 
@@ -618,3 +644,108 @@ def preview(
     except _Undo:
         pass
     return result
+
+
+# ---- nightly roll-forward (G-03a-T17) -----------------------------------------------------------
+
+#: Hooks called once when a period becomes due soon or overdue: ``hook(period, attention)``.
+FILING_EVENTS: list[Any] = []
+
+
+def attention(period: FilingPeriod, today: dt.date) -> str:
+    """``overdue`` once the return is past due, ``due_soon`` in its last 14 days, else ''."""
+    if period.is_locked or period.end >= today:
+        return ""
+    if period.due_date < today:
+        return PeriodAttention.OVERDUE
+    if (period.due_date - today).days <= DUE_SOON_DAYS:
+        return PeriodAttention.DUE_SOON
+    return ""
+
+
+def _notify(period: FilingPeriod, state: str) -> None:
+    from numo9.notifications.services import notify
+    from numo9.tenancy.models import OrganisationMember
+
+    organisation = period.organisation
+    admins = [
+        member.user
+        for member in OrganisationMember.objects.filter(
+            organisation=organisation, role__in=("owner", "admin")
+        ).select_related("user")
+    ]
+    notify(
+        f"tax.filing.{state}",
+        admins,
+        organisation=organisation,
+        params={
+            "registration": str(period.registration),
+            "period": str(period),
+            "due_date": period.due_date.isoformat(),
+        },
+        link=f"/o/{organisation.public_id}/settings/tax",
+    )
+
+
+def roll_registration(registration: Any, today: dt.date) -> dict[str, int]:
+    """Roll one registration's periods forward and recompute their attention (docstring)."""
+    from numo9.orgsettings.models import TaxRegistration
+    from numo9.tenancy.context import org_context
+
+    counts = {"added": 0, "due_soon": 0, "overdue": 0}
+    with org_context(registration.organisation), transaction.atomic():
+        # One worker at a time per registration (the job may run on two workers).
+        registration = TaxRegistration.objects.select_for_update().get(pk=registration.pk)
+        if registration.start_date is None or not cycles_of(registration):
+            return counts
+        periods = FilingPeriod.objects.filter(registration=registration)
+        before = periods.count()
+        last = periods.order_by("-end").first()
+        if last is None:
+            regenerate(registration, today=today)
+        elif last.end < horizon(registration, today):
+            cut = (
+                last.end + ONE_DAY
+                if last.is_locked or last.kind == PeriodKind.CUSTOM
+                else last.start
+            )
+            regenerate(registration, cut, today=today)
+        else:
+            renumber(registration, today)
+        counts["added"] = periods.count() - before
+        for period in periods.exclude(status__in=LOCKED_PERIOD_STATUSES).order_by("start"):
+            state = attention(period, today)
+            if state == period.attention:
+                continue
+            period.attention = state
+            period.save(update_fields=["attention"])
+            if state:
+                counts[state] += 1
+                for hook in FILING_EVENTS:
+                    hook(period, state)
+                _notify(period, state)
+        periods.filter(status__in=LOCKED_PERIOD_STATUSES).exclude(attention="").update(attention="")
+    return counts
+
+
+def roll_forward(now: Any = None) -> dict[str, int]:
+    """Every filing registration (module docstring); returns the totals. Safe to run again."""
+    from numo9.contacts.models import organisation_today
+    from numo9.orgsettings.models import TaxRegistration
+
+    moment = now or timezone.now()
+    totals = {"registrations": 0, "added": 0, "due_soon": 0, "overdue": 0}
+    registrations = (
+        TaxRegistration._base_manager.filter(deleted_at__isnull=True, filing_cycles__isnull=False)
+        .select_related("organisation")
+        .distinct()
+        .order_by("pk")
+    )
+    for registration in registrations:
+        counts = roll_registration(
+            registration, organisation_today(registration.organisation, now=moment)
+        )
+        totals["registrations"] += 1
+        for key, value in counts.items():
+            totals[key] += value
+    return totals

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 621   Remaining: 2166   Progress: 22.28%
+TOTAL ATOMIC TASKS: 2787   Completed: 622   Remaining: 2165   Progress: 22.32%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -820,7 +820,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-03a-T14 — Document → period resolver period_for(registration, date) used by tax reports/returns
 ✅ G-03a-T15 — Preview endpoint: proposed change → diff (removed/added/changed periods) without writing
 ✅ G-03a-T16 — API /api/v1/tax/registrations/{id}/cycles, /periods, /custom-periods, /preview; permissions tax.manage; audit
-❌ G-03a-T17 — Nightly job: rolls forward 24 months of periods, recomputes due-soon/overdue status, emits events for O-04 calendar and notifications
+✅ G-03a-T17 — Nightly job: rolls forward 24 months of periods, recomputes due-soon/overdue status, emits events for O-04 calendar and notifications
 ❌ G-03a-T18 — Timeline UI component (period blocks, status colours, switch markers, hover cards with due dates)
 ❌ G-03a-T19 — Change-frequency wizard with preview diff
 ❌ G-03a-T20 — Out-of-cycle period dialog with overlap preview and realignment explanation

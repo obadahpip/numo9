@@ -140,3 +140,16 @@ register_text(
     _("%(practice)s: %(subject)s"),
     _("%(body)s"),
 )
+
+# ---- filing periods (G-03a-T17) ---------------------------------------------------------------
+
+register_text(
+    "notifications.tax.filing.due_soon",
+    _("%(registration)s return due %(due_date)s"),
+    _("The return for %(period)s is due on %(due_date)s."),
+)
+register_text(
+    "notifications.tax.filing.overdue",
+    _("%(registration)s return overdue"),
+    _("The return for %(period)s was due on %(due_date)s and isn't filed."),
+)
