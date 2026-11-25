@@ -287,3 +287,35 @@ class InvoiceViewLinkView(APIView):
         finally:
             handle.close()
         return _pdf(data, row.file_name)
+
+
+# ---- public quote link (D-02-T06) --------------------------------------------------------------
+
+
+class PublicQuoteView(APIView):
+    """``GET /api/v1/q/<token>`` — the public quote page's data, without signing in (the signed
+    token is the credential); counts the view. 404 for an unknown or tampered token, **410** for
+    a revoked link."""
+
+    permission_classes = [RequiresPermission, AllowAny]
+    authentication_classes: list[Any] = []
+
+    @requires_permission(PUBLIC)  # the signed token is the credential
+    @extend_schema(
+        operation_id="quote_public",
+        summary="A quote through its public link (records the view)",
+        responses={200: OpenApiTypes.OBJECT, 410: OpenApiTypes.OBJECT},
+    )
+    def get(self, request: Request, token: str) -> Response:
+        from .quote_links import LinkRevoked, open_link, public_quote
+
+        try:
+            quote = open_link(token)
+        except LinkRevoked:
+            return Response(
+                {"code": "sales.quote.link_revoked", "detail": _("This quote link was withdrawn.")},
+                status=status.HTTP_410_GONE,
+            )
+        if quote is None:
+            raise NotFound(_("This quote link isn't valid."))
+        return Response(public_quote(quote))

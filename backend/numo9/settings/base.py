@@ -286,6 +286,8 @@ TENANT_SWEEP_EXEMPT = [
     # The "View invoice" link of an invoice email (D-03a-T12): the signed token names the
     # organisation and the send; the view runs in that organisation's context.
     r"^api/v1/invoice-view/",
+    # The public quote link (D-02-T06): the signed token names one quote; no organisation in it.
+    r"^api/v1/q/",
     # Stripe webhooks (U-04-T06): signed by Stripe; events name their customer, whose
     # organisation the handlers then act on.
     r"^webhooks/stripe/",

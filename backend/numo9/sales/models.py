@@ -526,3 +526,32 @@ class QuoteLine(DocumentLineBase):
                 name="sales_quoteline_optional_or_alternative",
             ),
         ]
+
+
+class QuoteLink(OrgOwnedModel):
+    """A public link to a quote (D-02-T06): the customer opens it without signing in. The URL
+    carries a **signed** token naming the quote and this row; revoking the row (``revoked_at``)
+    makes the link answer 410 Gone. ``views`` / ``last_viewed_at`` — the view tracking."""
+
+    quote = models.ForeignKey(
+        Quote, on_delete=models.CASCADE, related_name="links", verbose_name=_("quote")
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("created by"),
+    )
+    revoked_at = models.DateTimeField(_("revoked at"), null=True, blank=True)
+    views = models.PositiveIntegerField(_("views"), default=0)
+    last_viewed_at = models.DateTimeField(_("last viewed at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("quote", "-created_at")
+        verbose_name = _("quote link")
+        verbose_name_plural = _("quote links")
+
+    def __str__(self) -> str:
+        return f"{self.quote} link"
