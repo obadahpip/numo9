@@ -12,7 +12,7 @@ import type { DocumentWarning } from "./api";
 const messages = defineMessages({
   title: {
     id: "documents.warnings.title",
-    defaultMessage: "Check before saving",
+    defaultMessage: "Review before saving",
     description: "Heading of the editor's document warnings",
   },
 });
