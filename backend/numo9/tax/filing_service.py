@@ -30,6 +30,13 @@ unfiled one and regenerates its dates.
 
 Tax postings are never moved: a posting belongs to the period containing its date
 (``period_for``, G-03a-T14), so they follow the new periods by themselves.
+
+``period_for(registration, date)`` (G-03a-T14) — the one period a document dated ``date``
+belongs to (tax reports and returns group by it): ``None`` before the registration starts, after
+it stops, or while it has no filing frequency; a date past the stored periods (beyond the
+24-month horizon) extends them to the end of that date's period first, so every date of the
+registration has exactly one period. ``periods_for(registration, dates)`` resolves many dates
+with one query per extension.
 """
 
 from __future__ import annotations
@@ -393,3 +400,69 @@ def delete_custom_period(
         start = period.start
         period.delete()
         return regenerate(registration, start, today=today)
+
+
+# ---- document → period (G-03a-T14) ------------------------------------------------------------
+
+
+def _covered(registration: Any, day: dt.date) -> bool:
+    """Is ``day`` a date the registration files for (started, not stopped, has a frequency)?"""
+    start, stop = registration.start_date, registration.stop_date
+    if start is None or day < start or (stop is not None and day > stop):
+        return False
+    return FilingCycle.objects.filter(registration=registration).exists()
+
+
+def _extend(registration: Any, day: dt.date, today: dt.date) -> None:
+    """Add the periods from the last stored one up to the period containing ``day``."""
+    from numo9.tenancy.context import org_context
+
+    with org_context(registration.organisation), transaction.atomic():
+        periods = FilingPeriod.objects.select_for_update().filter(registration=registration)
+        last = periods.order_by("-end").first()
+        start = last.end + ONE_DAY if last is not None else registration.start_date
+        if day < start:  # another transaction extended them meanwhile
+            return
+        settings = _settings(registration)
+        # A regular period is at most a year long: a year past ``day`` ends its period.
+        end = day + relativedelta(years=1)
+        generated = generate_periods(
+            cycles_of(registration), int(settings.fye_month), int(settings.fye_day), start, end
+        )
+        through = next(p.end for p in generated if p.start <= day <= p.end)
+        _fill(registration, start, through, [], settings, today)
+        renumber(registration, today)
+
+
+def period_for(
+    registration: Any, day: dt.date, *, today: dt.date | None = None
+) -> FilingPeriod | None:
+    """The filing period a document dated ``day`` belongs to (module docstring)."""
+    return periods_for(registration, [day], today=today)[day]
+
+
+def periods_for(
+    registration: Any, days: Iterable[dt.date], *, today: dt.date | None = None
+) -> dict[dt.date, FilingPeriod | None]:
+    """``period_for`` for many dates: {date: its period, or None outside the registration}."""
+    from numo9.tenancy.context import org_context
+
+    today = today or timezone.localdate()
+    wanted = sorted(set(days))
+    out: dict[dt.date, FilingPeriod | None] = dict.fromkeys(wanted)
+    with org_context(registration.organisation):
+        inside = [d for d in wanted if _covered(registration, d)]
+        if not inside:
+            return out
+        stored = FilingPeriod.objects.filter(registration=registration)
+        last = stored.order_by("-end").first()
+        if last is None or inside[-1] > last.end:
+            _extend(registration, inside[-1], today)
+        periods = list(stored.filter(end__gte=inside[0], start__lte=inside[-1]).order_by("start"))
+        index = 0
+        for d in inside:
+            while index < len(periods) and periods[index].end < d:
+                index += 1
+            if index < len(periods) and periods[index].start <= d:
+                out[d] = periods[index]
+    return out
