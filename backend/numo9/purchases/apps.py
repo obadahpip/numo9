@@ -10,6 +10,10 @@ class PurchasesConfig(AppConfig):
     verbose_name = "Purchases"
 
     def ready(self) -> None:
+        from .recode import register_recode_exclusions
+
+        register_recode_exclusions()  # find & recode exclusions (C-07-T03)
+
         from .approvables import (
             register_bill_approvals,
             register_expense_claim_approvals,

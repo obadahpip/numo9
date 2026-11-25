@@ -38,6 +38,10 @@ class TaxConfig(AppConfig):
 
         register_history()  # one attributed history of every tax object (G-06-T06)
 
+        from .recode import register_recode_exclusions
+
+        register_recode_exclusions()  # find & recode exclusions (C-07-T03)
+
 
 def _sweep_code(organisation: Any) -> Any:
     from .models import TaxCode
