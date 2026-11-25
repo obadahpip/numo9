@@ -1583,7 +1583,7 @@
       "total": "Total"
     },
     "warnings": {
-      "title": "Check before saving"
+      "title": "Review before saving"
     }
   },
   "emailDomain": {

@@ -52,5 +52,5 @@ test("warning visible on a 15 Jul document", async ({ page }) => {
   const warning = page.locator('[data-warning="REGISTRATION_STOPPED"]');
   await expect(warning).toHaveText(MESSAGE);
   expect(asked).toBeGreaterThan(0);
-  await expect(page.getByRole("region", { name: "Check before saving" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Review before saving" })).toBeVisible();
 });

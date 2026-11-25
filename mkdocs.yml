@@ -107,6 +107,7 @@ nav:
       - "Emailing invoices": user-guide/emailing-invoices.md
       - "Purchase orders and receipts": user-guide/purchase-orders.md
       - "Changing your GST/HST filing frequency": user-guide/changing-filing-frequency.md
+      - "Stopping and restarting GST/HST or QST filing": user-guide/stopping-and-restarting-filing.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

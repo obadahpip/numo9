@@ -94,11 +94,32 @@ filled by G-09 (the lesser of the prior-year and current-year methods).
 (`numo9.tax.roll_filing_periods`, G-03a-T17) rolls them forward, marks a period **due soon** in
 the 14 days before its return is due and **overdue** after, and emits each change once.
 
+**Stop filing** (G-03b) — the last day registered, a reason (registration cancelled, small
+supplier, suspension, other) and a note:
+
+1. The date may not be before the registration starts, before the end of the last filed or paid
+   period, nor before the last restart; the registration must be filing.
+2. The open period crossing the date is cut to end on it (a stub — the **final return**); every
+   unfiled period after it, custom ones included, is deleted; none is generated after it.
+3. The registration ends on that date and is closed. New sales after it default to Out of scope
+   (tax setting, on by default); documents dated after it that use the registration's tax codes
+   are listed for review and warned about in the editor (`REGISTRATION_STOPPED`).
+
+**Restart filing** — a date after the stop and a frequency: a cycle of that frequency starts on
+the date (a stub up to the next regular boundary when it is mid-period) and the registration is
+active again. The days between the stop and the restart are a **"Not registered" gap**: no
+period, no frequency switch and no out-of-cycle period may cover them.
+
+Both are previewed (the same result as saving) and recorded with the person, the date and the
+reason — never "System".
+
 ## 7. Edge cases the tests cover
 
 Switch on the 1st vs mid-month · annual → quarterly mid-year (a stub) · two switches in a year ·
 a switch back · financial year ending 31 March · 29 February · a registration starting
-mid-month · deleting a custom period · a due date on a long weekend.
+mid-month · deleting a custom period · a due date on a long weekend · a stop mid-period · a
+stop with documents dated after it · a restart in the same month with the same frequency ·
+stopping QST but not GST/HST · stop, restart and stop again.
 
 ## Sign-off
 
