@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-24 15:49-0500\n"
+"POT-Creation-Date: 2026-11-24 16:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7349,6 +7349,27 @@ msgstr "%(journal)s n'attend pas d'approbation."
 msgid "You wrote or submitted this invoice: someone else must approve it."
 msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
 
+#, fuzzy, python-format
+#| msgid "This override request is already %(status)s."
+msgid "%(note)s is already %(status)s."
+msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
+
+msgid "A credit note can credit only an approved invoice of the same customer."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the credit note is approved."
+msgstr ""
+
+#, fuzzy
+#| msgid "The total must be more than 0.00."
+msgid "A credit note's total must be more than zero."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Credit note %(number)s — %(contact)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
@@ -7442,6 +7463,76 @@ msgstr "page de la facture"
 msgid "invoice emails"
 msgstr "numéro de facture"
 
+#, fuzzy
+#| msgid "Email received"
+msgid "Partially applied"
+msgstr "Courriel reçu"
+
+#, fuzzy
+#| msgid "Applied for"
+msgid "Applied"
+msgstr "Demande présentée"
+
+#, fuzzy
+#| msgid "Stripe invoice"
+msgid "credited invoice"
+msgstr "Facture Stripe"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount applied"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "amount due"
+msgid "amount refunded"
+msgstr "montant dû"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit note"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit notes"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "Draft credit note"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit note line"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "credit note lines"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "applied by"
+msgstr "appliqué le"
+
+#, fuzzy
+#| msgid "applied at"
+msgid "removed at"
+msgstr "appliqué le"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "credit application"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "credit applications"
+msgstr "Créer des organisations clientes"
+
 msgid "Net 30"
 msgstr ""
 
@@ -7491,6 +7582,51 @@ msgid "Void of invoice %(number)s"
 msgstr "numéro de facture"
 
 #, fuzzy
+#| msgid "Credit note"
+msgid "Credit to"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "Credit note number"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Credit note"
+msgid "Credit note date"
+msgstr "Note de crédit"
+
+#, fuzzy
+#| msgid "Stripe invoice"
+msgid "Credits invoice"
+msgstr "Facture Stripe"
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Total credit (%(currency)s)"
+msgstr "Montant dû (%(currency)s)"
+
+#, fuzzy
+#| msgid "Invoice"
+msgid "Applied to invoices"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "ended"
+msgid "Refunded"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "Credit remaining"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy, python-format
+#| msgid "GST/HST registration: %(bn)s"
+msgid "QST registration: %(qst)s"
+msgstr "Inscription TPS/TVH : %(bn)s"
+
+#, fuzzy
 #| msgid "invoice page"
 msgid "Invoice date"
 msgstr "page de la facture"
@@ -7504,11 +7640,6 @@ msgstr "modalités"
 #| msgid "amount due"
 msgid "Amount due"
 msgstr "montant dû"
-
-#, fuzzy, python-format
-#| msgid "GST/HST registration: %(bn)s"
-msgid "QST registration: %(qst)s"
-msgstr "Inscription TPS/TVH : %(bn)s"
 
 #, fuzzy
 #| msgid "arguments"
