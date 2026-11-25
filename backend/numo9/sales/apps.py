@@ -23,6 +23,10 @@ class SalesConfig(AppConfig):
 
         register_quote_search()  # quotes in the global search (D-02-T16)
 
+        from .recode import register_recode_exclusions
+
+        register_recode_exclusions()  # find & recode exclusions (C-07-T03)
+
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
         SWEEP_FACTORIES["sales.Invoice"] = _sweep_invoice

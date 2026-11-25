@@ -1372,3 +1372,140 @@ class PeriodClose(OrgOwnedModel):
     def is_open(self) -> bool:
         """Still closed (not reopened)."""
         return self.reopened_at is None
+
+
+class RecodeStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    RUNNING = "running", _("Running")
+    COMPLETED = "completed", _("Completed")
+    FAILED = "failed", _("Failed")
+    UNDONE = "undone", _("Undone")
+
+
+class RecodeBatch(AuditedModel, OrgOwnedModel):
+    """One find-and-recode (C-07-T01): the search (``criteria`` — ``{"match": "all"|"any",
+    "conditions": [{field, op, value}]}``, C-07-T02), the new coding (``changes`` — any of
+    ``account``, ``tax_code``, ``tracking``, ``contact``; amounts never change), the counts
+    (``line_count`` recoded, ``excluded_count`` left out with a reason, C-07-T03) and the
+    progress of the run. Executing reverses and re-posts each affected entry (append-only,
+    C-07-T05); **undo** reverses those re-posts, latest batch first (C-07-T07) — ``undone_by`` /
+    ``undone_at`` / ``undo_reason``."""
+
+    name = models.CharField(_("name"), max_length=200, blank=True)
+    criteria = models.JSONField(_("search"), default=dict)
+    changes = models.JSONField(_("new coding"), default=dict)
+    status = models.CharField(
+        _("status"), max_length=10, choices=RecodeStatus.choices, default=RecodeStatus.DRAFT
+    )
+    line_count = models.PositiveIntegerField(_("lines recoded"), default=0)
+    excluded_count = models.PositiveIntegerField(_("lines excluded"), default=0)
+    progress = models.PositiveIntegerField(_("lines done"), default=0)
+    error = models.TextField(_("error"), blank=True)
+    executed_by = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("run by"),
+    )
+    executed_at = models.DateTimeField(_("run at"), null=True, blank=True)
+    undone_by = models.ForeignKey(
+        "accounts.User",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("undone by"),
+    )
+    undone_at = models.DateTimeField(_("undone at"), null=True, blank=True)
+    undo_reason = models.TextField(_("reason for undoing"), blank=True)
+
+    class Meta:
+        ordering = ("-created_at", "-pk")
+        verbose_name = _("recode batch")
+        verbose_name_plural = _("recode batches")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(status__in=RecodeStatus.values),
+                name="ledger_recode_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=RecodeStatus.UNDONE)
+                | (models.Q(undone_by__isnull=False) & models.Q(undone_at__isnull=False)),
+                name="ledger_recode_undone_recorded",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(progress__lte=models.F("line_count"))
+                | models.Q(status=RecodeStatus.DRAFT),
+                name="ledger_recode_progress_max",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "status"), name="ledger_recode_status_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.name or f"Recode {self.public_id}"
+
+
+class RecodeLineChange(OrgOwnedModel):
+    """One journal line a batch recoded: the line (``entry`` + ``line_no``; ``line_id`` its id
+    then), its coding ``before`` and ``after`` (``{account, tax_code, tracking, contact}`` with
+    public ids) and the amounts it carried (unchanged), ``fingerprint`` — the line as previewed,
+    compared again at execute (C-07-T06) — and the entries of the change: the reversal of the
+    original and the re-post with the new coding."""
+
+    batch = models.ForeignKey(
+        RecodeBatch, on_delete=models.CASCADE, related_name="lines", verbose_name=_("batch")
+    )
+    entry = models.ForeignKey(
+        JournalEntry, on_delete=models.PROTECT, related_name="+", verbose_name=_("journal entry")
+    )
+    line_no = models.PositiveSmallIntegerField(_("line"))
+    line_id = models.BigIntegerField(_("line ID"))
+    before = models.JSONField(_("before"), default=dict)
+    after = models.JSONField(_("after"), default=dict)
+    debit = models.DecimalField(
+        _("debit"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES, default=Decimal("0")
+    )
+    credit = models.DecimalField(
+        _("credit"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES, default=Decimal("0")
+    )
+    fingerprint = models.CharField(_("fingerprint"), max_length=64, blank=True)
+    reversal_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("reversal"),
+    )
+    repost_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("re-post"),
+    )
+
+    class Meta:
+        ordering = ("batch_id", "entry_id", "line_no")
+        verbose_name = _("recoded line")
+        verbose_name_plural = _("recoded lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=("batch", "entry", "line_no"), name="ledger_recode_line_once"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(debit__gte=0) & models.Q(credit__gte=0),
+                name="ledger_recode_line_amounts",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=("organisation", "entry"), name="ledger_recode_entry_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.entry_id}/{self.line_no}"
