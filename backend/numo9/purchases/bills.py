@@ -51,6 +51,7 @@ def preview_lines(bill: Bill | SupplierCredit) -> list[PreviewLine]:
             description=line.description,
             tracking=dict(line.tracking or {}),
             itc_pct=itc,
+            tax_overridden=line.tax_overridden,
         )
         for line in bill.lines.select_related("account", "tax_code").order_by("position", "pk")
     ]

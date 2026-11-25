@@ -65,6 +65,8 @@ class PreviewLine:
     #: The line's own claimable share of input tax (0–100), before the account's and the tax
     #: code's (G-01-T05 order); a bill of an organisation not registered on its date passes 0.
     itc_pct: Decimal | None = None
+    #: The code was changed from the line's default (G-02): carried to the tax lines' audit flag.
+    tax_overridden: bool = False
 
 
 @dataclass(frozen=True)
@@ -248,7 +250,7 @@ def preview(
                 description=line.description,
                 tracking=dict(line.tracking),
                 tax_code=line.tax_code.code if line.tax_code is not None else "",
-                overridden=bool(getattr(line, "tax_overridden", False)),
+                overridden=line.tax_overridden,
             )
         )
     journal = journal_lines(taxed, side=side, counter=_counter(side), contact=contact)

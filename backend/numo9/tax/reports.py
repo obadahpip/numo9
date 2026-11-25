@@ -328,3 +328,120 @@ class TaxDetailReport(TaxReport):
                 [sum((r.values[i] or ZERO for r in mine), ZERO) for i in range(4)],
             )
         ]
+
+
+def flags_of(line: Any) -> list[str]:
+    """The audit flags of a tax line (``docs/specs/tax-reports.md`` §3)."""
+    stored = line.line if isinstance(line, RecognisedLine) else line
+    out = []
+    if stored.overridden:
+        out.append("override")
+    if stored.late:
+        out.append("late_adjustment")
+    if stored.source == "journal" or stored.entry.type == "manual":
+        out.append("journal_source")
+    if stored.restricted:
+        out.append("restricted_itc")
+    if stored.reverses_id is not None or stored.entry.status == "reversed":
+        out.append("superseded")
+    return out
+
+
+@register
+class TaxAuditReport(TaxReport):
+    """``tax_audit`` (G-05-T06) — every tax line: posting date, journal and line, account, code,
+    component, rate, basis, tax, who posted it, and its flags (override, late adjustment,
+    journal source, restricted ITC, superseded)."""
+
+    id = "tax_audit"
+    slug = "tax-audit"
+    name = _("Tax audit report")
+    description = _("Every tax line with its code, rate and who posted it, flags as chips.")
+    keywords = (_("GST audit"), _("tax audit trail"))
+    params = DETAIL_PARAMS
+
+    def columns(self, params: dict[str, Any]) -> list[Column]:
+        return [
+            Column("rate", str(_("Rate %"))),
+            Column("basis", str(_("Basis"))),
+            Column("tax", str(_("Tax"))),
+            Column("recoverable", str(_("Recoverable"))),
+        ]
+
+    def query(self, organisation: Any, params: dict[str, Any]) -> Any:
+        from numo9.ledger.models import JournalLine
+
+        data = self.load(organisation, params)
+        lines = [
+            r
+            for r in data.lines
+            if (not params["component"] or r.component == params["component"])
+            and (not params["code"] or r.code == params["code"])
+        ]
+        entries = {r.line.entry_id: r.line.entry for r in lines}
+        accounts = {
+            (entry_id, line_no): str(account)
+            for entry_id, line_no, account in (
+                (j.entry_id, j.line_no, j.account)
+                for j in JournalLine.objects.filter(entry_id__in=entries).select_related("account")
+            )
+        }
+        from numo9.accounts.models import User
+
+        people = {
+            u.pk: u.name or u.email
+            for u in User.objects.filter(
+                pk__in={e.posted_by_id for e in entries.values() if e.posted_by_id}
+            )
+        }
+        return lines, documents_of(organisation, list(entries.values())), accounts, people
+
+    def rows(self, data: Any, params: dict[str, Any]) -> list[ReportRow]:
+        lines, documents, accounts, people = data
+        out = []
+        for line in lines:
+            stored = line.line
+            entry = stored.entry
+            doc = documents[entry.pk]
+            out.append(
+                ReportRow(
+                    f"line:{stored.pk}",
+                    " · ".join(
+                        part
+                        for part in (
+                            stored.date.isoformat(),
+                            doc["journal"],
+                            str(stored.line_no),
+                            accounts.get((entry.pk, stored.line_no), ""),
+                            stored.code,
+                            component_label(stored.kind, stored.component)
+                            if stored.component
+                            else "",
+                        )
+                        if part
+                    ),
+                    values=[stored.rate, line.basis, line.tax, line.recoverable],
+                    drill={
+                        "flags": flags_of(line),
+                        "posted_by": people.get(entry.posted_by_id, ""),
+                        "posted_at": entry.posted_at.isoformat() if entry.posted_at else "",
+                        "journal": doc["journal"],
+                        "number": doc["number"],
+                        "url": doc["url"],
+                        "code": stored.code,
+                        "component": stored.component,
+                        "side": stored.side,
+                    },
+                )
+            )
+        return out
+
+    def totals(self, rows: Sequence[ReportRow], params: dict[str, Any]) -> list[ReportRow]:
+        return [
+            ReportRow(
+                "total",
+                str(_("Total")),
+                "total",
+                [None, *(sum((r.values[i] or ZERO for r in rows), ZERO) for i in (1, 2, 3))],
+            )
+        ]
