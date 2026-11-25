@@ -37,6 +37,18 @@ it stops, or while it has no filing frequency; a date past the stored periods (b
 24-month horizon) extends them to the end of that date's period first, so every date of the
 registration has exactly one period. ``periods_for(registration, dates)`` resolves many dates
 with one query per extension.
+
+``apply_change(registration, change, user=…)`` runs one change — ``{"action": "switch",
+"frequency", "effective_from", "approval_ref", "approval_date", "note"}``, ``{"action":
+"custom", "start", "end", "note"}`` or ``{"action": "delete_custom", "period": <public id>}`` —
+and writes its audit event on the registration (``tax.filing.frequency_changed``,
+``tax.filing.custom_period_added`` / ``…_removed``, in the tax history).
+
+``preview(registration, change)`` (G-03a-T15) — what the change would do, **writing nothing**:
+the change runs in a transaction that is rolled back, so the preview is the service's own
+result — ``{"removed", "added", "changed": [{"before", "after"}], "periods", "warnings"}``
+(``diff``: a period is *changed* when the same period gets other dates, kind or due dates —
+renumbering alone isn't a change). A refused change raises the same ``TaxError`` as saving it.
 """
 
 from __future__ import annotations
@@ -466,3 +478,143 @@ def periods_for(
             if index < len(periods) and periods[index].start <= d:
                 out[d] = periods[index]
     return out
+
+
+# ---- changes, their audit and their preview (G-03a-T15, T16) ------------------------------------
+
+_COMPARED = ("start", "end", "kind", "frequency", "due_date", "payment_due_date")
+
+
+def period_row(period: FilingPeriod) -> dict[str, Any]:
+    return {
+        "id": str(period.public_id),
+        "start": period.start.isoformat(),
+        "end": period.end.isoformat(),
+        "kind": period.kind,
+        "frequency": period.frequency,
+        "sequence_no": period.sequence_no,
+        "due_date": period.due_date.isoformat(),
+        "payment_due_date": period.payment_due_date.isoformat(),
+        "status": period.status,
+        "note": period.note,
+    }
+
+
+def period_rows(registration: Any) -> list[dict[str, Any]]:
+    periods = FilingPeriod.objects.filter(registration=registration).order_by("start")
+    return [period_row(p) for p in periods]
+
+
+def diff(before: list[dict[str, Any]], after: list[dict[str, Any]]) -> dict[str, Any]:
+    """Removed / added / changed periods between two ``period_rows`` (module docstring)."""
+    was = {row["id"]: row for row in before}
+    now = {row["id"]: row for row in after}
+    return {
+        "removed": [row for key, row in was.items() if key not in now],
+        "added": [row for key, row in now.items() if key not in was],
+        "changed": [
+            {"before": was[key], "after": row}
+            for key, row in now.items()
+            if key in was and any(was[key][f] != row[f] for f in _COMPARED)
+        ],
+    }
+
+
+def _spans(result: dict[str, Any]) -> dict[str, Any]:
+    """A diff without the row ids: what is compared between a preview and the saved change."""
+
+    def bare(row: dict[str, Any]) -> dict[str, Any]:
+        return {key: value for key, value in row.items() if key != "id"}
+
+    return {
+        "removed": [bare(r) for r in result["removed"]],
+        "added": [bare(r) for r in result["added"]],
+        "changed": [
+            {"before": bare(c["before"]), "after": bare(c["after"])} for c in result["changed"]
+        ],
+    }
+
+
+def apply_change(
+    registration: Any,
+    change: dict[str, Any],
+    *,
+    user: Any = None,
+    today: dt.date | None = None,
+) -> dict[str, Any]:
+    """Run one change and audit it (module docstring) → the diff, periods and warnings."""
+    from numo9.audit.service import record
+    from numo9.tenancy.context import org_context
+
+    action = change.get("action")
+    with org_context(registration.organisation), transaction.atomic():
+        before = period_rows(registration)
+        warnings: list[dict[str, str]] = []
+        if action == "switch":
+            previous = _frequency_at(registration, change["effective_from"])
+            first = not FilingCycle.objects.filter(registration=registration).exists()
+            _periods, warnings = switch_frequency(
+                registration,
+                change["frequency"],
+                change["effective_from"],
+                approval_ref=change.get("approval_ref") or "",
+                approval_date=change.get("approval_date"),
+                note=change.get("note") or "",
+                user=user,
+                today=today,
+            )
+            record(
+                "tax.filing.frequency_changed",
+                obj=registration,
+                actor=user,
+                changes={"frequency": ["" if first else previous, change["frequency"]]},
+                meta={
+                    "effective_from": change["effective_from"].isoformat(),
+                    "approval_ref": (change.get("approval_ref") or "").strip(),
+                },
+            )
+        elif action == "custom":
+            add_custom_period(
+                registration,
+                change["start"],
+                change["end"],
+                note=change.get("note") or "",
+                today=today,
+            )
+            record(
+                "tax.filing.custom_period_added",
+                obj=registration,
+                actor=user,
+                meta={"start": change["start"].isoformat(), "end": change["end"].isoformat()},
+            )
+        elif action == "delete_custom":
+            period = FilingPeriod.objects.filter(
+                registration=registration, public_id=change.get("period")
+            ).first()
+            if period is None:
+                raise TaxError(_("That period no longer exists."), code="tax.filing.no_period")
+            span = {"start": period.start.isoformat(), "end": period.end.isoformat()}
+            delete_custom_period(period, today=today)
+            record("tax.filing.custom_period_removed", obj=registration, actor=user, meta=span)
+        else:
+            raise TaxError(_("Unknown change."), code="tax.filing.action")
+        after = period_rows(registration)
+        return {**diff(before, after), "periods": after, "warnings": warnings}
+
+
+class _Undo(Exception):
+    """Rolls a preview's transaction back."""
+
+
+def preview(
+    registration: Any, change: dict[str, Any], *, today: dt.date | None = None
+) -> dict[str, Any]:
+    """The result ``apply_change`` would give, with nothing written (module docstring)."""
+    result: dict[str, Any] = {}
+    try:
+        with transaction.atomic():
+            result = apply_change(registration, change, today=today)
+            raise _Undo
+    except _Undo:
+        pass
+    return result
