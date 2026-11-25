@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 702   Remaining: 2085   Progress: 25.19%
+TOTAL ATOMIC TASKS: 2787   Completed: 703   Remaining: 2084   Progress: 25.22%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -928,7 +928,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-07-T07 — Undo service: reverse recode JEs in reverse order; refused if any period now locked (lists which)
 ✅ C-07-T08 — Audit report export (PDF/XLSX/CSV) per batch
 ✅ C-07-T09 — API /api/v1/recode/ (search, preview, execute, batches, undo, report) + permission accounting.recode (adviser roles)
-❌ C-07-T10 — UI: condition builder (All/Any, typed value inputs per field)
+✅ C-07-T10 — UI: condition builder (All/Any, typed value inputs per field)
 ❌ C-07-T11 — UI: results grid with select-all-across-pages, excluded tab
 ❌ C-07-T12 — UI: preview diff + confirm dialog with numbers; progress toast for async
 ❌ C-07-T13 — UI: batch history with Undo + report download
