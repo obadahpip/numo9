@@ -8,9 +8,9 @@
   its row was created, in the organisation's time zone).
 - ``record_revision_event(revision, before=, after=, reason=, journal_reversal=, journal_post=,
   user=)`` (D-03b-T15) — the audit event of a revision: the fields that changed with old and new
-  values (header fields, totals, tax per component, and each line added, removed or changed), the reason, and the
-  ids and numbers of the reversed and posted journals. ``field_diffs(before, after)`` computes
-  the changes from two snapshots.
+  values (header fields, totals, tax per component, and each line added, removed or changed),
+  the reason, and the ids and numbers of the reversed and posted journals.
+  ``field_diffs(before, after)`` computes the changes from two snapshots.
 """
 
 from __future__ import annotations
