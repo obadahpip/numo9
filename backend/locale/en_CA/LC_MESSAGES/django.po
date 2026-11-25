@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 16:17-0500\n"
+"POT-Creation-Date: 2026-11-25 16:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4619,6 +4619,60 @@ msgstr ""
 msgid "period closes"
 msgstr ""
 
+msgid "Undone"
+msgstr ""
+
+msgid "search"
+msgstr ""
+
+msgid "new coding"
+msgstr ""
+
+msgid "lines recoded"
+msgstr ""
+
+msgid "lines excluded"
+msgstr ""
+
+msgid "lines done"
+msgstr ""
+
+msgid "run by"
+msgstr ""
+
+msgid "run at"
+msgstr ""
+
+msgid "undone by"
+msgstr ""
+
+msgid "undone at"
+msgstr ""
+
+msgid "reason for undoing"
+msgstr ""
+
+msgid "recode batch"
+msgstr ""
+
+msgid "recode batches"
+msgstr ""
+
+msgid "batch"
+msgstr ""
+
+msgid "reversal"
+msgstr ""
+
+msgid "re-post"
+msgstr ""
+
+msgid "recoded line"
+msgstr ""
+
+msgid "recoded lines"
+msgstr ""
+
 #, python-format
 msgid "%(journal)s is waiting for your approval"
 msgstr ""
@@ -4799,6 +4853,49 @@ msgstr ""
 
 #, python-format
 msgid "The automatic reversal date %(reverse)s is in a locked period (%(lock)s). Choose a date after the lock."
+msgstr ""
+
+msgid "The document was revised since: only its current revision can be recoded."
+msgstr ""
+
+#, python-format
+msgid "This entry reverses journal %(number)s: recode the original instead."
+msgstr ""
+
+msgid "This entry was reversed: there is nothing to recode."
+msgstr ""
+
+#, python-format
+msgid "A %(type)s journal is coded by its own module: it can't be recoded here."
+msgstr ""
+
+#, python-format
+msgid "%(document)s %(number)s is void: its entries can't be recoded."
+msgstr ""
+
+msgid "Choose the new account, tax code, tracking or contact."
+msgstr ""
+
+msgid "The new account isn't an active account of this organisation."
+msgstr ""
+
+msgid "The new tax code isn't a tax code."
+msgstr ""
+
+msgid "Tracking is a category and its option."
+msgstr ""
+
+msgid "The new contact isn't a contact of this organisation."
+msgstr ""
+
+msgid "The search isn't a list of conditions."
+msgstr ""
+
+msgid "Add at least one condition, matching all or any of them."
+msgstr ""
+
+#, python-format
+msgid "Condition %(condition)s isn't a search we can run."
 msgstr ""
 
 msgid "Give the schedule as a recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
@@ -8146,6 +8243,10 @@ msgstr ""
 
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."
+msgstr ""
+
+#, python-format
+msgid "The tax period %(start)s to %(end)s is filed: lines with tax in it can't be recoded."
 msgstr ""
 
 msgid "Returns are already filed: the effective date can't change any more."
