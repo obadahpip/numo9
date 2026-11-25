@@ -4,19 +4,39 @@
  * A registration's filing periods (G-03a): the timeline (T18), "Change frequency" (wizard,
  * T19), "Add out-of-cycle period" (dialog, T20) and the frequency history (T21). Every change
  * is previewed before it is saved; after a change the periods and the history are read again.
+ * G-03b: the stop-filing danger zone (T10) while registered, "Restart filing" (wizard, T10)
+ * while stopped, the "Not registered" band (T11) and the stop / restart history.
  */
-import { Button, EmptyState, ErrorState, SkeletonText } from "@numo9/ui";
+import {
+  Button,
+  EmptyState,
+  ErrorState,
+  SkeletonText,
+  formatDate,
+  type AppLocale,
+} from "@numo9/ui";
 import Link from "next/link";
+import { useLocale } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
 
-import { filingApi, type FilingCycle, type FilingPeriod, type PeriodsResponse } from "./api";
+import {
+  filingApi,
+  type FilingCycle,
+  type FilingPeriod,
+  type PeriodsResponse,
+  type RegistrationStatus,
+} from "./api";
 import { ChangeFrequencyWizard } from "./ChangeFrequencyWizard";
 import { CycleHistory } from "./CycleHistory";
 import { FilingTimeline } from "./FilingTimeline";
 import { fmsg } from "./messages";
 import { OutOfCycleDialog } from "./OutOfCycleDialog";
+import { RegistrationHistory } from "./RegistrationHistory";
+import { RestartWizard } from "./RestartWizard";
+import { StopFilingCard } from "./StopFilingCard";
+import { smsg } from "./stopMessages";
 import { taxSettingsUrl } from "../settings/links";
 
 export interface FilingScreenProps {
@@ -28,7 +48,10 @@ export interface FilingScreenProps {
 
 export function FilingScreen({ org, registration, canManage = false }: FilingScreenProps) {
   const fm = useFormatMessage();
+  const locale = useLocale() as AppLocale;
   const [data, setData] = useState<PeriodsResponse | null>(null);
+  const [state, setState] = useState<RegistrationStatus | null>(null);
+  const [restarting, setRestarting] = useState(false);
   const [cycles, setCycles] = useState<FilingCycle[]>([]);
   const [failed, setFailed] = useState(false);
   const [wizard, setWizard] = useState(false);
@@ -38,13 +61,15 @@ export function FilingScreen({ org, registration, canManage = false }: FilingScr
 
   const load = useCallback(async () => {
     setFailed(false);
-    const [periods, history] = await Promise.all([
+    const [periods, history, events] = await Promise.all([
       filingApi.periods(org, registration),
       filingApi.cycles(org, registration),
+      filingApi.status(org, registration),
     ]);
     if (periods.status === 200 && history.status === 200) {
       setData(periods.body);
       setCycles(history.body.results);
+      setState(events.status === 200 ? events.body : null);
     } else setFailed(true);
   }, [org, registration]);
 
@@ -98,7 +123,11 @@ export function FilingScreen({ org, registration, canManage = false }: FilingScr
           </p>
           <p className="text-sm text-fg-muted">{fm(fmsg.intro)}</p>
         </div>
-        {canManage && data.results.length ? (
+        {canManage && state?.stopped ? (
+          <Button variant="primary" onClick={() => setRestarting(true)}>
+            {fm(smsg.restartButton)}
+          </Button>
+        ) : canManage && data.results.length ? (
           <div className="flex flex-wrap gap-2">
             {setButton}
             <Button variant="secondary" onClick={() => setCustom(true)}>
@@ -115,10 +144,16 @@ export function FilingScreen({ org, registration, canManage = false }: FilingScr
       <p role="status" className="text-sm text-fg-success" data-notice="">
         {notice}
       </p>
+      {state?.stopped && state.stop_date ? (
+        <p className="text-sm font-medium text-fg-danger" data-stopped="">
+          {fm(smsg.stopped, { date: formatDate(state.stop_date, { locale }) })}
+        </p>
+      ) : null}
       {data.results.length ? (
         <FilingTimeline
           periods={data.results}
           cycles={cycles}
+          gaps={state?.gaps ?? []}
           onRemoveCustom={canManage ? (period) => void removeCustom(period) : undefined}
         />
       ) : (
@@ -129,6 +164,7 @@ export function FilingScreen({ org, registration, canManage = false }: FilingScr
         />
       )}
       <CycleHistory cycles={cycles} today={data.today} />
+      <RegistrationHistory events={state?.events ?? []} />
       {canManage ? (
         <>
           <ChangeFrequencyWizard
@@ -140,6 +176,23 @@ export function FilingScreen({ org, registration, canManage = false }: FilingScr
             defaultDate={cycles.length ? "" : (data.registration.start_date ?? "")}
             onSaved={saved}
           />
+          {state?.stopped ? (
+            <RestartWizard
+              org={org}
+              registration={registration}
+              open={restarting}
+              onOpenChange={setRestarting}
+              stopDate={state.stop_date ? formatDate(state.stop_date, { locale }) : ""}
+              onRestarted={saved}
+            />
+          ) : data.results.length && state ? (
+            <StopFilingCard
+              org={org}
+              registration={registration}
+              number={data.registration.number}
+              onStopped={saved}
+            />
+          ) : null}
           <OutOfCycleDialog
             org={org}
             registration={registration}
