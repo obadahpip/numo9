@@ -1,12 +1,12 @@
 """Find & recode (C-07) test helpers: ``recode_books()`` — the period-close books (C-06) with a
 second expense account, two contacts and four posted journals of known coding:
 
-| # | Date | Lines | By |
-|---|---|---|---|
-| 1 | 10 Jan 2026 | Dr bank 1,000.00 / Cr revenue 1,000.00 (tax ``sales.ON.standard``, Acme, type sales) | adviser |
-| 2 | 15 Feb 2026 | Dr expense 200.00 (tax ``purchase.ON.standard``, Bolt, region east) / Cr bank | owner |
-| 3 | 20 Mar 2026 | Dr expense2 50.00 (region west) / Cr bank, accounting book, "Office rent March" | adviser |
-| 4 | 5 Apr 2026 | Dr expense 75.00 / Cr bank, tax book | adviser |
+1. 10 Jan 2026 — Dr bank 1,000.00 / Cr revenue 1,000.00 (tax ``sales.ON.standard``, Acme),
+   type sales, by the adviser;
+2. 15 Feb 2026 — Dr expense 200.00 (tax ``purchase.ON.standard``, Bolt, region east) / Cr bank,
+   by the owner;
+3. 20 Mar 2026 — Dr expense2 50.00 (region west) / Cr bank, accounting book, "Office rent March";
+4. 5 Apr 2026 — Dr expense 75.00 / Cr bank, tax book.
 """
 
 from __future__ import annotations
