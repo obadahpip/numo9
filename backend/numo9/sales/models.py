@@ -555,3 +555,34 @@ class QuoteLink(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.quote} link"
+
+
+class QuoteAcceptance(OrgOwnedModel):
+    """The evidence of a customer's acceptance (D-02-T07): who typed their name, the drawn
+    signature (a PNG in object storage — optional: typing the name alone is the accessible way),
+    the IP address and browser, the lines chosen, and the **SHA-256 of the PDF as accepted**
+    (the PDF itself is stored too, so the hash can be checked against it)."""
+
+    quote = models.OneToOneField(
+        Quote, on_delete=models.PROTECT, related_name="acceptance", verbose_name=_("quote")
+    )
+    typed_name = models.CharField(_("name typed"), max_length=200)
+    signature_key = models.CharField(_("signature (PNG) key"), max_length=500, blank=True)
+    ip = models.GenericIPAddressField(_("IP address"), null=True, blank=True)
+    user_agent = models.CharField(_("browser"), max_length=512, blank=True)
+    selections = models.JSONField(_("lines chosen"), default=dict, blank=True)
+    pdf_key = models.CharField(_("accepted PDF key"), max_length=500)
+    pdf_sha256 = models.CharField(_("accepted PDF SHA-256"), max_length=64)
+    accepted_at = models.DateTimeField(_("accepted at"))
+
+    class Meta:
+        verbose_name = _("quote acceptance")
+        verbose_name_plural = _("quote acceptances")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=~models.Q(typed_name=""), name="sales_quoteacceptance_named"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.quote} accepted by {self.typed_name}"

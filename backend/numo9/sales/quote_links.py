@@ -134,3 +134,91 @@ def public_quote(quote: Quote) -> dict[str, Any]:
         "can_accept": reason is None,
         "reason": reason,
     }
+
+
+# ---- acceptance with evidence (D-02-T07) -------------------------------------------------------
+
+PNG = b"\x89PNG\r\n\x1a\n"
+MAX_SIGNATURE = 512 * 1024
+
+
+class AcceptanceRefused(Exception):
+    def __init__(self, message: str, code: str) -> None:
+        super().__init__(message)
+        self.code = code
+
+
+def accept_with_evidence(
+    quote: Quote,
+    *,
+    typed_name: str,
+    signature_png: bytes | None = None,
+    selections: dict[str, bool] | None = None,
+    ip: str | None = None,
+    user_agent: str = "",
+    now: Any = None,
+) -> Any:
+    """Accept ``quote`` as the customer, keeping the evidence (module docstring): the options
+    chosen (``selections``: line id → selected, for optional and alternative lines) are applied
+    and the totals recalculated, the PDF of the quote **as accepted** is rendered and stored
+    with its SHA-256, the signature PNG stored, then the quote moves to Accepted (refused once
+    expired). Accepting twice returns the first acceptance (idempotent)."""
+    import hashlib
+
+    from django.db import transaction
+    from django.utils.translation import gettext as _
+
+    from numo9.files.storage import new_key, put_bytes
+    from numo9.tenancy.context import org_context
+
+    from .models import QuoteAcceptance
+    from .pdf import render_quote_pdf
+    from .quotes import accept, recalculate
+
+    name = (typed_name or "").strip()
+    if not name:
+        raise AcceptanceRefused(
+            _("Type your name to accept the quote."), "sales.quote.name_required"
+        )
+    if signature_png is not None and (
+        not signature_png.startswith(PNG) or len(signature_png) > MAX_SIGNATURE
+    ):
+        raise AcceptanceRefused(
+            _("The signature must be a PNG image."), "sales.quote.signature_invalid"
+        )
+    organisation = quote.organisation
+    with org_context(organisation), transaction.atomic():
+        locked = Quote._base_manager.select_for_update().get(pk=quote.pk)
+        existing = QuoteAcceptance.objects.filter(quote=locked).first()
+        if existing is not None:
+            return existing
+        chosen = {}
+        for line in locked.lines.all():
+            key = str(line.public_id)
+            if selections and key in selections and (line.is_optional or line.alternative_group):
+                line.selected = bool(selections[key])
+                line.save(update_fields=["selected", "updated_at"])
+            chosen[key] = line.selected
+        recalculate(locked)
+        accepted = accept(locked, now=now)  # the expiry and transition rules
+        pdf = render_quote_pdf(accepted)
+        pdf_key = new_key(organisation, f"{accepted.number}-accepted.pdf")
+        put_bytes(pdf_key, pdf, "application/pdf")
+        signature_key = ""
+        if signature_png:
+            signature_key = new_key(organisation, f"{accepted.number}-signature.png")
+            put_bytes(signature_key, signature_png, "image/png")
+        evidence = QuoteAcceptance(
+            organisation=organisation,
+            quote=accepted,
+            typed_name=name[:200],
+            signature_key=signature_key,
+            ip=ip or None,
+            user_agent=(user_agent or "")[:512],
+            selections=chosen,
+            pdf_key=pdf_key,
+            pdf_sha256=hashlib.sha256(pdf).hexdigest(),
+            accepted_at=accepted.accepted_at or timezone.now(),
+        )
+        evidence.save()
+        return evidence
