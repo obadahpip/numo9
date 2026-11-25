@@ -17,6 +17,7 @@ class LedgerConfig(AppConfig):
         from . import (
             cache,  # noqa: F401  (chart cache busting on account changes)
             notifications,  # noqa: F401  (journal approval events, C-04-T13)
+            period_close,  # noqa: F401  (closed fiscal years refuse postings, C-06)
         )
         from .importing import ACCOUNT
 
