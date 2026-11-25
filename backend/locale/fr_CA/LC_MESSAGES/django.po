@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 10:24-0500\n"
+"POT-Creation-Date: 2026-11-25 12:31-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6720,6 +6720,63 @@ msgstr "Créer des organisations clientes"
 msgid "supplier credit applications"
 msgstr "Créer des organisations clientes"
 
+msgid "Reimbursed"
+msgstr "Remboursée"
+
+msgid "Receipt"
+msgstr "Reçu"
+
+msgid "Mileage"
+msgstr "Kilométrage"
+
+msgid "claimant"
+msgstr "demandeur"
+
+msgid "employee contact"
+msgstr "contact de l’employé"
+
+msgid "title"
+msgstr "titre"
+
+msgid "approved or rejected by"
+msgstr "approuvée ou refusée par"
+
+msgid "approved or rejected at"
+msgstr "approuvée ou refusée le"
+
+msgid "reason for rejection"
+msgstr "motif du refus"
+
+msgid "reimbursement bill"
+msgstr "facture de remboursement"
+
+msgid "expense claim"
+msgstr "note de frais"
+
+msgid "expense claims"
+msgstr "notes de frais"
+
+msgid "Draft expense claim"
+msgstr "Note de frais (brouillon)"
+
+msgid "claim"
+msgstr "note de frais"
+
+msgid "merchant"
+msgstr "commerçant"
+
+msgid "distance (km)"
+msgstr "distance (km)"
+
+msgid "rate applied"
+msgstr "taux appliqué"
+
+msgid "expense claim line"
+msgstr "ligne de note de frais"
+
+msgid "expense claim lines"
+msgstr "lignes de note de frais"
+
 #, fuzzy
 #| msgid "purchase orders"
 msgid "See purchase orders and goods receipts"
@@ -7663,6 +7720,13 @@ msgstr ""
 msgid "Void of invoice %(number)s"
 msgstr "numéro de facture"
 
+msgid "Superseded"
+msgstr "Remplacée"
+
+#, python-format
+msgid "Revision %(n)d of invoice %(number)s"
+msgstr "Révision %(n)d de la facture %(number)s"
+
 #, fuzzy
 #| msgid "Credit note"
 msgid "Credit to"
@@ -7708,6 +7772,9 @@ msgstr "Créer des organisations clientes"
 msgid "QST registration: %(qst)s"
 msgstr "Inscription TPS/TVH : %(bn)s"
 
+msgid "supersedes the version issued on"
+msgstr "remplace la version émise le"
+
 #, fuzzy
 #| msgid "invoice page"
 msgid "Invoice date"
@@ -7752,11 +7819,6 @@ msgstr "Votre rôle dans cette organisation ne permet pas ce changement."
 #| msgid "record"
 msgid "record id"
 msgstr "fiche"
-
-#, fuzzy
-#| msgid "job type"
-msgid "title"
-msgstr "type de tâche"
 
 #, fuzzy
 #| msgid "subtotal"
@@ -8360,6 +8422,78 @@ msgstr "fréquence de facturation"
 msgid "filing periods"
 msgstr "fréquence de facturation"
 
+msgid "Reviewed"
+msgstr "Révisée"
+
+msgid "Amended"
+msgstr "Modifiée"
+
+msgid "Regular method"
+msgstr "Méthode régulière"
+
+msgid "Quick method"
+msgstr "Méthode rapide"
+
+msgid "method"
+msgstr "méthode"
+
+msgid "line values"
+msgstr "valeurs des lignes"
+
+msgid "prepared by"
+msgstr "préparée par"
+
+msgid "prepared at"
+msgstr "préparée le"
+
+msgid "reviewed by"
+msgstr "révisée par"
+
+msgid "reviewed at"
+msgstr "révisée le"
+
+msgid "filed by"
+msgstr "produite par"
+
+msgid "filed on"
+msgstr "produite le"
+
+msgid "confirmation number"
+msgstr "numéro de confirmation"
+
+msgid "amends"
+msgstr "modifie"
+
+msgid "reason for the amendment"
+msgstr "motif de la modification"
+
+msgid "tax return"
+msgstr "déclaration de taxes"
+
+msgid "tax returns"
+msgstr "déclarations de taxes"
+
+msgid "The period belongs to another registration."
+msgstr "La période appartient à une autre inscription."
+
+msgid "document date"
+msgstr "date du document"
+
+msgid "filed period"
+msgstr "période produite"
+
+msgid "reported in"
+msgstr "déclaré dans"
+
+msgid "return line"
+msgstr "ligne de la déclaration"
+
+msgid "late adjustment"
+msgstr "redressement tardif"
+
+msgid "late adjustments"
+msgstr "redressements tardifs"
+
 #, python-format
 msgid "%(message)s Example: %(example)s."
 msgstr ""
@@ -8374,6 +8508,16 @@ msgstr "Ajouter, versionner, archiver et restaurer des codes de taxe et des taux
 msgid "%(component)s has no control account: add the %(role)s account first."
 msgstr "%(component)s n'a pas de compte de contrôle : ajoutez d'abord le compte %(role)s."
 
+msgid "Returns are already filed: the effective date can't change any more."
+msgstr "Des déclarations sont déjà produites : la date d’effet ne peut plus changer."
+
+#, python-format
+msgid "The period ending %(end)s is filed: the registration can't end before it."
+msgstr "La période se terminant le %(end)s est produite : l’inscription ne peut pas se terminer avant."
+
+msgid "Returns are filed under this registration: end it instead of removing it."
+msgstr "Des déclarations sont produites sous cette inscription : mettez-y fin au lieu de la supprimer."
+
 #, python-format
 msgid "%(code)s (%(name)s) is in force %(range)s, not on %(date)s: pick the code again for this date."
 msgstr "%(code)s (%(name)s) est en vigueur %(range)s, pas le %(date)s : choisissez de nouveau le code pour cette date."
@@ -8381,6 +8525,48 @@ msgstr "%(code)s (%(name)s) est en vigueur %(range)s, pas le %(date)s : choisiss
 #, python-format
 msgid "%(code)s is archived: restore it or pick another code."
 msgstr "%(code)s est archivé : restaurez-le ou choisissez un autre code."
+
+msgid "No return is prepared for this period."
+msgstr "Aucune déclaration n’est préparée pour cette période."
+
+#, python-format
+msgid "The return for %(period)s is filed. Amend it to change it."
+msgstr "La déclaration de la période %(period)s est produite. Modifiez-la pour la changer."
+
+msgid "Only a draft return can be reviewed."
+msgstr "Seule une déclaration en brouillon peut être révisée."
+
+msgid "return"
+msgstr "déclaration"
+
+msgid "Only a reviewed return can be sent back."
+msgstr "Seule une déclaration révisée peut être renvoyée."
+
+msgid "Say why the return goes back."
+msgstr "Indiquez pourquoi la déclaration est renvoyée."
+
+#, python-format
+msgid "Return for %(period)s filed (confirmation %(number)s)."
+msgstr "Déclaration de la période %(period)s produite (confirmation %(number)s)."
+
+msgid "Review the return before filing it."
+msgstr "Faites réviser la déclaration avant de la produire."
+
+msgid "Enter the confirmation number the CRA or Revenu Québec gave when you filed."
+msgstr "Entrez le numéro de confirmation que l’ARC ou Revenu Québec a donné lors de la production."
+
+msgid "Only a filed return can be amended."
+msgstr "Seule une déclaration produite peut être modifiée."
+
+msgid "Say why the return is amended."
+msgstr "Indiquez pourquoi la déclaration est modifiée."
+
+msgid "An amendment of this return is already in progress."
+msgstr "Une modification de cette déclaration est déjà en cours."
+
+#, python-format
+msgid "No open period after %(period)s can carry the adjustment."
+msgstr "Aucune période ouverte après %(period)s ne peut porter le redressement."
 
 #, python-format
 msgid "The fiscal year started on %(start)s: changing to the %(basis)s basis during the year leaves the returns already filed on the %(current)s basis."
