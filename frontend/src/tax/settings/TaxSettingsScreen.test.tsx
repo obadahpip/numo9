@@ -24,6 +24,7 @@ const SETTINGS: TaxSettings = {
   quick_method: false,
   quick_method_from: null,
   default_codes: { sales: { revenue: "sales.ON.standard" } },
+  out_of_scope_after_stop: true,
   restricted_itc_accounts: [{ id: "a-meals", code: "6400", name: "Meals", pct: "50" }],
   registered: true,
 };
@@ -203,11 +204,16 @@ it("edits the quick method, default codes with rounding, and restricted ITCs", a
 
   await user.click(screen.getByRole("button", { name: "Edit Default codes" }));
   expect(await within(card("default-codes")).findByLabelText("Rounding")).toBeVisible();
+  // G-03b-T06: sales after a GST/HST stop default to out of scope unless turned off here.
+  await user.click(
+    within(card("default-codes")).getByRole("switch", { name: "Sales after filing stops" }),
+  );
   await user.click(within(card("default-codes")).getByRole("button", { name: "Save" }));
   await waitFor(() => expect(card("default-codes")).not.toHaveAttribute("data-editing"));
   expect(calls.at(-1)!.body).toEqual({
     default_codes: { sales: { revenue: "sales.ON.standard" } },
     rounding_mode: "line",
+    out_of_scope_after_stop: false,
   });
 
   await user.click(screen.getByRole("button", { name: "Edit Restricted input tax credits" }));

@@ -64,19 +64,33 @@ class SupplyAddress:
 
 @dataclass(frozen=True)
 class Registration:
-    """One of the organisation's registrations (A-05-T03) as the resolver sees it."""
+    """One of the organisation's registrations (A-05-T03) as the resolver sees it; ``gaps`` —
+    the spans it was not registered between a stop and a restart (G-03b; end None: still
+    stopped)."""
 
     type: str
     status: str = "active"
     effective_from: dt.date | None = None
     effective_to: dt.date | None = None
+    gaps: tuple[tuple[dt.date, dt.date | None], ...] = ()
+
+    def in_gap(self, day: dt.date) -> bool:
+        return any(start <= day and (end is None or day <= end) for start, end in self.gaps)
 
     def active_on(self, day: dt.date) -> bool:
         return (
             self.status == "active"
             and (self.effective_from is None or self.effective_from <= day)
             and (self.effective_to is None or day <= self.effective_to)
+            and not self.in_gap(day)
         )
+
+    def stopped_on(self, day: dt.date) -> bool:
+        """Filing was stopped before ``day`` (G-03b): in a gap, or after the last day
+        registered of a closed registration."""
+        if self.in_gap(day):
+            return True
+        return self.effective_to is not None and day > self.effective_to
 
 
 @dataclass(frozen=True)
@@ -93,6 +107,8 @@ class SupplyContext:
     account_default: str = ""
     #: False for a line whose item is zero-rated or exempt (no PST warning on it, G-02-T04).
     taxable: bool = True
+    #: Tax setting (G-03b-T06): after a GST/HST stop, sales default to out of scope.
+    out_of_scope_after_stop: bool = True
 
 
 @dataclass(frozen=True)
@@ -180,9 +196,46 @@ def warnings_for(context: SupplyContext) -> tuple[str, ...]:
     return (PST_UNREGISTERED,)
 
 
+#: Explanation of a sale defaulted to out of scope after a GST/HST stop (G-03b-T06).
+REGISTRATION_STOPPED = "tax.pos.registration_stopped"
+
+
+def gst_stopped(context: SupplyContext) -> dt.date | None:
+    """The last day registered when the organisation's GST/HST registration was stopped before
+    the line's date and isn't registered on it (G-03b), else None."""
+    rt = [r for r in context.registrations if r.type == "rt"]
+    if not rt or any(r.active_on(context.date) for r in rt):
+        return None
+    for registration in rt:
+        if registration.stopped_on(context.date):
+            starts = [s for s, _e in registration.gaps if s <= context.date]
+            if starts:
+                return max(starts) - dt.timedelta(days=1)
+            return registration.effective_to
+    return None
+
+
+def _after_stop(context: SupplyContext, resolution: Resolution) -> Resolution:
+    """Sales default to out of scope while the GST/HST registration is stopped (G-03b-T06) —
+    every default; a line override is kept (and warned about, G-03b-T05)."""
+    if context.side != SALES or not context.out_of_scope_after_stop:
+        return resolution
+    if resolution.source == SOURCE_OVERRIDE:
+        return resolution
+    stopped = gst_stopped(context)
+    if stopped is None:
+        return resolution
+    return replace(
+        resolution,
+        code="sales.out_of_scope",
+        explanation=REGISTRATION_STOPPED,
+        params={**resolution.params, "date": stopped.isoformat()},
+    )
+
+
 def resolve(context: SupplyContext) -> Resolution:
     """The default code for a line (module docstring), with its warnings."""
-    resolution = _resolve(context)
+    resolution = _after_stop(context, _resolve(context))
     found = warnings_for(context)
     if not found:
         return resolution

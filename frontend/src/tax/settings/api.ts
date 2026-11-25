@@ -20,6 +20,8 @@ export interface TaxSettings {
   /** side → account type → tax code key. */
   default_codes: Partial<Record<Side, Record<string, string>>>;
   restricted_itc_accounts: RestrictedAccount[];
+  /** After a GST/HST stop, new sales lines default to out of scope (G-03b-T06). */
+  out_of_scope_after_stop: boolean;
   /** Whether an active GST/HST or QST registration exists. */
   registered: boolean;
   /** After a basis change during the financial year. */
@@ -33,7 +35,14 @@ export interface BasisCheck {
 }
 
 export type SettingsChange = Partial<
-  Pick<TaxSettings, "rounding_mode" | "quick_method" | "quick_method_from" | "default_codes">
+  Pick<
+    TaxSettings,
+    | "rounding_mode"
+    | "quick_method"
+    | "quick_method_from"
+    | "default_codes"
+    | "out_of_scope_after_stop"
+  >
 > & { basis?: TaxBasis; basis_reason?: string };
 
 /** 400: field → messages. */

@@ -4,6 +4,7 @@ page edits.
 - ``GET tax/settings`` — basis, rounding, quick method, default codes per side and account
   type, the restricted-ITC accounts, and whether the organisation is registered for GST/HST or
   QST. ``PATCH tax/settings`` ``{rounding_mode, quick_method, quick_method_from, default_codes,
+  out_of_scope_after_stop (G-03b-T06),
   basis, basis_reason}`` — a basis change needs its reason (400 ``tax.settings.
   basis_reason_required``); the answer carries ``basis_warning`` for a change during the year.
 - ``GET tax/settings/basis-check?basis=cash`` — what changing the basis today means.
@@ -73,6 +74,7 @@ def settings_body(row: TaxSettings) -> dict[str, Any]:
         "quick_method": row.quick_method,
         "quick_method_from": row.quick_method_from.isoformat() if row.quick_method_from else None,
         "default_codes": row.default_codes or {},
+        "out_of_scope_after_stop": row.out_of_scope_after_stop,
         "restricted_itc_accounts": _restricted(),
         "registered": registered,
     }
@@ -85,6 +87,7 @@ class SettingsPatchSerializer(serializers.Serializer[Any]):
     quick_method = serializers.BooleanField(required=False)
     quick_method_from = serializers.DateField(required=False, allow_null=True)
     default_codes = serializers.DictField(required=False)
+    out_of_scope_after_stop = serializers.BooleanField(required=False)
 
 
 class TaxSettingsView(APIView):

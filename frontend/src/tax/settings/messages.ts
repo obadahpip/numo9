@@ -133,6 +133,16 @@ export const sm = defineMessages({
     defaultMessage: "{mode, select, document {Per document} other {Per line}}",
     description: "Rounding mode name",
   },
+  afterStop: {
+    id: "tax.settings.defaults.afterStop",
+    defaultMessage: "Sales after filing stops",
+    description: "Field: default tax code of new sales once GST/HST filing is stopped (G-03b)",
+  },
+  afterStopValue: {
+    id: "tax.settings.defaults.afterStopValue",
+    defaultMessage: "{on, select, true {Out of scope} other {Keep the usual default}}",
+    description: "Value of the after-stop default",
+  },
   quickTitle: {
     id: "tax.settings.quick.title",
     defaultMessage: "Quick method",
