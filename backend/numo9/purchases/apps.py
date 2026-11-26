@@ -10,6 +10,15 @@ class PurchasesConfig(AppConfig):
     verbose_name = "Purchases"
 
     def ready(self) -> None:
+        from django.utils.translation import gettext_lazy as _
+
+        from numo9.contacts.merge import register_reference
+
+        # A bill payment keeps its supplier on a merge, like the journal lines it posts (E-06-T01).
+        register_reference("purchases.BillPayment", "contact", "keep", _("bill payments"))
+        # A cheque keeps the payee it was written to (E-06-T06).
+        register_reference("purchases.Cheque", "payee", "keep", _("cheques"))
+
         from .recode import register_recode_exclusions
 
         register_recode_exclusions()  # find & recode exclusions (C-07-T03)

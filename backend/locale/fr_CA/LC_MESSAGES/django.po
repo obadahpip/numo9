@@ -6994,6 +6994,12 @@ msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
 msgid "%(order)s is %(status)s: it can't be cancelled or closed."
 msgstr "%(order)s a le statut « %(status)s » : il ne peut être ni annulé ni fermé."
 
+msgid "bill payments"
+msgstr "paiements de factures fournisseurs"
+
+msgid "cheques"
+msgstr "chèques"
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -7092,6 +7098,41 @@ msgstr ""
 #| msgid "invoice number"
 msgid "Void of bill %(number)s"
 msgstr "numéro de facture"
+
+#, python-format
+msgid "Enter the transit (5 digits), institution (3 digits) and account numbers of %(account)s to print its cheques."
+msgstr "Entrez les numéros de domiciliation (5 chiffres), d’institution (3 chiffres) et de compte de %(account)s pour imprimer ses chèques."
+
+msgid "Choose the cheques to print."
+msgstr "Choisissez les chèques à imprimer."
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't be printed."
+msgstr "Le chèque %(number)s est %(status)s : il ne peut pas être imprimé."
+
+msgid "A cheque number is from 1 to 99999999."
+msgstr "Un numéro de chèque va de 1 à 99999999."
+
+#, python-format
+msgid "Cheque %(number)s was already used on %(account)s."
+msgstr "Le chèque %(number)s a déjà été utilisé sur %(account)s."
+
+msgid "A cheque is for more than zero."
+msgstr "Un chèque doit être d’un montant supérieur à zéro."
+
+msgid "A cheque pays bills of its payee only."
+msgstr "Un chèque ne paie que des factures de son bénéficiaire."
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't become %(target)s."
+msgstr "Le chèque %(number)s est %(status)s : il ne peut pas devenir %(target)s."
+
+msgid "Say why the cheque is voided."
+msgstr "Indiquez pourquoi le chèque est annulé."
+
+#, python-format
+msgid "Cheque %(number)s pays posted bill payments: void it with its payments so they are reversed."
+msgstr "Le chèque %(number)s paie des paiements comptabilisés : annulez-le avec ses paiements pour qu’ils soient contrepassés."
 
 msgid "Month"
 msgstr "Mois"
@@ -7615,6 +7656,108 @@ msgstr "ligne de note de frais"
 msgid "expense claim lines"
 msgstr "lignes de note de frais"
 
+msgid "EFT (CPA 005 file)"
+msgstr "TEF (fichier CPA 005)"
+
+msgid "Cheque"
+msgstr "Chèque"
+
+msgid "Bank payment"
+msgstr "Paiement bancaire"
+
+msgid "File ready"
+msgstr "Fichier prêt"
+
+msgid "Sent to the bank"
+msgstr "Envoyé à la banque"
+
+msgid "Confirmed"
+msgstr "Confirmé"
+
+msgid "payment date"
+msgstr "date de paiement"
+
+msgid "file creation number"
+msgstr "numéro de création du fichier"
+
+msgid "file checksum (SHA-256)"
+msgstr "somme de contrôle du fichier (SHA-256)"
+
+msgid "file made at"
+msgstr "fichier créé le"
+
+msgid "reason for cancelling"
+msgstr "motif de l’annulation"
+
+msgid "payment batch"
+msgstr "lot de paiements"
+
+msgid "payment batches"
+msgstr "lots de paiements"
+
+msgid "In a batch, not posted"
+msgstr "Dans un lot, non comptabilisé"
+
+msgid "early-payment discount"
+msgstr "escompte pour paiement anticipé"
+
+msgid "reason for voiding"
+msgstr "motif de l’annulation du paiement"
+
+msgid "cheque"
+msgstr "chèque"
+
+msgid "bill payment"
+msgstr "paiement de facture fournisseur"
+
+msgid "Issued"
+msgstr "Émis"
+
+msgid "Printed"
+msgstr "Imprimé"
+
+msgid "Cleared"
+msgstr "Compensé"
+
+msgid "Stale-dated"
+msgstr "Périmé"
+
+msgid "next cheque number"
+msgstr "prochain numéro de chèque"
+
+msgid "account number (MICR line)"
+msgstr "numéro de compte (ligne MICR)"
+
+msgid "cheque numbering"
+msgstr "numérotation des chèques"
+
+msgid "cheque number"
+msgstr "numéro de chèque"
+
+msgid "payee"
+msgstr "bénéficiaire"
+
+msgid "pay to the order of"
+msgstr "payez à l’ordre de"
+
+msgid "cheque date"
+msgstr "date du chèque"
+
+msgid "memo"
+msgstr "mémo"
+
+msgid "printed at"
+msgstr "imprimé le"
+
+msgid "cleared on"
+msgstr "compensé le"
+
+msgid "stale-dated at"
+msgstr "périmé le"
+
+msgid "reprint of"
+msgstr "réimpression de"
+
 msgid "All"
 msgstr "Tout"
 
@@ -7697,6 +7840,34 @@ msgstr "Regroupez par compte, fournisseur ou mois."
 
 msgid "Enter dates as YYYY-MM-DD."
 msgstr "Entrez les dates au format AAAA-MM-JJ."
+
+msgid "Generic CSV (with headers)"
+msgstr "CSV générique (avec en-têtes)"
+
+msgid "RBC Royal Bank"
+msgstr "RBC Banque Royale"
+
+msgid "TD Canada Trust"
+msgstr "TD Canada Trust"
+
+msgid "BMO Bank of Montreal"
+msgstr "BMO Banque de Montréal"
+
+msgid "Scotiabank"
+msgstr "Banque Scotia"
+
+msgid "CIBC"
+msgstr "CIBC"
+
+msgid "Desjardins"
+msgstr "Desjardins"
+
+msgid "Choose a positive-pay format from the list."
+msgstr "Choisissez un format de paiement positif dans la liste."
+
+#, python-format
+msgid "Enter the account number printed on the cheques of %(account)s first."
+msgstr "Entrez d’abord le numéro de compte imprimé sur les chèques de %(account)s."
 
 #, python-format
 msgid "This receipt was already claimed on %(claims)s."
@@ -7790,6 +7961,43 @@ msgstr "Le total doit être supérieur à 0,00."
 msgid "Supplier credit %(reference)s — %(contact)s"
 msgstr "Inviter des utilisateurs dans l’organisation"
 
+msgid "Cheques"
+msgstr "Chèques"
+
+msgid "Y Y Y Y M M D D"
+msgstr "A A A A M M J J"
+
+msgid "Pay"
+msgstr "Payez"
+
+msgid "Pay to the order of"
+msgstr "Payez à l’ordre de"
+
+msgid "Memo"
+msgstr "Mémo"
+
+msgid "Authorized signature"
+msgstr "Signature autorisée"
+
+msgid "Voucher"
+msgstr "Talon"
+
+msgid "Remittance — keep for your records"
+msgstr "Avis de paiement — à conserver"
+
+msgid "File copy"
+msgstr "Copie pour le dossier"
+
+#, python-format
+msgid "Cheque %(number)s"
+msgstr "Chèque %(number)s"
+
+msgid "Your invoice"
+msgstr "Votre facture"
+
+msgid "Discount"
+msgstr "Escompte"
+
 #, fuzzy
 #| msgid "Number"
 msgid "PO number"
@@ -7813,11 +8021,6 @@ msgstr ""
 #| msgid "institution"
 msgid "Instructions"
 msgstr "institution"
-
-#, fuzzy
-#| msgid "discount"
-msgid "Discount"
-msgstr "rabais"
 
 #, python-format
 msgid "Includes %(name)s"

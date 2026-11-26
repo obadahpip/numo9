@@ -6553,6 +6553,12 @@ msgstr ""
 msgid "%(order)s is %(status)s: it can't be cancelled or closed."
 msgstr ""
 
+msgid "bill payments"
+msgstr ""
+
+msgid "cheques"
+msgstr ""
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -6635,6 +6641,41 @@ msgstr ""
 
 #, python-format
 msgid "Void of bill %(number)s"
+msgstr ""
+
+#, python-format
+msgid "Enter the transit (5 digits), institution (3 digits) and account numbers of %(account)s to print its cheques."
+msgstr ""
+
+msgid "Choose the cheques to print."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't be printed."
+msgstr ""
+
+msgid "A cheque number is from 1 to 99999999."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s was already used on %(account)s."
+msgstr ""
+
+msgid "A cheque is for more than zero."
+msgstr ""
+
+msgid "A cheque pays bills of its payee only."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't become %(target)s."
+msgstr ""
+
+msgid "Say why the cheque is voided."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s pays posted bill payments: void it with its payments so they are reversed."
 msgstr ""
 
 msgid "Month"
@@ -7058,6 +7099,108 @@ msgstr ""
 msgid "expense claim lines"
 msgstr ""
 
+msgid "EFT (CPA 005 file)"
+msgstr ""
+
+msgid "Cheque"
+msgstr ""
+
+msgid "Bank payment"
+msgstr ""
+
+msgid "File ready"
+msgstr ""
+
+msgid "Sent to the bank"
+msgstr ""
+
+msgid "Confirmed"
+msgstr ""
+
+msgid "payment date"
+msgstr ""
+
+msgid "file creation number"
+msgstr ""
+
+msgid "file checksum (SHA-256)"
+msgstr ""
+
+msgid "file made at"
+msgstr ""
+
+msgid "reason for cancelling"
+msgstr ""
+
+msgid "payment batch"
+msgstr ""
+
+msgid "payment batches"
+msgstr ""
+
+msgid "In a batch, not posted"
+msgstr ""
+
+msgid "early-payment discount"
+msgstr ""
+
+msgid "reason for voiding"
+msgstr ""
+
+msgid "cheque"
+msgstr ""
+
+msgid "bill payment"
+msgstr ""
+
+msgid "Issued"
+msgstr ""
+
+msgid "Printed"
+msgstr ""
+
+msgid "Cleared"
+msgstr ""
+
+msgid "Stale-dated"
+msgstr ""
+
+msgid "next cheque number"
+msgstr ""
+
+msgid "account number (MICR line)"
+msgstr ""
+
+msgid "cheque numbering"
+msgstr ""
+
+msgid "cheque number"
+msgstr ""
+
+msgid "payee"
+msgstr ""
+
+msgid "pay to the order of"
+msgstr ""
+
+msgid "cheque date"
+msgstr ""
+
+msgid "memo"
+msgstr ""
+
+msgid "printed at"
+msgstr ""
+
+msgid "cleared on"
+msgstr ""
+
+msgid "stale-dated at"
+msgstr ""
+
+msgid "reprint of"
+msgstr ""
+
 msgid "All"
 msgstr ""
 
@@ -7135,6 +7278,34 @@ msgid "Group by account, supplier or month."
 msgstr ""
 
 msgid "Enter dates as YYYY-MM-DD."
+msgstr ""
+
+msgid "Generic CSV (with headers)"
+msgstr ""
+
+msgid "RBC Royal Bank"
+msgstr ""
+
+msgid "TD Canada Trust"
+msgstr ""
+
+msgid "BMO Bank of Montreal"
+msgstr ""
+
+msgid "Scotiabank"
+msgstr ""
+
+msgid "CIBC"
+msgstr ""
+
+msgid "Desjardins"
+msgstr ""
+
+msgid "Choose a positive-pay format from the list."
+msgstr ""
+
+#, python-format
+msgid "Enter the account number printed on the cheques of %(account)s first."
 msgstr ""
 
 #, python-format
@@ -7218,6 +7389,43 @@ msgstr ""
 msgid "Supplier credit %(reference)s — %(contact)s"
 msgstr ""
 
+msgid "Cheques"
+msgstr ""
+
+msgid "Y Y Y Y M M D D"
+msgstr ""
+
+msgid "Pay"
+msgstr ""
+
+msgid "Pay to the order of"
+msgstr ""
+
+msgid "Memo"
+msgstr ""
+
+msgid "Authorized signature"
+msgstr ""
+
+msgid "Voucher"
+msgstr ""
+
+msgid "Remittance — keep for your records"
+msgstr ""
+
+msgid "File copy"
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s"
+msgstr ""
+
+msgid "Your invoice"
+msgstr ""
+
+msgid "Discount"
+msgstr ""
+
 msgid "PO number"
 msgstr ""
 
@@ -7232,9 +7440,6 @@ msgid "Attention: %(name)s"
 msgstr ""
 
 msgid "Instructions"
-msgstr ""
-
-msgid "Discount"
 msgstr ""
 
 #, python-format

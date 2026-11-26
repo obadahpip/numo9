@@ -43,6 +43,7 @@ from numo9.documents.models import (
     RecurringRunBase,
     TaxMode,
 )
+from numo9.security.fields import EncryptedField
 from numo9.tenancy.models import OrgOwnedModel
 
 
@@ -1060,3 +1061,382 @@ class ExpenseClaimLine(OrgOwnedModel):
         if self.kind == ExpenseLineKind.MILEAGE:
             return f"{self.distance_km} km {self.from_place} → {self.to_place}".strip()
         return f"{self.merchant or self.description} {self.amount}".strip()
+
+
+# ---- batch payments (E-06) ---------------------------------------------------------------------
+
+
+class PaymentMethod(models.TextChoices):
+    EFT = "eft", _("EFT (CPA 005 file)")
+    CHEQUE = "cheque", _("Cheque")
+    BANK = "bank", _("Bank payment")
+
+
+class PaymentBatchStatus(models.TextChoices):
+    DRAFT = "draft", _("Draft")
+    GENERATED = "generated", _("File ready")
+    SENT = "sent", _("Sent to the bank")
+    CONFIRMED = "confirmed", _("Confirmed")
+    CANCELLED = "cancelled", _("Cancelled")
+
+
+class PaymentBatch(AuditedModel, OrgOwnedModel):
+    """Many bills paid together from one bank account on one payment date (E-06-T01): by an EFT
+    file (CPA 005, E-06-T04) or by printed cheques (E-06-T06/T07).
+
+    Status: Draft (bills chosen, nothing posted) → File ready (the EFT file is made, or the cheques
+    printed) → Sent to the bank → Confirmed; or Cancelled (a cancelled batch frees its file
+    number). The **file reference** — ``file_creation_number`` (the CPA 005 file creation number,
+    1–9999, **unique per bank account** among batches that aren't cancelled: re-generating the
+    same file id is refused unless the first batch is cancelled), ``file_name`` and
+    ``file_sha256`` (the checksum shown with the download) — is set when the file is generated.
+
+    ``total`` = Σ of its bill payments' ``amount`` (cash paid); the early-payment discounts taken
+    (E-07) are on each payment (``discount``), so Σ (amount + discount) = what the bills settle.
+    """
+
+    bank_account = models.ForeignKey(
+        "banking.BankAccount",
+        on_delete=models.PROTECT,
+        related_name="payment_batches",
+        verbose_name=_("bank account"),
+    )
+    method = models.CharField(_("payment method"), max_length=8, choices=PaymentMethod.choices)
+    payment_date = models.DateField(_("payment date"))
+    status = models.CharField(
+        _("status"),
+        max_length=12,
+        choices=PaymentBatchStatus.choices,
+        default=PaymentBatchStatus.DRAFT,
+    )
+    reference = models.CharField(_("reference"), max_length=100, blank=True)
+    total = models.DecimalField(
+        _("total"), max_digits=18, decimal_places=2, default=Decimal("0.00")
+    )
+    file_creation_number = models.PositiveIntegerField(
+        _("file creation number"), null=True, blank=True
+    )
+    file_name = models.CharField(_("file name"), max_length=100, blank=True)
+    file_sha256 = models.CharField(_("file checksum (SHA-256)"), max_length=64, blank=True)
+    generated_at = models.DateTimeField(_("file made at"), null=True, blank=True)
+    sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
+    sent_by = _user(_("sent by"))
+    confirmed_at = models.DateTimeField(_("confirmed at"), null=True, blank=True)
+    cancelled_at = models.DateTimeField(_("cancelled at"), null=True, blank=True)
+    cancel_reason = models.CharField(_("reason for cancelling"), max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("-payment_date", "-pk")
+        verbose_name = _("payment batch")
+        verbose_name_plural = _("payment batches")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(method__in=PaymentMethod.values),
+                name="purchases_paymentbatch_method_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=PaymentBatchStatus.values),
+                name="purchases_paymentbatch_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(total__gte=0), name="purchases_paymentbatch_total_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(file_creation_number__isnull=True)
+                | models.Q(file_creation_number__gte=1, file_creation_number__lte=9999),
+                name="purchases_paymentbatch_file_number_range",
+            ),
+            # The same file id can't be sent twice from a bank account unless cancelled.
+            models.UniqueConstraint(
+                fields=["organisation", "bank_account", "file_creation_number"],
+                condition=models.Q(file_creation_number__isnull=False)
+                & ~models.Q(status="cancelled"),
+                name="purchases_paymentbatch_file_number_unique",
+            ),
+            # A file ready, sent or confirmed batch has its file reference.
+            models.CheckConstraint(
+                condition=~models.Q(
+                    method=PaymentMethod.EFT, status__in=["generated", "sent", "confirmed"]
+                )
+                | (models.Q(file_creation_number__isnull=False) & ~models.Q(file_sha256="")),
+                name="purchases_paymentbatch_eft_file_ref",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "status"], name="purchases_batch_status_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.reference or f"{self.get_method_display()} {self.payment_date:%Y-%m-%d}"
+
+    def recalculate(self) -> Decimal:
+        """Set ``total`` to Σ of the batch's payments that aren't void (not saved)."""
+        rows = self.payments.exclude(status=BillPaymentStatus.VOID)
+        self.total = Decimal(rows.aggregate(total=models.Sum("amount"))["total"] or 0)
+        return self.total
+
+
+class BillPaymentStatus(models.TextChoices):
+    PENDING = "pending", _("In a batch, not posted")
+    POSTED = "posted", _("Posted")
+    VOID = "void", _("Void")
+
+
+class BillPayment(AuditedModel, OrgOwnedModel):
+    """A payment of (part of) one bill (E-06-T01): cash ``amount`` from ``bank_account`` on
+    ``date``, plus the early-payment ``discount`` taken (E-07) — the bill is settled by
+    ``amount + discount``. Made in a ``PaymentBatch`` (EFT or cheques) or on its own.
+
+    Status: Pending (in a draft batch, nothing posted) → Posted (Dr AP / Cr bank or the EFT
+    clearing account, E-06-T02, ``journal_entry``) → Void (its journal reversed,
+    ``void_entry``, with a reason — a voided cheque, E-06-T08). ``method`` and ``reference``
+    (the cheque number, the EFT trace) say how it was paid.
+    """
+
+    bill = models.ForeignKey(
+        Bill, on_delete=models.PROTECT, related_name="payments", verbose_name=_("bill")
+    )
+    batch = models.ForeignKey(
+        PaymentBatch,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="payments",
+        verbose_name=_("payment batch"),
+    )
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        related_name="bill_payments",
+        verbose_name=_("supplier"),
+    )
+    bank_account = models.ForeignKey(
+        "banking.BankAccount",
+        on_delete=models.PROTECT,
+        related_name="bill_payments",
+        verbose_name=_("bank account"),
+    )
+    method = models.CharField(_("payment method"), max_length=8, choices=PaymentMethod.choices)
+    date = models.DateField(_("payment date"))
+    amount = models.DecimalField(_("amount paid"), max_digits=18, decimal_places=2)
+    discount = models.DecimalField(
+        _("early-payment discount"), max_digits=18, decimal_places=2, default=Decimal("0.00")
+    )
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    reference = models.CharField(_("reference"), max_length=100, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=BillPaymentStatus.choices,
+        default=BillPaymentStatus.PENDING,
+    )
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bill_payment",
+        verbose_name=_("journal"),
+    )
+    void_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="voided_bill_payment",
+        verbose_name=_("void journal"),
+    )
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+    void_reason = models.CharField(_("reason for voiding"), max_length=500, blank=True)
+    cheque = models.ForeignKey(
+        "purchases.Cheque",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="payments",
+        verbose_name=_("cheque"),
+    )
+
+    class Meta:
+        ordering = ("-date", "-pk")
+        verbose_name = _("bill payment")
+        verbose_name_plural = _("bill payments")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="purchases_billpayment_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(discount__gte=0), name="purchases_billpayment_discount_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(method__in=PaymentMethod.values),
+                name="purchases_billpayment_method_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=BillPaymentStatus.values),
+                name="purchases_billpayment_status_valid",
+            ),
+            # Posted (or voided after posting) payments have their journal; pending ones don't.
+            models.CheckConstraint(
+                condition=(
+                    models.Q(status=BillPaymentStatus.PENDING, journal_entry__isnull=True)
+                    | models.Q(status=BillPaymentStatus.POSTED, journal_entry__isnull=False)
+                    | models.Q(status=BillPaymentStatus.VOID)
+                ),
+                name="purchases_billpayment_posted_journal",
+            ),
+            # One payment per bill in a batch (a bill partly paid in a batch has one row).
+            models.UniqueConstraint(
+                fields=["batch", "bill"],
+                condition=models.Q(batch__isnull=False) & ~models.Q(status="void"),
+                name="purchases_billpayment_one_per_bill_in_batch",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "bill"], name="purchases_billpay_bill_idx"),
+            models.Index(fields=["organisation", "date"], name="purchases_billpay_date_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.bill} {self.date:%Y-%m-%d} {self.amount}"
+
+    @property
+    def settled(self) -> Decimal:
+        """What the payment takes off the bill: the cash paid plus the discount."""
+        return Decimal(self.amount) + Decimal(self.discount)
+
+
+# ---- cheques (E-06-T06) ------------------------------------------------------------------------
+
+
+class ChequeStatus(models.TextChoices):
+    ISSUED = "issued", _("Issued")
+    PRINTED = "printed", _("Printed")
+    CLEARED = "cleared", _("Cleared")
+    VOID = "void", _("Void")
+    STALE = "stale", _("Stale-dated")
+
+
+class ChequeSequence(OrgOwnedModel):
+    """The cheque settings of one bank account: the next cheque number (E-06-T06) — cheques are
+    numbered **per bank account** (each account has its own cheque stock), handed out under a row
+    lock by ``cheques.allocate_number``; ``next_number`` can be moved on (a new cheque book) but
+    never back onto a number already used — and the **account number printed on the MICR line**
+    (E-06-T07; encrypted at rest, never in the audit log — the transit and institution numbers
+    are the bank account's)."""
+
+    bank_account = models.OneToOneField(
+        "banking.BankAccount",
+        on_delete=models.CASCADE,
+        related_name="cheque_sequence",
+        verbose_name=_("bank account"),
+    )
+    next_number = models.PositiveIntegerField(_("next cheque number"), default=1)
+    account_number = EncryptedField(
+        _("account number (MICR line)"), max_length=12, blank=True, default=""
+    )
+
+    class Meta:
+        verbose_name = _("cheque numbering")
+        verbose_name_plural = _("cheque numbering")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(next_number__gte=1, next_number__lte=99999999),
+                name="purchases_chequesequence_range",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.bank_account} → {self.next_number}"
+
+
+class Cheque(AuditedModel, OrgOwnedModel):
+    """A cheque in the register (E-06-T06): ``number`` — unique **per bank account**; the
+    ``payee`` (a supplier contact, its name kept as printed in ``payee_name``), ``amount``,
+    ``date``, the batch it was issued in and the bill payments it pays (``BillPayment.cheque``).
+
+    Register statuses: **Issued** (numbered, not printed yet) → **Printed** (E-06-T07) →
+    **Cleared** (the bank paid it, ``cleared_on``); **Void** (with a reason, audited; a misfed
+    cheque is reprinted under a new number — ``reissue_of`` points to the voided one) or
+    **Stale-dated** (not cleared after the configured days, default 180 — the job is E-06-T09).
+    """
+
+    bank_account = models.ForeignKey(
+        "banking.BankAccount",
+        on_delete=models.PROTECT,
+        related_name="cheques",
+        verbose_name=_("bank account"),
+    )
+    number = models.PositiveIntegerField(_("cheque number"))
+    batch = models.ForeignKey(
+        PaymentBatch,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="cheques",
+        verbose_name=_("payment batch"),
+    )
+    payee = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        related_name="cheques",
+        verbose_name=_("payee"),
+    )
+    payee_name = models.CharField(_("pay to the order of"), max_length=200)
+    date = models.DateField(_("cheque date"))
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    memo = models.CharField(_("memo"), max_length=200, blank=True)
+    status = models.CharField(
+        _("status"), max_length=8, choices=ChequeStatus.choices, default=ChequeStatus.ISSUED
+    )
+    printed_at = models.DateTimeField(_("printed at"), null=True, blank=True)
+    cleared_on = models.DateField(_("cleared on"), null=True, blank=True)
+    stale_at = models.DateTimeField(_("stale-dated at"), null=True, blank=True)
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+    void_reason = models.CharField(_("reason for voiding"), max_length=500, blank=True)
+    reissue_of = models.OneToOneField(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="reissued_as",
+        verbose_name=_("reprint of"),
+    )
+
+    class Meta:
+        ordering = ("bank_account", "-number")
+        verbose_name = _("cheque")
+        verbose_name_plural = _("cheques")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "bank_account", "number"],
+                name="purchases_cheque_number_unique",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=ChequeStatus.values),
+                name="purchases_cheque_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="purchases_cheque_amount_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(number__gte=1, number__lte=99999999),
+                name="purchases_cheque_number_range",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=ChequeStatus.VOID) | ~models.Q(void_reason=""),
+                name="purchases_cheque_void_reason",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=ChequeStatus.CLEARED)
+                | models.Q(cleared_on__isnull=False),
+                name="purchases_cheque_cleared_date",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "status"], name="purchases_cheque_status_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.number:06d}"
