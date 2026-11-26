@@ -105,8 +105,11 @@ function mirrorTaxCode(code: TaxCode): MirrorTaxCode {
 export interface InvoiceActionContext {
   invoice: Invoice | null;
   busy: boolean;
-  /** Save the form (create or update); the saved invoice, or null when refused. */
-  save: () => Promise<Invoice | null>;
+  /** Save the form (create or update); the saved invoice, or null when refused. A new invoice
+   * moves to its own URL unless `stay` (then `open` it once the action is done). */
+  save: (stay?: boolean) => Promise<Invoice | null>;
+  /** Move a new invoice to its own URL. */
+  open: (invoice: Invoice) => void;
   /** Show the invoice the server answered. */
   show: (invoice: Invoice, notice?: string) => void;
   refuse: (refusal: Refusal) => void;
@@ -275,7 +278,13 @@ export function InvoiceEditor({
     setRefresh((n) => n + 1);
   };
 
-  const save = async (): Promise<Invoice | null> => {
+  const open = (saved: Invoice) => {
+    const href = invoiceUrl(org, saved.id);
+    if (navigate) navigate(href);
+    else window.history.replaceState(null, "", href);
+  };
+
+  const save = async (stay = false): Promise<Invoice | null> => {
     setRefusal(null);
     const result = invoice
       ? await invoicesApi.update(org, invoice.id, body())
@@ -283,11 +292,7 @@ export function InvoiceEditor({
     if (result.status === 200 || result.status === 201) {
       fill(result.body);
       setRefresh((n) => n + 1);
-      if (!invoice) {
-        const href = invoiceUrl(org, result.body.id);
-        if (navigate) navigate(href);
-        else window.history.replaceState(null, "", href);
-      }
+      if (!invoice && !stay) open(result.body);
       return result.body;
     }
     setRefusal(result.body && typeof result.body === "object" ? result.body : {});
@@ -322,6 +327,7 @@ export function InvoiceEditor({
     invoice,
     busy,
     save,
+    open,
     show,
     refuse: (r) => {
       setNotice("");

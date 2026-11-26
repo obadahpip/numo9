@@ -16,7 +16,7 @@ test("a first invoice in at most 5 clicks", async ({ page }) => {
   const form = page.getByRole("form", { name: "New invoice" });
   await expect(form.getByRole("option", { name: "Maple Leaf Supply Ltd." })).toBeAttached();
   let clicks = 0;
-  const click = async (run: () => Promise<void>) => {
+  const click = async (run: () => Promise<unknown>) => {
     clicks += 1;
     await run();
   };
