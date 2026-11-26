@@ -28,7 +28,9 @@
    date − 1 (never back: a later lock already set stays), each change audited by the lock date
    itself (``orgsettings.lockdate.*``) with the reason "Conversion balances finalised…", and the
    finalise event records which locks moved. Only advisers can then post before the conversion
-   date — as in Xero, but for the three modules at once.
+   date — as in Xero, but for the three modules at once;
+6. **exceptions** (C-05-T14) — when no equity line was entered, the
+   ``signals.opening_equity_missing`` signal is sent once the transaction commits (K-09).
 
 Any refusal (here or by the posting engine) leaves the session a draft and posts nothing.
 """
@@ -265,6 +267,9 @@ def finalise(
             locked.lock_balances = lock
         locked.save()
         moved = lock_balances(locked) if locked.lock_balances else []
+        from .exceptions import announce_finalised
+
+        announce_finalised(locked)  # C-05-T14: the K-09 signal when there is no equity line
         audit.record(
             "conversion.session.finalised",
             obj=locked,

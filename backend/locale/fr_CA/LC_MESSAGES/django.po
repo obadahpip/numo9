@@ -2709,6 +2709,14 @@ msgstr ""
 msgid "Enter the document's date."
 msgstr ""
 
+#, python-format
+msgid "The opening balances at %(date)s have no equity: no share capital, retained earnings or other equity was entered. Check the old balance sheet."
+msgstr ""
+
+#, python-format
+msgid "%(amount)s of the opening balances is on %(account)s: find what it is and move it to the right account."
+msgstr ""
+
 msgid "The chart has no Retained earnings account to open the year's result to."
 msgstr ""
 
