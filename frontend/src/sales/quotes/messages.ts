@@ -1,5 +1,6 @@
 import { defineMessages } from "@/i18n";
 
+import type { QuoteTab } from "./api";
 import type { QuoteStatus } from "./status";
 
 /** The quote editor (D-02-T12) and its action bar. */
@@ -235,3 +236,62 @@ export const quoteStatusLabels = defineMessages({
     description: "Status",
   },
 } satisfies Record<QuoteStatus, unknown>);
+
+/** The list tabs (D-02-T14): the status words of the same enum; Sent covers sent and viewed. */
+export const tabLabels = defineMessages({
+  all: { id: "sales.quotes.tab.all", defaultMessage: "All", description: "Tab" },
+  draft: { id: "sales.quotes.tab.draft", defaultMessage: "Draft", description: "Tab" },
+  sent: { id: "sales.quotes.tab.sent", defaultMessage: "Sent", description: "Tab" },
+  accepted: { id: "sales.quotes.tab.accepted", defaultMessage: "Accepted", description: "Tab" },
+  declined: { id: "sales.quotes.tab.declined", defaultMessage: "Declined", description: "Tab" },
+  expired: { id: "sales.quotes.tab.expired", defaultMessage: "Expired", description: "Tab" },
+  invoiced: { id: "sales.quotes.tab.invoiced", defaultMessage: "Invoiced", description: "Tab" },
+} satisfies Record<QuoteTab, unknown>);
+
+/** The quotes list (D-02-T14). */
+export const listMessages = defineMessages({
+  heading: { id: "sales.quotes.heading", defaultMessage: "Quotes", description: "Heading" },
+  newQuote: { id: "sales.quotes.newQuote", defaultMessage: "New quote", description: "Button" },
+  tabs: { id: "sales.quotes.tabs", defaultMessage: "Quotes by status", description: "Tab list" },
+  search: { id: "sales.quotes.search", defaultMessage: "Search quotes", description: "Search" },
+  searchHint: {
+    id: "sales.quotes.searchHint",
+    defaultMessage: "Number, customer, title or amount",
+    description: "Search placeholder",
+  },
+  searchButton: {
+    id: "sales.quotes.searchButton",
+    defaultMessage: "Search",
+    description: "Button",
+  },
+  number: { id: "sales.quotes.number", defaultMessage: "Number", description: "Column" },
+  customer: { id: "sales.quotes.customer", defaultMessage: "Customer", description: "Column" },
+  title: { id: "sales.quotes.title", defaultMessage: "Title", description: "Column" },
+  date: { id: "sales.quotes.date", defaultMessage: "Date", description: "Column" },
+  expiry: { id: "sales.quotes.expiry", defaultMessage: "Expires", description: "Column" },
+  status: { id: "sales.quotes.status", defaultMessage: "Status", description: "Column" },
+  total: { id: "sales.quotes.total", defaultMessage: "Total", description: "Column" },
+  empty: {
+    id: "sales.quotes.empty",
+    defaultMessage: "No quotes here yet.",
+    description: "Empty tab",
+  },
+  noMatches: {
+    id: "sales.quotes.noMatches",
+    defaultMessage: "No quotes match your search.",
+    description: "Empty search",
+  },
+  previous: { id: "sales.quotes.previous", defaultMessage: "Previous", description: "Button" },
+  next: { id: "sales.quotes.next", defaultMessage: "Next", description: "Button" },
+  page: {
+    id: "sales.quotes.page",
+    defaultMessage: "Page {page} of {pages}",
+    description: "Pagination",
+  },
+  loadFailed: {
+    id: "sales.quotes.loadFailed",
+    defaultMessage: "Quotes couldn't be loaded.",
+    description: "Error",
+  },
+  retry: { id: "sales.quotes.retry", defaultMessage: "Try again", description: "Button" },
+});

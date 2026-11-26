@@ -3085,6 +3085,37 @@
       "taxMode": "Amounts are",
       "taxNone": "No tax",
       "title": "Quote {number}"
+    },
+    "quotes": {
+      "customer": "Customer",
+      "date": "Date",
+      "empty": "No quotes here yet.",
+      "expiry": "Expires",
+      "heading": "Quotes",
+      "loadFailed": "Quotes couldn't be loaded.",
+      "newQuote": "New quote",
+      "next": "Next",
+      "noMatches": "No quotes match your search.",
+      "number": "Number",
+      "page": "Page {page} of {pages}",
+      "previous": "Previous",
+      "retry": "Try again",
+      "search": "Search quotes",
+      "searchButton": "Search",
+      "searchHint": "Number, customer, title or amount",
+      "status": "Status",
+      "tab": {
+        "accepted": "Accepted",
+        "all": "All",
+        "declined": "Declined",
+        "draft": "Draft",
+        "expired": "Expired",
+        "invoiced": "Invoiced",
+        "sent": "Sent"
+      },
+      "tabs": "Quotes by status",
+      "title": "Title",
+      "total": "Total"
     }
   },
   "security": {

@@ -3085,6 +3085,37 @@
       "taxMode": "Les montants sont",
       "taxNone": "Sans taxes",
       "title": "Soumission {number}"
+    },
+    "quotes": {
+      "customer": "Client",
+      "date": "Date",
+      "empty": "Aucune soumission ici pour l’instant.",
+      "expiry": "Expire le",
+      "heading": "Soumissions",
+      "loadFailed": "Les soumissions n’ont pas pu être chargées.",
+      "newQuote": "Nouvelle soumission",
+      "next": "Suivante",
+      "noMatches": "Aucune soumission ne correspond à votre recherche.",
+      "number": "Numéro",
+      "page": "Page {page} sur {pages}",
+      "previous": "Précédente",
+      "retry": "Réessayer",
+      "search": "Rechercher des soumissions",
+      "searchButton": "Rechercher",
+      "searchHint": "Numéro, client, titre ou montant",
+      "status": "Statut",
+      "tab": {
+        "accepted": "Acceptées",
+        "all": "Toutes",
+        "declined": "Refusées",
+        "draft": "Brouillons",
+        "expired": "Expirées",
+        "invoiced": "Facturées",
+        "sent": "Envoyées"
+      },
+      "tabs": "Soumissions par statut",
+      "title": "Titre",
+      "total": "Total"
     }
   },
   "security": {
