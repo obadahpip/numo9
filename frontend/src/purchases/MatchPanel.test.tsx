@@ -57,6 +57,33 @@ it("shows each line's result in words", () => {
   expect(screen.getByRole("heading", { name: "Match with purchase order PO-0007" })).toBeVisible();
 });
 
+it("says more than ordered, and a bill before receipt waits for it (E-01-T07)", () => {
+  renderWithIntl(
+    <MatchPanel
+      rows={[
+        row({
+          received: "12.0000",
+          quantity: "12.0000",
+          quantity_over: "2.0000",
+          flags: ["over_ordered"],
+          status: "red",
+        }),
+        row({
+          line: "l2",
+          description: "Install",
+          received: "0.0000",
+          flags: ["received_later"],
+          received_later: true,
+        }),
+      ]}
+    />,
+  );
+  expect(screen.getByRole("row", { name: /Tiles/ })).toHaveTextContent("2 more than ordered");
+  expect(screen.getByRole("row", { name: /Install/ })).toHaveTextContent(
+    "nothing received yet: match pending the receipt",
+  );
+});
+
 it("renders nothing for a bill without a PO", () => {
   const { container } = renderWithIntl(<MatchPanel rows={[]} />);
   expect(container).toBeEmptyDOMElement();

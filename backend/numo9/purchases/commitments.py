@@ -145,7 +145,8 @@ def export_commitments(
     with translation.override(locale or translation.get_language()):
         headers = _headers(result.by)
         total_label = _("Total")
-        name = f"{_('commitments')}-{result.by}-{dt.date.today().isoformat()}"
+        stem = _("commitments")
+        name = f"{stem}-{result.by}-{dt.date.today().isoformat()}"
     rows = [[row.label, len(row.orders), row.lines, row.amount, row.budget] for row in result.rows]
     total: list[Any] = [total_label, "", "", result.total, ""]
     table: list[list[Any]] = [*rows, total]

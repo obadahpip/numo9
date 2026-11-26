@@ -3,8 +3,9 @@
 /**
  * PO match panel (E-02-T13): per bill line from a purchase order — ordered, received, billed
  * before, this bill's quantity and price against the PO's — and a coloured result: green
- * (matches), amber (within the receipt tolerance), red (doesn't match: more than received or a
- * price beyond the tolerance). Colour is never alone: each result is also in words.
+ * (matches), amber (within the match tolerance), red (doesn't match: more than ordered or
+ * received, or a price beyond the tolerance — the E-01-T07 match engine). Colour is never alone:
+ * each result is also in words; a bill before any receipt says the match waits for it.
  */
 import { formatMoney, type AppLocale } from "@numo9/ui";
 import { useLocale } from "next-intl";
@@ -61,10 +62,16 @@ export function MatchPanel({ rows }: { rows: MatchRow[] }) {
           </thead>
           <tbody>
             {rows.map((row) => {
+              const flags = row.flags ?? [];
+              const overOrderedOnly =
+                flags.includes("over_ordered") && !flags.includes("over_received");
               const details = [
                 Number(row.quantity_over) > 0
-                  ? fm(m.over, { quantity: qty(row.quantity_over) })
+                  ? fm(overOrderedOnly ? m.overOrdered : m.over, {
+                      quantity: qty(row.quantity_over),
+                    })
                   : "",
+                row.received_later ? fm(m.receivedLater) : "",
                 Number(row.price_difference_pct) > 0
                   ? fm(m.priceDiff, { pct: String(Number(row.price_difference_pct)) })
                   : "",

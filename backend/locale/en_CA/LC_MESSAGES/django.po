@@ -6655,6 +6655,9 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
+msgid "commitments"
+msgstr ""
+
 #, python-format
 msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
 msgstr ""

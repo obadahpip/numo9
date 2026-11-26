@@ -2483,11 +2483,13 @@
         "line": "Line",
         "ordered": "Ordered",
         "over": "{quantity} more than received",
+        "overOrdered": "{quantity} de plus que commandé",
         "price": "Price (PO)",
         "priceCell": "{price} ({po})",
         "priceDiff": "price {pct} % off",
         "quantity": "This bill",
         "received": "Received",
+        "receivedLater": "rien de reçu pour l'instant : rapprochement en attente de la réception",
         "red": "Doesn't match",
         "result": "Match",
         "title": "Match with purchase order {po}"

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 794   Remaining: 1993   Progress: 28.49%
+TOTAL ATOMIC TASKS: 2787   Completed: 795   Remaining: 1992   Progress: 28.53%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1064,7 +1064,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-01-T12 — UI: Receive screen (ordered/received/outstanding, keyboard Enter-to-next, over-receipt warning)
 ✅ E-01-T13 — UI: PO list tabs incl. Partially received / Received; "Create bill" action
 ✅ E-01-T14 — UI: commitment report screen with export
-❌ E-01-T16 — Docs + i18n
+✅ E-01-T16 — Docs + i18n
 
 [E-03]
 ✅ E-03-T01 — RecurringBillTemplate + lines models

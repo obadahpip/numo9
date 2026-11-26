@@ -6373,16 +6373,16 @@ msgid "Warn: allowed once confirmed. Block: refused (E-01-T04)."
 msgstr ""
 
 msgid "match: quantity tolerance (%)"
-msgstr ""
+msgstr "rapprochement : tolérance de quantité (%)"
 
 msgid "How much more than ordered or received may be billed on a purchase order line and still be within tolerance (amber), as a percentage (E-01-T07). Empty: the over-receipt tolerance."
-msgstr ""
+msgstr "Quantité facturable au-delà de ce qui a été commandé ou reçu sur une ligne de bon de commande tout en restant dans la tolérance (orange), en pourcentage (E-01-T07). Vide : la tolérance de surréception."
 
 msgid "match: price tolerance (%)"
-msgstr ""
+msgstr "rapprochement : tolérance de prix (%)"
 
 msgid "How far a bill's unit price may be from the purchase order's and still be within tolerance (amber), as a percentage (E-01-T07). Empty: the over-receipt tolerance."
-msgstr ""
+msgstr "Écart permis entre le prix unitaire d'une facture fournisseur et celui du bon de commande pour rester dans la tolérance (orange), en pourcentage (E-01-T07). Vide : la tolérance de surréception."
 
 msgid "sales: default due date"
 msgstr "ventes : échéance par défaut"
@@ -6992,7 +6992,7 @@ msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
 
 #, python-format
 msgid "%(order)s is %(status)s: it can't be cancelled or closed."
-msgstr ""
+msgstr "%(order)s a le statut « %(status)s » : il ne peut être ni annulé ni fermé."
 
 msgid "Only an approved purchase order can be billed."
 msgstr ""
@@ -7094,24 +7094,25 @@ msgid "Void of bill %(number)s"
 msgstr "numéro de facture"
 
 msgid "Month"
-msgstr ""
+msgstr "Mois"
 
 msgid "Open POs"
-msgstr ""
+msgstr "Bons ouverts"
 
 msgid "Open lines"
-msgstr ""
+msgstr "Lignes ouvertes"
 
 msgid "Open value"
-msgstr ""
+msgstr "Valeur ouverte"
 
 msgid "Budget"
-msgstr ""
+msgstr "Budget"
 
-#, fuzzy
-#| msgid "total"
 msgid "Total"
-msgstr "total"
+msgstr "Total"
+
+msgid "commitments"
+msgstr "engagements"
 
 #, python-format
 msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
@@ -7610,44 +7611,44 @@ msgid "Approve or reject expense claims, within an approval limit"
 msgstr ""
 
 msgid "There's no purchase order with this id in this organisation."
-msgstr ""
+msgstr "Aucun bon de commande ne porte cet identifiant dans cette organisation."
 
 msgid "The delivery date is before the order date."
-msgstr ""
+msgstr "La date de livraison est antérieure à la date de commande."
 
 msgid "That line isn't on this purchase order."
-msgstr ""
+msgstr "Cette ligne ne fait pas partie de ce bon de commande."
 
 #, python-format
 msgid "%(quantity)s are received or billed on this line already."
-msgstr ""
+msgstr "%(quantity)s sont déjà reçus ou facturés sur cette ligne."
 
 #, python-format
 msgid "“%(line)s” has receipts or bills: it can't be removed."
-msgstr ""
+msgstr "« %(line)s » a des réceptions ou des factures fournisseurs : la ligne ne peut pas être supprimée."
 
 #, python-format
 msgid "%(order)s is %(status)s: it can't be edited."
-msgstr ""
+msgstr "%(order)s a le statut « %(status)s » : il ne peut pas être modifié."
 
 msgid "Someone else saved this purchase order: reload it to see their changes."
-msgstr ""
+msgstr "Une autre personne a enregistré ce bon de commande : rechargez-le pour voir ses modifications."
 
 msgid "Only a draft purchase order can be deleted: cancel it instead."
-msgstr ""
+msgstr "Seul un bon de commande en brouillon peut être supprimé : annulez-le plutôt."
 
 msgid "There's no goods receipt with this id in this organisation."
-msgstr ""
+msgstr "Aucune réception de marchandises ne porte cet identifiant dans cette organisation."
 
 #, python-format
 msgid "A line isn't on %(order)s."
-msgstr ""
+msgstr "Une ligne ne fait pas partie de %(order)s."
 
 msgid "Group by account, supplier or month."
-msgstr ""
+msgstr "Regroupez par compte, fournisseur ou mois."
 
 msgid "Enter dates as YYYY-MM-DD."
-msgstr ""
+msgstr "Entrez les dates au format AAAA-MM-JJ."
 
 #, python-format
 msgid "This receipt was already claimed on %(claims)s."
@@ -7655,19 +7656,19 @@ msgstr ""
 
 #, python-format
 msgid "Only an approved purchase order can be received: %(order)s is %(status)s."
-msgstr ""
+msgstr "Seul un bon de commande approuvé peut être reçu : %(order)s a le statut « %(status)s »."
 
 msgid "Enter the quantity received on at least one line."
-msgstr ""
+msgstr "Entrez la quantité reçue sur au moins une ligne."
 
 msgid "Quantities received can't be negative: reverse the receipt instead."
 msgstr ""
 
 msgid "More than ordered (beyond the tolerance) can't be received."
-msgstr ""
+msgstr "Une quantité supérieure à la commande (au-delà de la tolérance) ne peut pas être reçue."
 
 msgid "This receives more than ordered: confirm to receive it anyway."
-msgstr ""
+msgstr "Cette réception dépasse la quantité commandée : confirmez pour la recevoir quand même."
 
 #, fuzzy
 #| msgid "%(name)s is already uploaded."
@@ -7680,7 +7681,7 @@ msgid "%(order)s is %(status)s: its receipts can't be reversed."
 msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent être modifiés."
 
 msgid "Say why the receipt is reversed."
-msgstr ""
+msgstr "Indiquez pourquoi la réception est contrepassée."
 
 #, python-format
 msgid "%(names)s isn't a placeholder: use %(known)s."
