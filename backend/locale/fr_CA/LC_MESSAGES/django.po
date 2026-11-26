@@ -499,6 +499,32 @@ msgstr ""
 msgid "Multiple of"
 msgstr ""
 
+msgid "Dormant user with user-management rights"
+msgstr ""
+
+msgid "Someone who can add people and change roles hasn't signed in for a long time."
+msgstr ""
+
+#, python-format
+msgid "%(person)s can manage users but hasn't signed in since %(last_active)s (%(idle)s days). Remove the right or the access if it isn't needed any more."
+msgstr ""
+
+msgid "Days"
+msgstr ""
+
+msgid "Contact bank details changed"
+msgstr ""
+
+msgid "A supplier's or employee's bank details changed recently: confirm before paying."
+msgstr ""
+
+#, python-format
+msgid "%(contact)s's bank details (%(fields)s) were changed on %(changed_on)s by %(by)s. Call the contact on a number you already have to confirm before the next payment."
+msgstr ""
+
+msgid "Days back"
+msgstr ""
+
 msgid "Accounts not mapped to GIFI"
 msgstr ""
 
@@ -530,9 +556,6 @@ msgstr ""
 
 #, python-format
 msgid "The books have activity up to %(period_end)s, a period that ended more than %(days)s days ago, and the general ledger lock date is %(lock)s. Set the lock date to %(period_end)s so reported periods can't change."
-msgstr ""
-
-msgid "Days"
 msgstr ""
 
 msgid "not set"
@@ -581,6 +604,22 @@ msgid "Recode the tax of %(journal)s line %(line)s from %(from)s to %(to)s with 
 msgstr ""
 
 msgid "the right purchase code"
+msgstr ""
+
+msgid "Tax codes often changed from the account default"
+msgstr ""
+
+msgid "Many lines use another tax code than their account's default: the defaults may be wrong."
+msgstr ""
+
+#, python-format
+msgid "%(overrides)s of %(lines)s lines in the last %(days)s days (%(pct)s %%) use another tax code than their account's default (most on %(top)s). Review the accounts' default codes."
+msgstr ""
+
+msgid "Share above (%)"
+msgstr ""
+
+msgid "Minimum lines"
 msgstr ""
 
 msgid "Backdated posting"

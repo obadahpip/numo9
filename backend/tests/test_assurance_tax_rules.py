@@ -79,3 +79,35 @@ def test_fix_is_a_recode_of_that_line() -> None:
         lines = list(find_lines(org, fix.recode["criteria"]))
     assert [(line.entry_id, line.line_no) for line in lines] == [(books["journal2"].pk, 1)]
     assert "Find & recode" in fix.reasoning
+
+
+# ---- TAX_CODE_OVERRIDE_RATE (K-09-T15) ------------------------------------------------------
+
+
+def test_override_share_above_the_threshold_is_flagged() -> None:
+    books = refined()
+    org = books["org"]
+    with org_context(org):
+        for n in range(3):  # three lines on 5920 coded taxable while the default is exempt
+            post(
+                books["accounts"],
+                dt.date(2026, 11, 1 + n),
+                f"Taxi {n}",
+                (("5920", "10.00", "0"), ("2900", "0", "10.00")),
+                tax_code="purchase.ON.standard",
+                when=dt.datetime(2026, 11, 2 + n, 15, tzinfo=dt.UTC),
+            )
+            post(
+                books["accounts"],
+                dt.date(2026, 11, 1 + n),
+                f"Fee {n}",
+                (("5590", "10.00", "0"), ("2900", "0", "10.00")),
+                when=dt.datetime(2026, 11, 2 + n, 15, tzinfo=dt.UTC),
+            )
+    params = {"min_lines": 5}
+    (hit,) = evaluate(org, "TAX_CODE_OVERRIDE_RATE", now=NOW, params=params)
+    assert (hit.details["lines"], hit.details["overrides"], hit.details["pct"]) == (6, 3, "50.0")
+    assert hit.details["top"] == "5920"
+    assert evaluate(org, "TAX_CODE_OVERRIDE_RATE", now=NOW, params={"min_lines": 5,
+                    "threshold_pct": "50"}) == []  # fmt: skip
+    assert evaluate(org, "TAX_CODE_OVERRIDE_RATE", now=NOW) == []  # fewer than 20 lines
