@@ -22,7 +22,13 @@
      them to their accounts (the year-to-date comparatives);
 
 4. marks the session finalised (by, at, ``opening_entry``) — its lines and documents can't
-   change any more; corrections are correcting opening journals (C-05-T07).
+   change any more; corrections are correcting opening journals (C-05-T07);
+5. **lock balances** (C-05-T06, optional: ``lock_balances``, the session's saved choice by
+   default) — the GL, AR and AP lock dates for *everyone except advisers* move to the conversion
+   date − 1 (never back: a later lock already set stays), each change audited by the lock date
+   itself (``orgsettings.lockdate.*``) with the reason "Conversion balances finalised…", and the
+   finalise event records which locks moved. Only advisers can then post before the conversion
+   date — as in Xero, but for the three modules at once.
 
 Any refusal (here or by the posting engine) leaves the session a draft and posts nothing.
 """
@@ -188,8 +194,42 @@ def post_opening(
     )
 
 
-def finalise(session: ConversionSession, user: Any) -> ConversionSession:
-    """Finalise the conversion (module docstring); returns the finalised session."""
+LOCKED_MODULES = (LockModule.GL, LockModule.AR, LockModule.AP)
+
+
+def lock_balances(session: ConversionSession) -> list[str]:
+    """Step 5: move the advisers-only lock of the GL, AR and AP to the conversion date − 1;
+    returns the modules whose lock moved."""
+    import datetime as dt
+
+    from numo9.orgsettings.models import LockDate, LockLevel
+
+    day = session.conversion_date - dt.timedelta(days=1)
+    reason = _("Conversion balances finalised at %(date)s: balances locked.") % {
+        "date": session.conversion_date.isoformat()
+    }
+    moved: list[str] = []
+    for module in LOCKED_MODULES:
+        row = LockDate.objects.filter(
+            module=module, level=LockLevel.ADVISERS_ONLY, deleted_at__isnull=True
+        ).first() or LockDate(
+            organisation=session.organisation, module=module, level=LockLevel.ADVISERS_ONLY
+        )
+        if row.date is not None and row.date >= day:
+            continue
+        row.set_lock(day, reason)
+        row.full_clean()
+        row.save()
+        moved.append(str(module))
+    return moved
+
+
+def finalise(
+    session: ConversionSession, user: Any, *, lock: bool | None = None
+) -> ConversionSession:
+    """Finalise the conversion (module docstring); returns the finalised session. ``lock``:
+    lock the balances (step 5) — the session's ``lock_balances`` when not given."""
+    from numo9.audit import service as audit
     from numo9.ledger.renumber import acting_as
 
     person = _person(user)
@@ -220,6 +260,19 @@ def finalise(session: ConversionSession, user: Any) -> ConversionSession:
         locked.finalised_by = person
         locked.finalised_at = timezone.now()
         locked.opening_entry = entry
+        if lock is not None:
+            locked.lock_balances = lock
         locked.save()
+        moved = lock_balances(locked) if locked.lock_balances else []
+        audit.record(
+            "conversion.session.finalised",
+            obj=locked,
+            meta={
+                "conversion_date": locked.conversion_date.isoformat(),
+                "journal": entry.number,
+                "locked": moved,
+            },
+            actor=person,
+        )
         session.refresh_from_db()
         return locked

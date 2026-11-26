@@ -2,9 +2,10 @@
 
 - ``ConversionSession`` (C-05-T01) — the organisation's conversion: its date, status (draft →
   finalised), who finalised it and when, and the opening journal finalising posted
-  (``opening_entry``, C-05-T05: a finalised conversion has one). **One per organisation** (a
-  second is refused by the database, ``conversion_one_per_org``); corrections after finalising
-  are correcting opening journals (C-05-T07), never a second session.
+  (``opening_entry``, C-05-T05: a finalised conversion has one); ``lock_balances`` (C-05-T06) —
+  lock the GL, AR and AP at the conversion date − 1 when it is finalised. **One per
+  organisation** (a second is refused by the database, ``conversion_one_per_org``); corrections
+  after finalising are correcting opening journals (C-05-T07), never a second session.
 - ``ConversionLine`` (C-05-T02) — one account's opening balance: a debit **or** a credit
   (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``).
 - ``OpeningDocument`` (C-05-T03) — links the session to an invoice or a bill **open at the
@@ -54,6 +55,14 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
         verbose_name=_("finalised by"),
     )
     finalised_at = models.DateTimeField(_("finalised at"), null=True, blank=True)
+    lock_balances = models.BooleanField(
+        _("lock balances"),
+        default=False,
+        help_text=_(
+            "On finalising, lock the general ledger, sales and purchases to the day before the "
+            "conversion date for everyone except advisers."
+        ),
+    )
     opening_entry = models.OneToOneField(
         "ledger.JournalEntry",
         on_delete=models.PROTECT,

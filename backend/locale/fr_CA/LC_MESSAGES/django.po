@@ -2666,6 +2666,10 @@ msgid "Prior years' result (revenue and expenses at %(date)s)"
 msgstr ""
 
 #, python-format
+msgid "Conversion balances finalised at %(date)s: balances locked."
+msgstr ""
+
+#, python-format
 msgid "Opening balances at %(date)s"
 msgstr ""
 
@@ -2689,6 +2693,12 @@ msgstr ""
 #| msgid "finished at"
 msgid "finalised at"
 msgstr "terminée le"
+
+msgid "lock balances"
+msgstr ""
+
+msgid "On finalising, lock the general ledger, sales and purchases to the day before the conversion date for everyone except advisers."
+msgstr ""
 
 msgid "opening journal"
 msgstr ""
