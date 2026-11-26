@@ -388,3 +388,101 @@ export const list = defineMessages({
     description: "Button",
   },
 });
+
+/** Commitment report (E-01-T14). */
+export const commitments = defineMessages({
+  title: {
+    id: "purchases.po.commitments.title",
+    defaultMessage: "Commitments",
+    description: "Heading of the commitment report",
+  },
+  intro: {
+    id: "purchases.po.commitments.intro",
+    defaultMessage:
+      "What is ordered on approved purchase orders and not billed yet, before tax. Drafts and orders awaiting approval commit nothing.",
+    description: "Under the heading",
+  },
+  by: { id: "purchases.po.commitments.by", defaultMessage: "Group by", description: "Field" },
+  byAccount: {
+    id: "purchases.po.commitments.byAccount",
+    defaultMessage: "Account",
+    description: "Option and column",
+  },
+  bySupplier: {
+    id: "purchases.po.commitments.bySupplier",
+    defaultMessage: "Supplier",
+    description: "Option and column",
+  },
+  byMonth: {
+    id: "purchases.po.commitments.byMonth",
+    defaultMessage: "Month",
+    description: "Option and column",
+  },
+  from: {
+    id: "purchases.po.commitments.from",
+    defaultMessage: "PO date from",
+    description: "Field",
+  },
+  to: { id: "purchases.po.commitments.to", defaultMessage: "PO date to", description: "Field" },
+  orders: {
+    id: "purchases.po.commitments.orders",
+    defaultMessage: "Open POs",
+    description: "Column",
+  },
+  lines: {
+    id: "purchases.po.commitments.lines",
+    defaultMessage: "Open lines",
+    description: "Column",
+  },
+  amount: {
+    id: "purchases.po.commitments.amount",
+    defaultMessage: "Open value",
+    description: "Column",
+  },
+  budget: {
+    id: "purchases.po.commitments.budget",
+    defaultMessage: "Budget",
+    description: "Column",
+  },
+  budgetLater: {
+    id: "purchases.po.commitments.budgetLater",
+    defaultMessage: "Budgets come with budgeting (K-04).",
+    description: "Note under the table: the budget column is empty for now",
+  },
+  noAccount: {
+    id: "purchases.po.commitments.noAccount",
+    defaultMessage: "No account",
+    description: "Row of lines without an account",
+  },
+  total: { id: "purchases.po.commitments.total", defaultMessage: "Total", description: "Row" },
+  empty: {
+    id: "purchases.po.commitments.empty",
+    defaultMessage: "Nothing is committed for these dates.",
+    description: "Empty report",
+  },
+  exportCsv: {
+    id: "purchases.po.commitments.exportCsv",
+    defaultMessage: "Export CSV",
+    description: "Download link",
+  },
+  exportXlsx: {
+    id: "purchases.po.commitments.exportXlsx",
+    defaultMessage: "Export Excel",
+    description: "Download link",
+  },
+  loadFailed: {
+    id: "purchases.po.commitments.loadFailed",
+    defaultMessage: "The commitment report couldn't be loaded",
+    description: "Error title",
+  },
+  retry: {
+    id: "purchases.po.commitments.retry",
+    defaultMessage: "Try again",
+    description: "Button",
+  },
+  back: {
+    id: "purchases.po.commitments.back",
+    defaultMessage: "Purchase orders",
+    description: "Link back to the list",
+  },
+});
