@@ -190,3 +190,49 @@ class DocumentLineBase(OrgOwnedModel):
                 name=f"{prefix}_discount_pct_max",
             ),
         ]
+
+
+# ---- recurring documents (D-04-T05, shared with E-03-T02) -------------------------------------
+
+
+class RecurringRunStatus(models.TextChoices):
+    CREATED = "created", _("Created")
+    SKIPPED = "skipped", _("Skipped")
+
+
+class RecurringRunBase(OrgOwnedModel):
+    """One occurrence of a recurring document (``numo9.documents.recurring``): the idempotency
+    row. A concrete run adds ``template`` (the template, ``related_name="runs"``) and
+    ``document`` (the invoice or bill it created, one-to-one) and the unique constraint on
+    (template, occurrence date) from ``run_constraints`` — a tick that runs twice (two workers, a
+    restart) inserts the row once, and only the insert that wins keeps its document.
+
+    ``status`` — created, or skipped (``code`` / ``message`` say why: paused, ended, locked
+    period, archived contact); a created run may carry a ``code`` too when the mode's next step
+    was refused (the document then stays a draft, or approved but not sent)."""
+
+    occurrence_date = models.DateField(_("occurrence date"))
+    template_version = models.PositiveIntegerField(_("template version"))
+    status = models.CharField(_("status"), max_length=10, choices=RecurringRunStatus.choices)
+    code = models.CharField(_("reason code"), max_length=100, blank=True)
+    message = models.TextField(_("reason"), blank=True)
+
+    class Meta:
+        abstract = True
+        ordering = ("template", "-occurrence_date")
+
+    @classmethod
+    def run_constraints(cls, prefix: str) -> list[models.BaseConstraint]:
+        return [
+            models.UniqueConstraint(fields=["template", "occurrence_date"], name=f"{prefix}_once"),
+            models.CheckConstraint(
+                condition=_choices_q("status", RecurringRunStatus),
+                name=f"{prefix}_status_valid",
+            ),
+            # A created run has its document; a skipped one has none.
+            models.CheckConstraint(
+                condition=models.Q(status=RecurringRunStatus.CREATED, document__isnull=False)
+                | models.Q(status=RecurringRunStatus.SKIPPED, document__isnull=True),
+                name=f"{prefix}_document_iff_created",
+            ),
+        ]

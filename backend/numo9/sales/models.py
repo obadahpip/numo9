@@ -30,6 +30,7 @@ from numo9.documents.models import (
     DiscountType,
     DocumentBase,
     DocumentLineBase,
+    RecurringRunBase,
     TaxMode,
     _money,
 )
@@ -792,6 +793,37 @@ class RecurringInvoiceLine(DocumentLineBase):
         constraints: ClassVar[list[models.BaseConstraint]] = [
             *DocumentLineBase.line_constraints("sales_recurline"),
         ]
+
+
+class RecurringInvoiceRun(RecurringRunBase):
+    """One occurrence of a recurring invoice (D-04-T05): unique per (template, date) — the
+    idempotency row; ``document`` is the invoice it created (``None`` when skipped, D-04-T06)."""
+
+    template = models.ForeignKey(
+        RecurringInvoiceTemplate,
+        on_delete=models.CASCADE,
+        related_name="runs",
+        verbose_name=_("recurring invoice"),
+    )
+    document = models.OneToOneField(
+        Invoice,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="recurring_run",
+        verbose_name=_("invoice"),
+    )
+
+    class Meta(RecurringRunBase.Meta):
+        abstract = False
+        verbose_name = _("recurring invoice run")
+        verbose_name_plural = _("recurring invoice runs")
+        constraints: ClassVar[list[models.BaseConstraint]] = RecurringRunBase.run_constraints(
+            "sales_recur_run"
+        )
+
+    def __str__(self) -> str:
+        return f"{self.template} · {self.occurrence_date}"
 
 
 # ---- Invoice reminders (D-07) ------------------------------------------------------------------

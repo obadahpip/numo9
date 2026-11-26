@@ -2634,6 +2634,12 @@ msgstr ""
 msgid "tracking"
 msgstr ""
 
+msgid "occurrence date"
+msgstr ""
+
+msgid "template version"
+msgstr ""
+
 msgid "See quotes, invoices and credit notes and how their amounts are worked out"
 msgstr ""
 
@@ -4649,12 +4655,6 @@ msgstr ""
 msgid "recurring journals"
 msgstr ""
 
-msgid "occurrence date"
-msgstr ""
-
-msgid "template version"
-msgstr ""
-
 msgid "recurring journal run"
 msgstr ""
 
@@ -5645,6 +5645,14 @@ msgstr ""
 
 #, python-format
 msgid "%(customer)s declined quote %(number)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring invoice %(name)s needs attention"
+msgstr ""
+
+#, python-format
+msgid "The invoice of %(date)s was created but not finished: %(reason)s"
 msgstr ""
 
 #, python-format
@@ -7752,6 +7760,12 @@ msgstr ""
 msgid "recurring invoice lines"
 msgstr ""
 
+msgid "recurring invoice run"
+msgstr ""
+
+msgid "recurring invoice runs"
+msgstr ""
+
 msgid "Text message (SMS)"
 msgstr ""
 
@@ -8072,6 +8086,9 @@ msgstr ""
 
 #, python-format
 msgid "Refund to %(contact)s"
+msgstr ""
+
+msgid "The invoice needs approval before it is posted."
 msgstr ""
 
 msgid "Standard reminders"

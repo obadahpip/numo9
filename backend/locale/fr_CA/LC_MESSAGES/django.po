@@ -2812,6 +2812,16 @@ msgstr "taxe modifiée par rapport à la valeur par défaut"
 msgid "tracking"
 msgstr "Banque"
 
+#, fuzzy
+#| msgid "currency"
+msgid "occurrence date"
+msgstr "devise"
+
+#, fuzzy
+#| msgid "version"
+msgid "template version"
+msgstr "version"
+
 msgid "See quotes, invoices and credit notes and how their amounts are worked out"
 msgstr "Voir les soumissions, factures et notes de crédit et le calcul de leurs montants"
 
@@ -4976,16 +4986,6 @@ msgstr "Écriture de journal manuelle"
 msgid "recurring journals"
 msgstr "écritures de journal manuelles"
 
-#, fuzzy
-#| msgid "currency"
-msgid "occurrence date"
-msgstr "devise"
-
-#, fuzzy
-#| msgid "version"
-msgid "template version"
-msgstr "version"
-
 msgid "recurring journal run"
 msgstr ""
 
@@ -6054,6 +6054,14 @@ msgstr "Soumission %(number)s refusée"
 #, python-format
 msgid "%(customer)s declined quote %(number)s: %(reason)s"
 msgstr "%(customer)s a refusé la soumission %(number)s : %(reason)s"
+
+#, python-format
+msgid "Recurring invoice %(name)s needs attention"
+msgstr ""
+
+#, python-format
+msgid "The invoice of %(date)s was created but not finished: %(reason)s"
+msgstr ""
 
 #, python-format
 msgid "%(registration)s return due %(due_date)s"
@@ -8487,6 +8495,12 @@ msgstr ""
 msgid "recurring invoice lines"
 msgstr ""
 
+msgid "recurring invoice run"
+msgstr ""
+
+msgid "recurring invoice runs"
+msgstr ""
+
 msgid "Text message (SMS)"
 msgstr ""
 
@@ -8870,6 +8884,9 @@ msgstr ""
 #| msgid "Amount due (%(currency)s)"
 msgid "Refund to %(contact)s"
 msgstr "Montant dû (%(currency)s)"
+
+msgid "The invoice needs approval before it is posted."
+msgstr ""
 
 #, fuzzy
 #| msgid "trial reminders"

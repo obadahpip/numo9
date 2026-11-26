@@ -154,6 +154,14 @@ register_text(
     _("%(customer)s declined quote %(number)s: %(reason)s"),
 )
 
+# ---- recurring invoices (D-04-T05) ------------------------------------------------------------
+
+register_text(
+    "notifications.sales.recurring.failed",
+    _("Recurring invoice %(name)s needs attention"),
+    _("The invoice of %(date)s was created but not finished: %(reason)s"),
+)
+
 # ---- filing periods (G-03a-T17) ---------------------------------------------------------------
 
 register_text(
