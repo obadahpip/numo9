@@ -2712,6 +2712,99 @@ msgstr "%(account)s a des sous-comptes : choisissez-en un."
 msgid "%(code)s is already on row %(row)d."
 msgstr "%(name)s est déjà téléversé."
 
+msgid "Owner or admin"
+msgstr "Propriétaire ou administrateur"
+
+msgid "Accountant"
+msgstr "Comptable"
+
+msgid "Sales"
+msgstr "Ventes"
+
+msgid "Purchasing"
+msgstr "Achats"
+
+msgid "Everyone else"
+msgstr "Tous les autres"
+
+msgid "person"
+msgstr "personne"
+
+msgid "widgets"
+msgstr "widgets"
+
+msgid "In order: [{\"key\": \"cash_in_out\", \"settings\": {\"months\": 6}}, …]."
+msgstr "Dans l’ordre : [{\"key\": \"cash_in_out\", \"settings\": {\"months\": 6}}, …]."
+
+msgid "role default"
+msgstr "disposition par défaut du rôle"
+
+msgid "The role whose default layout this one started from."
+msgstr "Le rôle dont la disposition par défaut a servi de point de départ."
+
+msgid "changed by the person"
+msgstr "modifiée par la personne"
+
+msgid "dashboard layout"
+msgstr ""
+
+msgid "dashboard layouts"
+msgstr ""
+
+msgid "Bank & cash balances"
+msgstr "Soldes bancaires et encaisse"
+
+msgid "Every bank, card and cash account, petty cash included."
+msgstr "Tous les comptes bancaires, de carte et d’encaisse, petite caisse comprise."
+
+msgid "Cash in and out"
+msgstr "Entrées et sorties de fonds"
+
+msgid "Money in and out per month."
+msgstr "L’argent reçu et versé chaque mois."
+
+msgid "Invoices owed to you"
+msgstr "Factures qu’on vous doit"
+
+msgid "Awaiting payment and overdue invoices by age."
+msgstr "Factures en attente de paiement et en retard, selon l’ancienneté."
+
+msgid "Bills to pay"
+msgstr "Factures fournisseurs à payer"
+
+msgid "Awaiting payment and overdue bills by age."
+msgstr "Factures fournisseurs en attente de paiement et en retard, selon l’ancienneté."
+
+msgid "Tax and filing deadlines"
+msgstr "Échéances fiscales et de production"
+
+msgid "The next GST/HST and QST returns and payments, due soon or overdue."
+msgstr "Les prochaines déclarations et les prochains paiements de TPS/TVH et de TVQ, bientôt dus ou en retard."
+
+msgid "Profit and loss"
+msgstr "État des résultats"
+
+msgid "Income, expenses and net profit, month or year to date."
+msgstr "Revenus, dépenses et bénéfice net, depuis le début du mois ou de l’exercice."
+
+msgid "Account watchlist"
+msgstr "Comptes à surveiller"
+
+msgid "The balances of up to 10 accounts you choose."
+msgstr "Les soldes de 10 comptes au plus, choisis par vous."
+
+msgid "Exceptions"
+msgstr "Exceptions"
+
+msgid "Open exceptions by severity."
+msgstr "Les exceptions ouvertes, par gravité."
+
+msgid "Awaiting my approval"
+msgstr "En attente de mon approbation"
+
+msgid "Documents waiting for your approval."
+msgstr "Les documents qui attendent votre approbation."
+
 #, fuzzy
 #| msgid "Your role in this organisation can't make this change."
 msgid "No open demo organisation with this id."
@@ -4791,9 +4884,6 @@ msgstr "Comptabilité"
 msgid "Tax book"
 msgstr ""
 
-msgid "Sales"
-msgstr "Ventes"
-
 msgid "Purchases"
 msgstr "Achats"
 
@@ -5775,9 +5865,6 @@ msgstr "Les limites doivent être une liste de valeurs nommées."
 
 msgid "In the app"
 msgstr "Dans l’application"
-
-msgid "person"
-msgstr "personne"
 
 msgid "in the app"
 msgstr "dans l’application"
@@ -7814,9 +7901,6 @@ msgstr "Administrateur du cabinet"
 msgid "Runs the practice: staff, roles, clients, and full access to every client served."
 msgstr "Dirige le cabinet : personnel, rôles, clients, et accès complet à chaque client servi."
 
-msgid "Accountant"
-msgstr "Comptable"
-
 msgid "Keeps the books of the clients they are assigned to."
 msgstr "Tient les livres des clients qui lui sont confiés."
 
@@ -7858,9 +7942,6 @@ msgstr "Un teneur de livres interne : la comptabilité, sans les utilisateurs ni
 
 msgid "Quotes, invoices and customers."
 msgstr "Soumissions, factures et clients."
-
-msgid "Purchasing"
-msgstr "Achats"
 
 msgid "Purchase orders, bills and suppliers."
 msgstr "Bons de commande, factures fournisseurs et fournisseurs."
@@ -10716,12 +10797,6 @@ msgid "widget order"
 msgstr ""
 
 msgid "hidden widgets"
-msgstr ""
-
-msgid "dashboard layout"
-msgstr ""
-
-msgid "dashboard layouts"
 msgstr ""
 
 msgid "See the practice's client organisations in the directory"
