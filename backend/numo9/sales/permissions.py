@@ -14,6 +14,15 @@ INVOICES_WRITE = register(
     Permission("sales.invoices.write", _("Create and edit draft invoices"), "sales", Risk.MEDIUM)
 )
 
+INVOICES_APPROVE = register(
+    Permission(
+        "sales.invoices.approve",
+        _("Approve, post and void invoices"),
+        "sales",
+        Risk.HIGH,
+    )
+)
+
 INVOICES_SEND = register(
     Permission("sales.invoices.send", _("Email invoices to customers"), "sales", Risk.MEDIUM)
 )

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:46-0500\n"
+"POT-Creation-Date: 2026-11-25 19:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8117,6 +8117,32 @@ msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
 #, fuzzy
+#| msgid "That document doesn't exist."
+msgid "That customer doesn't exist."
+msgstr "Ce document n'existe pas."
+
+#, fuzzy
+#| msgid "The end date is before the start date."
+msgid "The due date is before the invoice date."
+msgstr "La date de fin est antérieure à la date de début."
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft invoice can be edited: revise or void a posted invoice."
+msgstr "Seul un brouillon peut être passé."
+
+msgid "Someone else saved this invoice: reload it to see their changes."
+msgstr ""
+
+#, fuzzy
+#| msgid "Only a draft can be posted."
+msgid "Only a draft invoice can be deleted: void a posted invoice."
+msgstr "Seul un brouillon peut être passé."
+
+msgid "Copy to an invoice or a quote."
+msgstr ""
+
+#, fuzzy
 #| msgid "first seen"
 msgid "first viewed at"
 msgstr "vu pour la première fois"
@@ -8502,6 +8528,11 @@ msgstr "Soumissions, factures et clients."
 #, fuzzy
 #| msgid "Create, edit and give the practice's roles"
 msgid "Create and edit draft invoices"
+msgstr "Créer, modifier et attribuer les rôles du cabinet"
+
+#, fuzzy
+#| msgid "Create, edit and give the practice's roles"
+msgid "Approve, post and void invoices"
 msgstr "Créer, modifier et attribuer les rôles du cabinet"
 
 #, fuzzy

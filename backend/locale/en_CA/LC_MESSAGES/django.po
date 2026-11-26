@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:46-0500\n"
+"POT-Creation-Date: 2026-11-25 19:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7427,6 +7427,24 @@ msgstr ""
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
+msgid "That customer doesn't exist."
+msgstr ""
+
+msgid "The due date is before the invoice date."
+msgstr ""
+
+msgid "Only a draft invoice can be edited: revise or void a posted invoice."
+msgstr ""
+
+msgid "Someone else saved this invoice: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft invoice can be deleted: void a posted invoice."
+msgstr ""
+
+msgid "Copy to an invoice or a quote."
+msgstr ""
+
 msgid "first viewed at"
 msgstr ""
 
@@ -7734,6 +7752,9 @@ msgid "See invoices, their PDF and emails"
 msgstr ""
 
 msgid "Create and edit draft invoices"
+msgstr ""
+
+msgid "Approve, post and void invoices"
 msgstr ""
 
 msgid "Email invoices to customers"
