@@ -7,7 +7,8 @@ G-05-T03). The mapping is ``docs/specs/gst-hst-return-line-mapping.md``.
 - **101** — the net amount of sales lines whose tax code is taxable or zero-rated (each line
   once, whatever its components; exempt and out-of-scope supplies have no GST/HST tax line);
 - **103** — the GST + HST of sales lines (credit notes and reversals negative);
-- **104 / 107** — the late adjustments carried into the period (G-03-T08) plus the amounts
+- **104 / 107** — the late adjustments carried into the period (G-03-T08; a late adjustment
+  is left out of the filed period it is dated in, amendments included) plus the amounts
   entered on the return (``entries``: ``104``, ``107``, ``110``, ``111``, ``113B``);
 - **105** = 103 + 104 — equals the tax summary's GST/HST collected for the period (G-05);
 - **106** — the claimable (recoverable) GST + HST of purchase lines;
@@ -55,14 +56,24 @@ def _basis(period: Any) -> str:
 
 
 def period_lines(period: Any, *, basis: str | None = None) -> list[RecognisedLine]:
-    """The GST/HST tax lines the period's return reads."""
-    return recognised_lines(
+    """The GST/HST tax lines the period's return reads. The tax of a late adjustment dated in
+    the period after it was filed is reported on the next open period's line 104 / 107
+    (G-03-T08), never again here — not even on an amendment of this period (G-03-T14)."""
+    from .models import LateAdjustment
+
+    rows = recognised_lines(
         period.organisation,
         period.start,
         period.end,
         basis=basis or _basis(period),
         kind="gst_hst",
     )
+    carried = set(
+        LateAdjustment.objects.filter(filed_period=period).values_list("journal_id", flat=True)
+    )
+    if not carried:
+        return rows
+    return [r for r in rows if r.line.entry_id not in carried]
 
 
 def _taxable_codes(organisation: Any, codes: set[str]) -> set[str]:
