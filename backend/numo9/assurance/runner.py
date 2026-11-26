@@ -295,8 +295,13 @@ def _start_incremental(organisation: Organisation, scope: Scope) -> None:
 
 
 def posted_hook(entry: Any, checked: Any, spec: Any, organisation: Any, person: Any) -> None:
-    """``POSTED_HOOKS``: queue an incremental run for the posted journal and its accounts when
-    the transaction commits (nothing is queued when it rolls back)."""
+    """``POSTED_HOOKS``: re-check at once the findings this journal fixes (K-09-T16), and queue
+    an incremental run for the journal and its accounts when the transaction commits (nothing is
+    queued when it rolls back)."""
+    from .fixes import resolve_fixed
+
+    with org_context(organisation):
+        resolve_fixed(entry, person)
     scope = Scope(
         frozenset({str(entry.public_id)}),
         frozenset(str(line.account.public_id) for line in checked.lines),

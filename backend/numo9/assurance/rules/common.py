@@ -42,14 +42,23 @@ __all__ = [
     "entry_hit",
     "entry_total",
     "is_cash",
+    "not_fixes",
     "posted_entries",
 ]
+
+
+def not_fixes(entries: QuerySet[JournalEntry]) -> QuerySet[JournalEntry]:
+    """Leave out the engine's own correcting journals (fixes reviewed and posted by an
+    accountant, K-09-T16): a fix dated back to the problem is not itself a problem."""
+    return entries.exclude(assurance_findings__isnull=False)
 
 
 def posted_entries(ctx: Context, *, manual: bool = False) -> QuerySet[JournalEntry]:
     """Posted journals (not reversed, not reversals) — in the scope for an incremental run —
     with their lines and accounts."""
-    entries = JournalEntry.objects.filter(status=JournalStatus.POSTED, reversal_of__isnull=True)
+    entries = not_fixes(
+        JournalEntry.objects.filter(status=JournalStatus.POSTED, reversal_of__isnull=True)
+    )
     if manual:
         entries = entries.filter(type=JournalType.MANUAL)
     if ctx.scope is not None:

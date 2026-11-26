@@ -203,6 +203,25 @@ msgstr "Ce mot de passe est apparu dans une fuite de données : les attaquants l
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr "Votre mot de passe ne peut pas être un mot de passe apparu dans une fuite de données connue."
 
+#, python-format
+msgid "Line %(line)d: enter an amount."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: amounts are positive."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: choose an account of this organisation."
+msgstr ""
+
+#, python-format
+msgid "This finding is %(status)s: there is nothing to fix."
+msgstr ""
+
+msgid "There is no correcting journal to propose for this finding."
+msgstr ""
+
 msgid "Info"
 msgstr ""
 

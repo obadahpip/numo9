@@ -26,7 +26,7 @@ from numo9.ledger.models import (
 
 from ..models import ExceptionFinding, Severity
 from .base import Context, Hit, Param, Rule, register
-from .common import ENTRY, Numbers, entry_hit, entry_total
+from .common import ENTRY, Numbers, entry_hit, entry_total, not_fixes
 
 #: Source documents judged as documents (subject = the document), by source type.
 DOCUMENTS: dict[str, str] = {
@@ -75,10 +75,12 @@ class Backdated(Rule):
 
     def evaluate(self, ctx: Context) -> Iterable[Hit]:
         entries = (
-            JournalEntry.objects.filter(
-                status__in=(JournalStatus.POSTED, JournalStatus.REVERSED),
-                reversal_of__isnull=True,
-                posted_at__isnull=False,
+            not_fixes(
+                JournalEntry.objects.filter(
+                    status__in=(JournalStatus.POSTED, JournalStatus.REVERSED),
+                    reversal_of__isnull=True,
+                    posted_at__isnull=False,
+                )
             )
             .exclude(type__in=(JournalType.OPENING, JournalType.REVERSAL))
             .exclude(journal_type=JournalCategory.CLOSING)
@@ -165,11 +167,13 @@ class WeekendPosting(Rule):
 
         from numo9.tax.holidays import FEDERAL, calendar
 
-        entries = JournalEntry.objects.filter(
-            status__in=(JournalStatus.POSTED, JournalStatus.REVERSED),
-            reversal_of__isnull=True,
-            posted_by__isnull=False,
-            posted_at__isnull=False,
+        entries = not_fixes(
+            JournalEntry.objects.filter(
+                status__in=(JournalStatus.POSTED, JournalStatus.REVERSED),
+                reversal_of__isnull=True,
+                posted_by__isnull=False,
+                posted_at__isnull=False,
+            )
         ).prefetch_related("lines")
         if ctx.scope is not None:
             entries = entries.filter(public_id__in=sorted(ctx.scope.entries))

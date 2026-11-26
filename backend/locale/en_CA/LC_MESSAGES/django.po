@@ -199,6 +199,25 @@ msgstr ""
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr ""
 
+#, python-format
+msgid "Line %(line)d: enter an amount."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: amounts are positive."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: choose an account of this organisation."
+msgstr ""
+
+#, python-format
+msgid "This finding is %(status)s: there is nothing to fix."
+msgstr ""
+
+msgid "There is no correcting journal to propose for this finding."
+msgstr ""
+
 msgid "Info"
 msgstr ""
 
