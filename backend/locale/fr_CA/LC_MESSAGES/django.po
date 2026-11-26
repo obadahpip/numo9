@@ -8388,6 +8388,9 @@ msgstr ""
 msgid "invoiced at"
 msgstr ""
 
+msgid "deposit invoice"
+msgstr ""
+
 msgid "revision of"
 msgstr ""
 
@@ -8777,6 +8780,14 @@ msgid "Add at least one email address to send the quote to."
 msgstr ""
 
 msgid "no reason given"
+msgstr ""
+
+#, python-format
+msgid "Deposit for quote %(number)s (%(percent)s %%)"
+msgstr ""
+
+#, python-format
+msgid "Deposit for quote %(number)s"
 msgstr ""
 
 msgid "Type your name to accept the quote."

@@ -189,6 +189,10 @@ def _transition(
         for name, value in fields.items():
             setattr(locked, name, value)
         locked.save()
+        if target == "accepted" and previous != target:  # the deposit asked, invoiced (T08)
+            from .quote_invoicing import create_deposit_invoice
+
+            create_deposit_invoice(locked, user=user, now=moment)
         if previous != target:
             audit.record(
                 f"sales.quote.{target}",

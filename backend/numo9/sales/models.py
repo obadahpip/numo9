@@ -474,7 +474,7 @@ class Quote(DocumentBase):
     (required — the customer can't accept after it, D-02-T05); optional lines and alternative
     groups (``QuoteLine``); a deposit request (``deposit_type`` amount or percent of the
     accepted total); the lifecycle dates (sent, first viewed, accepted, declined, expired,
-    invoiced) and the invoice it became.
+    invoiced), the invoice it became and the deposit invoice its acceptance created (D-02-T08).
 
     ``number`` — ``QU-0001``, taken when the quote is created (D-02-T02). An accepted quote is
     immutable; a revision is a new quote (``revises``), the old link shows "superseded".
@@ -508,6 +508,14 @@ class Quote(DocumentBase):
         blank=True,
         related_name="quote",
         verbose_name=_("invoice"),
+    )
+    deposit_invoice = models.OneToOneField(
+        Invoice,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="deposit_for",
+        verbose_name=_("deposit invoice"),
     )
     revises = models.ForeignKey(
         "self",
