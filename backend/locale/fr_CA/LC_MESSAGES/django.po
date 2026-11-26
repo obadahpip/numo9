@@ -8528,10 +8528,8 @@ msgstr "décision prise par"
 msgid "payment received"
 msgstr "Reçu"
 
-#, fuzzy
-#| msgid "Received"
 msgid "payments received"
-msgstr "Reçu"
+msgstr "paiements reçus"
 
 #, fuzzy
 #| msgid "first payment"
@@ -8553,10 +8551,8 @@ msgstr "terminée"
 msgid "customer credit"
 msgstr "fournisseur"
 
-#, fuzzy
-#| msgid "Stripe customer"
 msgid "customer credits"
-msgstr "Client Stripe"
+msgstr "crédits clients"
 
 #, fuzzy
 #| msgid "allocated"

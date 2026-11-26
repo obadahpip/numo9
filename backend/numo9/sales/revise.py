@@ -7,6 +7,12 @@ editor opened (``RevisionDraft.base_version``). A mismatch is a ``RevisionConfli
 nothing is written, and the editor offers to reload. Two simultaneous saves of the same version
 are serialised by the row lock: the first saves, the second sees the new version and is refused —
 never a lost update.
+
+Numbering (D-03b-T08): ``next_revision(locked)`` gives the revision's number — one more than the
+highest the invoice has — and is called only once the invoice row is locked, in the transaction
+that posts the revision. Saves of the same invoice wait for each other on that lock, so the
+suffixes are sequential ("101-1", "101-2", …) whatever the concurrency, and gap-free: a save that
+fails rolls its number back with everything else, and the next one takes it.
 """
 
 from __future__ import annotations
@@ -45,6 +51,17 @@ def lock_for_revision(invoice: Invoice | Any, version: int) -> Invoice:
     if locked.version != version:
         raise RevisionConflict(locked, version)
     return locked
+
+
+def next_revision(locked: Invoice) -> int:
+    """The number of the invoice's next revision (module docstring): call with the invoice row
+    locked (``lock_for_revision``), inside the transaction that records the revision."""
+    from django.db.models import Max
+
+    from .models import InvoiceRevision
+
+    top = InvoiceRevision._base_manager.filter(invoice_id=locked.pk).aggregate(top=Max("revision"))
+    return int(top["top"] if top["top"] is not None else -1) + 1
 
 
 # ---- posting a revision (D-03b-T07) ------------------------------------------------------------
@@ -86,9 +103,10 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
     5. **reverse** the previous revision's journal (on its own date: the old posting nets to
        zero where it was) and **post** the new revision's journal (on the invoice date), through
        the posting engine;
-    6. record revision n + 1 ("101-1") with its snapshot, totals, reason and **both journals**;
-       the previous one is superseded; ``current_revision`` and ``journal_entry`` move to it; the
-       audit event has the field diffs (T15).
+    6. record revision n + 1 ("101-1", numbered under the row lock, T08) with its snapshot,
+       totals, reason and **both journals**; the previous one is superseded;
+       ``current_revision`` and ``journal_entry`` move to it; the audit event has the field
+       diffs (T15).
 
     Any failure rolls everything back: never a reversal without its re-post. A revision can't
     bring the total below what is already paid (until D-03b-T09 moves the excess to credit)."""
@@ -156,7 +174,7 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
         assert_postable(locked, shown.lines, shown.date, person, "revise")
         store_figures(locked, shown.result)
         locked.save(update_fields=["subtotal", "discount_total", "tax_total", "total"])
-        number = previous.revision + 1
+        number = next_revision(locked)  # under the row lock: sequential, gap-free (T08)
         shown_as = display_number(locked.number, number)
         posted = previous.journal_post or locked.journal_entry
         if posted is None:  # pragma: no cover — a posted invoice has its journal (DB check)
