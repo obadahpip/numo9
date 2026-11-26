@@ -40,6 +40,11 @@ const labels = defineMessages({
     defaultMessage: "Purchases overview",
     description: "Module name (E-02-T15): the purchases overview",
   },
+  purchaseOrders: {
+    id: "routes.purchaseOrders",
+    defaultMessage: "Purchase orders",
+    description: "Module name (E-01)",
+  },
   settingsGeneral: {
     id: "routes.settingsGeneral",
     defaultMessage: "Settings: General",
@@ -277,6 +282,18 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.bills,
     settings: "settings/lock-dates",
     aliases: ["bills", "bill", "payables", "accounts-payable", "accountspayable/search.aspx"],
+  },
+  {
+    path: "purchases/orders",
+    feature: "accounting.purchase_orders.read",
+    label: labels.purchaseOrders,
+    aliases: [
+      "purchase-orders",
+      "purchaseorders",
+      "po",
+      "pos",
+      "accountspayable/purchaseorders.aspx",
+    ],
   },
   {
     // K-01: the report home lists every report, gated ones too (named, never hidden), so the
