@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 825   Remaining: 1962   Progress: 29.60%
+TOTAL ATOMIC TASKS: 2787   Completed: 826   Remaining: 1961   Progress: 29.64%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1102,7 +1102,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-09-T07 — Rule JOURNAL_TO_CASH
 ✅ K-09-T08 — Rules EXPENSE_JOURNAL_NO_CONTACT and EXPENSE_JOURNAL_NO_ATTACHMENT
 ✅ K-09-T09 — Rule EXEMPT_ON_TAXABLE_ACCOUNT (registrant org, expense account normally taxable, line coded Exempt) with fix "recode tax" via C-07 link
-❌ K-09-T10 — Rule BACKDATED (param N days, default 7) across journals/invoices/bills
+✅ K-09-T10 — Rule BACKDATED (param N days, default 7) across journals/invoices/bills
 ❌ K-09-T11 — Rules ROUND_AMOUNT and WEEKEND_POSTING (org time zone)
 ❌ K-09-T12 — Rule SOD_SAME_CREATOR_APPROVER (journals, bills, pay runs placeholder)
 ❌ K-09-T13 — Rules DUPLICATE_PAYMENT and DUPLICATE_SUPPLIER_INVOICE (similarity window)

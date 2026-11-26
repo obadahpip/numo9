@@ -452,6 +452,19 @@ msgstr ""
 msgid "the right purchase code"
 msgstr ""
 
+msgid "Backdated posting"
+msgstr ""
+
+msgid "A journal, invoice or bill posted long after its date: it changes periods that may already have been reported."
+msgstr ""
+
+#, python-format
+msgid "%(document)s is dated %(date)s but was posted on %(posted_on)s (%(gap)s days later; the limit is %(days)s)."
+msgstr ""
+
+msgid "Days"
+msgstr ""
+
 msgid "Date and time"
 msgstr ""
 
