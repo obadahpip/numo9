@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { FlatCompat } from "@eslint/eslintrc";
 
 import numo9, { BANNER_ALLOWED_FILES } from "./eslint/no-work-screen-banners.mjs";
-import i18nConfig from "./eslint.i18n.config.mjs";
+import { i18nConfig } from "./eslint.i18n.config.mjs";
 
 const compat = new FlatCompat({ baseDirectory: dirname(fileURLToPath(import.meta.url)) });
 
