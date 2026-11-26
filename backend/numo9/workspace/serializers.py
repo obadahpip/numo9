@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import builtins
+import re
 from typing import Any
 
 from rest_framework import serializers
@@ -138,16 +140,21 @@ class SavedViewSerializer(serializers.Serializer[Any]):
     updated_at = serializers.DateTimeField()
 
 
-class SavedViewWriteSerializer(serializers.Serializer[Any]):
-    """Create (``practice`` and ``name`` required) or change a view (any field)."""
+class SavedViewWriteBase(serializers.Serializer[Any]):
+    """The fields every saved view takes (directory and organisation lists, D-09-T03)."""
 
-    practice = serializers.UUIDField(required=False, help_text="Default: the user's only practice.")
     name = serializers.CharField(max_length=80, trim_whitespace=True)
     filters = serializers.DictField(required=False)
     columns = serializers.ListField(child=serializers.CharField(), required=False, max_length=30)
     sort = serializers.ListField(child=serializers.CharField(), required=False, max_length=5)
     density = serializers.ChoiceField(choices=Density.choices, required=False)
     is_default = serializers.BooleanField(required=False)
+
+
+class SavedViewWriteSerializer(SavedViewWriteBase):
+    """Create (``practice`` and ``name`` required) or change a view (any field)."""
+
+    practice = serializers.UUIDField(required=False, help_text="Default: the user's only practice.")
 
     def validate_filters(self, value: dict[str, Any]) -> dict[str, Any]:
         from .api import filter_choices
@@ -201,3 +208,64 @@ class SavedViewWriteSerializer(serializers.Serializer[Any]):
                 detail = error_detail(errors.WORKSPACE_BAD_SORT, value=key[:100])
                 raise serializers.ValidationError([detail])
         return value
+
+
+# ---- saved list views inside an organisation (D-09-T03) ----------------------------------------
+
+_KEY = re.compile(r"^[a-z][a-z0-9_]*$")
+
+
+class SavedListViewSerializer(serializers.Serializer[Any]):
+    id = serializers.UUIDField(source="public_id")
+    list = serializers.CharField(source="list_key", help_text="e.g. sales.invoices")
+    name = serializers.CharField()
+    filters = serializers.DictField(
+        help_text='The list\'s query parameters: {"tab": "overdue", "q": "maple"}.'
+    )
+    columns = serializers.ListField(child=serializers.CharField())
+    sort = serializers.ListField(child=serializers.CharField())
+    density = serializers.ChoiceField(choices=Density.choices)
+    is_default = serializers.BooleanField()
+    created_at = serializers.DateTimeField()
+    updated_at = serializers.DateTimeField()
+
+
+class SavedListViewWriteSerializer(SavedViewWriteBase):
+    """Create (``list`` and ``name`` required) or change a list view (any field but ``list``)."""
+
+    list = serializers.CharField(
+        required=False, max_length=60, help_text="The list's key, e.g. sales.invoices."
+    )
+
+    def validate_list(self, value: str) -> str:
+        from .saved_views import LIST_KEYS
+
+        if value not in LIST_KEYS:
+            raise serializers.ValidationError(
+                [error_detail(errors.WORKSPACE_UNKNOWN_LIST, value=value[:60])]
+            )
+        return value
+
+    def validate_filters(self, value: dict[str, Any]) -> dict[str, Any]:
+        from .saved_views import clean_list_filters
+
+        try:
+            return clean_list_filters(value)
+        except ValueError as error:
+            name, item = error.args
+            detail = error_detail(errors.WORKSPACE_BAD_VIEW_VALUE, name=name, value=item)
+            raise serializers.ValidationError([detail]) from None
+
+    def _keys(self, value: builtins.list[str], field: str, *, signed: bool) -> builtins.list[str]:
+        for key in value:
+            bare = key[1:] if signed and key.startswith("-") else key
+            if not _KEY.match(bare) or len(bare) > 60:
+                detail = error_detail(errors.WORKSPACE_BAD_VIEW_VALUE, name=field, value=key[:60])
+                raise serializers.ValidationError([detail])
+        return list(dict.fromkeys(value))
+
+    def validate_columns(self, value: builtins.list[str]) -> builtins.list[str]:
+        return self._keys(value, "columns", signed=False)
+
+    def validate_sort(self, value: builtins.list[str]) -> builtins.list[str]:
+        return self._keys(value, "sort", signed=True)

@@ -22,7 +22,6 @@ from __future__ import annotations
 import uuid
 from typing import Any, cast
 
-from django.db import IntegrityError, transaction
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import status
@@ -39,10 +38,8 @@ from numo9.tenancy.models import Practice, PracticeMember
 
 from .api import bad_parameter, resolve_practice
 from .models import SavedView
+from .saved_views import MAX_VIEWS, ViewNameTaken, save_view
 from .serializers import SavedViewSerializer, SavedViewWriteSerializer
-
-MAX_VIEWS = 50
-FIELDS = ("name", "filters", "columns", "sort", "density", "is_default")
 
 
 def _user(request: Request) -> User:
@@ -54,19 +51,13 @@ def _payload(view: SavedView) -> dict[str, Any]:
 
 
 def _save(view: SavedView, data: dict[str, Any]) -> SavedView:
-    for name in FIELDS:
-        if name in data:
-            setattr(view, name, data[name])
+    """The shared saved-view rules (``saved_views.save_view``): one default per user and practice,
+    names unique per user and practice."""
+    siblings = SavedView.objects.filter(user=view.user, practice=view.practice)
     try:
-        with transaction.atomic():
-            if view.is_default:  # one default per user and practice
-                SavedView.objects.filter(
-                    user=view.user, practice=view.practice, is_default=True
-                ).exclude(pk=view.pk).update(is_default=False)
-            view.save()
-    except IntegrityError:
+        return save_view(view, data, siblings)
+    except ViewNameTaken:
         raise bad_parameter(errors.WORKSPACE_VIEW_NAME_TAKEN, "name", name=view.name) from None
-    return view
 
 
 class SavedViewListView(APIView):

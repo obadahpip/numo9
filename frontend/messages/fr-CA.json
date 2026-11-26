@@ -2191,6 +2191,18 @@
     "retry": "Try again",
     "search": "Search organisations"
   },
+  "overview": {
+    "card": {
+      "denied": "Votre rôle ne donne pas accès à ces renseignements. Demandez l’accès à un administrateur.",
+      "failed": "Impossible de charger {card}",
+      "loading": "Chargement de {card}…",
+      "offline": "Impossible de joindre Numo9. Votre connexion a peut-être été interrompue. Réessayez dans un instant.",
+      "other": "La demande a été refusée. Réessayez; si le problème persiste, donnez la référence ci-dessous au soutien.",
+      "reference": "Référence : {reference}",
+      "retry": "Réessayer",
+      "server": "Un problème est survenu de notre côté et rien n’a été modifié. Réessayez; si le problème persiste, donnez la référence ci-dessous au soutien."
+    }
+  },
   "packages": {
     "card": {
       "annual": "Annual",

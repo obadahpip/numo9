@@ -44,6 +44,11 @@ export interface ApiResult<Body> {
   body: Body;
   /** `Retry-After` in seconds (429), when sent. */
   retryAfter?: number;
+  /**
+   * The request's support reference (D-09-T10): the server's `X-Request-ID` (the one sent, when the
+   * caller set it), shown on error states so support can find the request in the logs.
+   */
+  requestId?: string;
 }
 
 let csrf: Promise<string> | undefined;
@@ -152,7 +157,8 @@ export async function apiRequest<Body = AuthBody>(
       response = await send();
     }
   } catch {
-    return { status: 0, body: {} as Body };
+    // Offline: the reference the caller sent (if any) still names the attempt.
+    return { status: 0, body: {} as Body, requestId: headerValue(headers, REQUEST_ID_HEADER) };
   }
   let parsed: unknown = {};
   try {
@@ -165,7 +171,31 @@ export async function apiRequest<Body = AuthBody>(
     status: response.status,
     body: (parsed ?? {}) as Body,
     retryAfter: Number.isFinite(retry) && retry > 0 ? retry : undefined,
+    requestId: response.headers.get(REQUEST_ID_HEADER) ?? headerValue(headers, REQUEST_ID_HEADER),
   };
+}
+
+/** Request id header: sent by the client when it wants a reference, echoed by the API (A-04-T04). */
+export const REQUEST_ID_HEADER = "X-Request-ID";
+
+function headerValue(headers: Record<string, string>, name: string): string | undefined {
+  const wanted = name.toLowerCase();
+  const key = Object.keys(headers).find((k) => k.toLowerCase() === wanted);
+  return key ? headers[key] : undefined;
+}
+
+let referenceCounter = 0;
+
+/**
+ * A new support reference for one request (`X-Request-ID`, 8–64 of `A–Z a–z 0–9 . _ -`): known
+ * before the request is sent, so even an offline failure has a reference to show.
+ */
+export function newRequestId(): string {
+  const random =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID().replaceAll("-", "")
+      : `${Date.now().toString(16)}${(referenceCounter++).toString(16)}`.padEnd(16, "0");
+  return `web-${random.slice(0, 16)}`;
 }
 
 async function isCsrfFailure(response: Response): Promise<boolean> {

@@ -2191,6 +2191,18 @@
     "retry": "Try again",
     "search": "Search organisations"
   },
+  "overview": {
+    "card": {
+      "denied": "Your role doesn't include this information. Ask an administrator for access.",
+      "failed": "{card} couldn't be loaded",
+      "loading": "Loading {card}…",
+      "offline": "Numo9 couldn't be reached. Your connection may have dropped. Try again in a moment.",
+      "other": "The request was refused. Try again; if it keeps failing, give support the reference below.",
+      "reference": "Reference: {reference}",
+      "retry": "Try again",
+      "server": "Something went wrong on our side and nothing was changed. Try again; if it keeps failing, give support the reference below."
+    }
+  },
   "packages": {
     "card": {
       "annual": "Annual",

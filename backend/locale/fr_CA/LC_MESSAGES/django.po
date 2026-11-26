@@ -3897,6 +3897,14 @@ msgstr "Il existe déjà un rôle nommé %(name)s ici. Choisissez un autre nom."
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr "Vous avez %(max)s vues enregistrées, le maximum permis. Supprimez d’abord une vue que vous n’utilisez plus."
 
+#, python-format
+msgid "Views can't be saved for %(value)s: there's no list with that name."
+msgstr "Impossible d’enregistrer des vues pour %(value)s : aucune liste ne porte ce nom."
+
+#, python-format
+msgid "%(value)s isn't a valid value for %(name)s in a saved view."
+msgstr "%(value)s n’est pas une valeur valide pour %(name)s dans une vue enregistrée."
+
 msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
 msgstr "Les notifications de sécurité ne peuvent pas être désactivées : elles vous informent des connexions et des changements à votre compte."
 
@@ -10583,12 +10591,6 @@ msgstr "ligne du répertoire des organisations"
 msgid "organisation directory rows"
 msgstr "lignes du répertoire des organisations"
 
-msgid "search and filters"
-msgstr "recherche et filtres"
-
-msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
-msgstr ""
-
 msgid "Shown columns, in order."
 msgstr "Colonnes affichées, dans l’ordre."
 
@@ -10604,11 +10606,29 @@ msgstr "densité"
 msgid "opens by default"
 msgstr "s’ouvre par défaut"
 
+msgid "search and filters"
+msgstr "recherche et filtres"
+
+msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
+msgstr ""
+
 msgid "saved directory view"
 msgstr "vue de répertoire enregistrée"
 
 msgid "saved directory views"
 msgstr "vues de répertoire enregistrées"
+
+msgid "list"
+msgstr "liste"
+
+msgid "The list's query: {\"tab\": \"overdue\", \"q\": \"maple\"}."
+msgstr "La requête de la liste : {\"tab\": \"overdue\", \"q\": \"maple\"}."
+
+msgid "saved list view"
+msgstr "vue de liste enregistrée"
+
+msgid "saved list views"
+msgstr "vues de liste enregistrées"
 
 msgid "organisation group"
 msgstr "groupe d’organisations"
@@ -10696,6 +10716,21 @@ msgstr "Voir les organisations clientes du cabinet dans le répertoire"
 
 msgid "Organise the practice's clients into groups and tags, and assign staff to groups"
 msgstr "Organiser les clients du cabinet en groupes et en étiquettes, et affecter le personnel aux groupes"
+
+msgid "Invoices"
+msgstr "Factures"
+
+msgid "Quotes"
+msgstr "Soumissions"
+
+msgid "Credit notes"
+msgstr "Notes de crédit"
+
+msgid "Payments received"
+msgstr "Paiements reçus"
+
+msgid "Bank transactions"
+msgstr "Opérations bancaires"
 
 msgid "Give the tag a name."
 msgstr "Donnez un nom à l’étiquette."

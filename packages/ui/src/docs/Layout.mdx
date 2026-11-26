@@ -2,6 +2,7 @@ import { Canvas, Meta } from "@storybook/blocks";
 
 import * as Shell from "../shell/AppShell.stories";
 import * as Switcher from "../org-switcher/OrgSwitcher.stories";
+import * as Overview from "../overview/OverviewPage.stories";
 import { Do, DoDont, Dont } from "./DoDont";
 
 <Meta title="Guidelines/Layout" />
@@ -48,5 +49,32 @@ breadcrumbs, user menu, notification bell and job tray (A-10-T05). Responsive 36
   </Do>
   <Dont>
     <p>A plain dropdown of every organisation.</p>
+  </Dont>
+</DoDont>
+
+## OverviewPage — sales and purchases overviews
+
+One overview pattern for every module (D-09-T06, gap-22): status tiles (count and amount, each a
+link to the list filtered the same way), independent cards with their own skeleton and **Try
+again**, and the aging bar (one hue darkening with age, every bucket named with its amount).
+
+<Canvas of={Overview.Sales} />
+
+<Canvas of={Overview.CardError} />
+
+<DoDont>
+  <Do>
+    <p>
+      Build the sales and purchases overviews from `OverviewPage`, `OverviewTiles`, `OverviewCard`.
+    </p>
+    <p>Take tile counts from the list's own query, so a tile and its tab always agree.</p>
+    <p>
+      Give a failed card a title naming what failed and **Try again**; the rest of the page stays.
+    </p>
+  </Do>
+  <Dont>
+    <p>A second overview layout for one module, or a tile that isn't a link to its list.</p>
+    <p>"Unable to load" with no retry, or one failing card that blanks the page.</p>
+    <p>An empty tile or bar — zero shows `0` and `$0.00`.</p>
   </Dont>
 </DoDont>

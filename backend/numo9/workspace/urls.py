@@ -1,8 +1,9 @@
-"""Accountant workspace API routes, mounted under /api/v1/ (V-01)."""
+"""Accountant workspace API routes, mounted under /api/v1/ (V-01); saved list views inside an
+organisation (D-09-T03)."""
 
 from django.urls import path
 
-from . import api, dashboard_api, groups_api, views_api
+from . import api, dashboard_api, groups_api, list_views_api, views_api
 
 urlpatterns = [
     path("practice/orgs", api.DirectoryView.as_view(), name="practice-orgs"),
@@ -22,6 +23,13 @@ urlpatterns = [
         "practice/views/<uuid:view_id>",
         views_api.SavedViewDetailView.as_view(),
         name="practice-view",
+    ),
+    # Saved views of an organisation's lists (D-09-T03).
+    path("o/<uuid:org>/views", list_views_api.SavedListViewListView.as_view(), name="list-views"),
+    path(
+        "o/<uuid:org>/views/<uuid:view_id>",
+        list_views_api.SavedListViewDetailView.as_view(),
+        name="list-view",
     ),
     # Groups and tags (V-02-T07)
     path("practice/groups", groups_api.GroupListView.as_view(), name="practice-groups"),
