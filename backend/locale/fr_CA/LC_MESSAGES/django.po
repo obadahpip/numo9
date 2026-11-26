@@ -203,6 +203,135 @@ msgstr "Ce mot de passe est apparu dans une fuite de données : les attaquants l
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr "Votre mot de passe ne peut pas être un mot de passe apparu dans une fuite de données connue."
 
+msgid "Info"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Critical"
+msgstr "Critique"
+
+msgid "Open"
+msgstr ""
+
+msgid "Acknowledged"
+msgstr ""
+
+msgid "Resolved"
+msgstr ""
+
+msgid "False positive"
+msgstr ""
+
+msgid "On demand"
+msgstr ""
+
+msgid "Nightly"
+msgstr ""
+
+msgid "On posting"
+msgstr ""
+
+msgid "Running"
+msgstr "En cours"
+
+msgid "Succeeded"
+msgstr "Réussi"
+
+msgid "Failed"
+msgstr "Échec"
+
+msgid "rule"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "severity"
+msgstr ""
+
+msgid "parameters"
+msgstr "paramètres"
+
+msgid "assurance rule setting"
+msgstr ""
+
+msgid "assurance rule settings"
+msgstr ""
+
+msgid "trigger"
+msgstr ""
+
+msgid "status"
+msgstr "statut"
+
+msgid "started at"
+msgstr "commencée le"
+
+msgid "finished at"
+msgstr "terminée le"
+
+msgid "scope"
+msgstr ""
+
+msgid "rules run"
+msgstr ""
+
+msgid "counts"
+msgstr ""
+
+msgid "error"
+msgstr "erreur"
+
+msgid "job"
+msgstr ""
+
+msgid "assurance run"
+msgstr ""
+
+msgid "assurance runs"
+msgstr ""
+
+msgid "subject type"
+msgstr ""
+
+msgid "subject"
+msgstr "objet"
+
+msgid "subject label"
+msgstr ""
+
+msgid "amount"
+msgstr "montant"
+
+msgid "details"
+msgstr "détails"
+
+msgid "resolved at"
+msgstr ""
+
+msgid "acknowledged by"
+msgstr ""
+
+msgid "acknowledged at"
+msgstr ""
+
+msgid "reason"
+msgstr "raison"
+
+msgid "last run"
+msgstr ""
+
+msgid "fix journal"
+msgstr ""
+
+msgid "assurance finding"
+msgstr ""
+
+msgid "assurance findings"
+msgstr ""
+
 msgid "Date and time"
 msgstr "Date et heure"
 
@@ -286,9 +415,6 @@ msgstr "fiche"
 
 msgid "changes"
 msgstr "modifications"
-
-msgid "details"
-msgstr "détails"
 
 msgid "request ID"
 msgstr "ID de requête"
@@ -627,9 +753,6 @@ msgstr "taxes"
 msgid "total"
 msgstr "total"
 
-msgid "status"
-msgstr "statut"
-
 msgid "journal"
 msgstr "écriture"
 
@@ -649,9 +772,6 @@ msgstr "description"
 #| msgid "Accounting"
 msgid "account"
 msgstr "Comptabilité"
-
-msgid "amount"
-msgstr "montant"
 
 msgid "net"
 msgstr "net"
@@ -1006,9 +1126,6 @@ msgstr "Aperçu"
 msgid "Waiting to start"
 msgstr "En attente de démarrage"
 
-msgid "Running"
-msgstr "En cours"
-
 msgid "Completed"
 msgstr "Terminé"
 
@@ -1018,20 +1135,11 @@ msgstr ""
 msgid "Waiting"
 msgstr "En attente"
 
-msgid "Succeeded"
-msgstr "Réussi"
-
 msgid "Skipped"
 msgstr "Ignoré"
 
-msgid "Failed"
-msgstr "Échec"
-
 msgid "started by"
 msgstr "lancé par"
-
-msgid "parameters"
-msgstr "paramètres"
 
 msgid "selection"
 msgstr "sélection"
@@ -1053,12 +1161,6 @@ msgstr ""
 
 msgid "confirmed at"
 msgstr "confirmé le"
-
-msgid "started at"
-msgstr "commencée le"
-
-msgid "finished at"
-msgstr "terminée le"
 
 msgid "cancel requested at"
 msgstr "annulation demandée le"
@@ -2292,9 +2394,6 @@ msgstr "type de document"
 msgid "document"
 msgstr "document"
 
-msgid "reason"
-msgstr "raison"
-
 msgid "decided by"
 msgstr "décision prise par"
 
@@ -2330,9 +2429,6 @@ msgstr "montant dû"
 
 msgid "sent to"
 msgstr "envoyé à"
-
-msgid "subject"
-msgstr "objet"
 
 msgid "file"
 msgstr "fichier"
@@ -4546,9 +4642,6 @@ msgstr "lien du résultat"
 
 msgid "error code"
 msgstr "code d’erreur"
-
-msgid "error"
-msgstr "erreur"
 
 msgid "error detail"
 msgstr "détail de l’erreur"
@@ -7760,9 +7853,6 @@ msgstr "modèle de numéro de facture du fournisseur"
 msgid "Placeholders keep each bill's number unique, e.g. RENT-{{month}}-{{year}}."
 msgstr "Les espaces réservés gardent unique le numéro de chaque facture, p. ex. LOYER-{{month}}-{{year}}."
 
-msgid "last run"
-msgstr ""
-
 msgid "recurring bill"
 msgstr "facture fournisseur récurrente"
 
@@ -8302,12 +8392,6 @@ msgstr "Risque moyen"
 
 msgid "High risk"
 msgstr "Risque élevé"
-
-msgid "Critical"
-msgstr "Critique"
-
-msgid "scope"
-msgstr ""
 
 msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
 msgstr ""
@@ -10383,9 +10467,6 @@ msgid "Out of cycle"
 msgstr "Hors champ"
 
 msgid "Stub"
-msgstr ""
-
-msgid "Open"
 msgstr ""
 
 msgid "Filed"

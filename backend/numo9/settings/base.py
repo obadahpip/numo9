@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "numo9.purchases",  # E-01 purchase orders and receipts
     "numo9.reports",  # K-01 report engine
     "numo9.dashboard",  # K-05 organisation dashboard
+    "numo9.assurance",  # K-09 exceptions engine
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",

@@ -199,6 +199,135 @@ msgstr ""
 msgid "Your password can't be one that has appeared in a known data breach."
 msgstr ""
 
+msgid "Info"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Critical"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Acknowledged"
+msgstr ""
+
+msgid "Resolved"
+msgstr ""
+
+msgid "False positive"
+msgstr ""
+
+msgid "On demand"
+msgstr ""
+
+msgid "Nightly"
+msgstr ""
+
+msgid "On posting"
+msgstr ""
+
+msgid "Running"
+msgstr ""
+
+msgid "Succeeded"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "rule"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+msgid "severity"
+msgstr ""
+
+msgid "parameters"
+msgstr ""
+
+msgid "assurance rule setting"
+msgstr ""
+
+msgid "assurance rule settings"
+msgstr ""
+
+msgid "trigger"
+msgstr ""
+
+msgid "status"
+msgstr ""
+
+msgid "started at"
+msgstr ""
+
+msgid "finished at"
+msgstr ""
+
+msgid "scope"
+msgstr ""
+
+msgid "rules run"
+msgstr ""
+
+msgid "counts"
+msgstr ""
+
+msgid "error"
+msgstr ""
+
+msgid "job"
+msgstr ""
+
+msgid "assurance run"
+msgstr ""
+
+msgid "assurance runs"
+msgstr ""
+
+msgid "subject type"
+msgstr ""
+
+msgid "subject"
+msgstr ""
+
+msgid "subject label"
+msgstr ""
+
+msgid "amount"
+msgstr ""
+
+msgid "details"
+msgstr ""
+
+msgid "resolved at"
+msgstr ""
+
+msgid "acknowledged by"
+msgstr ""
+
+msgid "acknowledged at"
+msgstr ""
+
+msgid "reason"
+msgstr ""
+
+msgid "last run"
+msgstr ""
+
+msgid "fix journal"
+msgstr ""
+
+msgid "assurance finding"
+msgstr ""
+
+msgid "assurance findings"
+msgstr ""
+
 msgid "Date and time"
 msgstr ""
 
@@ -281,9 +410,6 @@ msgid "record"
 msgstr ""
 
 msgid "changes"
-msgstr ""
-
-msgid "details"
 msgstr ""
 
 msgid "request ID"
@@ -619,9 +745,6 @@ msgstr ""
 msgid "total"
 msgstr ""
 
-msgid "status"
-msgstr ""
-
 msgid "journal"
 msgstr ""
 
@@ -638,9 +761,6 @@ msgid "description"
 msgstr ""
 
 msgid "account"
-msgstr ""
-
-msgid "amount"
 msgstr ""
 
 msgid "net"
@@ -994,9 +1114,6 @@ msgstr ""
 msgid "Waiting to start"
 msgstr ""
 
-msgid "Running"
-msgstr ""
-
 msgid "Completed"
 msgstr ""
 
@@ -1006,19 +1123,10 @@ msgstr ""
 msgid "Waiting"
 msgstr ""
 
-msgid "Succeeded"
-msgstr ""
-
 msgid "Skipped"
 msgstr ""
 
-msgid "Failed"
-msgstr ""
-
 msgid "started by"
-msgstr ""
-
-msgid "parameters"
 msgstr ""
 
 msgid "selection"
@@ -1040,12 +1148,6 @@ msgid "created at"
 msgstr ""
 
 msgid "confirmed at"
-msgstr ""
-
-msgid "started at"
-msgstr ""
-
-msgid "finished at"
 msgstr ""
 
 msgid "cancel requested at"
@@ -2166,9 +2268,6 @@ msgstr ""
 msgid "document"
 msgstr ""
 
-msgid "reason"
-msgstr ""
-
 msgid "decided by"
 msgstr ""
 
@@ -2203,9 +2302,6 @@ msgid "amount due"
 msgstr ""
 
 msgid "sent to"
-msgstr ""
-
-msgid "subject"
 msgstr ""
 
 msgid "file"
@@ -4289,9 +4385,6 @@ msgid "result link"
 msgstr ""
 
 msgid "error code"
-msgstr ""
-
-msgid "error"
 msgstr ""
 
 msgid "error detail"
@@ -7205,9 +7298,6 @@ msgstr ""
 msgid "Placeholders keep each bill's number unique, e.g. RENT-{{month}}-{{year}}."
 msgstr ""
 
-msgid "last run"
-msgstr ""
-
 msgid "recurring bill"
 msgstr ""
 
@@ -7712,12 +7802,6 @@ msgid "Medium risk"
 msgstr ""
 
 msgid "High risk"
-msgstr ""
-
-msgid "Critical"
-msgstr ""
-
-msgid "scope"
 msgstr ""
 
 msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
@@ -9455,9 +9539,6 @@ msgid "Out of cycle"
 msgstr ""
 
 msgid "Stub"
-msgstr ""
-
-msgid "Open"
 msgstr ""
 
 msgid "Filed"
