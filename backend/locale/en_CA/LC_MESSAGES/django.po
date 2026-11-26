@@ -7280,6 +7280,34 @@ msgstr ""
 msgid "Enter dates as YYYY-MM-DD."
 msgstr ""
 
+msgid "Generic CSV (with headers)"
+msgstr ""
+
+msgid "RBC Royal Bank"
+msgstr ""
+
+msgid "TD Canada Trust"
+msgstr ""
+
+msgid "BMO Bank of Montreal"
+msgstr ""
+
+msgid "Scotiabank"
+msgstr ""
+
+msgid "CIBC"
+msgstr ""
+
+msgid "Desjardins"
+msgstr ""
+
+msgid "Choose a positive-pay format from the list."
+msgstr ""
+
+#, python-format
+msgid "Enter the account number printed on the cheques of %(account)s first."
+msgstr ""
+
 #, python-format
 msgid "This receipt was already claimed on %(claims)s."
 msgstr ""

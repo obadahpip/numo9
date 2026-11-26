@@ -7841,6 +7841,34 @@ msgstr "Regroupez par compte, fournisseur ou mois."
 msgid "Enter dates as YYYY-MM-DD."
 msgstr "Entrez les dates au format AAAA-MM-JJ."
 
+msgid "Generic CSV (with headers)"
+msgstr "CSV générique (avec en-têtes)"
+
+msgid "RBC Royal Bank"
+msgstr "RBC Banque Royale"
+
+msgid "TD Canada Trust"
+msgstr "TD Canada Trust"
+
+msgid "BMO Bank of Montreal"
+msgstr "BMO Banque de Montréal"
+
+msgid "Scotiabank"
+msgstr "Banque Scotia"
+
+msgid "CIBC"
+msgstr "CIBC"
+
+msgid "Desjardins"
+msgstr "Desjardins"
+
+msgid "Choose a positive-pay format from the list."
+msgstr "Choisissez un format de paiement positif dans la liste."
+
+#, python-format
+msgid "Enter the account number printed on the cheques of %(account)s first."
+msgstr "Entrez d’abord le numéro de compte imprimé sur les chèques de %(account)s."
+
 #, python-format
 msgid "This receipt was already claimed on %(claims)s."
 msgstr ""
