@@ -3981,6 +3981,24 @@ msgstr ""
 msgid "job runs"
 msgstr ""
 
+msgid "event"
+msgstr ""
+
+msgid "occurred at"
+msgstr ""
+
+msgid "delivered at"
+msgstr ""
+
+msgid "delivery attempts"
+msgstr ""
+
+msgid "outbox event"
+msgstr ""
+
+msgid "outbox events"
+msgstr ""
+
 msgid "Background job"
 msgstr ""
 

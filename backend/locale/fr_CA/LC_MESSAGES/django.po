@@ -4237,6 +4237,24 @@ msgstr "exécution de tâche"
 msgid "job runs"
 msgstr "exécutions de tâches"
 
+msgid "event"
+msgstr "événement"
+
+msgid "occurred at"
+msgstr "survenu le"
+
+msgid "delivered at"
+msgstr "livré le"
+
+msgid "delivery attempts"
+msgstr "tentatives de livraison"
+
+msgid "outbox event"
+msgstr "événement de la boîte d’envoi"
+
+msgid "outbox events"
+msgstr "événements de la boîte d’envoi"
+
 msgid "Background job"
 msgstr "Tâche en arrière-plan"
 

@@ -150,3 +150,49 @@ class JobRun(OrgOwnedModel):
         if not self.progress_total:
             return None
         return min(100, (self.progress_done * 100) // self.progress_total)
+
+
+class OutboxEvent(OrgOwnedModel):
+    """A business event to tell the outside world about (D-03b-T17): the **transactional
+    outbox** of the webhooks (W-01) and the mobile companion. It is written in the transaction
+    of the change it describes — a rolled-back change leaves no event, a committed one always has
+    it — and delivered later, at least once, by a relay that marks ``dispatched_at``.
+
+    ``event_type`` is the public name (``invoice.revised``); ``key`` makes it idempotent — one
+    event per key and organisation (``invoice.revised:<revision id>``), so emitting twice stores
+    it once; ``aggregate`` names the record it is about (``sales.invoice`` + public id);
+    ``payload`` is the JSON body consumers receive."""
+
+    event_type = models.CharField(_("event"), max_length=100)
+    key = models.CharField(_("idempotency key"), max_length=200)
+    aggregate_type = models.CharField(_("record type"), max_length=100)
+    aggregate_id = models.CharField(_("record ID"), max_length=64)
+    payload = models.JSONField(_("payload"), default=dict)
+    occurred_at = models.DateTimeField(_("occurred at"))
+    dispatched_at = models.DateTimeField(_("delivered at"), null=True, blank=True)
+    attempts = models.PositiveIntegerField(_("delivery attempts"), default=0)
+
+    class Meta:
+        ordering = ("occurred_at", "pk")
+        verbose_name = _("outbox event")
+        verbose_name_plural = _("outbox events")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "key"], name="jobs_outbox_event_once_per_key"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            # The relay: what is still to deliver, oldest first.
+            models.Index(
+                fields=["occurred_at"],
+                condition=models.Q(dispatched_at__isnull=True),
+                name="jobs_outbox_pending_idx",
+            ),
+            models.Index(
+                fields=["organisation", "aggregate_type", "aggregate_id"],
+                name="jobs_outbox_aggregate_idx",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.event_type} {self.key}"

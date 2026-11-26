@@ -111,7 +111,7 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
     6. record revision n + 1 ("101-1", numbered under the row lock, T08) with its snapshot,
        totals, reason and **both journals**; the previous one is superseded;
        ``current_revision`` and ``journal_entry`` move to it; the audit event has the field
-       diffs (T15).
+       diffs (T15); the event ``invoice.revised`` goes in the outbox (T17).
 
     Any failure rolls everything back: never a reversal without its re-post. A revision can't
     bring the total below what is already paid (until D-03b-T09 moves the excess to credit)."""
@@ -240,4 +240,43 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
             user=person,
             late_adjustment=late_adjustment_summary(revision) if late_adjustment else None,
         )
+        emit_revised(locked, revision, previous)
         return revision
+
+
+#: The public event of a saved revision (W-01 webhooks, the mobile app).
+REVISED_EVENT = "invoice.revised"
+
+
+def emit_revised(invoice: Invoice, revision: Any, previous: Any) -> Any:
+    """Store ``invoice.revised`` in the outbox (D-03b-T17) — in the revision's transaction, once
+    per revision (its public id is the key): a rolled-back revision leaves no event."""
+    from numo9.jobs.outbox import emit
+
+    def journal(entry: Any) -> str | None:
+        return str(entry.public_id) if entry is not None else None
+
+    return emit(
+        invoice.organisation,
+        REVISED_EVENT,
+        key=f"{REVISED_EVENT}:{revision.public_id}",
+        aggregate=("sales.invoice", str(invoice.public_id)),
+        payload={
+            "invoice": str(invoice.public_id),
+            "number": invoice.number,
+            "revision": revision.revision,
+            "revision_id": str(revision.public_id),
+            "number_display": revision.number_display,
+            "supersedes": previous.number_display or invoice.number,
+            "contact": str(invoice.contact.public_id),
+            "currency": invoice.currency,
+            "date": invoice.date.isoformat(),
+            "due_date": invoice.due_date.isoformat() if invoice.due_date else None,
+            "total": f"{revision.total:.2f}",
+            "tax_total": f"{revision.tax_total:.2f}",
+            "previous_total": f"{previous.total:.2f}",
+            "reason": revision.reason,
+            "journal_reversal": journal(revision.journal_reversal),
+            "journal_post": journal(revision.journal_post),
+        },
+    )
