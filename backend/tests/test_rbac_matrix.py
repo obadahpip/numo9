@@ -207,6 +207,8 @@ def path_for(declaration: Declaration, world: World) -> str:
         "line_id": "00000000-0000-4000-8000-000000000000",
         # Invoice "View invoice" link (D-03a-T12): a bad token — everyone gets its 404.
         "token": "not-a-token",
+        # Out-of-cycle filing periods (G-03a-T16): a period that doesn't exist — its 404.
+        "period_id": "00000000-0000-4000-8000-000000000000",
         # Report drill-down (K-01-T05): a report that exists.
         "report": "trial-balance",
     }

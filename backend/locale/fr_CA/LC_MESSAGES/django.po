@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:19-0500\n"
+"POT-Creation-Date: 2026-11-25 19:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6710,15 +6710,12 @@ msgstr "Aucune écriture de journal ne porte cet identifiant dans cette organisa
 msgid "That supplier doesn't exist."
 msgstr "Ce document n'existe pas."
 
-#, fuzzy
-#| msgid "That document doesn't exist."
 msgid "Those payment terms don't exist."
-msgstr "Ce document n'existe pas."
+msgstr "Ces conditions de paiement n’existent pas."
 
-#, fuzzy, python-format
-#| msgid "That document doesn't exist."
+#, python-format
 msgid "That %(field)s doesn't exist."
-msgstr "Ce document n'existe pas."
+msgstr "Ce champ (%(field)s) n’existe pas."
 
 #, fuzzy
 #| msgid "The end date is before the start date."
@@ -8032,10 +8029,8 @@ msgstr ""
 msgid "No activity in this period"
 msgstr ""
 
-#, fuzzy
-#| msgid "There's no contact with this id in this organisation."
 msgid "There's no invoice with this id in this organisation."
-msgstr "Aucun contact ne porte cet identifiant dans cette organisation."
+msgstr "Il n’y a pas de facture avec cet identifiant dans cette organisation."
 
 #, fuzzy
 #| msgid "Approve sales over a customer's credit limit"
@@ -8115,6 +8110,24 @@ msgstr ""
 
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
+
+msgid "That customer doesn't exist."
+msgstr "Ce client n’existe pas."
+
+msgid "The due date is before the invoice date."
+msgstr "La date d’échéance est antérieure à la date de la facture."
+
+msgid "Only a draft invoice can be edited: revise or void a posted invoice."
+msgstr "Seule une facture en brouillon peut être modifiée : révisez ou annulez une facture comptabilisée."
+
+msgid "Someone else saved this invoice: reload it to see their changes."
+msgstr "Une autre personne a enregistré cette facture : rechargez-la pour voir ses modifications."
+
+msgid "Only a draft invoice can be deleted: void a posted invoice."
+msgstr "Seule une facture en brouillon peut être supprimée : annulez une facture comptabilisée."
+
+msgid "Copy to an invoice or a quote."
+msgstr "Copiez vers une facture ou un devis."
 
 #, fuzzy
 #| msgid "first seen"
@@ -8467,20 +8480,37 @@ msgstr ""
 msgid "Thank you for your business. Payment by cheque or e-Transfer."
 msgstr ""
 
-#, fuzzy
-#| msgid "Quotes, invoices and customers."
+msgid "approved"
+msgstr "approuvée"
+
+msgid "voided"
+msgstr "annulée"
+
+#, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, on or before the %(module)s lock date (%(lock)s, %(level)s). Date it after %(lock)s, or ask someone who manages lock dates."
+msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s, à la date de verrouillage %(module)s (%(lock)s, %(level)s) ou avant. Datez-la après le %(lock)s, ou demandez à une personne qui gère les dates de verrouillage."
+
+#, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
+msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s, dans la période de %(registration)s %(start)s – %(end)s, produite (confirmation %(number)s). Datez-la dans une période ouverte : la taxe d’une période produite ne change que par un redressement tardif ou une déclaration modifiée."
+
+msgid "GST/HST"
+msgstr "TPS/TVH"
+
+msgid "QST"
+msgstr "TVQ"
+
 msgid "See invoices, their PDF and emails"
-msgstr "Soumissions, factures et clients."
+msgstr "Voir les factures, leur PDF et leurs courriels"
 
-#, fuzzy
-#| msgid "Create, edit and give the practice's roles"
 msgid "Create and edit draft invoices"
-msgstr "Créer, modifier et attribuer les rôles du cabinet"
+msgstr "Créer et modifier des factures en brouillon"
 
-#, fuzzy
-#| msgid "Quotes, invoices and customers."
+msgid "Approve, post and void invoices"
+msgstr "Approuver, comptabiliser et annuler des factures"
+
 msgid "Email invoices to customers"
-msgstr "Soumissions, factures et clients."
+msgstr "Envoyer les factures aux clients par courriel"
 
 msgid "See quotes and their PDF"
 msgstr ""
@@ -9023,9 +9053,6 @@ msgstr "TVH"
 
 msgid "PST"
 msgstr "TVP"
-
-msgid "QST"
-msgstr "TVQ"
 
 msgid "Sales and purchases"
 msgstr "Ventes et achats"

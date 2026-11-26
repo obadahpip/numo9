@@ -34,6 +34,7 @@ from numo9.tenancy.context import org_context
 from .credit import DOCUMENT_TYPE as CREDIT_DOCUMENT
 from .models import CreditNote, Invoice, InvoiceStatus
 from .numbering import assign_number
+from .period_checks import assert_postable
 
 SOURCE_TYPE = "sales.invoice"
 ZERO = Decimal("0.00")
@@ -146,6 +147,8 @@ def approve(invoice: Invoice, user: Any) -> Invoice:
             document_type=CREDIT_DOCUMENT,
             document_ref=str(locked.public_id),
         )
+        # D-03a-T04: the AR lock and filed GST/HST periods, named, before a number is used.
+        assert_postable(locked, shown.lines, shown.date, person, "approve")
         store_figures(locked, shown.result)
         number = assign_number(locked)
         entry = post_journal(
@@ -172,6 +175,14 @@ def approve(invoice: Invoice, user: Any) -> Invoice:
 
 # ---- void (D-03a-T07) --------------------------------------------------------------------------
 
+
+class _Reversed:
+    """A posted line as its reversal posts it (debit and credit swapped)."""
+
+    def __init__(self, line: Any) -> None:
+        self.account, self.debit, self.credit = line.account, line.credit, line.debit
+
+
 VOIDABLE = (InvoiceStatus.APPROVED, InvoiceStatus.SENT)
 
 
@@ -197,6 +208,13 @@ def void(invoice: Invoice, user: Any, *, date: Any = None, reason: str = "") -> 
                 else _("only approved or sent invoices can be voided."),
             )
         assert locked.journal_entry is not None  # noqa: S101 — posted statuses have one (DB check)
+        assert_postable(  # D-03a-T04: named refusals for the void date
+            locked,
+            [_Reversed(line) for line in locked.journal_entry.lines.select_related("account")],
+            date or locked.date,
+            person,
+            "void",
+        )
         reversal = reverse(
             locked.journal_entry,
             date=date or locked.date,

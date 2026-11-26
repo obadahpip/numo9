@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:19-0500\n"
+"POT-Creation-Date: 2026-11-25 19:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7427,6 +7427,24 @@ msgstr ""
 msgid "Add at least one email address to send the invoice to."
 msgstr ""
 
+msgid "That customer doesn't exist."
+msgstr ""
+
+msgid "The due date is before the invoice date."
+msgstr ""
+
+msgid "Only a draft invoice can be edited: revise or void a posted invoice."
+msgstr ""
+
+msgid "Someone else saved this invoice: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft invoice can be deleted: void a posted invoice."
+msgstr ""
+
+msgid "Copy to an invoice or a quote."
+msgstr ""
+
 msgid "first viewed at"
 msgstr ""
 
@@ -7710,10 +7728,33 @@ msgstr ""
 msgid "Thank you for your business. Payment by cheque or e-Transfer."
 msgstr ""
 
+msgid "approved"
+msgstr ""
+
+msgid "voided"
+msgstr ""
+
+#, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, on or before the %(module)s lock date (%(lock)s, %(level)s). Date it after %(lock)s, or ask someone who manages lock dates."
+msgstr ""
+
+#, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
+msgstr ""
+
+msgid "GST/HST"
+msgstr ""
+
+msgid "QST"
+msgstr ""
+
 msgid "See invoices, their PDF and emails"
 msgstr ""
 
 msgid "Create and edit draft invoices"
+msgstr ""
+
+msgid "Approve, post and void invoices"
 msgstr ""
 
 msgid "Email invoices to customers"
@@ -8154,9 +8195,6 @@ msgid "HST"
 msgstr ""
 
 msgid "PST"
-msgstr ""
-
-msgid "QST"
 msgstr ""
 
 msgid "Sales and purchases"
