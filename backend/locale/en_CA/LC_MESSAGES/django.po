@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:55-0500\n"
+"POT-Creation-Date: 2026-11-25 20:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7358,6 +7358,24 @@ msgstr ""
 msgid "No activity in this period"
 msgstr ""
 
+msgid "A void payment can't be allocated."
+msgstr ""
+
+msgid "Each allocation is more than zero."
+msgstr ""
+
+#, python-format
+msgid "That allocates %(total)s, but only %(left)s is left to allocate."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s is another customer's invoice."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s has %(owed)s open: %(amount)s is more than it is owed."
+msgstr ""
+
 msgid "There's no invoice with this id in this organisation."
 msgstr ""
 
@@ -7722,6 +7740,51 @@ msgstr ""
 msgid "Each escalation action is listed once."
 msgstr ""
 
+msgid "customer"
+msgstr ""
+
+msgid "recorded by"
+msgstr ""
+
+msgid "payment received"
+msgstr ""
+
+msgid "payments received"
+msgstr ""
+
+msgid "Overpayment"
+msgstr ""
+
+msgid "payment"
+msgstr ""
+
+msgid "refunded"
+msgstr ""
+
+msgid "customer credit"
+msgstr ""
+
+msgid "customer credits"
+msgstr ""
+
+msgid "allocated by"
+msgstr ""
+
+msgid "payment allocation"
+msgstr ""
+
+msgid "payment allocations"
+msgstr ""
+
+msgid "refunded by"
+msgstr ""
+
+msgid "customer credit refund"
+msgstr ""
+
+msgid "customer credit refunds"
+msgstr ""
+
 msgid "Net 30"
 msgstr ""
 
@@ -7812,6 +7875,24 @@ msgid "This quote expired on %(date)s: ask for a new quote."
 msgstr ""
 
 msgid "Add at least one line before sending the quote."
+msgstr ""
+
+msgid "The organisation has no accounts receivable account: add it to the chart."
+msgstr ""
+
+msgid "A payment received is more than zero."
+msgstr ""
+
+#, python-format
+msgid "Payment from %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "Refund between 0.01 and %(left)s: what the credit has left."
+msgstr ""
+
+#, python-format
+msgid "Refund to %(contact)s"
 msgstr ""
 
 msgid "Standard reminders"

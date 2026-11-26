@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:55-0500\n"
+"POT-Creation-Date: 2026-11-25 20:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8029,6 +8029,25 @@ msgstr ""
 msgid "No activity in this period"
 msgstr ""
 
+msgid "A void payment can't be allocated."
+msgstr ""
+
+msgid "Each allocation is more than zero."
+msgstr ""
+
+#, python-format
+msgid "That allocates %(total)s, but only %(left)s is left to allocate."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Approve sales over a customer's credit limit"
+msgid "%(invoice)s is another customer's invoice."
+msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
+
+#, python-format
+msgid "%(invoice)s has %(owed)s open: %(amount)s is more than it is owed."
+msgstr ""
+
 msgid "There's no invoice with this id in this organisation."
 msgstr "Il n’y a pas de facture avec cet identifiant dans cette organisation."
 
@@ -8474,6 +8493,81 @@ msgstr ""
 msgid "Each escalation action is listed once."
 msgstr ""
 
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customer"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "decided by"
+msgid "recorded by"
+msgstr "décision prise par"
+
+#, fuzzy
+#| msgid "Received"
+msgid "payment received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "Received"
+msgid "payments received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "first payment"
+msgid "Overpayment"
+msgstr "premier paiement"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "payment"
+msgstr "arguments"
+
+#, fuzzy
+#| msgid "ended"
+msgid "refunded"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "customer credit"
+msgstr "fournisseur"
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customer credits"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "allocated"
+msgid "allocated by"
+msgstr "attribuées"
+
+#, fuzzy
+#| msgid "payment method"
+msgid "payment allocation"
+msgstr "mode de paiement"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "payment allocations"
+msgstr "Créer des organisations clientes"
+
+#, fuzzy
+#| msgid "ended"
+msgid "refunded by"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "customer credit refund"
+msgstr "fournisseur"
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customer credit refunds"
+msgstr "Client Stripe"
+
 msgid "Net 30"
 msgstr ""
 
@@ -8567,6 +8661,30 @@ msgstr ""
 
 msgid "Add at least one line before sending the quote."
 msgstr ""
+
+#, fuzzy
+#| msgid "The organisation has no %(role)s account: add it to the chart of accounts."
+msgid "The organisation has no accounts receivable account: add it to the chart."
+msgstr "L'organisation n'a pas de compte %(role)s : ajoutez-le au plan comptable."
+
+#, fuzzy
+#| msgid "The total must be more than 0.00."
+msgid "A payment received is more than zero."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Payment from %(contact)s"
+msgstr "Montant dû (%(currency)s)"
+
+#, python-format
+msgid "Refund between 0.01 and %(left)s: what the credit has left."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Refund to %(contact)s"
+msgstr "Montant dû (%(currency)s)"
 
 #, fuzzy
 #| msgid "trial reminders"
