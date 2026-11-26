@@ -1,8 +1,10 @@
 "use client";
 
-/** The conversion balances screen (C-05): the wizard with its difference meter. */
+/** The conversion balances screen (C-05): the wizard with its difference meter and its open
+ * invoices / bills grids. */
 import { ConversionWizard } from "./ConversionWizard";
 import { DifferenceMeter } from "./DifferenceMeter";
+import { DocumentsGrid } from "./DocumentsGrid";
 
 export function ConversionScreen({ org }: { org: string }) {
   return (
@@ -17,6 +19,16 @@ export function ConversionScreen({ org }: { org: string }) {
           finalised={readOnly}
           lockBalances={lockBalances}
           onFinalised={onFinalised}
+        />
+      )}
+      renderDocuments={({ kind, documents, readOnly, onChanged }) => (
+        <DocumentsGrid
+          key={kind}
+          org={org}
+          kind={kind}
+          documents={documents}
+          readOnly={readOnly}
+          onChanged={onChanged}
         />
       )}
     />

@@ -91,3 +91,36 @@ test("leaving and returning resumes at the saved step", async ({ page }) => {
   );
   await expect(stepper.getByRole("button", { name: "2. Bank and cash (done)" })).toBeVisible();
 });
+
+/** C-05-T12 — open invoices grid: paste 20 rows from a spreadsheet → 20 documents validated. */
+test("paste 20 rows → 20 documents validated", async ({ page }) => {
+  await mockConversion(page, { step: "invoices", completed: ["date", "bank"] });
+  const batches: { dry_run: boolean; rows: unknown[] }[] = [];
+  await page.route(/\/api\/v1\/o\/acme\/conversion\/documents$/, (r) => {
+    if (r.request().method() !== "POST") return r.fulfill({ json: { documents: [] } });
+    const body = jsonBody(r) as { dry_run: boolean; rows: unknown[] };
+    batches.push(body);
+    const rows = body.rows.map((_, i) => ({ row: i + 1, ok: true, errors: [], id: null }));
+    return r.fulfill({
+      status: body.dry_run ? 200 : 201,
+      json: { dry_run: body.dry_run, rows, ok: rows.length, errors: 0, written: 0 },
+    });
+  });
+  await page.goto(`/o/${ORG}/accounting/conversion`);
+  const tsv = Array.from(
+    { length: 20 },
+    (_, i) => `ON Customer Ltd\tINV-${900 + i}\t2025-11-15\t2025-12-15\t${100 + i}.00\t`,
+  ).join("\n");
+  await page.getByLabel("Customer, row 1").evaluate((input, text) => {
+    const data = new DataTransfer();
+    data.setData("text/plain", text);
+    input.dispatchEvent(new ClipboardEvent("paste", { clipboardData: data, bubbles: true }));
+  }, tsv);
+  await expect(page.getByText("20 rows pasted.")).toBeVisible();
+  await expect(page.locator("[data-grid=invoice] [data-row]")).toHaveCount(20);
+  await page.getByRole("button", { name: "Check the rows" }).click();
+  await expect(page.getByText("All 20 rows are ready to add.")).toBeVisible();
+  expect(batches[0]?.dry_run).toBe(true);
+  expect(batches[0]?.rows).toHaveLength(20);
+  await expectAccessible(page);
+});
