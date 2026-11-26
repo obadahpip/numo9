@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 811   Remaining: 1976   Progress: 29.10%
+TOTAL ATOMIC TASKS: 2787   Completed: 812   Remaining: 1975   Progress: 29.14%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1051,7 +1051,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-05-T07 — Post-finalise correction flow: adviser creates correcting opening JE (no edits to original)
 ✅ C-05-T09 — API /api/v1/conversion/ (session, lines, documents, difference, finalise, import) + feature key accounting.conversion
 ✅ C-05-T10 — UI: stepper wizard with saved progress per step
-❌ C-05-T11 — UI: sticky difference meter + disabled Finalise with reason tooltip
+✅ C-05-T11 — UI: sticky difference meter + disabled Finalise with reason tooltip
 ❌ C-05-T12 — UI: open invoices/bills grids (paste-friendly)
 ❌ C-05-T13 — Fixtures: balanced and unbalanced conversion sets incl. REFINED (no opening equity)
 ❌ C-05-T14 — Exceptions hook: register "opening equity missing" signal for K-09

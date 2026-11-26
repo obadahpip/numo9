@@ -1254,6 +1254,25 @@
     }
   },
   "conversion": {
+    "meter": {
+      "cancel": "Annuler",
+      "confirm": "Finaliser",
+      "confirmBody": "Une seule écriture d’ouverture est comptabilisée, datée du {date}. Les soldes et les documents ne peuvent plus être modifiés ensuite : les corrections sont des écritures de correction, comptabilisées par un conseiller.",
+      "confirmLock": "Les soldes seront verrouillés : le grand livre, les ventes et les achats sont fermés au {date} pour tous sauf les conseillers.",
+      "confirmTitle": "Finaliser la conversion?",
+      "empty": "Saisissez au moins un solde d’ouverture.",
+      "failed": "Cela n’a pas fonctionné et rien n’a été comptabilisé. Réessayez dans un moment.",
+      "finalise": "Finaliser",
+      "finalised": "La conversion est finalisée.",
+      "finalising": "Finalisation…",
+      "ready": "— Équilibré, prêt à finaliser",
+      "region": "Écart de conversion",
+      "totals": "Débits {debits} · Crédits {credits} · Écart {difference}",
+      "unavailable": "— Finalisation impossible",
+      "unbalanced": "Les soldes ont un écart de {difference} : les débits doivent égaler les crédits.",
+      "unreadable": "{count, plural, one {# montant n’est pas un nombre} other {# montants ne sont pas des nombres}} pour l’instant.",
+      "why": "Pourquoi la finalisation est impossible"
+    },
     "wizard": {
       "account": "Compte",
       "accountOfLine": "Compte, ligne {line}",

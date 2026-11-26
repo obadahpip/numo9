@@ -1254,6 +1254,25 @@
     }
   },
   "conversion": {
+    "meter": {
+      "cancel": "Cancel",
+      "confirm": "Finalise",
+      "confirmBody": "One opening journal is posted, dated {date}. The balances and documents can't be edited afterwards: corrections are correcting journals, posted by an adviser.",
+      "confirmLock": "Balances will be locked: the general ledger, sales and purchases close to {date} for everyone except advisers.",
+      "confirmTitle": "Finalise the conversion?",
+      "empty": "Enter at least one opening balance.",
+      "failed": "That didn't work and nothing was posted. Try again in a moment.",
+      "finalise": "Finalise",
+      "finalised": "The conversion is finalised.",
+      "finalising": "Finalising…",
+      "ready": "— Balanced, ready to finalise",
+      "region": "Conversion difference",
+      "totals": "Debits {debits} · Credits {credits} · Difference {difference}",
+      "unavailable": "— Finalise unavailable",
+      "unbalanced": "The balances are out by {difference}: debits must equal credits.",
+      "unreadable": "{count, plural, one {# amount isn't a number} other {# amounts aren't numbers}} yet.",
+      "why": "Why Finalise is unavailable"
+    },
     "wizard": {
       "account": "Account",
       "accountOfLine": "Account, line {line}",
