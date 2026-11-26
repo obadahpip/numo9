@@ -1816,6 +1816,12 @@ msgstr ""
 msgid "client portal access"
 msgstr ""
 
+msgid "no invoice reminders"
+msgstr ""
+
+msgid "The customer asked not to receive invoice reminders."
+msgstr ""
+
 msgid "statements"
 msgstr ""
 
@@ -7449,6 +7455,12 @@ msgstr ""
 msgid "Credit refund"
 msgstr ""
 
+msgid "Only a posted invoice that isn't void can be disputed."
+msgstr ""
+
+msgid "Say what the customer disputes."
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
@@ -7504,6 +7516,18 @@ msgid "Late interest"
 msgstr ""
 
 msgid "first viewed at"
+msgstr ""
+
+msgid "disputed"
+msgstr ""
+
+msgid "The customer disputes the invoice: no reminder or late fee until resolved."
+msgstr ""
+
+msgid "disputed since"
+msgstr ""
+
+msgid "what is disputed"
 msgstr ""
 
 msgid "current revision"

@@ -1902,6 +1902,12 @@ msgstr ""
 msgid "client portal access"
 msgstr ""
 
+msgid "no invoice reminders"
+msgstr "aucun rappel de facture"
+
+msgid "The customer asked not to receive invoice reminders."
+msgstr "Le client a demandé de ne pas recevoir de rappels de facture."
+
 #, fuzzy
 #| msgid "audit events"
 msgid "statements"
@@ -8131,6 +8137,12 @@ msgstr "Paiement reçu"
 msgid "Credit refund"
 msgstr "Remboursement de crédit"
 
+msgid "Only a posted invoice that isn't void can be disputed."
+msgstr "Seule une facture comptabilisée qui n’est pas annulée peut être contestée."
+
+msgid "Say what the customer disputes."
+msgstr "Indiquez ce que le client conteste."
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
@@ -8192,6 +8204,18 @@ msgstr "Intérêts de retard"
 #| msgid "first seen"
 msgid "first viewed at"
 msgstr "vu pour la première fois"
+
+msgid "disputed"
+msgstr "contestée"
+
+msgid "The customer disputes the invoice: no reminder or late fee until resolved."
+msgstr "Le client conteste la facture : aucun rappel ni frais de retard jusqu’au règlement du différend."
+
+msgid "disputed since"
+msgstr "contestée depuis"
+
+msgid "what is disputed"
+msgstr "objet de la contestation"
 
 msgid "current revision"
 msgstr ""

@@ -86,6 +86,7 @@ CONTACT_FIELDS = (
     "credit_mode",
     "t4a_flag",
     "portal_enabled",
+    "reminders_opt_out",
     "statement_pref",
     "language",
     "custom_fields",
@@ -249,6 +250,7 @@ class ContactWriteSerializer(serializers.Serializer[Any]):
     credit_mode = serializers.ChoiceField(choices=CreditMode.choices, required=False)
     t4a_flag = serializers.BooleanField(required=False)
     portal_enabled = serializers.BooleanField(required=False)
+    reminders_opt_out = serializers.BooleanField(required=False)
     statement_pref = serializers.ChoiceField(choices=StatementPreference.choices, required=False)
     language = serializers.CharField(max_length=8, required=False)
     custom_fields = serializers.DictField(required=False)

@@ -5,7 +5,8 @@ Sent → Partially paid → Paid, or Void. The **number** is allocated at approv
 transaction (D-03a-T02) — a draft has none and shows "Draft"; a void invoice keeps its number.
 ``journal_entry`` is the posting of the approval (D-03a-T03), ``void_entry`` its reversal
 (D-03a-T07). ``current_revision`` is the latest ``InvoiceRevision`` once posted invoices become
-editable (D-03b fills it; empty until then).
+editable (D-03b fills it; empty until then). ``disputed`` (D-07-T07) — the customer disputes the
+invoice: reminders and late fees stop until it is resolved (``sales.disputes``).
 
 Credit notes (D-06-T01): ``CreditNote`` and ``CreditNoteLine`` on the same document base, numbered
 ``CN-0001`` at approval; optionally the invoice it credits ("Credit this invoice", D-06-T02).
@@ -101,6 +102,13 @@ class Invoice(DocumentBase):
         related_name="voided_invoice",
         verbose_name=_("void journal"),
     )
+    disputed = models.BooleanField(
+        _("disputed"),
+        default=False,
+        help_text=_("The customer disputes the invoice: no reminder or late fee until resolved."),
+    )
+    disputed_at = models.DateTimeField(_("disputed since"), null=True, blank=True)
+    dispute_reason = models.TextField(_("what is disputed"), blank=True, default="")
     current_revision = models.ForeignKey(
         "sales.InvoiceRevision",
         on_delete=models.PROTECT,
