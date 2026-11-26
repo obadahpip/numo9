@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:25-0500\n"
+"POT-Creation-Date: 2026-11-25 20:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7908,6 +7908,10 @@ msgid "Refund to %(contact)s"
 msgstr ""
 
 msgid "Standard reminders"
+msgstr ""
+
+#, python-format
+msgid "Someone else revised %(invoice)s since you opened it: reload it to see their changes."
 msgstr ""
 
 msgid "Superseded"
