@@ -16,6 +16,7 @@ note for an invoice must be the same customer's, and an invoice that is posted a
 
 from __future__ import annotations
 
+import contextlib
 from decimal import Decimal
 from typing import Any
 
@@ -31,6 +32,7 @@ from numo9.orgsettings.numbering import allocate_number
 from numo9.tenancy.context import org_context
 
 from .models import CreditNote, CreditNoteStatus, InvoiceStatus
+from .period_checks import assert_postable
 from .posting import InvoiceRefused, preview_lines, store_figures
 
 SOURCE_TYPE = "sales.credit_note"
@@ -89,10 +91,22 @@ def assign_number(note: CreditNote) -> str:
         return number
 
 
-def approve(note: CreditNote, user: Any) -> CreditNote:
-    """Approve and post (module docstring); returns the approved credit note."""
+def approve(note: CreditNote, user: Any, *, late_adjustment: bool = False) -> CreditNote:
+    """Approve and post (module docstring); returns the approved credit note.
+
+    D-06-T06 — the rule of invoices (D-03a-T04, D-03b-T10): a date on or before the AR lock is
+    refused naming the lock; a date in a filed GST/HST (or QST) period is refused naming the
+    period, unless ``late_adjustment`` — then the credit note posts on its own date and its tax
+    goes on the next open return (line 107, less net tax: G-03-T08)."""
+    from numo9.tax.returns import late_adjustments
+
     person = user if getattr(user, "is_authenticated", False) else None
-    with org_context(note.organisation), transaction.atomic(), acting_as(person):
+    with (
+        org_context(note.organisation),
+        transaction.atomic(),
+        acting_as(person),
+        late_adjustments() if late_adjustment else contextlib.nullcontext(),
+    ):
         locked = CreditNote._base_manager.select_for_update().get(pk=note.pk)
         if locked.status not in (CreditNoteStatus.DRAFT, CreditNoteStatus.AWAITING_APPROVAL):
             raise _refuse(
@@ -122,6 +136,7 @@ def approve(note: CreditNote, user: Any) -> CreditNote:
                 _("A credit note's total must be more than zero."),
                 "sales.credit_note.total_not_positive",
             )
+        assert_postable(locked, shown.lines, shown.date, person, "approve")
         store_figures(locked, shown.result)
         number = assign_number(locked)
         entry = post_journal(
