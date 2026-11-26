@@ -91,6 +91,8 @@ def test_a_report_outside_the_package_is_found_locked(
 ) -> None:
     client, org = client_org
     subscribe(org, package("accounting_only", ["accounting"]))
-    [found] = client.get(f"/api/v1/o/{org.public_id}/search", {"q": "gst hst"}).json()["reports"]
-    assert found["key"] == "reports.tax_search_sample"
+    reports = client.get(f"/api/v1/o/{org.public_id}/search", {"q": "gst hst"}).json()["reports"]
+    # The GST/HST tax reports (G-05) match too: every one outside the package is found locked.
+    [found] = [r for r in reports if r["key"] == "reports.tax_search_sample"]
     assert found["locked"] is True and "Tax" in found["reason"]
+    assert all(r["locked"] for r in reports if r["key"].startswith("reports.tax"))
