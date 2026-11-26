@@ -667,6 +667,17 @@ msgstr ""
 msgid "Province of the holidays"
 msgstr ""
 
+#, python-format
+msgid "This finding is %(status)s: it can't be %(action)s."
+msgstr ""
+
+msgid "A newer finding is open for the same problem: work on that one."
+msgstr ""
+
+#, python-format
+msgid "Say why this is not a problem (at least %(min)d characters)."
+msgstr ""
+
 msgid "Date and time"
 msgstr "Date et heure"
 
@@ -11826,6 +11837,9 @@ msgid "Dummy"
 msgstr ""
 
 msgid "Organisation level"
+msgstr ""
+
+msgid "Present"
 msgstr ""
 
 #, fuzzy
