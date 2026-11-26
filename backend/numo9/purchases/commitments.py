@@ -10,6 +10,8 @@ nor do drafts or POs waiting for approval.
 PO date (``2026-06``), largest first (months in order), with the open value, the number of open
 lines and POs, and ``budget`` — empty until budgets (K-04). ``total`` is the sum of every open
 line, whatever the grouping: the report total equals the open PO lines.
+
+``export_commitments(result, "csv" | "xlsx")`` — the same rows and total as a download (E-01-T14).
 """
 
 from __future__ import annotations
@@ -120,3 +122,57 @@ def commitments(
         else sorted(rows.values(), key=lambda r: (-r.amount, r.label))
     )
     return Commitments(by, ordered, total)
+
+
+def _headers(by: str) -> list[str]:
+    from django.utils.translation import gettext as _
+
+    first = {"account": _("Account"), "supplier": _("Supplier"), "month": _("Month")}[by]
+    return [first, _("Open POs"), _("Open lines"), _("Open value"), _("Budget")]
+
+
+def export_commitments(
+    result: Commitments, fmt: str, *, locale: str | None = None
+) -> tuple[bytes, str, str]:
+    """``(content, content type, file name)``: the report as CSV or XLSX — the rows and the total
+    the screen shows, in the same order (E-01-T14 "export = screen")."""
+    import csv
+    import io
+
+    from django.utils import translation
+    from django.utils.translation import gettext as _
+
+    with translation.override(locale or translation.get_language()):
+        headers = _headers(result.by)
+        total_label = _("Total")
+        stem = _("commitments")
+        name = f"{stem}-{result.by}-{dt.date.today().isoformat()}"
+    rows = [[row.label, len(row.orders), row.lines, row.amount, row.budget] for row in result.rows]
+    total: list[Any] = [total_label, "", "", result.total, ""]
+    table: list[list[Any]] = [*rows, total]
+    if fmt == "xlsx":
+        from openpyxl import Workbook
+
+        book = Workbook()
+        sheet = book.active
+        sheet.title = name[:31]
+        sheet.append(headers)
+        for cells in table:
+            sheet.append(
+                [float(c) if isinstance(c, Decimal) else ("" if c is None else c) for c in cells]
+            )
+        out = io.BytesIO()
+        book.save(out)
+        return (
+            out.getvalue(),
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            f"{name}.xlsx",
+        )
+    text = io.StringIO()
+    writer = csv.writer(text)
+    writer.writerow(headers)
+    for cells in table:
+        writer.writerow(
+            [f"{c:.2f}" if isinstance(c, Decimal) else ("" if c is None else c) for c in cells]
+        )
+    return ("\ufeff" + text.getvalue()).encode(), "text/csv; charset=utf-8", f"{name}.csv"

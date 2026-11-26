@@ -102,6 +102,9 @@ export interface MatchRow {
   price: string;
   quantity_over: string;
   price_difference_pct: string;
+  /** The match engine's flags (E-01-T07): over_ordered, over_received, price, received_later. */
+  flags?: string[];
+  received_later?: boolean;
   status: "green" | "amber" | "red";
 }
 

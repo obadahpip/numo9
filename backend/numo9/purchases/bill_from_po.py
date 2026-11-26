@@ -14,9 +14,10 @@ back when it is voided (``apply_billed``); every line billed in full makes the P
 
 ``match_panel(bill)`` — per bill line linked to a PO line: ordered, received, billed on other
 bills, this bill's quantity and price against the PO's, and a status — ``green`` (quantity within
-what was received and not billed yet, price equal), ``amber`` (within the receipt tolerance of
-the organisation settings, E-01), ``red`` (beyond it: over-billed or over-priced). Approving a
-bill with an amber or red line needs ``with_variance`` ("Approve with variance", E-02-T13).
+what was ordered and received and not billed yet, price equal), ``amber`` (within the match
+tolerance), ``red`` (beyond it: over-billed or over-priced) — the match engine's rule
+(``numo9.purchases.matching``, E-01-T07). Approving a bill with an amber or red line needs
+``with_variance`` ("Approve with variance", E-02-T13).
 """
 
 from __future__ import annotations
@@ -158,12 +159,10 @@ def apply_billed(bill: Bill, sign: int) -> None:
 
 def line_status(over_pct: Decimal, price_diff_pct: Decimal, tolerance: Decimal) -> str:
     """``green`` — quantity within what can be billed and the PO's price; ``amber`` — over either
-    by no more than the tolerance; ``red`` — beyond it."""
-    if over_pct <= 0 and price_diff_pct == 0:
-        return "green"
-    if over_pct <= tolerance and price_diff_pct <= tolerance:
-        return "amber"
-    return "red"
+    by no more than the tolerance; ``red`` — beyond it (the match engine's grading, E-01-T07)."""
+    from .matching import grade, worst
+
+    return worst(grade(over_pct, tolerance), grade(price_diff_pct, tolerance))
 
 
 def match_panel(bill: Bill) -> list[dict[str, Any]]:
@@ -172,9 +171,9 @@ def match_panel(bill: Bill) -> list[dict[str, Any]]:
 
 
 def _match_panel(bill: Bill) -> list[dict[str, Any]]:
-    from .receipts import _tolerance
+    from .matching import Figures, evaluate, tolerance_for
 
-    tolerance, _mode = _tolerance(bill.organisation)
+    tolerance = tolerance_for(bill.organisation)
     rows: list[dict[str, Any]] = []
     lines = bill.lines.filter(po_line__isnull=False).select_related("po_line__document")
     for line in lines.order_by("position", "pk"):
@@ -192,21 +191,22 @@ def _match_panel(bill: Bill) -> list[dict[str, Any]]:
         )
         received = Decimal(po_line.quantity_received)
         ordered = Decimal(po_line.quantity)
-        # Nothing received at all on the PO (a service order): match against what was ordered.
-        basis = (
-            received if po_line.document.lines.filter(quantity_received__gt=0).exists() else ordered
-        )
         quantity = Decimal(line.quantity)
-        over = quantity - (basis - others)
         po_price = Decimal(po_line.unit_price)
         price = Decimal(line.unit_price)
-        diff = (
-            abs(price - po_price) * 100 / po_price
-            if po_price
-            else (ZERO if price == 0 else Decimal(100))
+        # Nothing received at all on the PO (a service order, or goods not here yet): matched
+        # against what was ordered, the receipt check pending (``received_later``).
+        result = evaluate(
+            Figures(
+                ordered=ordered,
+                received=received,
+                billed=others + quantity,
+                po_price=po_price,
+                price=price,
+                received_any=po_line.document.lines.filter(quantity_received__gt=0).exists(),
+            ),
+            tolerance,
         )
-        over_pct = ZERO if over <= 0 else (over * 100 / basis if basis else Decimal(100))
-        status = line_status(over_pct, diff, tolerance)
         rows.append(
             {
                 "line": str(line.public_id),
@@ -219,9 +219,11 @@ def _match_panel(bill: Bill) -> list[dict[str, Any]]:
                 "quantity": f"{quantity:.4f}",
                 "po_price": f"{po_price:.4f}",
                 "price": f"{price:.4f}",
-                "quantity_over": f"{max(over, ZERO):.4f}",
-                "price_difference_pct": f"{diff:.2f}",
-                "status": status,
+                "quantity_over": f"{result.quantity_over:.4f}",
+                "price_difference_pct": f"{result.price_difference_pct:.2f}",
+                "flags": list(result.flags),
+                "received_later": result.received_later,
+                "status": result.status,
             }
         )
     return rows

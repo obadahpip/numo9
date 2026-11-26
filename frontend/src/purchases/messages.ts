@@ -268,6 +268,16 @@ export const match = defineMessages({
     defaultMessage: "{quantity} more than received",
     description: "Over-billed quantity",
   },
+  overOrdered: {
+    id: "purchases.bill.match.overOrdered",
+    defaultMessage: "{quantity} more than ordered",
+    description: "Over-billed quantity against the PO's ordered quantity (E-01-T07)",
+  },
+  receivedLater: {
+    id: "purchases.bill.match.receivedLater",
+    defaultMessage: "nothing received yet: match pending the receipt",
+    description: "Bill before receipt (E-01-T07)",
+  },
   priceDiff: {
     id: "purchases.bill.match.priceDiff",
     defaultMessage: "price {pct} % off",

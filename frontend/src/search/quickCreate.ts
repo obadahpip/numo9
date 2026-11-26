@@ -105,9 +105,8 @@ export const QUICK_CREATE: readonly QuickCreate[] = [
     key: "P",
     label: m.purchaseOrder,
     path: "purchases/orders/new",
-    permission: "purchases.orders.manage",
+    permission: "purchases.orders.write",
     feature: "accounting.purchase_orders.write",
-    availableIn: "Phase 1",
   },
   {
     id: "journal",
