@@ -149,10 +149,11 @@ def computed_lines(tax_return: TaxReturn, entries: dict[str, Any] | None = None)
     kept = (tax_return.lines or {}).get("entries") or {}
     given = {k: v for k, v in {**kept, **(entries or {})}.items() if k in ENTRY_LINES}
     if tax_return.method == "quick":
-        raise TaxError(
-            _("The quick method isn't available yet."), code="tax.return.quick_unavailable"
-        )
-    values = regular_lines(tax_return.period, entries=given)
+        from .quick_method import quick_lines
+
+        values = quick_lines(tax_return.period, entries=given)
+    else:
+        values = regular_lines(tax_return.period, entries=given)
     return {
         **as_text(values),
         "entries": {k: f"{Decimal(str(v or 0)):.2f}" for k, v in given.items()},
