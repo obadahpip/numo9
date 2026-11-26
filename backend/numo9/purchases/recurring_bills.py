@@ -22,8 +22,10 @@ own date.
 **Supplier invoice number** (T03) — ``supplier_invoice_number(template, start, end, exclude)``:
 the template's pattern with the placeholders resolved (``RENT-{{month}}-{{year}}`` →
 ``RENT-October-2026``), unique per supplier among bills that aren't void (gap-24): when the
-number is taken (a pattern without placeholders, two dates in the same month), ``-2``, ``-3``…
-is added until it is free. An empty pattern leaves the number empty.
+number is taken (a pattern without placeholders, two dates in the same month, a bill entered by
+hand), ``-2``, ``-3``… is added until it is free. An empty pattern leaves the number empty; an
+unknown placeholder in the pattern is refused when the template is saved
+(``validate_pattern``, ``purchases.recurring.pattern_unknown``).
 """
 
 from __future__ import annotations
@@ -78,11 +80,54 @@ def due_for(template: Any, day: dt.date) -> dt.date:
     return due_dates.due_date(day, terms.terms_type, terms.days)
 
 
+def unique_number(supplier: Any, wanted: str) -> str:
+    """``wanted``, or ``wanted-2``, ``wanted-3``… — the first that no bill of the supplier that
+    isn't void has (the editor's check, ``uniqueness.number_conflict``: letter case and extra
+    spaces don't make a number new), within the field's 100 characters."""
+    from .uniqueness import normalise, number_conflict
+
+    base = normalise(wanted)[:NUMBER_MAX]
+    if not base:
+        return ""
+    candidate, n = base, 1
+    while number_conflict(supplier, candidate) is not None:
+        n += 1
+        suffix = f"-{n}"
+        candidate = base[: NUMBER_MAX - len(suffix)] + suffix
+    return candidate
+
+
 def supplier_invoice_number(
     template: Any, start: dt.date, end: dt.date, *, locale: str | None = None
 ) -> str:
     """T03 — the pattern rendered for the period, made unique for the supplier (docstring)."""
-    return render(template.supplier_invoice_no or "", start, end, locale).strip()[:NUMBER_MAX]
+    return unique_number(
+        template.contact, render(template.supplier_invoice_no or "", start, end, locale)
+    )
+
+
+def validate_pattern(template: Any) -> None:
+    """T03 — ``ValidationError`` (``purchases.recurring.pattern_unknown``) for a placeholder the
+    renderer doesn't know in the supplier invoice number pattern (it would stay as typed on every
+    bill, so the numbers would only differ by their suffix)."""
+    from django.core.exceptions import ValidationError
+
+    from numo9.documents.placeholders import NAMES, unknown
+
+    names = unknown(template.supplier_invoice_no or "")
+    if names:
+        raise ValidationError(
+            {
+                "supplier_invoice_no": ValidationError(
+                    _("%(names)s isn't a placeholder: use %(known)s."),
+                    code="purchases.recurring.pattern_unknown",
+                    params={
+                        "names": ", ".join(names),
+                        "known": ", ".join(f"{{{{{n}}}}}" for n in NAMES),
+                    },
+                )
+            }
+        )
 
 
 def build_bill(template: Any, day: dt.date) -> Bill:

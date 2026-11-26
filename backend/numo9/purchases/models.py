@@ -718,6 +718,9 @@ class RecurringBillTemplate(AuditedModel, OrgOwnedModel):
         from numo9.documents.recurring import validate_schedule
 
         validate_schedule(self, "purchases.recurring")
+        from .recurring_bills import validate_pattern
+
+        validate_pattern(self)
 
     def save(self, *args: Any, **kwargs: Any) -> None:
         if self._state.adding and self.next_run is None:

@@ -6927,6 +6927,10 @@ msgid "Say why the receipt is reversed."
 msgstr ""
 
 #, python-format
+msgid "%(names)s isn't a placeholder: use %(known)s."
+msgstr ""
+
+#, python-format
 msgid "The bill needs approval before it is posted: %(why)s"
 msgstr ""
 
