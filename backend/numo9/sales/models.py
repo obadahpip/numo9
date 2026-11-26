@@ -876,3 +876,210 @@ class ReminderStep(OrgOwnedModel):
                     )
                 }
             )
+
+
+# ---- payments received (D-05) ------------------------------------------------------------------
+#
+# ``CustomerPayment`` — money received from a customer into a bank account on a date (posted Dr
+# bank / Cr accounts receivable by D-05-T03); ``PaymentAllocation`` — part of a payment, or of a
+# customer credit, applied to an invoice (≤ the invoice's open balance and ≤ what the source has
+# left, D-05-T02); ``CustomerCredit`` — money a customer has with you that no invoice used: an
+# overpayment or a prepayment (D-05-T04), applied to invoices later or refunded (D-05-T06). In the
+# ledger a credit stays on the accounts receivable control account, as a credit balance of the
+# customer: allocating it moves nothing in the general ledger, a refund posts Dr AR / Cr bank.
+
+
+class PaymentStatus(models.TextChoices):
+    POSTED = "posted", _("Posted")
+    VOID = "void", _("Void")
+
+
+class CustomerPayment(AuditedModel, OrgOwnedModel):
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        related_name="payments_received",
+        verbose_name=_("customer"),
+    )
+    bank_account = models.ForeignKey(
+        "banking.BankAccount",
+        on_delete=models.PROTECT,
+        related_name="customer_payments",
+        verbose_name=_("bank account"),
+    )
+    date = models.DateField(_("date"))
+    amount = _money(_("amount"))
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    reference = models.CharField(_("reference"), max_length=255, blank=True)
+    status = models.CharField(
+        _("status"), max_length=10, choices=PaymentStatus.choices, default=PaymentStatus.POSTED
+    )
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="customer_payment",
+        verbose_name=_("journal"),
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("recorded by"),
+    )
+    version = models.PositiveIntegerField(_("version"), default=1)
+
+    class Meta:
+        ordering = ("-date", "-pk")
+        verbose_name = _("payment received")
+        verbose_name_plural = _("payments received")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="sales_customerpayment_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=PaymentStatus.values),
+                name="sales_customerpayment_status_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "contact"], name="sales_payment_contact_idx"),
+            models.Index(fields=["organisation", "date"], name="sales_payment_date_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} {self.date:%Y-%m-%d} {self.amount}"
+
+    @property
+    def allocated(self) -> Decimal:
+        rows = self.allocations.filter(reversed_at__isnull=True)
+        return Decimal(rows.aggregate(total=models.Sum("amount"))["total"] or 0)
+
+    @property
+    def unallocated(self) -> Decimal:
+        return Decimal(self.amount) - self.allocated
+
+
+class CreditSource(models.TextChoices):
+    OVERPAYMENT = "overpayment", _("Overpayment")
+    PREPAYMENT = "prepayment", _("Prepayment")
+
+
+class CustomerCredit(AuditedModel, OrgOwnedModel):
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        related_name="customer_credits",
+        verbose_name=_("customer"),
+    )
+    source = models.CharField(_("source"), max_length=12, choices=CreditSource.choices)
+    payment = models.ForeignKey(
+        CustomerPayment,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="credits",
+        verbose_name=_("payment"),
+    )
+    date = models.DateField(_("date"))
+    amount = _money(_("amount"))
+    amount_refunded = _money(_("refunded"))
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+
+    class Meta:
+        ordering = ("date", "pk")
+        verbose_name = _("customer credit")
+        verbose_name_plural = _("customer credits")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="sales_customercredit_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount_refunded__gte=0)
+                & models.Q(amount_refunded__lte=models.F("amount")),
+                name="sales_customercredit_refund_within",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(source__in=CreditSource.values),
+                name="sales_customercredit_source_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "contact"], name="sales_credit_contact_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.contact} {self.get_source_display()} {self.amount}"
+
+    @property
+    def applied(self) -> Decimal:
+        rows = self.allocations.filter(reversed_at__isnull=True)
+        return Decimal(rows.aggregate(total=models.Sum("amount"))["total"] or 0)
+
+    @property
+    def remaining(self) -> Decimal:
+        return Decimal(self.amount) - self.applied - Decimal(self.amount_refunded)
+
+
+class PaymentAllocation(OrgOwnedModel):
+    """Part of a payment — or of a customer credit — applied to an invoice on a date."""
+
+    payment = models.ForeignKey(
+        CustomerPayment,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="allocations",
+        verbose_name=_("payment"),
+    )
+    credit = models.ForeignKey(
+        CustomerCredit,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="allocations",
+        verbose_name=_("customer credit"),
+    )
+    invoice = models.ForeignKey(
+        Invoice,
+        on_delete=models.PROTECT,
+        related_name="allocations",
+        verbose_name=_("invoice"),
+    )
+    amount = _money(_("amount"))
+    date = models.DateField(_("date"))
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("allocated by"),
+    )
+    created_at = models.DateTimeField(_("allocated at"), auto_now_add=True)
+    reversed_at = models.DateTimeField(_("removed at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("date", "pk")
+        verbose_name = _("payment allocation")
+        verbose_name_plural = _("payment allocations")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="sales_paymentallocation_positive"
+            ),
+            models.CheckConstraint(
+                condition=(models.Q(payment__isnull=False) & models.Q(credit__isnull=True))
+                | (models.Q(payment__isnull=True) & models.Q(credit__isnull=False)),
+                name="sales_paymentallocation_one_source",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "invoice"], name="sales_alloc_invoice_idx"),
+            models.Index(fields=["organisation", "payment"], name="sales_alloc_payment_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.payment or self.credit} → {self.invoice}: {self.amount}"

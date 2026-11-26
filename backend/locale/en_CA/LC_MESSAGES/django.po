@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:55-0500\n"
+"POT-Creation-Date: 2026-11-25 20:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7720,6 +7720,42 @@ msgid "Escalation is a list of: %(actions)s."
 msgstr ""
 
 msgid "Each escalation action is listed once."
+msgstr ""
+
+msgid "customer"
+msgstr ""
+
+msgid "recorded by"
+msgstr ""
+
+msgid "payment received"
+msgstr ""
+
+msgid "payments received"
+msgstr ""
+
+msgid "Overpayment"
+msgstr ""
+
+msgid "payment"
+msgstr ""
+
+msgid "refunded"
+msgstr ""
+
+msgid "customer credit"
+msgstr ""
+
+msgid "customer credits"
+msgstr ""
+
+msgid "allocated by"
+msgstr ""
+
+msgid "payment allocation"
+msgstr ""
+
+msgid "payment allocations"
 msgstr ""
 
 msgid "Net 30"

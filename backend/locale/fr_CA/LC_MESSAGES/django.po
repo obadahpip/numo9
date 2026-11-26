@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:55-0500\n"
+"POT-Creation-Date: 2026-11-25 20:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8473,6 +8473,66 @@ msgstr ""
 
 msgid "Each escalation action is listed once."
 msgstr ""
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customer"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "decided by"
+msgid "recorded by"
+msgstr "décision prise par"
+
+#, fuzzy
+#| msgid "Received"
+msgid "payment received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "Received"
+msgid "payments received"
+msgstr "Reçu"
+
+#, fuzzy
+#| msgid "first payment"
+msgid "Overpayment"
+msgstr "premier paiement"
+
+#, fuzzy
+#| msgid "arguments"
+msgid "payment"
+msgstr "arguments"
+
+#, fuzzy
+#| msgid "ended"
+msgid "refunded"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "customer credit"
+msgstr "fournisseur"
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customer credits"
+msgstr "Client Stripe"
+
+#, fuzzy
+#| msgid "allocated"
+msgid "allocated by"
+msgstr "attribuées"
+
+#, fuzzy
+#| msgid "payment method"
+msgid "payment allocation"
+msgstr "mode de paiement"
+
+#, fuzzy
+#| msgid "Create client organisations"
+msgid "payment allocations"
+msgstr "Créer des organisations clientes"
 
 msgid "Net 30"
 msgstr ""

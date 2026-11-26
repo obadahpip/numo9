@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 742   Remaining: 2045   Progress: 26.62%
+TOTAL ATOMIC TASKS: 2787   Completed: 743   Remaining: 2044   Progress: 26.66%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -980,7 +980,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-03a-T19 — Docs + i18n
 
 [D-05]
-❌ D-05-T01 — CustomerPayment, PaymentAllocation, CustomerCredit models
+✅ D-05-T01 — CustomerPayment, PaymentAllocation, CustomerCredit models
 ❌ D-05-T02 — Allocation service (auto oldest-due, manual) with ≤ open balance validation
 ❌ D-05-T04 — Overpayment and prepayment → credit; apply credit to invoice later
 ❌ D-05-T06 — Refund of customer credit to bank
