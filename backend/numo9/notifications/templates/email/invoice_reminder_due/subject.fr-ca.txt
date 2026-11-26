@@ -1,0 +1,1 @@
+{% autoescape off %}La facture {{ number }} est payable aujourd'hui{% endautoescape %}

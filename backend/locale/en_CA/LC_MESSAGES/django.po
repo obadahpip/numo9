@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 17:44-0500\n"
+"POT-Creation-Date: 2026-11-25 18:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2280,6 +2280,39 @@ msgstr ""
 msgid "contact activity"
 msgstr ""
 
+msgid "Sending"
+msgstr ""
+
+msgid "Sent"
+msgstr ""
+
+msgid "include contacts with no balance"
+msgstr ""
+
+msgid "results"
+msgstr ""
+
+msgid "sent"
+msgstr ""
+
+msgid "skipped"
+msgstr ""
+
+msgid "failed"
+msgstr ""
+
+msgid "run by"
+msgstr ""
+
+msgid "run at"
+msgstr ""
+
+msgid "statement run"
+msgstr ""
+
+msgid "statement runs"
+msgstr ""
+
 msgid "Approve sales over a customer's credit limit"
 msgstr ""
 
@@ -2287,6 +2320,18 @@ msgid "See contacts: customers, suppliers and their people"
 msgstr ""
 
 msgid "Add, edit, archive and merge contacts"
+msgstr ""
+
+msgid "Choose an outstanding or an activity statement."
+msgstr ""
+
+msgid "An activity statement needs a start date on or before its end date."
+msgstr ""
+
+msgid "Choose contacts from the list."
+msgstr ""
+
+msgid "This statement run has been sent already."
 msgstr ""
 
 msgid "Supplier statement lines"
@@ -4637,12 +4682,6 @@ msgstr ""
 msgid "lines done"
 msgstr ""
 
-msgid "run by"
-msgstr ""
-
-msgid "run at"
-msgstr ""
-
 msgid "undone by"
 msgstr ""
 
@@ -5291,12 +5330,6 @@ msgid "notification preferences"
 msgstr ""
 
 msgid "Waiting to send"
-msgstr ""
-
-msgid "Sending"
-msgstr ""
-
-msgid "Sent"
 msgstr ""
 
 msgid "Not sent"
@@ -7589,6 +7622,73 @@ msgstr ""
 msgid "recurring invoice lines"
 msgstr ""
 
+msgid "Text message (SMS)"
+msgstr ""
+
+msgid "WhatsApp"
+msgstr ""
+
+msgid "Notify the organisation's owner"
+msgstr ""
+
+msgid "Notify the invoice's salesperson"
+msgstr ""
+
+msgid "Put the customer on credit hold"
+msgstr ""
+
+msgid "default"
+msgstr ""
+
+msgid "send from"
+msgstr ""
+
+msgid "send until"
+msgstr ""
+
+msgid "business days only"
+msgstr ""
+
+msgid "reminders a day per customer"
+msgstr ""
+
+msgid "reminder schedule"
+msgstr ""
+
+msgid "reminder schedules"
+msgstr ""
+
+msgid "days from the due date"
+msgstr ""
+
+msgid "Negative before the due date, 0 on the day, positive after it."
+msgstr ""
+
+msgid "template"
+msgstr ""
+
+msgid "channel"
+msgstr ""
+
+msgid "minimum amount owing"
+msgstr ""
+
+msgid "escalation"
+msgstr ""
+
+msgid "reminder step"
+msgstr ""
+
+msgid "reminder steps"
+msgstr ""
+
+#, python-format
+msgid "Escalation is a list of: %(actions)s."
+msgstr ""
+
+msgid "Each escalation action is listed once."
+msgstr ""
+
 msgid "Net 30"
 msgstr ""
 
@@ -7656,6 +7756,9 @@ msgid "This quote expired on %(date)s: ask for a new quote."
 msgstr ""
 
 msgid "Add at least one line before sending the quote."
+msgstr ""
+
+msgid "Standard reminders"
 msgstr ""
 
 msgid "Superseded"

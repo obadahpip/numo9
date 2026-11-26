@@ -1,0 +1,13 @@
+{% autoescape off %}Hello {{ contact }},
+
+Invoice {{ number }} was due on {{ due_date }} and {{ amount_due }} is still owing. This is our final reminder: please pay the balance or contact us to arrange payment.
+
+Amount owing: {{ amount_due }}
+
+View and pay the invoice: {{ link }}
+
+If you have already paid, thank you — please disregard this reminder.
+
+--
+{{ organisation }}
+{% endautoescape %}

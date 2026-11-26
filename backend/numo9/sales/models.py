@@ -16,6 +16,7 @@ D-06-T04); ``amount_applied`` and ``amount_refunded`` are the credit used so far
 
 from __future__ import annotations
 
+import datetime as dt
 from decimal import Decimal
 from typing import Any, ClassVar
 
@@ -734,3 +735,144 @@ class RecurringInvoiceLine(DocumentLineBase):
         constraints: ClassVar[list[models.BaseConstraint]] = [
             *DocumentLineBase.line_constraints("sales_recurline"),
         ]
+
+
+# ---- Invoice reminders (D-07) ------------------------------------------------------------------
+
+
+class ReminderChannelKind(models.TextChoices):
+    """How a reminder step reaches the customer (D-07-T02 adapters)."""
+
+    EMAIL = "email", _("Email")
+    SMS = "sms", _("Text message (SMS)")
+    WHATSAPP = "whatsapp", _("WhatsApp")
+
+
+class ReminderEscalation(models.TextChoices):
+    """What a step does besides reminding (D-07-T05)."""
+
+    NOTIFY_OWNER = "notify_owner", _("Notify the organisation's owner")
+    NOTIFY_SALESPERSON = "notify_salesperson", _("Notify the invoice's salesperson")
+    CREDIT_HOLD = "credit_hold", _("Put the customer on credit hold")
+
+
+#: Steps run from three months before the due date to a year after it.
+REMINDER_OFFSET_MIN = -90
+REMINDER_OFFSET_MAX = 365
+
+
+class ReminderSchedule(AuditedModel, OrgOwnedModel):
+    """An organisation's invoice reminder schedule (D-07-T01): its steps before and after the
+    due date (``steps``), whether it runs (``is_active``) and the **sending window** in the
+    organisation's time zone — reminders go out between ``window_start`` and ``window_end`` on
+    business days — and at most ``daily_cap_per_contact`` reminders a day to one customer (no
+    spamming, even when several invoices are due). One schedule per organisation is the default
+    (``is_default``): the one new invoices follow."""
+
+    name = models.CharField(_("name"), max_length=200)
+    is_active = models.BooleanField(_("active"), default=True)
+    is_default = models.BooleanField(_("default"), default=False)
+    window_start = models.TimeField(_("send from"), default=dt.time(9, 0))
+    window_end = models.TimeField(_("send until"), default=dt.time(17, 0))
+    business_days_only = models.BooleanField(_("business days only"), default=True)
+    daily_cap_per_contact = models.PositiveSmallIntegerField(
+        _("reminders a day per customer"), default=1
+    )
+
+    class Meta:
+        ordering = ("name", "pk")
+        verbose_name = _("reminder schedule")
+        verbose_name_plural = _("reminder schedules")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation"],
+                condition=models.Q(is_default=True),
+                name="sales_reminder_one_default",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(window_end__gt=models.F("window_start")),
+                name="sales_reminder_window_order",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(daily_cap_per_contact__gte=1),
+                name="sales_reminder_daily_cap_min",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class ReminderStep(OrgOwnedModel):
+    """One step of a reminder schedule (D-07-T01): ``offset_days`` from the invoice's due date
+    (−7 = a week before, 0 = on the day, +14 = two weeks late), the email/text ``template`` (a
+    notification template key, rendered in the customer's language — EN/FR seeded, D-07-T13),
+    the ``channel``, the ``min_amount`` the invoice must still owe for the step to run and its
+    ``escalation`` actions (``ReminderEscalation`` values)."""
+
+    schedule = models.ForeignKey(
+        ReminderSchedule, on_delete=models.CASCADE, related_name="steps", verbose_name=_("schedule")
+    )
+    offset_days = models.SmallIntegerField(
+        _("days from the due date"),
+        help_text=_("Negative before the due date, 0 on the day, positive after it."),
+    )
+    template = models.CharField(_("template"), max_length=100)
+    channel = models.CharField(
+        _("channel"),
+        max_length=10,
+        choices=ReminderChannelKind.choices,
+        default=ReminderChannelKind.EMAIL,
+    )
+    min_amount = _money(_("minimum amount owing"))
+    escalation = models.JSONField(_("escalation"), default=list, blank=True)
+    is_active = models.BooleanField(_("active"), default=True)
+
+    class Meta:
+        ordering = ("schedule", "offset_days", "pk")
+        verbose_name = _("reminder step")
+        verbose_name_plural = _("reminder steps")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["schedule", "offset_days", "channel"], name="sales_reminder_step_once"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(offset_days__gte=REMINDER_OFFSET_MIN)
+                & models.Q(offset_days__lte=REMINDER_OFFSET_MAX),
+                name="sales_reminder_step_offset_range",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(min_amount__gte=0), name="sales_reminder_step_min_amount"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(channel__in=ReminderChannelKind.values),
+                name="sales_reminder_step_channel_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.schedule} {self.offset_days:+d}"
+
+    def clean(self) -> None:
+        from django.core.exceptions import ValidationError
+
+        actions = self.escalation if isinstance(self.escalation, list) else None
+        if actions is None or any(a not in ReminderEscalation.values for a in actions):
+            raise ValidationError(
+                {
+                    "escalation": ValidationError(
+                        _("Escalation is a list of: %(actions)s.")
+                        % {"actions": ", ".join(ReminderEscalation.values)},
+                        code="sales.reminder.escalation_invalid",
+                    )
+                }
+            )
+        if len(set(actions)) != len(actions):
+            raise ValidationError(
+                {
+                    "escalation": ValidationError(
+                        _("Each escalation action is listed once."),
+                        code="sales.reminder.escalation_invalid",
+                    )
+                }
+            )

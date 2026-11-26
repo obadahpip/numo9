@@ -1,0 +1,12 @@
+Bonjour Maple Leaf Supply Ltd.,
+
+Petit rappel : la facture INV-0042 de $1,130.00 CAD est payable le 1 Jul 2026, dans 7 jours.
+
+Montant dû : $1,130.00 CAD
+
+Consulter la facture : https://app.numo9.ca/api/v1/invoice-view/tok-abc
+
+Si vous l'avez déjà payée, merci — vous pouvez ignorer ce rappel.
+
+--
+Refined Interiors Inc.

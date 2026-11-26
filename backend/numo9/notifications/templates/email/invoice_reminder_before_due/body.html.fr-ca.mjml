@@ -1,0 +1,8 @@
+{% extends "email/base.mjml" %}
+{% block content %}        <mj-text font-size="20px" line-height="28px" font-weight="700" padding="0 24px 12px">Rappel : la facture {{ number }} est payable le {{ due_date }}</mj-text>
+        <mj-text padding="0 24px 12px">Bonjour {{ contact }},</mj-text>
+        <mj-text padding="0 24px 12px">Petit rappel : la facture {{ number }} de {{ amount_due }} est payable le {{ due_date }}, dans {{ days }} jour{{ days|pluralize }}.</mj-text>
+        <mj-text font-size="16px" font-weight="700" padding="0 24px 12px">Montant dû : {{ amount_due }}</mj-text>
+        <mj-button href="{{ link }}" align="left" padding="8px 24px 16px">Consulter la facture</mj-button>
+        <mj-text font-size="13px" color="#5C6370" padding="0 24px">Si vous l'avez déjà payée, merci — vous pouvez ignorer ce rappel.</mj-text>{% endblock %}
+{% block footer %}{{ organisation }}{% endblock %}
