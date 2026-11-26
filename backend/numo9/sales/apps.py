@@ -12,6 +12,15 @@ class SalesConfig(AppConfig):
     verbose_name = "Sales"
 
     def ready(self) -> None:
+        from django.utils.translation import gettext_lazy as _
+
+        from numo9.contacts.merge import register_reference
+
+        # A payment received and a customer credit keep their contact on a merge, like the
+        # journal lines they posted (D-05-T01).
+        register_reference("sales.CustomerPayment", "contact", "keep", _("payments received"))
+        register_reference("sales.CustomerCredit", "contact", "keep", _("customer credits"))
+
         from .credit import register_invoice_exposure
 
         register_invoice_exposure()  # what customers owe from invoices (D-03a-T06)
