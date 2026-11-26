@@ -1247,6 +1247,14 @@ class BillPayment(AuditedModel, OrgOwnedModel):
     )
     voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
     void_reason = models.CharField(_("reason for voiding"), max_length=500, blank=True)
+    cheque = models.ForeignKey(
+        "purchases.Cheque",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="payments",
+        verbose_name=_("cheque"),
+    )
 
     class Meta:
         ordering = ("-date", "-pk")
@@ -1295,3 +1303,134 @@ class BillPayment(AuditedModel, OrgOwnedModel):
     def settled(self) -> Decimal:
         """What the payment takes off the bill: the cash paid plus the discount."""
         return Decimal(self.amount) + Decimal(self.discount)
+
+
+# ---- cheques (E-06-T06) ------------------------------------------------------------------------
+
+
+class ChequeStatus(models.TextChoices):
+    ISSUED = "issued", _("Issued")
+    PRINTED = "printed", _("Printed")
+    CLEARED = "cleared", _("Cleared")
+    VOID = "void", _("Void")
+    STALE = "stale", _("Stale-dated")
+
+
+class ChequeSequence(OrgOwnedModel):
+    """The next cheque number of one bank account (E-06-T06): cheques are numbered **per bank
+    account** (each account has its own cheque stock), handed out under a row lock by
+    ``cheques.allocate_number``; ``next_number`` can be moved on (a new cheque book) but never
+    back onto a number already used."""
+
+    bank_account = models.OneToOneField(
+        "banking.BankAccount",
+        on_delete=models.CASCADE,
+        related_name="cheque_sequence",
+        verbose_name=_("bank account"),
+    )
+    next_number = models.PositiveIntegerField(_("next cheque number"), default=1)
+
+    class Meta:
+        verbose_name = _("cheque numbering")
+        verbose_name_plural = _("cheque numbering")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(next_number__gte=1, next_number__lte=99999999),
+                name="purchases_chequesequence_range",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.bank_account} → {self.next_number}"
+
+
+class Cheque(AuditedModel, OrgOwnedModel):
+    """A cheque in the register (E-06-T06): ``number`` — unique **per bank account**; the
+    ``payee`` (a supplier contact, its name kept as printed in ``payee_name``), ``amount``,
+    ``date``, the batch it was issued in and the bill payments it pays (``BillPayment.cheque``).
+
+    Register statuses: **Issued** (numbered, not printed yet) → **Printed** (E-06-T07) →
+    **Cleared** (the bank paid it, ``cleared_on``); **Void** (with a reason, audited; a misfed
+    cheque is reprinted under a new number — ``reissue_of`` points to the voided one) or
+    **Stale-dated** (not cleared after the configured days, default 180 — the job is E-06-T09).
+    """
+
+    bank_account = models.ForeignKey(
+        "banking.BankAccount",
+        on_delete=models.PROTECT,
+        related_name="cheques",
+        verbose_name=_("bank account"),
+    )
+    number = models.PositiveIntegerField(_("cheque number"))
+    batch = models.ForeignKey(
+        PaymentBatch,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="cheques",
+        verbose_name=_("payment batch"),
+    )
+    payee = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        related_name="cheques",
+        verbose_name=_("payee"),
+    )
+    payee_name = models.CharField(_("pay to the order of"), max_length=200)
+    date = models.DateField(_("cheque date"))
+    amount = models.DecimalField(_("amount"), max_digits=18, decimal_places=2)
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    memo = models.CharField(_("memo"), max_length=200, blank=True)
+    status = models.CharField(
+        _("status"), max_length=8, choices=ChequeStatus.choices, default=ChequeStatus.ISSUED
+    )
+    printed_at = models.DateTimeField(_("printed at"), null=True, blank=True)
+    cleared_on = models.DateField(_("cleared on"), null=True, blank=True)
+    stale_at = models.DateTimeField(_("stale-dated at"), null=True, blank=True)
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+    void_reason = models.CharField(_("reason for voiding"), max_length=500, blank=True)
+    reissue_of = models.OneToOneField(
+        "self",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="reissued_as",
+        verbose_name=_("reprint of"),
+    )
+
+    class Meta:
+        ordering = ("bank_account", "-number")
+        verbose_name = _("cheque")
+        verbose_name_plural = _("cheques")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "bank_account", "number"],
+                name="purchases_cheque_number_unique",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=ChequeStatus.values),
+                name="purchases_cheque_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="purchases_cheque_amount_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(number__gte=1, number__lte=99999999),
+                name="purchases_cheque_number_range",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=ChequeStatus.VOID) | ~models.Q(void_reason=""),
+                name="purchases_cheque_void_reason",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(status=ChequeStatus.CLEARED)
+                | models.Q(cleared_on__isnull=False),
+                name="purchases_cheque_cleared_date",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(fields=["organisation", "status"], name="purchases_cheque_status_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.number:06d}"

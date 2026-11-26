@@ -16,6 +16,8 @@ class PurchasesConfig(AppConfig):
 
         # A bill payment keeps its supplier on a merge, like the journal lines it posts (E-06-T01).
         register_reference("purchases.BillPayment", "contact", "keep", _("bill payments"))
+        # A cheque keeps the payee it was written to (E-06-T06).
+        register_reference("purchases.Cheque", "payee", "keep", _("cheques"))
 
         from .recode import register_recode_exclusions
 

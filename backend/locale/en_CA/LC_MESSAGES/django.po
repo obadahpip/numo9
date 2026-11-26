@@ -6556,6 +6556,9 @@ msgstr ""
 msgid "bill payments"
 msgstr ""
 
+msgid "cheques"
+msgstr ""
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -6638,6 +6641,30 @@ msgstr ""
 
 #, python-format
 msgid "Void of bill %(number)s"
+msgstr ""
+
+msgid "A cheque number is from 1 to 99999999."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s was already used on %(account)s."
+msgstr ""
+
+msgid "A cheque is for more than zero."
+msgstr ""
+
+msgid "A cheque pays bills of its payee only."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't become %(target)s."
+msgstr ""
+
+msgid "Say why the cheque is voided."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s pays posted bill payments: void it with its payments so they are reversed."
 msgstr ""
 
 msgid "Month"
@@ -7109,7 +7136,55 @@ msgstr ""
 msgid "reason for voiding"
 msgstr ""
 
+msgid "cheque"
+msgstr ""
+
 msgid "bill payment"
+msgstr ""
+
+msgid "Issued"
+msgstr ""
+
+msgid "Printed"
+msgstr ""
+
+msgid "Cleared"
+msgstr ""
+
+msgid "Stale-dated"
+msgstr ""
+
+msgid "next cheque number"
+msgstr ""
+
+msgid "cheque numbering"
+msgstr ""
+
+msgid "cheque number"
+msgstr ""
+
+msgid "payee"
+msgstr ""
+
+msgid "pay to the order of"
+msgstr ""
+
+msgid "cheque date"
+msgstr ""
+
+msgid "memo"
+msgstr ""
+
+msgid "printed at"
+msgstr ""
+
+msgid "cleared on"
+msgstr ""
+
+msgid "stale-dated at"
+msgstr ""
+
+msgid "reprint of"
 msgstr ""
 
 msgid "All"
