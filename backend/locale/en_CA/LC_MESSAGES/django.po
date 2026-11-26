@@ -399,6 +399,16 @@ msgstr ""
 msgid "Owner funded %(account)s"
 msgstr ""
 
+msgid "Created and approved by the same person"
+msgstr ""
+
+msgid "One person entered and approved the same journal, bill or pay run: no second pair of eyes."
+msgstr ""
+
+#, python-format
+msgid "%(document)s (%(date)s) was entered and approved by %(person)s. Approval needs a second person."
+msgstr ""
+
 msgid "Manual journal posts to a bank or cash account"
 msgstr ""
 
