@@ -74,6 +74,7 @@ CHOOSABLE = (
     "credit_mode",
     "t4a_flag",
     "portal_enabled",
+    "reminders_opt_out",
     "statement_pref",
     "language",
     "sales_account",

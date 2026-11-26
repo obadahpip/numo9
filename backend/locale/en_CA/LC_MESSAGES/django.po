@@ -1816,6 +1816,12 @@ msgstr ""
 msgid "client portal access"
 msgstr ""
 
+msgid "no invoice reminders"
+msgstr ""
+
+msgid "The customer asked not to receive invoice reminders."
+msgstr ""
+
 msgid "statements"
 msgstr ""
 
@@ -7449,6 +7455,12 @@ msgstr ""
 msgid "Credit refund"
 msgstr ""
 
+msgid "Only a posted invoice that isn't void can be disputed."
+msgstr ""
+
+msgid "Say what the customer disputes."
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
@@ -7493,7 +7505,29 @@ msgstr ""
 msgid "Copy to an invoice or a quote."
 msgstr ""
 
+#, python-format
+msgid "Late interest on %(invoice)s: %(days)d days at %(rate)s %% a year on %(balance)s"
+msgstr ""
+
+msgid "Choose the income account late fees are invoiced to in the late fee settings."
+msgstr ""
+
+msgid "Late interest"
+msgstr ""
+
 msgid "first viewed at"
+msgstr ""
+
+msgid "disputed"
+msgstr ""
+
+msgid "The customer disputes the invoice: no reminder or late fee until resolved."
+msgstr ""
+
+msgid "disputed since"
+msgstr ""
+
+msgid "what is disputed"
 msgstr ""
 
 msgid "current revision"
@@ -7819,6 +7853,57 @@ msgid "customer credit refund"
 msgstr ""
 
 msgid "customer credit refunds"
+msgstr ""
+
+msgid "A line on the next statement"
+msgstr ""
+
+msgid "A separate fee invoice"
+msgstr ""
+
+msgid "charge late interest"
+msgstr ""
+
+msgid "interest (% a year) when the payment term has none"
+msgstr ""
+
+msgid "grace period (days)"
+msgstr ""
+
+msgid "minimum fee"
+msgstr ""
+
+msgid "charged on"
+msgstr ""
+
+msgid "fee income account"
+msgstr ""
+
+msgid "late fee policy"
+msgstr ""
+
+msgid "late fee policies"
+msgstr ""
+
+msgid "days"
+msgstr ""
+
+msgid "overdue balance"
+msgstr ""
+
+msgid "rate (% a year)"
+msgstr ""
+
+msgid "fee"
+msgstr ""
+
+msgid "fee invoice"
+msgstr ""
+
+msgid "late fee charge"
+msgstr ""
+
+msgid "late fee charges"
 msgstr ""
 
 msgid "Net 30"

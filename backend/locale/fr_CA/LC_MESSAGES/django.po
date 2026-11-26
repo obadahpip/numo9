@@ -1902,6 +1902,12 @@ msgstr ""
 msgid "client portal access"
 msgstr ""
 
+msgid "no invoice reminders"
+msgstr "aucun rappel de facture"
+
+msgid "The customer asked not to receive invoice reminders."
+msgstr "Le client a demandé de ne pas recevoir de rappels de facture."
+
 #, fuzzy
 #| msgid "audit events"
 msgid "statements"
@@ -8131,6 +8137,12 @@ msgstr "Paiement reçu"
 msgid "Credit refund"
 msgstr "Remboursement de crédit"
 
+msgid "Only a posted invoice that isn't void can be disputed."
+msgstr "Seule une facture comptabilisée qui n’est pas annulée peut être contestée."
+
+msgid "Say what the customer disputes."
+msgstr "Indiquez ce que le client conteste."
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
@@ -8178,10 +8190,32 @@ msgstr "Seule une facture en brouillon peut être supprimée : annulez une factu
 msgid "Copy to an invoice or a quote."
 msgstr "Copiez vers une facture ou un devis."
 
+#, python-format
+msgid "Late interest on %(invoice)s: %(days)d days at %(rate)s %% a year on %(balance)s"
+msgstr "Intérêts de retard sur %(invoice)s : %(days)d jours à %(rate)s %% par année sur %(balance)s"
+
+msgid "Choose the income account late fees are invoiced to in the late fee settings."
+msgstr "Choisissez, dans les paramètres des frais de retard, le compte de revenus auquel les frais de retard sont facturés."
+
+msgid "Late interest"
+msgstr "Intérêts de retard"
+
 #, fuzzy
 #| msgid "first seen"
 msgid "first viewed at"
 msgstr "vu pour la première fois"
+
+msgid "disputed"
+msgstr "contestée"
+
+msgid "The customer disputes the invoice: no reminder or late fee until resolved."
+msgstr "Le client conteste la facture : aucun rappel ni frais de retard jusqu’au règlement du différend."
+
+msgid "disputed since"
+msgstr "contestée depuis"
+
+msgid "what is disputed"
+msgstr "objet de la contestation"
 
 msgid "current revision"
 msgstr ""
@@ -8607,6 +8641,57 @@ msgstr "fournisseur"
 #| msgid "Stripe customer"
 msgid "customer credit refunds"
 msgstr "Client Stripe"
+
+msgid "A line on the next statement"
+msgstr "Une ligne sur le prochain relevé"
+
+msgid "A separate fee invoice"
+msgstr "Une facture de frais distincte"
+
+msgid "charge late interest"
+msgstr "facturer des intérêts de retard"
+
+msgid "interest (% a year) when the payment term has none"
+msgstr "intérêts (% par année) lorsque la condition de paiement n’en prévoit pas"
+
+msgid "grace period (days)"
+msgstr "délai de grâce (jours)"
+
+msgid "minimum fee"
+msgstr "frais minimaux"
+
+msgid "charged on"
+msgstr "facturés sur"
+
+msgid "fee income account"
+msgstr "compte de revenus de frais"
+
+msgid "late fee policy"
+msgstr "politique de frais de retard"
+
+msgid "late fee policies"
+msgstr "politiques de frais de retard"
+
+msgid "days"
+msgstr "jours"
+
+msgid "overdue balance"
+msgstr "solde en souffrance"
+
+msgid "rate (% a year)"
+msgstr "taux (% par année)"
+
+msgid "fee"
+msgstr "frais"
+
+msgid "fee invoice"
+msgstr "facture de frais"
+
+msgid "late fee charge"
+msgstr "frais de retard facturés"
+
+msgid "late fee charges"
+msgstr "frais de retard facturés"
 
 msgid "Net 30"
 msgstr ""

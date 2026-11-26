@@ -19,7 +19,8 @@ a supplier has both) — never inferred from transactions (gap-19). It is an org
   needs an override approval (B-01-T13, gap-20);
 - ``t4a_flag`` — payments to the contact are reported on T4A slips (withholding flag, gap-20);
 - ``portal_enabled`` — the contact may use the client portal; ``statement_pref`` — how statements
-  reach it; ``language`` — the language of its documents and emails;
+  reach it; ``language`` — the language of its documents and emails; ``reminders_opt_out`` — the
+  customer asked for no invoice reminders (D-07-T07: no reminder is sent for its invoices);
 - ``status`` — active or archived. Archiving is the contact's "delete": an archived contact keeps
   its history and can be restored. ``deleted_at`` is left to the merge (B-01-T12), which retires
   the merged contact and keeps its number as an alias.
@@ -185,6 +186,11 @@ class Contact(AuditedModel, OrgOwnedModel):
         help_text=_("Payments to this contact are reported on T4A slips."),
     )
     portal_enabled = models.BooleanField(_("client portal access"), default=False)
+    reminders_opt_out = models.BooleanField(
+        _("no invoice reminders"),
+        default=False,
+        help_text=_("The customer asked not to receive invoice reminders."),
+    )
     statement_pref = models.CharField(
         _("statements"),
         max_length=8,
