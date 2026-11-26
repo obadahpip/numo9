@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { expectAccessible, jsonBody, mockCsrf } from "./auth-helpers";
+import { ACCOUNTING_FEATURES, entitlements, mockEntitlements } from "./entitlements-fixtures";
 
 /**
  * G-03-T11, T12 — the GST/HST return: the periods list prepares a return and opens the
@@ -275,4 +276,40 @@ test("the filing timeline shows the lock on a filed period", async ({ page }) =>
   );
   await page.goto(`/o/${ORG}/settings/tax/registrations/${REG}/filing`);
   await expect(page.getByTestId("period-lock")).toHaveCount(1);
+});
+
+test.describe("gap-54: the GST/HST return is on every package with Tax", () => {
+  test("a package with Tax opens the returns", async ({ page }) => {
+    await mock(page, null);
+    await mockEntitlements(
+      page,
+      ORG,
+      entitlements({
+        products: ["accounting", "tax", "practice", "portal"],
+        features: [...ACCOUNTING_FEATURES, "tax.returns.read", "tax.returns.write"],
+      }),
+    );
+    await page.goto(`/o/${ORG}/tax/returns`);
+    await expect(page.getByRole("heading", { level: 1, name: "GST/HST returns" })).toBeVisible();
+    await expect(page.locator('[data-feature-state="gated"]')).toHaveCount(0);
+  });
+
+  test("a package without Tax shows the locked panel naming Tax", async ({ page }) => {
+    await mock(page, null);
+    await mockEntitlements(
+      page,
+      ORG,
+      entitlements({
+        packages_by_product: { tax: [{ code: "books_tax", name: "Books + Tax" }] },
+      }),
+    );
+    const response = await page.goto(`/o/${ORG}/tax/returns`);
+    expect(response?.status()).toBe(200);
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Tax isn't in this organisation's package" }),
+    ).toBeVisible();
+    await expect(page.locator('[data-explain="gated"]')).toContainText("included in Books + Tax");
+    expect(new URL(page.url()).pathname).toBe(`/o/${ORG}/tax/returns`);
+    await expectAccessible(page);
+  });
 });

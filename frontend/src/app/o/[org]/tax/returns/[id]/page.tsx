@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { Gated } from "@/catalogue/Gated";
 import { AppShell } from "@/components/AppShell";
 import { ORG_SLUG } from "@/routing/routes";
 import { ReturnWorksheet } from "@/tax/returns/ReturnWorksheet";
@@ -17,7 +18,10 @@ export default async function ReturnPage({ params }: { params: Promise<Params> }
   if (!ORG_SLUG.test(org) || !UUID.test(id)) notFound();
   return (
     <AppShell org={org} modulePath="reports">
-      <ReturnWorksheet org={org} id={id} />
+      {/* Part of every package with Tax (G-03-T15, gap-54); elsewhere the locked panel. */}
+      <Gated feature="tax.returns.read" headingLevel={1}>
+        <ReturnWorksheet org={org} id={id} />
+      </Gated>
     </AppShell>
   );
 }
