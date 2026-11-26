@@ -28,6 +28,8 @@ class PurchasesConfig(AppConfig):
         register_bill_search()  # bills in the global search (E-02-T16)
         from numo9.reports.drill import register_source
 
+        from . import recurring_bills  # noqa: F401  (the "bills" generator, E-03-T02)
+
         # A report figure's bill lines open the bill (K-01-T05 drill-down, E-02-T10).
         register_source(
             "purchases.bill", lambda org, sid: f"/o/{org.public_id}/purchases/bills/{sid}"

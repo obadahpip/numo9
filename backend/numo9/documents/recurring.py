@@ -87,6 +87,44 @@ class Outcome:
     notify: bool = False
 
 
+def validate_schedule(template: Any, prefix: str) -> None:
+    """``ValidationError`` for a rule the engine can't read (``rrule``) or an end date before the
+    start (``<prefix>.end_before_start``)."""
+    engine.parse_rule(template.rrule, template.start_date)
+    if template.end_date is not None and template.end_date < template.start_date:
+        raise ValidationError(
+            {
+                "end_date": ValidationError(
+                    _("The end date is before the start date."),
+                    code=f"{prefix}.end_before_start",
+                )
+            }
+        )
+
+
+def first_run(template: Any) -> dt.date | None:
+    """The schedule's first date (``next_run`` of a new template)."""
+    dates = engine.occurrences(template.rrule, template.start_date, template.end_date, limit=1)
+    return dates[0] if dates else None
+
+
+def _open_rule(rule: str) -> str:
+    """The rule without its own COUNT / UNTIL — the cadence only."""
+    text = rule.strip()
+    if text.upper().startswith("RRULE:"):
+        text = text[6:]
+    return ";".join(p for p in text.split(";") if not p.upper().startswith(("COUNT=", "UNTIL=")))
+
+
+def period_of(template: Any, day: dt.date) -> tuple[dt.date, dt.date]:
+    """The period the occurrence on ``day`` covers: from its date to the day before the
+    cadence's next date (neither the end date nor the rule's own COUNT / UNTIL cut it)."""
+    following = engine.occurrences(
+        _open_rule(template.rrule), template.start_date, after=day, limit=1
+    )
+    return day, following[0] - dt.timedelta(days=1)
+
+
 class GenerationFailed(RuntimeError):
     """Some templates failed unexpectedly during a tick (logged); the others were generated."""
 

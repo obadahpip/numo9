@@ -121,3 +121,12 @@ allowed_modules = [
     "numo9.scale.fixtures",
     "numo9.reports.management.commands.seed_report_books",
 ]
+
+[[tool.importlinter.contracts]]
+# E-03 risk "duplicated logic": recurring bills reuse the shared generator of numo9.documents
+# (D-04-T05) — never the sales app's recurring invoices.
+name = "Recurring bills use the shared recurring generator, not the sales app (E-03-T02)"
+type = "forbidden"
+source_modules = ["numo9.purchases.recurring_bills"]
+forbidden_modules = ["numo9.sales"]
+allow_indirect_imports = true

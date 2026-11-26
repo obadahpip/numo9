@@ -37,6 +37,7 @@ from numo9.documents.recurring import (
     reason,
     register,
 )
+from numo9.documents.recurring import period_of as shared_period_of
 from numo9.ledger import recurring as engine
 from numo9.orgsettings.models import LockModule
 
@@ -85,21 +86,11 @@ def next_after(template: Any, day: dt.date) -> dt.date | None:
     return dates[0] if dates else None
 
 
-def _open_rule(rule: str) -> str:
-    """The rule without its own COUNT / UNTIL — the cadence only."""
-    text = rule.strip()
-    if text.upper().startswith("RRULE:"):
-        text = text[6:]
-    return ";".join(p for p in text.split(";") if not p.upper().startswith(("COUNT=", "UNTIL=")))
-
-
 def period_of(template: Any, day: dt.date) -> tuple[dt.date, dt.date]:
     """The period the occurrence on ``day`` bills: to the day before the cadence's next date
-    (neither the end date nor the rule's own COUNT / UNTIL cut it — proration does, T04)."""
-    following = engine.occurrences(
-        _open_rule(template.rrule), template.start_date, after=day, limit=1
-    )
-    return day, following[0] - dt.timedelta(days=1)
+    (neither the end date nor the rule's own COUNT / UNTIL cut it — proration does, T04). The
+    shared ``numo9.documents.recurring.period_of``."""
+    return shared_period_of(template, day)
 
 
 def terms_for(template: Any) -> Any:
@@ -141,8 +132,9 @@ def build_invoice(template: Any, day: dt.date) -> Any:
     template's rule (T02); placeholders resolved for the period the occurrence bills in the
     customer's language (T03); a first or last partial period prorated per line (T04). The
     figures are the server's (``recalculate``); the number comes at approval."""
+    from numo9.documents.placeholders import render
+
     from .models import Invoice, InvoiceLine
-    from .placeholders import render
     from .posting import recalculate
     from .proration import for_template
 

@@ -620,6 +620,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.sales.recurring_invoices",
         "schedule": crontab(minute=44),
     },
+    # Recurring bills (E-03-T02): hourly, the shared generator of recurring invoices.
+    "numo9.purchases.recurring_bills": {
+        "task": "numo9.purchases.recurring_bills",
+        "schedule": crontab(minute=47),
+    },
     # Recurring journals (C-04-T06): hourly, each organisation on its own date; idempotent.
     "numo9.ledger.recurring_journals": {
         "task": "numo9.ledger.recurring_journals",

@@ -2646,6 +2646,9 @@ msgstr ""
 msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
 msgstr ""
 
+msgid "The end date is before the start date."
+msgstr ""
+
 msgid "The template was paused on this date."
 msgstr ""
 
@@ -5159,9 +5162,6 @@ msgstr ""
 msgid "A recurring journal can't be of a system type."
 msgstr ""
 
-msgid "The end date is before the start date."
-msgstr ""
-
 #, python-format
 msgid "The recurring journal refers to a record that no longer exists (%(id)s)."
 msgstr ""
@@ -5681,6 +5681,29 @@ msgid "Recurring invoice %(name)s has ended"
 msgstr ""
 
 msgid "Its schedule has no more dates: no more invoices will be created."
+msgstr ""
+
+#, python-format
+msgid "Recurring bill %(name)s needs attention"
+msgstr ""
+
+#, python-format
+msgid "The bill of %(date)s was created but not approved: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring bill %(name)s skipped %(date)s"
+msgstr ""
+
+#, python-format
+msgid "No bill was created for %(date)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring bill %(name)s has ended"
+msgstr ""
+
+msgid "Its schedule has no more dates: no more bills will be created."
 msgstr ""
 
 #, python-format
@@ -6734,6 +6757,36 @@ msgstr ""
 msgid "supplier credit applications"
 msgstr ""
 
+msgid "Approve"
+msgstr ""
+
+msgid "supplier invoice number pattern"
+msgstr ""
+
+msgid "Placeholders keep each bill's number unique, e.g. RENT-{{month}}-{{year}}."
+msgstr ""
+
+msgid "last run"
+msgstr ""
+
+msgid "recurring bill"
+msgstr ""
+
+msgid "recurring bills"
+msgstr ""
+
+msgid "recurring bill line"
+msgstr ""
+
+msgid "recurring bill lines"
+msgstr ""
+
+msgid "recurring bill run"
+msgstr ""
+
+msgid "recurring bill runs"
+msgstr ""
+
 msgid "Reimbursed"
 msgstr ""
 
@@ -6871,6 +6924,14 @@ msgid "%(order)s is %(status)s: its receipts can't be reversed."
 msgstr ""
 
 msgid "Say why the receipt is reversed."
+msgstr ""
+
+#, python-format
+msgid "%(names)s isn't a placeholder: use %(known)s."
+msgstr ""
+
+#, python-format
+msgid "The bill needs approval before it is posted: %(why)s"
 msgstr ""
 
 #, python-format
@@ -7758,9 +7819,6 @@ msgstr ""
 msgid "quote acceptances"
 msgstr ""
 
-msgid "Approve"
-msgstr ""
-
 msgid "Approve and send"
 msgstr ""
 
@@ -7771,9 +7829,6 @@ msgid "service starts"
 msgstr ""
 
 msgid "service ends"
-msgstr ""
-
-msgid "last run"
 msgstr ""
 
 msgid "recurring invoice"
