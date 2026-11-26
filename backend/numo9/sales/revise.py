@@ -101,7 +101,10 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
        reverses: the AR lock refuses, naming it, late or not; a filed GST/HST (QST) period
        refuses naming the period and its confirmation — unless the period is unlocked or
        ``late_adjustment`` is set: then the journals post into the filed period and their tax
-       difference is reported on the next open return (T11, G-03-T08);
+       difference is reported on the next open return (T11, G-03-T08): the reversal's tax and
+       the new tax are carried there as late adjustments of the revision's two journals (the
+       filed return never changes), their net — the revision's tax difference — in the audit
+       event (``late_adjustment_summary``);
     5. **reverse** the previous revision's journal (on its own date: the old posting nets to
        zero where it was) and **post** the new revision's journal (on the invoice date), through
        the posting engine;
@@ -128,6 +131,7 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
     from .posting import SOURCE_TYPE, invoice_preview, store_figures
     from .revisions import (
         display_number,
+        late_adjustment_summary,
         record_revision_event,
         revision_snapshot,
         validate_revision,
@@ -234,5 +238,6 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
             journal_reversal=reversal,
             journal_post=entry,
             user=person,
+            late_adjustment=late_adjustment_summary(revision) if late_adjustment else None,
         )
         return revision

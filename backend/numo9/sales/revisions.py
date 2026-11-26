@@ -11,6 +11,9 @@
   values (header fields, totals, tax per component, and each line added, removed or changed),
   the reason, and the ids and numbers of the reversed and posted journals.
   ``field_diffs(before, after)`` computes the changes from two snapshots.
+- ``late_adjustments_of(revision)`` / ``late_adjustment_summary(revision)`` (D-03b-T11) — a
+  revision saved as a late adjustment into a filed tax period: the ``LateAdjustment`` rows of
+  its two journals and the tax difference each next open period reports.
 - ``document_snapshot(invoice)`` / ``start_revisions(invoice, entry, user)`` (D-03b-T03) — the
   invoice as entered (header, lines, totals) and revision 0 at first approval;
   ``backfill_revision_zero(apps)`` gives one to posted invoices approved before.
@@ -155,6 +158,7 @@ def record_revision_event(
     journal_reversal: Any = None,
     journal_post: Any = None,
     user: Any = None,
+    late_adjustment: list[dict[str, str]] | None = None,
 ) -> Any:
     """Write the audit event ``sales.invoice.revised`` on the invoice (module docstring)."""
     from numo9.audit.service import record
@@ -177,8 +181,51 @@ def record_revision_event(
             "number": display_number(invoice.number, revision.revision),
             "journal_reversal": journal(journal_reversal),
             "journal_post": journal(journal_post),
+            **({"late_adjustment": late_adjustment} if late_adjustment else {}),
         },
     )
+
+
+# ---- late adjustments (D-03b-T11) ---------------------------------------------------------------
+
+
+def late_adjustments_of(revision: InvoiceRevision) -> list[Any]:
+    """The late adjustments (G-03-T08) of the revision's two journals: when it was saved with
+    ``late_adjustment`` into a filed GST/HST (QST) period, the reversal's tax (line 107 when it
+    gave tax back) and the re-post's tax (line 104) are carried by the next open period."""
+    from numo9.tax.models import LateAdjustment
+    from numo9.tenancy.context import org_context
+
+    journals = [pk for pk in (revision.journal_reversal_id, revision.journal_post_id) if pk]
+    with org_context(revision.organisation):
+        return list(
+            LateAdjustment.objects.filter(journal_id__in=journals)
+            .select_related("filed_period", "target_period", "registration")
+            .order_by("target_period__start", "pk")
+        )
+
+
+def late_adjustment_summary(revision: InvoiceRevision) -> list[dict[str, str]]:
+    """The revision's **tax difference** per period that reports it (module docstring of
+    ``revise``): ``[{registration, filed_period, reported_in, reported_in_id, tax_delta}]`` —
+    ``tax_delta`` is what the revision adds to the net tax of ``reported_in`` (negative when the
+    revision lowered the tax: 1,130.00 → 1,017.00 gives −13.00)."""
+    totals: dict[tuple[int, int], tuple[Any, Decimal]] = {}
+    for row in late_adjustments_of(revision):
+        key = (row.registration_id, row.target_period_id)
+        signed = Decimal(row.amount) if row.line == "104" else -Decimal(row.amount)
+        found = totals.get(key)
+        totals[key] = (row, (found[1] if found else Decimal("0.00")) + signed)
+    return [
+        {
+            "registration": row.registration.type,
+            "filed_period": str(row.filed_period),
+            "reported_in": str(row.target_period),
+            "reported_in_id": str(row.target_period.public_id),
+            "tax_delta": f"{delta:.2f}",
+        }
+        for row, delta in totals.values()
+    ]
 
 
 # ---- PDF stamp (D-03b-T14) --------------------------------------------------------------------
