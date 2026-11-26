@@ -17,6 +17,8 @@
 - ``build_revision(invoice)`` (D-03b-T04) — the current revision cloned into an editable
   ``RevisionDraft``; ``draft.document()`` is its snapshot form (equal to the current revision's
   until something is changed).
+- ``validate_revision(invoice, draft)`` (D-03b-T05) — the rules of a revision, refused with an
+  error per field (``RevisionInvalid``).
 """
 
 from __future__ import annotations
@@ -27,6 +29,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
 from .models import Invoice, InvoiceRevision
@@ -356,3 +359,67 @@ def build_revision(invoice: Any) -> RevisionDraft:
         totals=copy.deepcopy(document.get("totals") or {}),
     )
 
+
+# ---- the revision validator (D-03b-T05) ---------------------------------------------------------
+
+
+class RevisionInvalid(ValidationError):
+    """A revision the rules refuse: ``message_dict`` has the field errors; ``code`` is
+    ``sales.revision.invalid``."""
+
+    def __init__(self, errors: dict[str, list[str]]) -> None:
+        super().__init__(errors)
+        self.code = "sales.revision.invalid"
+
+
+def validate_revision(invoice: Any, draft: RevisionDraft) -> None:
+    """Refuse a revision that breaks the rules, with an error per field (ADR-0006):
+
+    - ``reason`` — required (a revision says why);
+    - ``currency`` — never changes (the payments and the AR balance are in it);
+    - ``contact`` — changes only while no payment, credit or credit note is applied to the
+      invoice;
+    - header fields other than those of a document (``DOCUMENT_FIELDS``) and line fields other
+      than ``DOCUMENT_LINE_FIELDS`` can't be set; at least one line; quantities and prices are
+      numbers.
+    """
+    from .models import CreditApplication, PaymentAllocation
+
+    errors: dict[str, list[str]] = {}
+    if not " ".join((draft.reason or "").split()):
+        errors["reason"] = [_("Say why the invoice is revised.")]
+    unknown = sorted(set(draft.header) - set(DOCUMENT_FIELDS))
+    for name in unknown:
+        errors[name] = [_("This field can't be changed on a revision.")]
+    if draft.header.get("currency", invoice.currency) != invoice.currency:
+        errors["currency"] = [
+            _("The currency of a posted invoice can't change: void it and invoice again.")
+        ]
+    contact = draft.header.get("contact_id", invoice.contact_id)
+    if contact != invoice.contact_id:
+        paid = PaymentAllocation.objects.filter(invoice=invoice, reversed_at__isnull=True).exists()
+        credited = CreditApplication.objects.filter(
+            invoice=invoice, reversed_at__isnull=True
+        ).exists()
+        if paid or credited:
+            errors["contact_id"] = [
+                _(
+                    "Payments or credits are applied to this invoice: remove them before "
+                    "changing the customer."
+                )
+            ]
+    if not draft.lines:
+        errors["lines"] = [_("A revision keeps at least one line.")]
+    for index, line in enumerate(draft.lines, start=1):
+        bad = sorted(set(line) - set(DOCUMENT_LINE_FIELDS))
+        problems = [_("%(field)s can't be set on a line.") % {"field": name} for name in bad]
+        for name in ("quantity", "unit_price", "discount_value"):
+            if name in line:
+                try:
+                    Decimal(str(line[name]))
+                except ArithmeticError:
+                    problems.append(_("%(field)s is not a number.") % {"field": name})
+        if problems:
+            errors[f"lines[{index}]"] = problems
+    if errors:
+        raise RevisionInvalid(errors)

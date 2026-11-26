@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:15-0500\n"
+"POT-Creation-Date: 2026-11-25 20:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7915,6 +7915,29 @@ msgstr ""
 
 #, python-format
 msgid "Revision %(n)d of invoice %(number)s"
+msgstr ""
+
+msgid "Say why the invoice is revised."
+msgstr ""
+
+msgid "This field can't be changed on a revision."
+msgstr ""
+
+msgid "The currency of a posted invoice can't change: void it and invoice again."
+msgstr ""
+
+msgid "Payments or credits are applied to this invoice: remove them before changing the customer."
+msgstr ""
+
+msgid "A revision keeps at least one line."
+msgstr ""
+
+#, python-format
+msgid "%(field)s can't be set on a line."
+msgstr ""
+
+#, python-format
+msgid "%(field)s is not a number."
 msgstr ""
 
 msgid "Credit to"

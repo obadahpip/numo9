@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:15-0500\n"
+"POT-Creation-Date: 2026-11-25 20:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8717,6 +8717,37 @@ msgstr "Remplacée"
 #, python-format
 msgid "Revision %(n)d of invoice %(number)s"
 msgstr "Révision %(n)d de la facture %(number)s"
+
+#, fuzzy
+#| msgid "Say why the return is amended."
+msgid "Say why the invoice is revised."
+msgstr "Indiquez pourquoi la déclaration est modifiée."
+
+#, fuzzy
+#| msgid "The file has no lines."
+msgid "This field can't be changed on a revision."
+msgstr "Le fichier ne contient aucune ligne."
+
+msgid "The currency of a posted invoice can't change: void it and invoice again."
+msgstr ""
+
+msgid "Payments or credits are applied to this invoice: remove them before changing the customer."
+msgstr ""
+
+#, fuzzy
+#| msgid "Add at least one line."
+msgid "A revision keeps at least one line."
+msgstr "Ajoutez au moins une ligne."
+
+#, fuzzy, python-format
+#| msgid "Add at least one line."
+msgid "%(field)s can't be set on a line."
+msgstr "Ajoutez au moins une ligne."
+
+#, fuzzy, python-format
+#| msgid "%(name)s isn't a supplier."
+msgid "%(field)s is not a number."
+msgstr "%(name)s n’est pas un fournisseur."
 
 #, fuzzy
 #| msgid "Credit note"
