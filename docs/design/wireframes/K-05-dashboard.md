@@ -33,8 +33,8 @@ Principles fixed here (binding for K-05-T02 … T11):
 | Maple Fixtures Ltd. · Data as of 2:14 p.m. (2)                                           |
 |                                                                                          |
 | +-- Bank & cash balances (3) -------------------+ +-- Cash in and out, 6 months (4) ----+ |
-| | RBC Chequing   1001   $18,420.16  stmt $18,…  | |  $20k ┤        ▇                     | |
-| | Visa ••4471    1010   ($2,310.00)  ⚠ (5)      | |  $10k ┤  ▇ ▆   ▇ ▆  ▆               | |
+| | RBC Chequing   1001   $18,420.16  stmt $18,…  | |  $20K ┤        ▇                     | |
+| | Visa ••4471    1010   ($2,310.00)  ⚠ (5)      | |  $10K ┤  ▇ ▆   ▇ ▆  ▆               | |
 | | Petty cash     1015      $250.00              | |    $0 ┼──────────────────────────── | |
 | | Total cash            $16,360.16              | |       Jun Jul Aug Sep Oct Nov       | |
 | | [Bank accounts →]                             | |  ■ In  ■ Out      [Show as table]   | |
@@ -62,7 +62,7 @@ Principles fixed here (binding for K-05-T02 … T11):
 | 1 | Customise dashboard | Opens edit mode (frame 5): add, remove, reorder (drag or keyboard), widget settings; saved per person; **Reset to my role's default** |
 | 2 | Data as of | Time the figures were computed, in the organisation's time zone; each widget also shows its own when cached |
 | 3 | Bank & cash | Every bank, credit-card and cash account **incl. petty cash** (F-01): ledger balance, statement balance when an import exists; total uses the K-02-T09 cash definition; many accounts scroll inside the card (max 8 rows visible) |
-| 4 | Cash in and out | Bar chart (K-05-T08), 6 months by default (setting: 3 / 6 / 12); zero baseline, CAD axis (`$0`, `$10k`), legend + table fallback; bars link to the cash summary for the month |
+| 4 | Cash in and out | Bar chart (K-05-T08), 6 months by default (setting: 3 / 6 / 12); zero baseline, CAD axis (`$0`, `$10K`), legend + table fallback; bars link to the cash summary for the month |
 | 5 | Negative cash | A negative balance shows in parentheses, `text-fg-danger` and a warning icon + "Negative balance" text (never colour alone), linking to the exceptions list filtered to the account |
 | 6 | Invoices owed | Tiles Awaiting payment / Overdue from the D-09 sales query and the aging bar (shared `AgingBar`); each links to the invoices list tab |
 | 7 | Bills to pay | Same pattern from the E-02 purchases overview query (`bills/overview`); links to the bills list tabs |
@@ -183,8 +183,8 @@ anything.
 ## 7. Chart rules (K-05-T08)
 
 - Bar (cash in/out) and line (trends) charts from `@numo9/ui` `BarChart` / `LineChart`; one value
-  axis only (never dual axis), **zero baseline**, recessive grid, CAD axis ticks (`$0`, `$5k`,
-  `$1.2M`; fr-CA `0 $`, `5 k$`), at most two series with the fixed series order (blue, then
+  axis only (never dual axis), **zero baseline**, recessive grid, CAD axis ticks (`$0`, `$5K`,
+  `$1.2M`; fr-CA `0 $`, `5 k $`), at most two series with the fixed series order (blue, then
   amber) and a legend; values in tooltips and in the **Show as table** fallback (exact amounts,
   `$0.00` for empty months).
 - An all-zero or empty series still draws the axis from `$0` with real tick labels — never
