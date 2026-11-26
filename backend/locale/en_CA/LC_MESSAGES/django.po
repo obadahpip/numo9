@@ -2455,7 +2455,155 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr ""
 
+msgid "Start the conversion first."
+msgstr ""
+
+msgid "Choose an account of the chart."
+msgstr ""
+
+msgid "Choose a contact."
+msgstr ""
+
+msgid "Enter an amount."
+msgstr ""
+
+msgid "Nothing was saved: fix the rows listed."
+msgstr ""
+
+msgid "Choose invoices or bills."
+msgstr ""
+
+msgid "The file is over 25 MB: split it or remove what isn't needed."
+msgstr ""
+
+msgid "The mapping is a JSON object of field → column."
+msgstr ""
+
+msgid "Choose an account of the chart for every line."
+msgstr ""
+
+msgid "The conversion is still a draft: change its balances directly."
+msgstr ""
+
+msgid "Only an adviser (the organisation's accountant) can correct finalised opening balances."
+msgstr ""
+
+msgid "Say why the opening balances are corrected (kept with the journal)."
+msgstr ""
+
+#, python-format
+msgid "Correction of the opening balances at %(date)s — %(reason)s"
+msgstr ""
+
+msgid "The conversion is finalised: correct it with a correcting opening journal."
+msgstr ""
+
+msgid "Enter at least one opening balance to finalise."
+msgstr ""
+
+#, python-format
+msgid "Debits %(debits)s · Credits %(credits)s · Difference %(difference)s — the opening balances must balance before they're finalised."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is %(control)s but its open documents add up to %(documents)s (difference %(gap)s)."
+msgstr ""
+
+#, python-format
+msgid "%(account)s requires a contact: choose one for its line."
+msgstr ""
+
+#, python-format
+msgid "%(account)s opens at −%(amount)s: check the bank statement at the conversion date."
+msgstr ""
+
+#, python-format
+msgid "An opening document is dated before the conversion date (%(date)s): enter documents raised from that date in Numo9."
+msgstr ""
+
+msgid "The due date can't be before the document's date."
+msgstr ""
+
+msgid "The total must be more than zero."
+msgstr ""
+
+msgid "What is still owed must be more than zero and no more than the total."
+msgstr ""
+
+#, python-format
+msgid "Opening balance at %(date)s"
+msgstr ""
+
+msgid "Enter the invoice's number in the old system."
+msgstr ""
+
+#, python-format
+msgid "There's already an invoice %(number)s."
+msgstr ""
+
+msgid "Enter the supplier's invoice number."
+msgstr ""
+
+#, python-format
+msgid "There's already a bill %(number)s from this supplier."
+msgstr ""
+
+#, python-format
+msgid "%(document)s has payments in Numo9: remove them first."
+msgstr ""
+
+#, python-format
+msgid "There's no contact “%(name)s”: add it first, or use its exact name."
+msgstr ""
+
+msgid "Use dates like 2025-12-31."
+msgstr ""
+
+msgid "Enter the document's date."
+msgstr ""
+
+#, python-format
+msgid "The opening balances at %(date)s have no equity: no share capital, retained earnings or other equity was entered. Review the old balance sheet."
+msgstr ""
+
+#, python-format
+msgid "%(amount)s of the opening balances is on %(account)s: find what it is and move it to the right account."
+msgstr ""
+
+msgid "The chart has no Retained earnings account to open the year's result to."
+msgstr ""
+
+#, python-format
+msgid "Prior years' result (revenue and expenses at %(date)s)"
+msgstr ""
+
+#, python-format
+msgid "Conversion balances finalised at %(date)s: balances locked."
+msgstr ""
+
+#, python-format
+msgid "Opening balances at %(date)s"
+msgstr ""
+
 msgid "Finalised"
+msgstr ""
+
+msgid "Conversion date"
+msgstr ""
+
+msgid "Bank and cash"
+msgstr ""
+
+msgid "Open invoices"
+msgstr ""
+
+msgid "Open bills"
+msgstr ""
+
+msgid "Other balances"
+msgstr ""
+
+msgid "Review"
 msgstr ""
 
 msgid "conversion date"
@@ -2468,6 +2616,21 @@ msgid "finalised by"
 msgstr ""
 
 msgid "finalised at"
+msgstr ""
+
+msgid "lock balances"
+msgstr ""
+
+msgid "On finalising, lock the general ledger, sales and purchases to the day before the conversion date for everyone except advisers."
+msgstr ""
+
+msgid "current step"
+msgstr ""
+
+msgid "completed steps"
+msgstr ""
+
+msgid "opening journal"
 msgstr ""
 
 msgid "conversion"
@@ -2489,6 +2652,9 @@ msgstr ""
 msgid "credit"
 msgstr ""
 
+msgid "For an account that requires a contact (a shareholder loan…)."
+msgstr ""
+
 msgid "conversion line"
 msgstr ""
 
@@ -2504,7 +2670,40 @@ msgstr ""
 msgid "Enter the account's balance as a debit or a credit."
 msgstr ""
 
-msgid "The conversion is finalised: correct it with a correcting opening journal."
+msgid "invoice"
+msgstr ""
+
+msgid "bill"
+msgstr ""
+
+msgid "owed at the conversion date"
+msgstr ""
+
+msgid "opening document"
+msgstr ""
+
+msgid "opening documents"
+msgstr ""
+
+msgid "correcting journal"
+msgstr ""
+
+msgid "conversion correction"
+msgstr ""
+
+msgid "conversion corrections"
+msgstr ""
+
+msgid "See the conversion balances, open documents and the difference"
+msgstr ""
+
+msgid "Enter and finalise the conversion balances (advisers post corrections after finalising)"
+msgstr ""
+
+msgid "The conversion is finalised: its date doesn't change."
+msgstr ""
+
+msgid "Unknown step."
 msgstr ""
 
 msgid "Choose the column with the account code or name."
@@ -6626,6 +6825,13 @@ msgstr ""
 msgid "Holdback released"
 msgstr ""
 
+#, python-format
+msgid "%(bill)s can't be voided: %(why)s"
+msgstr ""
+
+msgid "it's an opening balance of the conversion — correct it with a correcting opening journal."
+msgstr ""
+
 msgid "remove its payments first."
 msgstr ""
 
@@ -6633,10 +6839,6 @@ msgid "reverse the holdback release first."
 msgstr ""
 
 msgid "only bills awaiting payment can be voided; delete a draft instead."
-msgstr ""
-
-#, python-format
-msgid "%(bill)s can't be voided: %(why)s"
 msgstr ""
 
 #, python-format
@@ -6916,10 +7118,13 @@ msgstr ""
 msgid "amount paid"
 msgstr ""
 
-msgid "void journal"
+msgid "opening balance"
 msgstr ""
 
-msgid "bill"
+msgid "A bill still unpaid at the conversion date, entered with the conversion balances: it posts nothing itself (the opening journal carries Accounts payable)."
+msgstr ""
+
+msgid "void journal"
 msgstr ""
 
 msgid "bills"
@@ -8049,6 +8254,9 @@ msgstr ""
 msgid "Late interest"
 msgstr ""
 
+msgid "An invoice still open at the conversion date, entered with the conversion balances: it posts nothing itself (the opening journal carries Accounts receivable)."
+msgstr ""
+
 msgid "first viewed at"
 msgstr ""
 
@@ -8065,9 +8273,6 @@ msgid "what is disputed"
 msgstr ""
 
 msgid "current revision"
-msgstr ""
-
-msgid "invoice"
 msgstr ""
 
 msgid "Draft invoice"

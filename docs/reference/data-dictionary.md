@@ -177,6 +177,9 @@ by `numo9.conversion.services.start_conversion`.
 | `conversion_date` | date | no | The first day the books are kept in Numo9 |
 | `status` | varchar(10) | no | `draft` or `finalised` (`conversion_status_valid`) |
 | `finalised_by_id`, `finalised_at` | bigint → `accounts_user`, timestamptz | yes | Who finalised and when; a finalised session is dated (`conversion_finalised_dated`) |
+| `opening_entry_id` | bigint → `ledger_journalentry` | yes | The opening journal finalising posted (C-05-T05); a finalised session has one (`conversion_finalised_posted`) |
+| `lock_balances` | boolean | no | Lock the GL, AR and AP for everyone except advisers at the conversion date − 1 on finalise (C-05-T06) |
+| `step` / `completed_steps` | varchar(10) / jsonb | no | The wizard's saved progress (C-05-T10): `date`, `bank`, `invoices`, `bills`, `other`, `review` |
 
 ### `conversion_conversionline` — Conversion line {#conversion-conversionline}
 
@@ -190,6 +193,32 @@ written by `numo9.conversion.services.set_line` and the TB import (C-05-T08).
 | `account_id` | bigint → `ledger_account` | no | `PROTECT`; one line per account per session (`conversion_line_one_per_account`) |
 | `debit` / `credit` | numeric(18,2) | no | One side only, positive (`conversion_line_one_side`) |
 | `description` | varchar(500) | no | Optional note |
+| `contact_id` | bigint → `contacts_contact` | yes | For an account that requires a contact (C-05-T09); posted on the opening journal's line |
+
+### `conversion_openingdocument` — Opening document {#conversion-openingdocument}
+
+Links the conversion to an invoice or a bill open at the conversion date (C-05-T03). The document
+itself is a `sales_invoice` / `purchases_bill` with `is_opening = true`. `OrgOwnedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `session_id` | bigint → `conversion_conversionsession` | no | `CASCADE` |
+| `kind` | varchar(8) | no | `invoice` or `bill`; exactly the matching target is set (`conversion_document_one_target`) |
+| `invoice_id` / `bill_id` | bigint → `sales_invoice` / `purchases_bill` | yes | One-to-one, `CASCADE` |
+| `outstanding` | numeric(18,2) | no | What was owed at the conversion date, > 0 (`conversion_document_outstanding`): what the AR/AP control line must add up to |
+
+### `conversion_conversioncorrection` — Conversion correction {#conversion-conversioncorrection}
+
+A correcting opening journal posted by an adviser after finalising (C-05-T07). `OrgOwnedModel`
+and `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; `created_by` is the adviser |
+| `session_id` | bigint → `conversion_conversionsession` | no | `PROTECT` |
+| `entry_id` | bigint → `ledger_journalentry` | no | One-to-one, `PROTECT`: the correcting journal (type `opening`) |
+| `reason` | text | no | Why the opening balances were corrected |
 
 ## Sales (`sales`) {#sales}
 
@@ -205,6 +234,7 @@ ship-to, discount, totals, version). `OrgOwnedModel` and `AuditedModel`.
 | `status` | varchar(20) | no | `draft`, `awaiting_approval`, `approved`, `sent`, `partially_paid`, `paid`, `void` (`sales_invoice_status_valid`); a posted status needs a number and a journal (`sales_invoice_posted_numbered`) |
 | `notes` | text | no | Notes and terms printed on the invoice |
 | `amount_paid` | numeric(18,2) | no | ≥ 0; `amount_due` = total − paid |
+| `is_opening` | boolean | no | An invoice open at the conversion date (C-05-T03): numbered, open, **no journal of its own** (`sales_invoice_opening_unposted`; `sales_invoice_posted_numbered` accepts it without a journal) |
 | `journal_entry_id` / `void_entry_id` | bigint → `ledger_journalentry` | yes | The approval's posting and the void's reversal |
 | `approved_by_id`, `approved_at`, `sent_at`, `viewed_at`, `voided_at` | — | yes | Lifecycle facts |
 | `current_revision_id` | bigint → `sales_invoicerevision` | yes | Filled by D-03b |

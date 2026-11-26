@@ -166,6 +166,7 @@ def bill_row(bill: Bill) -> dict[str, Any]:
         "number": bill.number,
         "status": bill.status,
         "status_label": str(BillStatus(bill.status).label),
+        "is_opening": bill.is_opening,
         "supplier": {"id": str(bill.contact.public_id), "name": bill.contact.display_name},
         "supplier_invoice_no": bill.supplier_invoice_no,
         "reference": bill.reference,

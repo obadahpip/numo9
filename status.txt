@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 804   Remaining: 1983   Progress: 28.85%
+TOTAL ATOMIC TASKS: 2787   Completed: 816   Remaining: 1971   Progress: 29.28%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1044,18 +1044,18 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-02-T18 — Docs + i18n
 
 [C-05]
-❌ C-05-T03 — OpeningDocument link: opening invoices/bills stored as Invoice/Bill with is_opening=True, no revenue posting
-❌ C-05-T04 — Difference calculator service incl. AR/AP control vs documents check
-❌ C-05-T05 — Finalise service: refuses if difference ≠ 0.00 or control ≠ documents; posts one opening JE (is_opening) atomically
-❌ C-05-T06 — Optional "lock balances": set GL/AR/AP lock at conversion date − 1 on finalise
-❌ C-05-T07 — Post-finalise correction flow: adviser creates correcting opening JE (no edits to original)
-❌ C-05-T09 — API /api/v1/conversion/ (session, lines, documents, difference, finalise, import) + feature key accounting.conversion
-❌ C-05-T10 — UI: stepper wizard with saved progress per step
-❌ C-05-T11 — UI: sticky difference meter + disabled Finalise with reason tooltip
-❌ C-05-T12 — UI: open invoices/bills grids (paste-friendly)
-❌ C-05-T13 — Fixtures: balanced and unbalanced conversion sets incl. REFINED (no opening equity)
-❌ C-05-T14 — Exceptions hook: register "opening equity missing" signal for K-09
-❌ C-05-T15 — Docs + i18n
+✅ C-05-T03 — OpeningDocument link: opening invoices/bills stored as Invoice/Bill with is_opening=True, no revenue posting
+✅ C-05-T04 — Difference calculator service incl. AR/AP control vs documents check
+✅ C-05-T05 — Finalise service: refuses if difference ≠ 0.00 or control ≠ documents; posts one opening JE (is_opening) atomically
+✅ C-05-T06 — Optional "lock balances": set GL/AR/AP lock at conversion date − 1 on finalise
+✅ C-05-T07 — Post-finalise correction flow: adviser creates correcting opening JE (no edits to original)
+✅ C-05-T09 — API /api/v1/conversion/ (session, lines, documents, difference, finalise, import) + feature key accounting.conversion
+✅ C-05-T10 — UI: stepper wizard with saved progress per step
+✅ C-05-T11 — UI: sticky difference meter + disabled Finalise with reason tooltip
+✅ C-05-T12 — UI: open invoices/bills grids (paste-friendly)
+✅ C-05-T13 — Fixtures: balanced and unbalanced conversion sets incl. REFINED (no opening equity)
+✅ C-05-T14 — Exceptions hook: register "opening equity missing" signal for K-09
+✅ C-05-T15 — Docs + i18n
 
 [E-01]
 ✅ E-01-T07 — Match engine (PO vs GRN vs bill per line with qty/price tolerance)

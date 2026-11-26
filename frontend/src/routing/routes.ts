@@ -31,6 +31,11 @@ const labels = defineMessages({
     defaultMessage: "Journals",
     description: "Module name (Accounting)",
   },
+  conversion: {
+    id: "routes.conversion",
+    defaultMessage: "Conversion balances",
+    description: "Module name (Accounting, C-05)",
+  },
   documents: { id: "routes.documents", defaultMessage: "Documents", description: "Module name" },
   banking: { id: "routes.banking", defaultMessage: "Banking", description: "Module name" },
   reports: { id: "routes.reports", defaultMessage: "Reports", description: "Module name (K-01)" },
@@ -260,6 +265,18 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.journals,
     settings: "settings/lock-dates",
     aliases: ["journals", "journal", "manual-journals", "journal/search.aspx"],
+  },
+  {
+    path: "accounting/conversion",
+    feature: "accounting.conversion_balances.read",
+    label: labels.conversion,
+    settings: "settings/lock-dates",
+    aliases: [
+      "conversion",
+      "conversion-balances",
+      "opening-balances",
+      "setup/welcome/editconversionbalances.aspx",
+    ],
   },
   {
     path: "banking",

@@ -18,6 +18,7 @@ from numo9.conversion.models import ConversionLine, ConversionSession
 from numo9.conversion.services import set_line, start_conversion
 from numo9.tenancy.context import org_context
 from numo9.tenancy.models import Organisation
+from tests.conversion_helpers import posted_entry
 from tests.journal_helpers import chart
 
 pytestmark = pytest.mark.django_db
@@ -74,8 +75,9 @@ def test_one_line_per_account_replaced(books: dict[str, Any]) -> None:
 def test_finalised_conversion_takes_no_lines(books: dict[str, Any]) -> None:
     session = books["session"]
     with org_context(books["org"]):
+        entry = posted_entry(books["org"])
         ConversionSession._base_manager.filter(pk=session.pk).update(
-            status="finalised", finalised_at=timezone.now()
+            status="finalised", finalised_at=timezone.now(), opening_entry=entry
         )
         session.refresh_from_db()
     with pytest.raises(ValidationError) as caught:

@@ -1,17 +1,30 @@
 """Conversion balances (C-05).
 
 - ``ConversionSession`` (C-05-T01) — the organisation's conversion: its date, status (draft →
-  finalised), who finalised it and when. **One per organisation** (a second is refused by the
-  database, ``conversion_one_per_org``); corrections after finalising are correcting opening
-  journals (C-05-T07), never a second session.
+  finalised), who finalised it and when, and the opening journal finalising posted
+  (``opening_entry``, C-05-T05: a finalised conversion has one); ``lock_balances`` (C-05-T06) —
+  lock the GL, AR and AP at the conversion date − 1 when it is finalised; ``step`` /
+  ``completed_steps`` — the wizard's saved progress (C-05-T10). **One per
+  organisation** (a second is refused by the database, ``conversion_one_per_org``); corrections
+  after finalising are correcting opening journals (C-05-T07), never a second session.
 - ``ConversionLine`` (C-05-T02) — one account's opening balance: a debit **or** a credit
-  (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``).
+  (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``);
+  ``contact`` for an account that requires one (posted on the opening journal's line).
+- ``OpeningDocument`` (C-05-T03) — links the session to an invoice or a bill **open at the
+  conversion date**: the document itself is an ordinary ``sales.Invoice`` / ``purchases.Bill``
+  with ``is_opening=True`` (so aging, statements and payments work on it as on any other), open
+  for what was still owed, with no journal of its own; its receivable or payable is posted by
+  the conversion's opening journal (C-05-T05). Exactly one of ``invoice`` / ``bill``;
+  ``outstanding`` is what it had open at the conversion date (what the AR/AP control line must
+  add up to — payments made in Numo9 afterwards don't change it).
+- ``ConversionCorrection`` (C-05-T07) — a correcting opening journal posted after finalising,
+  with its reason, linked to the conversion.
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -27,6 +40,17 @@ ZERO = Decimal("0.00")
 class ConversionStatus(models.TextChoices):
     DRAFT = "draft", _("Draft")
     FINALISED = "finalised", _("Finalised")
+
+
+class ConversionStep(models.TextChoices):
+    """The wizard's steps (C-05-T10), in order."""
+
+    DATE = "date", _("Conversion date")
+    BANK = "bank", _("Bank and cash")
+    INVOICES = "invoices", _("Open invoices")
+    BILLS = "bills", _("Open bills")
+    OTHER = "other", _("Other balances")
+    REVIEW = "review", _("Review")
 
 
 class ConversionSession(AuditedModel, OrgOwnedModel):
@@ -46,6 +70,29 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
         verbose_name=_("finalised by"),
     )
     finalised_at = models.DateTimeField(_("finalised at"), null=True, blank=True)
+    lock_balances = models.BooleanField(
+        _("lock balances"),
+        default=False,
+        help_text=_(
+            "On finalising, lock the general ledger, sales and purchases to the day before the "
+            "conversion date for everyone except advisers."
+        ),
+    )
+    step = models.CharField(
+        _("current step"),
+        max_length=10,
+        choices=ConversionStep.choices,
+        default=ConversionStep.DATE,
+    )
+    completed_steps = models.JSONField(_("completed steps"), default=list, blank=True)
+    opening_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="conversion",
+        verbose_name=_("opening journal"),
+    )
 
     class Meta:
         verbose_name = _("conversion")
@@ -63,6 +110,10 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
             models.CheckConstraint(
                 condition=models.Q(status="draft") | models.Q(finalised_at__isnull=False),
                 name="conversion_finalised_dated",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status="draft") | models.Q(opening_entry__isnull=False),
+                name="conversion_finalised_posted",
             ),
         ]
 
@@ -97,6 +148,15 @@ class ConversionLine(AuditedModel, OrgOwnedModel):
     debit = models.DecimalField(_("debit"), max_digits=18, decimal_places=2, default=ZERO)
     credit = models.DecimalField(_("credit"), max_digits=18, decimal_places=2, default=ZERO)
     description = models.CharField(_("description"), max_length=500, blank=True)
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("contact"),
+        help_text=_("For an account that requires a contact (a shareholder loan…)."),
+    )
 
     class Meta:
         ordering = ("session", "account__code", "pk")
@@ -139,3 +199,89 @@ class ConversionLine(AuditedModel, OrgOwnedModel):
                 _("The conversion is finalised: correct it with a correcting opening journal."),
                 code="conversion.session.finalised",
             )
+
+
+class OpeningDocumentKind(models.TextChoices):
+    INVOICE = "invoice", _("Invoice")
+    BILL = "bill", _("Bill")
+
+
+class OpeningDocument(OrgOwnedModel):
+    session = models.ForeignKey(
+        ConversionSession,
+        on_delete=models.CASCADE,
+        related_name="documents",
+        verbose_name=_("conversion"),
+    )
+    kind = models.CharField(_("kind"), max_length=8, choices=OpeningDocumentKind.choices)
+    invoice = models.OneToOneField(
+        "sales.Invoice",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="opening_link",
+        verbose_name=_("invoice"),
+    )
+    bill = models.OneToOneField(
+        "purchases.Bill",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="opening_link",
+        verbose_name=_("bill"),
+    )
+    outstanding = models.DecimalField(
+        _("owed at the conversion date"), max_digits=18, decimal_places=2, default=ZERO
+    )
+
+    class Meta:
+        ordering = ("session", "kind", "pk")
+        verbose_name = _("opening document")
+        verbose_name_plural = _("opening documents")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(kind="invoice", invoice__isnull=False, bill__isnull=True)
+                    | models.Q(kind="bill", bill__isnull=False, invoice__isnull=True)
+                ),
+                name="conversion_document_one_target",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(outstanding__gt=0), name="conversion_document_outstanding"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return str(self.invoice or self.bill)
+
+    @property
+    def document(self) -> Any:
+        return self.invoice if self.kind == OpeningDocumentKind.INVOICE else self.bill
+
+
+class ConversionCorrection(AuditedModel, OrgOwnedModel):
+    """A correcting opening journal (C-05-T07): posted by an adviser after the conversion is
+    finalised, dated the conversion date, linked to the conversion — the original opening
+    journal is never edited."""
+
+    session = models.ForeignKey(
+        ConversionSession,
+        on_delete=models.PROTECT,
+        related_name="corrections",
+        verbose_name=_("conversion"),
+    )
+    entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        related_name="conversion_correction",
+        verbose_name=_("correcting journal"),
+    )
+    reason = models.TextField(_("reason"))
+
+    class Meta:
+        ordering = ("session", "created_at", "pk")
+        verbose_name = _("conversion correction")
+        verbose_name_plural = _("conversion corrections")
+
+    def __str__(self) -> str:
+        return str(self.entry)

@@ -202,6 +202,16 @@ def void(invoice: Invoice, user: Any, *, date: Any = None, reason: str = "") -> 
     person = user if getattr(user, "is_authenticated", False) else None
     with org_context(invoice.organisation), transaction.atomic(), acting_as(person):
         locked = Invoice._base_manager.select_for_update().get(pk=invoice.pk)
+        if locked.is_opening:  # C-05-T03: it posted nothing; the opening journal carries it
+            raise _refuse(
+                _("%(invoice)s can't be voided: %(why)s"),
+                "sales.invoice.not_voidable",
+                invoice=str(locked),
+                why=_(
+                    "it's an opening balance of the conversion — correct it with a correcting "
+                    "opening journal."
+                ),
+            )
         if locked.status not in VOIDABLE or locked.amount_paid:
             raise _refuse(
                 _("%(invoice)s can't be voided: %(why)s"),
