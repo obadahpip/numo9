@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:10-0500\n"
+"POT-Creation-Date: 2026-11-25 20:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8646,6 +8646,21 @@ msgstr ""
 
 msgid "Add at least one line before sending the quote."
 msgstr ""
+
+#, fuzzy
+#| msgid "The organisation has no %(role)s account: add it to the chart of accounts."
+msgid "The organisation has no accounts receivable account: add it to the chart."
+msgstr "L'organisation n'a pas de compte %(role)s : ajoutez-le au plan comptable."
+
+#, fuzzy
+#| msgid "The total must be more than 0.00."
+msgid "A payment received is more than zero."
+msgstr "Le total doit être supérieur à 0,00."
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Payment from %(contact)s"
+msgstr "Montant dû (%(currency)s)"
 
 #, fuzzy
 #| msgid "trial reminders"

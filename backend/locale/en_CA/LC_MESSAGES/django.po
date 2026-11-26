@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:10-0500\n"
+"POT-Creation-Date: 2026-11-25 20:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7866,6 +7866,16 @@ msgid "This quote expired on %(date)s: ask for a new quote."
 msgstr ""
 
 msgid "Add at least one line before sending the quote."
+msgstr ""
+
+msgid "The organisation has no accounts receivable account: add it to the chart."
+msgstr ""
+
+msgid "A payment received is more than zero."
+msgstr ""
+
+#, python-format
+msgid "Payment from %(contact)s"
 msgstr ""
 
 msgid "Standard reminders"
