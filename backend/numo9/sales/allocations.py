@@ -12,7 +12,8 @@ caller's (an overpayment, D-05-T04).
 invoices, in one transaction: every invoice is locked and must be a posted invoice of the same
 customer with an open balance of at least its amount (``sales.allocation.over_invoice``), and the
 plan's total can't be more than the source has left (``sales.allocation.over_source``); each
-allocation adds its amount to the invoice's ``amount_paid``. ``unallocate(allocation, user)``
+allocation adds its amount to the invoice's ``amount_paid`` and refreshes its status (Partially
+paid / Paid, D-05-T07). ``unallocate(allocation, user)``
 removes one (kept, dated) and gives the amount back. Allocating moves nothing in the general
 ledger: the payment already credited accounts receivable (D-05-T03); a credit is a credit
 balance of the customer on the same control account.
@@ -33,6 +34,7 @@ from django.utils.translation import gettext as _
 from numo9.ledger.models import LedgerError
 from numo9.tenancy.context import org_context
 
+from .invoice_status import refresh_status
 from .models import (
     CreditApplication,
     CustomerCredit,
@@ -165,6 +167,7 @@ def allocate(
             allocation.save()
             row.amount_paid = _money(row.amount_paid) + amount
             row.save(update_fields=["amount_paid"])
+            refresh_status(row)  # Partially paid / Paid (D-05-T07)
             made.append(allocation)
         return made
 
@@ -180,4 +183,5 @@ def unallocate(allocation: PaymentAllocation, user: Any = None) -> PaymentAlloca
         invoice.save(update_fields=["amount_paid"])
         row.reversed_at = timezone.now()
         row.save(update_fields=["reversed_at"])
+        refresh_status(invoice)  # back to Partially paid / Sent (D-05-T07)
         return row

@@ -241,6 +241,9 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
             late_adjustment=late_adjustment_summary(revision) if late_adjustment else None,
         )
         emit_revised(locked, revision, previous)
+        from .invoice_status import refresh_status
+
+        refresh_status(locked)  # the current revision's total against what is paid (D-05-T07)
         return revision
 
 
