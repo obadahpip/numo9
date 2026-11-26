@@ -114,12 +114,21 @@ def test_credit_balance_on_ap_side_is_negative(books: dict[str, Any]) -> None:
 def test_warnings_and_equity_missing(books: dict[str, Any]) -> None:
     session = books["session"]
     set_line(session, acct(books, "1000"), credit="994.17")  # petty cash overdrawn
-    set_line(session, acct(books, "2600"), debit="994.17")
+    set_line(session, acct(books, "2010"), debit="994.17")
     result = difference(session)
     assert result.can_finalise  # a warning doesn't block
     (warning,) = result.warnings
     assert warning.code == "conversion.negative_cash" and "994.17" in warning.message
     assert result.opening_equity_missing is True
+
+
+def test_contact_required_line(books: dict[str, Any]) -> None:
+    session = books["session"]
+    set_line(session, acct(books, "1010"), debit="10.00")
+    set_line(session, acct(books, "2600"), credit="10.00")  # Due to shareholder: a contact
+    result = difference(session)
+    assert [r.code for r in result.reasons] == ["conversion.contact_required"]
+    assert "2600" in result.reasons[0].message
 
 
 def test_empty_cannot_finalise(books: dict[str, Any]) -> None:
@@ -135,7 +144,7 @@ def put(session: Any, account: Any, amount: Decimal, debit: bool) -> None:
 
 
 AMOUNTS = st.decimals(min_value=Decimal("0.01"), max_value=Decimal("99999.99"), places=2)
-CODES = ("1010", "1020", "1500", "1620", "2010", "2600", "2700", "3000", "3100", "3200")
+CODES = ("1010", "1020", "1310", "1620", "2010", "2150", "2700", "3000", "3100", "3200")
 
 
 @settings(
@@ -166,7 +175,7 @@ def test_property_balanced_always_unbalanced_never(
     result = difference(session)
     assert result.difference == Decimal("0.00") and result.can_finalise
     # Unbalance it: one more line, ``off`` on one side.
-    spare = acct(books, "1310")
+    spare = acct(books, "1450")
     put(session, spare, abs(off), off > 0)
     broken = difference(session)
     assert broken.difference == off and not broken.can_finalise
