@@ -220,6 +220,50 @@ and `AuditedModel`.
 | `entry_id` | bigint → `ledger_journalentry` | no | One-to-one, `PROTECT`: the correcting journal (type `opening`) |
 | `reason` | text | no | Why the opening balances were corrected |
 
+## Assurance (`assurance`) {#assurance}
+
+The exceptions engine (K-09; rules in [Assurance rules](../specs/assurance-rules.md)). All three
+tables are `OrgOwnedModel` with row-level security.
+
+### `assurance_exceptionruleconfig` — Assurance rule setting {#assurance-exceptionruleconfig}
+
+An organisation's settings of one rule (K-09-T03); no row = the rule's defaults. `AuditedModel`.
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel`; one row per organisation and rule (`assurance_rule_config_unique`) |
+| `rule_code` | varchar(60) | no | A registered rule code (`NEG_CASH`, `BACKDATED`…) |
+| `enabled` | boolean | no | The rule runs |
+| `severity` | varchar(10) | no | Empty (the rule's default) or `info` / `warning` / `critical` (`assurance_rule_config_severity_valid`) |
+| `params` | jsonb | no | Parameter values, validated against the rule's schema; missing keys take the defaults |
+
+### `assurance_exceptionrun` — Assurance run {#assurance-exceptionrun}
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `trigger` | varchar(10) | no | `manual`, `nightly` or `posting` (incremental) |
+| `status` | varchar(10) | no | `running`, `succeeded`, `failed` |
+| `started_at` / `finished_at` | timestamptz | no / yes | |
+| `scope` | jsonb | no | Incremental runs: `{"entries": [...], "accounts": [...]}` public ids; `{}` = full |
+| `rules` / `counts` | jsonb | no | Rules evaluated; `{created, reopened, updated, resolved, seen}` |
+| `job_run_id` | bigint → `jobs_jobrun` | yes | The background job that ran it |
+
+### `assurance_exceptionfinding` — Assurance finding {#assurance-exceptionfinding}
+
+| Column | Type | Null | Rules / meaning |
+|---|---|---|---|
+| `id`, `public_id`, `organisation_id`, `created_by_id`, `created_at`, `updated_at`, `deleted_at` | — | — | As every `OrgOwnedModel` |
+| `rule_code` / `severity` | varchar | no | The rule and its severity when last seen |
+| `subject_type` / `subject_id` / `subject_label` | varchar | no | What the finding is about (`ledger.JournalEntry` + public id, `ledger.Account`, `purchases.Bill`, `accounts.User`, `tenancy.Organisation`…) |
+| `fingerprint` | varchar(64) | no | sha256(rule, subject type, subject id); **one open or acknowledged finding per fingerprint** (`assurance_finding_one_active`) |
+| `amount` / `details` | numeric(18,2) / jsonb | yes / no | The figures the explanation uses |
+| `status` | varchar(16) | no | `open`, `acknowledged`, `resolved`, `false_positive` (a false positive has a reason: `assurance_finding_false_positive_reason`) |
+| `first_seen` / `last_seen` / `resolved_at` | timestamptz | no / no / yes | |
+| `ack_by_id` / `ack_at` / `reason` | bigint → `accounts_user` / timestamptz / text | yes | Who acknowledged or marked it a false positive, when and why |
+| `last_run_id` | bigint → `assurance_exceptionrun` | yes | |
+| `fix_entry_id` | bigint → `ledger_journalentry` | yes | The draft journal proposed as the fix (K-09-T16) |
+
 ## Sales (`sales`) {#sales}
 
 ### `sales_invoice` — Invoice {#sales-invoice}

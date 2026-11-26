@@ -32,6 +32,7 @@ urlpatterns = [
     path("api/v1/", include("numo9.purchases.urls")),  # bills (E-02)
     path("api/v1/", include("numo9.sales.urls")),  # invoices: email, PDF, view link (D-03a)
     path("api/v1/", include("numo9.reports.urls")),  # report engine: drill-down (K-01)
+    path("api/v1/", include("numo9.assurance.urls")),  # exceptions engine (K-09)
     path("api/v1/", include("numo9.tax.urls")),  # tax codes and rates (G-01-T11)
     path("api/v1/", include("numo9.documents.urls")),  # document calculation (D-01-T09)
     path("api/v1/", include("numo9.billing.urls")),  # subscription billing (U-04)

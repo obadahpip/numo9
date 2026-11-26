@@ -62,6 +62,9 @@ METERING_REDIS_URL = ""
 # NUMO9_TEST_REDIS_URL is set.
 NUMO9_ORG_RATE_LIMIT_ENABLED = False
 NUMO9_RATE_LIMIT_REDIS_URL = ""
+# Exceptions engine (K-09-T05): no incremental job per posting in the suite (tests count the jobs
+# they start); tests/test_assurance_runner.py turns it on.
+NUMO9_ASSURANCE_ON_POSTING = False
 
 # Field encryption (S-03-T04): a fixed key derived from a public label when none is configured —
 # for local data only; never valid in staging/prod (they require NUMO9_FIELD_ENCRYPTION_KEYS).

@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     "numo9.purchases",  # E-01 purchase orders and receipts
     "numo9.reports",  # K-01 report engine
     "numo9.dashboard",  # K-05 organisation dashboard
+    "numo9.assurance",  # K-09 exceptions engine
     # Feature flags (U-06-T12): django-waffle with Numo9's flag model (organisations, practices).
     "waffle",
     "django.contrib.admin",
@@ -538,6 +539,8 @@ CELERY_TASK_SEND_SENT_EVENT = True
 # Beat (A-08-T05, numo9/jobs/beat.py): schedules in the database (django-celery-beat), one
 # execution per schedule tick across every running beat (Redis lock numo9:beat:<name>:<tick>).
 CELERY_BEAT_SCHEDULER = "numo9.jobs.beat:LockedDatabaseScheduler"
+# Exceptions engine (K-09-T05): an incremental run is queued for every posting.
+NUMO9_ASSURANCE_ON_POSTING = env_bool("NUMO9_ASSURANCE_ON_POSTING", True)
 JOBS_BEAT_LOCK_URL = env_str("JOBS_BEAT_LOCK_URL", "")  # empty: the broker's Redis
 DJANGO_CELERY_BEAT_TZ_AWARE = True
 # Job tray event stream (A-08-T06, numo9/jobs/api.py): checks every second, ends after 25 s
@@ -604,6 +607,11 @@ CELERY_BEAT_SCHEDULE = {
     "numo9.staff.aggregate_activity": {
         "task": "numo9.staff.aggregate_activity",
         "schedule": crontab(minute=37),  # hourly: today's squares fill in during the day
+    },
+    # Exceptions engine (K-09-T05): every organisation's rules re-evaluated overnight.
+    "numo9.assurance.nightly": {
+        "task": "numo9.assurance.nightly",
+        "schedule": crontab(minute=47, hour=8),  # 08:47 UTC = 03:47 / 04:47 Toronto
     },
     # Automatic reversals (C-03-T09): hourly — organisations' days start at different UTC hours.
     "numo9.ledger.auto_reversals": {
