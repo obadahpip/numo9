@@ -78,6 +78,26 @@ class JournalInvalid(LedgerError):
 
 
 @dataclass(frozen=True)
+class TaxPart:
+    """One tax component a line carries (G-05-T02) — filled by the apps that calculate tax
+    (documents, bank transactions); the ledger passes it to its posted hooks untouched, where the
+    tax app records the posted tax lines the tax reports read. Signed like the document (a credit
+    note is negative)."""
+
+    component: str  # the component's key ("gst", "hst_on", "qst"…) or a control role
+    kind: str  # gst, hst, qst, pst
+    side: str  # sales, purchase
+    basis: Decimal  # the net amount taxed
+    tax: Decimal
+    recoverable: Decimal = ZERO  # purchases: the ITC / ITR
+    non_recoverable: Decimal = ZERO  # purchases: added to the line's cost
+    rate: Decimal | None = None
+    code: str = ""  # the tax code key
+    overridden: bool = False  # the line's code was changed from its default (G-02)
+    restricted: bool = False  # part of the ITC / ITR is restricted (meals 50 %…)
+
+
+@dataclass(frozen=True)
 class LineSpec:
     """One line as a caller describes it. ``account`` is an ``Account`` or its id."""
 
@@ -89,6 +109,8 @@ class LineSpec:
     tracking: dict[str, Any] = field(default_factory=dict)
     description: str = ""
     tax_code: str = ""
+    #: The tax the line carries, per component (G-05-T02): not compared, never stored here.
+    tax_parts: tuple[TaxPart, ...] = field(default=(), compare=False, repr=False)
 
 
 @dataclass(frozen=True)

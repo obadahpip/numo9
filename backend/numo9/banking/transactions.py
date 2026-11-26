@@ -49,7 +49,7 @@ from django.utils.translation import gettext as _
 from numo9.contacts.models import Contact
 from numo9.ledger.models import Account, JournalType, LedgerError, SystemRole
 from numo9.ledger.services import ACTING, post_journal
-from numo9.ledger.validation import JournalSpec, LineSpec
+from numo9.ledger.validation import JournalSpec, LineSpec, TaxPart
 from numo9.orgsettings.models import LockModule
 from numo9.tenancy.context import org_context
 
@@ -210,6 +210,37 @@ def _control_accounts(lines: list[_Line], *, spend: bool) -> dict[str, Account]:
     return found
 
 
+#: The tax kind of each control role (the tax lines of a bank transaction, G-05-T02).
+ROLE_KINDS: dict[str, str] = {
+    SystemRole.GST_HST_PAYABLE: "gst",
+    SystemRole.ITC_RECEIVABLE: "gst",
+    SystemRole.QST_PAYABLE: "qst",
+    SystemRole.QST_ITR: "qst",
+    SystemRole.PST_PAYABLE: "pst",
+}
+
+
+def _tax_parts(line: _Line, *, spend: bool) -> tuple[TaxPart, ...]:
+    """The line's tax portions as tax lines: purchases when money is spent, sales when received."""
+    out = []
+    for portion in line.spec.taxes:
+        amount = _money(portion.amount)
+        recoverable = amount if spend and portion.recoverable else ZERO
+        out.append(
+            TaxPart(
+                component=str(portion.role),
+                kind=ROLE_KINDS.get(str(portion.role), "gst"),
+                side="purchase" if spend else "sales",
+                basis=line.net,
+                tax=amount,
+                recoverable=recoverable,
+                non_recoverable=amount - recoverable if spend else ZERO,
+                code=line.spec.tax_code,
+            )
+        )
+    return tuple(out)
+
+
 def journal_lines(spec: MoneySpec, lines: list[_Line], total: Decimal) -> list[LineSpec]:
     """The journal's lines (module docstring): line accounts, tax controls, then the bank."""
     spend = spec.kind == BankTransactionKind.SPEND
@@ -231,6 +262,7 @@ def journal_lines(spec: MoneySpec, lines: list[_Line], total: Decimal) -> list[L
                 tracking=dict(line.spec.tracking),
                 description=line.spec.description,
                 tax_code=line.spec.tax_code,
+                tax_parts=_tax_parts(line, spend=spend),
             )
         )
         for portion in line.spec.taxes:

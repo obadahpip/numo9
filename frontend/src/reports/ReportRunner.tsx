@@ -9,6 +9,8 @@
  * and the results in the design-system `ReportTable` (sticky header and first column, ⤢ drill on
  * each figure, compact view, windowed for long reports; a 12-column comparison scrolls inside the
  * table). Export menu: PDF, XLSX (also for Google Sheets), CSV — the same body as the screen.
+ * Tax reports (G-05-T10) add the tax period presets (current, last filed), the tie-out card and
+ * the flags and document links of their rows (`tax/TaxPanel.tsx`).
  */
 import {
   Badge,
@@ -38,6 +40,8 @@ import {
   type ReportRowData,
   type ReportSummary,
 } from "./api";
+import { TAX_PERIODS, TaxRowsPanel, TieOutCard, TIE_REPORT } from "./tax/TaxPanel";
+import { tm } from "./tax/messages";
 import {
   basisLabels,
   bookLabels,
@@ -300,6 +304,20 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
             ) : null}
           </>
         ) : null}
+        {report.category === "tax" && names.has("period") ? (
+          <label className="flex flex-col gap-1 text-xs font-semibold text-fg">
+            {fm(tm.period)}
+            <Select
+              aria-label={fm(tm.period)}
+              value={params.period || "dates"}
+              onValueChange={(value) => set("period", value === "dates" ? "" : value)}
+              options={TAX_PERIODS.map((period) => ({
+                value: period || "dates",
+                label: fm(tm.periodOption, { period: period || "dates" }),
+              }))}
+            />
+          </label>
+        ) : null}
         {names.has("as_of") ? (
           <label className="flex flex-col gap-1 text-xs font-semibold text-fg">
             {fm(runner.asOf)}
@@ -439,20 +457,24 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
               ) : null}
               <Badge tone="neutral">{header.book_label}</Badge>
             </div>
-            {(body.alerts ?? []).map((alert) => (
-              <p
-                key={alert.code + alert.message}
-                role="alert"
-                data-report-alert={alert.code}
-                className={
-                  alert.level === "error"
-                    ? "mt-2 rounded-md border-2 border-border-danger bg-surface-danger-subtle px-4 py-3 text-sm text-fg"
-                    : "mt-2 rounded-md border border-border bg-surface-warning-subtle px-4 py-3 text-sm text-fg"
-                }
-              >
-                {alert.message}
-              </p>
-            ))}
+            {(body.alerts ?? [])
+              .filter(
+                (alert) => !(report.id === TIE_REPORT && alert.code.startsWith("tax.tie_out")),
+              )
+              .map((alert) => (
+                <p
+                  key={alert.code + alert.message}
+                  role="alert"
+                  data-report-alert={alert.code}
+                  className={
+                    alert.level === "error"
+                      ? "mt-2 rounded-md border-2 border-border-danger bg-surface-danger-subtle px-4 py-3 text-sm text-fg"
+                      : "mt-2 rounded-md border border-border bg-surface-warning-subtle px-4 py-3 text-sm text-fg"
+                  }
+                >
+                  {alert.message}
+                </p>
+              ))}
             {body.layout ? (
               <p className="text-xs text-fg-muted">
                 {fm(runner.layoutName, { name: body.layout.name, version: body.layout.version })}
@@ -462,6 +484,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
               </p>
             ) : null}
           </header>
+          {report.id === TIE_REPORT ? <TieOutCard body={body} /> : null}
           <ReportTable
             caption={header.title}
             columns={body.columns}
@@ -507,6 +530,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
               ) : null
             }
           />
+          {report.category === "tax" ? <TaxRowsPanel body={body} /> : null}
         </section>
       ) : null}
       {drill && body && renderDrill ? renderDrill(drill, body, () => setDrill(null)) : null}

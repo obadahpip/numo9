@@ -54,6 +54,7 @@ def preview_lines(invoice: Invoice | CreditNote) -> list[PreviewLine]:
             tax_code=line.tax_code,
             description=line.description,
             tracking=dict(line.tracking or {}),
+            tax_overridden=line.tax_overridden,
         )
         for line in invoice.lines.select_related("account", "tax_code").order_by("position", "pk")
     ]

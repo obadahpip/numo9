@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 715   Remaining: 2072   Progress: 25.65%
+TOTAL ATOMIC TASKS: 2787   Completed: 727   Remaining: 2060   Progress: 26.09%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -947,18 +947,18 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-07-T03 — Default discount accounts in CoA template (Purchase discounts received, Sales discounts given)
 
 [G-05]
-❌ G-05-T01 — Report specs (columns, filters, grouping) for summary, detail, audit, ITC/ITR detail, tie-out
-❌ G-05-T02 — Tax line query layer (SQL view/materialised view of posted tax lines with code, component, period, basis amounts, current revision only)
-❌ G-05-T03 — Cash-basis allocator: tax recognised proportionally to payments in range
-❌ G-05-T04 — Tax summary by code/component report definition in K-01
-❌ G-05-T05 — Tax detail by document report
-❌ G-05-T06 — Tax audit report with flags (override, late adjustment, journal source, restricted ITC)
-❌ G-05-T07 — ITC/ITR detail incl. restricted portion and non-recoverable amounts
-❌ G-05-T08 — Tax-to-GL tie-out: control account movement vs report total per component; lists journals hitting tax accounts directly
-❌ G-05-T09 — API registrations in the K-01 catalogue; feature key tax.reports available on every Tax package
-❌ G-05-T10 — UI: report presets, tie-out status card, drill-down, flags as chips
-❌ G-05-T11 — Exports PDF/XLSX/CSV equal to screen
-❌ G-05-T12 — Gap tests gap-54, gap-49; i18n
+✅ G-05-T01 — Report specs (columns, filters, grouping) for summary, detail, audit, ITC/ITR detail, tie-out
+✅ G-05-T02 — Tax line query layer (SQL view/materialised view of posted tax lines with code, component, period, basis amounts, current revision only)
+✅ G-05-T03 — Cash-basis allocator: tax recognised proportionally to payments in range
+✅ G-05-T04 — Tax summary by code/component report definition in K-01
+✅ G-05-T05 — Tax detail by document report
+✅ G-05-T06 — Tax audit report with flags (override, late adjustment, journal source, restricted ITC)
+✅ G-05-T07 — ITC/ITR detail incl. restricted portion and non-recoverable amounts
+✅ G-05-T08 — Tax-to-GL tie-out: control account movement vs report total per component; lists journals hitting tax accounts directly
+✅ G-05-T09 — API registrations in the K-01 catalogue; feature key tax.reports available on every Tax package
+✅ G-05-T10 — UI: report presets, tie-out status card, drill-down, flags as chips
+✅ G-05-T11 — Exports PDF/XLSX/CSV equal to screen
+✅ G-05-T12 — Gap tests gap-54, gap-49; i18n
 
 [G-03]
 ❌ G-03-T03 — Line calculator (regular method) from posted tax lines by tax-point date and basis
