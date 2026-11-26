@@ -15,6 +15,8 @@
   the conversion's opening journal (C-05-T05). Exactly one of ``invoice`` / ``bill``;
   ``outstanding`` is what it had open at the conversion date (what the AR/AP control line must
   add up to — payments made in Numo9 afterwards don't change it).
+- ``ConversionCorrection`` (C-05-T07) — a correcting opening journal posted after finalising,
+  with its reason, linked to the conversion.
 """
 
 from __future__ import annotations
@@ -226,3 +228,31 @@ class OpeningDocument(OrgOwnedModel):
     @property
     def document(self) -> Any:
         return self.invoice if self.kind == OpeningDocumentKind.INVOICE else self.bill
+
+
+class ConversionCorrection(AuditedModel, OrgOwnedModel):
+    """A correcting opening journal (C-05-T07): posted by an adviser after the conversion is
+    finalised, dated the conversion date, linked to the conversion — the original opening
+    journal is never edited."""
+
+    session = models.ForeignKey(
+        ConversionSession,
+        on_delete=models.PROTECT,
+        related_name="corrections",
+        verbose_name=_("conversion"),
+    )
+    entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        related_name="conversion_correction",
+        verbose_name=_("correcting journal"),
+    )
+    reason = models.TextField(_("reason"))
+
+    class Meta:
+        ordering = ("session", "created_at", "pk")
+        verbose_name = _("conversion correction")
+        verbose_name_plural = _("conversion corrections")
+
+    def __str__(self) -> str:
+        return str(self.entry)

@@ -2455,6 +2455,19 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr ""
 
+msgid "The conversion is still a draft: change its balances directly."
+msgstr ""
+
+msgid "Only an adviser (the organisation's accountant) can correct finalised opening balances."
+msgstr ""
+
+msgid "Say why the opening balances are corrected (kept with the journal)."
+msgstr ""
+
+#, python-format
+msgid "Correction of the opening balances at %(date)s — %(reason)s"
+msgstr ""
+
 msgid "The conversion is finalised: correct it with a correcting opening journal."
 msgstr ""
 
@@ -2597,6 +2610,15 @@ msgid "opening document"
 msgstr ""
 
 msgid "opening documents"
+msgstr ""
+
+msgid "correcting journal"
+msgstr ""
+
+msgid "conversion correction"
+msgstr ""
+
+msgid "conversion corrections"
 msgstr ""
 
 msgid "Choose the column with the account code or name."
