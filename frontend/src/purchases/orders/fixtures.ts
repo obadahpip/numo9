@@ -85,6 +85,7 @@ export const partlyReceived = (): PurchaseOrder => {
         description: "Grout",
         quantity: "4.0000",
         unit_price: "20.0000",
+        outstanding: "4.0000",
         net: "80.00",
         amount: "80.00",
       },

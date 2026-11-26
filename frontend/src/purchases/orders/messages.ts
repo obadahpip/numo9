@@ -193,3 +193,115 @@ export const statusLabels: Record<PurchaseOrderStatus, MessageDescriptor> = defi
     description: "PO status",
   },
 });
+
+/** Receive screen (E-01-T12). */
+export const receive = defineMessages({
+  title: {
+    id: "purchases.po.receive.title",
+    defaultMessage: "Receive goods: {number}",
+    description: "Heading of the receive screen",
+  },
+  supplier: {
+    id: "purchases.po.receive.supplier",
+    defaultMessage: "From {supplier}",
+    description: "Under the heading",
+  },
+  back: {
+    id: "purchases.po.receive.back",
+    defaultMessage: "Back to the purchase order",
+    description: "Link",
+  },
+  table: {
+    id: "purchases.po.receive.table",
+    defaultMessage: "Lines to receive",
+    description: "Accessible name of the table",
+  },
+  line: { id: "purchases.po.receive.line", defaultMessage: "Item", description: "Column" },
+  ordered: { id: "purchases.po.receive.ordered", defaultMessage: "Ordered", description: "Column" },
+  received: {
+    id: "purchases.po.receive.received",
+    defaultMessage: "Received",
+    description: "Column: received before",
+  },
+  outstanding: {
+    id: "purchases.po.receive.outstanding",
+    defaultMessage: "Outstanding",
+    description: "Column",
+  },
+  now: {
+    id: "purchases.po.receive.now",
+    defaultMessage: "Receiving now",
+    description: "Column: the quantity received in this delivery",
+  },
+  nowFor: {
+    id: "purchases.po.receive.nowFor",
+    defaultMessage: "Receiving now: {line}",
+    description: "Accessible name of a quantity input",
+  },
+  overLine: {
+    id: "purchases.po.receive.overLine",
+    defaultMessage: "{quantity} more than ordered",
+    description: "Warning on a line received beyond what was ordered",
+  },
+  date: {
+    id: "purchases.po.receive.date",
+    defaultMessage: "Date received",
+    description: "Field",
+  },
+  notes: {
+    id: "purchases.po.receive.notes",
+    defaultMessage: "Notes (packing slip, damage…)",
+    description: "Field",
+  },
+  fillAll: {
+    id: "purchases.po.receive.fillAll",
+    defaultMessage: "Receive everything outstanding",
+    description: "Button: fill every line with its outstanding quantity",
+  },
+  keyboardHint: {
+    id: "purchases.po.receive.keyboardHint",
+    defaultMessage: "Enter moves to the next line; a barcode scanner works the same way.",
+    description: "Help above the table",
+  },
+  record: {
+    id: "purchases.po.receive.record",
+    defaultMessage: "Record receipt",
+    description: "Button",
+  },
+  recording: {
+    id: "purchases.po.receive.recording",
+    defaultMessage: "Recording…",
+    description: "Button while saving",
+  },
+  done: {
+    id: "purchases.po.receive.done",
+    defaultMessage:
+      "Receipt recorded. {outstanding, plural, =0 {Nothing is outstanding.} one {# still outstanding.} other {# still outstanding.}}",
+    description: "Status after a receipt",
+  },
+  overTitle: {
+    id: "purchases.po.receive.overTitle",
+    defaultMessage: "More than ordered",
+    description: "Heading of the over-receipt warning",
+  },
+  overRow: {
+    id: "purchases.po.receive.overRow",
+    defaultMessage: "{line}: {received} received of {ordered} ordered (tolerance up to {allowed})",
+    description: "A line received beyond the tolerance",
+  },
+  confirmOver: {
+    id: "purchases.po.receive.confirmOver",
+    defaultMessage: "Receive anyway",
+    description: "Button: confirm an over-receipt",
+  },
+  nothing: {
+    id: "purchases.po.receive.nothing",
+    defaultMessage: "Enter the quantity received on at least one line.",
+    description: "Error",
+  },
+  notReceivable: {
+    id: "purchases.po.receive.notReceivable",
+    defaultMessage: "{status}: this purchase order can't be received.",
+    description: "Banner",
+  },
+});
