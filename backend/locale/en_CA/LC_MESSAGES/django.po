@@ -2646,6 +2646,19 @@ msgstr ""
 msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
 msgstr ""
 
+msgid "The template was paused on this date."
+msgstr ""
+
+#, python-format
+msgid "%(contact)s is archived: nothing was created for this date."
+msgstr ""
+
+msgid "The contact"
+msgstr ""
+
+msgid "The schedule has no more dates."
+msgstr ""
+
 msgid "Prepared with Numo9"
 msgstr ""
 
@@ -5656,6 +5669,21 @@ msgid "The invoice of %(date)s was created but not finished: %(reason)s"
 msgstr ""
 
 #, python-format
+msgid "Recurring invoice %(name)s skipped %(date)s"
+msgstr ""
+
+#, python-format
+msgid "No invoice was created for %(date)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring invoice %(name)s has ended"
+msgstr ""
+
+msgid "Its schedule has no more dates: no more invoices will be created."
+msgstr ""
+
+#, python-format
 msgid "%(registration)s return due %(due_date)s"
 msgstr ""
 
@@ -8086,6 +8114,10 @@ msgstr ""
 
 #, python-format
 msgid "Refund to %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "The service starts on %(date)s: nothing to bill for this period."
 msgstr ""
 
 msgid "The invoice needs approval before it is posted."

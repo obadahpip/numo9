@@ -29,7 +29,7 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 
 from numo9.documents import due_dates
-from numo9.documents.recurring import REFUSALS, Outcome, RecurringGenerator, reason
+from numo9.documents.recurring import REFUSALS, Outcome, RecurringGenerator, Skip, reason
 from numo9.ledger import recurring as engine
 from numo9.orgsettings.models import LockModule
 
@@ -198,6 +198,44 @@ class RecurringInvoiceGenerator(RecurringGenerator):
     job = JOB
     lock_module = LockModule.AR
     event_prefix = "sales.recurring_invoice"
+
+    def schedule(
+        self,
+        template: Any,
+        *,
+        after: dt.date | None = None,
+        until: dt.date | None = None,
+        limit: int | None = None,
+    ) -> list[dt.date]:
+        """The template's dates — up to its end date and, once the service ends
+        (``service_end``), the occurrence whose period holds that day: the schedule is over."""
+        ends = [d for d in (template.end_date, template.service_end) if d is not None]
+        return engine.occurrences(
+            template.rrule,
+            template.start_date,
+            min(ends) if ends else None,
+            after=after,
+            until=until,
+            limit=limit,
+        )
+
+    def skip_reason(self, template: Any, day: dt.date) -> Skip | None:
+        """The shared rules (paused, archived customer, locked AR or closed period), and a
+        period that ends before the service starts: nothing to bill yet (logged, not
+        notified)."""
+        found = super().skip_reason(template, day)
+        if found is not None:
+            return found
+        if template.service_start is not None:
+            _start, end = period_of(template, day)
+            if end < template.service_start:
+                return Skip(
+                    "sales.recurring.not_started",
+                    _("The service starts on %(date)s: nothing to bill for this period.")
+                    % {"date": template.service_start.isoformat()},
+                    notify=False,
+                )
+        return None
 
     def build(self, template: Any, day: dt.date) -> Any:
         return build_invoice(template, day)

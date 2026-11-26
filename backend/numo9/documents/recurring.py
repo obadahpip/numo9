@@ -54,6 +54,7 @@ from typing import Any, ClassVar
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 from django.db.models import Max
+from django.utils.translation import gettext as _
 from rest_framework.exceptions import APIException
 
 from numo9.ledger import recurring as engine
@@ -141,7 +142,29 @@ class RecurringGenerator:
         return template.contact
 
     def skip_reason(self, template: Any, day: dt.date) -> Skip | None:
-        """Why the occurrence on ``day`` isn't generated (D-04-T06), or ``None``."""
+        """D-04-T06: paused → skipped (logged, not notified: the owner paused it); an archived
+        or deleted contact; a date in a locked or closed period (``assert_can_post`` of the
+        documents' lock module, for drafts too — never dated elsewhere)."""
+        from numo9.ledger.periods import assert_can_post
+
+        if template.paused:
+            return Skip(
+                "documents.recurring.paused",
+                _("The template was paused on this date."),
+                notify=False,
+            )
+        contact = self.contact_of(template)
+        if contact is None or contact.deleted_at is not None or contact.is_archived:
+            return Skip(
+                "documents.recurring.contact_archived",
+                _("%(contact)s is archived: nothing was created for this date.")
+                % {"contact": getattr(contact, "display_name", "") or _("The contact")},
+            )
+        try:
+            assert_can_post(template.organisation, day, None, self.lock_module)
+        except REFUSALS as error:
+            code, message = reason(error)
+            return Skip(code, message)
         return None
 
     # ---- schedule --------------------------------------------------------------------------
@@ -274,6 +297,8 @@ class RecurringGenerator:
 
     def generate_template(self, template: Any, today: dt.date) -> list[Any]:
         """The template's due occurrences up to ``today``, then ``next_run`` / ``last_run``."""
+        from numo9.audit import service as audit
+
         runs: list[Any] = []
         start = template.next_run
         if start is not None:
@@ -286,22 +311,37 @@ class RecurringGenerator:
         last = self.run_model._base_manager.filter(
             template_id=template.pk, status=RecurringRunStatus.CREATED
         ).aggregate(last=Max("occurrence_date"))["last"]
-        self.template_model._base_manager.filter(pk=template.pk, next_run=template.next_run).update(
-            next_run=upcoming, last_run=last
-        )
+        moved = self.template_model._base_manager.filter(
+            pk=template.pk, next_run=template.next_run
+        ).update(next_run=upcoming, last_run=last)
+        if moved and template.next_run is not None and upcoming is None:
+            # The schedule is over (its end date, or an end date moved before the next run):
+            # the owner hears it once — only the worker whose update moved next_run says so.
+            with transaction.atomic():
+                audit.record(
+                    self._action(template, "ended"),
+                    obj=template,
+                    changes={},
+                    meta={"job": self.job, "end_date": str(template.end_date or "")},
+                    actor=None,
+                )
+                self._notify_on_commit(
+                    template, "ended", template.end_date, _("The schedule has no more dates.")
+                )
         return runs
 
     def due(self, organisation: Any, today: dt.date) -> Any:
         return self.template_model.objects.filter(
             organisation=organisation,
-            paused=False,
             deleted_at__isnull=True,
             next_run__isnull=False,
             next_run__lte=today,
         ).order_by("next_run", "pk")
 
     def generate_due(self, organisation: Any, today: dt.date) -> list[Any]:
-        """Every due occurrence of the organisation's active templates, oldest first."""
+        """Every due occurrence of the organisation's templates (a paused template's are
+        recorded as skipped: the history shows them, and resuming doesn't bill them), oldest
+        first."""
         from numo9.tenancy.context import org_context
 
         runs: list[Any] = []
