@@ -134,3 +134,69 @@ def regular_lines(
 
 def as_text(lines: dict[str, Decimal]) -> dict[str, str]:
     return {line: f"{value:.2f}" for line, value in lines.items()}
+
+
+#: The lines whose figure is a sum of documents (G-03-T05); the others are sums of lines.
+DRILL_LINES = ("101", "103", "104", "106", "107")
+
+
+def drill_down(period: Any, line: str, *, basis: str | None = None) -> list[dict[str, Any]]:
+    """The documents behind a regular-method line (G-03-T05), each with its share of the line:
+    their sum is the line's figure from the books (entries typed on the return aside). 104 and
+    107 list the late adjustments carried into the period."""
+    from numo9.tax.reports import documents_of
+
+    from .returns import late_adjustment_rows
+
+    if line not in DRILL_LINES:
+        return []
+    if line in ("104", "107"):
+        return [
+            {
+                "entry": row["journal"],
+                "number": str(row["journal_number"]),
+                "date": row["document_date"],
+                "amount": row["amount"],
+                "detail": {"filed_period": row["filed_period"]},
+            }
+            for row in late_adjustment_rows(period)
+            if row["line"] == line
+        ]
+    lines = period_lines(period, basis=basis)
+    shares: dict[int, Decimal] = {}
+    entries: dict[int, Any] = {}
+    if line == "101":
+        sales = [r for r in lines if r.side == "sales" and r.source == "document"]
+        taxable = _taxable_codes(period.organisation, {r.code for r in sales})
+        seen: set[tuple[int, int, int | None]] = set()
+        for row in sales:
+            key = (row.line.entry_id, row.line.line_no, row.line.reverses_id)
+            if row.code in taxable and key not in seen:
+                seen.add(key)
+                shares[row.line.entry_id] = shares.get(row.line.entry_id, ZERO) + row.basis
+                entries[row.line.entry_id] = row.line.entry
+    else:
+        side, amount = ("sales", "tax") if line == "103" else ("purchase", "recoverable")
+        for row in lines:
+            if row.side == side:
+                value = getattr(row, amount)
+                shares[row.line.entry_id] = shares.get(row.line.entry_id, ZERO) + value
+                entries[row.line.entry_id] = row.line.entry
+    documents = documents_of(period.organisation, list(entries.values()))
+    out = []
+    for entry_id, value in shares.items():
+        entry = entries[entry_id]
+        doc = documents[entry_id]
+        out.append(
+            {
+                "entry": str(entry.public_id),
+                "number": doc["number"],
+                "journal": doc["journal"],
+                "contact": doc["contact"],
+                "date": entry.date.isoformat(),
+                "type": doc["type"],
+                "url": doc["url"],
+                "amount": f"{value:.2f}",
+            }
+        )
+    return sorted(out, key=lambda r: (r["date"], r["number"]))
