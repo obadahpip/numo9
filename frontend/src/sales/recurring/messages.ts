@@ -264,4 +264,112 @@ export const rim = defineMessages({
     defaultMessage: "Total",
     description: "Preview total row",
   },
+  listTitle: {
+    id: "sales.recurring.listTitle",
+    defaultMessage: "Recurring invoices",
+    description: "Heading of the list",
+  },
+  add: {
+    id: "sales.recurring.add",
+    defaultMessage: "New recurring invoice",
+    description: "Link to a new template",
+  },
+  tabs: {
+    id: "sales.recurring.tabs",
+    defaultMessage: "Recurring invoices by status",
+    description: "Name of the status tabs",
+  },
+  tab: {
+    id: "sales.recurring.tab",
+    defaultMessage:
+      "{status, select, all {All} active {Active} paused {Paused} other {Ended}} ({count})",
+    description: "A status tab with its count",
+  },
+  search: {
+    id: "sales.recurring.search",
+    defaultMessage: "Search by name, reference or customer",
+    description: "Search box",
+  },
+  listFailed: {
+    id: "sales.recurring.listFailed",
+    defaultMessage: "Recurring invoices couldn't load.",
+    description: "List error",
+  },
+  emptyTitle: {
+    id: "sales.recurring.emptyTitle",
+    defaultMessage: "No recurring invoices here",
+    description: "Empty list title",
+  },
+  emptyBody: {
+    id: "sales.recurring.emptyBody",
+    defaultMessage:
+      "Retainers, subscriptions, rent: set the invoice up once and Numo9 creates it on schedule.",
+    description: "Empty list body",
+  },
+  nextRun: { id: "sales.recurring.nextRun", defaultMessage: "Next run", description: "Column" },
+  lastRun: { id: "sales.recurring.lastRun", defaultMessage: "Last run", description: "Column" },
+  statusColumn: {
+    id: "sales.recurring.statusColumn",
+    defaultMessage: "Status",
+    description: "Column",
+  },
+  generatedColumn: {
+    id: "sales.recurring.generatedColumn",
+    defaultMessage: "History",
+    description: "Column: invoices generated and dates skipped",
+  },
+  generatedCount: {
+    id: "sales.recurring.generatedCount",
+    defaultMessage:
+      "{created, plural, one {# invoice} other {# invoices}}{skipped, plural, =0 {} one {, # skipped} other {, # skipped}}",
+    description: "Invoices generated and dates skipped",
+  },
+  templateTab: {
+    id: "sales.recurring.templateTab",
+    defaultMessage: "Template",
+    description: "Tab of the template editor",
+  },
+  historyTab: {
+    id: "sales.recurring.historyTab",
+    defaultMessage: "Generated invoices",
+    description: "Tab of the history",
+  },
+  historyTitle: {
+    id: "sales.recurring.historyTitle",
+    defaultMessage: "Generated invoices and skipped dates",
+    description: "History heading",
+  },
+  historyFailed: {
+    id: "sales.recurring.historyFailed",
+    defaultMessage: "The history couldn't load.",
+    description: "History error",
+  },
+  historyEmpty: {
+    id: "sales.recurring.historyEmpty",
+    defaultMessage: "Nothing generated yet: the first invoice comes on the next run.",
+    description: "Empty history",
+  },
+  historyDate: { id: "sales.recurring.historyDate", defaultMessage: "Date", description: "Column" },
+  historyOutcome: {
+    id: "sales.recurring.historyOutcome",
+    defaultMessage: "Outcome",
+    description: "Column",
+  },
+  historyInvoice: {
+    id: "sales.recurring.historyInvoice",
+    defaultMessage: "Invoice",
+    description: "Column",
+  },
+  historyDraft: {
+    id: "sales.recurring.historyDraft",
+    defaultMessage: "Draft",
+    description: "Link text of a generated draft (no number yet)",
+  },
+  runStatus: {
+    id: "sales.recurring.runStatus",
+    defaultMessage: "{status, select, created {Created} other {Skipped}}",
+    description: "A run's outcome",
+  },
+  previous: { id: "sales.recurring.previous", defaultMessage: "Previous", description: "Button" },
+  next: { id: "sales.recurring.next", defaultMessage: "Next", description: "Button" },
 });
