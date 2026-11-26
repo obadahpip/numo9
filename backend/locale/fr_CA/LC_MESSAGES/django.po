@@ -8790,6 +8790,13 @@ msgstr ""
 msgid "Deposit for quote %(number)s"
 msgstr ""
 
+msgid "Only an accepted quote can be turned into an invoice."
+msgstr ""
+
+#, python-format
+msgid "Less deposit, invoice %(number)s"
+msgstr ""
+
 msgid "Type your name to accept the quote."
 msgstr ""
 

@@ -8,6 +8,13 @@
   rule, lock dates and numbering apply when someone approves and sends it — a customer clicking
   Accept never posts to the ledger. The tax of the work is charged in full on the final invoice
   (below), where the deposit is deducted. A deposit larger than the total is capped at the total.
+- ``convert_to_invoice(quote, user)`` — an **accepted** quote becomes a draft invoice (D-03a) with
+  its lines copied **identically** — the lines that count, i.e. the options the customer selected
+  (``copying.copy_document``, D-03a-T10) — then, when a deposit invoice was raised and not voided,
+  one more line deducting it: "Less deposit, invoice INV-0042", quantity 1, minus the deposit, on
+  the deposit's account, no tax — so the final invoice's total is the quote's total less the
+  deposit and its tax is the full tax of the work. The quote moves to **Invoiced** and links the
+  invoice (``quote.invoice``), all in one transaction: a refused conversion changes nothing.
 """
 
 from __future__ import annotations
@@ -114,4 +121,49 @@ def create_deposit_invoice(
             meta={"number": quote.number, "deposit": f"{amount:.2f}"},
             actor=person,
         )
+        return invoice
+
+
+def _deposit_credit(quote: Quote) -> Invoice | None:
+    deposit = quote.deposit_invoice
+    if deposit is None or deposit.deleted_at is not None or deposit.status == "void":
+        return None
+    return deposit
+
+
+def convert_to_invoice(quote: Quote, user: Any = None, *, date: dt.date | None = None) -> Invoice:
+    """The draft invoice of an accepted quote (module docstring)."""
+    from .copying import copy_document
+    from .posting import recalculate
+    from .quotes import QuoteRefused, mark_invoiced
+
+    organisation = quote.organisation
+    with org_context(organisation), transaction.atomic():
+        locked = (
+            Quote._base_manager.select_for_update(of=("self",))
+            .select_related("deposit_invoice", "organisation", "contact")
+            .get(pk=quote.pk)
+        )
+        if locked.status != "accepted":
+            raise QuoteRefused(
+                _("Only an accepted quote can be turned into an invoice."),
+                code="sales.quote.not_accepted",
+            )
+        invoice: Invoice = copy_document(locked, "invoice", user, date=date)
+        deposit = _deposit_credit(locked)
+        if deposit is not None:
+            first = deposit.lines.select_related("account").order_by("position", "pk").first()
+            InvoiceLine(
+                organisation=organisation,
+                document=invoice,
+                position=invoice.lines.count(),
+                description=_("Less deposit, invoice %(number)s")
+                % {"number": deposit.number or _("draft")},
+                quantity=Decimal("1"),
+                unit_price=-Decimal(deposit.total),
+                account=first.account if first is not None else deposit_account(),
+                tax_code=None,
+            ).save()
+            invoice = recalculate(invoice)
+        mark_invoiced(locked, invoice, user)
         return invoice
