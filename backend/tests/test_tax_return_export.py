@@ -61,3 +61,21 @@ def test_pdf_lines_equal_the_screen_and_the_snapshot(ctx: dict[str, Any]) -> Non
     if os.environ.get("NUMO9_UPDATE_SNAPSHOTS") or not SNAPSHOT.exists():
         SNAPSHOT.write_text(text + "\n", encoding="utf-8")
     assert flat == squeezed(SNAPSHOT.read_text(encoding="utf-8"))
+
+
+def test_the_french_export_uses_the_cra_labels(ctx: dict[str, Any]) -> None:
+    """G-03-T16 — the CRA's French line labels in the French CSV and PDF."""
+    import csv as csvlib
+
+    from numo9.tax.return_export import render_csv
+
+    with org_context(ctx["org"]):
+        body = render_csv(ctx["return"], "fr-ca").decode("utf-8-sig")
+        text = squeezed(pdf_text(render_pdf(ctx["return"], "fr-ca")))
+    rows = list(csvlib.reader(io.StringIO(body)))
+    assert rows[0] == ["Ligne", "Description", "Montant"]
+    labels = {r[0]: r[1] for r in rows[1:]}
+    assert labels["103"] == "TPS/TVH perçue ou à percevoir"
+    assert labels["109"] == "Taxe nette" and labels["115"] == "Paiement joint"
+    for expected in ("Déclarationde TPS/TVH", "Méthodenormale", "Brouillon", "Taxenette"):
+        assert squeezed(expected) in text, expected
