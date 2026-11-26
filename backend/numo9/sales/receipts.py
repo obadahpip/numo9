@@ -10,6 +10,11 @@ The credit is a credit balance of the customer on the AR control account.
 
 ``apply_credit(credit, invoice, amount, user, date=None)`` — use a credit on an invoice later
 (the allocation rules of D-05-T02: ≤ the invoice's open balance and ≤ what the credit has left).
+
+``refund_credit(credit, bank_account, date, amount, user, reference="")`` — pay a credit back to
+the customer (D-06-T06 has the credit note's refund): posts Dr accounts receivable (the
+customer's credit) / Cr the bank account and records the ``CustomerCreditRefund``; the amount
+can't be more than the credit has left (``sales.credit.over_refund``).
 """
 
 from __future__ import annotations
@@ -32,12 +37,14 @@ from .allocations import CENT, ZERO, Plan, allocate, auto_allocate
 from .models import (
     CreditSource,
     CustomerCredit,
+    CustomerCreditRefund,
     CustomerPayment,
     Invoice,
     PaymentAllocation,
 )
 
 PAYMENT_SOURCE = "sales.payment"
+REFUND_SOURCE = "sales.credit_refund"
 
 
 class ReceiptRefused(LedgerError):
@@ -133,3 +140,58 @@ def apply_credit(
     """Use a customer credit on an invoice (module docstring)."""
     (made,) = allocate(credit, [(invoice, Decimal(amount))], user, date=date)
     return made
+
+
+def refund_credit(
+    credit: CustomerCredit,
+    bank_account: Any,
+    date: dt.date,
+    amount: Decimal,
+    user: Any = None,
+    *,
+    reference: str = "",
+) -> CustomerCreditRefund:
+    """Pay a customer credit back to the customer (module docstring)."""
+    person = _person(user)
+    value = Decimal(amount).quantize(CENT)
+    with org_context(credit.organisation), transaction.atomic(), acting_as(person):
+        locked = CustomerCredit._base_manager.select_for_update().get(pk=credit.pk)
+        left = locked.remaining
+        if value <= ZERO or value > left:
+            raise ReceiptRefused(
+                _("Refund between 0.01 and %(left)s: what the credit has left.")
+                % {"left": f"{left:.2f}"},
+                code="sales.credit.over_refund",
+                params={"left": f"{left:.2f}"},
+            )
+        refund = CustomerCreditRefund(
+            organisation=locked.organisation,
+            credit=locked,
+            bank_account=bank_account,
+            date=date,
+            amount=value,
+            reference=" ".join((reference or "").split()),
+            created_by=person,
+        )
+        refund.save()
+        entry = post_journal(
+            JournalSpec(
+                date=date,
+                type=JournalType.PAYMENT,
+                narration=_("Refund to %(contact)s") % {"contact": locked.contact.display_name},
+                source_type=REFUND_SOURCE,
+                source_id=str(refund.public_id),
+                lines=[
+                    LineSpec(_ar(), debit=value, contact=locked.contact),
+                    LineSpec(bank_account.gl_account, credit=value),
+                ],
+            ),
+            organisation=locked.organisation,
+            user=person,
+            module=LockModule.AR,
+        )
+        refund.journal_entry = entry
+        refund.save(update_fields=["journal_entry"])
+        locked.amount_refunded = Decimal(locked.amount_refunded) + value
+        locked.save(update_fields=["amount_refunded"])
+        return refund

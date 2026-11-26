@@ -1083,3 +1083,53 @@ class PaymentAllocation(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.payment or self.credit} → {self.invoice}: {self.amount}"
+
+
+class CustomerCreditRefund(AuditedModel, OrgOwnedModel):
+    """Part of a customer credit paid back to the customer from a bank account (D-05-T06):
+    posted Dr accounts receivable (the customer's credit) / Cr the bank."""
+
+    credit = models.ForeignKey(
+        CustomerCredit,
+        on_delete=models.PROTECT,
+        related_name="refunds",
+        verbose_name=_("customer credit"),
+    )
+    bank_account = models.ForeignKey(
+        "banking.BankAccount",
+        on_delete=models.PROTECT,
+        related_name="customer_refunds",
+        verbose_name=_("bank account"),
+    )
+    date = models.DateField(_("date"))
+    amount = _money(_("amount"))
+    reference = models.CharField(_("reference"), max_length=255, blank=True)
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="customer_credit_refund",
+        verbose_name=_("journal"),
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("refunded by"),
+    )
+
+    class Meta:
+        ordering = ("date", "pk")
+        verbose_name = _("customer credit refund")
+        verbose_name_plural = _("customer credit refunds")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="sales_customercreditrefund_positive"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.credit} ← {self.amount}"

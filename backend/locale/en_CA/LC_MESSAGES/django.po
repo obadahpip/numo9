@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:11-0500\n"
+"POT-Creation-Date: 2026-11-25 20:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7776,6 +7776,15 @@ msgstr ""
 msgid "payment allocations"
 msgstr ""
 
+msgid "refunded by"
+msgstr ""
+
+msgid "customer credit refund"
+msgstr ""
+
+msgid "customer credit refunds"
+msgstr ""
+
 msgid "Net 30"
 msgstr ""
 
@@ -7876,6 +7885,14 @@ msgstr ""
 
 #, python-format
 msgid "Payment from %(contact)s"
+msgstr ""
+
+#, python-format
+msgid "Refund between 0.01 and %(left)s: what the credit has left."
+msgstr ""
+
+#, python-format
+msgid "Refund to %(contact)s"
 msgstr ""
 
 msgid "Standard reminders"

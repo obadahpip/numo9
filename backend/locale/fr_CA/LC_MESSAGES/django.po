@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:11-0500\n"
+"POT-Creation-Date: 2026-11-25 20:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8553,6 +8553,21 @@ msgstr "mode de paiement"
 msgid "payment allocations"
 msgstr "Créer des organisations clientes"
 
+#, fuzzy
+#| msgid "ended"
+msgid "refunded by"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "supplier"
+msgid "customer credit refund"
+msgstr "fournisseur"
+
+#, fuzzy
+#| msgid "Stripe customer"
+msgid "customer credit refunds"
+msgstr "Client Stripe"
+
 msgid "Net 30"
 msgstr ""
 
@@ -8660,6 +8675,15 @@ msgstr "Le total doit être supérieur à 0,00."
 #, fuzzy, python-format
 #| msgid "Amount due (%(currency)s)"
 msgid "Payment from %(contact)s"
+msgstr "Montant dû (%(currency)s)"
+
+#, python-format
+msgid "Refund between 0.01 and %(left)s: what the credit has left."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Amount due (%(currency)s)"
+msgid "Refund to %(contact)s"
 msgstr "Montant dû (%(currency)s)"
 
 #, fuzzy
