@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:07-0500\n"
+"POT-Creation-Date: 2026-11-25 20:10-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8027,6 +8027,25 @@ msgid "Net income for %(period)s (%(income)s) doesn't equal the change in retain
 msgstr ""
 
 msgid "No activity in this period"
+msgstr ""
+
+msgid "A void payment can't be allocated."
+msgstr ""
+
+msgid "Each allocation is more than zero."
+msgstr ""
+
+#, python-format
+msgid "That allocates %(total)s, but only %(left)s is left to allocate."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Approve sales over a customer's credit limit"
+msgid "%(invoice)s is another customer's invoice."
+msgstr "Approuver les ventes au-delà de la limite de crédit d'un client"
+
+#, python-format
+msgid "%(invoice)s has %(owed)s open: %(amount)s is more than it is owed."
 msgstr ""
 
 msgid "There's no invoice with this id in this organisation."
