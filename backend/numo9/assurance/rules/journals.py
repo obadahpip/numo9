@@ -10,8 +10,11 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from decimal import Decimal
+from typing import Any, ClassVar
 
 from django.utils.translation import gettext_lazy
+
+from numo9.ledger.models import AccountType, JournalEntry, JournalLine
 
 from ..models import Severity
 from .base import Context, Hit, Param, Rule, register
@@ -58,3 +61,109 @@ class JournalToCash(Rule):
                 cash_amount=f"{amount:.2f}",
                 accounts=", ".join(names),
             )
+
+
+def _expense_lines(entry: JournalEntry) -> list[JournalLine]:
+    return [line for line in entry.lines.all() if line.account.type == AccountType.EXPENSE]
+
+
+def _attached(entry_ids: list[Any]) -> set[str]:
+    """The journals (public ids) that have at least one live document attached."""
+    if not entry_ids:
+        return set()
+    from django.contrib.contenttypes.models import ContentType
+
+    from numo9.files.models import Attachment
+
+    rows = Attachment.objects.filter(
+        content_type=ContentType.objects.get_for_model(JournalEntry),
+        object_public_id__in=entry_ids,
+        deleted_at__isnull=True,
+        document__deleted_at__isnull=True,
+    ).values_list("object_public_id", flat=True)
+    return {str(value) for value in rows}
+
+
+class _ExpenseJournalRule(Rule):
+    """Manual journals with an expense line; ``flagged`` picks the lines with the problem."""
+
+    default_severity = Severity.WARNING
+    incremental = True
+    needs_attachments: ClassVar[bool] = False
+    money_keys = ("expense_amount",)
+    date_keys = ("date",)
+    params = {
+        "min_amount": Param(
+            "decimal", Decimal("0.00"), gettext_lazy("Minimum amount"), minimum=Decimal("0")
+        )
+    }
+
+    def flagged(
+        self, entry: JournalEntry, expense: list[JournalLine], attached: set[str]
+    ) -> list[JournalLine]:
+        raise NotImplementedError
+
+    def evaluate(self, ctx: Context) -> Iterable[Hit]:
+        numbers = Numbers(ctx.organisation)
+        entries = [
+            (entry, expense)
+            for entry in posted_entries(ctx, manual=True)
+            if (expense := _expense_lines(entry))
+        ]
+        attached = (
+            _attached([entry.public_id for entry, _lines in entries])
+            if self.needs_attachments
+            else set()
+        )
+        for entry, expense in entries:
+            amount = sum((line.debit - line.credit for line in expense), ZERO)
+            if abs(amount) < ctx.params["min_amount"]:
+                continue
+            lines = self.flagged(entry, expense, attached)
+            if not lines:
+                continue
+            yield entry_hit(
+                entry,
+                numbers,
+                amount,
+                expense_amount=f"{amount:.2f}",
+                lines=[line.line_no for line in lines],
+                accounts=", ".join(sorted({line.account.name for line in lines})),
+            )
+
+
+@register
+class ExpenseJournalNoContact(_ExpenseJournalRule):
+    code = "EXPENSE_JOURNAL_NO_CONTACT"
+    name = gettext_lazy("Expense journal without a contact")
+    description = gettext_lazy(
+        "A manual journal records an expense without saying who it was paid to."
+    )
+    explanation = gettext_lazy(
+        "%(journal)s (%(date)s) records %(expense_amount)s of expenses (%(accounts)s) with no "
+        "supplier. Enter purchases as bills or spend money with the supplier, so the supplier "
+        "ledger and the GST/HST credits are right."
+    )
+
+    def flagged(
+        self, entry: JournalEntry, expense: list[JournalLine], attached: set[str]
+    ) -> list[JournalLine]:
+        return [line for line in expense if not line.contact_id]
+
+
+@register
+class ExpenseJournalNoAttachment(_ExpenseJournalRule):
+    code = "EXPENSE_JOURNAL_NO_ATTACHMENT"
+    name = gettext_lazy("Expense journal without an attachment")
+    description = gettext_lazy("A manual journal records an expense with no receipt attached.")
+    explanation = gettext_lazy(
+        "%(journal)s (%(date)s) records %(expense_amount)s of expenses (%(accounts)s) with no "
+        "receipt or invoice attached. Attach the supporting document: the CRA asks for it to "
+        "claim the expense and its input tax credits."
+    )
+    needs_attachments = True
+
+    def flagged(
+        self, entry: JournalEntry, expense: list[JournalLine], attached: set[str]
+    ) -> list[JournalLine]:
+        return [] if str(entry.public_id) in attached else expense

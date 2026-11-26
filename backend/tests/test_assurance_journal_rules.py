@@ -69,3 +69,41 @@ def test_sales_postings_to_cash_are_not_manual_journals() -> None:
             type="sales",
         )
     assert str(sale.public_id) not in _subjects(books, "JOURNAL_TO_CASH")
+
+
+# ---- EXPENSE_JOURNAL_NO_CONTACT / NO_ATTACHMENT (K-09-T08) ---------------------------------
+
+
+def test_teardown_journals_have_no_contact_and_no_attachment() -> None:
+    books = refined()
+    both = {str(books["journal1"].public_id), str(books["journal2"].public_id)}
+    no_contact = _subjects(books, "EXPENSE_JOURNAL_NO_CONTACT")
+    assert set(no_contact) == both
+    hit = no_contact[str(books["journal1"].public_id)]
+    assert hit.details["lines"] == [1, 2, 3, 4]  # type: ignore[attr-defined]
+    assert hit.amount == Decimal("417.22")  # type: ignore[attr-defined]
+    assert set(_subjects(books, "EXPENSE_JOURNAL_NO_ATTACHMENT")) == both
+
+
+def test_contact_and_attachment_clear_the_findings() -> None:
+    from numo9.files.attachments import attach
+    from tests.contact_helpers import contact
+    from tests.journal_helpers import document
+
+    books = refined()
+    org = books["org"]
+    with org_context(org):
+        supplier = contact(org, "Staples", roles=["supplier"])
+        with_contact = post(
+            books["accounts"],
+            dt.date(2026, 7, 2),
+            "Supplies",
+            (("5515", "40.00", "0"), ("2900", "0", "40.00")),
+            contact=supplier,
+        )
+        attach(document(org), "ledger.JournalEntry", books["journal2"].public_id, user=None)
+    no_contact = _subjects(books, "EXPENSE_JOURNAL_NO_CONTACT")
+    assert str(with_contact.public_id) not in no_contact
+    no_attachment = _subjects(books, "EXPENSE_JOURNAL_NO_ATTACHMENT")
+    assert str(books["journal2"].public_id) not in no_attachment
+    assert str(books["journal1"].public_id) in no_attachment
