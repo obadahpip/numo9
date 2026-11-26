@@ -2941,10 +2941,10 @@
       "saving": "Enregistrement…",
       "status": {
         "approved": "Approuvée",
-        "awaiting_approval": "En attente d’approbation",
+        "awaitingApproval": "En attente d’approbation",
         "draft": "Brouillon",
         "paid": "Payée",
-        "partially_paid": "Partiellement payée",
+        "partiallyPaid": "Partiellement payée",
         "sent": "Envoyée",
         "void": "Annulée"
       },

@@ -2941,10 +2941,10 @@
       "saving": "Saving…",
       "status": {
         "approved": "Approved",
-        "awaiting_approval": "Awaiting approval",
+        "awaitingApproval": "Awaiting approval",
         "draft": "Draft",
         "paid": "Paid",
-        "partially_paid": "Partially paid",
+        "partiallyPaid": "Partially paid",
         "sent": "Sent",
         "void": "Void"
       },
