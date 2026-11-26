@@ -399,6 +399,19 @@ msgstr ""
 msgid "Owner funded %(account)s"
 msgstr ""
 
+msgid "Manual journal posts to a bank or cash account"
+msgstr ""
+
+msgid "Money in or out of a bank or cash account recorded by manual journal instead of a bank transaction, a payment or a transfer."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s (%(date)s) posts %(cash_amount)s to %(accounts)s. Money in or out of a bank or cash account should be recorded as a bank transaction, a payment or a transfer so it can be reconciled."
+msgstr ""
+
+msgid "Minimum amount"
+msgstr ""
+
 msgid "Date and time"
 msgstr ""
 
