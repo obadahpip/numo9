@@ -47,6 +47,8 @@ def _label(document: Any) -> str:
 
 
 def _verb(action: str) -> str:
+    if action == "revise":
+        return _("revised")
     return _("approved") if action == "approve" else _("voided")
 
 

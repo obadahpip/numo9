@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:26-0500\n"
+"POT-Creation-Date: 2026-11-25 20:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7803,6 +7803,9 @@ msgstr ""
 msgid "Thank you for your business. Payment by cheque or e-Transfer."
 msgstr ""
 
+msgid "revised"
+msgstr ""
+
 msgid "approved"
 msgstr ""
 
@@ -7912,6 +7915,27 @@ msgstr ""
 
 #, python-format
 msgid "Someone else revised %(invoice)s since you opened it: reload it to see their changes."
+msgstr ""
+
+#, python-format
+msgid "%(invoice)s can't be revised: only a posted invoice that isn't void can."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the revision is saved."
+msgstr ""
+
+msgid "An invoice's total stays above zero: credit the customer with a credit note."
+msgstr ""
+
+#, python-format
+msgid "%(paid)s is already paid on this invoice: a revision can't bring its total below that."
+msgstr ""
+
+msgid "The invoice has no posted journal."
+msgstr ""
+
+#, python-format
+msgid "Reversal of invoice %(number)s, revised as %(revision)s"
 msgstr ""
 
 msgid "Superseded"
