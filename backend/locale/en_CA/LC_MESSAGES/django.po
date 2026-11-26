@@ -6390,6 +6390,10 @@ msgstr ""
 msgid "The due date is before the bill date."
 msgstr ""
 
+#, python-format
+msgid "There's no %(tab)s tab on the bills list."
+msgstr ""
+
 msgid "Only a draft bill can be edited: void it to correct it."
 msgstr ""
 
@@ -6403,6 +6407,9 @@ msgid "There's no such purchase order."
 msgstr ""
 
 msgid "There's no such goods receipt."
+msgstr ""
+
+msgid "Ask for the tiles, aging or suppliers section."
 msgstr ""
 
 msgid "Draft purchase order"
@@ -6871,6 +6878,15 @@ msgid "expense claim line"
 msgstr ""
 
 msgid "expense claim lines"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Overdue"
+msgstr ""
+
+msgid "1–30 days"
 msgstr ""
 
 msgid "See purchase orders and goods receipts"
@@ -8836,9 +8852,6 @@ msgid "Filed"
 msgstr ""
 
 msgid "Due soon"
-msgstr ""
-
-msgid "Overdue"
 msgstr ""
 
 msgid "start"
