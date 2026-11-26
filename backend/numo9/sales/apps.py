@@ -43,6 +43,7 @@ class SalesConfig(AppConfig):
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
         SWEEP_FACTORIES["sales.Invoice"] = _sweep_invoice
+        SWEEP_FACTORIES["sales.Quote"] = _sweep_quote  # the quotes API (D-02-T11)
 
 
 def _sweep_invoice(organisation: Any) -> Any:
@@ -69,3 +70,20 @@ def _sweep_invoice(organisation: Any) -> Any:
         )
         invoice.save()
         return invoice
+
+
+def _sweep_quote(organisation: Any) -> Any:
+    import datetime as dt
+
+    from numo9.tenancy.context import org_context
+
+    from .quotes import create_quote
+
+    with org_context(organisation):
+        invoice = _sweep_invoice(organisation)  # its customer
+        return create_quote(
+            organisation,
+            contact=invoice.contact,
+            date=dt.date(2026, 6, 15),
+            expiry_date=dt.date(2026, 7, 15),
+        )

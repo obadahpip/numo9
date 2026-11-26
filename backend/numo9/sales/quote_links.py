@@ -14,12 +14,13 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import Any
 
 from django.core import signing
 from django.utils import timezone
 
-from .models import Quote, QuoteLink
+from .models import Quote, QuoteAcceptance, QuoteLink
 
 SALT = "numo9.sales.quote-link"  # noqa: S105 — a signing salt, not a secret
 
@@ -88,12 +89,15 @@ def open_link(token: str) -> Quote | None:
 def public_quote(quote: Quote) -> dict[str, Any]:
     from numo9.tenancy.context import org_context
 
+    from .quote_invoicing import deposit_due
     from .quotes import counted, is_expired
 
     with org_context(quote.organisation):
         lines = list(quote.lines.order_by("position", "pk"))
         flags = counted(lines)
-        superseded = quote.revisions.exists()
+        superseded = quote.revisions.filter(deleted_at__isnull=True).exists()
+        evidence = QuoteAcceptance.objects.filter(quote=quote).first()
+    accepted_by = evidence.typed_name if evidence is not None else None
     reason = None
     if superseded:
         reason = "superseded"
@@ -129,8 +133,13 @@ def public_quote(quote: Quote) -> dict[str, Any]:
             for line, take in zip(lines, flags, strict=True)
         ],
         "subtotal": f"{quote.subtotal:.2f}",
+        "discount_total": f"{quote.discount_total:.2f}",
         "tax_total": f"{quote.tax_total:.2f}",
         "total": f"{quote.total:.2f}",
+        "deposit_type": quote.deposit_type,
+        "deposit_value": f"{Decimal(quote.deposit_value).normalize():f}",
+        "deposit": f"{deposit_due(quote):.2f}",
+        "accepted_by": accepted_by,
         "can_accept": reason is None,
         "reason": reason,
     }
@@ -171,7 +180,6 @@ def accept_with_evidence(
     from numo9.files.storage import new_key, put_bytes
     from numo9.tenancy.context import org_context
 
-    from .models import QuoteAcceptance
     from .pdf import render_quote_pdf
     from .quotes import accept, recalculate
 

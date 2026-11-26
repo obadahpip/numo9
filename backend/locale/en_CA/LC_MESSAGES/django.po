@@ -8023,6 +8023,40 @@ msgstr ""
 msgid "Add at least one line before sending the quote."
 msgstr ""
 
+msgid "There's no quote with this id in this organisation."
+msgstr ""
+
+msgid "The expiry date is before the quote date."
+msgstr ""
+
+msgid "A discount can't be more than 100 %."
+msgstr ""
+
+#, python-format
+msgid "A deposit can't be more than 100 % of the quote."
+msgstr ""
+
+msgid "A line is optional or an alternative, not both."
+msgstr ""
+
+msgid "Only a draft quote can be edited: revise it to send a new version."
+msgstr ""
+
+msgid "Someone else saved this quote: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft quote can be deleted."
+msgstr ""
+
+msgid "Send the quote before sharing its link."
+msgstr ""
+
+msgid "A draft is edited, and an invoiced quote stays as it was: copy it instead."
+msgstr ""
+
+msgid "This quote can't be declined any more."
+msgstr ""
+
 msgid "The organisation has no accounts receivable account: add it to the chart."
 msgstr ""
 

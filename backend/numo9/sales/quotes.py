@@ -263,3 +263,77 @@ def expire_due(now: dt.datetime | None = None) -> int:
                 expire(item, now=moment)
                 done += 1
     return done
+
+
+# ---- the one count of quotes per status (gap-05) and the options' totals (T11) -----------------
+
+
+def status_counts() -> dict[str, int]:
+    """The current organisation's quotes (not deleted) per ``QuoteStatus`` value, every value
+    present: what the overview card, the list tabs and the filters show (gap-05)."""
+    from django.db.models import Count
+
+    rows = (
+        Quote.objects.filter(deleted_at__isnull=True)
+        .values_list("status")
+        .annotate(n=Count("pk"))
+        .values_list("status", "n")
+    )
+    found = dict(rows)
+    return {key: int(found.get(key, 0)) for key in QuoteStatus.values}
+
+
+#: The list tabs (D-02-T14) and the statuses each counts: Sent covers sent and viewed quotes.
+TABS: dict[str, tuple[str, ...]] = {
+    "all": tuple(QuoteStatus.values),
+    "draft": (QuoteStatus.DRAFT,),
+    "sent": (QuoteStatus.SENT, QuoteStatus.VIEWED),
+    "accepted": (QuoteStatus.ACCEPTED,),
+    "declined": (QuoteStatus.DECLINED,),
+    "expired": (QuoteStatus.EXPIRED,),
+    "invoiced": (QuoteStatus.INVOICED,),
+}
+
+
+def tab_counts(counts: dict[str, int]) -> dict[str, int]:
+    """The tab counts, summed from ``status_counts`` — never counted another way."""
+    return {tab: sum(counts.get(s, 0) for s in statuses) for tab, statuses in TABS.items()}
+
+
+def selection_totals(quote: Quote, selections: dict[str, bool]) -> dict[str, Any]:
+    """The totals the quote would have with the optional / alternative lines ticked as in
+    ``selections`` (line public id → selected), the others as they are — computed, **nothing
+    saved** (the public page's live recalculation)."""
+    from numo9.documents.posting import result_for
+
+    from .quote_invoicing import deposit_due
+
+    with org_context(quote.organisation):
+        lines = list(quote.lines.select_related("account", "tax_code").order_by("position", "pk"))
+    for line in lines:
+        key = str(line.public_id)
+        if key in selections and (line.is_optional or line.alternative_group):
+            line.selected = bool(selections[key])
+    flags = counted(lines)
+    with org_context(quote.organisation):
+        result = result_for(
+            "quote",
+            [_preview_line(line) for line, take in zip(lines, flags, strict=True) if take],
+            tax_mode=quote.tax_mode,
+            discount_type=quote.discount_type,
+            discount_value=quote.discount_value,
+        )
+    shown = Quote(
+        total=result.total, deposit_type=quote.deposit_type, deposit_value=quote.deposit_value
+    )
+    return {
+        "lines": {
+            str(line.public_id): {"selected": line.selected, "counted": take}
+            for line, take in zip(lines, flags, strict=True)
+        },
+        "subtotal": f"{result.subtotal:.2f}",
+        "discount_total": f"{result.discount_total:.2f}",
+        "tax_total": f"{result.tax_total:.2f}",
+        "total": f"{result.total:.2f}",
+        "deposit": f"{deposit_due(shown):.2f}",
+    }
