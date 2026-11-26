@@ -1,0 +1,26 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+GST/HST return
+Business number: 123456782RT0001
+Reporting period: 1 Jun 2026 to 30 Jun 2026
+Due: 31 Jul 2026
+Regular method · Draft · version 1
+LINE DESCRIPTION AMOUNT
+101 Sales and other revenue $1,200.00
+103 GST/HST collected or collectible $130.00
+104 Adjustments to be added to the net tax $0.00
+105 Total GST/HST and adjustments for period $130.00
+106 Input tax credits (ITCs) for the current period $63.50
+107 Adjustments to be deducted $0.00
+108 Total ITCs and adjustments $63.50
+109 Net tax $66.50
+110 Instalments and other annual filer payments $0.00
+111 Rebates $0.00
+112 Total other credits $0.00
+113A Balance (line 109 minus line 112) $66.50
+113B Other debits $0.00
+113C Balance (line 113 A plus line 113 B) $66.50
+114 Refund claimed $0.00
+115 Payment enclosed $66.50
+Prepared with Numo9 Page 1 of 1

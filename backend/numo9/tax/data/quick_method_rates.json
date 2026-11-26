@@ -1,0 +1,18 @@
+{
+  "source": "CRA RC4058 Quick Method of Accounting for GST/HST — remittance rates for supplies made in the province of the permanent establishment (in effect since 1 July 2010; the 15 % HST provinces since 1 July 2016). Rates are percent of supplies including tax. Nova Scotia's 14 % HST (from 1 April 2025) needs its rates entered before a Nova Scotia quick-method return.",
+  "credit": {"pct": "1", "threshold": "30000", "note": "1 % of the first 30,000 of eligible supplies (including tax) in each fiscal year"},
+  "rates": [
+    {"component": "gst", "kind": "services", "from": "2010-07-01", "to": null, "pct": "3.6"},
+    {"component": "gst", "kind": "goods", "from": "2010-07-01", "to": null, "pct": "1.8"},
+    {"component": "hst_on", "kind": "services", "from": "2010-07-01", "to": null, "pct": "8.8"},
+    {"component": "hst_on", "kind": "goods", "from": "2010-07-01", "to": null, "pct": "4.4"},
+    {"component": "hst_nb", "kind": "services", "from": "2016-07-01", "to": null, "pct": "10.0"},
+    {"component": "hst_nb", "kind": "goods", "from": "2016-07-01", "to": null, "pct": "6.6"},
+    {"component": "hst_nl", "kind": "services", "from": "2016-07-01", "to": null, "pct": "10.0"},
+    {"component": "hst_nl", "kind": "goods", "from": "2016-07-01", "to": null, "pct": "6.6"},
+    {"component": "hst_pe", "kind": "services", "from": "2016-10-01", "to": null, "pct": "10.0"},
+    {"component": "hst_pe", "kind": "goods", "from": "2016-10-01", "to": null, "pct": "6.6"},
+    {"component": "hst_ns", "kind": "services", "from": "2016-07-01", "to": "2025-03-31", "pct": "10.0"},
+    {"component": "hst_ns", "kind": "goods", "from": "2016-07-01", "to": "2025-03-31", "pct": "6.6"}
+  ]
+}

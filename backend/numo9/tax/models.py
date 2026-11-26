@@ -511,6 +511,15 @@ class TaxSettings(AuditedModel, OrgOwnedModel):
         ),
     )
     quick_method_from = models.DateField(_("quick method from"), null=True, blank=True)
+    #: Which quick-method remittance rates apply (G-03-T04): ``services``, or ``goods`` when
+    #: goods bought for resale are at least 40 % of taxable supplies (CRA RC4058).
+    quick_method_kind = models.CharField(
+        _("quick method rates"),
+        max_length=8,
+        choices=[("services", _("Services")), ("goods", _("Goods for resale"))],
+        default="services",
+        db_default="services",
+    )
     default_codes = models.JSONField(_("default codes"), default=dict, blank=True)
 
     class Meta:
