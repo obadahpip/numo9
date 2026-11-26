@@ -111,6 +111,21 @@ export const fm = defineMessages({
     defaultMessage: "Distance (km)",
     description: "Field label: kilometres driven",
   },
+  mileageAmount: {
+    id: "purchases.expenseForm.mileageAmount",
+    defaultMessage: "At the CRA rate:",
+    description: "Before the live amount of a trip",
+  },
+  mileageTier: {
+    id: "purchases.expenseForm.mileageTier",
+    defaultMessage: "{km} km × {rate} = {amount}",
+    description: "One rate tier of a trip (first 5,000 km, then the lower rate)",
+  },
+  rateMissing: {
+    id: "purchases.expenseForm.rateMissing",
+    defaultMessage: "No mileage rate is set for this date: the amount is worked out when it is.",
+    description: "No CRA rate covers the trip's date",
+  },
   remove: {
     id: "purchases.expenseForm.remove",
     defaultMessage: "Remove",

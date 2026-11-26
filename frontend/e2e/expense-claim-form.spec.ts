@@ -4,7 +4,7 @@ import { expectAccessible, mockCsrf } from "./auth-helpers";
 
 /**
  * E-04-T09 — the claimant's form on a phone (390 px): a receipt with a photo (the camera input),
- * a category chip, a trip, then Submit. Rules on the
+ * a category chip, a trip with its amount shown live (E-04-T10), then Submit. Rules on the
  * server: backend/tests/test_expense_claim_api.py.
  */
 const ORG = "acme";
@@ -88,6 +88,7 @@ test("an employee submits a claim on a 390 px phone", async ({ page }) => {
   await page.getByLabel("From").fill("Office");
   await page.getByLabel("To", { exact: true }).fill("Kingston");
   await page.getByLabel("Distance (km)").fill("100");
+  await expect(page.getByText("$73.00")).toBeVisible(); // live CRA amount (E-04-T10)
   // Nothing overflows the phone's width.
   const width = await page.evaluate(() => document.documentElement.scrollWidth);
   expect(width).toBeLessThanOrEqual(390);
