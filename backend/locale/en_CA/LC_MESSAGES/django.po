@@ -363,6 +363,42 @@ msgstr ""
 msgid "%(rule)s has no parameter %(param)s."
 msgstr ""
 
+msgid "Negative cash or bank balance"
+msgstr ""
+
+msgid "A bank or cash account's balance went below zero: money was spent that was never in it."
+msgstr ""
+
+#, python-format
+msgid "%(account)s went below zero: %(lowest)s on %(lowest_on)s (today %(today_balance)s). Cash on hand can't be negative: money was spent from it that was never put in."
+msgstr ""
+
+msgid "Fix source"
+msgstr ""
+
+msgid "Shareholder loan account code"
+msgstr ""
+
+#, python-format
+msgid "%(account)s fell to %(lowest)s on %(lowest_on)s. %(bank)s has %(balance)s today: transferring %(shortfall)s on %(date)s brings %(account)s back to zero at its lowest point."
+msgstr ""
+
+#, python-format
+msgid "Transfer to %(account)s"
+msgstr ""
+
+#, python-format
+msgid "%(account)s fell to %(lowest)s on %(lowest_on)s and no other bank account can cover it: the owner most likely paid personally, so the entry credits %(loan)s for %(shortfall)s on %(date)s."
+msgstr ""
+
+#, python-format
+msgid "If the owner paid personally, the entry credits %(loan)s for %(shortfall)s on %(date)s instead of a transfer."
+msgstr ""
+
+#, python-format
+msgid "Owner funded %(account)s"
+msgstr ""
+
 msgid "Date and time"
 msgstr ""
 
