@@ -332,6 +332,41 @@ msgstr ""
 msgid "assurance findings"
 msgstr ""
 
+#, python-format
+msgid "%(param)s must be on or off."
+msgstr ""
+
+#, python-format
+msgid "%(param)s must be one of: %(choices)s."
+msgstr ""
+
+#, python-format
+msgid "%(param)s must be a short text."
+msgstr ""
+
+#, python-format
+msgid "%(param)s must be a list of account codes."
+msgstr ""
+
+#, python-format
+msgid "%(param)s must be a number."
+msgstr ""
+
+#, python-format
+msgid "%(param)s must be at least %(min)s."
+msgstr ""
+
+#, python-format
+msgid "%(param)s must be at most %(max)s."
+msgstr ""
+
+msgid "Rule"
+msgstr ""
+
+#, python-format
+msgid "%(rule)s has no parameter %(param)s."
+msgstr ""
+
 msgid "Date and time"
 msgstr "Date et heure"
 
@@ -11476,6 +11511,25 @@ msgid "Workload"
 msgstr ""
 
 msgid "Organisations per staff member and their open tasks."
+msgstr ""
+
+msgid "Dummy count"
+msgstr ""
+
+#, python-format
+msgid "%(count)s things on %(day)s for %(total)s."
+msgstr ""
+
+msgid "Limit"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+msgid "Strict"
+msgstr ""
+
+msgid "Dummy organisation"
 msgstr ""
 
 #, fuzzy

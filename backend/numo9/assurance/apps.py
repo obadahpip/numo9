@@ -8,3 +8,9 @@ class AssuranceConfig(AppConfig):
     name = "numo9.assurance"
     label = "assurance"
     verbose_name = "Assurance"
+
+    def ready(self) -> None:
+        from .rules import load_rules
+
+        load_rules()  # every rule module registers its rules (K-09-T04)
+
