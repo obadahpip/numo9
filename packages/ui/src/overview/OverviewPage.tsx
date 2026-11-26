@@ -118,29 +118,33 @@ export function OverviewTiles({
 
 export type OverviewCardStatus = "loading" | "ready" | "error";
 
+/**
+ * A card's failure (D-09-T10): never a bare "Unable to load" — it names what failed, says what to
+ * do, offers **Try again** and shows the support reference (the request's `X-Request-ID`).
+ */
 export interface OverviewCardError {
   /** What failed, naming the thing: "Money coming in couldn't be loaded". */
   title: string;
   /** Why (if known) and what to do. */
   body?: ReactNode;
+  /** Support reference of the failed request, shown as `labels.reference(ref)`. */
+  reference?: string;
 }
 
 export interface OverviewCardLabels {
   /** Announced while the card loads: "Loading money coming in…". */
   loading: string;
   retry: string;
+  /** e.g. (ref) → "Reference: web-7f3c2a10". */
+  reference: (reference: string) => string;
 }
 
-export interface OverviewCardProps {
+interface OverviewCardBase {
   /** Card heading (also its region's accessible name). */
   title: string;
   /** Key for tests and the visual id (`data-card`). */
   cardKey: string;
-  status: OverviewCardStatus;
   labels: OverviewCardLabels;
-  /** Required with `status="error"`: the card never fails silently. */
-  error?: OverviewCardError;
-  onRetry?: () => void;
   retrying?: boolean;
   /** Link beside the heading ("View all"). */
   action?: ReactNode;
@@ -148,6 +152,13 @@ export interface OverviewCardProps {
   wide?: boolean;
   children?: ReactNode;
 }
+
+/** A failed card must say what failed and how to retry (the type refuses a silent error). */
+export type OverviewCardState =
+  | { status: "loading" | "ready"; error?: undefined; onRetry?: () => void }
+  | { status: "error"; error: OverviewCardError; onRetry: () => void };
+
+export type OverviewCardProps = OverviewCardBase & OverviewCardState;
 
 export function OverviewCard({
   title,
@@ -192,6 +203,8 @@ export function OverviewCard({
           retryLabel={labels.retry}
           onRetry={onRetry ?? (() => undefined)}
           retrying={retrying}
+          reference={error?.reference}
+          referenceLabel={labels.reference}
         />
       ) : (
         children

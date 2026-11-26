@@ -75,6 +75,7 @@ export const CardError: Story = {
         error={{
           title: "Money going out couldn't be loaded",
           body: "Your connection may have dropped. Try again in a moment.",
+          reference: "web-7f3c2a10b44e91d0",
         }}
         onRetry={() => undefined}
       />

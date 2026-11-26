@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 781   Remaining: 2006   Progress: 28.02%
+TOTAL ATOMIC TASKS: 2787   Completed: 782   Remaining: 2005   Progress: 28.06%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1084,7 +1084,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ❌ E-06-T10 — Positive-pay export (generic CSV + bank presets)
 
 [D-09]
-❌ D-09-T10 — Card error state with retry + reference id (no silent "Unable to load")
+✅ D-09-T10 — Card error state with retry + reference id (no silent "Unable to load")
 
 [K-05]
 ❌ K-05-T01 — Wireframes: default layouts per role, widget library, empty states, mobile layout

@@ -13,6 +13,7 @@ export {
   type OverviewCardError,
   type OverviewCardLabels,
   type OverviewCardProps,
+  type OverviewCardState,
   type OverviewCardStatus,
   type OverviewPageProps,
   type OverviewTile,

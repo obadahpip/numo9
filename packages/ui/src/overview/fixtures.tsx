@@ -44,7 +44,11 @@ export const agingBuckets: AgingBucket[] = [
 export const tileLabel = (tile: OverviewTile, count: string, amount: string) =>
   `${tile.label}: ${count} invoices, ${amount}`;
 
-export const cardLabels: OverviewCardLabels = { loading: "Loading…", retry: "Try again" };
+export const cardLabels: OverviewCardLabels = {
+  loading: "Loading…",
+  retry: "Try again",
+  reference: (reference) => `Reference: ${reference}`,
+};
 
 export const agingLabels: AgingBarLabels = {
   chart: (total) => `Money coming in by age: ${total} owed`,

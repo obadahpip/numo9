@@ -28,16 +28,20 @@ function page(kind: string, failing = false, onRetry = vi.fn()) {
       title="Sales overview"
       tiles={<OverviewTiles tiles={salesTiles} locale="en-CA" tileLabel={tileLabel} />}
     >
-      <OverviewCard
-        cardKey="aging"
-        title="Money coming in"
-        status={failing ? "error" : "ready"}
-        labels={cardLabels}
-        error={{ title: "Money coming in couldn't be loaded" }}
-        onRetry={onRetry}
-      >
-        <AgingBar buckets={agingBuckets} locale="en-CA" labels={agingLabels} />
-      </OverviewCard>
+      {failing ? (
+        <OverviewCard
+          cardKey="aging"
+          title="Money coming in"
+          status="error"
+          labels={cardLabels}
+          error={{ title: "Money coming in couldn't be loaded", reference: "web-0123456789abcdef" }}
+          onRetry={onRetry}
+        />
+      ) : (
+        <OverviewCard cardKey="aging" title="Money coming in" status="ready" labels={cardLabels}>
+          <AgingBar buckets={agingBuckets} locale="en-CA" labels={agingLabels} />
+        </OverviewCard>
+      )}
       <OverviewCard
         cardKey="top"
         title="Customers owing the most"
@@ -115,6 +119,35 @@ describe("OverviewPage (D-09-T06)", () => {
   it("has no axe violations", async () => {
     page("sales", true);
     await expectNoAxeViolations();
+  });
+});
+
+describe("OverviewCard errors (D-09-T10)", () => {
+  it("names what failed, offers Try again and shows the support reference", () => {
+    page("sales", true);
+    const alert = within(document.querySelector("[data-card=aging]") as HTMLElement).getByRole(
+      "alert",
+    );
+    expect(alert).toHaveTextContent("Money coming in couldn't be loaded");
+    expect(alert).toHaveTextContent("Reference: web-0123456789abcdef");
+    expect(alert).not.toHaveTextContent(/unable to load/i);
+    expect(within(alert).getByRole("button", { name: "Try again" })).toBeEnabled();
+  });
+
+  it("shows the retry as busy while it runs", () => {
+    render(
+      <OverviewCard
+        cardKey="top"
+        title="Customers owing the most"
+        status="error"
+        error={{ title: "Customers owing the most couldn't be loaded" }}
+        onRetry={() => undefined}
+        retrying
+        labels={cardLabels}
+      />,
+    );
+    expect(screen.getByRole("button", { name: /Try again/ })).toHaveAttribute("aria-busy", "true");
+    expect(screen.queryByText(/Reference:/)).not.toBeInTheDocument();
   });
 });
 
