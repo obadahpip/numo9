@@ -20,6 +20,9 @@ from numo9.documents.formatting import format_date, format_money
 
 from .return_lines import LINES, line_labels
 
+#: The lines shown as totals (bold, ruled above) — as on the worksheet screen.
+TOTAL_LINES = frozenset({"105", "108", "109", "112", "113A", "113C"})
+
 
 def rows(tax_return: Any, locale: str = "en-ca") -> list[tuple[str, str, str]]:
     values = tax_return.lines or {}
@@ -56,7 +59,12 @@ def render_pdf(tax_return: Any, locale: str = "en-ca") -> bytes:
             "confirmation_no": tax_return.confirmation_no,
             "filed_on": format_date(tax_return.filed_on, locale) if tax_return.filed_on else "",
             "lines": [
-                {"line": line, "label": label, "amount": format_money(amount, locale)}
+                {
+                    "line": line,
+                    "label": label,
+                    "amount": format_money(amount, locale),
+                    "total": line in TOTAL_LINES,
+                }
                 for line, label, amount in rows(tax_return, locale)
             ],
         }
