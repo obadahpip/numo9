@@ -1174,3 +1174,114 @@ class CustomerCreditRefund(AuditedModel, OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.credit} ← {self.amount}"
+
+
+# ---- Late fees and interest (D-07-T06) ---------------------------------------------------------
+
+
+class LateFeeTarget(models.TextChoices):
+    STATEMENT = "statement", _("A line on the next statement")
+    FEE_INVOICE = "fee_invoice", _("A separate fee invoice")
+
+
+class LateFeePolicy(AuditedModel, OrgOwnedModel):
+    """How an organisation charges interest on overdue invoices (D-07-T06; FN-04 extends it).
+
+    The **rate** is data: the invoice's payment term's ``late_interest_pct`` (% a year, the
+    terms master of B-01 stays the single source of truth) and, when the term has none,
+    ``rate_pct`` here. Nothing is charged until ``grace_days`` after the due date; then
+    interest runs from the due date (or the end of the last charge) to the charge date —
+    simple interest, ``balance × rate × days / 365``, to the cent — and a charge below
+    ``min_fee`` is raised to it. ``target`` says where the fee goes: a line appended to the
+    customer's next statement, or a separate fee invoice (``fee_account`` is its revenue)."""
+
+    is_active = models.BooleanField(_("charge late interest"), default=False)
+    rate_pct = models.DecimalField(
+        _("interest (% a year) when the payment term has none"),
+        max_digits=6,
+        decimal_places=3,
+        default=Decimal("0"),
+    )
+    grace_days = models.PositiveSmallIntegerField(_("grace period (days)"), default=0)
+    min_fee = _money(_("minimum fee"))
+    target = models.CharField(
+        _("charged on"),
+        max_length=12,
+        choices=LateFeeTarget.choices,
+        default=LateFeeTarget.STATEMENT,
+    )
+    fee_account = models.ForeignKey(
+        "ledger.Account",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("fee income account"),
+    )
+
+    class Meta:
+        verbose_name = _("late fee policy")
+        verbose_name_plural = _("late fee policies")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(fields=["organisation"], name="sales_late_fee_policy_once"),
+            models.CheckConstraint(
+                condition=models.Q(rate_pct__gte=0, rate_pct__lte=100),
+                name="sales_late_fee_policy_rate_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(min_fee__gte=0), name="sales_late_fee_policy_min_fee"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(target__in=LateFeeTarget.values),
+                name="sales_late_fee_policy_target_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.organisation} late fees"
+
+
+class LateFeeCharge(OrgOwnedModel):
+    """Interest charged on one overdue invoice for one stretch of days (D-07-T06): kept so the
+    next charge starts where this one ended (never twice for the same days), with the figures
+    it was computed from and where it went (a statement date or a fee invoice)."""
+
+    invoice = models.ForeignKey(
+        Invoice, on_delete=models.PROTECT, related_name="late_fees", verbose_name=_("invoice")
+    )
+    start = models.DateField(_("from"))
+    end = models.DateField(_("to"))
+    days = models.PositiveIntegerField(_("days"))
+    balance = _money(_("overdue balance"))
+    rate_pct = models.DecimalField(_("rate (% a year)"), max_digits=6, decimal_places=3)
+    amount = _money(_("fee"))
+    target = models.CharField(_("charged on"), max_length=12, choices=LateFeeTarget.choices)
+    fee_invoice = models.ForeignKey(
+        Invoice,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="fee_charges",
+        verbose_name=_("fee invoice"),
+    )
+
+    class Meta:
+        ordering = ("invoice", "end", "pk")
+        verbose_name = _("late fee charge")
+        verbose_name_plural = _("late fee charges")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(fields=["invoice", "end"], name="sales_late_fee_once_per_day"),
+            models.CheckConstraint(
+                condition=models.Q(end__gt=models.F("start")), name="sales_late_fee_period_order"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="sales_late_fee_amount_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(target__in=LateFeeTarget.values),
+                name="sales_late_fee_target_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.invoice} {self.start:%Y-%m-%d}–{self.end:%Y-%m-%d}: {self.amount}"
