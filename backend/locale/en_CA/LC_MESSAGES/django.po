@@ -2540,6 +2540,108 @@ msgstr ""
 msgid "%(code)s is already on row %(row)d."
 msgstr ""
 
+msgid "GST/HST"
+msgstr ""
+
+msgid "QST"
+msgstr ""
+
+msgid "No tax or filing deadline is coming up."
+msgstr ""
+
+msgid "Owner or admin"
+msgstr ""
+
+msgid "Accountant"
+msgstr ""
+
+msgid "Sales"
+msgstr ""
+
+msgid "Purchasing"
+msgstr ""
+
+msgid "Everyone else"
+msgstr ""
+
+msgid "person"
+msgstr ""
+
+msgid "widgets"
+msgstr ""
+
+msgid "In order: [{\"key\": \"cash_in_out\", \"settings\": {\"months\": 6}}, …]."
+msgstr ""
+
+msgid "role default"
+msgstr ""
+
+msgid "The role whose default layout this one started from."
+msgstr ""
+
+msgid "changed by the person"
+msgstr ""
+
+msgid "dashboard layout"
+msgstr ""
+
+msgid "dashboard layouts"
+msgstr ""
+
+msgid "Bank & cash balances"
+msgstr ""
+
+msgid "Every bank, card and cash account, petty cash included."
+msgstr ""
+
+msgid "Cash in and out"
+msgstr ""
+
+msgid "Money in and out per month."
+msgstr ""
+
+msgid "Invoices owed to you"
+msgstr ""
+
+msgid "Awaiting payment and overdue invoices by age."
+msgstr ""
+
+msgid "Bills to pay"
+msgstr ""
+
+msgid "Awaiting payment and overdue bills by age."
+msgstr ""
+
+msgid "Tax and filing deadlines"
+msgstr ""
+
+msgid "The next GST/HST and QST returns and payments, due soon or overdue."
+msgstr ""
+
+msgid "Profit and loss"
+msgstr ""
+
+msgid "Income, expenses and net profit, month or year to date."
+msgstr ""
+
+msgid "Account watchlist"
+msgstr ""
+
+msgid "The balances of up to 10 accounts you choose."
+msgstr ""
+
+msgid "Exceptions"
+msgstr ""
+
+msgid "Open exceptions by severity."
+msgstr ""
+
+msgid "Awaiting my approval"
+msgstr ""
+
+msgid "Documents waiting for your approval."
+msgstr ""
+
 msgid "No open demo organisation with this id."
 msgstr ""
 
@@ -4503,9 +4605,6 @@ msgstr ""
 msgid "Tax book"
 msgstr ""
 
-msgid "Sales"
-msgstr ""
-
 msgid "Purchases"
 msgstr ""
 
@@ -5372,9 +5471,6 @@ msgid "Message details are a set of named values."
 msgstr ""
 
 msgid "In the app"
-msgstr ""
-
-msgid "person"
 msgstr ""
 
 msgid "in the app"
@@ -7221,9 +7317,6 @@ msgstr ""
 msgid "Runs the practice: staff, roles, clients, and full access to every client served."
 msgstr ""
 
-msgid "Accountant"
-msgstr ""
-
 msgid "Keeps the books of the clients they are assigned to."
 msgstr ""
 
@@ -7264,9 +7357,6 @@ msgid "An in-house bookkeeper: the books, without user or critical settings."
 msgstr ""
 
 msgid "Quotes, invoices and customers."
-msgstr ""
-
-msgid "Purchasing"
 msgstr ""
 
 msgid "Purchase orders, bills and suppliers."
@@ -8055,12 +8145,6 @@ msgstr ""
 
 #, python-format
 msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
-msgstr ""
-
-msgid "GST/HST"
-msgstr ""
-
-msgid "QST"
 msgstr ""
 
 msgid "See invoices, their PDF and emails"
@@ -9693,12 +9777,6 @@ msgid "widget order"
 msgstr ""
 
 msgid "hidden widgets"
-msgstr ""
-
-msgid "dashboard layout"
-msgstr ""
-
-msgid "dashboard layouts"
 msgstr ""
 
 msgid "See the practice's client organisations in the directory"

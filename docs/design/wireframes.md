@@ -53,6 +53,7 @@ use the brand tokens from [Brand tokens](brand-tokens.md).
 | 34 | Practice staff — detail with heatmap | V-05-T07, T08 | 12-month activity heatmap from the audit log, numbers in tooltips and a table alternative, Suspend / Remove |
 | 35 | Practice staff — assignments | V-05-T04 | Organisations (direct) and groups (with role) a person works on, search to add, remove; effective at once |
 | 36 | Practice home — dashboard | V-04-T06 … T09 | Cards (large number, label, drill link to the pre-filtered directory), my organisations / all practice, per-card error with retry, 30-day deadlines, workload per staff, customise (reorder, hide) |
+| K-05 | Organisation dashboard | K-05-T01 | Role default layouts, widget library, empty/gated/error states, edit mode, mobile, chart rules — [K-05 dashboard wireframes](wireframes/K-05-dashboard.md) |
 
 ## 1. Application shell
 

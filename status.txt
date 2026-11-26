@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 784   Remaining: 2003   Progress: 28.13%
+TOTAL ATOMIC TASKS: 2787   Completed: 788   Remaining: 1999   Progress: 28.27%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1087,10 +1087,10 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-09-T10 — Card error state with retry + reference id (no silent "Unable to load")
 
 [K-05]
-❌ K-05-T01 — Wireframes: default layouts per role, widget library, empty states, mobile layout
-❌ K-05-T02 — DashboardLayout per user (widgets, order, settings) with role defaults
-❌ K-05-T04 — Deadlines widget service from G-03a periods (and payroll later) with due-soon/overdue status
-❌ K-05-T08 — Chart components (bar/line) with zero rendering rule, CAD axis format, table fallback
+✅ K-05-T01 — Wireframes: default layouts per role, widget library, empty states, mobile layout
+✅ K-05-T02 — DashboardLayout per user (widgets, order, settings) with role defaults
+✅ K-05-T04 — Deadlines widget service from G-03a periods (and payroll later) with due-soon/overdue status
+✅ K-05-T08 — Chart components (bar/line) with zero rendering rule, CAD axis format, table fallback
 
 [K-09]
 ❌ K-09-T01 — Rule catalogue specification (code, condition, parameters, severity, fix template) signed off by the client
