@@ -7099,6 +7099,17 @@ msgstr ""
 msgid "Void of bill %(number)s"
 msgstr "numéro de facture"
 
+#, python-format
+msgid "Enter the transit (5 digits), institution (3 digits) and account numbers of %(account)s to print its cheques."
+msgstr "Entrez les numéros de domiciliation (5 chiffres), d’institution (3 chiffres) et de compte de %(account)s pour imprimer ses chèques."
+
+msgid "Choose the cheques to print."
+msgstr "Choisissez les chèques à imprimer."
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't be printed."
+msgstr "Le chèque %(number)s est %(status)s : il ne peut pas être imprimé."
+
 msgid "A cheque number is from 1 to 99999999."
 msgstr "Un numéro de chèque va de 1 à 99999999."
 
@@ -7714,6 +7725,9 @@ msgstr "Périmé"
 msgid "next cheque number"
 msgstr "prochain numéro de chèque"
 
+msgid "account number (MICR line)"
+msgstr "numéro de compte (ligne MICR)"
+
 msgid "cheque numbering"
 msgstr "numérotation des chèques"
 
@@ -7919,6 +7933,43 @@ msgstr "Le total doit être supérieur à 0,00."
 msgid "Supplier credit %(reference)s — %(contact)s"
 msgstr "Inviter des utilisateurs dans l’organisation"
 
+msgid "Cheques"
+msgstr "Chèques"
+
+msgid "Y Y Y Y M M D D"
+msgstr "A A A A M M J J"
+
+msgid "Pay"
+msgstr "Payez"
+
+msgid "Pay to the order of"
+msgstr "Payez à l’ordre de"
+
+msgid "Memo"
+msgstr "Mémo"
+
+msgid "Authorized signature"
+msgstr "Signature autorisée"
+
+msgid "Voucher"
+msgstr "Talon"
+
+msgid "Remittance — keep for your records"
+msgstr "Avis de paiement — à conserver"
+
+msgid "File copy"
+msgstr "Copie pour le dossier"
+
+#, python-format
+msgid "Cheque %(number)s"
+msgstr "Chèque %(number)s"
+
+msgid "Your invoice"
+msgstr "Votre facture"
+
+msgid "Discount"
+msgstr "Escompte"
+
 #, fuzzy
 #| msgid "Number"
 msgid "PO number"
@@ -7942,11 +7993,6 @@ msgstr ""
 #| msgid "institution"
 msgid "Instructions"
 msgstr "institution"
-
-#, fuzzy
-#| msgid "discount"
-msgid "Discount"
-msgstr "rabais"
 
 #, python-format
 msgid "Includes %(name)s"

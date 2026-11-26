@@ -43,6 +43,7 @@ from numo9.documents.models import (
     RecurringRunBase,
     TaxMode,
 )
+from numo9.security.fields import EncryptedField
 from numo9.tenancy.models import OrgOwnedModel
 
 
@@ -1317,10 +1318,12 @@ class ChequeStatus(models.TextChoices):
 
 
 class ChequeSequence(OrgOwnedModel):
-    """The next cheque number of one bank account (E-06-T06): cheques are numbered **per bank
-    account** (each account has its own cheque stock), handed out under a row lock by
-    ``cheques.allocate_number``; ``next_number`` can be moved on (a new cheque book) but never
-    back onto a number already used."""
+    """The cheque settings of one bank account: the next cheque number (E-06-T06) — cheques are
+    numbered **per bank account** (each account has its own cheque stock), handed out under a row
+    lock by ``cheques.allocate_number``; ``next_number`` can be moved on (a new cheque book) but
+    never back onto a number already used — and the **account number printed on the MICR line**
+    (E-06-T07; encrypted at rest, never in the audit log — the transit and institution numbers
+    are the bank account's)."""
 
     bank_account = models.OneToOneField(
         "banking.BankAccount",
@@ -1329,6 +1332,9 @@ class ChequeSequence(OrgOwnedModel):
         verbose_name=_("bank account"),
     )
     next_number = models.PositiveIntegerField(_("next cheque number"), default=1)
+    account_number = EncryptedField(
+        _("account number (MICR line)"), max_length=12, blank=True, default=""
+    )
 
     class Meta:
         verbose_name = _("cheque numbering")

@@ -6643,6 +6643,17 @@ msgstr ""
 msgid "Void of bill %(number)s"
 msgstr ""
 
+#, python-format
+msgid "Enter the transit (5 digits), institution (3 digits) and account numbers of %(account)s to print its cheques."
+msgstr ""
+
+msgid "Choose the cheques to print."
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s is %(status)s: it can't be printed."
+msgstr ""
+
 msgid "A cheque number is from 1 to 99999999."
 msgstr ""
 
@@ -7157,6 +7168,9 @@ msgstr ""
 msgid "next cheque number"
 msgstr ""
 
+msgid "account number (MICR line)"
+msgstr ""
+
 msgid "cheque numbering"
 msgstr ""
 
@@ -7347,6 +7361,43 @@ msgstr ""
 msgid "Supplier credit %(reference)s — %(contact)s"
 msgstr ""
 
+msgid "Cheques"
+msgstr ""
+
+msgid "Y Y Y Y M M D D"
+msgstr ""
+
+msgid "Pay"
+msgstr ""
+
+msgid "Pay to the order of"
+msgstr ""
+
+msgid "Memo"
+msgstr ""
+
+msgid "Authorized signature"
+msgstr ""
+
+msgid "Voucher"
+msgstr ""
+
+msgid "Remittance — keep for your records"
+msgstr ""
+
+msgid "File copy"
+msgstr ""
+
+#, python-format
+msgid "Cheque %(number)s"
+msgstr ""
+
+msgid "Your invoice"
+msgstr ""
+
+msgid "Discount"
+msgstr ""
+
 msgid "PO number"
 msgstr ""
 
@@ -7361,9 +7412,6 @@ msgid "Attention: %(name)s"
 msgstr ""
 
 msgid "Instructions"
-msgstr ""
-
-msgid "Discount"
 msgstr ""
 
 #, python-format

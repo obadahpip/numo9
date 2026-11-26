@@ -1,0 +1,27 @@
+Refined Interiors Inc.
+200 King Street West, Suite 1200
+Toronto ON  M5V 2T6
+RBC 001001
+Y Y Y Y M M D D
+2026-06-25
+Pay One thousand two hundred thirty-four and 56/100 dollars
+Pay to the order of
+Cedar Supply Co.
+Toronto ON
+$ ****1,234.56
+Memo: June invoices
+Authorized signature
+Remittance — keep for your records
+Cedar Supply Co. Cheque 001001 · 2026-06-25
+Bill Your invoice Date Amount Discount Paid
+BILL-0001 CS-1001 15 Jun 2026 $1,000.00 $20.00 $980.00
+BILL-0002 CS-1002 15 Jun 2026 $254.56 $254.56
+$20.00 $1,234.56
+June invoices
+File copy
+Cedar Supply Co. Cheque 001001 · 2026-06-25
+Bill Your invoice Date Amount Discount Paid
+BILL-0001 CS-1001 15 Jun 2026 $1,000.00 $20.00 $980.00
+BILL-0002 CS-1002 15 Jun 2026 $254.56 $254.56
+$20.00 $1,234.56
+June invoices
