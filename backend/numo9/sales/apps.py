@@ -16,6 +16,10 @@ class SalesConfig(AppConfig):
 
         register_invoice_exposure()  # what customers owe from invoices (D-03a-T06)
 
+        from .current import register_receivables
+
+        register_receivables()  # statements and AR aging read current revisions (D-03b-T12)
+
         from .search import register_sales_search
 
         register_sales_search()  # invoices in the global search (D-03a-T17)

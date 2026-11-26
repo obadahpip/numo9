@@ -8101,6 +8101,12 @@ msgstr "Le total doit être supérieur à 0,00."
 msgid "Credit note %(number)s — %(contact)s"
 msgstr "Inviter des utilisateurs dans l’organisation"
 
+msgid "Payment received"
+msgstr "Paiement reçu"
+
+msgid "Credit refund"
+msgstr "Remboursement de crédit"
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""

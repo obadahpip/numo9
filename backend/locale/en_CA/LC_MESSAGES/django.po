@@ -7419,6 +7419,12 @@ msgstr ""
 msgid "Credit note %(number)s — %(contact)s"
 msgstr ""
 
+msgid "Payment received"
+msgstr ""
+
+msgid "Credit refund"
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
