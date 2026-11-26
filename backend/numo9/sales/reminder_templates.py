@@ -84,12 +84,16 @@ def ensure_default_schedule(organisation: Any) -> ReminderSchedule:
 def reminder_context(
     invoice: Any, offset_days: int, *, amount_due: Decimal, link: str, language: str
 ) -> dict[str, Any]:
-    """The values the reminder templates read, formatted for ``language``."""
+    """The values the reminder templates read, formatted for ``language``. The number is the
+    current revision's ("101-1") and ``amount_due`` should be its open balance
+    (``current.open_balance``)."""
+    from .current import current_number
+
     due: dt.date = invoice.due_date
     with translation.override(language):
         return {
             "contact": invoice.contact.display_name,
-            "number": invoice.number,
+            "number": current_number(invoice),  # the current revision's (D-03b-T12)
             "amount_due": f"{format_money(amount_due, language)} {invoice.currency}",
             "due_date": format_date(due, language),
             "days": abs(offset_days),

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 753   Remaining: 2034   Progress: 27.02%
+TOTAL ATOMIC TASKS: 2787   Completed: 758   Remaining: 2029   Progress: 27.20%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -995,16 +995,16 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ D-03b-T05 — Revision validator: allowed field changes, contact change only if no allocations, currency fixed, reason required
 ✅ D-03b-T06 — Concurrency: SELECT … FOR UPDATE on invoice + version compare; conflict error type
 ✅ D-03b-T07 — Posting: reverse previous revision JE + post new JE in one transaction; link both to revision
-❌ D-03b-T08 — Number suffix allocation inside the same transaction (101-1, 101-2)
-❌ D-03b-T10 — Lock rules: AR lock refuses; filed GST period → require unlock or late_adjustment=True
-❌ D-03b-T11 — Late-adjustment posting: tax difference posted into next open GST period (adjusting entry linked to revision)
-❌ D-03b-T12 — Reports read current revision: AR aging, statements, reminders, tax report query layer (InvoiceCurrent view)
+✅ D-03b-T08 — Number suffix allocation inside the same transaction (101-1, 101-2)
+✅ D-03b-T10 — Lock rules: AR lock refuses; filed GST period → require unlock or late_adjustment=True
+✅ D-03b-T11 — Late-adjustment posting: tax difference posted into next open GST period (adjusting entry linked to revision)
+✅ D-03b-T12 — Reports read current revision: AR aging, statements, reminders, tax report query layer (InvoiceCurrent view)
 
 [D-05]
 ❌ D-05-T07 — Invoice status updater (Partially paid / Paid) reading current revision
 
 [D-03b]
-❌ D-03b-T17 — Webhook/event invoice.revised emitted (consumed later by W-01, mobile)
+✅ D-03b-T17 — Webhook/event invoice.revised emitted (consumed later by W-01, mobile)
 
 [D-02]
 ❌ D-02-T08 — Deposit: on acceptance create deposit invoice (D-03a) and link

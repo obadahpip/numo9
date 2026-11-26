@@ -221,7 +221,7 @@ export const im = defineMessages({
 export const statusLabels = defineMessages({
   draft: { id: "sales.invoice.status.draft", defaultMessage: "Draft", description: "Status" },
   awaiting_approval: {
-    id: "sales.invoice.status.awaiting_approval",
+    id: "sales.invoice.status.awaitingApproval",
     defaultMessage: "Awaiting approval",
     description: "Status",
   },
@@ -232,7 +232,7 @@ export const statusLabels = defineMessages({
   },
   sent: { id: "sales.invoice.status.sent", defaultMessage: "Sent", description: "Status" },
   partially_paid: {
-    id: "sales.invoice.status.partially_paid",
+    id: "sales.invoice.status.partiallyPaid",
     defaultMessage: "Partially paid",
     description: "Status",
   },

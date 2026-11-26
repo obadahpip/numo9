@@ -244,7 +244,8 @@ class TaxSummaryReport(TaxReport):
 
 #: Source document of a journal: (app label, model, number field) — the detail's labels.
 DOCUMENTS = {
-    "sales.invoice": ("sales", "Invoice", "number"),
+    # an invoice is labelled with its current revision ("101-1", D-03b-T12)
+    "sales.invoice": ("sales", "Invoice", "current_revision__number_display"),
     "sales.credit_note": ("sales", "CreditNote", "number"),
     "purchases.bill": ("purchases", "Bill", "number"),
     "purchases.supplier_credit": ("purchases", "SupplierCredit", "number"),

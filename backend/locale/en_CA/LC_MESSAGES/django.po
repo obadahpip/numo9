@@ -3981,6 +3981,24 @@ msgstr ""
 msgid "job runs"
 msgstr ""
 
+msgid "event"
+msgstr ""
+
+msgid "occurred at"
+msgstr ""
+
+msgid "delivered at"
+msgstr ""
+
+msgid "delivery attempts"
+msgstr ""
+
+msgid "outbox event"
+msgstr ""
+
+msgid "outbox events"
+msgstr ""
+
 msgid "Background job"
 msgstr ""
 
@@ -7419,6 +7437,12 @@ msgstr ""
 msgid "Credit note %(number)s — %(contact)s"
 msgstr ""
 
+msgid "Payment received"
+msgstr ""
+
+msgid "Credit refund"
+msgstr ""
+
 #, python-format
 msgid "%(invoice)s for %(contact)s on %(date)s has the same total, %(total)s."
 msgstr ""
@@ -7814,6 +7838,10 @@ msgstr ""
 
 #, python-format
 msgid "%(document)s can't be %(action)s: it is dated %(date)s, on or before the %(module)s lock date (%(lock)s, %(level)s). Date it after %(lock)s, or ask someone who manages lock dates."
+msgstr ""
+
+#, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Ask someone who manages lock dates to unlock the period, or save the revision as a late adjustment: its tax difference goes on the next open return."
 msgstr ""
 
 #, python-format

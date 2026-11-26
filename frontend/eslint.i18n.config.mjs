@@ -5,7 +5,7 @@
 import tsParser from "@typescript-eslint/parser";
 import formatjs from "eslint-plugin-formatjs";
 
-const i18nConfig = [
+export const i18nConfig = [
   {
     ignores: [".next/**", "node_modules/**", "coverage/**", "next-env.d.ts"],
   },
@@ -36,4 +36,21 @@ const i18nConfig = [
   },
 ];
 
-export default i18nConfig;
+/**
+ * Run on its own, this config has no react-hooks plugin: a stub keeps the source's
+ * `eslint-disable-next-line react-hooks/exhaustive-deps` comments from failing as unknown rules.
+ * The main eslint.config.mjs imports `i18nConfig` (the real plugin comes from next there).
+ */
+const reactHooksStub = {
+  rules: { "exhaustive-deps": { meta: { schema: [] }, create: () => ({}) } },
+};
+
+const standaloneConfig = [
+  ...i18nConfig,
+  {
+    plugins: { "react-hooks": reactHooksStub },
+    linterOptions: { reportUnusedDisableDirectives: "off" },
+  },
+];
+
+export default standaloneConfig;
