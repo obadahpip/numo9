@@ -347,6 +347,12 @@ msgstr ""
 msgid "assurance findings"
 msgstr ""
 
+msgid "See the assurance score, findings and the activity heatmap"
+msgstr ""
+
+msgid "Run the assurance checks, acknowledge findings or mark them false positives, draft fixes and change the rule settings"
+msgstr ""
+
 #, python-format
 msgid "%(param)s must be on or off."
 msgstr ""
@@ -10787,34 +10793,6 @@ msgid "Workload"
 msgstr ""
 
 msgid "Organisations per staff member and their open tasks."
-msgstr ""
-
-msgid "Dummy count"
-msgstr ""
-
-#, python-format
-msgid "%(count)s things on %(day)s for %(total)s."
-msgstr ""
-
-msgid "Limit"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "Strict"
-msgstr ""
-
-msgid "Dummy organisation"
-msgstr ""
-
-msgid "Dummy"
-msgstr ""
-
-msgid "Organisation level"
-msgstr ""
-
-msgid "Present"
 msgstr ""
 
 msgid "Balance sheet"

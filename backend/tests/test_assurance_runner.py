@@ -16,7 +16,7 @@ from decimal import Decimal
 from typing import Any
 
 import pytest
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as lazy
 
 from numo9.assurance.models import (
     ExceptionFinding,
@@ -40,7 +40,7 @@ STATE: dict[str, Decimal] = {}
 
 class Dummy(Rule):
     code = "DUMMY"
-    name = _("Dummy")
+    name = lazy("Dummy")
     incremental = True
 
     def evaluate(self, ctx: Context) -> Iterable[Hit]:
@@ -51,7 +51,7 @@ class Dummy(Rule):
 
 class OrgLevel(Rule):
     code = "ORG_LEVEL"
-    name = _("Organisation level")
+    name = lazy("Organisation level")
 
     def evaluate(self, ctx: Context) -> Iterable[Hit]:
         yield Hit("tenancy.Organisation", str(ctx.organisation.public_id), "Org")
@@ -146,7 +146,8 @@ def test_disabled_rule_is_skipped_and_its_findings_resolved(rules: RuleRegistry)
     assert [f.status for f in _findings(org)] == ["resolved"]
 
 
-def test_posting_queues_one_incremental_job(sent: list[dict[str, Any]]) -> None:
+def test_posting_queues_one_incremental_job(sent: list[dict[str, Any]], settings: Any) -> None:
+    settings.NUMO9_ASSURANCE_ON_POSTING = True
     org = Organisation.objects.create(name="Refined Interiors Inc.")
     with org_context(org):
         accounts = chart(org)

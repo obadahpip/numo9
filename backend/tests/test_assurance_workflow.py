@@ -13,7 +13,7 @@ from collections.abc import Iterable
 from decimal import Decimal
 
 import pytest
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as lazy
 
 from numo9.assurance.models import ExceptionFinding
 from numo9.assurance.rules.base import Context, Hit, Rule, RuleRegistry
@@ -35,7 +35,7 @@ PRESENT: list[str] = []
 
 class Present(Rule):
     code = "PRESENT"
-    name = _("Present")
+    name = lazy("Present")
 
     def evaluate(self, ctx: Context) -> Iterable[Hit]:
         for subject in PRESENT:
@@ -72,7 +72,7 @@ def test_transitions_are_audited(setup: tuple) -> None:  # type: ignore[type-arg
     assert done.ack_at is not None
     (event,) = _events(org, "assurance.finding.acknowledged")
     assert event.changes == {"status": ["open", "acknowledged"]}
-    assert event.actor_user_id == owner.pk  # type: ignore[attr-defined]
+    assert event.actor_user_id == owner.pk
     done = mark_false_positive(done, owner, "Float counted at night")
     (event,) = _events(org, "assurance.finding.false_positive")
     assert event.changes == {"status": ["acknowledged", "false_positive"]}

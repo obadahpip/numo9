@@ -205,28 +205,28 @@ msgstr "Votre mot de passe ne peut pas être un mot de passe apparu dans une fui
 
 #, python-format
 msgid "Line %(line)d: enter an amount."
-msgstr ""
+msgstr "Ligne %(line)d : entrez un montant."
 
 #, python-format
 msgid "Line %(line)d: amounts are positive."
-msgstr ""
+msgstr "Ligne %(line)d : les montants sont positifs."
 
 #, python-format
 msgid "Line %(line)d: choose an account of this organisation."
-msgstr ""
+msgstr "Ligne %(line)d : choisissez un compte de cette organisation."
 
 #, python-format
 msgid "This finding is %(status)s: there is nothing to fix."
-msgstr ""
+msgstr "Ce constat est %(status)s : il n'y a rien à corriger."
 
 msgid "There is no correcting journal to propose for this finding."
-msgstr ""
+msgstr "Aucune écriture de correction ne peut être proposée pour ce constat."
 
 msgid "Info"
-msgstr ""
+msgstr "Information"
 
 msgid "Warning"
-msgstr ""
+msgstr "Avertissement"
 
 msgid "Critical"
 msgstr "Critique"
@@ -235,22 +235,22 @@ msgid "Open"
 msgstr ""
 
 msgid "Acknowledged"
-msgstr ""
+msgstr "Pris en compte"
 
 msgid "Resolved"
-msgstr ""
+msgstr "Résolu"
 
 msgid "False positive"
-msgstr ""
+msgstr "Faux positif"
 
 msgid "On demand"
-msgstr ""
+msgstr "Sur demande"
 
 msgid "Nightly"
-msgstr ""
+msgstr "Chaque nuit"
 
 msgid "On posting"
-msgstr ""
+msgstr "À la comptabilisation"
 
 msgid "Running"
 msgstr "En cours"
@@ -262,25 +262,25 @@ msgid "Failed"
 msgstr "Échec"
 
 msgid "rule"
-msgstr ""
+msgstr "règle"
 
 msgid "on"
-msgstr ""
+msgstr "activée"
 
 msgid "severity"
-msgstr ""
+msgstr "gravité"
 
 msgid "parameters"
 msgstr "paramètres"
 
 msgid "assurance rule setting"
-msgstr ""
+msgstr "paramètre de règle d'assurance"
 
 msgid "assurance rule settings"
-msgstr ""
+msgstr "paramètres des règles d'assurance"
 
 msgid "trigger"
-msgstr ""
+msgstr "déclencheur"
 
 msgid "status"
 msgstr "statut"
@@ -295,31 +295,31 @@ msgid "scope"
 msgstr ""
 
 msgid "rules run"
-msgstr ""
+msgstr "règles exécutées"
 
 msgid "counts"
-msgstr ""
+msgstr "décomptes"
 
 msgid "error"
 msgstr "erreur"
 
 msgid "job"
-msgstr ""
+msgstr "tâche"
 
 msgid "assurance run"
-msgstr ""
+msgstr "vérification d'assurance"
 
 msgid "assurance runs"
-msgstr ""
+msgstr "vérifications d'assurance"
 
 msgid "subject type"
-msgstr ""
+msgstr "type de sujet"
 
 msgid "subject"
 msgstr "objet"
 
 msgid "subject label"
-msgstr ""
+msgstr "libellé du sujet"
 
 msgid "amount"
 msgstr "montant"
@@ -328,13 +328,13 @@ msgid "details"
 msgstr "détails"
 
 msgid "resolved at"
-msgstr ""
+msgstr "résolu le"
 
 msgid "acknowledged by"
-msgstr ""
+msgstr "pris en compte par"
 
 msgid "acknowledged at"
-msgstr ""
+msgstr "pris en compte le"
 
 msgid "reason"
 msgstr "raison"
@@ -343,120 +343,126 @@ msgid "last run"
 msgstr ""
 
 msgid "fix journal"
-msgstr ""
+msgstr "écriture de correction"
 
 msgid "assurance finding"
-msgstr ""
+msgstr "constat d'assurance"
 
 msgid "assurance findings"
-msgstr ""
+msgstr "constats d'assurance"
+
+msgid "See the assurance score, findings and the activity heatmap"
+msgstr "Voir la note d'assurance, les constats et la carte d'activité"
+
+msgid "Run the assurance checks, acknowledge findings or mark them false positives, draft fixes and change the rule settings"
+msgstr "Lancer les vérifications d'assurance, prendre en compte les constats ou les marquer comme faux positifs, préparer des corrections et modifier les paramètres des règles"
 
 #, python-format
 msgid "%(param)s must be on or off."
-msgstr ""
+msgstr "%(param)s doit être activé ou désactivé."
 
 #, python-format
 msgid "%(param)s must be one of: %(choices)s."
-msgstr ""
+msgstr "%(param)s doit être l'une des valeurs suivantes : %(choices)s."
 
 #, python-format
 msgid "%(param)s must be a short text."
-msgstr ""
+msgstr "%(param)s doit être un texte court."
 
 #, python-format
 msgid "%(param)s must be a list of account codes."
-msgstr ""
+msgstr "%(param)s doit être une liste de numéros de compte."
 
 #, python-format
 msgid "%(param)s must be a number."
-msgstr ""
+msgstr "%(param)s doit être un nombre."
 
 #, python-format
 msgid "%(param)s must be at least %(min)s."
-msgstr ""
+msgstr "%(param)s doit être d'au moins %(min)s."
 
 #, python-format
 msgid "%(param)s must be at most %(max)s."
-msgstr ""
+msgstr "%(param)s doit être d'au plus %(max)s."
 
 msgid "Rule"
-msgstr ""
+msgstr "Règle"
 
 #, python-format
 msgid "%(rule)s has no parameter %(param)s."
-msgstr ""
+msgstr "%(rule)s n'a pas de paramètre %(param)s."
 
 msgid "Negative cash or bank balance"
-msgstr ""
+msgstr "Solde de caisse ou de banque négatif"
 
 msgid "A bank or cash account's balance went below zero: money was spent that was never in it."
-msgstr ""
+msgstr "Le solde d'un compte de banque ou de caisse est passé sous zéro : on a dépensé de l'argent qui n'y a jamais été."
 
 #, python-format
 msgid "%(account)s went below zero: %(lowest)s on %(lowest_on)s (today %(today_balance)s). Cash on hand can't be negative: money was spent from it that was never put in."
-msgstr ""
+msgstr "%(account)s est passé sous zéro : %(lowest)s le %(lowest_on)s (aujourd'hui %(today_balance)s). L'encaisse ne peut pas être négative : on y a pris de l'argent qui n'y a jamais été déposé."
 
 msgid "Fix source"
-msgstr ""
+msgstr "Source de la correction"
 
 msgid "Shareholder loan account code"
-msgstr ""
+msgstr "Numéro du compte Prêt de l'actionnaire"
 
 #, python-format
 msgid "%(account)s fell to %(lowest)s on %(lowest_on)s. %(bank)s has %(balance)s today: transferring %(shortfall)s on %(date)s brings %(account)s back to zero at its lowest point."
-msgstr ""
+msgstr "%(account)s est descendu à %(lowest)s le %(lowest_on)s. %(bank)s a %(balance)s aujourd'hui : un virement de %(shortfall)s le %(date)s ramène %(account)s à zéro à son point le plus bas."
 
 #, python-format
 msgid "Transfer to %(account)s"
-msgstr ""
+msgstr "Virement vers %(account)s"
 
 #, python-format
 msgid "%(account)s fell to %(lowest)s on %(lowest_on)s and no other bank account can cover it: the owner most likely paid personally, so the entry credits %(loan)s for %(shortfall)s on %(date)s."
-msgstr ""
+msgstr "%(account)s est descendu à %(lowest)s le %(lowest_on)s et aucun autre compte bancaire ne peut le couvrir : le propriétaire a probablement payé personnellement, donc l'écriture crédite %(loan)s de %(shortfall)s le %(date)s."
 
 #, python-format
 msgid "If the owner paid personally, the entry credits %(loan)s for %(shortfall)s on %(date)s instead of a transfer."
-msgstr ""
+msgstr "Si le propriétaire a payé personnellement, l'écriture crédite %(loan)s de %(shortfall)s le %(date)s au lieu d'un virement."
 
 #, python-format
 msgid "Owner funded %(account)s"
-msgstr ""
+msgstr "%(account)s financé par le propriétaire"
 
 msgid "Created and approved by the same person"
-msgstr ""
+msgstr "Saisi et approuvé par la même personne"
 
 msgid "One person entered and approved the same journal, bill or pay run: no second pair of eyes."
-msgstr ""
+msgstr "Une même personne a saisi et approuvé la même écriture, facture fournisseur ou paie : personne d'autre ne l'a revue."
 
 #, python-format
 msgid "%(document)s (%(date)s) was entered and approved by %(person)s. Approval needs a second person."
-msgstr ""
+msgstr "%(document)s (%(date)s) a été saisi et approuvé par %(person)s. L'approbation demande une deuxième personne."
 
 msgid "Possible duplicate payment"
-msgstr ""
+msgstr "Paiement possiblement en double"
 
 msgid "The same contact was paid the same amount twice within a few days."
-msgstr ""
+msgstr "Le même contact a reçu le même montant deux fois en quelques jours."
 
 #, python-format
 msgid "%(journal)s pays %(contact)s %(paid)s on %(date)s; %(other)s paid the same amount on %(other_date)s. If it is a duplicate, void or reverse it and ask for the money back."
-msgstr ""
+msgstr "%(journal)s paie %(paid)s à %(contact)s le %(date)s; %(other)s a payé le même montant le %(other_date)s. S'il s'agit d'un doublon, annulez-le ou contrepassez-le et demandez le remboursement."
 
 msgid "Days apart"
-msgstr ""
+msgstr "Jours d'écart"
 
 msgid "Possible duplicate supplier invoice"
-msgstr ""
+msgstr "Facture fournisseur possiblement en double"
 
 msgid "A supplier's invoice may have been entered twice."
-msgstr ""
+msgstr "La facture d'un fournisseur a peut-être été saisie deux fois."
 
 #, python-format
 msgid "%(bill)s from %(supplier)s (%(date)s, %(total)s) looks like %(other)s (%(other_date)s, %(other_total)s): %(why)s."
-msgstr ""
+msgstr "%(bill)s de %(supplier)s (%(date)s, %(total)s) ressemble à %(other)s (%(other_date)s, %(other_total)s) : %(why)s."
 
 msgid "Total within %"
-msgstr ""
+msgstr "Total à moins de %"
 
 #, fuzzy
 #| msgid "Created"
@@ -464,131 +470,131 @@ msgid "A draft bill"
 msgstr "Créé"
 
 msgid "the same invoice number"
-msgstr ""
+msgstr "le même numéro de facture"
 
 msgid "a similar total within a few days"
-msgstr ""
+msgstr "un total semblable à quelques jours d'intervalle"
 
 msgid "Manual journal posts to a bank or cash account"
-msgstr ""
+msgstr "Écriture manuelle dans un compte de banque ou de caisse"
 
 msgid "Money in or out of a bank or cash account recorded by manual journal instead of a bank transaction, a payment or a transfer."
-msgstr ""
+msgstr "Une entrée ou une sortie d'argent d'un compte de banque ou de caisse enregistrée par écriture manuelle plutôt que par une opération bancaire, un paiement ou un virement."
 
 #, python-format
 msgid "%(journal)s (%(date)s) posts %(cash_amount)s to %(accounts)s. Money in or out of a bank or cash account should be recorded as a bank transaction, a payment or a transfer so it can be reconciled."
-msgstr ""
+msgstr "%(journal)s (%(date)s) inscrit %(cash_amount)s dans %(accounts)s. Les entrées et sorties d'argent d'un compte de banque ou de caisse doivent être enregistrées comme opération bancaire, paiement ou virement pour pouvoir être rapprochées."
 
 msgid "Minimum amount"
-msgstr ""
+msgstr "Montant minimal"
 
 msgid "Expense journal without a contact"
-msgstr ""
+msgstr "Écriture de dépense sans contact"
 
 msgid "A manual journal records an expense without saying who it was paid to."
-msgstr ""
+msgstr "Une écriture manuelle enregistre une dépense sans dire à qui elle a été payée."
 
 #, python-format
 msgid "%(journal)s (%(date)s) records %(expense_amount)s of expenses (%(accounts)s) with no supplier. Enter purchases as bills or spend money with the supplier, so the supplier ledger and the GST/HST credits are right."
-msgstr ""
+msgstr "%(journal)s (%(date)s) enregistre %(expense_amount)s de dépenses (%(accounts)s) sans fournisseur. Saisissez les achats comme factures fournisseurs ou dépenses avec le fournisseur, pour que le grand livre des fournisseurs et les crédits de TPS/TVH soient justes."
 
 msgid "Expense journal without an attachment"
-msgstr ""
+msgstr "Écriture de dépense sans pièce jointe"
 
 msgid "A manual journal records an expense with no receipt attached."
-msgstr ""
+msgstr "Une écriture manuelle enregistre une dépense sans reçu joint."
 
 #, python-format
 msgid "%(journal)s (%(date)s) records %(expense_amount)s of expenses (%(accounts)s) with no receipt or invoice attached. Attach the supporting document: the CRA asks for it to claim the expense and its input tax credits."
-msgstr ""
+msgstr "%(journal)s (%(date)s) enregistre %(expense_amount)s de dépenses (%(accounts)s) sans reçu ni facture joints. Joignez la pièce justificative : l'ARC l'exige pour déduire la dépense et demander ses crédits de taxe sur les intrants."
 
 msgid "Round amount journal"
-msgstr ""
+msgstr "Écriture d'un montant rond"
 
 msgid "A large manual journal for a round amount: an estimate or a plug?"
-msgstr ""
+msgstr "Une écriture manuelle importante d'un montant rond : une estimation ou un montant d'équilibrage?"
 
 #, python-format
 msgid "%(journal)s (%(date)s) is for %(total)s, a round amount: check it is supported by a document and not an estimate or a balancing figure."
-msgstr ""
+msgstr "%(journal)s (%(date)s) est de %(total)s, un montant rond : vérifiez qu'il est appuyé par une pièce et qu'il ne s'agit pas d'une estimation ou d'un montant d'équilibrage."
 
 msgid "From"
-msgstr ""
+msgstr "À partir de"
 
 msgid "Multiple of"
-msgstr ""
+msgstr "Multiple de"
 
 msgid "Dormant user with user-management rights"
-msgstr ""
+msgstr "Utilisateur inactif ayant le droit de gérer les utilisateurs"
 
 msgid "Someone who can add people and change roles hasn't signed in for a long time."
-msgstr ""
+msgstr "Une personne qui peut ajouter des utilisateurs et changer les rôles ne s'est pas connectée depuis longtemps."
 
 #, python-format
 msgid "%(person)s can manage users but hasn't signed in since %(last_active)s (%(idle)s days). Remove the right or the access if it isn't needed any more."
-msgstr ""
+msgstr "%(person)s peut gérer les utilisateurs mais ne s'est pas connecté depuis le %(last_active)s (%(idle)s jours). Retirez ce droit ou l'accès s'il n'est plus nécessaire."
 
 msgid "Days"
-msgstr ""
+msgstr "Jours"
 
 msgid "Contact bank details changed"
-msgstr ""
+msgstr "Coordonnées bancaires d'un contact modifiées"
 
 msgid "A supplier's or employee's bank details changed recently: confirm before paying."
-msgstr ""
+msgstr "Les coordonnées bancaires d'un fournisseur ou d'un employé ont changé récemment : confirmez-les avant de payer."
 
 #, python-format
 msgid "%(contact)s's bank details (%(fields)s) were changed on %(changed_on)s by %(by)s. Call the contact on a number you already have to confirm before the next payment."
-msgstr ""
+msgstr "Les coordonnées bancaires de %(contact)s (%(fields)s) ont été modifiées le %(changed_on)s par %(by)s. Appelez le contact à un numéro que vous avez déjà pour confirmer avant le prochain paiement."
 
 msgid "Days back"
-msgstr ""
+msgstr "Jours en arrière"
 
 msgid "Accounts not mapped to GIFI"
-msgstr ""
+msgstr "Comptes non associés à la IGRF"
 
 msgid "Active accounts without a GIFI code: the T2 financial statements can't be prepared from the ledger as it is."
-msgstr ""
+msgstr "Des comptes actifs n'ont pas de code IGRF : les états financiers de la T2 ne peuvent pas être préparés à partir du grand livre tel quel."
 
 #, python-format
 msgid "%(unmapped)s of %(total)s active accounts have no GIFI code (%(sample)s…). Map them in the chart of accounts so the T2 schedules 100 and 125 can be prepared."
-msgstr ""
+msgstr "%(unmapped)s des %(total)s comptes actifs n'ont pas de code IGRF (%(sample)s…). Associez-les dans le plan comptable pour pouvoir préparer les annexes 100 et 125 de la T2."
 
 msgid "Only accounts used"
-msgstr ""
+msgstr "Seulement les comptes utilisés"
 
 msgid "Registered without a Business Number"
-msgstr ""
+msgstr "Inscrit sans numéro d'entreprise"
 
 msgid "The organisation has a CRA or Revenu Québec registration but no Business Number on file."
-msgstr ""
+msgstr "L'organisation a une inscription auprès de l'ARC ou de Revenu Québec, mais aucun numéro d'entreprise au dossier."
 
 #, python-format
 msgid "The organisation is registered (%(registrations)s) but has no Business Number (BN). Add it under Tax registrations: it is printed on invoices and needed for every return."
-msgstr ""
+msgstr "L'organisation est inscrite (%(registrations)s) mais n'a pas de numéro d'entreprise (NE). Ajoutez-le dans Inscriptions fiscales : il figure sur les factures et il est nécessaire pour chaque déclaration."
 
 msgid "No lock date"
-msgstr ""
+msgstr "Aucune date de verrouillage"
 
 msgid "Periods that ended long ago are still open: anyone can still change them."
-msgstr ""
+msgstr "Des périodes terminées depuis longtemps sont encore ouvertes : n'importe qui peut encore les modifier."
 
 #, python-format
 msgid "The books have activity up to %(period_end)s, a period that ended more than %(days)s days ago, and the general ledger lock date is %(lock)s. Set the lock date to %(period_end)s so reported periods can't change."
-msgstr ""
+msgstr "Les livres ont des opérations jusqu'au %(period_end)s, une période terminée depuis plus de %(days)s jours, et la date de verrouillage du grand livre est %(lock)s. Fixez la date de verrouillage au %(period_end)s pour que les périodes déclarées ne puissent plus changer."
 
 msgid "not set"
-msgstr ""
+msgstr "non définie"
 
 msgid "Conversion balances incomplete or unbalanced"
-msgstr ""
+msgstr "Soldes de conversion incomplets ou déséquilibrés"
 
 msgid "The opening balances brought over from the previous system are empty, don't balance or have no equity."
-msgstr ""
+msgstr "Les soldes d'ouverture repris de l'ancien système sont vides, ne s'équilibrent pas ou n'ont aucun capitaux propres."
 
 #, python-format
 msgid "The conversion at %(conversion_date)s: %(problem)s. Opening balances are where the balance sheet starts — debits %(debit)s, credits %(credit)s."
-msgstr ""
+msgstr "La conversion au %(conversion_date)s : %(problem)s. Le bilan part des soldes d'ouverture — débits %(debit)s, crédits %(credit)s."
 
 #, fuzzy, python-format
 #| msgid "conversion rate (30 days)"
@@ -596,87 +602,87 @@ msgid "Conversion at %(date)s"
 msgstr "taux de conversion (30 jours)"
 
 msgid "no opening balances were entered"
-msgstr ""
+msgstr "aucun solde d'ouverture n'a été saisi"
 
 #, python-format
 msgid "debits and credits differ by %(difference)s"
-msgstr ""
+msgstr "les débits et les crédits diffèrent de %(difference)s"
 
 msgid "there is no equity (share capital, shareholder loan, retained earnings)"
-msgstr ""
+msgstr "il n'y a aucun capitaux propres (capital-actions, prêt de l'actionnaire, bénéfices non répartis)"
 
 msgid "Exempt code on a normally taxable account"
-msgstr ""
+msgstr "Code exonéré dans un compte normalement taxable"
 
 msgid "A registrant coded a purchase on a normally taxable expense account as exempt: the input tax credit may be missed."
-msgstr ""
+msgstr "Un inscrit a codé comme exonéré un achat dans un compte de dépense normalement taxable : le crédit de taxe sur les intrants risque d'être perdu."
 
 #, python-format
 msgid "%(journal)s line %(line)s: %(amount)s on %(account)s is coded %(tax_code)s. This account is normally taxable and the organisation is registered for GST/HST: check the receipt and claim the input tax credit if tax was paid."
-msgstr ""
+msgstr "%(journal)s, ligne %(line)s : %(amount)s dans %(account)s est codé %(tax_code)s. Ce compte est normalement taxable et l'organisation est inscrite à la TPS/TVH : vérifiez le reçu et demandez le crédit de taxe sur les intrants si la taxe a été payée."
 
 msgid "Accounts to leave out"
-msgstr ""
+msgstr "Comptes à exclure"
 
 #, python-format
 msgid "Recode the tax of %(journal)s line %(line)s from %(from)s to %(to)s with Find & recode: the journal is reversed and re-posted with the new code (undo is available), and the input tax credit is calculated."
-msgstr ""
+msgstr "Recodez la taxe de %(journal)s, ligne %(line)s, de %(from)s à %(to)s avec Rechercher et recoder : l'écriture est contrepassée et comptabilisée de nouveau avec le nouveau code (l'annulation reste possible), et le crédit de taxe sur les intrants est calculé."
 
 msgid "the right purchase code"
-msgstr ""
+msgstr "le bon code d'achat"
 
 msgid "Tax codes often changed from the account default"
-msgstr ""
+msgstr "Codes de taxe souvent différents du code par défaut du compte"
 
 msgid "Many lines use another tax code than their account's default: the defaults may be wrong."
-msgstr ""
+msgstr "Beaucoup de lignes utilisent un autre code de taxe que celui du compte par défaut : les codes par défaut sont peut-être mauvais."
 
 #, python-format
 msgid "%(overrides)s of %(lines)s lines in the last %(days)s days (%(pct)s %%) use another tax code than their account's default (most on %(top)s). Review the accounts' default codes."
-msgstr ""
+msgstr "%(overrides)s des %(lines)s lignes des %(days)s derniers jours (%(pct)s %%) utilisent un autre code de taxe que celui du compte par défaut (surtout dans %(top)s). Revoyez les codes par défaut des comptes."
 
 msgid "Share above (%)"
-msgstr ""
+msgstr "Proportion supérieure à (%)"
 
 msgid "Minimum lines"
-msgstr ""
+msgstr "Nombre minimal de lignes"
 
 msgid "Backdated posting"
-msgstr ""
+msgstr "Comptabilisation antidatée"
 
 msgid "A journal, invoice or bill posted long after its date: it changes periods that may already have been reported."
-msgstr ""
+msgstr "Une écriture, une facture ou une facture fournisseur comptabilisée longtemps après sa date : elle modifie des périodes peut-être déjà déclarées."
 
 #, python-format
 msgid "%(document)s is dated %(date)s but was posted on %(posted_on)s (%(gap)s days later; the limit is %(days)s)."
-msgstr ""
+msgstr "%(document)s est daté du %(date)s mais a été comptabilisé le %(posted_on)s (%(gap)s jours plus tard; la limite est de %(days)s)."
 
 msgid "Weekend posting"
-msgstr ""
+msgstr "Comptabilisation la fin de semaine"
 
 msgid "A journal posted on a weekend or a holiday."
-msgstr ""
+msgstr "Une écriture comptabilisée la fin de semaine ou un jour férié."
 
 #, python-format
 msgid "%(journal)s was posted on %(weekday)s %(posted_on)s at %(time)s (%(zone)s)."
-msgstr ""
+msgstr "%(journal)s a été comptabilisé le %(weekday)s %(posted_on)s à %(time)s (%(zone)s)."
 
 msgid "Holidays too"
-msgstr ""
+msgstr "Jours fériés aussi"
 
 msgid "Province of the holidays"
-msgstr ""
+msgstr "Province des jours fériés"
 
 #, python-format
 msgid "This finding is %(status)s: it can't be %(action)s."
-msgstr ""
+msgstr "Ce constat est %(status)s : il ne peut pas être %(action)s."
 
 msgid "A newer finding is open for the same problem: work on that one."
-msgstr ""
+msgstr "Un constat plus récent est ouvert pour le même problème : traitez celui-là."
 
 #, python-format
 msgid "Say why this is not a problem (at least %(min)d characters)."
-msgstr ""
+msgstr "Dites pourquoi ce n'est pas un problème (au moins %(min)d caractères)."
 
 msgid "Date and time"
 msgstr "Date et heure"
@@ -11812,34 +11818,6 @@ msgid "Workload"
 msgstr ""
 
 msgid "Organisations per staff member and their open tasks."
-msgstr ""
-
-msgid "Dummy count"
-msgstr ""
-
-#, python-format
-msgid "%(count)s things on %(day)s for %(total)s."
-msgstr ""
-
-msgid "Limit"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "Strict"
-msgstr ""
-
-msgid "Dummy organisation"
-msgstr ""
-
-msgid "Dummy"
-msgstr ""
-
-msgid "Organisation level"
-msgstr ""
-
-msgid "Present"
 msgstr ""
 
 #, fuzzy

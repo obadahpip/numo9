@@ -539,6 +539,8 @@ CELERY_TASK_SEND_SENT_EVENT = True
 # Beat (A-08-T05, numo9/jobs/beat.py): schedules in the database (django-celery-beat), one
 # execution per schedule tick across every running beat (Redis lock numo9:beat:<name>:<tick>).
 CELERY_BEAT_SCHEDULER = "numo9.jobs.beat:LockedDatabaseScheduler"
+# Exceptions engine (K-09-T05): an incremental run is queued for every posting.
+NUMO9_ASSURANCE_ON_POSTING = env_bool("NUMO9_ASSURANCE_ON_POSTING", True)
 JOBS_BEAT_LOCK_URL = env_str("JOBS_BEAT_LOCK_URL", "")  # empty: the broker's Redis
 DJANGO_CELERY_BEAT_TZ_AWARE = True
 # Job tray event stream (A-08-T06, numo9/jobs/api.py): checks every second, ends after 25 s

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import datetime as dt
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -21,7 +22,7 @@ from tests.ledger_helpers import account
 pytestmark = pytest.mark.django_db
 
 
-def _subjects(books: dict, code: str, **params: object) -> dict[str, object]:
+def _subjects(books: dict[str, Any], code: str, **params: object) -> dict[str, object]:
     hits = evaluate(books["org"], code, now=NOW, params=params or None)
     return {h.subject_id: h for h in hits}
 

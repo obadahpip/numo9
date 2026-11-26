@@ -38,6 +38,7 @@ __all__ = [
     "LEDGER_STATUSES",
     "ZERO",
     "Numbers",
+    "account_of",
     "cash_accounts",
     "entry_hit",
     "entry_total",
@@ -111,6 +112,18 @@ def entry_hit(
             **details,
         },
     )
+
+
+def account_of(public_id: Any) -> Account | None:
+    """The organisation's account with this public id (``None`` for anything else)."""
+    import uuid
+
+    try:
+        key = uuid.UUID(str(public_id))
+    except ValueError:
+        return None
+    found: Account | None = Account.objects.filter(public_id=key).first()
+    return found
 
 
 def cash_accounts() -> QuerySet[Account]:

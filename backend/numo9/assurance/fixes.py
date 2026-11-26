@@ -28,7 +28,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from numo9.ledger.models import Account, JournalCategory, JournalEntry, JournalStatus
+from numo9.ledger.models import JournalCategory, JournalEntry, JournalStatus
 from numo9.ledger.sequence import format_journal_number
 from numo9.ledger.services import save_draft
 from numo9.ledger.validation import JournalSpec, LineSpec
@@ -36,6 +36,7 @@ from numo9.tenancy.context import org_context
 
 from .models import ACTIVE_STATUSES, ExceptionFinding, fingerprint_of
 from .rules.base import FixProposal, Scope, context_for, registry
+from .rules.common import account_of
 from .runner import _audit, resolve
 
 
@@ -75,7 +76,7 @@ def _money(value: Any, position: int) -> Decimal:
 def _line_specs(rows: Sequence[dict[str, Any]]) -> tuple[LineSpec, ...]:
     specs: list[LineSpec] = []
     for position, row in enumerate(rows, 1):
-        account = Account.objects.filter(public_id=row.get("account")).first()
+        account = account_of(row.get("account"))
         if account is None:
             raise _refuse(
                 _("Line %(line)d: choose an account of this organisation."),

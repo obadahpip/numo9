@@ -14,7 +14,7 @@ from decimal import Decimal
 
 import pytest
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as lazy
 
 from numo9.assurance.models import ExceptionFinding, ExceptionRuleConfig
 from numo9.assurance.rules.base import (
@@ -37,15 +37,15 @@ pytestmark = pytest.mark.django_db
 
 class CountJournals(Rule):
     code = "DUMMY_COUNT"
-    name = _("Dummy count")
-    explanation = _("%(count)s things on %(day)s for %(total)s.")
+    name = lazy("Dummy count")
+    explanation = lazy("%(count)s things on %(day)s for %(total)s.")
     money_keys = ("total",)
     date_keys = ("day",)
     params = {
-        "limit": Param("int", 2, _("Limit"), minimum=1, maximum=10),
-        "mode": Param("choice", "a", _("Mode"), choices=("a", "b")),
-        "amount": Param("decimal", Decimal("100.00"), _("Amount"), minimum=Decimal("0")),
-        "strict": Param("bool", False, _("Strict")),
+        "limit": Param("int", 2, lazy("Limit"), minimum=1, maximum=10),
+        "mode": Param("choice", "a", lazy("Mode"), choices=("a", "b")),
+        "amount": Param("decimal", Decimal("100.00"), lazy("Amount"), minimum=Decimal("0")),
+        "strict": Param("bool", False, lazy("Strict")),
     }
     incremental = True
 
@@ -57,7 +57,7 @@ class CountJournals(Rule):
 
 class AlwaysOrg(Rule):
     code = "DUMMY_ORG"
-    name = _("Dummy organisation")
+    name = lazy("Dummy organisation")
     has_fix = True
 
     def evaluate(self, ctx: Context) -> Iterable[Hit]:

@@ -20,7 +20,8 @@ Triggers: *on demand* (``start_run``, a background job when asked through the AP
 (``nightly_job``: every organisation) and *on posting* — ``posted_hook`` (registered in
 ``numo9.ledger.services.POSTED_HOOKS``) collects the posted journal and its accounts and, when
 the transaction commits, starts one incremental job for them (``numo9.assurance.run``, keyed by
-the journals so a re-sent message runs once).
+the journals so a re-sent message runs once). ``NUMO9_ASSURANCE_ON_POSTING`` (default on; off in
+the test settings) switches the per-posting job off.
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ from collections import Counter
 from collections.abc import Iterable, Sequence
 from typing import Any
 
+from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
@@ -302,6 +304,8 @@ def posted_hook(entry: Any, checked: Any, spec: Any, organisation: Any, person: 
 
     with org_context(organisation):
         resolve_fixed(entry, person)
+    if not getattr(settings, "NUMO9_ASSURANCE_ON_POSTING", True):
+        return
     scope = Scope(
         frozenset({str(entry.public_id)}),
         frozenset(str(line.account.public_id) for line in checked.lines),

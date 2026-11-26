@@ -126,10 +126,10 @@ class ExemptOnTaxableAccount(Rule):
         return f"purchase.{province}.standard" if province else ""
 
     def propose_fix(self, finding: ExceptionFinding, ctx: Context) -> FixProposal | None:
-        from numo9.ledger.models import Account
+        from .common import account_of
 
         details = finding.details or {}
-        account = Account.objects.filter(public_id=details.get("account_id")).first()
+        account = account_of(details.get("account_id"))
         if account is None:
             return None
         suggested = self.suggested_code(account, exempt_codes())

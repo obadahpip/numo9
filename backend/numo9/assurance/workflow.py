@@ -47,7 +47,7 @@ def _move(
     reason: str = "",
 ) -> ExceptionFinding:
     with org_context(finding.organisation), transaction.atomic():
-        locked = ExceptionFinding.objects.select_for_update().get(pk=finding.pk)
+        locked: ExceptionFinding = ExceptionFinding.objects.select_for_update().get(pk=finding.pk)
         if locked.status not in allowed:
             raise WorkflowRefused(
                 _("This finding is %(status)s: it can't be %(action)s.")
@@ -78,7 +78,7 @@ def _move(
         else:
             locked.ack_by, locked.ack_at, locked.reason = None, None, ""
         locked.save(update_fields=["status", "ack_by", "ack_at", "reason", "updated_at"])
-        verb = {FindingStatus.OPEN: "reopened"}.get(to, to)
+        verb = "reopened" if to == FindingStatus.OPEN else to
         audit.record(
             f"assurance.finding.{verb}",
             obj=locked,

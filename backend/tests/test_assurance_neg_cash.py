@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import datetime as dt
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -24,7 +25,7 @@ from tests.ledger_helpers import account
 pytestmark = pytest.mark.django_db
 
 
-def _fix(books: dict, hit_subject: str, **params: object) -> dict:
+def _fix(books: dict[str, Any], hit_subject: str, **params: object) -> dict[str, Any]:
     rule = registry.get("NEG_CASH")
     org = books["org"]
     ctx = context_for(org, rule, now=NOW, params=params or None)

@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.apps import AppConfig
 
 
@@ -21,3 +23,25 @@ class AssuranceConfig(AppConfig):
 
         if posted_hook not in POSTED_HOOKS:
             POSTED_HOOKS.append(posted_hook)
+
+        # Tenant sweep (A-01-T09): one finding per endpoint, each with its own subject.
+        from numo9.tenancy.sweep import SWEEP_FACTORIES
+
+        SWEEP_FACTORIES["assurance.ExceptionFinding"] = _sweep_finding
+
+
+def _sweep_finding(organisation: Any) -> Any:
+    import uuid
+
+    from .models import ExceptionFinding
+
+    finding = ExceptionFinding(
+        organisation=organisation,
+        rule_code="NEG_CASH",
+        severity="critical",
+        subject_type="ledger.Account",
+        subject_id=str(uuid.uuid4()),
+        subject_label="Sweep",
+    )
+    finding.save()
+    return finding

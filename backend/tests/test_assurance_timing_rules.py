@@ -8,6 +8,7 @@ document), a recode re-post keeping its original date is not.
 from __future__ import annotations
 
 import datetime as dt
+from typing import Any
 
 import pytest
 
@@ -76,7 +77,7 @@ def test_recode_repost_keeps_its_date_and_is_not_backdated() -> None:
 # ---- WEEKEND_POSTING (K-09-T11) --------------------------------------------------------------
 
 
-def _post_by_person(books: dict, when: dt.datetime) -> object:
+def _post_by_person(books: dict[str, Any], when: dt.datetime) -> object:
     from tests.assurance_helpers import post
     from tests.journal_helpers import people
 
