@@ -614,6 +614,12 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.sales.expire_quotes",
         "schedule": crontab(minute=3),
     },
+    # Recurring invoices (D-04-T05): hourly, each organisation on its own date; one invoice per
+    # occurrence (the run row), however many workers or restarts.
+    "numo9.sales.recurring_invoices": {
+        "task": "numo9.sales.recurring_invoices",
+        "schedule": crontab(minute=44),
+    },
     # Recurring journals (C-04-T06): hourly, each organisation on its own date; idempotent.
     "numo9.ledger.recurring_journals": {
         "task": "numo9.ledger.recurring_journals",

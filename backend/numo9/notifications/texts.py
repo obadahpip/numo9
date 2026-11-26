@@ -154,6 +154,24 @@ register_text(
     _("%(customer)s declined quote %(number)s: %(reason)s"),
 )
 
+# ---- recurring invoices (D-04-T05) ------------------------------------------------------------
+
+register_text(
+    "notifications.sales.recurring.failed",
+    _("Recurring invoice %(name)s needs attention"),
+    _("The invoice of %(date)s was created but not finished: %(reason)s"),
+)
+register_text(
+    "notifications.sales.recurring.skipped",
+    _("Recurring invoice %(name)s skipped %(date)s"),
+    _("No invoice was created for %(date)s: %(reason)s"),
+)
+register_text(
+    "notifications.sales.recurring.ended",
+    _("Recurring invoice %(name)s has ended"),
+    _("Its schedule has no more dates: no more invoices will be created."),
+)
+
 # ---- filing periods (G-03a-T17) ---------------------------------------------------------------
 
 register_text(

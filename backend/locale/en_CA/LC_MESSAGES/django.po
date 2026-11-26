@@ -2634,10 +2634,29 @@ msgstr ""
 msgid "tracking"
 msgstr ""
 
+msgid "occurrence date"
+msgstr ""
+
+msgid "template version"
+msgstr ""
+
 msgid "See quotes, invoices and credit notes and how their amounts are worked out"
 msgstr ""
 
 msgid "See bills, purchase orders and supplier credits and how their amounts are worked out"
+msgstr ""
+
+msgid "The template was paused on this date."
+msgstr ""
+
+#, python-format
+msgid "%(contact)s is archived: nothing was created for this date."
+msgstr ""
+
+msgid "The contact"
+msgstr ""
+
+msgid "The schedule has no more dates."
 msgstr ""
 
 msgid "Prepared with Numo9"
@@ -4649,12 +4668,6 @@ msgstr ""
 msgid "recurring journals"
 msgstr ""
 
-msgid "occurrence date"
-msgstr ""
-
-msgid "template version"
-msgstr ""
-
 msgid "recurring journal run"
 msgstr ""
 
@@ -5645,6 +5658,29 @@ msgstr ""
 
 #, python-format
 msgid "%(customer)s declined quote %(number)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring invoice %(name)s needs attention"
+msgstr ""
+
+#, python-format
+msgid "The invoice of %(date)s was created but not finished: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring invoice %(name)s skipped %(date)s"
+msgstr ""
+
+#, python-format
+msgid "No invoice was created for %(date)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring invoice %(name)s has ended"
+msgstr ""
+
+msgid "Its schedule has no more dates: no more invoices will be created."
 msgstr ""
 
 #, python-format
@@ -7752,6 +7788,12 @@ msgstr ""
 msgid "recurring invoice lines"
 msgstr ""
 
+msgid "recurring invoice run"
+msgstr ""
+
+msgid "recurring invoice runs"
+msgstr ""
+
 msgid "Text message (SMS)"
 msgstr ""
 
@@ -8072,6 +8114,29 @@ msgstr ""
 
 #, python-format
 msgid "Refund to %(contact)s"
+msgstr ""
+
+msgid "There's no recurring invoice with this id in this organisation."
+msgstr ""
+
+msgid "The service ends before it starts."
+msgstr ""
+
+msgid "You can't approve or send invoices, so a recurring invoice you set up can only save drafts."
+msgstr ""
+
+msgid "Someone else saved this recurring invoice: reload it to see their changes."
+msgstr ""
+
+#, python-format
+msgid "%(date)s isn't one of the schedule's dates."
+msgstr ""
+
+#, python-format
+msgid "The service starts on %(date)s: nothing to bill for this period."
+msgstr ""
+
+msgid "The invoice needs approval before it is posted."
 msgstr ""
 
 msgid "Standard reminders"
