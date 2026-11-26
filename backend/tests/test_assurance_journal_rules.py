@@ -107,3 +107,35 @@ def test_contact_and_attachment_clear_the_findings() -> None:
     no_attachment = _subjects(books, "EXPENSE_JOURNAL_NO_ATTACHMENT")
     assert str(books["journal2"].public_id) not in no_attachment
     assert str(books["journal1"].public_id) in no_attachment
+
+
+# ---- ROUND_AMOUNT (K-09-T11) -----------------------------------------------------------------
+
+
+def test_round_amount_journals_are_flagged() -> None:
+    books = refined()
+    org = books["org"]
+    with org_context(org):
+        plug = post(
+            books["accounts"],
+            dt.date(2026, 7, 31),
+            "Year-end estimate",
+            (("5920", "5000.00", "0"), ("2900", "0", "5000.00")),
+        )
+        post(
+            books["accounts"],
+            dt.date(2026, 7, 31),
+            "Small round",
+            (("5920", "500.00", "0"), ("2900", "0", "500.00")),
+        )
+        post(
+            books["accounts"],
+            dt.date(2026, 7, 31),
+            "Not round",
+            (("5920", "5000.01", "0"), ("2900", "0", "5000.01")),
+        )
+    found = _subjects(books, "ROUND_AMOUNT")
+    assert set(found) == {str(plug.public_id)}
+    assert set(_subjects(books, "ROUND_AMOUNT", threshold="100")) >= {str(plug.public_id)}
+    assert len(_subjects(books, "ROUND_AMOUNT", threshold="100")) == 2
+    assert _subjects(books, "ROUND_AMOUNT", multiple="3000") == {}

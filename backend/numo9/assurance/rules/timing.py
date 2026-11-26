@@ -26,7 +26,7 @@ from numo9.ledger.models import (
 
 from ..models import ExceptionFinding, Severity
 from .base import Context, Hit, Param, Rule, register
-from .common import ENTRY, Numbers, entry_total
+from .common import ENTRY, Numbers, entry_hit, entry_total
 
 #: Source documents judged as documents (subject = the document), by source type.
 DOCUMENTS: dict[str, str] = {
@@ -137,4 +137,63 @@ class Backdated(Rule):
                     "gap": gap,
                     "days": limit,
                 },
+            )
+
+
+@register
+class WeekendPosting(Rule):
+    """A journal posted by a person on a Saturday or Sunday — in the organisation's time zone,
+    not UTC — or, with ``include_holidays``, on a statutory holiday (federal, plus ``province``'s
+    when given). Postings by Numo9 itself (scheduled jobs, imports) are not counted."""
+
+    code = "WEEKEND_POSTING"
+    name = gettext_lazy("Weekend posting")
+    description = gettext_lazy("A journal posted on a weekend or a holiday.")
+    explanation = gettext_lazy(
+        "%(journal)s was posted on %(weekday)s %(posted_on)s at %(time)s (%(zone)s)."
+    )
+    default_severity = Severity.INFO
+    incremental = True
+    date_keys = ("posted_on",)
+    params = {
+        "include_holidays": Param("bool", False, gettext_lazy("Holidays too")),
+        "province": Param("str", "", gettext_lazy("Province of the holidays")),
+    }
+
+    def evaluate(self, ctx: Context) -> Iterable[Hit]:
+        from django.utils import dateformat
+
+        from numo9.tax.holidays import FEDERAL, calendar
+
+        entries = JournalEntry.objects.filter(
+            status__in=(JournalStatus.POSTED, JournalStatus.REVERSED),
+            reversal_of__isnull=True,
+            posted_by__isnull=False,
+            posted_at__isnull=False,
+        ).prefetch_related("lines")
+        if ctx.scope is not None:
+            entries = entries.filter(public_id__in=sorted(ctx.scope.entries))
+        places = (FEDERAL, ctx.params["province"].upper()) if ctx.params["province"] else (FEDERAL,)
+        numbers = Numbers(ctx.organisation)
+        for entry in entries.order_by("posted_at", "pk"):
+            if entry.posted_at is None:
+                continue
+            local = entry.posted_at.astimezone(ctx.zone)
+            day = local.date()
+            holiday = (
+                calendar().holidays(day.year, places).get(day)
+                if ctx.params["include_holidays"]
+                else None
+            )
+            if day.weekday() < 5 and holiday is None:
+                continue
+            yield entry_hit(
+                entry,
+                numbers,
+                entry_total(entry),
+                posted_on=day.isoformat(),
+                weekday=dateformat.format(day, "l"),
+                time=local.strftime("%H:%M"),
+                zone=str(ctx.zone),
+                holiday=holiday or "",
             )

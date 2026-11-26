@@ -18,7 +18,15 @@ from numo9.ledger.models import AccountType, JournalEntry, JournalLine
 
 from ..models import Severity
 from .base import Context, Hit, Param, Rule, register
-from .common import ZERO, Numbers, accounting_lines, entry_hit, is_cash, posted_entries
+from .common import (
+    ZERO,
+    Numbers,
+    accounting_lines,
+    entry_hit,
+    entry_total,
+    is_cash,
+    posted_entries,
+)
 
 
 @register
@@ -167,3 +175,37 @@ class ExpenseJournalNoAttachment(_ExpenseJournalRule):
         self, entry: JournalEntry, expense: list[JournalLine], attached: set[str]
     ) -> list[JournalLine]:
         return [] if str(entry.public_id) in attached else expense
+
+
+@register
+class RoundAmount(Rule):
+    """A posted manual journal whose amount is at least ``threshold`` and a multiple of
+    ``multiple`` (5,000.00; 12,300.00…) — estimates and plugs look like this."""
+
+    code = "ROUND_AMOUNT"
+    name = gettext_lazy("Round amount journal")
+    description = gettext_lazy("A large manual journal for a round amount: an estimate or a plug?")
+    explanation = gettext_lazy(
+        "%(journal)s (%(date)s) is for %(total)s, a round amount: check it is supported by a "
+        "document and not an estimate or a balancing figure."
+    )
+    default_severity = Severity.INFO
+    incremental = True
+    money_keys = ("total",)
+    date_keys = ("date",)
+    params = {
+        "threshold": Param(
+            "decimal", Decimal("1000.00"), gettext_lazy("From"), minimum=Decimal("1")
+        ),
+        "multiple": Param(
+            "decimal", Decimal("100.00"), gettext_lazy("Multiple of"), minimum=Decimal("1")
+        ),
+    }
+
+    def evaluate(self, ctx: Context) -> Iterable[Hit]:
+        numbers = Numbers(ctx.organisation)
+        threshold, multiple = ctx.params["threshold"], ctx.params["multiple"]
+        for entry in posted_entries(ctx, manual=True):
+            total = entry_total(entry)
+            if total >= threshold and total % multiple == 0:
+                yield entry_hit(entry, numbers, total, total=f"{total:.2f}")

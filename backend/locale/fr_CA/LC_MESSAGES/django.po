@@ -436,6 +436,22 @@ msgstr ""
 msgid "%(journal)s (%(date)s) records %(expense_amount)s of expenses (%(accounts)s) with no receipt or invoice attached. Attach the supporting document: the CRA asks for it to claim the expense and its input tax credits."
 msgstr ""
 
+msgid "Round amount journal"
+msgstr ""
+
+msgid "A large manual journal for a round amount: an estimate or a plug?"
+msgstr ""
+
+#, python-format
+msgid "%(journal)s (%(date)s) is for %(total)s, a round amount: check it is supported by a document and not an estimate or a balancing figure."
+msgstr ""
+
+msgid "From"
+msgstr ""
+
+msgid "Multiple of"
+msgstr ""
+
 msgid "Exempt code on a normally taxable account"
 msgstr ""
 
@@ -467,6 +483,22 @@ msgid "%(document)s is dated %(date)s but was posted on %(posted_on)s (%(gap)s d
 msgstr ""
 
 msgid "Days"
+msgstr ""
+
+msgid "Weekend posting"
+msgstr ""
+
+msgid "A journal posted on a weekend or a holiday."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s was posted on %(weekday)s %(posted_on)s at %(time)s (%(zone)s)."
+msgstr ""
+
+msgid "Holidays too"
+msgstr ""
+
+msgid "Province of the holidays"
 msgstr ""
 
 msgid "Date and time"

@@ -71,3 +71,53 @@ def test_recode_repost_keeps_its_date_and_is_not_backdated() -> None:
         execute(batch, None)
     hits = evaluate(org, "BACKDATED", now=NOW)
     assert [h.subject_id for h in hits] == [str(books["journal1"].public_id)]
+
+
+# ---- WEEKEND_POSTING (K-09-T11) --------------------------------------------------------------
+
+
+def _post_by_person(books: dict, when: dt.datetime) -> object:
+    from tests.assurance_helpers import post
+    from tests.journal_helpers import people
+
+    staff = books.get("people") or people(books["org"])
+    books["people"] = staff
+    with org_context(books["org"]):
+        return post(
+            books["accounts"],
+            when.date(),
+            "Posted by a person",
+            (("5920", "10.00", "0"), ("2900", "0", "10.00")),
+            when=when,
+            user=staff["owner"],
+        )
+
+
+def test_saturday_in_toronto_is_detected_not_utc() -> None:
+    books = refined()
+    # Saturday 20 Jun 2026 01:30 UTC = Friday 19 Jun 21:30 in Toronto: not a weekend there.
+    friday = _post_by_person(books, dt.datetime(2026, 6, 20, 1, 30, tzinfo=dt.UTC))
+    # Sunday 21 Jun 2026 02:30 UTC = Saturday 20 Jun 22:30 in Toronto: a weekend there.
+    saturday = _post_by_person(books, dt.datetime(2026, 6, 21, 2, 30, tzinfo=dt.UTC))
+    # Monday 22 Jun 2026 03:00 UTC = Sunday 21 Jun 23:00 in Toronto: a weekend there.
+    sunday = _post_by_person(books, dt.datetime(2026, 6, 22, 3, 0, tzinfo=dt.UTC))
+    hits = {h.subject_id: h for h in evaluate(books["org"], "WEEKEND_POSTING", now=NOW)}
+    assert set(hits) == {str(saturday.public_id), str(sunday.public_id)}  # type: ignore[attr-defined]
+    assert str(friday.public_id) not in hits  # type: ignore[attr-defined]
+    detail = hits[str(saturday.public_id)].details  # type: ignore[attr-defined]
+    assert (detail["posted_on"], detail["weekday"], detail["time"]) == (
+        "2026-06-20",
+        "Saturday",
+        "22:30",
+    )
+    # the teardown journals were posted by an import (no person) on a Monday: not counted
+    assert str(books["journal1"].public_id) not in hits
+
+
+def test_holidays_count_when_asked() -> None:
+    books = refined()
+    canada_day = _post_by_person(books, dt.datetime(2026, 7, 1, 15, tzinfo=dt.UTC))  # Wednesday
+    assert evaluate(books["org"], "WEEKEND_POSTING", now=NOW) == []
+    (hit,) = evaluate(books["org"], "WEEKEND_POSTING", now=NOW, params={"include_holidays": True})
+    assert hit.subject_id == str(canada_day.public_id)  # type: ignore[attr-defined]
+    assert hit.details["holiday"]
