@@ -1320,7 +1320,7 @@ msgid "Upload documents, email them to the inbox and turn them into bills or rec
 msgstr ""
 
 msgid "See quotes"
-msgstr ""
+msgstr "Voir les soumissions"
 
 msgid "Create and send quotes and turn them into invoices"
 msgstr ""
@@ -6041,19 +6041,19 @@ msgstr "%(body)s"
 
 #, python-format
 msgid "Quote %(number)s accepted"
-msgstr ""
+msgstr "Soumission %(number)s acceptée"
 
 #, python-format
 msgid "%(customer)s accepted quote %(number)s (%(total)s)."
-msgstr ""
+msgstr "%(customer)s a accepté la soumission %(number)s (%(total)s)."
 
 #, python-format
 msgid "Quote %(number)s declined"
-msgstr ""
+msgstr "Soumission %(number)s refusée"
 
 #, python-format
 msgid "%(customer)s declined quote %(number)s: %(reason)s"
-msgstr ""
+msgstr "%(customer)s a refusé la soumission %(number)s : %(reason)s"
 
 #, python-format
 msgid "%(registration)s return due %(due_date)s"
@@ -8084,10 +8084,10 @@ msgid "This invoice link isn't valid any more."
 msgstr ""
 
 msgid "This quote link was withdrawn."
-msgstr ""
+msgstr "Ce lien de soumission a été retiré."
 
 msgid "This quote link isn't valid."
-msgstr ""
+msgstr "Ce lien de soumission n’est pas valide."
 
 #, fuzzy, python-format
 #| msgid "This override request is already %(status)s."
@@ -8347,112 +8347,115 @@ msgid "credit applications"
 msgstr "Créer des organisations clientes"
 
 msgid "Viewed"
-msgstr ""
+msgstr "Consultée"
 
 msgid "Accepted"
-msgstr ""
+msgstr "Acceptée"
 
 msgid "Invoiced"
-msgstr ""
+msgstr "Facturée"
 
 msgid "No deposit"
-msgstr ""
+msgstr "Aucun acompte"
 
 msgid "Percentage"
-msgstr ""
+msgstr "Pourcentage"
 
 msgid "summary"
-msgstr ""
+msgstr "résumé"
 
 msgid "expiry date"
-msgstr ""
+msgstr "date d’expiration"
 
 msgid "deposit"
-msgstr ""
+msgstr "acompte"
 
 msgid "deposit amount or %"
-msgstr ""
+msgstr "montant ou % de l’acompte"
 
 msgid "accepted at"
-msgstr ""
+msgstr "acceptée le"
 
 msgid "declined at"
-msgstr ""
+msgstr "refusée le"
 
 msgid "reason for declining"
-msgstr ""
+msgstr "raison du refus"
 
 msgid "expired at"
-msgstr ""
+msgstr "expirée le"
 
 msgid "invoiced at"
-msgstr ""
+msgstr "facturée le"
+
+msgid "deposit invoice"
+msgstr "facture d’acompte"
 
 msgid "revision of"
-msgstr ""
+msgstr "révision de"
 
 msgid "quote"
-msgstr ""
+msgstr "soumission"
 
 msgid "quotes"
-msgstr ""
+msgstr "soumissions"
 
 msgid "optional"
-msgstr ""
+msgstr "facultative"
 
 msgid "alternative group"
-msgstr ""
+msgstr "groupe d’options"
 
 msgid "selected"
-msgstr ""
+msgstr "choisie"
 
 msgid "quote line"
-msgstr ""
+msgstr "ligne de soumission"
 
 msgid "quote lines"
-msgstr ""
+msgstr "lignes de soumission"
 
 msgid "created by"
 msgstr ""
 
 msgid "revoked at"
-msgstr ""
+msgstr "date de retrait"
 
 msgid "views"
-msgstr ""
+msgstr "consultations"
 
 msgid "last viewed at"
-msgstr ""
+msgstr "dernière consultation le"
 
 msgid "quote link"
-msgstr ""
+msgstr "lien de soumission"
 
 msgid "quote links"
-msgstr ""
+msgstr "liens de soumission"
 
 msgid "name typed"
-msgstr ""
+msgstr "nom tapé"
 
 msgid "signature (PNG) key"
-msgstr ""
+msgstr "clé de la signature (PNG)"
 
 msgid "browser"
-msgstr ""
+msgstr "navigateur"
 
 msgid "lines chosen"
-msgstr ""
+msgstr "lignes choisies"
 
 msgid "accepted PDF key"
-msgstr ""
+msgstr "clé du PDF accepté"
 
 msgid "accepted PDF SHA-256"
-msgstr ""
+msgstr "SHA-256 du PDF accepté"
 
 msgid "quote acceptance"
-msgstr ""
+msgstr "acceptation de soumission"
 
 msgid "quote acceptances"
-msgstr ""
+msgstr "acceptations de soumission"
 
 msgid "Approve"
 msgstr ""
@@ -8741,10 +8744,10 @@ msgid "Email invoices to customers"
 msgstr "Envoyer les factures aux clients par courriel"
 
 msgid "See quotes and their PDF"
-msgstr ""
+msgstr "Voir les soumissions et leur PDF"
 
 msgid "Create, edit and send quotes, and turn accepted quotes into invoices"
-msgstr ""
+msgstr "Créer, modifier et envoyer des soumissions, et convertir les soumissions acceptées en factures"
 
 #, fuzzy, python-format
 #| msgid "This override request is already %(status)s."
@@ -8774,27 +8777,75 @@ msgid "Void of invoice %(number)s"
 msgstr "numéro de facture"
 
 msgid "Add at least one email address to send the quote to."
-msgstr ""
+msgstr "Ajoutez au moins une adresse courriel à laquelle envoyer la soumission."
 
 msgid "no reason given"
-msgstr ""
+msgstr "aucune raison donnée"
+
+#, python-format
+msgid "Deposit for quote %(number)s (%(percent)s %%)"
+msgstr "Acompte pour la soumission %(number)s (%(percent)s %%)"
+
+#, python-format
+msgid "Deposit for quote %(number)s"
+msgstr "Acompte pour la soumission %(number)s"
+
+msgid "Only an accepted quote can be turned into an invoice."
+msgstr "Seule une soumission acceptée peut être convertie en facture."
+
+#, python-format
+msgid "Less deposit, invoice %(number)s"
+msgstr "Moins l’acompte, facture %(number)s"
 
 msgid "Type your name to accept the quote."
-msgstr ""
+msgstr "Tapez votre nom pour accepter la soumission."
 
 msgid "The signature must be a PNG image."
-msgstr ""
+msgstr "La signature doit être une image PNG."
 
 #, python-format
 msgid "%(quote)s is %(status)s: it can't be %(action)s."
-msgstr ""
+msgstr "%(quote)s est à l’état « %(status)s » : elle ne peut pas être %(action)s."
 
 #, python-format
 msgid "This quote expired on %(date)s: ask for a new quote."
-msgstr ""
+msgstr "Cette soumission a expiré le %(date)s : demandez une nouvelle soumission."
 
 msgid "Add at least one line before sending the quote."
-msgstr ""
+msgstr "Ajoutez au moins une ligne avant d’envoyer la soumission."
+
+msgid "There's no quote with this id in this organisation."
+msgstr "Il n’y a pas de soumission avec cet identifiant dans cette organisation."
+
+msgid "The expiry date is before the quote date."
+msgstr "La date d’expiration est antérieure à la date de la soumission."
+
+msgid "A discount can't be more than 100 %."
+msgstr "Une remise ne peut pas dépasser 100 %."
+
+msgid "A deposit percentage can't be more than 100 %."
+msgstr "Le pourcentage d’acompte ne peut pas dépasser 100 %."
+
+msgid "A line is optional or an alternative, not both."
+msgstr "Une ligne est facultative ou fait partie d’un groupe d’options, pas les deux."
+
+msgid "Only a draft quote can be edited: revise it to send a new version."
+msgstr "Seule une soumission en brouillon peut être modifiée : révisez-la pour envoyer une nouvelle version."
+
+msgid "Someone else saved this quote: reload it to see their changes."
+msgstr "Une autre personne a enregistré cette soumission : rechargez-la pour voir ses modifications."
+
+msgid "Only a draft quote can be deleted."
+msgstr "Seule une soumission en brouillon peut être supprimée."
+
+msgid "Send the quote before sharing its link."
+msgstr "Envoyez la soumission avant de partager son lien."
+
+msgid "A draft is edited, and an invoiced quote stays as it was: copy it instead."
+msgstr "Un brouillon se modifie, et une soumission facturée reste telle quelle : copiez-la plutôt."
+
+msgid "This quote can't be declined any more."
+msgstr "Cette soumission ne peut plus être refusée."
 
 #, fuzzy
 #| msgid "The organisation has no %(role)s account: add it to the chart of accounts."
@@ -8970,35 +9021,35 @@ msgid "Amount enclosed"
 msgstr "montant (cents)"
 
 msgid "Prepared for"
-msgstr ""
+msgstr "Préparée pour"
 
 msgid "Quote number"
-msgstr ""
+msgstr "Numéro de soumission"
 
 msgid "Quote date"
-msgstr ""
+msgstr "Date de la soumission"
 
 msgid "Valid until"
-msgstr ""
+msgstr "Valide jusqu’au"
 
 msgid "Tax amount"
-msgstr ""
+msgstr "Montant des taxes"
 
 msgid "(optional)"
-msgstr ""
+msgstr "(facultative)"
 
 #, python-format
 msgid "(option %(group)s)"
-msgstr ""
+msgstr "(option %(group)s)"
 
 msgid "Optional lines and options not chosen are shown in grey and aren't in the total."
-msgstr ""
+msgstr "Les lignes facultatives et les options non choisies sont en gris et ne sont pas comprises dans le total."
 
 msgid "Total tax"
-msgstr ""
+msgstr "Total des taxes"
 
 msgid "Deposit on acceptance"
-msgstr ""
+msgstr "Acompte à l’acceptation"
 
 #, python-format
 msgid "Part of %(product)s, which isn't in this organisation's package."
@@ -10281,7 +10332,7 @@ msgid "token hash"
 msgstr ""
 
 msgid "accepted by"
-msgstr ""
+msgstr "acceptée par"
 
 msgid "times sent"
 msgstr ""

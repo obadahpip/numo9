@@ -273,6 +273,58 @@ describe("paste from a spreadsheet (D-01-T15)", () => {
   });
 });
 
+describe("DocumentLines extra columns (D-02-T12)", () => {
+  function Quote() {
+    const [lines, setLines] = useState<DocumentGridLine[]>(sampleDocumentLines);
+    return (
+      <ToastProvider labels={{ region: "Notifications", close: "Close" }}>
+        <DocumentLines
+          lines={lines}
+          onChange={setLines}
+          side="sales"
+          date="2026-07-15"
+          accounts={chartAccounts}
+          taxCodes={sampleTaxCodes}
+          labels={documentLabels}
+          locale="en-CA"
+          extraColumns={[
+            {
+              id: "isOptional",
+              header: "Optional",
+              kind: "custom",
+              width: 80,
+              render: ({ id, label, value, onChange }) => (
+                <input
+                  id={id}
+                  type="checkbox"
+                  aria-label={label}
+                  checked={Boolean(value)}
+                  onChange={(event) => onChange(event.target.checked)}
+                />
+              ),
+            },
+          ]}
+        />
+        <output data-testid="optional">
+          {JSON.stringify(lines.map((l) => Boolean(l.isOptional)))}
+        </output>
+      </ToastProvider>
+    );
+  }
+
+  it("adds the document's columns before the calculated ones and keeps their values", async () => {
+    const user = userEvent.setup();
+    render(<Quote />);
+    const headers = within(screen.getByRole("grid", { name: "Invoice lines" }))
+      .getAllByRole("columnheader")
+      .map((h) => h.textContent)
+      .filter(Boolean);
+    expect(headers.slice(4, 8)).toEqual(["Account", "Tax code", "Optional", "Tax amount"]);
+    await user.click(screen.getByRole("checkbox", { name: "Optional, line 2" }));
+    expect(screen.getByTestId("optional")).toHaveTextContent("[false,true]");
+  });
+});
+
 describe("pasteRows", () => {
   it("starts at the pasted line and column, overwriting then adding", () => {
     const pasted = pasteRows(

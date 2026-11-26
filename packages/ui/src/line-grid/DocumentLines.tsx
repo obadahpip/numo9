@@ -116,6 +116,12 @@ export interface DocumentLinesProps {
    * through `side` as usual.
    */
   bank?: boolean;
+  /**
+   * Columns a document adds after Tax code, before the calculated Tax amount and Amount — the
+   * quote editor's "Optional" toggle and "Alternative group" picker (D-02-T12). Their values are
+   * fields of the line (`line[column.id]`), kept through edits like the typed ones.
+   */
+  extraColumns?: readonly LineColumn[];
 }
 
 /** Bank mode: the typed amount is the line; item, quantity, discount and the computed amount go. */
@@ -316,6 +322,7 @@ export function DocumentLines({
   columnStore,
   problems = {},
   bank = false,
+  extraColumns = [],
 }: DocumentLinesProps) {
   const toast = useOptionalToast();
   const [invalid, setInvalid] = useState<Record<string, string[]>>({});
@@ -458,6 +465,7 @@ export function DocumentLines({
         );
       },
     },
+    ...extraColumns,
     {
       id: "taxAmount",
       header: labels.taxAmount,
