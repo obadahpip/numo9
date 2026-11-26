@@ -12,6 +12,10 @@
 - ``reapproval_needed(order)`` / ``revise(order, user)`` (E-01-T03) — after an approved PO is
   edited: its total above the approved total → back to **Awaiting approval** (the number is
   kept; audited ``purchases.purchaseorder.reapproval``); equal or lower stays approved.
+- ``cancel(order, user)`` / ``close(order, user)`` (E-01-T10) — a draft, awaiting or approved PO
+  with nothing received or billed is **Cancelled**; one with receipts or bills is **Closed** (its
+  outstanding quantities no longer commit anything). Audited ``purchases.purchaseorder.cancelled``
+  / ``.closed``.
 """
 
 from __future__ import annotations
@@ -19,7 +23,7 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Any
 
-from django.db import transaction
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
@@ -196,3 +200,64 @@ def revise(order: PurchaseOrder, user: Any) -> PurchaseOrder:
             actor=_person(user),
         )
         return locked
+
+
+#: Statuses a PO can be closed from (its outstanding quantities dropped).
+CLOSABLE = (
+    PurchaseOrderStatus.APPROVED,
+    PurchaseOrderStatus.PARTIALLY_RECEIVED,
+    PurchaseOrderStatus.RECEIVED,
+)
+CANCELLABLE = (*APPROVABLE, *CLOSABLE)
+
+
+def _end(order: PurchaseOrder, user: Any, wanted: str) -> PurchaseOrder:
+    """Cancel (``wanted`` cancelled) or close a PO. A PO with anything received or billed is
+    **closed** instead of cancelled: what arrived stays on record, the outstanding is dropped
+    (E-01 business rule "cancelling a partially received PO closes outstanding")."""
+    from numo9.audit import service as audit
+
+    person = _person(user)
+    allowed = CANCELLABLE if wanted == PurchaseOrderStatus.CANCELLED else CLOSABLE
+    with org_context(order.organisation), transaction.atomic():
+        locked = _locked(order)
+        if locked.status not in allowed:
+            raise PurchaseOrderRefused(
+                _("%(order)s is %(status)s: it can't be cancelled or closed."),
+                code="purchases.po.not_closable",
+                params={
+                    "order": str(locked),
+                    "status": str(PurchaseOrderStatus(locked.status).label).lower(),
+                },
+            )
+        touched = locked.lines.filter(
+            models.Q(quantity_received__gt=0) | models.Q(quantity_billed__gt=0)
+        ).exists()
+        status = PurchaseOrderStatus.CLOSED if touched else wanted
+        previous = locked.status
+        locked.status = status
+        now = timezone.now()
+        if status == PurchaseOrderStatus.CLOSED:
+            locked.closed_at = now
+        else:
+            locked.cancelled_at = now
+        locked.version += 1
+        locked.save()
+        audit.record(
+            f"purchases.purchaseorder.{status}",
+            obj=locked,
+            changes={"status": [previous, status]},
+            meta={"number": locked.number},
+            actor=person,
+        )
+        return locked
+
+
+def cancel(order: PurchaseOrder, user: Any) -> PurchaseOrder:
+    """Cancel a PO; one with receipts or bills is closed instead (E-01-T10)."""
+    return _end(order, user, PurchaseOrderStatus.CANCELLED)
+
+
+def close(order: PurchaseOrder, user: Any) -> PurchaseOrder:
+    """Close an approved PO: nothing more to receive or bill on it (E-01-T10)."""
+    return _end(order, user, PurchaseOrderStatus.CLOSED)

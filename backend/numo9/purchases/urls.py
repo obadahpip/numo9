@@ -1,14 +1,35 @@
-"""Purchases routes (E-02 bills and the purchases overview, E-04 expense claims), under /api/v1/."""
+"""Purchases routes (E-01 purchase orders and receipts, E-02 bills and the purchases overview,
+E-04 expense claims), under /api/v1/."""
 
 from django.urls import path
 
-from . import api, expense_api
+from . import api, expense_api, po_api
 
 ORG = "o/<uuid:org>/"
+PO = f"{ORG}purchase-orders/<uuid:public_id>"
+GRN = f"{ORG}receipts/<uuid:public_id>"
 BILL = f"{ORG}bills/<uuid:public_id>"
 CLAIM = f"{ORG}expense-claims/<uuid:public_id>"
 
 urlpatterns = [
+    path(f"{ORG}purchase-orders", po_api.PurchaseOrderListView.as_view(), name="purchase-orders"),
+    path(
+        f"{ORG}purchase-orders/approval-limit",
+        po_api.ApprovalLimitView.as_view(),
+        name="purchase-order-approval-limit",
+    ),
+    path(PO, po_api.PurchaseOrderDetailView.as_view(), name="purchase-order"),
+    path(f"{PO}/submit", po_api.PurchaseOrderSubmitView.as_view(), name="purchase-order-submit"),
+    path(f"{PO}/approve", po_api.PurchaseOrderApproveView.as_view(), name="purchase-order-approve"),
+    path(f"{PO}/cancel", po_api.PurchaseOrderCancelView.as_view(), name="purchase-order-cancel"),
+    path(f"{PO}/close", po_api.PurchaseOrderCloseView.as_view(), name="purchase-order-close"),
+    path(f"{PO}/match", po_api.PurchaseOrderMatchView.as_view(), name="purchase-order-match"),
+    path(f"{PO}/pdf", po_api.PurchaseOrderPdfView.as_view(), name="purchase-order-pdf"),
+    path(f"{PO}/send", po_api.PurchaseOrderSendView.as_view(), name="purchase-order-send"),
+    path(f"{ORG}receipts", po_api.ReceiptListView.as_view(), name="receipts"),
+    path(GRN, po_api.ReceiptDetailView.as_view(), name="receipt"),
+    path(f"{GRN}/reverse", po_api.ReceiptReverseView.as_view(), name="receipt-reverse"),
+    path(f"{ORG}reports/commitments", po_api.CommitmentReportView.as_view(), name="commitments"),
     path(f"{ORG}bills", api.BillListView.as_view(), name="bills"),
     path(f"{ORG}bills/overview", api.BillOverviewView.as_view(), name="bills-overview"),
     path(f"{ORG}bills/check-number", api.BillNumberCheckView.as_view(), name="bill-check-number"),

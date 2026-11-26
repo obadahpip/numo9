@@ -6990,6 +6990,10 @@ msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'app
 msgid "%(order)s isn't a draft."
 msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
 
+#, python-format
+msgid "%(order)s is %(status)s: it can't be cancelled or closed."
+msgstr ""
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -7088,6 +7092,26 @@ msgstr ""
 #| msgid "invoice number"
 msgid "Void of bill %(number)s"
 msgstr "numéro de facture"
+
+msgid "Month"
+msgstr ""
+
+msgid "Open POs"
+msgstr ""
+
+msgid "Open lines"
+msgstr ""
+
+msgid "Open value"
+msgstr ""
+
+msgid "Budget"
+msgstr ""
+
+#, fuzzy
+#| msgid "total"
+msgid "Total"
+msgstr "total"
 
 #, python-format
 msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
@@ -7585,6 +7609,46 @@ msgstr ""
 msgid "Approve or reject expense claims, within an approval limit"
 msgstr ""
 
+msgid "There's no purchase order with this id in this organisation."
+msgstr ""
+
+msgid "The delivery date is before the order date."
+msgstr ""
+
+msgid "That line isn't on this purchase order."
+msgstr ""
+
+#, python-format
+msgid "%(quantity)s are received or billed on this line already."
+msgstr ""
+
+#, python-format
+msgid "“%(line)s” has receipts or bills: it can't be removed."
+msgstr ""
+
+#, python-format
+msgid "%(order)s is %(status)s: it can't be edited."
+msgstr ""
+
+msgid "Someone else saved this purchase order: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft purchase order can be deleted: cancel it instead."
+msgstr ""
+
+msgid "There's no goods receipt with this id in this organisation."
+msgstr ""
+
+#, python-format
+msgid "A line isn't on %(order)s."
+msgstr ""
+
+msgid "Group by account, supplier or month."
+msgstr ""
+
+msgid "Enter dates as YYYY-MM-DD."
+msgstr ""
+
 #, python-format
 msgid "This receipt was already claimed on %(claims)s."
 msgstr ""
@@ -7594,10 +7658,6 @@ msgid "Only an approved purchase order can be received: %(order)s is %(status)s.
 msgstr ""
 
 msgid "Enter the quantity received on at least one line."
-msgstr ""
-
-#, python-format
-msgid "A line isn't on %(order)s."
 msgstr ""
 
 msgid "Quantities received can't be negative: reverse the receipt instead."
@@ -8045,11 +8105,6 @@ msgstr ""
 #| msgid "Opening balance"
 msgid "Closing balance"
 msgstr "Solde d’ouverture"
-
-#, fuzzy
-#| msgid "total"
-msgid "Total"
-msgstr "total"
 
 #, fuzzy, python-format
 #| msgid "There's no %(side)s tax code %(code)s."

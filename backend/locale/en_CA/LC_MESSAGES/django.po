@@ -6549,6 +6549,10 @@ msgstr ""
 msgid "%(order)s isn't a draft."
 msgstr ""
 
+#, python-format
+msgid "%(order)s is %(status)s: it can't be cancelled or closed."
+msgstr ""
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -6631,6 +6635,24 @@ msgstr ""
 
 #, python-format
 msgid "Void of bill %(number)s"
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "Open POs"
+msgstr ""
+
+msgid "Open lines"
+msgstr ""
+
+msgid "Open value"
+msgstr ""
+
+msgid "Budget"
+msgstr ""
+
+msgid "Total"
 msgstr ""
 
 #, python-format
@@ -7024,6 +7046,46 @@ msgstr ""
 msgid "Approve or reject expense claims, within an approval limit"
 msgstr ""
 
+msgid "There's no purchase order with this id in this organisation."
+msgstr ""
+
+msgid "The delivery date is before the order date."
+msgstr ""
+
+msgid "That line isn't on this purchase order."
+msgstr ""
+
+#, python-format
+msgid "%(quantity)s are received or billed on this line already."
+msgstr ""
+
+#, python-format
+msgid "“%(line)s” has receipts or bills: it can't be removed."
+msgstr ""
+
+#, python-format
+msgid "%(order)s is %(status)s: it can't be edited."
+msgstr ""
+
+msgid "Someone else saved this purchase order: reload it to see their changes."
+msgstr ""
+
+msgid "Only a draft purchase order can be deleted: cancel it instead."
+msgstr ""
+
+msgid "There's no goods receipt with this id in this organisation."
+msgstr ""
+
+#, python-format
+msgid "A line isn't on %(order)s."
+msgstr ""
+
+msgid "Group by account, supplier or month."
+msgstr ""
+
+msgid "Enter dates as YYYY-MM-DD."
+msgstr ""
+
 #, python-format
 msgid "This receipt was already claimed on %(claims)s."
 msgstr ""
@@ -7033,10 +7095,6 @@ msgid "Only an approved purchase order can be received: %(order)s is %(status)s.
 msgstr ""
 
 msgid "Enter the quantity received on at least one line."
-msgstr ""
-
-#, python-format
-msgid "A line isn't on %(order)s."
 msgstr ""
 
 msgid "Quantities received can't be negative: reverse the receipt instead."
@@ -7436,9 +7494,6 @@ msgid "Year to date — unaudited"
 msgstr ""
 
 msgid "Closing balance"
-msgstr ""
-
-msgid "Total"
 msgstr ""
 
 #, python-format
