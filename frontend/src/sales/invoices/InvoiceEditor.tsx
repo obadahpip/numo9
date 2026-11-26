@@ -53,7 +53,10 @@ import { im, statusLabels } from "./messages";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-export function gridLine(line: InvoiceLine): DocumentGridLine {
+/** A saved line (an invoice's, or a recurring template's: no figures) in the grid. */
+export function gridLine(
+  line: Omit<InvoiceLine, "net" | "tax_amount" | "amount">,
+): DocumentGridLine {
   const value = Number(line.discount_value);
   return {
     ...newDocumentLine(),
