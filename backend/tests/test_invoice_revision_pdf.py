@@ -54,12 +54,8 @@ def revised() -> dict[str, Any]:
     owner = people(org)["owner"]
     invoice = approve(draft(books, [("1", "1000.00", "sales.ON.standard")]), owner)
     with org_context(org):
-        first = InvoiceRevision(
-            organisation=org,
-            invoice=invoice,
-            revision=0,
-            snapshot=pdf_snapshot(invoice, dt.date(2026, 10, 26)),
-        )
+        first = invoice.current_revision  # revision 0, made at approval (D-03b-T03)
+        first.snapshot = pdf_snapshot(invoice, dt.date(2026, 10, 26))
         first.save()
         # The revised invoice: the rows hold the current revision (ADR-0006).
         InvoiceLine._base_manager.filter(document=invoice).update(unit_price=Decimal("900.00"))
@@ -107,7 +103,8 @@ def test_an_unrevised_invoice_has_no_stamp_and_helpers() -> None:
     back = restore(kept["pdf"])
     assert back["total"] == Decimal("113.00") and isinstance(back["issue_date"], dt.date)
     with org_context(books["org"]):
-        row = InvoiceRevision(organisation=books["org"], invoice=invoice, revision=0, snapshot={})
+        row = InvoiceRevision.objects.get(invoice=invoice, revision=0)
+        row.snapshot = {}
         row.save()
         assert isinstance(issued_on(row), dt.date)  # no snapshot: the day the row was created
         assert revision_context(row)["total"] == Decimal("113.00")  # no snapshot: the invoice

@@ -11,6 +11,9 @@
   values (header fields, totals, tax per component, and each line added, removed or changed),
   the reason, and the ids and numbers of the reversed and posted journals.
   ``field_diffs(before, after)`` computes the changes from two snapshots.
+- ``document_snapshot(invoice)`` / ``start_revisions(invoice, entry, user)`` (D-03b-T03) — the
+  invoice as entered (header, lines, totals) and revision 0 at first approval;
+  ``backfill_revision_zero(apps)`` gives one to posted invoices approved before.
 """
 
 from __future__ import annotations
@@ -203,3 +206,107 @@ def stamp_context(invoice: Invoice, revision: InvoiceRevision) -> dict[str, Any]
         }
         context["revision_superseded_on"] = issued_on(previous) if previous else None
     return context
+
+
+# ---- the document snapshot and revision 0 (D-03b-T03, T04) --------------------------------------
+
+#: The header fields a revision keeps (and the revision builder restores, D-03b-T04).
+DOCUMENT_FIELDS = (
+    "contact_id", "date", "due_date", "terms_id", "reference", "currency", "tax_mode",
+    "ship_to_country", "ship_to_province", "discount_type", "discount_value", "notes",
+)  # fmt: skip
+DOCUMENT_LINE_FIELDS = (
+    "position", "item_id", "description", "quantity", "unit_price", "discount_type",
+    "discount_value", "account_id", "tax_code_id", "tax_overridden", "tracking",
+)  # fmt: skip
+TOTAL_FIELDS = ("subtotal", "discount_total", "tax_total", "total")
+
+
+def document_snapshot(invoice: Any) -> dict[str, Any]:
+    """The invoice as entered — header, lines and totals — packed (amounts and dates tagged)."""
+    lines = invoice.lines.order_by("position", "pk")
+    packed: dict[str, Any] = _pack(
+        {
+            "header": {name: getattr(invoice, name) for name in DOCUMENT_FIELDS},
+            "lines": [
+                {name: getattr(line, name) for name in DOCUMENT_LINE_FIELDS} for line in lines
+            ],
+            "totals": {name: getattr(invoice, name) for name in TOTAL_FIELDS},
+        }
+    )
+    return packed
+
+
+def revision_snapshot(invoice: Any, issued: dt.date | None = None) -> dict[str, Any]:
+    """What a revision keeps: the document as entered and the PDF as issued."""
+    return {"document": document_snapshot(invoice), **pdf_snapshot(invoice, issued)}
+
+
+def start_revisions(invoice: Any, entry: Any, user: Any = None) -> InvoiceRevision:
+    """Revision 0 of an invoice just approved (D-03b-T03): its snapshot and the journal of the
+    approval; ``current_revision`` points at it."""
+    revision = InvoiceRevision(
+        organisation=invoice.organisation,
+        invoice=invoice,
+        revision=0,
+        number_display=display_number(invoice.number, 0),
+        snapshot=revision_snapshot(invoice),
+        total=invoice.total,
+        tax_total=invoice.tax_total,
+        journal_post=entry,
+        created_by=user if getattr(user, "is_authenticated", False) else None,
+    )
+    revision.save()
+    type(invoice)._base_manager.filter(pk=invoice.pk).update(current_revision=revision)
+    invoice.current_revision = revision
+    return revision
+
+
+#: Statuses of a posted invoice (every one has a current revision).
+POSTED = ("approved", "sent", "partially_paid", "paid", "void")
+
+
+def backfill_revision_zero(apps: Any) -> int:
+    """Revision 0 for every posted invoice that has none (the data migration, D-03b-T03): the
+    document snapshot from the invoice's rows, its totals and the approval journal. Returns how
+    many it created. ``apps`` is a migration's app registry (or ``django.apps.apps``)."""
+    invoices = apps.get_model("sales", "Invoice")
+    revisions = apps.get_model("sales", "InvoiceRevision")
+    invoice_lines = apps.get_model("sales", "InvoiceLine")
+    made = 0
+    for invoice in invoices._base_manager.filter(
+        status__in=POSTED, current_revision__isnull=True
+    ).iterator():
+        lines = invoice_lines._base_manager.filter(document_id=invoice.pk).order_by(
+            "position", "pk"
+        )
+        snapshot = {
+            "document": _pack(
+                {
+                    "header": {name: getattr(invoice, name) for name in DOCUMENT_FIELDS},
+                    "lines": [
+                        {name: getattr(line, name) for name in DOCUMENT_LINE_FIELDS}
+                        for line in lines
+                    ],
+                    "totals": {name: getattr(invoice, name) for name in TOTAL_FIELDS},
+                }
+            ),
+            "issued_on": (
+                invoice.approved_at.date() if invoice.approved_at else invoice.date
+            ).isoformat(),
+        }
+        revision = revisions._base_manager.create(
+            organisation_id=invoice.organisation_id,
+            invoice_id=invoice.pk,
+            revision=0,
+            number_display=invoice.number,
+            snapshot=snapshot,
+            total=invoice.total,
+            tax_total=invoice.tax_total,
+            journal_post_id=invoice.journal_entry_id,
+            created_by_id=invoice.approved_by_id,
+        )
+        invoices._base_manager.filter(pk=invoice.pk).update(current_revision=revision)
+        made += 1
+    return made
+

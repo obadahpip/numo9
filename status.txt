@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 748   Remaining: 2039   Progress: 26.84%
+TOTAL ATOMIC TASKS: 2787   Completed: 749   Remaining: 2038   Progress: 26.87%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -990,7 +990,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [D-03b]
 ✅ D-03b-T02 — InvoiceRevision model (invoice, revision_no, number_display "101-1", snapshot JSON of header+lines, totals, reason, created_by, journal_reversal, journal_post, superseded_at)
-❌ D-03b-T03 — Backfill: revision 0 created at first approval (D-03a hook) so every posted invoice has a current revision
+✅ D-03b-T03 — Backfill: revision 0 created at first approval (D-03a hook) so every posted invoice has a current revision
 ❌ D-03b-T04 — Revision builder: clone current revision into editable draft state (in memory / draft row)
 ❌ D-03b-T05 — Revision validator: allowed field changes, contact change only if no allocations, currency fixed, reason required
 ❌ D-03b-T06 — Concurrency: SELECT … FOR UPDATE on invoice + version compare; conflict error type
