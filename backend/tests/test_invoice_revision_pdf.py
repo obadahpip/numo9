@@ -69,6 +69,7 @@ def revised() -> dict[str, Any]:
             invoice=invoice,
             revision=1,
             snapshot=pdf_snapshot(invoice, dt.date(2026, 11, 3)),
+            reason="Unit price corrected",
         )
         second.save()
         Invoice._base_manager.filter(pk=invoice.pk).update(current_revision=second)
