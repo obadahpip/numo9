@@ -4,7 +4,7 @@
  * Open invoices / bills grid (C-05-T12) — **paste-friendly**: paste rows copied from a
  * spreadsheet (tab-separated) into any cell and they fill the grid from that cell on, adding rows
  * as needed (a header row is skipped). Amounts and dates are read forgivingly ("$1,200.50",
- * "15/11/2025") and sent as the server expects. "Check the rows" validates every row on the
+ * "15/11/2025") and sent as the server expects. "Verify the rows" validates every row on the
  * server without saving (dry run); "Add N documents" saves them all or none — a row's problems
  * are flagged on its cells and listed under the grid. Saved documents are listed with what was
  * still owed, and can be removed while the conversion is a draft.

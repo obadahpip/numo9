@@ -96,7 +96,7 @@ it("paste 20 rows → 20 documents validated, then added", async () => {
   });
   expect(await screen.findByText("20 rows pasted.")).toBeInTheDocument();
   expect(document.querySelectorAll("[data-row]")).toHaveLength(20);
-  await user.click(screen.getByRole("button", { name: "Check the rows" }));
+  await user.click(screen.getByRole("button", { name: "Verify the rows" }));
   expect(await screen.findByText("All 20 rows are ready to add.")).toBeInTheDocument();
   const check = sent[0]!;
   expect(check.dry_run).toBe(true);

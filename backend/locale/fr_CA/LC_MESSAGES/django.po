@@ -602,7 +602,7 @@ msgid "Voided"
 msgstr "Annulée"
 
 msgid "kind"
-msgstr ""
+msgstr "type"
 
 #, fuzzy
 #| msgid "Due date"
@@ -643,7 +643,7 @@ msgid "line"
 msgstr ""
 
 msgid "description"
-msgstr ""
+msgstr "description"
 
 #, fuzzy
 #| msgid "Accounting"
@@ -1081,7 +1081,7 @@ msgid "reason code"
 msgstr "code de motif"
 
 msgid "message"
-msgstr ""
+msgstr "message"
 
 msgid "before"
 msgstr "avant"
@@ -1193,7 +1193,7 @@ msgid "A retired product can't be deleted: it stays for the history of the organ
 msgstr ""
 
 msgid "code"
-msgstr ""
+msgstr "code"
 
 msgid "Stable identifier, e.g. 'accounting'. Never changes once created."
 msgstr ""
@@ -1223,7 +1223,7 @@ msgid "Use lower-case letters, digits and _ (companion apps: app.<name>)."
 msgstr ""
 
 msgid "key"
-msgstr ""
+msgstr "clé"
 
 msgid "<product>.<area>.<action>, e.g. 'accounting.sales_invoices.write'."
 msgstr ""
@@ -2081,7 +2081,7 @@ msgid "Lower-case letters, digits and _; starts with a letter; never changes."
 msgstr "Utilisez de 2 à 40 lettres minuscules, chiffres et _, en commençant par une lettre."
 
 msgid "label"
-msgstr ""
+msgstr "libellé"
 
 msgid "The label per language, e.g. {\"en-ca\": \"Industry\"}."
 msgstr ""
@@ -2603,155 +2603,155 @@ msgid "Unknown role: %(roles)s."
 msgstr "Limite inconnue : %(names)s."
 
 msgid "Start the conversion first."
-msgstr ""
+msgstr "Commencez d’abord la conversion."
 
 msgid "Choose an account of the chart."
-msgstr ""
+msgstr "Choisissez un compte du plan comptable."
 
 msgid "Choose a contact."
-msgstr ""
+msgstr "Choisissez un contact."
 
 msgid "Enter an amount."
-msgstr ""
+msgstr "Saisissez un montant."
 
 msgid "Nothing was saved: fix the rows listed."
-msgstr ""
+msgstr "Rien n’a été enregistré : corrigez les lignes indiquées."
 
 msgid "Choose invoices or bills."
-msgstr ""
+msgstr "Choisissez les factures clients ou les factures fournisseurs."
 
 msgid "The file is over 25 MB: split it or remove what isn't needed."
-msgstr ""
+msgstr "Le fichier dépasse 25 Mo : divisez-le ou retirez ce qui n’est pas nécessaire."
 
 msgid "The mapping is a JSON object of field → column."
-msgstr ""
+msgstr "La correspondance est un objet JSON champ → colonne."
 
 msgid "Choose an account of the chart for every line."
-msgstr ""
+msgstr "Choisissez un compte du plan comptable pour chaque ligne."
 
 msgid "The conversion is still a draft: change its balances directly."
-msgstr ""
+msgstr "La conversion est encore un brouillon : modifiez directement ses soldes."
 
 msgid "Only an adviser (the organisation's accountant) can correct finalised opening balances."
-msgstr ""
+msgstr "Seul un conseiller (le comptable de l’organisation) peut corriger des soldes d’ouverture finalisés."
 
 msgid "Say why the opening balances are corrected (kept with the journal)."
-msgstr ""
+msgstr "Indiquez pourquoi les soldes d’ouverture sont corrigés (conservé avec l’écriture)."
 
 #, python-format
 msgid "Correction of the opening balances at %(date)s — %(reason)s"
-msgstr ""
+msgstr "Correction des soldes d’ouverture au %(date)s — %(reason)s"
 
 msgid "The conversion is finalised: correct it with a correcting opening journal."
-msgstr ""
+msgstr "La conversion est finalisée : corrigez-la au moyen d’une écriture d’ouverture de correction."
 
 msgid "Enter at least one opening balance to finalise."
-msgstr ""
+msgstr "Saisissez au moins un solde d’ouverture pour finaliser."
 
 #, python-format
 msgid "Debits %(debits)s · Credits %(credits)s · Difference %(difference)s — the opening balances must balance before they're finalised."
-msgstr ""
+msgstr "Débits %(debits)s · Crédits %(credits)s · Écart %(difference)s — les soldes d’ouverture doivent être équilibrés avant d’être finalisés."
 
 #, python-format
 msgid "%(account)s is %(control)s but its open documents add up to %(documents)s (difference %(gap)s)."
-msgstr ""
+msgstr "%(account)s est de %(control)s, mais ses documents ouverts totalisent %(documents)s (écart %(gap)s)."
 
 #, python-format
 msgid "%(account)s requires a contact: choose one for its line."
-msgstr ""
+msgstr "%(account)s exige un contact : choisissez-en un pour sa ligne."
 
 #, python-format
 msgid "%(account)s opens at −%(amount)s: check the bank statement at the conversion date."
-msgstr ""
+msgstr "%(account)s s’ouvre à −%(amount)s : vérifiez le relevé bancaire à la date de conversion."
 
 #, python-format
 msgid "An opening document is dated before the conversion date (%(date)s): enter documents raised from that date in Numo9."
-msgstr ""
+msgstr "Un document d’ouverture est daté d’avant la date de conversion (%(date)s) : saisissez dans Numo9 les documents émis à compter de cette date."
 
 msgid "The due date can't be before the document's date."
-msgstr ""
+msgstr "L’échéance ne peut pas précéder la date du document."
 
 msgid "The total must be more than zero."
-msgstr ""
+msgstr "Le total doit être supérieur à zéro."
 
 msgid "What is still owed must be more than zero and no more than the total."
-msgstr ""
+msgstr "Le solde dû doit être supérieur à zéro et ne pas dépasser le total."
 
 #, python-format
 msgid "Opening balance at %(date)s"
-msgstr ""
+msgstr "Solde d’ouverture au %(date)s"
 
 msgid "Enter the invoice's number in the old system."
-msgstr ""
+msgstr "Saisissez le numéro de la facture dans l’ancien système."
 
 #, python-format
 msgid "There's already an invoice %(number)s."
-msgstr ""
+msgstr "Il existe déjà une facture %(number)s."
 
 msgid "Enter the supplier's invoice number."
-msgstr ""
+msgstr "Saisissez le numéro de facture du fournisseur."
 
 #, python-format
 msgid "There's already a bill %(number)s from this supplier."
-msgstr ""
+msgstr "Il existe déjà une facture fournisseur %(number)s de ce fournisseur."
 
 #, python-format
 msgid "%(document)s has payments in Numo9: remove them first."
-msgstr ""
+msgstr "%(document)s a des paiements dans Numo9 : supprimez-les d’abord."
 
 #, python-format
 msgid "There's no contact “%(name)s”: add it first, or use its exact name."
-msgstr ""
+msgstr "Il n’y a aucun contact « %(name)s » : ajoutez-le d’abord, ou utilisez son nom exact."
 
 msgid "Use dates like 2025-12-31."
-msgstr ""
+msgstr "Utilisez des dates comme 2025-12-31."
 
 msgid "Enter the document's date."
-msgstr ""
+msgstr "Saisissez la date du document."
 
 #, python-format
-msgid "The opening balances at %(date)s have no equity: no share capital, retained earnings or other equity was entered. Check the old balance sheet."
-msgstr ""
+msgid "The opening balances at %(date)s have no equity: no share capital, retained earnings or other equity was entered. Review the old balance sheet."
+msgstr "Les soldes d’ouverture au %(date)s n’ont aucun capital propre : aucun capital-actions, bénéfice non réparti ni autre capital propre n’a été saisi. Vérifiez l’ancien bilan."
 
 #, python-format
 msgid "%(amount)s of the opening balances is on %(account)s: find what it is and move it to the right account."
-msgstr ""
+msgstr "%(amount)s des soldes d’ouverture est au compte %(account)s : trouvez de quoi il s’agit et reclassez-le au bon compte."
 
 msgid "The chart has no Retained earnings account to open the year's result to."
-msgstr ""
+msgstr "Le plan comptable n’a aucun compte de bénéfices non répartis où porter le résultat de l’exercice."
 
 #, python-format
 msgid "Prior years' result (revenue and expenses at %(date)s)"
-msgstr ""
+msgstr "Résultat des exercices antérieurs (produits et charges au %(date)s)"
 
 #, python-format
 msgid "Conversion balances finalised at %(date)s: balances locked."
-msgstr ""
+msgstr "Soldes de conversion finalisés au %(date)s : soldes verrouillés."
 
 #, python-format
 msgid "Opening balances at %(date)s"
-msgstr ""
+msgstr "Soldes d’ouverture au %(date)s"
 
 msgid "Finalised"
-msgstr ""
+msgstr "Finalisée"
 
 msgid "Conversion date"
-msgstr ""
+msgstr "Date de conversion"
 
 msgid "Bank and cash"
-msgstr ""
+msgstr "Banque et encaisse"
 
 msgid "Open invoices"
-msgstr ""
+msgstr "Factures ouvertes"
 
 msgid "Open bills"
-msgstr ""
+msgstr "Factures fournisseurs ouvertes"
 
 msgid "Other balances"
-msgstr ""
+msgstr "Autres soldes"
 
 msgid "Review"
-msgstr ""
+msgstr "Vérification"
 
 #, fuzzy
 #| msgid "conversion rate (30 days)"
@@ -2764,7 +2764,7 @@ msgid "The first day the organisation's books are kept in Numo9."
 msgstr "Cette organisation n'est pas une démo."
 
 msgid "finalised by"
-msgstr ""
+msgstr "finalisée par"
 
 #, fuzzy
 #| msgid "finished at"
@@ -2772,19 +2772,19 @@ msgid "finalised at"
 msgstr "terminée le"
 
 msgid "lock balances"
-msgstr ""
+msgstr "verrouiller les soldes"
 
 msgid "On finalising, lock the general ledger, sales and purchases to the day before the conversion date for everyone except advisers."
-msgstr ""
+msgstr "À la finalisation, verrouiller le grand livre, les ventes et les achats à la veille de la date de conversion pour tous sauf les conseillers."
 
 msgid "current step"
-msgstr ""
+msgstr "étape en cours"
 
 msgid "completed steps"
-msgstr ""
+msgstr "étapes terminées"
 
 msgid "opening journal"
-msgstr ""
+msgstr "écriture d’ouverture"
 
 #, fuzzy
 #| msgid "version"
@@ -2807,13 +2807,13 @@ msgid "This organisation already has a conversion: continue that one."
 msgstr "Cette organisation a déjà un propriétaire. Demandez au propriétaire de vous inviter ou d’ajouter des utilisateurs."
 
 msgid "debit"
-msgstr ""
+msgstr "débit"
 
 msgid "credit"
-msgstr ""
+msgstr "crédit"
 
 msgid "For an account that requires a contact (a shareholder loan…)."
-msgstr ""
+msgstr "Pour un compte qui exige un contact (un prêt d’actionnaire…)."
 
 #, fuzzy
 #| msgid "conversion rate (30 days)"
@@ -2826,53 +2826,49 @@ msgid "conversion lines"
 msgstr "version"
 
 msgid "Enter a positive amount: a credit balance goes in the Credit column."
-msgstr ""
+msgstr "Saisissez un montant positif : un solde créditeur va dans la colonne Crédit."
 
 msgid "A line has a debit or a credit, not both."
-msgstr ""
+msgstr "Une ligne a un débit ou un crédit, pas les deux."
 
 msgid "Enter the account's balance as a debit or a credit."
-msgstr ""
+msgstr "Saisissez le solde du compte au débit ou au crédit."
 
-#, fuzzy
-#| msgid "Invoice"
 msgid "invoice"
-msgstr "Facture"
+msgstr "facture"
 
-#, fuzzy
-#| msgid "bills"
 msgid "bill"
-msgstr "factures fournisseurs"
+msgstr "facture fournisseur"
 
 msgid "owed at the conversion date"
-msgstr ""
+msgstr "dû à la date de conversion"
 
 msgid "opening document"
-msgstr ""
+msgstr "document d’ouverture"
 
 msgid "opening documents"
-msgstr ""
+msgstr "documents d’ouverture"
 
 msgid "correcting journal"
-msgstr ""
+msgstr "écriture de correction"
 
 msgid "conversion correction"
-msgstr ""
+msgstr "correction de la conversion"
 
 msgid "conversion corrections"
-msgstr ""
+msgstr "corrections de la conversion"
 
 msgid "See the conversion balances, open documents and the difference"
-msgstr ""
+msgstr "Voir les soldes de conversion, les documents ouverts et l’écart"
 
 msgid "Enter and finalise the conversion balances (advisers post corrections after finalising)"
-msgstr ""
+msgstr "Saisir et finaliser les soldes de conversion (les conseillers comptabilisent les corrections après la finalisation)"
 
 msgid "The conversion is finalised: its date doesn't change."
-msgstr ""
+msgstr "La conversion est finalisée : sa date ne change plus."
 
 msgid "Unknown step."
-msgstr ""
+msgstr "Étape inconnue."
 
 #, fuzzy
 #| msgid "Choose the month of the fiscal year end."
@@ -2880,7 +2876,7 @@ msgid "Choose the column with the account code or name."
 msgstr "Choisissez le mois de fin d’exercice."
 
 msgid "Choose Debit and Credit columns, or one Balance column — not both."
-msgstr ""
+msgstr "Choisissez les colonnes Débit et Crédit, ou une seule colonne Solde — pas les deux."
 
 #, fuzzy, python-format
 #| msgid "The file has no column called %(header)s."
@@ -2893,7 +2889,7 @@ msgid "“%(value)s” isn't an amount."
 msgstr "« %(type)s » n'est pas un type de compte bancaire."
 
 msgid "The row has a debit and a credit: keep one."
-msgstr ""
+msgstr "La ligne a un débit et un crédit : gardez-en un seul."
 
 #, fuzzy, python-format
 #| msgid "There's already an account called “%(name)s”. Choose another name."
@@ -3411,7 +3407,7 @@ msgid "Trial expired"
 msgstr "essai commencé"
 
 msgid "step"
-msgstr ""
+msgstr "étape"
 
 msgid "reminder milestone"
 msgstr ""
@@ -4391,19 +4387,19 @@ msgid "column headers"
 msgstr ""
 
 msgid "rows"
-msgstr ""
+msgstr "lignes"
 
 msgid "[[row number, [cell, …]], …]"
 msgstr ""
 
 msgid "mapping"
-msgstr ""
+msgstr "correspondance"
 
 msgid "options"
 msgstr ""
 
 msgid "totals"
-msgstr ""
+msgstr "totaux"
 
 msgid "imported at"
 msgstr ""
@@ -4415,13 +4411,13 @@ msgid "imports"
 msgstr ""
 
 msgid "row"
-msgstr ""
+msgstr "ligne"
 
 msgid "match key"
 msgstr ""
 
 msgid "errors"
-msgstr ""
+msgstr "erreurs"
 
 msgid "import row"
 msgstr ""
@@ -7289,7 +7285,7 @@ msgid "%(bill)s can't be voided: %(why)s"
 msgstr ""
 
 msgid "it's an opening balance of the conversion — correct it with a correcting opening journal."
-msgstr ""
+msgstr "c’est un solde d’ouverture de la conversion — corrigez-le au moyen d’une écriture d’ouverture de correction."
 
 msgid "remove its payments first."
 msgstr ""
@@ -7640,10 +7636,10 @@ msgid "amount paid"
 msgstr "montant dû"
 
 msgid "opening balance"
-msgstr ""
+msgstr "solde d’ouverture"
 
 msgid "A bill still unpaid at the conversion date, entered with the conversion balances: it posts nothing itself (the opening journal carries Accounts payable)."
-msgstr ""
+msgstr "Une facture fournisseur encore impayée à la date de conversion, saisie avec les soldes de conversion : elle ne comptabilise rien elle-même (l’écriture d’ouverture porte les comptes fournisseurs)."
 
 #, fuzzy
 #| msgid "journal"
@@ -8317,7 +8313,7 @@ msgid "System roles: stable identifier, e.g. 'owner'. Empty for custom roles."
 msgstr ""
 
 msgid "role"
-msgstr ""
+msgstr "rôle"
 
 msgid "permission"
 msgstr ""
@@ -8934,7 +8930,7 @@ msgid "Late interest"
 msgstr "Intérêts de retard"
 
 msgid "An invoice still open at the conversion date, entered with the conversion balances: it posts nothing itself (the opening journal carries Accounts receivable)."
-msgstr ""
+msgstr "Une facture encore ouverte à la date de conversion, saisie avec les soldes de conversion : elle ne comptabilise rien elle-même (l’écriture d’ouverture porte les comptes clients)."
 
 #, fuzzy
 #| msgid "first seen"

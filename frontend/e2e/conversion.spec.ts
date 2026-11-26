@@ -118,7 +118,7 @@ test("paste 20 rows → 20 documents validated", async ({ page }) => {
   }, tsv);
   await expect(page.getByText("20 rows pasted.")).toBeVisible();
   await expect(page.locator("[data-grid=invoice] [data-row]")).toHaveCount(20);
-  await page.getByRole("button", { name: "Check the rows" }).click();
+  await page.getByRole("button", { name: "Verify the rows" }).click();
   await expect(page.getByText("All 20 rows are ready to add.")).toBeVisible();
   expect(batches[0]?.dry_run).toBe(true);
   expect(batches[0]?.rows).toHaveLength(20);

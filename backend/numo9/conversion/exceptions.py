@@ -98,7 +98,7 @@ def equity_finding(session: ConversionSession) -> ConversionFinding | None:
         amount=result.debits,
         message=_(
             "The opening balances at %(date)s have no equity: no share capital, retained "
-            "earnings or other equity was entered. Check the old balance sheet."
+            "earnings or other equity was entered. Review the old balance sheet."
         )
         % {"date": session.conversion_date.isoformat()},
         details={**_base(session), "lines": result.lines, "debits": f"{result.debits:.2f}"},

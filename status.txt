@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 815   Remaining: 1972   Progress: 29.24%
+TOTAL ATOMIC TASKS: 2787   Completed: 816   Remaining: 1971   Progress: 29.28%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1055,7 +1055,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ C-05-T12 — UI: open invoices/bills grids (paste-friendly)
 ✅ C-05-T13 — Fixtures: balanced and unbalanced conversion sets incl. REFINED (no opening equity)
 ✅ C-05-T14 — Exceptions hook: register "opening equity missing" signal for K-09
-❌ C-05-T15 — Docs + i18n
+✅ C-05-T15 — Docs + i18n
 
 [E-01]
 ✅ E-01-T07 — Match engine (PO vs GRN vs bill per line with qty/price tolerance)

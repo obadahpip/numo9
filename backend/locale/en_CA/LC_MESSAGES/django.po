@@ -2563,7 +2563,7 @@ msgid "Enter the document's date."
 msgstr ""
 
 #, python-format
-msgid "The opening balances at %(date)s have no equity: no share capital, retained earnings or other equity was entered. Check the old balance sheet."
+msgid "The opening balances at %(date)s have no equity: no share capital, retained earnings or other equity was entered. Review the old balance sheet."
 msgstr ""
 
 #, python-format

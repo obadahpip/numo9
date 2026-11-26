@@ -142,7 +142,7 @@ export const cm = defineMessages({
   reviewIntro: {
     id: "conversion.wizard.reviewIntro",
     defaultMessage:
-      "Check the totals and the receivable and payable controls, then finalise: one opening journal is posted, dated the conversion date. After that, balances are corrected by your adviser with a correcting journal.",
+      "Review the totals and the receivable and payable controls, then finalise: one opening journal is posted, dated the conversion date. After that, balances are corrected by your adviser with a correcting journal.",
     description: "Review step text",
   },
   control: {

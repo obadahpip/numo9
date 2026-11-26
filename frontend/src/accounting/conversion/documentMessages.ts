@@ -64,7 +64,7 @@ export const dm = defineMessages({
   },
   check: {
     id: "conversion.documents.check",
-    defaultMessage: "Check the rows",
+    defaultMessage: "Verify the rows",
     description: "Button: validate without saving",
   },
   add: {
