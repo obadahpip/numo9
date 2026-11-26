@@ -2812,15 +2812,11 @@ msgstr "taxe modifiée par rapport à la valeur par défaut"
 msgid "tracking"
 msgstr "Banque"
 
-#, fuzzy
-#| msgid "currency"
 msgid "occurrence date"
-msgstr "devise"
+msgstr "date d’occurrence"
 
-#, fuzzy
-#| msgid "version"
 msgid "template version"
-msgstr "version"
+msgstr "version du modèle"
 
 msgid "See quotes, invoices and credit notes and how their amounts are worked out"
 msgstr "Voir les soumissions, factures et notes de crédit et le calcul de leurs montants"
@@ -2829,17 +2825,17 @@ msgid "See bills, purchase orders and supplier credits and how their amounts are
 msgstr "Voir les factures fournisseurs, bons de commande et crédits fournisseurs et le calcul de leurs montants"
 
 msgid "The template was paused on this date."
-msgstr ""
+msgstr "Le modèle était suspendu à cette date."
 
 #, python-format
 msgid "%(contact)s is archived: nothing was created for this date."
-msgstr ""
+msgstr "%(contact)s est archivé : rien n’a été créé pour cette date."
 
 msgid "The contact"
-msgstr ""
+msgstr "Le contact"
 
 msgid "The schedule has no more dates."
-msgstr ""
+msgstr "Le calendrier n’a plus de dates."
 
 msgid "Prepared with Numo9"
 msgstr "Préparé avec Numo9"
@@ -6070,26 +6066,26 @@ msgstr "%(customer)s a refusé la soumission %(number)s : %(reason)s"
 
 #, python-format
 msgid "Recurring invoice %(name)s needs attention"
-msgstr ""
+msgstr "La facture récurrente %(name)s demande votre attention"
 
 #, python-format
 msgid "The invoice of %(date)s was created but not finished: %(reason)s"
-msgstr ""
+msgstr "La facture du %(date)s a été créée mais pas terminée : %(reason)s"
 
 #, python-format
 msgid "Recurring invoice %(name)s skipped %(date)s"
-msgstr ""
+msgstr "La facture récurrente %(name)s a sauté le %(date)s"
 
 #, python-format
 msgid "No invoice was created for %(date)s: %(reason)s"
-msgstr ""
+msgstr "Aucune facture n’a été créée pour le %(date)s : %(reason)s"
 
 #, python-format
 msgid "Recurring invoice %(name)s has ended"
-msgstr ""
+msgstr "La facture récurrente %(name)s est terminée"
 
 msgid "Its schedule has no more dates: no more invoices will be created."
-msgstr ""
+msgstr "Son calendrier n’a plus de dates : aucune autre facture ne sera créée."
 
 #, python-format
 msgid "%(registration)s return due %(due_date)s"
@@ -8524,10 +8520,10 @@ msgid "recurring invoice lines"
 msgstr ""
 
 msgid "recurring invoice run"
-msgstr ""
+msgstr "exécution de facture récurrente"
 
 msgid "recurring invoice runs"
-msgstr ""
+msgstr "exécutions de factures récurrentes"
 
 msgid "Text message (SMS)"
 msgstr ""
@@ -8914,27 +8910,27 @@ msgid "Refund to %(contact)s"
 msgstr "Montant dû (%(currency)s)"
 
 msgid "There's no recurring invoice with this id in this organisation."
-msgstr ""
+msgstr "Il n’y a pas de facture récurrente avec cet identifiant dans cette organisation."
 
 msgid "The service ends before it starts."
-msgstr ""
+msgstr "Le service se termine avant de commencer."
 
 msgid "You can't approve or send invoices, so a recurring invoice you set up can only save drafts."
-msgstr ""
+msgstr "Vous ne pouvez pas approuver ni envoyer de factures : une facture récurrente que vous configurez ne peut qu’enregistrer des brouillons."
 
 msgid "Someone else saved this recurring invoice: reload it to see their changes."
-msgstr ""
+msgstr "Une autre personne a enregistré cette facture récurrente : rechargez-la pour voir ses modifications."
 
 #, python-format
 msgid "%(date)s isn't one of the schedule's dates."
-msgstr ""
+msgstr "Le %(date)s n’est pas l’une des dates du calendrier."
 
 #, python-format
 msgid "The service starts on %(date)s: nothing to bill for this period."
-msgstr ""
+msgstr "Le service commence le %(date)s : rien à facturer pour cette période."
 
 msgid "The invoice needs approval before it is posted."
-msgstr ""
+msgstr "La facture doit être approuvée avant d’être comptabilisée."
 
 #, fuzzy
 #| msgid "trial reminders"

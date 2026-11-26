@@ -108,6 +108,7 @@ nav:
       - "Quotes": user-guide/quotes.md
       - "Creating and approving invoices": user-guide/invoices.md
       - "Emailing invoices": user-guide/emailing-invoices.md
+      - "Recurring invoices": user-guide/recurring-invoices.md
       - "Purchase orders and receipts": user-guide/purchase-orders.md
       - "Changing your GST/HST filing frequency": user-guide/changing-filing-frequency.md
       - "Stopping and restarting GST/HST or QST filing": user-guide/stopping-and-restarting-filing.md
