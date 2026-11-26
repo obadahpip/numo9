@@ -137,7 +137,7 @@ def refined(
             from numo9.accounts.models import User
             from numo9.tenancy.models import OrganisationMember
 
-            dana = User.objects.create_user("dana@refined.ca", name="Dana Lee")
+            dana = User.objects.create_user(f"dana+{org.pk}@refined.ca", name="Dana Lee")
             User.objects.filter(pk=dana.pk).update(
                 last_login=dt.datetime(2026, 7, 26, 14, tzinfo=dt.UTC)
             )

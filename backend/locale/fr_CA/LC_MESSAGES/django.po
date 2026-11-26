@@ -436,6 +436,26 @@ msgstr ""
 msgid "%(journal)s (%(date)s) records %(expense_amount)s of expenses (%(accounts)s) with no receipt or invoice attached. Attach the supporting document: the CRA asks for it to claim the expense and its input tax credits."
 msgstr ""
 
+msgid "Exempt code on a normally taxable account"
+msgstr ""
+
+msgid "A registrant coded a purchase on a normally taxable expense account as exempt: the input tax credit may be missed."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s line %(line)s: %(amount)s on %(account)s is coded %(tax_code)s. This account is normally taxable and the organisation is registered for GST/HST: check the receipt and claim the input tax credit if tax was paid."
+msgstr ""
+
+msgid "Accounts to leave out"
+msgstr ""
+
+#, python-format
+msgid "Recode the tax of %(journal)s line %(line)s from %(from)s to %(to)s with Find & recode: the journal is reversed and re-posted with the new code (undo is available), and the input tax credit is calculated."
+msgstr ""
+
+msgid "the right purchase code"
+msgstr ""
+
 msgid "Date and time"
 msgstr "Date et heure"
 
