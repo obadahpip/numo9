@@ -105,6 +105,7 @@ nav:
   - User guide:
       - "Manual journals: types and controls": user-guide/journal-types-and-controls.md
       - "Manual journals: editor, approval and recurring": user-guide/journal-approval-and-recurring.md
+      - "Creating and approving invoices": user-guide/invoices.md
       - "Emailing invoices": user-guide/emailing-invoices.md
       - "Purchase orders and receipts": user-guide/purchase-orders.md
       - "Changing your GST/HST filing frequency": user-guide/changing-filing-frequency.md
