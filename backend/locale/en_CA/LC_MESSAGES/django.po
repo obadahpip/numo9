@@ -10507,6 +10507,12 @@ msgstr ""
 msgid "Dummy organisation"
 msgstr ""
 
+msgid "Dummy"
+msgstr ""
+
+msgid "Organisation level"
+msgstr ""
+
 msgid "Balance sheet"
 msgstr ""
 

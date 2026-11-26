@@ -606,6 +606,11 @@ CELERY_BEAT_SCHEDULE = {
         "task": "numo9.staff.aggregate_activity",
         "schedule": crontab(minute=37),  # hourly: today's squares fill in during the day
     },
+    # Exceptions engine (K-09-T05): every organisation's rules re-evaluated overnight.
+    "numo9.assurance.nightly": {
+        "task": "numo9.assurance.nightly",
+        "schedule": crontab(minute=47, hour=8),  # 08:47 UTC = 03:47 / 04:47 Toronto
+    },
     # Automatic reversals (C-03-T09): hourly — organisations' days start at different UTC hours.
     "numo9.ledger.auto_reversals": {
         "task": "numo9.ledger.auto_reversals",

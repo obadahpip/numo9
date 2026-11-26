@@ -11532,6 +11532,12 @@ msgstr ""
 msgid "Dummy organisation"
 msgstr ""
 
+msgid "Dummy"
+msgstr ""
+
+msgid "Organisation level"
+msgstr ""
+
 #, fuzzy
 #| msgid "Balance"
 msgid "Balance sheet"

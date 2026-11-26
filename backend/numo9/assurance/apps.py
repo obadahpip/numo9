@@ -14,3 +14,10 @@ class AssuranceConfig(AppConfig):
 
         load_rules()  # every rule module registers its rules (K-09-T04)
 
+        # Incremental runs on posting (K-09-T05).
+        from numo9.ledger.services import POSTED_HOOKS
+
+        from .runner import posted_hook
+
+        if posted_hook not in POSTED_HOOKS:
+            POSTED_HOOKS.append(posted_hook)
