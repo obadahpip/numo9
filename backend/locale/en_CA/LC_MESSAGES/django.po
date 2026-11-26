@@ -2455,6 +2455,33 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr ""
 
+msgid "Start the conversion first."
+msgstr ""
+
+msgid "Choose an account of the chart."
+msgstr ""
+
+msgid "Choose a contact."
+msgstr ""
+
+msgid "Enter an amount."
+msgstr ""
+
+msgid "Nothing was saved: fix the rows listed."
+msgstr ""
+
+msgid "Choose invoices or bills."
+msgstr ""
+
+msgid "The file is over 25 MB: split it or remove what isn't needed."
+msgstr ""
+
+msgid "The mapping is a JSON object of field → column."
+msgstr ""
+
+msgid "Choose an account of the chart for every line."
+msgstr ""
+
 msgid "The conversion is still a draft: change its balances directly."
 msgstr ""
 
@@ -2483,10 +2510,11 @@ msgid "%(account)s is %(control)s but its open documents add up to %(documents)s
 msgstr ""
 
 #, python-format
-msgid "%(account)s opens at −%(amount)s: check the bank statement at the conversion date."
+msgid "%(account)s requires a contact: choose one for its line."
 msgstr ""
 
-msgid "Enter an amount."
+#, python-format
+msgid "%(account)s opens at −%(amount)s: check the bank statement at the conversion date."
 msgstr ""
 
 #, python-format
@@ -2524,6 +2552,16 @@ msgstr ""
 msgid "%(document)s has payments in Numo9: remove them first."
 msgstr ""
 
+#, python-format
+msgid "There's no contact “%(name)s”: add it first, or use its exact name."
+msgstr ""
+
+msgid "Use dates like 2025-12-31."
+msgstr ""
+
+msgid "Enter the document's date."
+msgstr ""
+
 msgid "The chart has no Retained earnings account to open the year's result to."
 msgstr ""
 
@@ -2542,6 +2580,24 @@ msgstr ""
 msgid "Finalised"
 msgstr ""
 
+msgid "Conversion date"
+msgstr ""
+
+msgid "Bank and cash"
+msgstr ""
+
+msgid "Open invoices"
+msgstr ""
+
+msgid "Open bills"
+msgstr ""
+
+msgid "Other balances"
+msgstr ""
+
+msgid "Review"
+msgstr ""
+
 msgid "conversion date"
 msgstr ""
 
@@ -2558,6 +2614,12 @@ msgid "lock balances"
 msgstr ""
 
 msgid "On finalising, lock the general ledger, sales and purchases to the day before the conversion date for everyone except advisers."
+msgstr ""
+
+msgid "current step"
+msgstr ""
+
+msgid "completed steps"
 msgstr ""
 
 msgid "opening journal"
@@ -2580,6 +2642,9 @@ msgid "debit"
 msgstr ""
 
 msgid "credit"
+msgstr ""
+
+msgid "For an account that requires a contact (a shareholder loan…)."
 msgstr ""
 
 msgid "conversion line"
@@ -2619,6 +2684,18 @@ msgid "conversion correction"
 msgstr ""
 
 msgid "conversion corrections"
+msgstr ""
+
+msgid "See the conversion balances, open documents and the difference"
+msgstr ""
+
+msgid "Enter and finalise the conversion balances (advisers post corrections after finalising)"
+msgstr ""
+
+msgid "The conversion is finalised: its date doesn't change."
+msgstr ""
+
+msgid "Unknown step."
 msgstr ""
 
 msgid "Choose the column with the account code or name."

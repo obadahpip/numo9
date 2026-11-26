@@ -22,7 +22,8 @@ receivable and payable control lines equal the open documents?
   K-09 by ``numo9.conversion.exceptions`` (C-05-T14);
 - ``reasons`` — why it can't be finalised, each a code and a message naming the figures
   (``conversion.unbalanced``, ``conversion.control_mismatch``, ``conversion.empty``,
-  ``conversion.finalised``); ``can_finalise`` is true when there are none.
+  ``conversion.finalised``, ``conversion.contact_required`` — a line on an account that requires
+  a contact, a shareholder loan…, without one); ``can_finalise`` is true when there are none.
 
 Amounts are ``Decimal`` to the cent; ``as_dict()`` is the API's shape (strings).
 """
@@ -101,6 +102,8 @@ class Difference:
     warnings: list[Reason] = field(default_factory=list)
     opening_equity_missing: bool = True
     finalised: bool = False
+    #: Lines on an account that requires a contact, without one (not a control account).
+    missing_contacts: list[Any] = field(default_factory=list)
 
     @property
     def difference(self) -> Decimal:
@@ -161,6 +164,14 @@ class Difference:
                     },
                 )
             )
+        for account in self.missing_contacts:
+            out.append(
+                Reason(
+                    "conversion.contact_required",
+                    _("%(account)s requires a contact: choose one for its line.")
+                    % {"account": str(account)},
+                )
+            )
         return out
 
     @property
@@ -209,6 +220,18 @@ def difference(session: ConversionSession) -> Difference:
             ),
         )
         by_account = {line.account_id: line for line in lines}
+        control_ids = set(
+            Account.objects.filter(system_role__in=[r for r, _k, _s in CONTROLS]).values_list(
+                "pk", flat=True
+            )
+        )
+        result.missing_contacts = [
+            line.account
+            for line in lines
+            if line.account.require_contact
+            and line.contact_id is None
+            and line.account_id not in control_ids
+        ]
         for role, kind, side in CONTROLS:
             account = Account.objects.filter(system_role=role).first()
             line = by_account.get(account.pk) if account is not None else None

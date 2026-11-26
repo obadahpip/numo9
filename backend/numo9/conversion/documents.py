@@ -314,3 +314,127 @@ def opening_documents(session: ConversionSession, kind: str | None = None) -> li
             links = links.filter(kind=kind)
         documents = [link.document for link in links]
     return sorted(documents, key=lambda d: (d.date, d.number, d.pk))
+
+
+# ---- batches (C-05-T09, T12: the paste-friendly grids) -------------------------------------
+
+
+def _find_contact(value: Any, role: str) -> Any:
+    """A contact by public id, or by display name (case ignored) when exactly one has it."""
+    import uuid
+
+    from numo9.contacts.models import Contact
+
+    text = " ".join(str(value or "").split())
+    if not text:
+        return None
+    try:
+        return Contact.objects.filter(public_id=uuid.UUID(text), deleted_at__isnull=True).first()
+    except ValueError:
+        pass
+    named = list(Contact.objects.filter(display_name__iexact=text, deleted_at__isnull=True)[:3])
+    if len(named) > 1:
+        with_role = [c for c in named if role in (c.roles or [])]
+        named = with_role if len(with_role) == 1 else named
+    return named[0] if len(named) == 1 else None
+
+
+def _date(value: Any) -> dt.date | None:
+    if isinstance(value, dt.date):
+        return value
+    text = str(value or "").strip()
+    return dt.date.fromisoformat(text) if text else None
+
+
+def _errors(error: ValidationError) -> list[dict[str, str]]:
+    if hasattr(error, "error_dict"):
+        return [
+            {"field": name, "code": item.code or "invalid", "message": " ".join(item.messages)}
+            for name, items in error.error_dict.items()
+            for item in items
+        ]
+    return [
+        {"field": "", "code": item.code or "invalid", "message": " ".join(item.messages)}
+        for item in error.error_list
+    ]
+
+
+def add_opening_rows(
+    session: ConversionSession,
+    kind: str,
+    rows: list[dict[str, Any]],
+    *,
+    dry_run: bool = False,
+    user: Any = None,
+) -> dict[str, Any]:
+    """Validate (and, unless ``dry_run``, add) a batch of opening invoices or bills — the rows of
+    the grid, pasted from a spreadsheet: ``contact`` (id or name), ``number`` (invoices) or
+    ``supplier_invoice_no`` (bills), ``date``, ``due_date``, ``total``, ``outstanding``,
+    ``reference``. **All or nothing**: every row is validated (duplicates inside the batch
+    included); when any row has a problem — or on a dry run — nothing is written. Returns
+    ``{"rows": [{"row", "ok", "errors", "id"}], "ok", "errors", "written"}``."""
+    if kind not in OpeningDocumentKind.values:
+        raise _refuse("kind", _("Choose invoices or bills."), "conversion.document.kind")
+    role = "customer" if kind == OpeningDocumentKind.INVOICE else "supplier"
+    results: list[dict[str, Any]] = []
+    with org_context(session.organisation), transaction.atomic():
+        assert_draft(session)
+        for index, row in enumerate(rows, start=1):
+            result: dict[str, Any] = {"row": index, "ok": True, "errors": [], "id": None}
+            try:
+                with transaction.atomic():
+                    contact = _find_contact(row.get("contact"), role)
+                    if contact is None:
+                        raise _refuse(
+                            "contact",
+                            _("There's no contact “%(name)s”: add it first, or use its exact name.")
+                            % {"name": row.get("contact") or "—"},
+                            "conversion.document.contact",
+                        )
+                    try:
+                        date = _date(row.get("date"))
+                        due_date = _date(row.get("due_date"))
+                    except ValueError:
+                        raise _refuse(
+                            "date", _("Use dates like 2025-12-31."), "conversion.document.date"
+                        ) from None
+                    if date is None:
+                        raise _refuse(
+                            "date", _("Enter the document's date."), "conversion.document.date"
+                        )
+                    common = {
+                        "contact": contact,
+                        "date": date,
+                        "due_date": due_date,
+                        "total": row.get("total"),
+                        "outstanding": row.get("outstanding"),
+                        "reference": str(row.get("reference") or ""),
+                        "user": user,
+                    }
+                    if kind == OpeningDocumentKind.INVOICE:
+                        made = add_opening_invoice(
+                            session, number=str(row.get("number") or ""), **common
+                        )
+                    else:
+                        made = add_opening_bill(
+                            session,
+                            supplier_invoice_no=str(row.get("supplier_invoice_no") or ""),
+                            **common,
+                        )
+                    result["id"] = str(made.opening_link.public_id)
+            except ValidationError as error:
+                result.update(ok=False, errors=_errors(error), id=None)
+            results.append(result)
+        failed = sum(1 for r in results if not r["ok"])
+        if failed or dry_run:
+            transaction.set_rollback(True)
+            for result in results:
+                result["id"] = None
+    written = 0 if failed or dry_run else len(results)
+    return {
+        "dry_run": dry_run,
+        "rows": results,
+        "ok": len(results) - failed,
+        "errors": failed,
+        "written": written,
+    }

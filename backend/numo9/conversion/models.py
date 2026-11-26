@@ -3,11 +3,13 @@
 - ``ConversionSession`` (C-05-T01) — the organisation's conversion: its date, status (draft →
   finalised), who finalised it and when, and the opening journal finalising posted
   (``opening_entry``, C-05-T05: a finalised conversion has one); ``lock_balances`` (C-05-T06) —
-  lock the GL, AR and AP at the conversion date − 1 when it is finalised. **One per
+  lock the GL, AR and AP at the conversion date − 1 when it is finalised; ``step`` /
+  ``completed_steps`` — the wizard's saved progress (C-05-T10). **One per
   organisation** (a second is refused by the database, ``conversion_one_per_org``); corrections
   after finalising are correcting opening journals (C-05-T07), never a second session.
 - ``ConversionLine`` (C-05-T02) — one account's opening balance: a debit **or** a credit
-  (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``).
+  (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``);
+  ``contact`` for an account that requires one (posted on the opening journal's line).
 - ``OpeningDocument`` (C-05-T03) — links the session to an invoice or a bill **open at the
   conversion date**: the document itself is an ordinary ``sales.Invoice`` / ``purchases.Bill``
   with ``is_opening=True`` (so aging, statements and payments work on it as on any other), open
@@ -40,6 +42,17 @@ class ConversionStatus(models.TextChoices):
     FINALISED = "finalised", _("Finalised")
 
 
+class ConversionStep(models.TextChoices):
+    """The wizard's steps (C-05-T10), in order."""
+
+    DATE = "date", _("Conversion date")
+    BANK = "bank", _("Bank and cash")
+    INVOICES = "invoices", _("Open invoices")
+    BILLS = "bills", _("Open bills")
+    OTHER = "other", _("Other balances")
+    REVIEW = "review", _("Review")
+
+
 class ConversionSession(AuditedModel, OrgOwnedModel):
     conversion_date = models.DateField(
         _("conversion date"),
@@ -65,6 +78,13 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
             "conversion date for everyone except advisers."
         ),
     )
+    step = models.CharField(
+        _("current step"),
+        max_length=10,
+        choices=ConversionStep.choices,
+        default=ConversionStep.DATE,
+    )
+    completed_steps = models.JSONField(_("completed steps"), default=list, blank=True)
     opening_entry = models.OneToOneField(
         "ledger.JournalEntry",
         on_delete=models.PROTECT,
@@ -128,6 +148,15 @@ class ConversionLine(AuditedModel, OrgOwnedModel):
     debit = models.DecimalField(_("debit"), max_digits=18, decimal_places=2, default=ZERO)
     credit = models.DecimalField(_("credit"), max_digits=18, decimal_places=2, default=ZERO)
     description = models.CharField(_("description"), max_length=500, blank=True)
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("contact"),
+        help_text=_("For an account that requires a contact (a shareholder loan…)."),
+    )
 
     class Meta:
         ordering = ("session", "account__code", "pk")

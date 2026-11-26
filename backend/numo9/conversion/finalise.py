@@ -111,7 +111,7 @@ def opening_lines(session: ConversionSession) -> list[LineSpec]:
     text = _("Opening balance at %(date)s") % {"date": session.conversion_date.isoformat()}
     lines = list(
         ConversionLine.objects.filter(session=session, deleted_at__isnull=True)
-        .select_related("account")
+        .select_related("account", "contact")
         .order_by("account__code", "pk")
     )
     controls = {}
@@ -149,6 +149,7 @@ def opening_lines(session: ConversionSession) -> list[LineSpec]:
                 account=account,
                 debit=line.debit,
                 credit=line.credit,
+                contact=line.contact,
                 description=line.description or text,
             )
         )
