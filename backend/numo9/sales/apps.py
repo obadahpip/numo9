@@ -44,24 +44,51 @@ class SalesConfig(AppConfig):
 
         SWEEP_FACTORIES["sales.Invoice"] = _sweep_invoice
         SWEEP_FACTORIES["sales.Quote"] = _sweep_quote  # the quotes API (D-02-T11)
+        SWEEP_FACTORIES["sales.RecurringInvoiceTemplate"] = _sweep_recurring_invoice
+
+
+def _sweep_customer(organisation: Any) -> Any:
+    import uuid
+
+    from numo9.contacts.models import Contact
+
+    customer = Contact(
+        organisation=organisation,
+        display_name=f"Sweep {uuid.uuid4().hex[:8]}",
+        roles=["customer"],
+    )
+    customer.save()
+    return customer
+
+
+def _sweep_recurring_invoice(organisation: Any) -> Any:
+    import datetime as dt
+
+    from numo9.tenancy.context import org_context
+
+    from .models import RecurringInvoiceTemplate
+
+    with org_context(organisation):
+        template = RecurringInvoiceTemplate(
+            organisation=organisation,
+            name="Sweep",
+            contact=_sweep_customer(organisation),
+            rrule="FREQ=MONTHLY",
+            start_date=dt.date(2026, 6, 15),
+        )
+        template.save()
+        return template
 
 
 def _sweep_invoice(organisation: Any) -> Any:
     import datetime as dt
-    import uuid
 
-    from numo9.contacts.models import Contact
     from numo9.tenancy.context import org_context
 
     from .models import Invoice
 
     with org_context(organisation):
-        customer = Contact(
-            organisation=organisation,
-            display_name=f"Sweep {uuid.uuid4().hex[:8]}",
-            roles=["customer"],
-        )
-        customer.save()
+        customer = _sweep_customer(organisation)
         invoice = Invoice(
             organisation=organisation,
             contact=customer,

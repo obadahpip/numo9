@@ -49,7 +49,7 @@ from numo9.ledger.models import LedgerError
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
-from .models import Invoice, InvoiceLine, InvoiceStatus
+from .models import Invoice, InvoiceLine, InvoiceStatus, RecurringInvoiceLine
 from .permissions import INVOICES_APPROVE, INVOICES_VIEW, INVOICES_WRITE
 
 READ = "accounting.sales_invoices.read"
@@ -86,7 +86,7 @@ def _ref(obj: Any, **extra: Any) -> dict[str, Any] | None:
     return {"id": str(obj.public_id), **extra}
 
 
-def line_row(line: InvoiceLine) -> dict[str, Any]:
+def line_row(line: InvoiceLine | RecurringInvoiceLine) -> dict[str, Any]:
     return {
         "id": str(line.public_id),
         "position": line.position,

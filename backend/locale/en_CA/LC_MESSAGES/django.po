@@ -8116,6 +8116,22 @@ msgstr ""
 msgid "Refund to %(contact)s"
 msgstr ""
 
+msgid "There's no recurring invoice with this id in this organisation."
+msgstr ""
+
+msgid "The service ends before it starts."
+msgstr ""
+
+msgid "You can't approve or send invoices, so a recurring invoice you set up can only save drafts."
+msgstr ""
+
+msgid "Someone else saved this recurring invoice: reload it to see their changes."
+msgstr ""
+
+#, python-format
+msgid "%(date)s isn't one of the schedule's dates."
+msgstr ""
+
 #, python-format
 msgid "The service starts on %(date)s: nothing to bill for this period."
 msgstr ""

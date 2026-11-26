@@ -1,14 +1,16 @@
 """Sales routes, under /api/v1/: invoices CRUD and actions (D-03a-T11), email (D-03a-T12); quotes
-CRUD and actions, and the public quote link's endpoints (D-02-T11)."""
+CRUD and actions, and the public quote link's endpoints (D-02-T11); recurring invoices
+(D-04-T07)."""
 
 from django.urls import path
 
-from . import api, invoices_api, quotes_api
+from . import api, invoices_api, quotes_api, recurring_api
 
 ORG = "o/<uuid:org>/"
 INVOICE = f"{ORG}invoices/<uuid:public_id>"
 QUOTE = f"{ORG}quotes/<uuid:public_id>"
 PUBLIC_QUOTE = "q/<str:token>"
+RECURRING = f"{ORG}recurring-invoices/<uuid:public_id>"
 
 urlpatterns = [
     path(f"{ORG}invoices", invoices_api.InvoiceListView.as_view(), name="invoices"),
@@ -33,6 +35,37 @@ urlpatterns = [
         name="invoice-credit-override",
     ),
     path(f"{ORG}invoices/<uuid:public_id>/pdf", api.InvoicePdfView.as_view(), name="invoice-pdf"),
+    path(
+        f"{ORG}recurring-invoices",
+        recurring_api.RecurringInvoiceListView.as_view(),
+        name="recurring-invoices",
+    ),
+    path(
+        f"{ORG}recurring-invoices/schedule",
+        recurring_api.RecurringScheduleView.as_view(),
+        name="recurring-invoices-schedule",
+    ),
+    path(RECURRING, recurring_api.RecurringInvoiceDetailView.as_view(), name="recurring-invoice"),
+    path(
+        f"{RECURRING}/pause",
+        recurring_api.RecurringInvoicePauseView.as_view(),
+        name="recurring-invoice-pause",
+    ),
+    path(
+        f"{RECURRING}/resume",
+        recurring_api.RecurringInvoiceResumeView.as_view(),
+        name="recurring-invoice-resume",
+    ),
+    path(
+        f"{RECURRING}/preview",
+        recurring_api.RecurringInvoicePreviewView.as_view(),
+        name="recurring-invoice-preview",
+    ),
+    path(
+        f"{RECURRING}/history",
+        recurring_api.RecurringInvoiceHistoryView.as_view(),
+        name="recurring-invoice-history",
+    ),
     path("invoice-view/<str:token>", api.InvoiceViewLinkView.as_view(), name="invoice-view"),
     path(f"{ORG}quotes", quotes_api.QuoteListView.as_view(), name="quotes"),
     path(QUOTE, quotes_api.QuoteDetailView.as_view(), name="quote"),
