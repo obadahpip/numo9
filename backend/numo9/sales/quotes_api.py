@@ -268,7 +268,7 @@ class QuoteSerializer(serializers.Serializer[Any]):
             )
         if attrs["deposit_type"] == DepositType.PERCENT and attrs["deposit_value"] > 100:
             raise serializers.ValidationError(
-                {"deposit_value": [_("A deposit can't be more than 100 % of the quote.")]}
+                {"deposit_value": [_("A deposit percentage can't be more than 100 %.")]}
             )
         if attrs["deposit_type"] == DepositType.NONE:
             attrs["deposit_value"] = Decimal("0")

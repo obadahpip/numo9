@@ -8032,8 +8032,7 @@ msgstr ""
 msgid "A discount can't be more than 100 %."
 msgstr ""
 
-#, python-format
-msgid "A deposit can't be more than 100 % of the quote."
+msgid "A deposit percentage can't be more than 100 %."
 msgstr ""
 
 msgid "A line is optional or an alternative, not both."

@@ -25,12 +25,12 @@ Risk: low · medium · high · critical (what misuse could do). Scope: where it 
 | Key | Permission (en-CA) | Permission (fr-CA) | Risk | Scope | Given by system roles |
 |---|---|---|---|---|---|
 | `sales.document.view` | See quotes, invoices and credit notes and how their amounts are worked out | Voir les soumissions, factures et notes de crédit et le calcul de leurs montants | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate, Sales |
-| `sales.invoices.approve` | Approve, post and void invoices | Approve, post and void invoices | high | organisation | Practice admin, Accountant, Reviewer, Owner, Admin, Accountant delegate, Sales |
-| `sales.invoices.send` | Email invoices to customers | Email invoices to customers | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate, Sales |
-| `sales.invoices.view` | See invoices, their PDF and emails | See invoices, their PDF and emails | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate, Sales |
-| `sales.invoices.write` | Create and edit draft invoices | Create and edit draft invoices | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate, Sales |
-| `sales.quotes.manage` | Create, edit and send quotes, and turn accepted quotes into invoices | Create, edit and send quotes, and turn accepted quotes into invoices | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate, Sales |
-| `sales.quotes.view` | See quotes and their PDF | See quotes and their PDF | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate, Sales |
+| `sales.invoices.approve` | Approve, post and void invoices | Approuver, comptabiliser et annuler des factures | high | organisation | Practice admin, Accountant, Reviewer, Owner, Admin, Accountant delegate, Sales |
+| `sales.invoices.send` | Email invoices to customers | Envoyer les factures aux clients par courriel | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate, Sales |
+| `sales.invoices.view` | See invoices, their PDF and emails | Voir les factures, leur PDF et leurs courriels | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate, Sales |
+| `sales.invoices.write` | Create and edit draft invoices | Créer et modifier des factures en brouillon | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate, Sales |
+| `sales.quotes.manage` | Create, edit and send quotes, and turn accepted quotes into invoices | Créer, modifier et envoyer des soumissions, et convertir les soumissions acceptées en factures | medium | organisation | Practice admin, Accountant, Owner, Admin, Accountant delegate, Sales |
+| `sales.quotes.view` | See quotes and their PDF | Voir les soumissions et leur PDF | low | organisation | Practice admin, Accountant, Reviewer, Read-only staff, Owner, Admin, Accountant delegate, Sales |
 
 ## Purchases { #purchases }
 
