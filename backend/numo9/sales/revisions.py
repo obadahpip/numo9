@@ -14,11 +14,16 @@
 - ``document_snapshot(invoice)`` / ``start_revisions(invoice, entry, user)`` (D-03b-T03) — the
   invoice as entered (header, lines, totals) and revision 0 at first approval;
   ``backfill_revision_zero(apps)`` gives one to posted invoices approved before.
+- ``build_revision(invoice)`` (D-03b-T04) — the current revision cloned into an editable
+  ``RevisionDraft``; ``draft.document()`` is its snapshot form (equal to the current revision's
+  until something is changed).
 """
 
 from __future__ import annotations
 
+import copy
 import datetime as dt
+from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
@@ -309,4 +314,45 @@ def backfill_revision_zero(apps: Any) -> int:
         invoices._base_manager.filter(pk=invoice.pk).update(current_revision=revision)
         made += 1
     return made
+
+
+# ---- the revision builder (D-03b-T04) -----------------------------------------------------------
+
+
+@dataclass
+class RevisionDraft:
+    """A posted invoice opened for revision: its current revision's header and lines, editable in
+    memory (nothing is written until the revision is saved, D-03b-T07). ``base_version`` is the
+    invoice's version when opened — the optimistic-concurrency token (D-03b-T06)."""
+
+    invoice_id: int
+    revision: int  # the revision it was cloned from
+    base_version: int
+    header: dict[str, Any]
+    lines: list[dict[str, Any]]
+    totals: dict[str, Any]
+    reason: str = ""
+
+    def document(self) -> dict[str, Any]:
+        """The draft in the snapshot's form (packed)."""
+        packed: dict[str, Any] = _pack(
+            {"header": self.header, "lines": self.lines, "totals": self.totals}
+        )
+        return packed
+
+
+def build_revision(invoice: Any) -> RevisionDraft:
+    """Clone the invoice's current revision into an editable draft (module docstring)."""
+    current = invoice.current_revision
+    if current is None:
+        raise ValueError(f"{invoice} has no current revision")
+    document = restore((current.snapshot or {}).get("document") or {})
+    return RevisionDraft(
+        invoice_id=invoice.pk,
+        revision=current.revision,
+        base_version=invoice.version,
+        header=copy.deepcopy(document.get("header") or {}),
+        lines=copy.deepcopy(document.get("lines") or []),
+        totals=copy.deepcopy(document.get("totals") or {}),
+    )
 
