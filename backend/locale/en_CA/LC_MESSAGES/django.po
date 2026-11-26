@@ -2455,10 +2455,25 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr ""
 
-msgid "Enter an amount."
+msgid "The conversion is finalised: correct it with a correcting opening journal."
 msgstr ""
 
-msgid "The conversion is finalised: correct it with a correcting opening journal."
+msgid "Enter at least one opening balance to finalise."
+msgstr ""
+
+#, python-format
+msgid "Debits %(debits)s · Credits %(credits)s · Difference %(difference)s — the opening balances must balance before they're finalised."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is %(control)s but its open documents add up to %(documents)s (difference %(gap)s)."
+msgstr ""
+
+#, python-format
+msgid "%(account)s opens at −%(amount)s: check the bank statement at the conversion date."
+msgstr ""
+
+msgid "Enter an amount."
 msgstr ""
 
 #, python-format
