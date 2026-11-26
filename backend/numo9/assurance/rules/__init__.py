@@ -6,7 +6,7 @@ from __future__ import annotations
 import importlib
 
 #: Rule modules, in catalogue order (docs/specs/assurance-rules.md).
-RULE_MODULES: tuple[str, ...] = ("cash", "journals", "tax", "timing", "controls")
+RULE_MODULES: tuple[str, ...] = ("cash", "journals", "tax", "timing", "controls", "setup")
 
 
 def load_rules() -> None:

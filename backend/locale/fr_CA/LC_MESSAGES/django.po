@@ -499,6 +499,70 @@ msgstr ""
 msgid "Multiple of"
 msgstr ""
 
+msgid "Accounts not mapped to GIFI"
+msgstr ""
+
+msgid "Active accounts without a GIFI code: the T2 financial statements can't be prepared from the ledger as it is."
+msgstr ""
+
+#, python-format
+msgid "%(unmapped)s of %(total)s active accounts have no GIFI code (%(sample)s…). Map them in the chart of accounts so the T2 schedules 100 and 125 can be prepared."
+msgstr ""
+
+msgid "Only accounts used"
+msgstr ""
+
+msgid "Registered without a Business Number"
+msgstr ""
+
+msgid "The organisation has a CRA or Revenu Québec registration but no Business Number on file."
+msgstr ""
+
+#, python-format
+msgid "The organisation is registered (%(registrations)s) but has no Business Number (BN). Add it under Tax registrations: it is printed on invoices and needed for every return."
+msgstr ""
+
+msgid "No lock date"
+msgstr ""
+
+msgid "Periods that ended long ago are still open: anyone can still change them."
+msgstr ""
+
+#, python-format
+msgid "The books have activity up to %(period_end)s, a period that ended more than %(days)s days ago, and the general ledger lock date is %(lock)s. Set the lock date to %(period_end)s so reported periods can't change."
+msgstr ""
+
+msgid "Days"
+msgstr ""
+
+msgid "not set"
+msgstr ""
+
+msgid "Conversion balances incomplete or unbalanced"
+msgstr ""
+
+msgid "The opening balances brought over from the previous system are empty, don't balance or have no equity."
+msgstr ""
+
+#, python-format
+msgid "The conversion at %(conversion_date)s: %(problem)s. Opening balances are where the balance sheet starts — debits %(debit)s, credits %(credit)s."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "conversion rate (30 days)"
+msgid "Conversion at %(date)s"
+msgstr "taux de conversion (30 jours)"
+
+msgid "no opening balances were entered"
+msgstr ""
+
+#, python-format
+msgid "debits and credits differ by %(difference)s"
+msgstr ""
+
+msgid "there is no equity (share capital, shareholder loan, retained earnings)"
+msgstr ""
+
 msgid "Exempt code on a normally taxable account"
 msgstr ""
 
@@ -527,9 +591,6 @@ msgstr ""
 
 #, python-format
 msgid "%(document)s is dated %(date)s but was posted on %(posted_on)s (%(gap)s days later; the limit is %(days)s)."
-msgstr ""
-
-msgid "Days"
 msgstr ""
 
 msgid "Weekend posting"
@@ -3107,11 +3168,6 @@ msgstr "version"
 #| msgid "version"
 msgid "conversions"
 msgstr "version"
-
-#, fuzzy, python-format
-#| msgid "conversion rate (30 days)"
-msgid "Conversion at %(date)s"
-msgstr "taux de conversion (30 jours)"
 
 #, fuzzy
 #| msgid "This organisation already has an owner. Ask the owner to invite you, or to add users."
