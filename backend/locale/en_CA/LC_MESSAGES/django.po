@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 18:21-0500\n"
+"POT-Creation-Date: 2026-11-25 18:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2026,6 +2026,12 @@ msgstr ""
 msgid "The choice %(value)s is listed twice."
 msgstr ""
 
+msgid "Document total (with tax)"
+msgstr ""
+
+msgid "Amount before tax"
+msgstr ""
+
 msgid "The name per language, e.g. {\"en-ca\": \"Net 30\"}."
 msgstr ""
 
@@ -2039,6 +2045,9 @@ msgid "early-payment discount (%)"
 msgstr ""
 
 msgid "discount if paid within (days)"
+msgstr ""
+
+msgid "discount is a percent of"
 msgstr ""
 
 msgid "late interest (% a year)"
@@ -4292,6 +4301,12 @@ msgid "Foreign exchange gain or loss"
 msgstr ""
 
 msgid "Holdbacks payable"
+msgstr ""
+
+msgid "Sales discounts given"
+msgstr ""
+
+msgid "Purchase discounts received"
 msgstr ""
 
 msgid "Current assets"

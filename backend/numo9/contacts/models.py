@@ -1093,6 +1093,13 @@ class CustomFieldDefinition(AuditedModel, OrgOwnedModel):
 TERM_DAYS_MAX = 365
 
 
+class DiscountBase(models.TextChoices):
+    """What an early-payment discount is a percent of (E-07-T01)."""
+
+    TOTAL = "total", _("Document total (with tax)")
+    PRE_TAX = "pre_tax", _("Amount before tax")
+
+
 class PaymentTerm(AuditedModel, OrgOwnedModel):
     """A payment term of the organisation's master list (B-01-T05, gap-20): picked on contacts,
     invoices and bills instead of typing terms on every contact (Xero teardown §3.2).
@@ -1102,7 +1109,9 @@ class PaymentTerm(AuditedModel, OrgOwnedModel):
       is 0), *n* days after the end of the document month (EOM is 0), the *n*th of the following
       month, the *n*th of the current month;
     - ``discount_pct`` / ``discount_days`` — early-payment discount (2/10 net 30: 2 % if paid within
-      10 days), applied by E-07; the discount window is shorter than the term;
+      10 days), applied by E-07; the discount window is shorter than the term; ``discount_base``
+      — a percent of the document total (with tax, the default) or of the amount before tax
+      (E-07-T01);
     - ``late_interest_pct`` — annual interest on overdue amounts (FN-04 adds how it is charged);
     - ``code`` — the seed's stable key (``net_30``) for terms created with the organisation; empty
       for terms people add. Names are per language (``name_i18n``) like account names.
@@ -1126,6 +1135,13 @@ class PaymentTerm(AuditedModel, OrgOwnedModel):
         _("early-payment discount (%)"), max_digits=5, decimal_places=2, default=Decimal("0")
     )
     discount_days = models.PositiveSmallIntegerField(_("discount if paid within (days)"), default=0)
+    discount_base = models.CharField(
+        _("discount is a percent of"),
+        max_length=8,
+        choices=DiscountBase.choices,
+        default=DiscountBase.TOTAL,
+        db_default=DiscountBase.TOTAL,
+    )
     late_interest_pct = models.DecimalField(
         _("late interest (% a year)"), max_digits=6, decimal_places=3, default=Decimal("0")
     )
@@ -1161,6 +1177,10 @@ class PaymentTerm(AuditedModel, OrgOwnedModel):
             ),
             models.CheckConstraint(
                 condition=_in("status", ContactStatus), name="contacts_payment_term_status_valid"
+            ),
+            models.CheckConstraint(
+                condition=_in("discount_base", DiscountBase),
+                name="contacts_payment_term_discount_base_valid",
             ),
         ]
 

@@ -581,6 +581,15 @@
    "tax": "sales"
   },
   {
+   "code": "4020",
+   "name": "Sales discounts given",
+   "subtype": "revenue",
+   "gifi": "8000",
+   "tax": "none",
+   "system_role": "sales_discounts",
+   "note": "Early-payment discounts customers take (2/10 net 30), a reduction of sales (E-07)."
+  },
+  {
    "code": "4500",
    "name": "Interest income",
    "subtype": "other_income",
@@ -651,6 +660,15 @@
    "subtype": "cost_of_sales",
    "gifi": "8458",
    "tax": "none"
+  },
+  {
+   "code": "5050",
+   "name": "Purchase discounts received",
+   "subtype": "cost_of_sales",
+   "gifi": "8320",
+   "tax": "none",
+   "system_role": "purchase_discounts",
+   "note": "Early-payment discounts taken on bills, a reduction of purchases (E-07)."
   },
   {
    "code": "6000",

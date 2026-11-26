@@ -292,3 +292,18 @@ def unmapped_gifi_count(organisation: Organisation) -> int:
         .exclude(status="archived")
         .count()
     )
+
+
+#: The system roles of the early-payment discount accounts, by document side (E-07-T03).
+DISCOUNT_ROLES = {"sales": SystemRole.SALES_DISCOUNTS, "purchase": SystemRole.PURCHASE_DISCOUNTS}
+
+
+def discount_account(organisation: Organisation, side: str, *, actor: Any = None) -> Account:
+    """The account early-payment discounts post to — *Sales discounts given* (invoices) or
+    *Purchase discounts received* (bills) — added from the template to a chart that predates it
+    (E-07-T03), in the organisation's home province."""
+    from numo9.orgsettings.service import get_settings
+
+    with org_context(organisation):
+        province = get_settings(organisation).physical_province or "ON"
+    return ensure_system_account(organisation, DISCOUNT_ROLES[side], province=province, actor=actor)
