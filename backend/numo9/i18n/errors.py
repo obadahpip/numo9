@@ -738,6 +738,15 @@ WORKSPACE_VIEW_LIMIT = define(
     _("You have %(max)s saved views, the most allowed. Delete one you no longer use first."),
 )
 
+WORKSPACE_UNKNOWN_LIST = define(
+    "workspace.unknown_list",
+    _("Views can't be saved for %(value)s: there's no list with that name."),
+)
+WORKSPACE_BAD_VIEW_VALUE = define(
+    "workspace.bad_view_value",
+    _("%(value)s isn't a valid value for %(name)s in a saved view."),
+)
+
 # ---- notifications and email (A-07) ------------------------------------------------------------
 NOTIFICATIONS_CATEGORY_LOCKED = define(
     "notifications.category_locked",

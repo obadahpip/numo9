@@ -12,7 +12,7 @@ from django.db import IntegrityError, transaction
 from rest_framework.test import APIClient
 
 from numo9.workspace.models import SavedView
-from numo9.workspace.views_api import MAX_VIEWS
+from numo9.workspace.saved_views import MAX_VIEWS
 from tests.workspace_helpers import member, practice, user
 
 pytestmark = pytest.mark.django_db

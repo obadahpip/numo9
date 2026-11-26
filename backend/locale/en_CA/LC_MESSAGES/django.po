@@ -3647,6 +3647,14 @@ msgstr ""
 msgid "You have %(max)s saved views, the most allowed. Delete one you no longer use first."
 msgstr ""
 
+#, python-format
+msgid "Views can't be saved for %(value)s: there's no list with that name."
+msgstr ""
+
+#, python-format
+msgid "%(value)s isn't a valid value for %(name)s in a saved view."
+msgstr ""
+
 msgid "Security notifications can't be turned off: they tell you about sign-ins and changes to your account."
 msgstr ""
 
@@ -9560,12 +9568,6 @@ msgstr ""
 msgid "organisation directory rows"
 msgstr ""
 
-msgid "search and filters"
-msgstr ""
-
-msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
-msgstr ""
-
 msgid "Shown columns, in order."
 msgstr ""
 
@@ -9581,10 +9583,28 @@ msgstr ""
 msgid "opens by default"
 msgstr ""
 
+msgid "search and filters"
+msgstr ""
+
+msgid "{\"q\": \"maple\", \"province\": [\"ON\"], \"status\": [\"paid\"]}"
+msgstr ""
+
 msgid "saved directory view"
 msgstr ""
 
 msgid "saved directory views"
+msgstr ""
+
+msgid "list"
+msgstr ""
+
+msgid "The list's query: {\"tab\": \"overdue\", \"q\": \"maple\"}."
+msgstr ""
+
+msgid "saved list view"
+msgstr ""
+
+msgid "saved list views"
 msgstr ""
 
 msgid "organisation group"
@@ -9672,6 +9692,21 @@ msgid "See the practice's client organisations in the directory"
 msgstr ""
 
 msgid "Organise the practice's clients into groups and tags, and assign staff to groups"
+msgstr ""
+
+msgid "Invoices"
+msgstr ""
+
+msgid "Quotes"
+msgstr ""
+
+msgid "Credit notes"
+msgstr ""
+
+msgid "Payments received"
+msgstr ""
+
+msgid "Bank transactions"
 msgstr ""
 
 msgid "Give the tag a name."

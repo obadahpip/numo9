@@ -36,7 +36,7 @@ from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 from treebeard.mp_tree import MP_Node
 
-from numo9.tenancy.models import Organisation, Practice
+from numo9.tenancy.models import Organisation, OrgOwnedModel, Practice
 
 
 class DirectoryStatus(models.TextChoices):
@@ -141,14 +141,37 @@ class OrgDirectorySummary(models.Model):
         return f"{self.practice} → {self.name}"
 
 
-class SavedView(models.Model):
+class SavedViewFields(models.Model):
+    """What every saved list view holds (V-01-T08, generalised for D-09-T03): a name, the columns
+    shown and their order, the sort, the row density and whether it opens by default. The
+    search-and-filter ``filters`` JSON is declared by each concrete view (its help names its keys).
+    """
+
+    name = models.CharField(_("name"), max_length=80)
+    columns = models.JSONField(
+        _("columns"), default=list, blank=True, help_text=_("Shown columns, in order.")
+    )
+    sort = models.JSONField(
+        _("sort"), default=list, blank=True, help_text=_('["-overdue", "name"]')
+    )
+    density = models.CharField(
+        _("density"), max_length=16, choices=Density.choices, default=Density.COMFORTABLE
+    )
+    is_default = models.BooleanField(_("opens by default"), default=False)
+
+    class Meta:
+        abstract = True
+
+
+class SavedView(SavedViewFields):
     """A user's own named directory state in one practice (V-01-T08): search and filters, the
     columns shown and their order, the sort, the row density; one view can open by default.
 
     Personal: nobody else — not even a practice admin — lists, opens, changes or deletes it (the
     API answers 404). Stored on the server, so a view follows the user to another browser or
     device and survives logout/login. Not organisation data (it names filter values, not records):
-    allow-listed platform model, like the practice memberships it belongs to.
+    allow-listed platform model, like the practice memberships it belongs to. Its organisation-side
+    twin is ``SavedListView`` (D-09-T03): the same fields for the lists inside an organisation.
     """
 
     public_id = models.UUIDField(_("public ID"), default=uuid.uuid4, unique=True, editable=False)
@@ -164,23 +187,12 @@ class SavedView(models.Model):
         related_name="directory_views",
         verbose_name=_("practice"),
     )
-    name = models.CharField(_("name"), max_length=80)
     filters = models.JSONField(
         _("search and filters"),
         default=dict,
         blank=True,
         help_text=_('{"q": "maple", "province": ["ON"], "status": ["paid"]}'),
     )
-    columns = models.JSONField(
-        _("columns"), default=list, blank=True, help_text=_("Shown columns, in order.")
-    )
-    sort = models.JSONField(
-        _("sort"), default=list, blank=True, help_text=_('["-overdue", "name"]')
-    )
-    density = models.CharField(
-        _("density"), max_length=16, choices=Density.choices, default=Density.COMFORTABLE
-    )
-    is_default = models.BooleanField(_("opens by default"), default=False)
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     updated_at = models.DateTimeField(_("updated at"), auto_now=True)
 
@@ -203,6 +215,65 @@ class SavedView(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} · {self.practice} · {self.name}"
+
+
+class SavedListView(SavedViewFields, OrgOwnedModel):
+    """A user's own named state of one list inside an organisation (D-09-T03): "Overdue over
+    $5,000" on the invoices list, "Awaiting approval — Finance" on bills.
+
+    The organisation-side twin of the directory's ``SavedView`` (same fields, same rules): per
+    **user × organisation × list** (``list_key``, one of ``numo9.workspace.saved_views.LIST_KEYS``:
+    ``sales.invoices``, ``purchases.bills`` …); names unique per user and list (case ignored), one
+    default per user and list. Personal: another user — even an organisation admin — gets 404.
+    ``filters`` holds the list's own query parameters (``{"tab": "overdue", "q": "maple"}``);
+    each list validates the values when it applies them, so a view never breaks its list.
+    """
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,  # personal preferences go with the user
+        related_name="list_views",
+        verbose_name=_("user"),
+    )
+    list_key = models.CharField(_("list"), max_length=60)
+    filters = models.JSONField(
+        _("search and filters"),
+        default=dict,
+        blank=True,
+        help_text=_('The list\'s query: {"tab": "overdue", "q": "maple"}.'),
+    )
+
+    class Meta:
+        verbose_name = _("saved list view")
+        verbose_name_plural = _("saved list views")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                "organisation",
+                "user",
+                "list_key",
+                Lower("name"),
+                name="workspace_listview_name_unique",
+            ),
+            models.UniqueConstraint(
+                fields=("organisation", "user", "list_key"),
+                condition=models.Q(is_default=True),
+                name="workspace_listview_one_default",
+            ),
+            models.CheckConstraint(
+                condition=_in("density", Density), name="workspace_listview_density_valid"
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(list_key=""), name="workspace_listview_list_key"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=("organisation", "user", "list_key"), name="workspace_listview_user_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user_id} · {self.list_key} · {self.name}"
 
 
 # ---- groups (V-02) ---------------------------------------------------------------------------
