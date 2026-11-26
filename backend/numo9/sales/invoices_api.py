@@ -118,6 +118,7 @@ def invoice_row(invoice: Invoice) -> dict[str, Any]:
         "number": invoice.number,
         "status": invoice.status,
         "status_label": str(InvoiceStatus(invoice.status).label),
+        "is_opening": invoice.is_opening,
         "customer": {"id": str(invoice.contact.public_id), "name": invoice.contact.display_name},
         "reference": invoice.reference,
         "date": invoice.date.isoformat(),

@@ -6,12 +6,19 @@
   journals (C-05-T07), never a second session.
 - ``ConversionLine`` (C-05-T02) — one account's opening balance: a debit **or** a credit
   (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``).
+- ``OpeningDocument`` (C-05-T03) — links the session to an invoice or a bill **open at the
+  conversion date**: the document itself is an ordinary ``sales.Invoice`` / ``purchases.Bill``
+  with ``is_opening=True`` (so aging, statements and payments work on it as on any other), open
+  for what was still owed, with no journal of its own; its receivable or payable is posted by
+  the conversion's opening journal (C-05-T05). Exactly one of ``invoice`` / ``bill``;
+  ``outstanding`` is what it had open at the conversion date (what the AR/AP control line must
+  add up to — payments made in Numo9 afterwards don't change it).
 """
 
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import ClassVar
+from typing import Any, ClassVar
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -139,3 +146,61 @@ class ConversionLine(AuditedModel, OrgOwnedModel):
                 _("The conversion is finalised: correct it with a correcting opening journal."),
                 code="conversion.session.finalised",
             )
+
+
+class OpeningDocumentKind(models.TextChoices):
+    INVOICE = "invoice", _("Invoice")
+    BILL = "bill", _("Bill")
+
+
+class OpeningDocument(OrgOwnedModel):
+    session = models.ForeignKey(
+        ConversionSession,
+        on_delete=models.CASCADE,
+        related_name="documents",
+        verbose_name=_("conversion"),
+    )
+    kind = models.CharField(_("kind"), max_length=8, choices=OpeningDocumentKind.choices)
+    invoice = models.OneToOneField(
+        "sales.Invoice",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="opening_link",
+        verbose_name=_("invoice"),
+    )
+    bill = models.OneToOneField(
+        "purchases.Bill",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="opening_link",
+        verbose_name=_("bill"),
+    )
+    outstanding = models.DecimalField(
+        _("owed at the conversion date"), max_digits=18, decimal_places=2, default=ZERO
+    )
+
+    class Meta:
+        ordering = ("session", "kind", "pk")
+        verbose_name = _("opening document")
+        verbose_name_plural = _("opening documents")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(kind="invoice", invoice__isnull=False, bill__isnull=True)
+                    | models.Q(kind="bill", bill__isnull=False, invoice__isnull=True)
+                ),
+                name="conversion_document_one_target",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(outstanding__gt=0), name="conversion_document_outstanding"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return str(self.invoice or self.bill)
+
+    @property
+    def document(self) -> Any:
+        return self.invoice if self.kind == OpeningDocumentKind.INVOICE else self.bill

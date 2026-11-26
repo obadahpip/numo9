@@ -270,7 +270,10 @@ class Bill(DocumentBase):
     - holdback (construction): ``holdback_type`` none / amount / percent of the total and
       ``holdback_value``; ``holdback_amount`` is posted to Holdback payable instead of AP and
       ``holdback_released`` is what has been released to AP since (E-02-T06);
-    - ``purchase_order`` — the PO it bills (E-02-T08), if any.
+    - ``purchase_order`` — the PO it bills (E-02-T08), if any;
+    - ``is_opening`` — a bill unpaid at the conversion date (C-05-T03): entered with the
+      conversion balances, open (Awaiting payment / Partially paid) so payments and aging see
+      it, and **without a journal** — the conversion's opening journal carries the payable.
     """
 
     number = models.CharField(_("number"), max_length=40, blank=True)
@@ -302,6 +305,14 @@ class Bill(DocumentBase):
     )
     amount_paid = models.DecimalField(
         _("amount paid"), max_digits=18, decimal_places=2, default=Decimal("0")
+    )
+    is_opening = models.BooleanField(
+        _("opening balance"),
+        default=False,
+        help_text=_(
+            "A bill still unpaid at the conversion date, entered with the conversion balances: "
+            "it posts nothing itself (the opening journal carries Accounts payable)."
+        ),
     )
     journal_entry = models.OneToOneField(
         "ledger.JournalEntry",
@@ -368,11 +379,19 @@ class Bill(DocumentBase):
                 & models.Q(deleted_at__isnull=True),
                 name="purchases_bill_supplier_invoice_unique",
             ),
-            # A posted bill has its number and its journal; a draft has neither.
+            # A posted bill has its number and its journal; a draft has neither. An opening bill
+            # (C-05-T03) has its number and no journal of its own.
             models.CheckConstraint(
                 condition=~models.Q(status__in=sorted(BILL_POSTED_STATUSES))
-                | (~models.Q(number="") & models.Q(journal_entry__isnull=False)),
+                | (
+                    ~models.Q(number="")
+                    & (models.Q(journal_entry__isnull=False) | models.Q(is_opening=True))
+                ),
                 name="purchases_bill_posted_numbered",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(is_opening=False) | models.Q(journal_entry__isnull=True),
+                name="purchases_bill_opening_unposted",
             ),
         ]
         indexes: ClassVar[list[models.Index]] = [

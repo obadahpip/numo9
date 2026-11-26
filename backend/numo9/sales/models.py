@@ -4,9 +4,13 @@ Status: Draft → (Awaiting approval, when the organisation's rule asks, D-03a-T
 Sent → Partially paid → Paid, or Void. The **number** is allocated at approval, in the posting
 transaction (D-03a-T02) — a draft has none and shows "Draft"; a void invoice keeps its number.
 ``journal_entry`` is the posting of the approval (D-03a-T03), ``void_entry`` its reversal
-(D-03a-T07). ``current_revision`` is the latest ``InvoiceRevision`` once posted invoices become
-editable (D-03b fills it; empty until then). ``disputed`` (D-07-T07) — the customer disputes the
-invoice: reminders and late fees stop until it is resolved (``sales.disputes``).
+(D-03a-T07). ``is_opening`` (C-05-T03) marks an invoice open at the conversion date: entered with
+the conversion balances, numbered with the old system's number, open (Approved or Partially
+paid) so payments and aging see it, and **without a journal** — the opening journal of the
+conversion carries the receivable. ``current_revision`` is the latest ``InvoiceRevision`` once
+posted invoices become editable (D-03b fills it; empty until then). ``disputed`` (D-07-T07) — the
+customer disputes the invoice: reminders and late fees stop until it is resolved
+(``sales.disputes``).
 
 Credit notes (D-06-T01): ``CreditNote`` and ``CreditNoteLine`` on the same document base, numbered
 ``CN-0001`` at approval; optionally the invoice it credits ("Credit this invoice", D-06-T02).
@@ -66,6 +70,14 @@ class Invoice(DocumentBase):
     )
     notes = models.TextField(_("notes"), blank=True)
     amount_paid = _money(_("amount paid"))
+    is_opening = models.BooleanField(
+        _("opening balance"),
+        default=False,
+        help_text=_(
+            "An invoice still open at the conversion date, entered with the conversion balances: "
+            "it posts nothing itself (the opening journal carries Accounts receivable)."
+        ),
+    )
     journal_entry = models.OneToOneField(
         "ledger.JournalEntry",
         on_delete=models.PROTECT,
@@ -135,11 +147,19 @@ class Invoice(DocumentBase):
                 condition=~models.Q(number=""),
                 name="sales_invoice_number_unique",
             ),
-            # A posted invoice has its number and its journal; a draft has neither.
+            # A posted invoice has its number and its journal; a draft has neither. An opening
+            # invoice (C-05-T03) has its number and no journal of its own.
             models.CheckConstraint(
                 condition=~models.Q(status__in=sorted(POSTED_STATUSES))
-                | (~models.Q(number="") & models.Q(journal_entry__isnull=False)),
+                | (
+                    ~models.Q(number="")
+                    & (models.Q(journal_entry__isnull=False) | models.Q(is_opening=True))
+                ),
                 name="sales_invoice_posted_numbered",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(is_opening=False) | models.Q(journal_entry__isnull=True),
+                name="sales_invoice_opening_unposted",
             ),
             models.CheckConstraint(
                 condition=models.Q(amount_paid__gte=0), name="sales_invoice_paid_positive"

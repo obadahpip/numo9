@@ -2602,6 +2602,47 @@ msgstr ""
 msgid "Unknown role: %(roles)s."
 msgstr "Limite inconnue : %(names)s."
 
+msgid "Enter an amount."
+msgstr ""
+
+msgid "The conversion is finalised: correct it with a correcting opening journal."
+msgstr ""
+
+#, python-format
+msgid "An opening document is dated before the conversion date (%(date)s): enter documents raised from that date in Numo9."
+msgstr ""
+
+msgid "The due date can't be before the document's date."
+msgstr ""
+
+msgid "The total must be more than zero."
+msgstr ""
+
+msgid "What is still owed must be more than zero and no more than the total."
+msgstr ""
+
+#, python-format
+msgid "Opening balance at %(date)s"
+msgstr ""
+
+msgid "Enter the invoice's number in the old system."
+msgstr ""
+
+#, python-format
+msgid "There's already an invoice %(number)s."
+msgstr ""
+
+msgid "Enter the supplier's invoice number."
+msgstr ""
+
+#, python-format
+msgid "There's already a bill %(number)s from this supplier."
+msgstr ""
+
+#, python-format
+msgid "%(document)s has payments in Numo9: remove them first."
+msgstr ""
+
 msgid "Finalised"
 msgstr ""
 
@@ -2668,7 +2709,23 @@ msgstr ""
 msgid "Enter the account's balance as a debit or a credit."
 msgstr ""
 
-msgid "The conversion is finalised: correct it with a correcting opening journal."
+#, fuzzy
+#| msgid "Invoice"
+msgid "invoice"
+msgstr "Facture"
+
+#, fuzzy
+#| msgid "bills"
+msgid "bill"
+msgstr "factures fournisseurs"
+
+msgid "owed at the conversion date"
+msgstr ""
+
+msgid "opening document"
+msgstr ""
+
+msgid "opening documents"
 msgstr ""
 
 #, fuzzy
@@ -7081,6 +7138,13 @@ msgstr "Inviter des utilisateurs dans l’organisation"
 msgid "Holdback released"
 msgstr "Comptable"
 
+#, python-format
+msgid "%(bill)s can't be voided: %(why)s"
+msgstr ""
+
+msgid "it's an opening balance of the conversion — correct it with a correcting opening journal."
+msgstr ""
+
 msgid "remove its payments first."
 msgstr ""
 
@@ -7088,10 +7152,6 @@ msgid "reverse the holdback release first."
 msgstr ""
 
 msgid "only bills awaiting payment can be voided; delete a draft instead."
-msgstr ""
-
-#, python-format
-msgid "%(bill)s can't be voided: %(why)s"
 msgstr ""
 
 #, fuzzy, python-format
@@ -7433,15 +7493,16 @@ msgstr ""
 msgid "amount paid"
 msgstr "montant dû"
 
+msgid "opening balance"
+msgstr ""
+
+msgid "A bill still unpaid at the conversion date, entered with the conversion balances: it posts nothing itself (the opening journal carries Accounts payable)."
+msgstr ""
+
 #, fuzzy
 #| msgid "journal"
 msgid "void journal"
 msgstr "écriture"
-
-#, fuzzy
-#| msgid "bills"
-msgid "bill"
-msgstr "factures fournisseurs"
 
 msgid "bills"
 msgstr "factures fournisseurs"
@@ -8726,6 +8787,9 @@ msgstr "Choisissez, dans les paramètres des frais de retard, le compte de reven
 msgid "Late interest"
 msgstr "Intérêts de retard"
 
+msgid "An invoice still open at the conversion date, entered with the conversion balances: it posts nothing itself (the opening journal carries Accounts receivable)."
+msgstr ""
+
 #, fuzzy
 #| msgid "first seen"
 msgid "first viewed at"
@@ -8745,11 +8809,6 @@ msgstr "objet de la contestation"
 
 msgid "current revision"
 msgstr ""
-
-#, fuzzy
-#| msgid "Invoice"
-msgid "invoice"
-msgstr "Facture"
 
 #, fuzzy
 #| msgid "Invoice"

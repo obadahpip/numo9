@@ -361,6 +361,16 @@ def void(bill: Bill, user: Any, *, date: Any = None, reason: str = "") -> Bill:
     person = _person(user)
     with org_context(bill.organisation), transaction.atomic(), acting_as(person):
         locked = Bill._base_manager.select_for_update().get(pk=bill.pk)
+        if locked.is_opening:  # C-05-T03: it posted nothing; the opening journal carries it
+            raise _refuse(
+                _("%(bill)s can't be voided: %(why)s"),
+                "purchases.bill.not_voidable",
+                bill=str(locked),
+                why=_(
+                    "it's an opening balance of the conversion — correct it with a correcting "
+                    "opening journal."
+                ),
+            )
         if locked.status not in VOIDABLE or locked.amount_paid or locked.holdback_released:
             why = (
                 _("remove its payments first.")

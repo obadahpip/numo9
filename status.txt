@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 804   Remaining: 1983   Progress: 28.85%
+TOTAL ATOMIC TASKS: 2787   Completed: 805   Remaining: 1982   Progress: 28.88%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1044,7 +1044,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-02-T18 — Docs + i18n
 
 [C-05]
-❌ C-05-T03 — OpeningDocument link: opening invoices/bills stored as Invoice/Bill with is_opening=True, no revenue posting
+✅ C-05-T03 — OpeningDocument link: opening invoices/bills stored as Invoice/Bill with is_opening=True, no revenue posting
 ❌ C-05-T04 — Difference calculator service incl. AR/AP control vs documents check
 ❌ C-05-T05 — Finalise service: refuses if difference ≠ 0.00 or control ≠ documents; posts one opening JE (is_opening) atomically
 ❌ C-05-T06 — Optional "lock balances": set GL/AR/AP lock at conversion date − 1 on finalise
