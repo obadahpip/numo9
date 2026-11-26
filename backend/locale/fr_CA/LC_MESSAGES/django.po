@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 19:19-0500\n"
+"POT-Creation-Date: 2026-11-25 19:46-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8468,6 +8468,33 @@ msgid "Thank you for your business. Payment by cheque or e-Transfer."
 msgstr ""
 
 #, fuzzy
+#| msgid "Approved"
+msgid "approved"
+msgstr "Approuvée"
+
+#, fuzzy
+#| msgid "Voided"
+msgid "voided"
+msgstr "Annulée"
+
+#, fuzzy, python-format
+#| msgid "The %(module)s lock date is %(date)s (%(level)s): changes dated on or before it are refused. Date it after %(date)s, or ask someone who manages lock dates."
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, on or before the %(module)s lock date (%(lock)s, %(level)s). Date it after %(lock)s, or ask someone who manages lock dates."
+msgstr "La date de verrouillage %(module)s est le %(date)s (%(level)s) : les modifications datées de ce jour ou d’avant sont refusées. Datez-la après le %(date)s, ou demandez à une personne qui gère les dates de verrouillage."
+
+#, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
+msgstr ""
+
+#, fuzzy
+#| msgid "GST/HST cycle"
+msgid "GST/HST"
+msgstr "Périodicité TPS/TVH"
+
+msgid "QST"
+msgstr "TVQ"
+
+#, fuzzy
 #| msgid "Quotes, invoices and customers."
 msgid "See invoices, their PDF and emails"
 msgstr "Soumissions, factures et clients."
@@ -9023,9 +9050,6 @@ msgstr "TVH"
 
 msgid "PST"
 msgstr "TVP"
-
-msgid "QST"
-msgstr "TVQ"
 
 msgid "Sales and purchases"
 msgstr "Ventes et achats"
