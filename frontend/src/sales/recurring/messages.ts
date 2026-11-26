@@ -178,4 +178,90 @@ export const rim = defineMessages({
     description: "Load error",
   },
   retry: { id: "sales.recurring.retry", defaultMessage: "Try again", description: "Button" },
+  previewTitle: {
+    id: "sales.recurring.previewTitle",
+    defaultMessage: "Preview next invoice",
+    description: "Heading of the preview panel",
+  },
+  previewDate: {
+    id: "sales.recurring.previewDate",
+    defaultMessage: "For",
+    description: "Label of the occurrence date picker in the preview",
+  },
+  previewFailed: {
+    id: "sales.recurring.previewFailed",
+    defaultMessage: "The next invoice couldn't be previewed.",
+    description: "Preview error",
+  },
+  previewNone: {
+    id: "sales.recurring.previewNone",
+    defaultMessage: "The schedule has ended: there's no next invoice.",
+    description: "Preview of an ended template",
+  },
+  previewSkipped: {
+    id: "sales.recurring.previewSkipped",
+    defaultMessage: "This date will be skipped: {reason}",
+    description: "Preview warning: the occurrence would be skipped",
+  },
+  previewCustomer: {
+    id: "sales.recurring.previewCustomer",
+    defaultMessage: "Customer",
+    description: "Preview field",
+  },
+  previewInvoiceDate: {
+    id: "sales.recurring.previewInvoiceDate",
+    defaultMessage: "Invoice date",
+    description: "Preview field",
+  },
+  previewDue: {
+    id: "sales.recurring.previewDue",
+    defaultMessage: "Due date",
+    description: "Preview field",
+  },
+  previewPeriod: {
+    id: "sales.recurring.previewPeriod",
+    defaultMessage: "Period billed",
+    description: "Preview field",
+  },
+  previewPeriodValue: {
+    id: "sales.recurring.previewPeriodValue",
+    defaultMessage: "{start} to {end}",
+    description: "The period an invoice bills",
+  },
+  previewProrated: {
+    id: "sales.recurring.previewProrated",
+    defaultMessage: "Prorated: {covered} of {days} days",
+    description: "Badge on a prorated preview",
+  },
+  previewLines: {
+    id: "sales.recurring.previewLines",
+    defaultMessage: "Lines of the next invoice",
+    description: "Table caption",
+  },
+  previewDescription: {
+    id: "sales.recurring.previewDescription",
+    defaultMessage: "Description",
+    description: "Column",
+  },
+  previewQuantity: {
+    id: "sales.recurring.previewQuantity",
+    defaultMessage: "Qty",
+    description: "Column",
+  },
+  previewAmount: {
+    id: "sales.recurring.previewAmount",
+    defaultMessage: "Amount",
+    description: "Column",
+  },
+  previewSubtotal: {
+    id: "sales.recurring.previewSubtotal",
+    defaultMessage: "Subtotal",
+    description: "Preview total row",
+  },
+  previewTax: { id: "sales.recurring.previewTax", defaultMessage: "Tax", description: "Row" },
+  previewTotal: {
+    id: "sales.recurring.previewTotal",
+    defaultMessage: "Total",
+    description: "Preview total row",
+  },
 });
