@@ -8,7 +8,9 @@
 - ``approve(claim, user)`` — only a claim awaiting approval; **never by its claimant or by whoever
   submitted it** (``purchases.expense.self_approval``), and only within the approver's
   expense-claim approval limit (A-03: no limit → no approval, above it → the people who may).
-  The reimbursement bill is E-04-T06.
+  In the same transaction the **reimbursement bill** to the employee's contact is created and
+  posted, crediting Unpaid expense claims (E-04-T06, ``expense_reimbursement``); if it can't be
+  posted (a locked period, a missing category) the approval is refused as a whole.
 - ``reject(claim, user, reason)`` — a reason is required; the same segregation rule applies.
 
 Each step is audited (``purchases.expenseclaim.submitted`` / ``approved`` / ``rejected``).
@@ -142,6 +144,9 @@ def approve(claim: ExpenseClaim, user: Any) -> ExpenseClaim:
             organisation=locked.organisation,
             exclude=[p for p in (locked.claimant, locked.submitted_by) if p is not None],
         )
+        from .expense_reimbursement import create_reimbursement_bill
+
+        bill = create_reimbursement_bill(locked, person)
         locked.status = ExpenseClaimStatus.APPROVED
         locked.decided_by = person
         locked.decided_at = timezone.now()
@@ -150,7 +155,7 @@ def approve(claim: ExpenseClaim, user: Any) -> ExpenseClaim:
             "purchases.expenseclaim.approved",
             obj=locked,
             changes={"status": [ExpenseClaimStatus.SUBMITTED, locked.status]},
-            meta={"number": locked.number, "total": f"{locked.total:.2f}"},
+            meta={"number": locked.number, "total": f"{locked.total:.2f}", "bill": bill.number},
             actor=person,
         )
         return locked

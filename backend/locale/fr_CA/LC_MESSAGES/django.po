@@ -7168,6 +7168,24 @@ msgstr ""
 msgid "Say why the claim is rejected."
 msgstr ""
 
+msgid "Add an Unpaid expense claims account to the chart of accounts to reimburse claims."
+msgstr ""
+
+#, python-format
+msgid "Mileage %(date)s: %(trip)s"
+msgstr ""
+
+msgid "Choose a category for every line of the claim."
+msgstr ""
+
+#, python-format
+msgid "Reimbursement of expense claim %(number)s"
+msgstr ""
+
+#, python-format
+msgid "Expense claim %(number)s — %(contact)s"
+msgstr ""
+
 #, python-format
 msgid "No mileage rate is set for %(day)s."
 msgstr ""
