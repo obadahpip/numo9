@@ -8606,6 +8606,10 @@ msgid "%(document)s can't be %(action)s: it is dated %(date)s, on or before the 
 msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s, à la date de verrouillage %(module)s (%(lock)s, %(level)s) ou avant. Datez-la après le %(lock)s, ou demandez à une personne qui gère les dates de verrouillage."
 
 #, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Ask someone who manages lock dates to unlock the period, or save the revision as a late adjustment: its tax difference goes on the next open return."
+msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s, dans la période de %(registration)s %(start)s – %(end)s, produite (confirmation %(number)s). Demandez à une personne qui gère les dates de verrouillage de déverrouiller la période, ou enregistrez la révision comme redressement tardif : son écart de taxe sera reporté sur la prochaine déclaration ouverte."
+
+#, python-format
 msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
 msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s, dans la période de %(registration)s %(start)s – %(end)s, produite (confirmation %(number)s). Datez-la dans une période ouverte : la taxe d’une période produite ne change que par un redressement tardif ou une déclaration modifiée."
 

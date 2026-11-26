@@ -12,7 +12,9 @@ it — a date that is:
   a sales-tax control account): code ``sales.invoice.filed_period`` — "… it is dated 15 Mar 2026,
   in the GST/HST period 1 Jan 2026 – 31 Mar 2026, filed (confirmation GH-2026-0001). …"; on or
   before another Tax lock date: ``sales.invoice.tax_locked``. Inside ``late_adjustments()`` the
-  document posts knowingly (its tax goes to the next open return, G-03-T08).
+  document posts knowingly (its tax goes to the next open return, G-03-T08). A revision
+  (``action="revise"``, D-03b-T10) is told its two ways out: unlock the period, or save it as a
+  late adjustment.
 
 The posting engine applies the same rules again (C-02 lock dates, the Tax lock guard G-03-T07):
 this check runs first so the refusal names the invoice and nothing — not even a number — is used.
@@ -114,13 +116,22 @@ def assert_postable(
         if period is None:
             continue
         filed = period.returns.filter(status="filed").order_by("-version").first()
-        raise PeriodRefused(
-            _(
+        if action == "revise":
+            text = _(
+                "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s "
+                "period %(start)s – %(end)s, filed (confirmation %(number)s). Ask someone who "
+                "manages lock dates to unlock the period, or save the revision as a late "
+                "adjustment: its tax difference goes on the next open return."
+            )
+        else:
+            text = _(
                 "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s "
                 "period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open "
                 "period: the tax of a filed period changes only by a late adjustment or an "
                 "amended return."
             )
+        raise PeriodRefused(
+            text
             % {
                 "document": _label(document),
                 "action": _verb(action),

@@ -7817,6 +7817,10 @@ msgid "%(document)s can't be %(action)s: it is dated %(date)s, on or before the 
 msgstr ""
 
 #, python-format
+msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Ask someone who manages lock dates to unlock the period, or save the revision as a late adjustment: its tax difference goes on the next open return."
+msgstr ""
+
+#, python-format
 msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
 msgstr ""
 

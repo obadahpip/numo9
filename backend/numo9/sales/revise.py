@@ -97,9 +97,11 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
     1. lock the invoice and compare the version the draft was opened at (T06: conflict, 409);
     2. validate the change (T05) — a void invoice isn't revised;
     3. write the draft on the invoice rows and recalculate them (the server's figures);
-    4. the AR lock and the filed-period rule on the invoice date (D-03a-T04: named refusals;
-       ``late_adjustment`` posts into a filed period, its tax difference reported on the next
-       open return, G-03-T08);
+    4. the lock rules (D-03b-T10) on the invoice date **and** on the date of the version it
+       reverses: the AR lock refuses, naming it, late or not; a filed GST/HST (QST) period
+       refuses naming the period and its confirmation — unless the period is unlocked or
+       ``late_adjustment`` is set: then the journals post into the filed period and their tax
+       difference is reported on the next open return (T11, G-03-T08);
     5. **reverse** the previous revision's journal (on its own date: the old posting nets to
        zero where it was) and **post** the new revision's journal (on the invoice date), through
        the posting engine;
@@ -179,6 +181,11 @@ def revise(invoice: Invoice, draft: Any, user: Any = None, *, late_adjustment: b
         posted = previous.journal_post or locked.journal_entry
         if posted is None:  # pragma: no cover — a posted invoice has its journal (DB check)
             raise RevisionRefused(_("The invoice has no posted journal."), code="sales.revision")
+        # T10: the reversal posts on the previous version's date — the same lock rules apply there
+        # (an invoice dated in a filed period can't move out of it without a late adjustment).
+        assert_postable(
+            locked, posted.lines.select_related("account"), posted.date, person, "revise"
+        )
         reversal = reverse(
             posted,
             date=posted.date,
