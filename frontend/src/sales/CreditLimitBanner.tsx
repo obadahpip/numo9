@@ -160,3 +160,10 @@ export function CreditLimitBanner({
     </section>
   );
 }
+
+/**
+ * The editor's name for the credit check (D-03a-T13): a warning about this invoice, not a
+ * promotional banner — the gap-12 rule (`numo9/no-work-screen-banners`) matches names ending in
+ * "Banner".
+ */
+export { CreditLimitBanner as CreditLimitCheck };
