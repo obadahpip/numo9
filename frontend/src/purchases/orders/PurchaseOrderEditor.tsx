@@ -38,6 +38,8 @@ import { useTaxDefaults } from "@/documents/useTaxDefaults";
 import { useFormatMessage } from "@/i18n";
 import { taxApi, type TaxCode } from "@/tax/api";
 
+import { billUrl } from "../BillEditor";
+
 import {
   purchaseOrdersApi,
   type PurchaseOrder,
@@ -298,6 +300,19 @@ export function PurchaseOrderEditor({ org, id, navigate }: Readonly<PurchaseOrde
       else setStatus(saved.status === "draft" ? fm(m.saved) : fm(m.changesSaved));
     }
     setBusy(false);
+  };
+
+  const createBill = async () => {
+    if (!order || busy) return;
+    setBusy(true);
+    setRefusal(null);
+    const result = await purchaseOrdersApi.billFromOrder(org, order.id);
+    setBusy(false);
+    if (result.status === 201 && result.body.id) {
+      const href = billUrl(org, result.body.id);
+      if (navigate) navigate(href);
+      else window.location.assign(href);
+    } else refuse(result);
   };
 
   const end = async (action: "cancel" | "close") => {
@@ -575,6 +590,16 @@ export function PurchaseOrderEditor({ org, id, navigate }: Readonly<PurchaseOrde
         {editable && approvedAlready ? (
           <Button type="submit" variant="primary" disabled={busy}>
             {busy ? fm(m.saving) : fm(m.saveChanges)}
+          </Button>
+        ) : null}
+        {order && APPROVED.includes(order.status) ? (
+          <Button
+            type="button"
+            variant="secondary"
+            disabled={busy}
+            onClick={() => void createBill()}
+          >
+            {fm(m.createBill)}
           </Button>
         ) : null}
         {order && order.status !== "draft" && !ended ? (

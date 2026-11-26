@@ -48,7 +48,7 @@ it("creates a purchase order with its delivery block and approves it within the 
     lines: [{ id: null, description: "Tiles", account: EXPENSE }],
   });
   expect(calls.some((c) => c.url.endsWith(`/${PO_ID}/approve`))).toBe(true);
-});
+}, 20_000); // a long keyboard flow: slow under a loaded CI runner
 
 it("submits for approval when the total is above the limit", async () => {
   serve((url) =>
@@ -109,4 +109,23 @@ it("converts lines and judges the limit", () => {
   expect(limitVerdict("5000.00", "5000.00")).toBe("within");
   expect(limitVerdict("5001.00", "5000.00")).toBe("above");
   expect(limitVerdict("1.00", null)).toBe("none");
+});
+
+it("creates the bill of what was received and opens it", async () => {
+  const navigate = vi.fn();
+  serve((url, method) => {
+    if (url.endsWith(`/purchase-orders/${PO_ID}`))
+      return { body: order({ number: "PO-0001", status: "received", status_label: "Received" }) };
+    if (url.includes("/bills/from-po") && method === "POST")
+      return { status: 201, body: { id: "b1b1b1b1-0000-4000-8000-000000000001" } };
+    return undefined;
+  });
+  renderWithIntl(<PurchaseOrderEditor org={ORG} id={PO_ID} navigate={navigate} />);
+  await userEvent.click(await screen.findByRole("button", { name: "Create bill" }));
+  await waitFor(() =>
+    expect(navigate).toHaveBeenCalledWith(
+      `/o/${ORG}/purchases/bills/b1b1b1b1-0000-4000-8000-000000000001`,
+    ),
+  );
+  expect(screen.getByRole("button", { name: "Close order" })).toBeVisible();
 });

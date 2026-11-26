@@ -305,3 +305,86 @@ export const receive = defineMessages({
     description: "Banner",
   },
 });
+
+/** Purchase order list (E-01-T13). */
+export const list = defineMessages({
+  title: {
+    id: "purchases.po.list.title",
+    defaultMessage: "Purchase orders",
+    description: "Heading",
+  },
+  tabs: {
+    id: "purchases.po.list.tabs",
+    defaultMessage: "Purchase orders by status",
+    description: "Accessible name of the tab list",
+  },
+  all: { id: "purchases.po.list.all", defaultMessage: "All", description: "Tab" },
+  newOrder: {
+    id: "purchases.po.list.new",
+    defaultMessage: "New purchase order",
+    description: "Link",
+  },
+  commitments: {
+    id: "purchases.po.list.commitments",
+    defaultMessage: "Commitments",
+    description: "Link to the commitment report",
+  },
+  search: {
+    id: "purchases.po.list.search",
+    defaultMessage: "Search by number, reference or supplier",
+    description: "Search field",
+  },
+  number: { id: "purchases.po.list.number", defaultMessage: "Number", description: "Column" },
+  supplier: { id: "purchases.po.list.supplier", defaultMessage: "Supplier", description: "Column" },
+  date: { id: "purchases.po.list.date", defaultMessage: "Date", description: "Column" },
+  delivery: {
+    id: "purchases.po.list.delivery",
+    defaultMessage: "Delivery",
+    description: "Column: delivery date",
+  },
+  total: { id: "purchases.po.list.total", defaultMessage: "Total", description: "Column" },
+  status: { id: "purchases.po.list.status", defaultMessage: "Status", description: "Column" },
+  actions: { id: "purchases.po.list.actions", defaultMessage: "Actions", description: "Column" },
+  draft: {
+    id: "purchases.po.list.draftNumber",
+    defaultMessage: "Draft",
+    description: "Number cell of a PO without a number",
+  },
+  receive: {
+    id: "purchases.po.list.receive",
+    defaultMessage: "Receive {number}",
+    description: "Row action",
+  },
+  createBill: {
+    id: "purchases.po.list.createBill",
+    defaultMessage: "Create bill from {number}",
+    description: "Row action",
+  },
+  empty: {
+    id: "purchases.po.list.empty",
+    defaultMessage: "No purchase orders here.",
+    description: "Empty tab",
+  },
+  loadFailed: {
+    id: "purchases.po.list.loadFailed",
+    defaultMessage: "The purchase orders couldn't be loaded",
+    description: "Error title",
+  },
+  retry: { id: "purchases.po.list.retry", defaultMessage: "Try again", description: "Button" },
+  billFailed: {
+    id: "purchases.po.list.billFailed",
+    defaultMessage: "The bill couldn't be created.",
+    description: "Error",
+  },
+  more: {
+    id: "purchases.po.list.more",
+    defaultMessage: "Page {page} of {pages}",
+    description: "Pagination",
+  },
+  next: { id: "purchases.po.list.next", defaultMessage: "Next page", description: "Button" },
+  previous: {
+    id: "purchases.po.list.previous",
+    defaultMessage: "Previous page",
+    description: "Button",
+  },
+});
