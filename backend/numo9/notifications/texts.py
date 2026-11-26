@@ -172,6 +172,24 @@ register_text(
     _("Its schedule has no more dates: no more invoices will be created."),
 )
 
+# ---- recurring bills (E-03-T02) ---------------------------------------------------------------
+
+register_text(
+    "notifications.purchases.recurring.failed",
+    _("Recurring bill %(name)s needs attention"),
+    _("The bill of %(date)s was created but not approved: %(reason)s"),
+)
+register_text(
+    "notifications.purchases.recurring.skipped",
+    _("Recurring bill %(name)s skipped %(date)s"),
+    _("No bill was created for %(date)s: %(reason)s"),
+)
+register_text(
+    "notifications.purchases.recurring.ended",
+    _("Recurring bill %(name)s has ended"),
+    _("Its schedule has no more dates: no more bills will be created."),
+)
+
 # ---- filing periods (G-03a-T17) ---------------------------------------------------------------
 
 register_text(

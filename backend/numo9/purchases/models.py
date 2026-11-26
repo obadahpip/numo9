@@ -40,6 +40,7 @@ from numo9.documents.models import (
     DiscountType,
     DocumentBase,
     DocumentLineBase,
+    RecurringRunBase,
     TaxMode,
 )
 from numo9.tenancy.models import OrgOwnedModel
@@ -744,6 +745,38 @@ class RecurringBillLine(DocumentLineBase):
         constraints: ClassVar[list[models.BaseConstraint]] = [
             *DocumentLineBase.line_constraints("purch_recurline"),
         ]
+
+
+class RecurringBillRun(RecurringRunBase):
+    """One occurrence of a recurring bill (E-03-T02): unique per (template, date) — the
+    idempotency row of the shared generator; ``document`` is the bill it created (``None`` when
+    the date was skipped)."""
+
+    template = models.ForeignKey(
+        RecurringBillTemplate,
+        on_delete=models.CASCADE,
+        related_name="runs",
+        verbose_name=_("recurring bill"),
+    )
+    document = models.OneToOneField(
+        Bill,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="recurring_run",
+        verbose_name=_("bill"),
+    )
+
+    class Meta(RecurringRunBase.Meta):
+        abstract = False
+        verbose_name = _("recurring bill run")
+        verbose_name_plural = _("recurring bill runs")
+        constraints: ClassVar[list[models.BaseConstraint]] = RecurringRunBase.run_constraints(
+            "purch_recur_run"
+        )
+
+    def __str__(self) -> str:
+        return f"{self.template} · {self.occurrence_date}"
 
 
 # ---- expense claims (E-04) ---------------------------------------------------------------------

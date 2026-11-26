@@ -6088,6 +6088,29 @@ msgid "Its schedule has no more dates: no more invoices will be created."
 msgstr "Son calendrier n’a plus de dates : aucune autre facture ne sera créée."
 
 #, python-format
+msgid "Recurring bill %(name)s needs attention"
+msgstr "La facture fournisseur récurrente %(name)s demande votre attention"
+
+#, python-format
+msgid "The bill of %(date)s was created but not approved: %(reason)s"
+msgstr "La facture fournisseur du %(date)s a été créée mais pas approuvée : %(reason)s"
+
+#, python-format
+msgid "Recurring bill %(name)s skipped %(date)s"
+msgstr "La facture fournisseur récurrente %(name)s a sauté le %(date)s"
+
+#, python-format
+msgid "No bill was created for %(date)s: %(reason)s"
+msgstr "Aucune facture fournisseur n’a été créée pour le %(date)s : %(reason)s"
+
+#, python-format
+msgid "Recurring bill %(name)s has ended"
+msgstr "La facture fournisseur récurrente %(name)s est terminée"
+
+msgid "Its schedule has no more dates: no more bills will be created."
+msgstr "Son calendrier n’a plus de dates : aucune autre facture fournisseur ne sera créée."
+
+#, python-format
 msgid "%(registration)s return due %(due_date)s"
 msgstr "Déclaration %(registration)s à produire le %(due_date)s"
 
@@ -7315,6 +7338,12 @@ msgstr "ligne de facture fournisseur récurrente"
 msgid "recurring bill lines"
 msgstr "lignes de factures fournisseurs récurrentes"
 
+msgid "recurring bill run"
+msgstr "exécution de facture fournisseur récurrente"
+
+msgid "recurring bill runs"
+msgstr "exécutions de factures fournisseurs récurrentes"
+
 msgid "Reimbursed"
 msgstr "Remboursée"
 
@@ -7460,6 +7489,10 @@ msgstr "%(journal)s a le statut « %(status)s » : seuls les brouillons peuvent 
 
 msgid "Say why the receipt is reversed."
 msgstr ""
+
+#, python-format
+msgid "The bill needs approval before it is posted: %(why)s"
+msgstr "La facture fournisseur doit être approuvée avant d’être comptabilisée : %(why)s"
 
 #, python-format
 msgid "amount over %(low)s up to %(high)s"

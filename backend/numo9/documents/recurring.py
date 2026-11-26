@@ -108,6 +108,23 @@ def first_run(template: Any) -> dt.date | None:
     return dates[0] if dates else None
 
 
+def _open_rule(rule: str) -> str:
+    """The rule without its own COUNT / UNTIL — the cadence only."""
+    text = rule.strip()
+    if text.upper().startswith("RRULE:"):
+        text = text[6:]
+    return ";".join(p for p in text.split(";") if not p.upper().startswith(("COUNT=", "UNTIL=")))
+
+
+def period_of(template: Any, day: dt.date) -> tuple[dt.date, dt.date]:
+    """The period the occurrence on ``day`` covers: from its date to the day before the
+    cadence's next date (neither the end date nor the rule's own COUNT / UNTIL cut it)."""
+    following = engine.occurrences(
+        _open_rule(template.rrule), template.start_date, after=day, limit=1
+    )
+    return day, following[0] - dt.timedelta(days=1)
+
+
 class GenerationFailed(RuntimeError):
     """Some templates failed unexpectedly during a tick (logged); the others were generated."""
 

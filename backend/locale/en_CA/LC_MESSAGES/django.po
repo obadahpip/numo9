@@ -5684,6 +5684,29 @@ msgid "Its schedule has no more dates: no more invoices will be created."
 msgstr ""
 
 #, python-format
+msgid "Recurring bill %(name)s needs attention"
+msgstr ""
+
+#, python-format
+msgid "The bill of %(date)s was created but not approved: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring bill %(name)s skipped %(date)s"
+msgstr ""
+
+#, python-format
+msgid "No bill was created for %(date)s: %(reason)s"
+msgstr ""
+
+#, python-format
+msgid "Recurring bill %(name)s has ended"
+msgstr ""
+
+msgid "Its schedule has no more dates: no more bills will be created."
+msgstr ""
+
+#, python-format
 msgid "%(registration)s return due %(due_date)s"
 msgstr ""
 
@@ -6758,6 +6781,12 @@ msgstr ""
 msgid "recurring bill lines"
 msgstr ""
 
+msgid "recurring bill run"
+msgstr ""
+
+msgid "recurring bill runs"
+msgstr ""
+
 msgid "Reimbursed"
 msgstr ""
 
@@ -6895,6 +6924,10 @@ msgid "%(order)s is %(status)s: its receipts can't be reversed."
 msgstr ""
 
 msgid "Say why the receipt is reversed."
+msgstr ""
+
+#, python-format
+msgid "The bill needs approval before it is posted: %(why)s"
 msgstr ""
 
 #, python-format

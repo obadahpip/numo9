@@ -152,6 +152,19 @@ register_event(
     "sales.recurring_invoice.ended", C.JOBS, title_key="notifications.sales.recurring.ended"
 )
 
+# ---- recurring bills (E-03-T02): the shared generator's events ---------------------------------
+register_event(
+    "purchases.recurring_bill.failed", C.JOBS, title_key="notifications.purchases.recurring.failed"
+)
+register_event(
+    "purchases.recurring_bill.skipped",
+    C.JOBS,
+    title_key="notifications.purchases.recurring.skipped",
+)
+register_event(
+    "purchases.recurring_bill.ended", C.JOBS, title_key="notifications.purchases.recurring.ended"
+)
+
 # ---- filing periods (G-03a-T17) ---------------------------------------------------------------
 register_event("tax.filing.due_soon", C.REMINDERS, title_key="notifications.tax.filing.due_soon")
 register_event("tax.filing.overdue", C.REMINDERS, title_key="notifications.tax.filing.overdue")
