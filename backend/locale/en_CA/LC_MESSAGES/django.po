@@ -2540,6 +2540,15 @@ msgstr ""
 msgid "%(code)s is already on row %(row)d."
 msgstr ""
 
+msgid "GST/HST"
+msgstr ""
+
+msgid "QST"
+msgstr ""
+
+msgid "No tax or filing deadline is coming up."
+msgstr ""
+
 msgid "Owner or admin"
 msgstr ""
 
@@ -8136,12 +8145,6 @@ msgstr ""
 
 #, python-format
 msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
-msgstr ""
-
-msgid "GST/HST"
-msgstr ""
-
-msgid "QST"
 msgstr ""
 
 msgid "See invoices, their PDF and emails"

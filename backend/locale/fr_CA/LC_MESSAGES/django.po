@@ -2712,6 +2712,15 @@ msgstr "%(account)s a des sous-comptes : choisissez-en un."
 msgid "%(code)s is already on row %(row)d."
 msgstr "%(name)s est déjà téléversé."
 
+msgid "GST/HST"
+msgstr "TPS/TVH"
+
+msgid "QST"
+msgstr "TVQ"
+
+msgid "No tax or filing deadline is coming up."
+msgstr "Aucune échéance fiscale ou de production à venir."
+
 msgid "Owner or admin"
 msgstr "Propriétaire ou administrateur"
 
@@ -8922,12 +8931,6 @@ msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s,
 #, python-format
 msgid "%(document)s can't be %(action)s: it is dated %(date)s, in the %(registration)s period %(start)s – %(end)s, filed (confirmation %(number)s). Date it in an open period: the tax of a filed period changes only by a late adjustment or an amended return."
 msgstr "%(document)s ne peut pas être %(action)s : elle est datée du %(date)s, dans la période de %(registration)s %(start)s – %(end)s, produite (confirmation %(number)s). Datez-la dans une période ouverte : la taxe d’une période produite ne change que par un redressement tardif ou une déclaration modifiée."
-
-msgid "GST/HST"
-msgstr "TPS/TVH"
-
-msgid "QST"
-msgstr "TVQ"
 
 msgid "See invoices, their PDF and emails"
 msgstr "Voir les factures, leur PDF et leurs courriels"
