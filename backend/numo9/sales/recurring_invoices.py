@@ -29,7 +29,14 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 
 from numo9.documents import due_dates
-from numo9.documents.recurring import REFUSALS, Outcome, RecurringGenerator, Skip, reason
+from numo9.documents.recurring import (
+    REFUSALS,
+    Outcome,
+    RecurringGenerator,
+    Skip,
+    reason,
+    register,
+)
 from numo9.ledger import recurring as engine
 from numo9.orgsettings.models import LockModule
 
@@ -273,7 +280,7 @@ class RecurringInvoiceGenerator(RecurringGenerator):
         return f"/o/{template.organisation.public_id}/sales/recurring-invoices/{template.public_id}"
 
 
-GENERATOR = RecurringInvoiceGenerator()
+GENERATOR = register("invoices", RecurringInvoiceGenerator())  # manage.py replay_ticks
 
 
 def generate_due(organisation: Any, today: dt.date) -> list[Any]:

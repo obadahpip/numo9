@@ -42,6 +42,8 @@ class SalesConfig(AppConfig):
 
         from numo9.tenancy.sweep import SWEEP_FACTORIES
 
+        from . import recurring_invoices  # noqa: F401  (the "invoices" generator, D-04-T11)
+
         SWEEP_FACTORIES["sales.Invoice"] = _sweep_invoice
         SWEEP_FACTORIES["sales.Quote"] = _sweep_quote  # the quotes API (D-02-T11)
         SWEEP_FACTORIES["sales.RecurringInvoiceTemplate"] = _sweep_recurring_invoice

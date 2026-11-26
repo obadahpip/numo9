@@ -112,6 +112,15 @@ def reason(error: BaseException) -> tuple[str, str]:
     return str(code or "invalid"), " ".join(str(m) for m in messages)
 
 
+#: The generators by kind (``invoices``, ``bills``) — what ``manage.py replay_ticks`` replays.
+GENERATORS: dict[str, RecurringGenerator] = {}
+
+
+def register(kind: str, generator: RecurringGenerator) -> RecurringGenerator:
+    GENERATORS[kind] = generator
+    return generator
+
+
 class RecurringGenerator:
     """The generator of one kind of recurring document (module docstring)."""
 
