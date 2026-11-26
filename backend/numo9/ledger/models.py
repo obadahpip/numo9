@@ -816,6 +816,12 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
     def is_locked(self) -> bool:
         return self.status in LOCKED_STATUSES
 
+    @property
+    def is_opening(self) -> bool:
+        """An opening-balance journal: the conversion's opening journal or a correction of it
+        (C-05-T05, T07)."""
+        return self.type == JournalType.OPENING
+
     def lock_applies(self, stored: dict[str, Any] | None) -> bool:
         """Lock dates apply when the entry is being posted (A-05-T06)."""
         was = stored["status"] if stored is not None else None

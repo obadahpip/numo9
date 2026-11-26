@@ -2658,6 +2658,17 @@ msgstr ""
 msgid "%(document)s has payments in Numo9: remove them first."
 msgstr ""
 
+msgid "The chart has no Retained earnings account to open the year's result to."
+msgstr ""
+
+#, python-format
+msgid "Prior years' result (revenue and expenses at %(date)s)"
+msgstr ""
+
+#, python-format
+msgid "Opening balances at %(date)s"
+msgstr ""
+
 msgid "Finalised"
 msgstr ""
 
@@ -2678,6 +2689,9 @@ msgstr ""
 #| msgid "finished at"
 msgid "finalised at"
 msgstr "terminée le"
+
+msgid "opening journal"
+msgstr ""
 
 #, fuzzy
 #| msgid "version"

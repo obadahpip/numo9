@@ -33,3 +33,21 @@ def conversion_books(name: str = "Refined Interiors Inc.") -> dict[str, Any]:
 def acct(books: dict[str, Any], code: str) -> Account:
     found: Account = books["accounts"][code]
     return found
+
+
+def posted_entry(org: Any) -> Any:
+    """A posted journal of ``org`` (chequing 1.00 / sales 1.00): what a finalised conversion
+    points to (``conversion_finalised_posted``) in tests that mark a session finalised directly."""
+    from numo9.ledger.services import post_journal
+    from tests.journal_helpers import chart, pay
+
+    with org_context(org):
+        accounts = {a.code: a for a in Account.objects.filter(code__in=["1000", "4000"])}
+        if len(accounts) < 2:
+            made = chart(org)
+            accounts = {"1000": made["chequing"], "4000": made["sales"]}
+        return post_journal(
+            pay(accounts["1000"], accounts["4000"], "1.00", CONVERSION_DATE),
+            organisation=org,
+            user=None,
+        )

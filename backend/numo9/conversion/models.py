@@ -1,9 +1,10 @@
 """Conversion balances (C-05).
 
 - ``ConversionSession`` (C-05-T01) — the organisation's conversion: its date, status (draft →
-  finalised), who finalised it and when. **One per organisation** (a second is refused by the
-  database, ``conversion_one_per_org``); corrections after finalising are correcting opening
-  journals (C-05-T07), never a second session.
+  finalised), who finalised it and when, and the opening journal finalising posted
+  (``opening_entry``, C-05-T05: a finalised conversion has one). **One per organisation** (a
+  second is refused by the database, ``conversion_one_per_org``); corrections after finalising
+  are correcting opening journals (C-05-T07), never a second session.
 - ``ConversionLine`` (C-05-T02) — one account's opening balance: a debit **or** a credit
   (``conversion_line_one_side``), one line per account (``conversion_line_one_per_account``).
 - ``OpeningDocument`` (C-05-T03) — links the session to an invoice or a bill **open at the
@@ -53,6 +54,14 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
         verbose_name=_("finalised by"),
     )
     finalised_at = models.DateTimeField(_("finalised at"), null=True, blank=True)
+    opening_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="conversion",
+        verbose_name=_("opening journal"),
+    )
 
     class Meta:
         verbose_name = _("conversion")
@@ -70,6 +79,10 @@ class ConversionSession(AuditedModel, OrgOwnedModel):
             models.CheckConstraint(
                 condition=models.Q(status="draft") | models.Q(finalised_at__isnull=False),
                 name="conversion_finalised_dated",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status="draft") | models.Q(opening_entry__isnull=False),
+                name="conversion_finalised_posted",
             ),
         ]
 
