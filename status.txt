@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 817   Remaining: 1970   Progress: 29.31%
+TOTAL ATOMIC TASKS: 2787   Completed: 818   Remaining: 1969   Progress: 29.35%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1094,7 +1094,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [K-09]
 ✅ K-09-T01 — Rule catalogue specification (code, condition, parameters, severity, fix template) signed off by the client
-❌ K-09-T02 — Wireframes: assurance page, finding detail, proposed-fix drawer, rule settings, heatmap
+✅ K-09-T02 — Wireframes: assurance page, finding detail, proposed-fix drawer, rule settings, heatmap
 ❌ K-09-T03 — Models: ExceptionRuleConfig (org, rule_code, enabled, severity, params JSON), ExceptionFinding (rule_code, subject type/id, fingerprint, amount, details JSON, status, first_seen, last_seen, resolved_at, ack_by, reason), ExceptionRun
 ❌ K-09-T04 — Rule plug-in framework: base class, registry, parameter schema validation, evaluate(org, scope) → findings, propose_fix(finding) → draft JE payload
 ❌ K-09-T05 — Runner: full run (Celery), incremental run triggered by posting events (affected accounts/documents only), dedupe/reopen logic
