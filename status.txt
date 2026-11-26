@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 834   Remaining: 1953   Progress: 29.92%
+TOTAL ATOMIC TASKS: 2787   Completed: 835   Remaining: 1952   Progress: 29.96%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1111,7 +1111,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-09-T16 — Fix-to-draft service: converts propose_fix payload into a Draft journal (C-04) linked to the finding; posting resolves the finding
 ✅ K-09-T17 — Finding workflow: acknowledge, false positive with reason, resolve (auto when condition clears); audit
 ✅ K-09-T18 — Assurance score (weighted by severity, 0–100) and summary per org; practice-level aggregation hook for V-04
-❌ K-09-T19 — User-activity heatmap data from A-04 counts
+✅ K-09-T19 — User-activity heatmap data from A-04 counts
 ❌ K-09-T20 — API /api/v1/assurance (findings, run, rules config, fix, heatmap); feature key accounting.assurance; permissions
 ❌ K-09-T21 — Assurance page UI: score, filters, grouped findings, plain-language explanation, actions
 ❌ K-09-T22 — Proposed-fix drawer with editable draft journal grid and reasoning text
