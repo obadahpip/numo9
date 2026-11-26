@@ -9,7 +9,8 @@ ORG = "o/<uuid:org>/"
 PO = f"{ORG}purchase-orders/<uuid:public_id>"
 GRN = f"{ORG}receipts/<uuid:public_id>"
 BILL = f"{ORG}bills/<uuid:public_id>"
-CLAIM = f"{ORG}expense-claims/<uuid:public_id>"
+CLAIMS = f"{ORG}expense-claims"
+CLAIM = f"{CLAIMS}/<uuid:public_id>"
 
 urlpatterns = [
     path(f"{ORG}purchase-orders", po_api.PurchaseOrderListView.as_view(), name="purchase-orders"),
@@ -41,7 +42,23 @@ urlpatterns = [
     path(f"{BILL}/approve", api.BillApproveView.as_view(), name="bill-approve"),
     path(f"{BILL}/void", api.BillVoidView.as_view(), name="bill-void"),
     path(f"{BILL}/release-holdback", api.BillReleaseHoldbackView.as_view(), name="bill-release"),
+    path(CLAIMS, expense_api.ExpenseClaimListView.as_view(), name="expense-claims"),
+    path(
+        f"{CLAIMS}/categories",
+        expense_api.ExpenseCategoriesView.as_view(),
+        name="expense-categories",
+    ),
+    path(
+        f"{CLAIMS}/mileage-rate", expense_api.MileageRateView.as_view(), name="expense-mileage-rate"
+    ),
+    path(f"{CLAIMS}/receipts", expense_api.ReceiptUploadView.as_view(), name="expense-receipts"),
+    path(
+        f"{CLAIMS}/receipts/<uuid:public_id>/finalize",
+        expense_api.ReceiptFinalizeView.as_view(),
+        name="expense-receipt-finalize",
+    ),
     path(CLAIM, expense_api.ExpenseClaimDetailView.as_view(), name="expense-claim"),
+    path(f"{CLAIM}/submit", expense_api.ExpenseClaimSubmitView.as_view(), name="expense-submit"),
     path(f"{CLAIM}/approve", expense_api.ExpenseClaimApproveView.as_view(), name="expense-approve"),
     path(f"{CLAIM}/reject", expense_api.ExpenseClaimRejectView.as_view(), name="expense-reject"),
 ]

@@ -126,6 +126,7 @@ def test_functional_roles_start_small() -> None:
                 "sales.quotes.view",
                 "sales.quotes.manage",
                 "reports.reports.view",
+                "purchases.expenses.own",  # self-service (E-04-T08)
             },
         ),
         (
@@ -142,6 +143,7 @@ def test_functional_roles_start_small() -> None:
                 "purchases.expenses.view",
                 "purchases.expenses.write",
                 "purchases.expenses.approve",
+                "purchases.expenses.own",
                 "reports.reports.view",
             },
         ),
@@ -157,9 +159,18 @@ def test_functional_roles_start_small() -> None:
         "organisation.profile.view",
         "documents.file.view",
         "reports.reports.view",
+        "purchases.expenses.own",
     }
-    assert grants("organisation", "hr") == {"organisation.profile.view", "documents.file.view"}
-    assert grants("organisation", "employee") == {"organisation.profile.view"}
+    assert grants("organisation", "hr") == {
+        "organisation.profile.view",
+        "documents.file.view",
+        "purchases.expenses.own",
+    }
+    # Employees: their own expense claims (self-service, E-04-T08).
+    assert grants("organisation", "employee") == {
+        "organisation.profile.view",
+        "purchases.expenses.own",
+    }
 
 
 def test_platform_roles() -> None:
@@ -213,7 +224,10 @@ def test_sync_grants_permissions_declared_later_and_removes_dropped_ones(
     assert "payroll.payrun.post" in grants("organisation", "payroll")
     assert "payroll.payrun.post" in grants("practice", "payroll_specialist")
     assert "payroll.payrun.post" not in grants("organisation", "sales")
-    assert grants("organisation", "employee") == {"organisation.profile.view"}
+    assert grants("organisation", "employee") == {
+        "organisation.profile.view",
+        "purchases.expenses.own",
+    }
 
     for key in ("sales.invoice.view", "sales.invoice.approve", "sales.invoice.void"):
         catalogue.unregister(key)
@@ -232,4 +246,8 @@ def test_sync_is_idempotent_and_restores_a_deleted_role() -> None:
     out = StringIO()
     call_command("sync_system_roles", stdout=out)
     assert "1 created" in out.getvalue()
-    assert grants("organisation", "hr") == {"organisation.profile.view", "documents.file.view"}
+    assert grants("organisation", "hr") == {
+        "organisation.profile.view",
+        "documents.file.view",
+        "purchases.expenses.own",
+    }

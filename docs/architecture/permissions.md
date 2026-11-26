@@ -78,11 +78,11 @@ custom role for anything else).
 | organisation | Owner (`owner`) | every organisation permission |
 | organisation | Admin (`admin`) | every organisation permission except owner-only (`organisation.close`, `organisation.billing.view`, `organisation.billing.manage`) |
 | organisation | Accountant delegate (`accountant_delegate`) | everything except critical, users read-only |
-| organisation | Sales (`sales`) | sales and contacts (not critical); read-only reports and documents |
+| organisation | Sales (`sales`) | sales and contacts (not critical); read-only reports and documents; their own expense claims |
 | organisation | Purchasing (`purchasing`) | purchases and contacts (not critical); read-only inventory, reports, documents |
-| organisation | Payroll (`payroll`) | payroll (not critical); read-only reports and documents |
-| organisation | HR (`hr`) | HR (not critical); read-only documents |
-| organisation | Employee (`employee`) | the organisation's details (self-service comes with Phase 3) |
+| organisation | Payroll (`payroll`) | payroll (not critical); read-only reports and documents; their own expense claims |
+| organisation | HR (`hr`) | HR (not critical); read-only documents; their own expense claims |
+| organisation | Employee (`employee`) | the organisation's details; their own expense claims (`purchases.expenses.own`, E-04); pay stubs and leave come with Phase 3 |
 
 Every practice and organisation role includes `organisation.profile.view`. "Critical" and
 "read-only" come from the catalogue (`risk`, actions `view`/`export`). Today the functional roles
