@@ -216,3 +216,63 @@ test("the changed-since banner recalculates from the books", async ({ page }) =>
   await expect(banner).toBeHidden();
   expect(state.posts.at(-1)?.path).toBe(`/${ID}/recalculate`);
 });
+
+test("review, mark as filed: the period is locked; amend starts version 2", async ({ page }) => {
+  const state = await mock(page, taxReturn());
+  await page.goto(`/o/${ORG}/tax/returns/${ID}`);
+  await page.getByRole("button", { name: "Mark as reviewed" }).click();
+  await expect(page.getByText("Review (current step)")).toBeVisible();
+
+  await page.getByRole("button", { name: "Mark as filed" }).click();
+  const dialog = page.getByRole("dialog", { name: "Mark the return as filed" });
+  await dialog.getByRole("button", { name: "Mark as filed" }).click();
+  await expect(dialog.getByRole("alert")).toHaveText("Required");
+  await dialog.getByRole("textbox", { name: "Confirmation number" }).fill("GH-2026-0001");
+  await dialog.getByLabel("Filed on").fill("2026-07-20");
+  await expectAccessible(page);
+  await dialog.getByRole("button", { name: "Mark as filed" }).click();
+  await expect(dialog).toBeHidden();
+  expect(state.posts.at(-1)).toEqual({
+    path: `/${ID}/file`,
+    body: { confirmation_no: "GH-2026-0001", filed_on: "2026-07-20" },
+  });
+  const filed = page.getByTestId("return-filed");
+  await expect(filed).toContainText("Filed on 20 Jul 2026 · confirmation GH-2026-0001");
+  await expect(filed.getByRole("img", { name: "Locked: filed" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Amount for line 110" })).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Amend" }).click();
+  const amend = page.getByRole("dialog", { name: "Amend the filed return" });
+  await amend.getByRole("textbox", { name: "Why is it amended?" }).fill("Missed a bill");
+  await amend.getByRole("button", { name: "Amend" }).click();
+  await expect(page).toHaveURL(new RegExp(`/tax/returns/${V2}$`));
+  expect(state.posts.at(-1)).toEqual({ path: `/${ID}/amend`, body: { reason: "Missed a bill" } });
+  await expect(page.getByTestId("return-versions")).toContainText("Filed · version 1");
+
+  await page.goto(`/o/${ORG}/tax/returns`);
+  await expect(
+    page.locator('tr[data-period="2026-06-01"]').getByTestId("period-lock"),
+  ).toBeVisible();
+});
+
+test("the filing timeline shows the lock on a filed period", async ({ page }) => {
+  await mock(page, null);
+  await mockCsrf(page);
+  await page.route(`**/api/v1/o/${ORG}/tax/registrations/${REG}/periods`, (r) =>
+    r.fulfill({
+      json: {
+        registration: { id: REG, type: "rt", number: "123456782RT0001", start_date: "2026-01-01" },
+        today: "2026-07-25",
+        results: [period("filed")],
+      },
+    }),
+  );
+  await page.route(`**/api/v1/o/${ORG}/tax/registrations/${REG}/cycles`, (r) =>
+    r.fulfill({ json: { results: [] } }),
+  );
+  await page.route(`**/api/v1/o/${ORG}/tax/registrations/${REG}/events`, (r) =>
+    r.fulfill({ json: { events: [], gaps: [], stopped: false, stop_date: null } }),
+  );
+  await page.goto(`/o/${ORG}/settings/tax/registrations/${REG}/filing`);
+  await expect(page.getByTestId("period-lock")).toHaveCount(1);
+});

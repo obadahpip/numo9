@@ -123,11 +123,6 @@ export const retm = defineMessages({
     description: "Column heading",
   },
   amount: { id: "tax.returns.amount", defaultMessage: "Amount", description: "Column heading" },
-  lineNumber: {
-    id: "tax.returns.lineNumber",
-    defaultMessage: "Line {line}",
-    description: "A line of the return",
-  },
   showDocuments: {
     id: "tax.returns.showDocuments",
     defaultMessage: "Show the documents behind line {line}",
@@ -299,11 +294,6 @@ export const retm = defineMessages({
     id: "tax.returns.amendReason",
     defaultMessage: "Why is it amended?",
     description: "Field label",
-  },
-  amended: {
-    id: "tax.returns.amended",
-    defaultMessage: "Amendment started as version {version}.",
-    description: "Notice",
   },
   notCurrent: {
     id: "tax.returns.notCurrent",

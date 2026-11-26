@@ -19,12 +19,13 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
-import { listRegistrations, type Registration } from "@/settings/general/registrations";
+import type { Registration } from "@/settings/general/registrations";
 import { useFormatMessage } from "@/i18n";
 import { filingApi, type FilingPeriod } from "@/tax/filing/api";
 
 import { returnUrl, returnsApi, type TaxReturn } from "./api";
 import { retm } from "./messages";
+import { returnRegistrations } from "./registrations";
 
 export function ReturnsScreen({ org }: { org: string }) {
   const fm = useFormatMessage();
@@ -40,7 +41,7 @@ export function ReturnsScreen({ org }: { org: string }) {
 
   const loadRegistrations = useCallback(async () => {
     setFailed(false);
-    const answer = await listRegistrations(org);
+    const answer = await returnRegistrations(org);
     if (answer.status !== 200 || !answer.body) return setFailed(true);
     const filing = answer.body.filter((r) => r.type === "rt");
     setRegistrations(filing);

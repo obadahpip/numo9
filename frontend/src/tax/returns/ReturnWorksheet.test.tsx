@@ -14,6 +14,7 @@ import { ReturnWorksheet } from "./ReturnWorksheet";
  * stepper, the changed-since banner with Recalculate, and the drill-down drawer listing the
  * documents behind a line (their total = the line).
  */
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 afterEach(() => vi.unstubAllGlobals());
 
 const DOCS = [

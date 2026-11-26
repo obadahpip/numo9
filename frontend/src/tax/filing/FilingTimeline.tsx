@@ -11,7 +11,7 @@
  * restart (open-ended while stopped), with a stop marker at its start and a restart marker at
  * its end.
  */
-import { CloseIcon, Tooltip, formatDate, type AppLocale } from "@numo9/ui";
+import { CloseIcon, LockIcon, Tooltip, formatDate, type AppLocale } from "@numo9/ui";
 import { useLocale } from "next-intl";
 
 import { useFormatMessage } from "@/i18n";
@@ -177,7 +177,12 @@ export function FilingTimeline({
             }`}
           >
             <span className="sr-only">{label}</span>
-            <span aria-hidden="true" className="font-semibold">
+            <span aria-hidden="true" className="inline-flex items-center gap-1 font-semibold">
+              {state === "filed" ? (
+                <span data-testid="period-lock" className="inline-flex">
+                  <LockIcon />
+                </span>
+              ) : null}
               {period.sequence_no}
             </span>
             <span aria-hidden="true" className="truncate">

@@ -283,6 +283,27 @@ export function ReturnWorksheet({ org, id }: ReturnWorksheetProps) {
         <ReturnActions org={org} data={data} onChange={show} />
       </div>
 
+      {data.versions && data.versions.length > 1 ? (
+        <section aria-labelledby="return-versions" className="text-sm">
+          <h2 id="return-versions" className="font-semibold">
+            {fm(retm.versions)}
+          </h2>
+          <ul data-testid="return-versions">
+            {data.versions.map((v) => (
+              <li key={v.id}>
+                {v.id === data.id ? (
+                  fm(retm.statusVersion, { status: v.status, version: v.version })
+                ) : (
+                  <Link href={returnUrl(org, v.id)}>
+                    {fm(retm.statusVersion, { status: v.status, version: v.version })}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       <LineDrillDrawer org={org} returnId={id} line={drill} onClose={() => setDrill(null)} />
     </div>
   );
