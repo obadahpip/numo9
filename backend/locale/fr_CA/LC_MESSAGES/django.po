@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 20:12-0500\n"
+"POT-Creation-Date: 2026-11-25 20:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8181,8 +8181,28 @@ msgstr "numéro de facture"
 msgid "revision"
 msgstr "décision"
 
+#, fuzzy
+#| msgid "number"
+msgid "number shown"
+msgstr "numéro"
+
 msgid "snapshot"
 msgstr ""
+
+#, fuzzy
+#| msgid "release reason"
+msgid "reversal journal"
+msgstr "motif de libération"
+
+#, fuzzy
+#| msgid "journal"
+msgid "posted journal"
+msgstr "écriture"
+
+#, fuzzy
+#| msgid "suspended at"
+msgid "superseded at"
+msgstr "suspendu le"
 
 #, fuzzy
 #| msgid "Quotes, invoices and customers."
@@ -8574,6 +8594,11 @@ msgstr ""
 msgid "Thank you for your business. Payment by cheque or e-Transfer."
 msgstr ""
 
+#, fuzzy
+#| msgid "Preview"
+msgid "revised"
+msgstr "Aperçu"
+
 msgid "approved"
 msgstr "approuvée"
 
@@ -8691,12 +8716,70 @@ msgstr "Montant dû (%(currency)s)"
 msgid "Standard reminders"
 msgstr "rappels d’essai"
 
+#, fuzzy, python-format
+#| msgid "Someone else saved this invoice: reload it to see their changes."
+msgid "Someone else revised %(invoice)s since you opened it: reload it to see their changes."
+msgstr "Une autre personne a enregistré cette facture : rechargez-la pour voir ses modifications."
+
+#, python-format
+msgid "%(invoice)s can't be revised: only a posted invoice that isn't void can."
+msgstr ""
+
+msgid "Every line with an amount needs an account before the revision is saved."
+msgstr ""
+
+msgid "An invoice's total stays above zero: credit the customer with a credit note."
+msgstr ""
+
+#, python-format
+msgid "%(paid)s is already paid on this invoice: a revision can't bring its total below that."
+msgstr ""
+
+msgid "The invoice has no posted journal."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Invite users to the organisation"
+msgid "Reversal of invoice %(number)s, revised as %(revision)s"
+msgstr "Inviter des utilisateurs dans l’organisation"
+
 msgid "Superseded"
 msgstr "Remplacée"
 
 #, python-format
 msgid "Revision %(n)d of invoice %(number)s"
 msgstr "Révision %(n)d de la facture %(number)s"
+
+#, fuzzy
+#| msgid "Say why the return is amended."
+msgid "Say why the invoice is revised."
+msgstr "Indiquez pourquoi la déclaration est modifiée."
+
+#, fuzzy
+#| msgid "The file has no lines."
+msgid "This field can't be changed on a revision."
+msgstr "Le fichier ne contient aucune ligne."
+
+msgid "The currency of a posted invoice can't change: void it and invoice again."
+msgstr ""
+
+msgid "Payments or credits are applied to this invoice: remove them before changing the customer."
+msgstr ""
+
+#, fuzzy
+#| msgid "Add at least one line."
+msgid "A revision keeps at least one line."
+msgstr "Ajoutez au moins une ligne."
+
+#, fuzzy, python-format
+#| msgid "Add at least one line."
+msgid "%(field)s can't be set on a line."
+msgstr "Ajoutez au moins une ligne."
+
+#, fuzzy, python-format
+#| msgid "%(name)s isn't a supplier."
+msgid "%(field)s is not a number."
+msgstr "%(name)s n’est pas un fournisseur."
 
 #, fuzzy
 #| msgid "Credit note"

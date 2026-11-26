@@ -33,7 +33,9 @@ def test_revision_event_has_diffs_reason_and_journals() -> None:
         Invoice._base_manager.filter(pk=invoice.pk).update(reference="PO 7781-B")
         invoice = Invoice.objects.get(pk=invoice.pk)
         after = pdf_snapshot(invoice, dt.date(2026, 11, 3))
-        revision = InvoiceRevision(organisation=org, invoice=invoice, revision=1, snapshot=after)
+        revision = InvoiceRevision(
+            organisation=org, invoice=invoice, revision=1, snapshot=after, reason="Price agreed"
+        )
         revision.save()
         posted = invoice.journal_entry
         event = record_revision_event(

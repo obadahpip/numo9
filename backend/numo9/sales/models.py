@@ -170,14 +170,47 @@ class InvoiceLine(DocumentLineBase):
 
 
 class InvoiceRevision(OrgOwnedModel):
-    """A posted invoice's revision (D-03b fills these; here so ``current_revision`` can point at
-    one): its number within the invoice, a snapshot of header and lines, and its journal."""
+    """A posted invoice's revision (D-03b-T02, ADR-0006): revision 0 at first approval, then 1,
+    2… for each edit of the posted invoice — ``number_display`` "101", "101-1"; a ``snapshot``
+    of the header and lines with the totals as it was issued; the ``reason`` of the edit; the
+    journal it reversed (``journal_reversal``: the reversal of the previous revision's posting)
+    and the journal it posted (``journal_post``); ``superseded_at`` once a later revision
+    replaces it. The invoice rows always hold the current revision."""
 
     invoice = models.ForeignKey(
         Invoice, on_delete=models.CASCADE, related_name="revisions", verbose_name=_("invoice")
     )
     revision = models.PositiveIntegerField(_("revision"))
+    number_display = models.CharField(_("number shown"), max_length=50, blank=True, db_default="")
     snapshot = models.JSONField(_("snapshot"), default=dict)
+    total = models.DecimalField(
+        _("total"),
+        max_digits=18,
+        decimal_places=2,
+        default=Decimal("0.00"),
+        db_default=Decimal("0"),
+    )
+    tax_total = models.DecimalField(
+        _("tax"), max_digits=18, decimal_places=2, default=Decimal("0.00"), db_default=Decimal("0")
+    )
+    reason = models.TextField(_("reason"), blank=True, db_default="")
+    journal_reversal = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="reversed_invoice_revision",
+        verbose_name=_("reversal journal"),
+    )
+    journal_post = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="posted_invoice_revision",
+        verbose_name=_("posted journal"),
+    )
+    superseded_at = models.DateTimeField(_("superseded at"), null=True, blank=True)
 
     class Meta:
         ordering = ("invoice", "revision")
@@ -187,10 +220,18 @@ class InvoiceRevision(OrgOwnedModel):
             models.UniqueConstraint(
                 fields=["invoice", "revision"], name="sales_invoice_revision_unique"
             ),
+            models.CheckConstraint(
+                condition=models.Q(revision=0) | ~models.Q(reason=""),
+                name="sales_invoice_revision_reason",
+            ),
         ]
 
     def __str__(self) -> str:
-        return f"{self.invoice} r{self.revision}"
+        return self.number_display or f"{self.invoice} r{self.revision}"
+
+    @property
+    def is_current(self) -> bool:
+        return self.superseded_at is None
 
 
 class InvoiceEmail(OrgOwnedModel):

@@ -169,6 +169,10 @@ def approve(invoice: Invoice, user: Any) -> Invoice:
         locked.approved_at = timezone.now()
         locked.version += 1
         locked.save()
+        # D-03b-T03: revision 0 — every posted invoice has a current revision.
+        from .revisions import start_revisions
+
+        start_revisions(locked, entry, person)
         locked.credit_warning = credit.message  # type: ignore[attr-defined]
         return locked
 

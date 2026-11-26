@@ -11,14 +11,25 @@
   values (header fields, totals, tax per component, and each line added, removed or changed),
   the reason, and the ids and numbers of the reversed and posted journals.
   ``field_diffs(before, after)`` computes the changes from two snapshots.
+- ``document_snapshot(invoice)`` / ``start_revisions(invoice, entry, user)`` (D-03b-T03) — the
+  invoice as entered (header, lines, totals) and revision 0 at first approval;
+  ``backfill_revision_zero(apps)`` gives one to posted invoices approved before.
+- ``build_revision(invoice)`` (D-03b-T04) — the current revision cloned into an editable
+  ``RevisionDraft``; ``draft.document()`` is its snapshot form (equal to the current revision's
+  until something is changed).
+- ``validate_revision(invoice, draft)`` (D-03b-T05) — the rules of a revision, refused with an
+  error per field (``RevisionInvalid``).
 """
 
 from __future__ import annotations
 
+import copy
 import datetime as dt
+from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any
 
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
 from .models import Invoice, InvoiceRevision
@@ -203,3 +214,212 @@ def stamp_context(invoice: Invoice, revision: InvoiceRevision) -> dict[str, Any]
         }
         context["revision_superseded_on"] = issued_on(previous) if previous else None
     return context
+
+
+# ---- the document snapshot and revision 0 (D-03b-T03, T04) --------------------------------------
+
+#: The header fields a revision keeps (and the revision builder restores, D-03b-T04).
+DOCUMENT_FIELDS = (
+    "contact_id", "date", "due_date", "terms_id", "reference", "currency", "tax_mode",
+    "ship_to_country", "ship_to_province", "discount_type", "discount_value", "notes",
+)  # fmt: skip
+DOCUMENT_LINE_FIELDS = (
+    "position", "item_id", "description", "quantity", "unit_price", "discount_type",
+    "discount_value", "account_id", "tax_code_id", "tax_overridden", "tracking",
+)  # fmt: skip
+TOTAL_FIELDS = ("subtotal", "discount_total", "tax_total", "total")
+
+
+def document_snapshot(invoice: Any) -> dict[str, Any]:
+    """The invoice as entered — header, lines and totals — packed (amounts and dates tagged)."""
+    lines = invoice.lines.order_by("position", "pk")
+    packed: dict[str, Any] = _pack(
+        {
+            "header": {name: getattr(invoice, name) for name in DOCUMENT_FIELDS},
+            "lines": [
+                {name: getattr(line, name) for name in DOCUMENT_LINE_FIELDS} for line in lines
+            ],
+            "totals": {name: getattr(invoice, name) for name in TOTAL_FIELDS},
+        }
+    )
+    return packed
+
+
+def revision_snapshot(invoice: Any, issued: dt.date | None = None) -> dict[str, Any]:
+    """What a revision keeps: the document as entered and the PDF as issued."""
+    return {"document": document_snapshot(invoice), **pdf_snapshot(invoice, issued)}
+
+
+def start_revisions(invoice: Any, entry: Any, user: Any = None) -> InvoiceRevision:
+    """Revision 0 of an invoice just approved (D-03b-T03): its snapshot and the journal of the
+    approval; ``current_revision`` points at it."""
+    revision = InvoiceRevision(
+        organisation=invoice.organisation,
+        invoice=invoice,
+        revision=0,
+        number_display=display_number(invoice.number, 0),
+        snapshot=revision_snapshot(invoice),
+        total=invoice.total,
+        tax_total=invoice.tax_total,
+        journal_post=entry,
+        created_by=user if getattr(user, "is_authenticated", False) else None,
+    )
+    revision.save()
+    type(invoice)._base_manager.filter(pk=invoice.pk).update(current_revision=revision)
+    invoice.current_revision = revision
+    return revision
+
+
+#: Statuses of a posted invoice (every one has a current revision).
+POSTED = ("approved", "sent", "partially_paid", "paid", "void")
+
+
+def backfill_revision_zero(apps: Any) -> int:
+    """Revision 0 for every posted invoice that has none (the data migration, D-03b-T03): the
+    document snapshot from the invoice's rows, its totals and the approval journal. Returns how
+    many it created. ``apps`` is a migration's app registry (or ``django.apps.apps``)."""
+    invoices = apps.get_model("sales", "Invoice")
+    revisions = apps.get_model("sales", "InvoiceRevision")
+    invoice_lines = apps.get_model("sales", "InvoiceLine")
+    made = 0
+    for invoice in invoices._base_manager.filter(
+        status__in=POSTED, current_revision__isnull=True
+    ).iterator():
+        lines = invoice_lines._base_manager.filter(document_id=invoice.pk).order_by(
+            "position", "pk"
+        )
+        snapshot = {
+            "document": _pack(
+                {
+                    "header": {name: getattr(invoice, name) for name in DOCUMENT_FIELDS},
+                    "lines": [
+                        {name: getattr(line, name) for name in DOCUMENT_LINE_FIELDS}
+                        for line in lines
+                    ],
+                    "totals": {name: getattr(invoice, name) for name in TOTAL_FIELDS},
+                }
+            ),
+            "issued_on": (
+                invoice.approved_at.date() if invoice.approved_at else invoice.date
+            ).isoformat(),
+        }
+        revision = revisions._base_manager.create(
+            organisation_id=invoice.organisation_id,
+            invoice_id=invoice.pk,
+            revision=0,
+            number_display=invoice.number,
+            snapshot=snapshot,
+            total=invoice.total,
+            tax_total=invoice.tax_total,
+            journal_post_id=invoice.journal_entry_id,
+            created_by_id=invoice.approved_by_id,
+        )
+        invoices._base_manager.filter(pk=invoice.pk).update(current_revision=revision)
+        made += 1
+    return made
+
+
+# ---- the revision builder (D-03b-T04) -----------------------------------------------------------
+
+
+@dataclass
+class RevisionDraft:
+    """A posted invoice opened for revision: its current revision's header and lines, editable in
+    memory (nothing is written until the revision is saved, D-03b-T07). ``base_version`` is the
+    invoice's version when opened — the optimistic-concurrency token (D-03b-T06)."""
+
+    invoice_id: int
+    revision: int  # the revision it was cloned from
+    base_version: int
+    header: dict[str, Any]
+    lines: list[dict[str, Any]]
+    totals: dict[str, Any]
+    reason: str = ""
+
+    def document(self) -> dict[str, Any]:
+        """The draft in the snapshot's form (packed)."""
+        packed: dict[str, Any] = _pack(
+            {"header": self.header, "lines": self.lines, "totals": self.totals}
+        )
+        return packed
+
+
+def build_revision(invoice: Any) -> RevisionDraft:
+    """Clone the invoice's current revision into an editable draft (module docstring)."""
+    current = invoice.current_revision
+    if current is None:
+        raise ValueError(f"{invoice} has no current revision")
+    document = restore((current.snapshot or {}).get("document") or {})
+    return RevisionDraft(
+        invoice_id=invoice.pk,
+        revision=current.revision,
+        base_version=invoice.version,
+        header=copy.deepcopy(document.get("header") or {}),
+        lines=copy.deepcopy(document.get("lines") or []),
+        totals=copy.deepcopy(document.get("totals") or {}),
+    )
+
+
+# ---- the revision validator (D-03b-T05) ---------------------------------------------------------
+
+
+class RevisionInvalid(ValidationError):
+    """A revision the rules refuse: ``message_dict`` has the field errors; ``code`` is
+    ``sales.revision.invalid``."""
+
+    def __init__(self, errors: dict[str, list[str]]) -> None:
+        super().__init__(errors)
+        self.code = "sales.revision.invalid"
+
+
+def validate_revision(invoice: Any, draft: RevisionDraft) -> None:
+    """Refuse a revision that breaks the rules, with an error per field (ADR-0006):
+
+    - ``reason`` — required (a revision says why);
+    - ``currency`` — never changes (the payments and the AR balance are in it);
+    - ``contact`` — changes only while no payment, credit or credit note is applied to the
+      invoice;
+    - header fields other than those of a document (``DOCUMENT_FIELDS``) and line fields other
+      than ``DOCUMENT_LINE_FIELDS`` can't be set; at least one line; quantities and prices are
+      numbers.
+    """
+    from .models import CreditApplication, PaymentAllocation
+
+    errors: dict[str, list[str]] = {}
+    if not " ".join((draft.reason or "").split()):
+        errors["reason"] = [_("Say why the invoice is revised.")]
+    unknown = sorted(set(draft.header) - set(DOCUMENT_FIELDS))
+    for name in unknown:
+        errors[name] = [_("This field can't be changed on a revision.")]
+    if draft.header.get("currency", invoice.currency) != invoice.currency:
+        errors["currency"] = [
+            _("The currency of a posted invoice can't change: void it and invoice again.")
+        ]
+    contact = draft.header.get("contact_id", invoice.contact_id)
+    if contact != invoice.contact_id:
+        paid = PaymentAllocation.objects.filter(invoice=invoice, reversed_at__isnull=True).exists()
+        credited = CreditApplication.objects.filter(
+            invoice=invoice, reversed_at__isnull=True
+        ).exists()
+        if paid or credited:
+            errors["contact_id"] = [
+                _(
+                    "Payments or credits are applied to this invoice: remove them before "
+                    "changing the customer."
+                )
+            ]
+    if not draft.lines:
+        errors["lines"] = [_("A revision keeps at least one line.")]
+    for index, line in enumerate(draft.lines, start=1):
+        bad = sorted(set(line) - set(DOCUMENT_LINE_FIELDS))
+        problems = [_("%(field)s can't be set on a line.") % {"field": name} for name in bad]
+        for name in ("quantity", "unit_price", "discount_value"):
+            if name in line:
+                try:
+                    Decimal(str(line[name]))
+                except ArithmeticError:
+                    problems.append(_("%(field)s is not a number.") % {"field": name})
+        if problems:
+            errors[f"lines[{index}]"] = problems
+    if errors:
+        raise RevisionInvalid(errors)
