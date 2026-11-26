@@ -31,6 +31,7 @@ the Tax lock as well as its own module's.
 from __future__ import annotations
 
 import datetime as dt
+from decimal import Decimal
 from typing import Any
 
 from django.db import transaction
@@ -134,10 +135,42 @@ def prepare(period: FilingPeriod, user: Any = None, *, method: str = "regular") 
             prepared_at=timezone.now(),
             created_by=_person(user),
         )
-        tax_return.lines = {**(tax_return.lines or {}), **adjustment_lines(period)}
+        tax_return.lines = computed_lines(tax_return)
         tax_return.save()
         _record("tax.return.prepared", tax_return, user, version=tax_return.version)
         return tax_return
+
+
+def computed_lines(tax_return: TaxReturn, entries: dict[str, Any] | None = None) -> dict[str, Any]:
+    """The return's lines from the books (G-03-T03 regular, T04 quick) and its entries — the
+    amounts entered by hand (104, 107, 110, 111, 113B; kept under ``entries``)."""
+    from .return_lines import ENTRY_LINES, as_text, regular_lines
+
+    kept = (tax_return.lines or {}).get("entries") or {}
+    given = {k: v for k, v in {**kept, **(entries or {})}.items() if k in ENTRY_LINES}
+    if tax_return.method == "quick":
+        raise TaxError(
+            _("The quick method isn't available yet."), code="tax.return.quick_unavailable"
+        )
+    values = regular_lines(tax_return.period, entries=given)
+    return {
+        **as_text(values),
+        "entries": {k: f"{Decimal(str(v or 0)):.2f}" for k, v in given.items()},
+    }
+
+
+def recalculate(
+    tax_return: TaxReturn, user: Any = None, *, entries: dict[str, Any] | None = None
+) -> TaxReturn:
+    """Recalculate a draft return from the books (G-03-T03); a reviewed or filed one is
+    refused — send it back, or amend it."""
+    with _org(tax_return), transaction.atomic(), _acting(user):
+        locked: TaxReturn = TaxReturn.objects.select_for_update().get(pk=tax_return.pk)
+        _expect(locked, ReturnStatus.DRAFT, _("Only a draft return is recalculated."))
+        locked.lines = computed_lines(locked, entries)
+        locked.save()
+        _record("tax.return.recalculated", locked, user, version=locked.version)
+        return locked
 
 
 def _expect(tax_return: TaxReturn, status: str, message: str) -> None:
@@ -459,7 +492,10 @@ def _write_adjustments(period: FilingPeriod) -> None:
         period=period, status__in=OPEN_RETURN_STATUSES, deleted_at__isnull=True
     ).first()
     if open_one is not None:
-        open_one.lines = {**(open_one.lines or {}), **adjustment_lines(period)}
+        if open_one.status == ReturnStatus.DRAFT:
+            open_one.lines = computed_lines(open_one)
+        else:
+            open_one.lines = {**(open_one.lines or {}), **adjustment_lines(period)}
         open_one.save()
 
 

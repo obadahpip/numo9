@@ -33,6 +33,8 @@ from .models import TaxLine, TaxLineSource, TaxSide
 
 ZERO = Decimal("0.00")
 KINDS = {"gst_hst": ("gst", "hst"), "qst": ("qst",), "pst": ("pst",)}
+#: Entry types whose tax-coded lines without calculated tax are journal-source tax lines.
+JOURNAL_TYPES = ("manual", "adjustment")
 
 #: Set while find & recode re-posts an entry: the re-post's tax lines are copied, not rebuilt.
 _REPOSTING: ContextVar[bool] = ContextVar("numo9_tax_reposting", default=False)
@@ -105,7 +107,8 @@ def record_tax_lines(entry: Any, checked: Any, spec: Any, organisation: Any, per
                     late=late,
                 )
             )
-        if not parts and line.spec.tax_code:
+        # a manual journal's tax-coded line (documents' exempt lines carry no tax: no row)
+        if not parts and line.spec.tax_code and entry.type in JOURNAL_TYPES:
             side = _side_of_code(line.spec.tax_code)
             basis = line.credit - line.debit if side == TaxSide.SALES else line.debit - line.credit
             rows.append(
