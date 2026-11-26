@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 18:52-0500\n"
+"POT-Creation-Date: 2026-11-25 19:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8293,6 +8293,15 @@ msgstr ""
 msgid "quick method from"
 msgstr ""
 
+msgid "quick method rates"
+msgstr ""
+
+msgid "Services"
+msgstr ""
+
+msgid "Goods for resale"
+msgstr ""
+
 msgid "default codes"
 msgstr ""
 
@@ -8512,12 +8521,25 @@ msgstr ""
 msgid "Add, version, archive and restore tax codes and rates"
 msgstr ""
 
+msgid "See GST/HST returns, their lines and documents"
+msgstr ""
+
+msgid "Prepare and recalculate GST/HST returns"
+msgstr ""
+
+msgid "Review, file and amend GST/HST returns (the reviewer isn't the preparer)"
+msgstr ""
+
 #, python-format
 msgid "%(registration)s wasn't registered on %(date)s (filing stopped after %(stop)s): this document shouldn't use its tax codes."
 msgstr ""
 
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."
+msgstr ""
+
+#, python-format
+msgid "There's no quick-method rate for %(component)s on %(day)s: enter it first."
 msgstr ""
 
 #, python-format
@@ -8664,11 +8686,62 @@ msgstr ""
 msgid "%(code)s is archived: restore it or pick another code."
 msgstr ""
 
+msgid "Sales and other revenue"
+msgstr ""
+
+msgid "GST/HST collected or collectible"
+msgstr ""
+
+msgid "Adjustments to be added to the net tax"
+msgstr ""
+
+msgid "Total GST/HST and adjustments for period"
+msgstr ""
+
+msgid "Input tax credits (ITCs) for the current period"
+msgstr ""
+
+msgid "Adjustments to be deducted"
+msgstr ""
+
+msgid "Total ITCs and adjustments"
+msgstr ""
+
+msgid "Net tax"
+msgstr ""
+
+msgid "Instalments and other annual filer payments"
+msgstr ""
+
+msgid "Rebates"
+msgstr ""
+
+msgid "Total other credits"
+msgstr ""
+
+msgid "Balance (line 109 minus line 112)"
+msgstr ""
+
+msgid "Other debits"
+msgstr ""
+
+msgid "Balance (line 113 A plus line 113 B)"
+msgstr ""
+
+msgid "Refund claimed"
+msgstr ""
+
+msgid "Payment enclosed"
+msgstr ""
+
 msgid "No return is prepared for this period."
 msgstr ""
 
 #, python-format
 msgid "The return for %(period)s is filed. Amend it to change it."
+msgstr ""
+
+msgid "Only a draft return is recalculated."
 msgstr ""
 
 msgid "Only a draft return can be reviewed."
@@ -8754,6 +8827,29 @@ msgstr ""
 
 #, python-format
 msgid "Registered again from must be after the last day registered (%(day)s)."
+msgstr ""
+
+msgid "GST/HST return"
+msgstr ""
+
+#, python-format
+msgid "Business number: %(number)s"
+msgstr ""
+
+#, python-format
+msgid "Reporting period: %(start)s to %(end)s"
+msgstr ""
+
+#, python-format
+msgid "Due: %(due)s"
+msgstr ""
+
+#, python-format
+msgid "%(method)s · %(status)s · version %(version)s"
+msgstr ""
+
+#, python-format
+msgid "Filed on %(on)s, confirmation %(no)s"
 msgstr ""
 
 msgid "Tenancy"

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 730   Remaining: 2057   Progress: 26.19%
+TOTAL ATOMIC TASKS: 2787   Completed: 731   Remaining: 2056   Progress: 26.23%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -964,7 +964,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ G-03-T03 — Line calculator (regular method) from posted tax lines by tax-point date and basis
 ✅ G-03-T04 — Quick-method calculator with remittance rates as effective-dated data and a 1 % credit rule
 ✅ G-03-T05 — Drill-down service: each line returns its source document list
-❌ G-03-T10 — API /api/v1/tax/returns (generate, recalc, review, file, amend, pdf, csv); feature key tax.returns; permissions
+✅ G-03-T10 — API /api/v1/tax/returns (generate, recalc, review, file, amend, pdf, csv); feature key tax.returns; permissions
 ❌ G-03-T11 — Worksheet UI: form layout, drill-down drawer, status stepper, changed-since banner
 ❌ G-03-T12 — Mark-as-filed dialog, lock indicators, amend action
 ❌ G-03-T13 — PDF (WeasyPrint, Letter, inch margins) and CSV export of line values

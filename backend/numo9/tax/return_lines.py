@@ -200,3 +200,27 @@ def drill_down(period: Any, line: str, *, basis: str | None = None) -> list[dict
             }
         )
     return sorted(out, key=lambda r: (r["date"], r["number"]))
+
+
+def line_labels() -> dict[str, str]:
+    """The GST34 line labels in the active language (CRA's English and French, G-03-T16)."""
+    from django.utils.translation import gettext as _
+
+    return {
+        "101": _("Sales and other revenue"),
+        "103": _("GST/HST collected or collectible"),
+        "104": _("Adjustments to be added to the net tax"),
+        "105": _("Total GST/HST and adjustments for period"),
+        "106": _("Input tax credits (ITCs) for the current period"),
+        "107": _("Adjustments to be deducted"),
+        "108": _("Total ITCs and adjustments"),
+        "109": _("Net tax"),
+        "110": _("Instalments and other annual filer payments"),
+        "111": _("Rebates"),
+        "112": _("Total other credits"),
+        "113A": _("Balance (line 109 minus line 112)"),
+        "113B": _("Other debits"),
+        "113C": _("Balance (line 113 A plus line 113 B)"),
+        "114": _("Refund claimed"),
+        "115": _("Payment enclosed"),
+    }

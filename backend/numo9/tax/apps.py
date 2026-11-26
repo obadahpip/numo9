@@ -24,6 +24,7 @@ class TaxConfig(AppConfig):
         SWEEP_FACTORIES["tax.TaxCode"] = _sweep_code
         SWEEP_FACTORIES["tax.TaxComponent"] = _sweep_component
         SWEEP_FACTORIES["tax.TaxSettings"] = _sweep_settings
+        SWEEP_FACTORIES["tax.TaxReturn"] = _sweep_return
 
         from numo9.ledger import services as ledger
 
@@ -75,3 +76,38 @@ def _sweep_settings(organisation: Any) -> Any:
     from .settings import tax_settings
 
     return tax_settings(organisation)
+
+
+def _sweep_return(organisation: Any) -> Any:
+    """A draft return on a quarterly GST/HST registration (G-03-T10)."""
+    import datetime as dt
+
+    from numo9.orgsettings.models import TaxRegistration
+    from numo9.tenancy.context import org_context
+
+    from .filing_service import switch_frequency
+    from .models import FilingPeriod, TaxReturn
+
+    with org_context(organisation):
+        existing = TaxReturn._base_manager.filter(organisation=organisation).first()
+        if existing is not None:
+            return existing
+        reg = TaxRegistration._base_manager.filter(organisation=organisation, type="rt").first()
+        if reg is None:
+            reg = TaxRegistration(
+                organisation=organisation,
+                type="rt",
+                number="123456782RT0001",
+                effective_from=dt.date(2026, 1, 1),
+            )
+            reg.save()
+    period = FilingPeriod._base_manager.filter(registration=reg).order_by("start").first()
+    if period is None:
+        periods, _warnings = switch_frequency(
+            reg, "quarterly", dt.date(2026, 1, 1), today=dt.date(2026, 6, 1)
+        )
+        period = periods[0]
+    with org_context(organisation):
+        row: Any = TaxReturn(organisation=organisation, registration=reg, period=period)
+        row.save()
+    return row

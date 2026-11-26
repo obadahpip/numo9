@@ -23,3 +23,32 @@ TAX_MANAGE = register(
         Risk.HIGH,
     )
 )
+
+# ---- GST/HST returns (G-03-T10) ------------------------------------------------------------------
+
+RETURNS_VIEW = register(
+    Permission(
+        "tax.returns.view",
+        _("See GST/HST returns, their lines and documents"),
+        "tax",
+        Risk.LOW,
+    )
+)
+
+RETURNS_PREPARE = register(
+    Permission(
+        "tax.returns.prepare",
+        _("Prepare and recalculate GST/HST returns"),
+        "tax",
+        Risk.MEDIUM,
+    )
+)
+
+RETURNS_FILE = register(
+    Permission(
+        "tax.returns.file",
+        _("Review, file and amend GST/HST returns (the reviewer isn't the preparer)"),
+        "tax",
+        Risk.HIGH,
+    )
+)

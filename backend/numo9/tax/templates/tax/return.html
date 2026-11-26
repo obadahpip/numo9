@@ -1,0 +1,33 @@
+{% extends "documents/base.html" %}
+{% load i18n %}
+{% comment %}
+  G-03-T13 — GST/HST return worksheet (PDF): the lines of the GST34 as on the screen.
+{% endcomment %}
+{% block title %}{% translate "GST/HST return" %}{% endblock %}
+{% block style %}
+  .return td { padding: 3pt 6pt 3pt 0; font-size: 9pt; }
+  .return td.line { width: 12%; font-weight: 600; }
+  .return td.amount { text-align: right; white-space: nowrap; width: 22%; }
+  .return tr.total td { font-weight: 700; border-block-start: 1pt solid #111111; }
+{% endblock %}
+{% block content %}
+  <h1>{% translate "GST/HST return" %}</h1>
+  <p class="muted">
+    {% blocktranslate with number=number %}Business number: {{ number }}{% endblocktranslate %}<br>
+    {% blocktranslate with start=start end=end %}Reporting period: {{ start }} to {{ end }}{% endblocktranslate %}<br>
+    {% blocktranslate with due=due %}Due: {{ due }}{% endblocktranslate %}<br>
+    {% blocktranslate with method=method status=status version=version %}{{ method }} · {{ status }} · version {{ version }}{% endblocktranslate %}
+    {% if confirmation_no %}<br>{% blocktranslate with no=confirmation_no on=filed_on %}Filed on {{ on }}, confirmation {{ no }}{% endblocktranslate %}{% endif %}
+  </p>
+  <table class="return">
+    <tbody>
+      {% for row in lines %}
+      <tr class="{% if row.line == '109' or row.line == '113C' or row.line == '115' or row.line == '114' %}total{% endif %}">
+        <td class="line">{{ row.line }}</td>
+        <td>{{ row.label }}</td>
+        <td class="amount">{{ row.amount }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

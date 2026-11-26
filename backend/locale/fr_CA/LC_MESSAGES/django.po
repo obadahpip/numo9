@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 18:52-0500\n"
+"POT-Creation-Date: 2026-11-25 19:19-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9170,6 +9170,19 @@ msgid "quick method from"
 msgstr ""
 
 #, fuzzy
+#| msgid "Quick method"
+msgid "quick method rates"
+msgstr "Méthode rapide"
+
+#, fuzzy
+#| msgid "device"
+msgid "Services"
+msgstr "appareil"
+
+msgid "Goods for resale"
+msgstr ""
+
+#, fuzzy
 #| msgid "error code"
 msgid "default codes"
 msgstr "code d’erreur"
@@ -9438,6 +9451,15 @@ msgstr "Voir les codes de taxe, les taux et leur historique"
 msgid "Add, version, archive and restore tax codes and rates"
 msgstr "Ajouter, versionner, archiver et restaurer des codes de taxe et des taux"
 
+msgid "See GST/HST returns, their lines and documents"
+msgstr ""
+
+msgid "Prepare and recalculate GST/HST returns"
+msgstr ""
+
+msgid "Review, file and amend GST/HST returns (the reviewer isn't the preparer)"
+msgstr ""
+
 #, python-format
 msgid "%(registration)s wasn't registered on %(date)s (filing stopped after %(stop)s): this document shouldn't use its tax codes."
 msgstr ""
@@ -9445,6 +9467,10 @@ msgstr ""
 #, python-format
 msgid "%(component)s has no control account: add the %(role)s account first."
 msgstr "%(component)s n'a pas de compte de contrôle : ajoutez d'abord le compte %(role)s."
+
+#, python-format
+msgid "There's no quick-method rate for %(component)s on %(day)s: enter it first."
+msgstr ""
 
 #, python-format
 msgid "The tax period %(start)s to %(end)s is filed: lines with tax in it can't be recoded."
@@ -9636,12 +9662,79 @@ msgstr "%(code)s (%(name)s) est en vigueur %(range)s, pas le %(date)s : choisiss
 msgid "%(code)s is archived: restore it or pick another code."
 msgstr "%(code)s est archivé : restaurez-le ou choisissez un autre code."
 
+#, fuzzy
+#| msgid "Sales and accounts receivable"
+msgid "Sales and other revenue"
+msgstr "Ventes et comptes clients"
+
+msgid "GST/HST collected or collectible"
+msgstr ""
+
+msgid "Adjustments to be added to the net tax"
+msgstr ""
+
+msgid "Total GST/HST and adjustments for period"
+msgstr ""
+
+msgid "Input tax credits (ITCs) for the current period"
+msgstr ""
+
+msgid "Adjustments to be deducted"
+msgstr ""
+
+#, fuzzy
+#| msgid "late adjustments"
+msgid "Total ITCs and adjustments"
+msgstr "redressements tardifs"
+
+#, fuzzy
+#| msgid "Sales tax"
+msgid "Net tax"
+msgstr "Taxes de vente"
+
+msgid "Instalments and other annual filer payments"
+msgstr ""
+
+msgid "Rebates"
+msgstr ""
+
+#, fuzzy
+#| msgid "supplier"
+msgid "Total other credits"
+msgstr "fournisseur"
+
+msgid "Balance (line 109 minus line 112)"
+msgstr ""
+
+#, fuzzy
+#| msgid "Documents"
+msgid "Other debits"
+msgstr "Documents"
+
+msgid "Balance (line 113 A plus line 113 B)"
+msgstr ""
+
+#, fuzzy
+#| msgid "ended"
+msgid "Refund claimed"
+msgstr "terminée"
+
+#, fuzzy
+#| msgid "amount (cents)"
+msgid "Payment enclosed"
+msgstr "montant (cents)"
+
 msgid "No return is prepared for this period."
 msgstr "Aucune déclaration n’est préparée pour cette période."
 
 #, python-format
 msgid "The return for %(period)s is filed. Amend it to change it."
 msgstr "La déclaration de la période %(period)s est produite. Modifiez-la pour la changer."
+
+#, fuzzy
+#| msgid "Only a draft return can be reviewed."
+msgid "Only a draft return is recalculated."
+msgstr "Seule une déclaration en brouillon peut être révisée."
 
 msgid "Only a draft return can be reviewed."
 msgstr "Seule une déclaration en brouillon peut être révisée."
@@ -9730,6 +9823,34 @@ msgstr ""
 #, python-format
 msgid "Registered again from must be after the last day registered (%(day)s)."
 msgstr ""
+
+#, fuzzy
+#| msgid "GST/HST cycle"
+msgid "GST/HST return"
+msgstr "Périodicité TPS/TVH"
+
+#, fuzzy, python-format
+#| msgid "Business Number (BN)"
+msgid "Business number: %(number)s"
+msgstr "Numéro d’entreprise (NE)"
+
+#, fuzzy, python-format
+#| msgid "%(start)s to %(end)s · times in %(zone)s"
+msgid "Reporting period: %(start)s to %(end)s"
+msgstr "Du %(start)s au %(end)s · heures en %(zone)s"
+
+#, python-format
+msgid "Due: %(due)s"
+msgstr ""
+
+#, python-format
+msgid "%(method)s · %(status)s · version %(version)s"
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "Return for %(period)s filed (confirmation %(number)s)."
+msgid "Filed on %(on)s, confirmation %(no)s"
+msgstr "Déclaration de la période %(period)s produite (confirmation %(number)s)."
 
 msgid "Tenancy"
 msgstr ""
