@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 788   Remaining: 1999   Progress: 28.27%
+TOTAL ATOMIC TASKS: 2787   Completed: 789   Remaining: 1998   Progress: 28.31%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1058,7 +1058,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ❌ C-05-T15 — Docs + i18n
 
 [E-01]
-❌ E-01-T07 — Match engine (PO vs GRN vs bill per line with qty/price tolerance)
+✅ E-01-T07 — Match engine (PO vs GRN vs bill per line with qty/price tolerance)
 ❌ E-01-T10 — API /api/v1/purchase-orders/, /receipts/, /purchase-orders/{id}/match, /reports/commitments; feature key accounting.purchases.po
 ❌ E-01-T11 — UI: PO editor (shared grid purchase mode, delivery block, limit indicator)
 ❌ E-01-T12 — UI: Receive screen (ordered/received/outstanding, keyboard Enter-to-next, over-receipt warning)

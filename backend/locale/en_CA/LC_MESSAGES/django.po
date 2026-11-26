@@ -5962,6 +5962,18 @@ msgstr ""
 msgid "Warn: allowed once confirmed. Block: refused (E-01-T04)."
 msgstr ""
 
+msgid "match: quantity tolerance (%)"
+msgstr ""
+
+msgid "How much more than ordered or received may be billed on a purchase order line and still be within tolerance (amber), as a percentage (E-01-T07). Empty: the over-receipt tolerance."
+msgstr ""
+
+msgid "match: price tolerance (%)"
+msgstr ""
+
+msgid "How far a bill's unit price may be from the purchase order's and still be within tolerance (amber), as a percentage (E-01-T07). Empty: the over-receipt tolerance."
+msgstr ""
+
 msgid "sales: default due date"
 msgstr ""
 

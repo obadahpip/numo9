@@ -321,6 +321,32 @@ class OrganisationSettings(AuditedModel, OrgOwnedModel):
         default="warn",
         help_text=_("Warn: allowed once confirmed. Block: refused (E-01-T04)."),
     )
+    # ---- 3-way match (E-01-T07) --------------------------------------------------------------
+    po_match_quantity_tolerance_percent = models.DecimalField(
+        _("match: quantity tolerance (%)"),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_(
+            "How much more than ordered or received may be billed on a purchase order line and "
+            "still be within tolerance (amber), as a percentage (E-01-T07). Empty: the "
+            "over-receipt tolerance."
+        ),
+    )
+    po_match_price_tolerance_percent = models.DecimalField(
+        _("match: price tolerance (%)"),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(Decimal("0.00"))],
+        help_text=_(
+            "How far a bill's unit price may be from the purchase order's and still be within "
+            "tolerance (amber), as a percentage (E-01-T07). Empty: the over-receipt tolerance."
+        ),
+    )
 
     # ---- default payment terms -------------------------------------------------------------
     sales_terms_type = models.CharField(

@@ -322,6 +322,8 @@ The one settings row of an organisation (A-05-T01). Business record: `OrgOwnedMo
 | `sales_terms_days`, `purchase_terms_days` | smallint | no | Days (0–365, default 30), or the day of the month (1–31) for the `day_of_*` types |
 | `po_receipt_tolerance_percent` | numeric(5,2) | no | Over-receipt tolerance on PO lines, % of the ordered quantity (default 0, E-01-T04) |
 | `po_over_receipt` | varchar(8) | no | Beyond the tolerance: `warn` (default; received once confirmed) or `block` (refused) |
+| `po_match_quantity_tolerance_percent` | numeric(5,2) | yes | 3-way match: billing more than ordered or received within this % is amber, beyond it red (empty = the over-receipt tolerance, E-01-T07) |
+| `po_match_price_tolerance_percent` | numeric(5,2) | yes | 3-way match: a bill unit price within this % of the PO price is amber, beyond it red (empty = the over-receipt tolerance, E-01-T07) |
 
 Audit actions: `orgsettings.organisationsettings.created`, `.updated`.
 
