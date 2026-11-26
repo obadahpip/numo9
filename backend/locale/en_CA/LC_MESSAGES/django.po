@@ -6553,6 +6553,9 @@ msgstr ""
 msgid "%(order)s is %(status)s: it can't be cancelled or closed."
 msgstr ""
 
+msgid "bill payments"
+msgstr ""
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -7056,6 +7059,57 @@ msgid "expense claim line"
 msgstr ""
 
 msgid "expense claim lines"
+msgstr ""
+
+msgid "EFT (CPA 005 file)"
+msgstr ""
+
+msgid "Cheque"
+msgstr ""
+
+msgid "Bank payment"
+msgstr ""
+
+msgid "File ready"
+msgstr ""
+
+msgid "Sent to the bank"
+msgstr ""
+
+msgid "Confirmed"
+msgstr ""
+
+msgid "payment date"
+msgstr ""
+
+msgid "file creation number"
+msgstr ""
+
+msgid "file checksum (SHA-256)"
+msgstr ""
+
+msgid "file made at"
+msgstr ""
+
+msgid "reason for cancelling"
+msgstr ""
+
+msgid "payment batch"
+msgstr ""
+
+msgid "payment batches"
+msgstr ""
+
+msgid "In a batch, not posted"
+msgstr ""
+
+msgid "early-payment discount"
+msgstr ""
+
+msgid "reason for voiding"
+msgstr ""
+
+msgid "bill payment"
 msgstr ""
 
 msgid "All"

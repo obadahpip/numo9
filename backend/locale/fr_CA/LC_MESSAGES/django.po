@@ -6994,6 +6994,9 @@ msgstr "Cette demande de dérogation est déjà au statut « %(status)s »."
 msgid "%(order)s is %(status)s: it can't be cancelled or closed."
 msgstr "%(order)s a le statut « %(status)s » : il ne peut être ni annulé ni fermé."
 
+msgid "bill payments"
+msgstr "paiements de factures fournisseurs"
+
 msgid "Only an approved purchase order can be billed."
 msgstr ""
 
@@ -7614,6 +7617,57 @@ msgstr "ligne de note de frais"
 
 msgid "expense claim lines"
 msgstr "lignes de note de frais"
+
+msgid "EFT (CPA 005 file)"
+msgstr "TEF (fichier CPA 005)"
+
+msgid "Cheque"
+msgstr "Chèque"
+
+msgid "Bank payment"
+msgstr "Paiement bancaire"
+
+msgid "File ready"
+msgstr "Fichier prêt"
+
+msgid "Sent to the bank"
+msgstr "Envoyé à la banque"
+
+msgid "Confirmed"
+msgstr "Confirmé"
+
+msgid "payment date"
+msgstr "date de paiement"
+
+msgid "file creation number"
+msgstr "numéro de création du fichier"
+
+msgid "file checksum (SHA-256)"
+msgstr "somme de contrôle du fichier (SHA-256)"
+
+msgid "file made at"
+msgstr "fichier créé le"
+
+msgid "reason for cancelling"
+msgstr "motif de l’annulation"
+
+msgid "payment batch"
+msgstr "lot de paiements"
+
+msgid "payment batches"
+msgstr "lots de paiements"
+
+msgid "In a batch, not posted"
+msgstr "Dans un lot, non comptabilisé"
+
+msgid "early-payment discount"
+msgstr "escompte pour paiement anticipé"
+
+msgid "reason for voiding"
+msgstr "motif de l’annulation du paiement"
+
+msgid "bill payment"
+msgstr "paiement de facture fournisseur"
 
 msgid "All"
 msgstr "Tout"
