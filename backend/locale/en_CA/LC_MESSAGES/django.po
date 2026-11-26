@@ -409,6 +409,41 @@ msgstr ""
 msgid "%(document)s (%(date)s) was entered and approved by %(person)s. Approval needs a second person."
 msgstr ""
 
+msgid "Possible duplicate payment"
+msgstr ""
+
+msgid "The same contact was paid the same amount twice within a few days."
+msgstr ""
+
+#, python-format
+msgid "%(journal)s pays %(contact)s %(paid)s on %(date)s; %(other)s paid the same amount on %(other_date)s. If it is a duplicate, void or reverse it and ask for the money back."
+msgstr ""
+
+msgid "Days apart"
+msgstr ""
+
+msgid "Possible duplicate supplier invoice"
+msgstr ""
+
+msgid "A supplier's invoice may have been entered twice."
+msgstr ""
+
+#, python-format
+msgid "%(bill)s from %(supplier)s (%(date)s, %(total)s) looks like %(other)s (%(other_date)s, %(other_total)s): %(why)s."
+msgstr ""
+
+msgid "Total within %"
+msgstr ""
+
+msgid "A draft bill"
+msgstr ""
+
+msgid "the same invoice number"
+msgstr ""
+
+msgid "a similar total within a few days"
+msgstr ""
+
 msgid "Manual journal posts to a bank or cash account"
 msgstr ""
 
@@ -7175,9 +7210,6 @@ msgstr ""
 
 #, python-format
 msgid "%(bill)s from %(supplier)s on %(date)s for %(total)s looks like this bill."
-msgstr ""
-
-msgid "A draft bill"
 msgstr ""
 
 #, python-format
