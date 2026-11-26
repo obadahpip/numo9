@@ -159,15 +159,18 @@ def check_tree_rules(account: Account) -> None:
         )
 
 
-def assert_postable(account: Account) -> None:
-    """Raise unless a journal line may post to the account (C-02 and document validators)."""
+def assert_postable(account: Account, *, children: bool | None = None) -> None:
+    """Raise unless a journal line may post to the account (C-02 and document validators).
+
+    ``children`` — whether the account has sub-accounts, when the caller already knows it (the
+    journal validator looks the parents of all its lines up in one query)."""
     if account.deleted_at is not None or account.is_archived:
         raise _error(
             _("%(account)s is archived: choose an active account."),
             "ledger.account.archived",
             account=str(account),
         )
-    if has_children(account):
+    if has_children(account) if children is None else children:
         raise _error(
             _("%(account)s has sub-accounts: post to one of its sub-accounts instead."),
             "ledger.account.not_leaf",

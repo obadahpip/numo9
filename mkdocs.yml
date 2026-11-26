@@ -98,6 +98,7 @@ nav:
       - "Search and command palette": architecture/search.md
       - "Invoice fixtures": architecture/invoice-fixtures.md
       - "Report engine": architecture/reports.md
+      - "Find and recode with undo": architecture/find-and-recode.md
   - Operations:
       - "Operations runbook": operations/runbook.md
       - "Connection pooling (PgBouncer)": operations/pgbouncer.md
@@ -109,6 +110,7 @@ nav:
       - "Changing your GST/HST filing frequency": user-guide/changing-filing-frequency.md
       - "Stopping and restarting GST/HST or QST filing": user-guide/stopping-and-restarting-filing.md
       - "Closing periods and the fiscal year": user-guide/period-close-and-year-end.md
+      - "Finding and recoding transactions": user-guide/find-and-recode.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:

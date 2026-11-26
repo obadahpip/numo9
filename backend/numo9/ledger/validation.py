@@ -274,6 +274,13 @@ def validate_journal(
             count=len(lines),
         )
     accounts = _accounts(organisation, lines)
+    # The accounts with sub-accounts, in one query for all the lines (C-07-T14: a recode posts
+    # thousands of entries; one query per line was a third of the posting's queries).
+    parents = set(
+        Account._base_manager.filter(
+            organisation=organisation, parent_id__in=list(accounts), deleted_at__isnull=True
+        ).values_list("parent_id", flat=True)
+    )
     contacts = _contacts(organisation, lines)
     validated: list[ValidatedLine] = []
     # (debit, credit, book) of every line; balancing needs them all to be valid amounts.
@@ -316,7 +323,7 @@ def validate_journal(
             )
         else:
             try:
-                assert_postable(account)
+                assert_postable(account, children=account.pk in parents)
             except ValidationError as error:
                 problems.errors.append(
                     ValidationError(

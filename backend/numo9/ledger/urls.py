@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import accounts_api, api, close_api, journals_api, workflow_api
+from . import accounts_api, api, close_api, journals_api, recode_api, workflow_api
 
 ORG = "o/<uuid:org>/"
 
@@ -26,6 +26,26 @@ urlpatterns = [
         f"{ORG}period-close/<uuid:public_id>/reopen",
         close_api.PeriodReopenView.as_view(),
         name="period-close-reopen",
+    ),
+    # Find & recode with undo (C-07-T09)
+    path(f"{ORG}recode/search", recode_api.RecodeSearchView.as_view(), name="recode-search"),
+    path(f"{ORG}recode/preview", recode_api.RecodePreviewView.as_view(), name="recode-preview"),
+    path(f"{ORG}recode/execute", recode_api.RecodeExecuteView.as_view(), name="recode-execute"),
+    path(f"{ORG}recode/batches", recode_api.RecodeBatchListView.as_view(), name="recode-batches"),
+    path(
+        f"{ORG}recode/batches/<uuid:public_id>",
+        recode_api.RecodeBatchDetailView.as_view(),
+        name="recode-batch",
+    ),
+    path(
+        f"{ORG}recode/batches/<uuid:public_id>/undo",
+        recode_api.RecodeUndoView.as_view(),
+        name="recode-batch-undo",
+    ),
+    path(
+        f"{ORG}recode/batches/<uuid:public_id>/report",
+        recode_api.RecodeReportView.as_view(),
+        name="recode-batch-report",
     ),
     # Chart of accounts (C-01-T09)
     path(f"{ORG}accounts", accounts_api.AccountListView.as_view(), name="accounts"),

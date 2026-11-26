@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-25 16:18-0500\n"
+"POT-Creation-Date: 2026-11-25 17:44-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4652,6 +4652,12 @@ msgstr ""
 msgid "reason for undoing"
 msgstr ""
 
+msgid "chosen lines"
+msgstr ""
+
+msgid "problems"
+msgstr ""
+
 msgid "recode batch"
 msgstr ""
 
@@ -4665,6 +4671,12 @@ msgid "reversal"
 msgstr ""
 
 msgid "re-post"
+msgstr ""
+
+msgid "undo reversal"
+msgstr ""
+
+msgid "restored entry"
 msgstr ""
 
 msgid "recoded line"
@@ -4798,6 +4810,9 @@ msgstr ""
 msgid "Close periods and the fiscal year (advisers reopen them)"
 msgstr ""
 
+msgid "Find and recode posted transactions in bulk, and undo a recode"
+msgstr ""
+
 #, python-format
 msgid "Line %(line)d (%(account)s): a tax adjustment posts to the tax book only — set the line's book to Tax."
 msgstr ""
@@ -4873,6 +4888,29 @@ msgstr ""
 msgid "%(document)s %(number)s is void: its entries can't be recoded."
 msgstr ""
 
+msgid "Choose the lines as the preview lists them (entry and line)."
+msgstr ""
+
+msgid "Nothing to recode: no chosen line would change."
+msgstr ""
+
+#, python-format
+msgid "Changing the tax code changes the tax these lines carry by %(delta)s: confirm the tax change to go on."
+msgstr ""
+
+#, python-format
+msgid "Recode %(batch)s: reversal of %(number)s"
+msgstr ""
+
+msgid "This entry changed after the preview: its lines were not recoded. Preview again to include them."
+msgstr ""
+
+msgid "This line can't be recoded any more (it changed, or is excluded now) — preview again."
+msgstr ""
+
+msgid "This recode has run already."
+msgstr ""
+
 msgid "Choose the new account, tax code, tracking or contact."
 msgstr ""
 
@@ -4896,6 +4934,92 @@ msgstr ""
 
 #, python-format
 msgid "Condition %(condition)s isn't a search we can run."
+msgstr ""
+
+msgid "Line"
+msgstr ""
+
+msgid "Book"
+msgstr ""
+
+msgid "Changed"
+msgstr ""
+
+msgid "Account before"
+msgstr ""
+
+msgid "Account after"
+msgstr ""
+
+msgid "Tax code before"
+msgstr ""
+
+msgid "Tax code after"
+msgstr ""
+
+msgid "Tracking before"
+msgstr ""
+
+msgid "Tracking after"
+msgstr ""
+
+msgid "Contact before"
+msgstr ""
+
+msgid "Contact after"
+msgstr ""
+
+msgid "Re-post"
+msgstr ""
+
+msgid "Undone by"
+msgstr ""
+
+msgid "Tax code"
+msgstr ""
+
+msgid "Tracking"
+msgstr ""
+
+#, python-format
+msgid "Recode: %(name)s"
+msgstr ""
+
+#, python-format
+msgid "Status: %(status)s"
+msgstr ""
+
+#, python-format
+msgid "Run by %(who)s on %(when)s"
+msgstr ""
+
+msgid "Numo9"
+msgstr ""
+
+#, python-format
+msgid "%(lines)d lines recoded · %(excluded)d excluded · %(problems)d not recoded"
+msgstr ""
+
+#, python-format
+msgid "Undone by %(who)s on %(when)s: %(reason)s"
+msgstr ""
+
+msgid "Recode"
+msgstr ""
+
+#, python-format
+msgid "Lines of this recode were recoded again by “%(batch)s”: undo it first."
+msgstr ""
+
+#, python-format
+msgid "Undo of recode %(batch)s: reversal of %(number)s"
+msgstr ""
+
+msgid "Only a recode that ran can be undone, once."
+msgstr ""
+
+#, python-format
+msgid "This recode can't be undone: %(count)d entries are in locked, closed or filed periods, or changed since — %(entries)s."
 msgstr ""
 
 msgid "Give the schedule as a recurrence rule, e.g. FREQ=MONTHLY;INTERVAL=1."
@@ -4985,6 +5109,12 @@ msgid "The template has no account for this system role."
 msgstr ""
 
 msgid "No free code for the account: renumber an account and try again."
+msgstr ""
+
+msgid "Recode audit report"
+msgstr ""
+
+msgid "This recode changed no lines."
 msgstr ""
 
 #, python-format

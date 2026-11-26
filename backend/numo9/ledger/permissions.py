@@ -70,3 +70,14 @@ PERIOD_CLOSE_MANAGE = register(
         Risk.HIGH,
     )
 )
+
+# ---- Find & recode (C-07-T09) --------------------------------------------------------------------
+
+RECODE = register(
+    Permission(
+        "accounting.recode",
+        _("Find and recode posted transactions in bulk, and undo a recode"),
+        "accounting",
+        Risk.HIGH,
+    )
+)

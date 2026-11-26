@@ -5,6 +5,8 @@
 - ``lines`` — every found line that would change: the entry (number, date), the line, its book
   and **amounts — never changed** — and its coding ``before`` and ``after``
   (``{account, tax_code, tracking, contact}``, public ids; ``changed`` names what moves);
+  and its ``fingerprint`` — the line as seen now: executing the chosen lines compares it again
+  and reports a line changed meanwhile as a conflict (C-07-T06);
 - ``excluded`` — the found lines left out, each with its reason (C-07-T03);
 - ``unchanged`` — found lines already coded that way (nothing to do);
 - ``totals_before`` / ``totals_after`` — debits and credits of the changed lines per book: the
@@ -26,6 +28,8 @@ category), ``contact`` (a contact's public id, or ``None`` to clear). Anything e
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
+import json
 import uuid
 from collections import defaultdict
 from collections.abc import Callable
@@ -151,6 +155,26 @@ def coding(line: Any) -> dict[str, Any]:
     }
 
 
+def fingerprint(line: Any) -> str:
+    """The line as the preview saw it: its entry's state and the line's coding and amounts. Any
+    change between the preview and the run (another recode, a reversal, a void) changes it."""
+    entry = line.entry
+    payload = [
+        entry.pk,
+        entry.status,
+        entry.reversal_of_id,
+        line.line_no,
+        line.account_id,
+        f"{line.debit:.2f}",
+        f"{line.credit:.2f}",
+        line.book,
+        line.tax_code or "",
+        line.contact_id,
+        sorted((line.tracking or {}).items()),
+    ]
+    return hashlib.sha256(json.dumps(payload, default=str).encode()).hexdigest()
+
+
 @dataclass(frozen=True)
 class PreviewLine:
     line: Any
@@ -174,6 +198,7 @@ class PreviewLine:
             "before": self.before,
             "after": self.after,
             "changed": self.changed,
+            "fingerprint": fingerprint(self.line),
         }
 
 
@@ -202,6 +227,7 @@ class Preview:
     def summary(self) -> dict[str, Any]:
         return {
             "lines": len(self.lines),
+            "entries": len({p.line.entry_id for p in self.lines}),
             "accounts": len({p.before["account"] for p in self.lines}),
             "excluded": len(self.excluded),
             "unchanged": self.unchanged,
@@ -302,8 +328,19 @@ def build(
     return built
 
 
-def preview(organisation: Any, criteria: Any, changes: Any, user: Any = None) -> Preview:
+def preview(
+    organisation: Any,
+    criteria: Any,
+    changes: Any,
+    user: Any = None,
+    *,
+    keys: set[tuple[str, int]] | None = None,
+) -> Preview:
+    """The preview of the search; ``keys`` — ``{(entry public id, line no)}`` chosen in the
+    results grid — narrows it to those lines (``None``: every line found)."""
     resolved = clean_changes(organisation, changes)
     found = list(find_lines(organisation, criteria))
     included, excluded = split(organisation, found, resolved.values, user)
+    if keys is not None:
+        included = [line for line in included if (str(line.entry.public_id), line.line_no) in keys]
     return build(organisation, included, resolved, excluded)

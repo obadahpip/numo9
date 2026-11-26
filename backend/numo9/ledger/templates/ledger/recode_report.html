@@ -1,0 +1,47 @@
+{% extends "documents/base.html" %}
+{% load i18n %}
+{% comment %}
+  C-07-T08 — find & recode audit report (PDF): one row per recoded line of the batch.
+{% endcomment %}
+{% block title %}{% translate "Recode audit report" %}{% endblock %}
+{% block style %}
+  .recode td, .recode th { padding-inline-end: 5pt; font-size: 7pt; vertical-align: top; }
+  .recode td.num { text-align: right; white-space: nowrap; }
+  .recode .muted { color: #5B6472; }
+{% endblock %}
+{% block content %}
+  <h1>{% translate "Recode audit report" %}</h1>
+  <p class="muted">{% for line in lines %}{{ line }}{% if not forloop.last %}<br>{% endif %}{% endfor %}</p>
+  <table class="recode">
+    <thead>
+      <tr>
+        <th>{{ columns.0 }}</th><th>{{ columns.1 }}</th><th>{{ columns.2 }}</th>
+        <th>{{ columns.4 }}</th><th>{{ columns.5 }}</th><th>{{ columns.6 }}</th>
+        <th>{{ columns.7 }} → {{ columns.8 }}</th>
+        <th>{{ columns.9 }} → {{ columns.10 }}</th>
+        <th>{{ columns.11 }} → {{ columns.12 }}</th>
+        <th>{{ columns.13 }} → {{ columns.14 }}</th>
+        <th>{{ columns.15 }} / {{ columns.16 }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+        <td>{{ row.2 }}<br><span class="muted">{{ row.3 }}</span></td>
+        <td class="num">{{ row.4 }}</td>
+        <td class="num">{{ row.5 }}</td>
+        <td>{{ row.6 }}</td>
+        <td>{{ row.7 }}{% if row.7 != row.8 %}<br>→ {{ row.8 }}{% endif %}</td>
+        <td>{{ row.9 }}{% if row.9 != row.10 %}<br>→ {{ row.10 }}{% endif %}</td>
+        <td>{{ row.11 }}{% if row.11 != row.12 %}<br>→ {{ row.12 }}{% endif %}</td>
+        <td>{{ row.13 }}{% if row.13 != row.14 %}<br>→ {{ row.14 }}{% endif %}</td>
+        <td>{{ row.15 }}<br>{{ row.16 }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="11">{% translate "This recode changed no lines." %}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

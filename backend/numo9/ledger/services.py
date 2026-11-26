@@ -72,6 +72,8 @@ from .validation import JournalSpec, LineSpec, ValidatedJournal, validate_journa
 
 #: ``user`` not given: the person of the audit context (a request's user; None for a system job).
 ACTING: Any = object()
+#: ``caller`` of the re-posts of find & recode (C-07-T05): no approval gate, no cash guard.
+RECODE_CALLER = "recode"
 
 
 #: Called with a journal entry after its header and lines are written (draft saved, posted,
@@ -212,7 +214,9 @@ def post_journal(
         assert_can_post(organisation, spec.date, person, module)
         for guard in POSTING_GUARDS:  # e.g. the Tax lock on journals with tax (G-03-T07)
             guard(checked, spec, organisation, person)
-        if reversal_of is None:  # C-04-T03: a manual journal over the threshold needs approval
+        # C-04-T03: a manual journal over the threshold needs approval — not the re-post of a
+        # recode (C-07-T05), which carries an entry that posted already with new coding.
+        if reversal_of is None and caller != RECODE_CALLER:
             assert_approved(None, organisation, _total(checked), spec.type)
         documents = list({document.pk: document for document in attachments}.values())
         if reversal_of is None:  # a reversal mirrors an entry that passed the rules

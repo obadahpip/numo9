@@ -1420,6 +1420,23 @@ class RecodeBatch(AuditedModel, OrgOwnedModel):
     )
     undone_at = models.DateTimeField(_("undone at"), null=True, blank=True)
     undo_reason = models.TextField(_("reason for undoing"), blank=True)
+    #: The lines chosen in the preview (C-07-T05/T06): ``[{"entry", "line_no", "fingerprint"}]``
+    #: — ``None`` recodes every line the search finds when the batch runs.
+    selection = models.JSONField(_("chosen lines"), null=True, blank=True)
+    #: Entries that could not be recoded when the batch ran — a line changed since the preview
+    #: (``conflict``, C-07-T06) or a posting refused — ``[{"entry", "number", "lines", "code",
+    #: "message"}]``; their lines keep their coding.
+    problems = models.JSONField(
+        _("problems"), default=list, blank=True, db_default=models.Value([], models.JSONField())
+    )
+    job_run = models.ForeignKey(
+        "jobs.JobRun",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("background job"),
+    )
 
     class Meta:
         ordering = ("-created_at", "-pk")
@@ -1488,6 +1505,24 @@ class RecodeLineChange(OrgOwnedModel):
         blank=True,
         related_name="+",
         verbose_name=_("re-post"),
+    )
+    #: Undo (C-07-T07): the reversal of the re-post and the entry posted again with the coding
+    #: ``before``.
+    undo_reversal_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("undo reversal"),
+    )
+    undo_repost_entry = models.ForeignKey(
+        JournalEntry,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("restored entry"),
     )
 
     class Meta:
