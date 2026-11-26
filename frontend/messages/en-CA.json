@@ -2532,6 +2532,41 @@
       "uploading": "Uploading {name}…",
       "varianceHint": "Approving with variance is recorded in the audit log with your name. Only approvers can do it."
     },
+    "bills": {
+      "colDate": "Date",
+      "colDue": "Due date",
+      "colDueAmount": "Amount due",
+      "colNumber": "Number",
+      "colStatus": "Status",
+      "colSupplier": "Supplier",
+      "colSupplierInvoice": "Supplier invoice no.",
+      "colTotal": "Total",
+      "draftNumber": "Draft",
+      "empty": "No bills here",
+      "emptyBody": "Bills with this status appear here.",
+      "failed": "Bills couldn't be loaded",
+      "grid": "Bills",
+      "loading": "Loading bills…",
+      "next": "Next page",
+      "noResults": "No bill matches your search",
+      "overviewLink": "Purchases overview",
+      "pageOf": "Page {page} of {pages}",
+      "previous": "Previous page",
+      "results": "{shown, plural, one {# bill} other {# bills}} of {total}",
+      "retry": "Try again",
+      "search": "Search number, supplier or supplier invoice no.",
+      "tab": {
+        "all": "All",
+        "awaitingApproval": "Awaiting approval",
+        "awaitingPayment": "Awaiting payment",
+        "draft": "Draft",
+        "overdue": "Overdue",
+        "paid": "Paid",
+        "void": "Void"
+      },
+      "tabs": "Bills by status",
+      "title": "Bills"
+    },
     "expense": {
       "account": "{code} {name}",
       "approve": "Approve",
@@ -2565,6 +2600,31 @@
       "title": "Expense claim {number}",
       "total": "Total",
       "trip": "{from} → {to}, {km} km"
+    },
+    "overview": {
+      "aging": {
+        "current": "Current",
+        "days1to30": "1–30 days",
+        "days31to60": "31–60 days",
+        "days61to90": "61–90 days",
+        "over90": "Over 90 days"
+      },
+      "agingCard": "Money going out",
+      "agingChart": "Money going out by age: {total} owed",
+      "agingEmpty": "Nothing owed — every approved bill is paid.",
+      "allBills": "View all bills",
+      "asOf": "Overdue means due before {date}.",
+      "emptyBody": "Enter your first supplier bill, or forward a supplier's invoice to your documents inbox.",
+      "emptyTitle": "No bills yet",
+      "intro": "Bills you've entered, what's waiting for approval and what you owe.",
+      "newBill": "New bill",
+      "supplierBills": "{count, plural, one {# open bill} other {# open bills}}",
+      "supplierOverdue": "{amount} overdue",
+      "suppliersCard": "Suppliers you owe the most",
+      "suppliersEmpty": "You don't owe any supplier right now.",
+      "tile": "{label}: {count, plural, one {# bill} other {# bills}}, {amount}",
+      "tilesCard": "Bills by status",
+      "title": "Purchases overview"
     }
   },
   "quickCreate": {
@@ -2844,6 +2904,7 @@
     "home": "Home",
     "journals": "Journals",
     "placeholder": "This screen is a placeholder until its deliverable is built.",
+    "purchases": "Purchases overview",
     "reports": "Reports",
     "settingsAuditLog": "Settings: Audit log",
     "settingsCustomFields": "Settings: Custom fields",

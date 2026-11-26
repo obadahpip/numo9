@@ -35,6 +35,11 @@ const labels = defineMessages({
   banking: { id: "routes.banking", defaultMessage: "Banking", description: "Module name" },
   reports: { id: "routes.reports", defaultMessage: "Reports", description: "Module name (K-01)" },
   bills: { id: "routes.bills", defaultMessage: "Bills", description: "Module name (E-02)" },
+  purchases: {
+    id: "routes.purchases",
+    defaultMessage: "Purchases overview",
+    description: "Module name (E-02-T15): the purchases overview",
+  },
   settingsGeneral: {
     id: "routes.settingsGeneral",
     defaultMessage: "Settings: General",
@@ -257,6 +262,14 @@ export const ORG_MODULES: readonly OrgModule[] = [
     label: labels.banking,
     settings: "settings/lock-dates",
     aliases: ["bank", "bank-accounts", "bankaccounts", "bank/bankaccounts.aspx", "cash"],
+  },
+  {
+    // E-02-T15: the purchases overview (the shared OverviewPage, D-09-T06).
+    path: "purchases",
+    feature: "accounting.bills.read",
+    label: labels.purchases,
+    settings: "settings/lock-dates",
+    aliases: ["purchase", "purchases-overview"],
   },
   {
     path: "purchases/bills",

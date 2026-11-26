@@ -1,4 +1,4 @@
-"""Purchases routes (E-02 bills, E-04 expense claims), under /api/v1/."""
+"""Purchases routes (E-02 bills and the purchases overview, E-04 expense claims), under /api/v1/."""
 
 from django.urls import path
 
@@ -10,6 +10,7 @@ CLAIM = f"{ORG}expense-claims/<uuid:public_id>"
 
 urlpatterns = [
     path(f"{ORG}bills", api.BillListView.as_view(), name="bills"),
+    path(f"{ORG}bills/overview", api.BillOverviewView.as_view(), name="bills-overview"),
     path(f"{ORG}bills/check-number", api.BillNumberCheckView.as_view(), name="bill-check-number"),
     path(f"{ORG}bills/duplicates", api.BillDuplicatesView.as_view(), name="bill-duplicates"),
     path(f"{ORG}bills/from-po", api.BillFromOrderView.as_view(), name="bill-from-po"),

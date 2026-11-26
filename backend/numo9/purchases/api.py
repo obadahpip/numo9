@@ -1,9 +1,14 @@
 """Bills API (E-02-T10), under ``/api/v1/o/<org>/``. Feature keys ``accounting.bills.read`` /
 ``.write`` / ``.approve``; permissions ``purchases.bills.view`` / ``.write`` / ``.approve``.
 
-- ``GET bills`` — the list: ``status`` (one or comma-separated), ``supplier``, ``q`` (number,
-  supplier invoice number, reference, supplier name), ``page``; 50 a page, newest first, with
-  counts per status (the list tabs);
+- ``GET bills`` — the list: ``tab`` (all, draft, awaiting_approval, awaiting_payment, overdue,
+  paid, void — ``overview.tab_filter``), ``status`` (one or comma-separated), ``supplier``, ``q``
+  (number, supplier invoice number, reference, supplier name), ``page``; 50 a page, newest first,
+  with counts per status and the count and amount of every tab (``tabs``: the same query as the
+  overview tiles, E-02-T15);
+- ``GET bills/overview`` — the purchases overview (E-02-T15): ``tiles`` (Draft, Awaiting approval,
+  Awaiting payment, Overdue — count and amount, the tabs' own numbers), ``aging`` (what is owed by
+  age) and ``top_suppliers``; ``section=tiles|aging|suppliers`` answers one card only;
 - ``POST bills`` — a draft: ``supplier``, ``date``, ``due_date``, ``supplier_invoice_no``,
   ``reference``, ``terms``, ``tax_mode``, discount, ``department``, ``notes``, holdback, ``lines``
   and an optional ``document`` (a file of the documents inbox, attached: the editor's split view,
@@ -47,6 +52,7 @@ from numo9.documents.models import TaxMode
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
+from . import overview
 from .models import Bill, BillLine, BillStatus, HoldbackType
 from .permissions import BILLS_APPROVE, BILLS_VIEW, BILLS_WRITE
 from .uniqueness import normalise, number_conflict
@@ -387,6 +393,10 @@ def _save(bill: Bill, values: dict[str, Any], records: dict[str, Any]) -> Bill:
     return recalculate(bill)
 
 
+def overview_tabs() -> tuple[str, ...]:
+    return overview.TABS
+
+
 def _status_filter(text: str | None) -> list[str]:
     wanted = [s.strip() for s in (text or "").split(",") if s.strip()]
     return [s for s in wanted if s in BillStatus.values]
@@ -398,6 +408,7 @@ class BillListView(APIView):
     @extend_schema(
         operation_id="bills_list",
         parameters=[
+            OpenApiParameter("tab", str, enum=list(overview_tabs())),
             OpenApiParameter("status", str),
             OpenApiParameter("supplier", OpenApiTypes.UUID),
             OpenApiParameter("q", str),
@@ -406,13 +417,25 @@ class BillListView(APIView):
         responses={200: OpenApiTypes.OBJECT},
     )
     def get(self, request: Request, org: Any) -> Response:
+        from numo9.contacts.models import organisation_today
+
         query = request.query_params
-        bills = Bill.objects.filter(deleted_at__isnull=True).select_related(
-            "contact", "organisation"
-        )
+        today = organisation_today(current_org())
+        bills = overview.live_bills().select_related("contact", "organisation")
         counts = dict(
             bills.values_list("status").annotate(n=Count("pk")).values_list("status", "n")
         )
+        tabs = overview.tab_counts(bills, today)
+        tab = query.get("tab") or "all"
+        if tab not in overview.TABS:
+            return Response(
+                {
+                    "code": "purchases.bill.bad_tab",
+                    "detail": _("There's no %(tab)s tab on the bills list.") % {"tab": tab[:40]},
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        bills = bills.filter(overview.tab_filter(tab, today))
         statuses = _status_filter(query.get("status"))
         if statuses:
             bills = bills.filter(status__in=statuses)
@@ -436,6 +459,16 @@ class BillListView(APIView):
                 "page": page,
                 "pages": max(1, -(-total // PAGE_SIZE)),
                 "counts": {key: counts.get(key, 0) for key in BillStatus.values},
+                "tab": tab,
+                "tabs": [
+                    {
+                        "key": key,
+                        "label": str(overview.TAB_LABELS[key]),
+                        "count": tabs[key]["count"],
+                        "amount": _money(tabs[key]["amount"]),
+                    }
+                    for key in overview.TABS
+                ],
                 "results": [bill_row(bill) for bill in chunk],
             }
         )
@@ -698,3 +731,58 @@ class BillDuplicatesView(APIView):
         from .duplicates import review_list
 
         return Response({"results": review_list()})
+
+
+OVERVIEW_SECTIONS = ("tiles", "aging", "suppliers")
+
+
+class BillOverviewView(APIView):
+    """The purchases overview (E-02-T15): tiles = the list tabs' numbers (one query source)."""
+
+    @requires_permission(BILLS_VIEW.key)
+    @requires_feature(READ)
+    @extend_schema(
+        operation_id="bills_overview",
+        parameters=[OpenApiParameter("section", str, enum=list(OVERVIEW_SECTIONS))],
+        responses={200: OpenApiTypes.OBJECT},
+    )
+    def get(self, request: Request, org: Any) -> Response:
+        from numo9.contacts.models import organisation_today
+
+        organisation = current_org()
+        today = organisation_today(organisation)
+        section = request.query_params.get("section") or ""
+        if section and section not in OVERVIEW_SECTIONS:
+            return Response(
+                {
+                    "code": "purchases.overview.bad_section",
+                    "detail": _("Ask for the tiles, aging or suppliers section."),
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        bills = overview.live_bills()
+        list_url = f"/o/{organisation.public_id}/purchases/bills" if organisation else ""
+        body: dict[str, Any] = {"as_of": today.isoformat()}
+        if section in ("", "tiles"):
+            tabs = overview.tab_counts(bills, today)
+            body["tiles"] = [
+                {
+                    "key": key,
+                    "label": str(overview.TAB_LABELS[key]),
+                    "count": tabs[key]["count"],
+                    "amount": _money(tabs[key]["amount"]),
+                    "href": f"{list_url}?tab={key}",
+                }
+                for key in overview.TILES
+            ]
+        if section in ("", "aging"):
+            body["aging"] = [
+                {**bucket, "amount": _money(bucket["amount"])}
+                for bucket in overview.aging(bills, today)
+            ]
+        if section in ("", "suppliers"):
+            body["top_suppliers"] = [
+                {**row, "owed": _money(row["owed"]), "overdue": _money(row["overdue"])}
+                for row in overview.top_suppliers(bills, today)
+            ]
+        return Response(body)

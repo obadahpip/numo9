@@ -65,6 +65,7 @@ describe("route registry: settings sections and module gears (gap-03)", () => {
       "accounting/chart-of-accounts",
       "accounting/journals",
       "banking",
+      "purchases",
       "purchases/bills",
     ]);
     for (const entry of gears) {

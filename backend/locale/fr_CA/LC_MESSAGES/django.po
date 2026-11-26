@@ -6809,6 +6809,10 @@ msgstr "Ce champ (%(field)s) n’existe pas."
 msgid "The due date is before the bill date."
 msgstr "La date de fin est antérieure à la date de début."
 
+#, python-format
+msgid "There's no %(tab)s tab on the bills list."
+msgstr "La liste des factures fournisseurs n’a pas d’onglet %(tab)s."
+
 #, fuzzy
 #| msgid "Only a draft can be posted."
 msgid "Only a draft bill can be edited: void it to correct it."
@@ -6831,6 +6835,9 @@ msgstr "Créer, modifier et attribuer les rôles du cabinet"
 #| msgid "purchase orders"
 msgid "There's no such goods receipt."
 msgstr "bons de commande"
+
+msgid "Ask for the tiles, aging or suppliers section."
+msgstr "Demandez la section des tuiles, de l’échéancier ou des fournisseurs."
 
 #, fuzzy
 #| msgid "purchase orders"
@@ -7429,6 +7436,15 @@ msgstr "ligne de note de frais"
 
 msgid "expense claim lines"
 msgstr "lignes de note de frais"
+
+msgid "All"
+msgstr "Tout"
+
+msgid "Overdue"
+msgstr "En retard"
+
+msgid "1–30 days"
+msgstr "1 à 30 jours"
 
 #, fuzzy
 #| msgid "purchase orders"
@@ -9773,9 +9789,6 @@ msgstr "Produite"
 
 msgid "Due soon"
 msgstr "À produire bientôt"
-
-msgid "Overdue"
-msgstr "En retard"
 
 #, fuzzy
 #| msgid "started"

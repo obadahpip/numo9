@@ -153,10 +153,96 @@ export interface Refusal {
   [field: string]: unknown;
 }
 
+/** The bills list tabs (E-02-T15); the overview tiles are four of them, counted the same way. */
+export const BILL_TABS = [
+  "all",
+  "draft",
+  "awaiting_approval",
+  "awaiting_payment",
+  "overdue",
+  "paid",
+  "void",
+] as const;
+export type BillTab = (typeof BILL_TABS)[number];
+
+export function isBillTab(value: string | null | undefined): value is BillTab {
+  return BILL_TABS.includes(value as BillTab);
+}
+
+export interface BillRow {
+  id: string;
+  number: string;
+  status: BillStatus;
+  status_label: string;
+  supplier: { id: string; name: string };
+  supplier_invoice_no: string;
+  reference: string;
+  date: string;
+  due_date: string | null;
+  total: string;
+  amount_due: string;
+  url: string;
+}
+
+export interface TabCount {
+  key: BillTab;
+  label: string;
+  count: number;
+  amount: string;
+}
+
+export interface BillList {
+  count: number;
+  page: number;
+  pages: number;
+  tab: BillTab;
+  tabs: TabCount[];
+  counts: Record<BillStatus, number>;
+  results: BillRow[];
+}
+
+export interface AgingRow {
+  key: string;
+  label: string;
+  count: number;
+  amount: string;
+}
+
+export interface SupplierOwed {
+  id: string;
+  name: string;
+  owed: string;
+  overdue: string;
+  bills: number;
+}
+
+export interface PurchasesOverview {
+  as_of: string;
+  tiles?: (TabCount & { href: string })[];
+  aging?: AgingRow[];
+  top_suppliers?: SupplierOwed[];
+}
+
+export type OverviewSection = "tiles" | "aging" | "suppliers";
+
 const base = (org: string) => `/api/v1/o/${encodeURIComponent(org)}/bills`;
 type Result<T> = Promise<ApiResult<T & Refusal>>;
 
 export const billsApi = {
+  list: (
+    org: string,
+    { tab = "all", q = "", page = 1 }: { tab?: BillTab; q?: string; page?: number },
+  ): Result<BillList> => {
+    const query = new URLSearchParams({ tab, page: String(page) });
+    if (q.trim()) query.set("q", q.trim());
+    return apiRequest(`${base(org)}?${query.toString()}`);
+  },
+  overview: (
+    org: string,
+    section: OverviewSection,
+    headers: Record<string, string> = {},
+  ): Result<PurchasesOverview> =>
+    apiRequest(`${base(org)}/overview?section=${section}`, { headers }),
   get: (org: string, id: string): Result<Bill> => apiRequest(`${base(org)}/${id}`),
   create: (org: string, body: BillInput): Result<Bill> =>
     apiRequest(base(org), { method: "POST", body }),
