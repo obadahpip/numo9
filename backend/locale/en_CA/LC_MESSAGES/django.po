@@ -7420,6 +7420,12 @@ msgstr ""
 msgid "You wrote or submitted this invoice: someone else must approve it."
 msgstr ""
 
+msgid "payments received"
+msgstr ""
+
+msgid "customer credits"
+msgstr ""
+
 #, python-format
 msgid "%(note)s is already %(status)s."
 msgstr ""
@@ -7785,9 +7791,6 @@ msgstr ""
 msgid "payment received"
 msgstr ""
 
-msgid "payments received"
-msgstr ""
-
 msgid "Overpayment"
 msgstr ""
 
@@ -7798,9 +7801,6 @@ msgid "refunded"
 msgstr ""
 
 msgid "customer credit"
-msgstr ""
-
-msgid "customer credits"
 msgstr ""
 
 msgid "allocated by"

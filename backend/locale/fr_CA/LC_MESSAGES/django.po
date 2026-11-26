@@ -8098,6 +8098,12 @@ msgstr "%(journal)s n'attend pas d'approbation."
 msgid "You wrote or submitted this invoice: someone else must approve it."
 msgstr "Vous avez rédigé ou soumis %(journal)s : une autre personne doit l'approuver ou le refuser."
 
+msgid "payments received"
+msgstr "paiements reçus"
+
+msgid "customer credits"
+msgstr "crédits clients"
+
 #, fuzzy, python-format
 #| msgid "This override request is already %(status)s."
 msgid "%(note)s is already %(status)s."
@@ -8552,9 +8558,6 @@ msgstr "décision prise par"
 msgid "payment received"
 msgstr "Reçu"
 
-msgid "payments received"
-msgstr "paiements reçus"
-
 #, fuzzy
 #| msgid "first payment"
 msgid "Overpayment"
@@ -8574,9 +8577,6 @@ msgstr "terminée"
 #| msgid "supplier"
 msgid "customer credit"
 msgstr "fournisseur"
-
-msgid "customer credits"
-msgstr "crédits clients"
 
 #, fuzzy
 #| msgid "allocated"
