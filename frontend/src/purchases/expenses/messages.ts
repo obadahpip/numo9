@@ -85,6 +85,11 @@ export const em = defineMessages({
     description: "Warning panel heading",
   },
   approve: { id: "purchases.expense.approve", defaultMessage: "Approve", description: "Button" },
+  edit: {
+    id: "purchases.expense.edit",
+    defaultMessage: "Edit the claim",
+    description: "Link to the claim form (a draft or a rejected claim of the person)",
+  },
   reject: { id: "purchases.expense.reject", defaultMessage: "Reject", description: "Button" },
   rejectTitle: {
     id: "purchases.expense.rejectTitle",

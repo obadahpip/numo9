@@ -6685,6 +6685,33 @@ msgstr ""
 msgid "There's no expense claim with this id in this organisation."
 msgstr ""
 
+msgid "Enter the kilometres driven."
+msgstr ""
+
+msgid "You can enter expense claims for yourself only."
+msgstr ""
+
+msgid "That person isn't in this organisation."
+msgstr ""
+
+msgid "That category doesn't exist."
+msgstr ""
+
+msgid "That receipt file doesn't exist."
+msgstr ""
+
+msgid "Only your own draft or rejected claims can be edited."
+msgstr ""
+
+msgid "Only a draft claim can be deleted."
+msgstr ""
+
+msgid "You can submit your own expense claims only."
+msgstr ""
+
+msgid "Enter a date as YYYY-MM-DD."
+msgstr ""
+
 msgid "Add at least one receipt or trip with an amount before submitting."
 msgstr ""
 
@@ -6707,6 +6734,24 @@ msgid "This is your own expense claim: someone else must approve or reject it."
 msgstr ""
 
 msgid "Say why the claim is rejected."
+msgstr ""
+
+msgid "Add an Unpaid expense claims account to the chart of accounts to reimburse claims."
+msgstr ""
+
+#, python-format
+msgid "Mileage %(date)s: %(trip)s"
+msgstr ""
+
+msgid "Choose a category for every line of the claim."
+msgstr ""
+
+#, python-format
+msgid "Reimbursement of expense claim %(number)s"
+msgstr ""
+
+#, python-format
+msgid "Expense claim %(number)s — %(contact)s"
 msgstr ""
 
 #, python-format
@@ -7047,6 +7092,9 @@ msgid "Enter and submit expense claims for others"
 msgstr ""
 
 msgid "Approve or reject expense claims, within an approval limit"
+msgstr ""
+
+msgid "Enter, submit and see your own expense claims"
 msgstr ""
 
 msgid "There's no purchase order with this id in this organisation."

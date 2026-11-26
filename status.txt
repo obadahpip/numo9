@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 795   Remaining: 1992   Progress: 28.53%
+TOTAL ATOMIC TASKS: 2787   Completed: 800   Remaining: 1987   Progress: 28.70%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1071,11 +1071,11 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ E-03-T04 — SupplierCredit, lines, SupplierCreditApplication models
 
 [E-04]
-❌ E-04-T06 — Reimbursement bill creation on approval (employee contact, Unpaid expense claims control)
-❌ E-04-T08 — API /api/v1/expense-claims/ + actions; feature key accounting.expenses
-❌ E-04-T09 — UI: claim form (mobile-responsive, camera upload, category chips)
-❌ E-04-T10 — UI: mileage line calculator
-❌ E-04-T12 — Docs + i18n
+✅ E-04-T06 — Reimbursement bill creation on approval (employee contact, Unpaid expense claims control)
+✅ E-04-T08 — API /api/v1/expense-claims/ + actions; feature key accounting.expenses
+✅ E-04-T09 — UI: claim form (mobile-responsive, camera upload, category chips)
+✅ E-04-T10 — UI: mileage line calculator
+✅ E-04-T12 — Docs + i18n
 
 [E-06]
 ❌ E-06-T01 — PaymentBatch, BillPayment models (method, status, file ref)

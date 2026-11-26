@@ -91,6 +91,14 @@ export function ExpenseClaimReview({ org, id }: { org: string; id: string }) {
           {claim.number ? fm(em.title, { number: claim.number }) : fm(em.draftTitle)}
         </h1>
         <StatusBadge status={BADGE[claim.status]} label={claim.status_label} />
+        {claim.can_edit ? (
+          <a
+            href={`/o/${org}/purchases/expense-claims/${claim.id}/edit`}
+            className="text-sm text-fg-link underline"
+          >
+            {fm(em.edit)}
+          </a>
+        ) : null}
       </header>
       <p className="text-sm text-fg">{claim.title}</p>
       <p className="text-sm text-fg-muted">{fm(em.claimant, { name: claim.claimant.name })}</p>

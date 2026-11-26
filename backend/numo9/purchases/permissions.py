@@ -81,3 +81,11 @@ EXPENSES_APPROVE = register(
         Risk.HIGH,
     )
 )
+EXPENSES_OWN = register(
+    Permission(
+        "purchases.expenses.own",
+        _("Enter, submit and see your own expense claims"),
+        "purchases",
+        Risk.LOW,
+    )
+)

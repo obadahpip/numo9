@@ -111,6 +111,7 @@ nav:
       - "Recurring invoices": user-guide/recurring-invoices.md
       - "Purchase orders and receipts": user-guide/purchase-orders.md
       - "Bills and the purchases overview": user-guide/bills.md
+      - "Expense claims": user-guide/expense-claims.md
       - "Changing your GST/HST filing frequency": user-guide/changing-filing-frequency.md
       - "Stopping and restarting GST/HST or QST filing": user-guide/stopping-and-restarting-filing.md
       - "Preparing and filing your GST/HST return": user-guide/gst-hst-return.md

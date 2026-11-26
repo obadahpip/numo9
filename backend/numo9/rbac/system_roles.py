@@ -88,6 +88,9 @@ def _books(p: Permission) -> bool:
 
 
 _profile = _keys(PROFILE_VIEW)
+#: Self-service every person in the organisation has: their own expense claims (E-04-T08).
+EXPENSES_OWN = "purchases.expenses.own"
+_self_service = _keys(PROFILE_VIEW, EXPENSES_OWN)
 
 PLATFORM = Scope.PLATFORM
 PRACTICE = Scope.PRACTICE
@@ -192,7 +195,10 @@ SYSTEM_ROLES: tuple[SystemRole, ...] = (
         "sales",
         _("Sales"),
         _("Quotes, invoices and customers."),
-        _any(_profile, _org_modules({"sales", "contacts"}, read_only={"reports", "documents"})),
+        _any(
+            _self_service,
+            _org_modules({"sales", "contacts"}, read_only={"reports", "documents"}),
+        ),
     ),
     SystemRole(
         ORG,
@@ -211,21 +217,21 @@ SYSTEM_ROLES: tuple[SystemRole, ...] = (
         "payroll",
         _("Payroll"),
         _("Pay runs and employees' pay."),
-        _any(_profile, _org_modules({"payroll"}, read_only={"reports", "documents"})),
+        _any(_self_service, _org_modules({"payroll"}, read_only={"reports", "documents"})),
     ),
     SystemRole(
         ORG,
         "hr",
         _("HR"),
         _("Employees, leave and HR records."),
-        _any(_profile, _org_modules({"hr"}, read_only={"documents"})),
+        _any(_self_service, _org_modules({"hr"}, read_only={"documents"})),
     ),
     SystemRole(
         ORG,
         "employee",
         _("Employee"),
         _("Their own pay stubs, leave and expense claims (self-service)."),
-        _profile,
+        _self_service,
     ),
 )
 
