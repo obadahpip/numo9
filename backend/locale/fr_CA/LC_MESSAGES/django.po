@@ -12398,3 +12398,118 @@ msgstr "Indiquez chaque type de compte une seule fois."
 
 msgid "Change banking settings: what happens when a posting would take an account below zero"
 msgstr "Modifier les paramètres Banque : ce qui se passe quand une écriture rendrait un compte négatif"
+
+msgid "Overdrawn bank and cash accounts are presented as current liabilities (ASPE 1510)."
+msgstr "Les comptes bancaires et les caisses à découvert sont présentés dans les passifs à court terme (NCECF 1510)."
+
+#, python-format
+msgid "Bank overdraft — %(name)s"
+msgstr "Découvert bancaire — %(name)s"
+
+msgid "Cash flow statement"
+msgstr "État des flux de trésorerie"
+
+msgid "Where cash came from and went for a period: operating (indirect method), investing and financing activities."
+msgstr "D'où vient la trésorerie et où elle est allée pendant une période : activités d'exploitation (méthode indirecte), d'investissement et de financement."
+
+msgid "Cash flow statement (direct method)"
+msgstr "État des flux de trésorerie (méthode directe)"
+
+msgid "Cash received and paid for a period by what it was for: customers, suppliers, payroll, taxes, investing and financing."
+msgstr "Encaissements et décaissements d'une période selon leur objet : clients, fournisseurs, paie, taxes, investissement et financement."
+
+msgid "statement of cash flows"
+msgstr "tableau des flux de trésorerie"
+
+msgid "indirect method"
+msgstr "méthode indirecte"
+
+msgid "Receipts from customers"
+msgstr "Encaissements des clients"
+
+msgid "Payments to suppliers"
+msgstr "Paiements aux fournisseurs"
+
+msgid "Sales taxes"
+msgstr "Taxes de vente"
+
+msgid "Income taxes"
+msgstr "Impôts sur le résultat"
+
+msgid "Other operating cash flows"
+msgstr "Autres flux de trésorerie d'exploitation"
+
+msgid "direct method"
+msgstr "méthode directe"
+
+msgid "receipts and payments"
+msgstr "encaissements et décaissements"
+
+msgid "General ledger detail"
+msgstr "Grand livre détaillé"
+
+msgid "Every posted line of each account for a period, with opening, running and closing balances."
+msgstr "Chaque ligne inscrite de chaque compte pour une période, avec les soldes d'ouverture, cumulatifs et de clôture."
+
+msgid "Account transactions"
+msgstr "Opérations du compte"
+
+msgid "One account's posted lines for a period, with a running balance."
+msgstr "Les lignes inscrites d'un compte pour une période, avec un solde cumulatif."
+
+msgid "Journal report"
+msgstr "Rapport des écritures"
+
+msgid "The posted journals of a period with their lines."
+msgstr "Les écritures inscrites d'une période avec leurs lignes."
+
+msgid "GL"
+msgstr "GL"
+
+msgid "ledger detail"
+msgstr "détail du grand livre"
+
+msgid "account history"
+msgstr "historique du compte"
+
+msgid "running balance"
+msgstr "solde cumulatif"
+
+msgid "journals"
+msgstr "écritures"
+
+msgid "day book"
+msgstr "journal"
+
+msgid "Revenue, cost of sales, gross profit, expenses and net income for a period, with comparisons."
+msgstr "Produits, coût des ventes, marge brute, charges et résultat net d'une période, avec comparaisons."
+
+msgid "Assets, liabilities and equity on a date, with comparisons."
+msgstr "Actifs, passifs et capitaux propres à une date, avec comparaisons."
+
+msgid "Statement of retained earnings"
+msgstr "État des bénéfices non répartis"
+
+msgid "Opening retained earnings, net income, dividends, other movements and closing retained earnings for a period, with comparisons."
+msgstr "Bénéfices non répartis d'ouverture, résultat net, dividendes, autres variations et bénéfices non répartis de clôture d'une période, avec comparaisons."
+
+msgid "Other expenses"
+msgstr "Autres charges"
+
+msgid "income statement"
+msgstr "état des résultats"
+
+msgid "P&L"
+msgstr "État des résultats"
+
+msgid "net income"
+msgstr "résultat net"
+
+msgid "BS"
+msgstr "Bilan"
+
+msgid "movements in equity"
+msgstr "variation des capitaux propres"
+
+msgid "retained earnings"
+msgstr "bénéfices non répartis"

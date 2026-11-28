@@ -88,14 +88,29 @@ export function runQuery(report: ReportSummary, params: RunParams): RunParams {
   return query;
 }
 
-/** Starting parameters: the schema's defaults, a period report on this financial year. */
-export function initialParams(report: ReportSummary, search?: URLSearchParams): RunParams {
+/** Today in the person's time zone, as `YYYY-MM-DD`. */
+export function localToday(now: Date = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+/**
+ * Starting parameters: the schema's defaults, a period report on this financial year; a
+ * statement as at a date (the balance sheet, K-02-T13) opens **as at today** — not the end of
+ * the last financial year (a Xero gap) — with the date shown in its field.
+ */
+export function initialParams(
+  report: ReportSummary,
+  search?: URLSearchParams,
+  today: string = localToday(),
+): RunParams {
   const params: RunParams = {};
   for (const spec of report.params) {
     if (spec.default !== null && spec.default !== "") params[spec.name] = String(spec.default);
   }
   const names = new Set(report.params.map((p) => p.name));
   if (names.has("date_from") && names.has("date_to")) params.preset = "this_financial_year";
+  if (names.has("as_of") && !params.as_of) params.as_of = today;
   search?.forEach((value, key) => {
     if (key === "preset" || key === "layout" || names.has(key)) params[key] = value;
   });
@@ -103,10 +118,16 @@ export function initialParams(report: ReportSummary, search?: URLSearchParams): 
   return params;
 }
 
-export function toTableRows(body: ReportBody): ReportTableRow[] {
+/** "1000 · Chequing" → "Chequing" when account codes are hidden (K-02-T13). */
+export function withoutCode(label: string): string {
+  const at = label.indexOf(" · ");
+  return at > 0 ? label.slice(at + 3) : label;
+}
+
+export function toTableRows(body: ReportBody, { codes = true } = {}): ReportTableRow[] {
   return [...body.rows, ...body.totals].map((row) => ({
     key: row.key,
-    label: row.label,
+    label: !codes && row.key.startsWith("account:") ? withoutCode(row.label) : row.label,
     kind: row.kind,
     level: row.level,
     values: row.values,
@@ -140,6 +161,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
   const [gated, setGated] = useState("");
   const [compact, setCompact] = useState(false);
   const [zeroRows, setZeroRows] = useState(false);
+  const [codes, setCodes] = useState(true);
   const [drill, setDrill] = useState<DrillTarget | null>(null);
   const [editing, setEditing] = useState(false);
 
@@ -354,6 +376,35 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
             />
           </label>
         ) : null}
+        {names.has("order") ? (
+          // K-02-T11 / T13 (gap-58): the journal report's order and its direction
+          <label className="flex flex-col gap-1 text-xs font-semibold text-fg">
+            {fm(runner.orderBy)}
+            <Select
+              aria-label={fm(runner.orderBy)}
+              value={params.order ?? "number"}
+              onValueChange={(value) => set("order", value)}
+              options={[
+                { value: "number", label: fm(runner.orderNumber) },
+                { value: "date", label: fm(runner.orderDate) },
+              ]}
+            />
+          </label>
+        ) : null}
+        {names.has("direction") ? (
+          <label className="flex flex-col gap-1 text-xs font-semibold text-fg">
+            {fm(runner.direction)}
+            <Select
+              aria-label={fm(runner.direction)}
+              value={params.direction ?? "asc"}
+              onValueChange={(value) => set("direction", value)}
+              options={[
+                { value: "asc", label: fm(runner.ascending) },
+                { value: "desc", label: fm(runner.descending) },
+              ]}
+            />
+          </label>
+        ) : null}
         {names.has("basis") ? (
           <label className="flex flex-col gap-1 text-xs font-semibold text-fg">
             {fm(runner.basis)}
@@ -405,6 +456,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
         </Button>
         <Switch checked={compact} onCheckedChange={setCompact} label={fm(runner.compact)} />
         <Switch checked={zeroRows} onCheckedChange={setZeroRows} label={fm(runner.showZeroRows)} />
+        <Switch checked={codes} onCheckedChange={setCodes} label={fm(runner.showCodes)} />
       </form>
 
       {state === "gated" ? (
@@ -475,6 +527,16 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
                   {alert.message}
                 </p>
               ))}
+            {body.rows.some((row) => row.key.startsWith("overdraft:")) ? (
+              // K-02-T04 / T13: overdrawn bank and cash accounts were moved to liabilities
+              <p
+                role="note"
+                data-reclassification-note=""
+                className="mt-2 rounded-md border border-border bg-surface-info-subtle px-4 py-3 text-sm text-fg"
+              >
+                {fm(runner.reclassified)}
+              </p>
+            ) : null}
             {body.layout ? (
               <p className="text-xs text-fg-muted">
                 {fm(runner.layoutName, { name: body.layout.name, version: body.layout.version })}
@@ -488,7 +550,7 @@ export function ReportRunner({ org, slug, renderDrill, renderLayoutEditor }: Rep
           <ReportTable
             caption={header.title}
             columns={body.columns}
-            rows={toTableRows(body)}
+            rows={toTableRows(body, { codes })}
             locale={locale}
             compact={compact}
             showZeroRows={zeroRows}

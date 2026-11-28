@@ -236,3 +236,50 @@ export const SALES_LINES = {
     },
   ],
 };
+
+/** K-02: a balance sheet with Petty Cash overdrawn and reclassified (K-02-T04). */
+export function balanceSheet(asOf: string) {
+  const row = (key: string, label: string, kind: string, level: number, values: string[]) => ({
+    key,
+    label,
+    kind,
+    level,
+    values,
+    drill: kind === "row" ? drill(key.split(":")[1] ?? "") : null,
+    notes: {},
+  });
+  return {
+    report: "balance_sheet",
+    params: { as_of: asOf, compare: "none", periods: 1, book: "accounting" },
+    columns: [{ key: "b0", label: asOf }],
+    rows: [
+      row("section:assets", "Assets", "section", 0, []),
+      row("group:current_assets", "Current assets", "section", 1, []),
+      row("account:1000", "1000 · Chequing", "row", 2, ["5000.00"]),
+      row("account:1050", "1050 · Old float", "row", 2, ["0.00"]),
+      row("total:current_assets", "Total current assets", "total", 1, ["5000.00"]),
+      row("total:assets", "Total assets", "total", 0, ["5000.00"]),
+      row("section:liabilities", "Liabilities", "section", 0, []),
+      row("group:current_liabilities", "Current liabilities", "section", 1, []),
+      row("overdraft:1010", "Bank overdraft — Petty Cash", "row", 2, ["994.17"]),
+      row("total:current_liabilities", "Total current liabilities", "total", 1, ["994.17"]),
+      row(
+        "note:overdraft",
+        "Overdrawn bank and cash accounts are presented as current liabilities (ASPE 1510).",
+        "text",
+        1,
+        [],
+      ),
+      row("total:liabilities", "Total liabilities", "total", 0, ["994.17"]),
+      row("section:equity", "Equity", "section", 0, []),
+      row("current_year_earnings", "Current year earnings", "row", 1, ["4005.83"]),
+      row("total:equity", "Total equity", "total", 0, ["4005.83"]),
+    ],
+    totals: [
+      row("total:liabilities_and_equity", "Total liabilities and equity", "total", 0, ["5000.00"]),
+    ],
+    header: header("Balance sheet"),
+    notes: "",
+    unplaced_notes: [],
+  };
+}

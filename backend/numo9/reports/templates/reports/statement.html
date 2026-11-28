@@ -1,0 +1,57 @@
+{% extends "documents/base.html" %}
+{% load i18n %}
+{% comment %}K-02-T14 — a core financial statement (profit and loss, balance sheet, retained
+earnings, cash flow) on the document baseline: Letter, 1 in margins (documents/base.html, gap-43).
+The heading is the statement's own — the organisation's display name, its legal name when it
+differs, the statement and its date or period, centred — then the screen's rows: sections, the
+accounts, single-ruled sub-totals, the statement's grand totals double-ruled, and notes (the
+overdraft reclassification, K-02-T04) as full-width italic lines. Never recomputed: the report
+body is what the screen shows.{% endcomment %}
+{% block title %}{{ header.title }} — {{ header.display_name }}{% endblock %}
+{% block style %}
+  .statement-head { text-align: center; margin-block-end: 16pt; }
+  .statement-head .display { font-size: 14pt; font-weight: 700; }
+  .statement-head .legal { font-size: 9pt; color: #5B6472; }
+  .statement-head h1 { font-size: 13pt; margin: 6pt 0 2pt; }
+  .statement-head .line { font-size: 9pt; color: #5B6472; }
+  .statement-head .status { font-size: 9pt; font-weight: 700; }
+  thead { display: table-header-group; }
+  tr { page-break-inside: avoid; }
+  th.num { text-align: end; }
+  td { border-block-end: 0; padding: 2pt 0; }
+  tr.section td { font-weight: 700; padding-block-start: 10pt; }
+  tr.total td { font-weight: 700; }
+  tr.total td.num { border-block-start: 0.75pt solid #111111; }
+  tr.grand td.num { border-block-start: 0.75pt solid #111111; border-block-end: 2.25pt double #111111; }
+  tr.text td { font-style: italic; color: #5B6472; font-size: 9pt; }
+  .footnotes { margin-block-start: 16pt; font-size: 9pt; white-space: pre-line; }
+{% endblock %}
+{% block content %}
+  <div class="statement-head">
+    <div class="display">{{ header.display_name }}</div>
+    {% if header.legal_name %}<div class="legal">{{ header.legal_name }}</div>{% endif %}
+    <h1>{{ header.title }}</h1>
+    <div class="line">{{ header.period_label }}</div>
+    {% if header.status_label %}<div class="status">{{ header.status_label }}</div>{% endif %}
+    <div class="line">{% if header.basis_label %}{{ header.basis_label }} · {% endif %}{{ header.book_label }}</div>
+  </div>
+  <table>
+    <thead>
+      <tr><th></th>{% for column in columns %}<th class="num">{{ column.label }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      {% if empty %}<tr><td colspan="{{ columns|length|add:1 }}" class="muted">{% translate "No activity in this period" %}</td></tr>{% endif %}
+      {% for row in table %}
+        {% if row.kind == "text" %}
+        <tr class="text"><td colspan="{{ columns|length|add:1 }}" style="padding-inline-start: {{ row.indent }}pt">{{ row.label }}</td></tr>
+        {% else %}
+        <tr class="{{ row.kind }}{% if row.grand %} grand{% endif %}">
+          <td style="padding-inline-start: {{ row.indent }}pt">{{ row.label }}</td>
+          {% for cell in row.cells %}<td class="num">{{ cell }}</td>{% empty %}{% for column in columns %}<td></td>{% endfor %}{% endfor %}
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if notes %}<div class="footnotes">{{ notes }}</div>{% endif %}
+{% endblock %}

@@ -6,7 +6,10 @@ the same dict a published layout stores as its snapshot (K-01-T08). An export is
 screen, never a second computation: same rows, same order, same labels, same values.
 
 - ``render_pdf(body, locale)`` — Letter, 1 in margins, on the printed-document baseline
-  (``documents/base.html``, A-10-T16); amounts formatted like the screen (``$1,234.56``);
+  (``documents/base.html``, A-10-T16); amounts formatted like the screen (``$1,234.56``); the
+  core statements (K-02-T14: P&L, balance sheet, retained earnings, cash flow) on the statement
+  template — display and legal name centred over the title, grand totals double-ruled, notes as
+  full-width lines;
 - ``render_xlsx(body)`` — one sheet: header lines, the column headings, the rows with amounts as
   numbers (``#,##0.00``) and every **total as a formula** (``=SUM(…)``) over the rows it adds up,
   when they do add up to it; a total that isn't a plain sum of rows above it (net income of a
@@ -169,11 +172,23 @@ def _total_cell(
 # --- PDF -----------------------------------------------------------------------------------
 
 
+#: K-02-T14: the core financial statements print on their own template (``statement.html``),
+#: with the rows that close each statement double-ruled; other reports use ``report.html``.
+STATEMENT_TEMPLATES: dict[str, frozenset[str]] = {
+    "profit_and_loss": frozenset({"net_income"}),
+    "balance_sheet": frozenset({"total:assets", "total:liabilities_and_equity"}),
+    "retained_earnings": frozenset({"closing"}),
+    "cash_flow": frozenset({"net_change"}),
+    "cash_flow_direct": frozenset({"net_change"}),
+}
+
+
 def render_pdf(body: dict[str, Any], locale: str | None = None) -> bytes:
     from numo9.documents.formatting import format_money
     from numo9.documents.pdf import render_pdf as render_document
 
     language = locale or "en-ca"
+    grand = STATEMENT_TEMPLATES.get(str(body.get("report") or ""))
     table = [
         {
             **row,
@@ -181,6 +196,7 @@ def render_pdf(body: dict[str, Any], locale: str | None = None) -> bytes:
                 "" if v is None else format_money(v, language) for v in row.get("values") or []
             ],
             "indent": int(row.get("level") or 0) * 12,
+            "grand": grand is not None and row.get("key") in grand,
         }
         for row in _table(body)
     ]
@@ -194,7 +210,8 @@ def render_pdf(body: dict[str, Any], locale: str | None = None) -> bytes:
         "notes": body.get("notes", ""),
         "unplaced_notes": body.get("unplaced_notes", []),
     }
-    return render_document("reports/report.html", context, locale=language)
+    template = "reports/statement.html" if grand is not None else "reports/report.html"
+    return render_document(template, context, locale=language)
 
 
 def export_report(
