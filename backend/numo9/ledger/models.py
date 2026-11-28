@@ -817,6 +817,22 @@ class JournalEntry(LockGuardMixin, AuditedModel, OrgOwnedModel):
     def is_locked(self) -> bool:
         return self.status in LOCKED_STATUSES
 
+    def _override(self) -> Any:
+        return self.overrides.select_related("user").order_by("-at", "-pk").first()
+
+    @property
+    def override_reason(self) -> str:
+        """F-07-T04: why it was posted past a negative-balance warning ("" when it wasn't) —
+        the C-03 ``JournalOverride`` kept with the entry (the latest when several)."""
+        found = self._override()
+        return found.reason if found is not None else ""
+
+    @property
+    def override_by(self) -> Any:
+        """F-07-T04: who posted it past the warning (``None`` when no one had to)."""
+        found = self._override()
+        return found.user if found is not None else None
+
     @property
     def is_opening(self) -> bool:
         """An opening-balance journal: the conversion's opening journal or a correction of it

@@ -7006,7 +7006,7 @@ msgid "receiving more than the tolerance"
 msgstr ""
 
 msgid "Block"
-msgstr ""
+msgstr "Bloquer"
 
 msgid "Warn: allowed once confirmed. Block: refused (E-01-T04)."
 msgstr ""
@@ -12347,3 +12347,54 @@ msgstr "Ce virement n'existe pas."
 
 msgid "Record and void transfers between bank, credit card, loan and cash accounts"
 msgstr "Inscrire et annuler des virements entre comptes bancaires, cartes de crédit, prêts et caisses"
+
+msgid "Allow"
+msgstr "Permettre"
+
+msgid "Warn — a reason is required"
+msgstr "Avertir — une raison est exigée"
+
+msgid "for everyone else"
+msgstr "pour tous les autres"
+
+msgid "for advisers"
+msgstr "pour les conseillers"
+
+msgid "negative-balance policy"
+msgstr "règle de solde négatif"
+
+msgid "negative-balance policies"
+msgstr "règles de solde négatif"
+
+#, python-format
+msgid "%(shortfalls)s. This organisation's negative-balance policy blocks it for advisers too — change it in Banking settings, or record the money coming in first."
+msgstr "%(shortfalls)s. La règle de solde négatif de cette organisation le bloque aussi pour les conseillers — modifiez-la dans les paramètres Banque, ou inscrivez d'abord l'argent qui entre."
+
+#, python-format
+msgid "%(shortfalls)s. A posting can't take this bank or cash account below zero — record the money coming in first (for example a transfer), or ask your adviser (or someone allowed to approve negative balances) to post it."
+msgstr "%(shortfalls)s. Une écriture ne peut pas rendre ce compte bancaire ou cette caisse négatif — inscrivez d'abord l'argent qui entre (par exemple un virement), ou demandez à votre conseiller (ou à une personne autorisée à approuver les soldes négatifs) de l'inscrire."
+
+#, python-format
+msgid "%(shortfalls)s. You may post it anyway: give the reason (at least %(min)d characters)."
+msgstr "%(shortfalls)s. Vous pouvez l'inscrire quand même : indiquez la raison (au moins %(min)d caractères)."
+
+msgid "Post a transaction that takes a bank or cash account below zero, with a reason"
+msgstr "Inscrire une opération qui rend un compte bancaire ou une caisse négatif, avec une raison"
+
+msgid "Cash on hand can't be negative: a negative petty cash means money was spent that was never put in. Blocked by default for everyone but your adviser."
+msgstr "L'encaisse ne peut pas être négative : une petite caisse négative signifie qu'on a dépensé de l'argent qui n'y a jamais été mis. Bloqué par défaut pour tous sauf votre conseiller."
+
+msgid "A chequing account can be overdrawn when you have an overdraft: by default you are warned and give a reason."
+msgstr "Un compte chèques peut être à découvert si vous avez une marge de découvert : par défaut, vous êtes averti et donnez une raison."
+
+msgid "Savings accounts rarely go below zero: by default you are warned and give a reason."
+msgstr "Les comptes d'épargne passent rarement sous zéro : par défaut, vous êtes averti et donnez une raison."
+
+msgid "Money in transit between accounts: by default you are warned and give a reason."
+msgstr "Argent en transit entre des comptes : par défaut, vous êtes averti et donnez une raison."
+
+msgid "Give each account type once."
+msgstr "Indiquez chaque type de compte une seule fois."
+
+msgid "Change banking settings: what happens when a posting would take an account below zero"
+msgstr "Modifier les paramètres Banque : ce qui se passe quand une écriture rendrait un compte négatif"

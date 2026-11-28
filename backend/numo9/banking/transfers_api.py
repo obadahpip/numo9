@@ -6,8 +6,8 @@
   override_reason}`` — writes and posts the transfer (F-06-T03): 201 with the transfer and its
   journal. Refused rules: 400 ``{code, detail}`` (``banking.transfer.same_account``,
   ``…amount_positive``, ``…cross_currency``, ``banking.account.archived``); the cash guard and
-  journal rules as the journals API (409 negative cash, 400 ``ledger.journal.invalid``); 409
-  lock dates.
+  journal rules as the journals API (409 blocked / 422 reason required by the negative-balance
+  policy, 400 ``ledger.journal.invalid``); 409 lock dates.
 - ``GET bank-transfers/presets`` — each preset (F-06-T05) with the accounts it pre-fills.
 - ``GET bank-transfers/<id>``; ``POST bank-transfers/<id>/void`` ``{date}`` — reverses the
   journal (409 ``banking.transfer.voided`` when already voided).
@@ -37,6 +37,7 @@ from numo9.ledger.policy import JournalRuleError
 from numo9.orgsettings.locks import acting_user
 from numo9.rbac.drf import requires_permission
 
+from .api import override_of
 from .models import BankAccount, BankTransfer, BankTransferStatus
 from .permissions import BANKING_TRANSFER, BANKING_VIEW
 from .transfer_presets import PRESETS, resolve_preset
@@ -75,6 +76,7 @@ def transfer_row(transfer: BankTransfer) -> dict[str, Any]:
         "status": transfer.status,
         "voided_at": transfer.voided_at,
         "journal": {"id": str(entry.public_id), "number": entry.number} if entry else None,
+        "override": override_of(entry),
     }
 
 

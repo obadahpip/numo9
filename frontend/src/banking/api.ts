@@ -115,6 +115,9 @@ export interface Refusal {
   detail?: string;
   count?: number;
   errors?: { code: string; message: string }[];
+  /** F-07: the accounts a posting would take below zero (negative-balance refusals). */
+  shortfalls?: { account: { id: string; label: string }; message: string; action?: string }[];
+  adviser?: boolean;
 }
 
 export type AccountStatusFilter = "active" | "archived" | "all";
@@ -254,4 +257,34 @@ export const registerApi = {
     filters: RegisterFilters = {},
   ): Promise<ApiResult<{ account: BankAccount; results: RegisterRow[] }>> =>
     apiRequest(registerUrl(org, id, filters)),
+};
+
+// ---- negative-balance policy (F-07-T08) ------------------------------------------------------
+
+export type CashControlAction = "allow" | "warn" | "block";
+
+export interface CashPolicy {
+  account_type: BankAccountType;
+  label: string;
+  standard: CashControlAction;
+  adviser: CashControlAction;
+  default: { standard: CashControlAction; adviser: CashControlAction };
+  explanation: string;
+}
+
+export interface CashPolicies {
+  policies: CashPolicy[];
+  actions: { value: CashControlAction; label: string }[];
+}
+
+export type CashPolicyChange = Pick<CashPolicy, "account_type" | "standard" | "adviser">;
+
+export const cashPolicyApi = {
+  get: (org: string): Promise<ApiResult<CashPolicies>> =>
+    apiRequest(`${base(org)}/bank-settings/cash-policies`),
+  save: (org: string, policies: CashPolicyChange[]): Promise<ApiResult<CashPolicies & Refusal>> =>
+    apiRequest(`${base(org)}/bank-settings/cash-policies`, {
+      method: "PUT",
+      body: { policies },
+    }),
 };

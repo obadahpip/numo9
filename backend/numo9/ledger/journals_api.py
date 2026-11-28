@@ -14,8 +14,9 @@
 - ``POST journals/<id>/post`` — post a draft (``override_reason`` optional).
 
 Errors: 400 ``ledger.journal.invalid`` with every problem in ``errors`` (``code`` + ``message``,
-line and account named); 409 ``ledger.journal.negative_cash`` (someone who isn't an adviser) or
-``ledger.journal.override_reason_required`` (an adviser without a reason) with ``shortfalls``;
+line and account named); 409 ``ledger.journal.negative_cash`` (the negative-balance policy
+blocks it for the person) or 422 ``ledger.journal.override_reason_required`` (it warns: send
+``override_reason``, F-07-T04) with ``shortfalls``;
 409 ``lock.violation`` / ``ledger.period.closed`` from the period check.
 
 Permission ``accounting.journals.post``; feature ``accounting.journals.write`` (402 without it).
@@ -38,13 +39,12 @@ from rest_framework.views import APIView
 from numo9.catalogue.drf import requires_feature
 from numo9.contacts.models import Contact
 from numo9.files.models import Document
-from numo9.orgsettings.locks import acting_user, is_adviser, local_date
+from numo9.orgsettings.locks import acting_user, is_adviser
 from numo9.rbac.drf import requires_permission
 from numo9.tenancy.context import current_org
 
 from .api import JournalDetailSerializer, JournalDetailView, JournalListView
 from .approvals import ApprovalRefused
-from .cash_guard import shortfalls
 from .models import (
     SELECTABLE_CATEGORIES,
     Account,
@@ -56,7 +56,14 @@ from .models import (
     LedgerError,
 )
 from .permissions import JOURNALS_POST
-from .policy import NegativeCash, check_policy
+from .policy import (
+    ALLOW,
+    NegativeBalanceWarning,
+    NegativeCash,
+    assess_cash,
+    check_policy,
+    may_override,
+)
 from .services import post_entry, post_journal, save_draft
 from .validation import JournalSpec, LineSpec, validate_journal
 
@@ -106,6 +113,7 @@ class CheckSerializer(serializers.Serializer[Any]):
     errors = ProblemSerializer(many=True)  # type: ignore[assignment]
     shortfalls = serializers.ListField(child=serializers.DictField())
     adviser = serializers.BooleanField()
+    may_override = serializers.BooleanField()
     needs = serializers.DictField()
 
 
@@ -181,7 +189,11 @@ def _refused(error: LedgerError) -> Response:
                 "adviser": error.adviser,
                 "shortfalls": [p.as_dict() for p in error.projections],
             },
-            status=status.HTTP_409_CONFLICT,
+            # F-07-T04: a WARN without a reason is an incomplete request (422 — send it again
+            # with ``override_reason``); a BLOCK is a conflict with the books (409).
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY
+            if isinstance(error, NegativeBalanceWarning)
+            else status.HTTP_409_CONFLICT,
         )
     return Response(
         {
@@ -268,7 +280,8 @@ class JournalCheckView(APIView):
                 check_policy(checked, attachments=len(documents), organisation=organisation)
             except LedgerError as error:
                 errors = _problems(error)
-            found = shortfalls(checked, organisation, today=local_date(organisation, _now()))
+            # F-07-T03: the organisation's negative-balance policy, as the posting will meet it
+            found = [p for p in assess_cash(checked, organisation, person) if p.action != ALLOW]
             needs = _needs(checked, errors)
         return Response(
             {
@@ -276,6 +289,8 @@ class JournalCheckView(APIView):
                 "errors": errors,
                 "shortfalls": [p.as_dict() for p in found],
                 "adviser": is_adviser(person, organisation),
+                # F-07: may post past a WARN with a reason (an adviser or allow_negative)
+                "may_override": may_override(person, organisation),
                 "needs": needs,
             }
         )

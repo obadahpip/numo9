@@ -56,6 +56,8 @@ const taxCode = (id: string, code: string, name: string, side: string) => ({
 
 let posted: Record<string, unknown>[] = [];
 let codeQueries: string[] = [];
+/** F-07-T07: what each POST answers, in order (then 201). */
+let answers: { status: number; body: unknown }[] = [];
 
 function serve() {
   posted = [];
@@ -129,7 +131,7 @@ function serve() {
         }
         if (url.endsWith("/bank-transactions") && init?.method === "POST") {
           posted.push(JSON.parse(String(init.body)) as Record<string, unknown>);
-          return { status: 201, body: { id: "t1" } };
+          return answers.shift() ?? { status: 201, body: { id: "t1" } };
         }
         return { status: 404, body: {} };
       }),
@@ -137,7 +139,10 @@ function serve() {
   );
 }
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  answers = [];
+});
 
 async function chooseAccount(name: RegExp) {
   await userEvent.click(screen.getByRole("combobox", { name: "Account, line 1" }));
@@ -239,4 +244,79 @@ it("receive: the PST warning shows inline and doesn't block (G-02-T08)", async (
   ).toBeVisible();
   await chooseAccount(/Sales/);
   expect(screen.getByRole("combobox", { name: "Tax code, line 1" })).toBeEnabled();
+});
+
+const PETTY_SHORT = {
+  account: { id: "g3", label: "1010 Petty Cash" },
+  message: "Petty Cash would be −994.17 on 15 Jun 2026",
+};
+
+async function recordOfficeSpend() {
+  await chooseAccount(/Office supplies/);
+  await userEvent.type(screen.getByRole("textbox", { name: "Amount, line 1" }), "994.17");
+  await userEvent.tab();
+  const save = screen.getByRole("button", { name: "Record spend" });
+  await waitFor(() => expect(save).toBeEnabled());
+  await userEvent.click(save);
+  return save;
+}
+
+it("F-07-T07: a warning shows the inline panel with the reason, sent on the next try", async () => {
+  serve();
+  answers = [
+    {
+      status: 422,
+      body: {
+        code: "ledger.journal.override_reason_required",
+        detail: "…",
+        adviser: true,
+        shortfalls: [{ ...PETTY_SHORT, action: "warn" }],
+      },
+    },
+  ];
+  renderWithIntl(<MoneyForm org={ORG} kind="spend" account={ACCOUNTS[2]?.id} navigate={vi.fn()} />);
+  await screen.findByRole("heading", { name: "Spend money" });
+  const save = await recordOfficeSpend();
+  const panel = await screen.findByRole("status", {
+    name: "This would take a bank or cash account below zero",
+  });
+  expect(panel).toHaveAttribute("data-negative-balance", "warn");
+  expect(panel).toHaveTextContent("Petty Cash would be −994.17 on 15 Jun 2026");
+  expect(save).toBeDisabled();
+  await userEvent.type(
+    within(panel).getByLabelText("Reason for saving it anyway"),
+    "Owner tops it up Monday",
+  );
+  expect(save).toBeEnabled();
+  await userEvent.click(save);
+  await waitFor(() => expect(posted).toHaveLength(2));
+  expect(posted[1]).toMatchObject({ override_reason: "Owner tops it up Monday" });
+});
+
+it("F-07-T07: a block shows who can override and a remedy, saving stays off", async () => {
+  serve();
+  answers = [
+    {
+      status: 409,
+      body: {
+        code: "ledger.journal.negative_cash",
+        detail: "…",
+        adviser: false,
+        shortfalls: [{ ...PETTY_SHORT, action: "block" }],
+      },
+    },
+  ];
+  const navigate = vi.fn();
+  renderWithIntl(
+    <MoneyForm org={ORG} kind="spend" account={ACCOUNTS[2]?.id} navigate={navigate} />,
+  );
+  await screen.findByRole("heading", { name: "Spend money" });
+  const save = await recordOfficeSpend();
+  const panel = await screen.findByRole("alert");
+  expect(panel).toHaveAttribute("data-negative-balance", "block");
+  expect(panel).toHaveTextContent("Who can override: your adviser");
+  expect(within(panel).queryByLabelText("Reason for saving it anyway")).toBeNull();
+  expect(save).toBeDisabled();
+  await userEvent.click(within(panel).getByRole("button", { name: "Record money coming in" }));
+  expect(navigate).toHaveBeenCalledWith(`/o/${ORG}/banking/receive?account=${ACCOUNTS[2]?.id}`);
 });

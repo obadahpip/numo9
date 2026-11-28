@@ -11315,3 +11315,54 @@ msgstr ""
 
 msgid "Record and void transfers between bank, credit card, loan and cash accounts"
 msgstr ""
+
+msgid "Allow"
+msgstr ""
+
+msgid "Warn — a reason is required"
+msgstr ""
+
+msgid "for everyone else"
+msgstr ""
+
+msgid "for advisers"
+msgstr ""
+
+msgid "negative-balance policy"
+msgstr ""
+
+msgid "negative-balance policies"
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. This organisation's negative-balance policy blocks it for advisers too — change it in Banking settings, or record the money coming in first."
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. A posting can't take this bank or cash account below zero — record the money coming in first (for example a transfer), or ask your adviser (or someone allowed to approve negative balances) to post it."
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. You may post it anyway: give the reason (at least %(min)d characters)."
+msgstr ""
+
+msgid "Post a transaction that takes a bank or cash account below zero, with a reason"
+msgstr ""
+
+msgid "Cash on hand can't be negative: a negative petty cash means money was spent that was never put in. Blocked by default for everyone but your adviser."
+msgstr ""
+
+msgid "A chequing account can be overdrawn when you have an overdraft: by default you are warned and give a reason."
+msgstr ""
+
+msgid "Savings accounts rarely go below zero: by default you are warned and give a reason."
+msgstr ""
+
+msgid "Money in transit between accounts: by default you are warned and give a reason."
+msgstr ""
+
+msgid "Give each account type once."
+msgstr ""
+
+msgid "Change banking settings: what happens when a posting would take an account below zero"
+msgstr ""

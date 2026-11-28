@@ -110,6 +110,8 @@ test("non-adviser: chip on the bank line, block message, Post disabled", async (
   await expect(page.locator("[data-blocked]")).toContainText(
     "A journal can't take a bank or cash account below zero",
   );
+  // F-07-T07: the inline negative-balance panel, block state
+  await expect(page.locator("[data-blocked] [data-negative-balance='block']")).toBeVisible();
   await expect(page.getByRole("button", { name: "Post journal" })).toBeDisabled();
   await expectAccessible(page);
   expect(posted).toEqual([]);
@@ -120,6 +122,9 @@ test("adviser: the override dialog needs a reason, sent with the journal", async
   const posted = await mockJournalApi(page, { adviser: true });
   await fillTeardownJournal(page);
   await expect(page.locator("[data-chip='negative-cash']")).toBeVisible();
+  await expect(page.locator("[data-negative-balance='warn']")).toContainText(
+    "Petty Cash would be −994.17 on 15 Jun 2026",
+  ); // F-07-T07: the inline panel, warn state
   await page.getByRole("button", { name: "Post journal" }).click();
   const dialog = page.getByRole("dialog", { name: "Post below zero?" });
   await expect(dialog).toContainText("Petty Cash would be −994.17 on 15 Jun 2026");

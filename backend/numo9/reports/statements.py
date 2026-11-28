@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import datetime as dt
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Any
 
@@ -250,6 +250,12 @@ def fiscal_start(organisation: Any, day: dt.date) -> dt.date:
     return fiscal_year(get_settings(organisation), day)[0]
 
 
+#: F-07-T09: who says which asset bank/cash accounts are overdrawn at the balance-sheet dates —
+#: ``hook(organisation, accounts, balances, dates) -> [Overdrawn(account, column, date, balance,
+#: account_type)]`` (``numo9.banking.presentation.overdrawn_accounts``, registered by banking).
+OVERDRAFT_HOOKS: list[Any] = []
+
+
 @dataclass
 class BalanceData:
     dates: list[dt.date]
@@ -257,6 +263,8 @@ class BalanceData:
     balances: dict[int, list[Decimal]]
     retained: list[Decimal]
     current_year: list[Decimal]
+    #: F-07-T09: the overdrawn asset bank/cash accounts, per date (K-02-T04 reclassifies them).
+    overdrawn: list[Any] = field(default_factory=list)
 
 
 def balance_figures(
@@ -277,7 +285,10 @@ def balance_figures(
         total = -sum((balances.get(a.pk, [ZERO] * len(dates))[i] for a in pnl), ZERO)
         retained.append(prior)
         current.append(total - prior)
-    return BalanceData(dates, accounts, balances, retained, current)
+    overdrawn = [
+        found for hook in OVERDRAFT_HOOKS for found in hook(organisation, accounts, balances, dates)
+    ]
+    return BalanceData(dates, accounts, balances, retained, current, overdrawn)
 
 
 def _ordered_non_current(accounts: list[Any]) -> list[Any]:

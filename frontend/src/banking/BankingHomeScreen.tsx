@@ -25,6 +25,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { useFormatMessage } from "@/i18n";
 
 import { bankingApi, type BankAccount, type BankAccountType } from "./api";
+import { cash } from "./cashControlMessages";
 import { m, typeLabels } from "./messages";
 
 const TIME_ZONE = "America/Toronto";
@@ -93,6 +94,9 @@ export function BankingHomeScreen({
         <p className="text-sm text-fg-muted">{fm(m.intro)}</p>
       </div>
       <div className="flex flex-wrap items-center gap-3">
+        <Link href={`/o/${org}/banking/settings`} className="text-sm text-fg-link underline">
+          {fm(cash.settingsLink)}
+        </Link>
         <Button variant="primary" onClick={onAddAccount}>
           {fm(m.addAccount)}
         </Button>

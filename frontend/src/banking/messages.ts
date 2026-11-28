@@ -496,11 +496,6 @@ export const money = defineMessages({
     defaultMessage: "{name} couldn't be uploaded. Try again.",
     description: "A document upload failed",
   },
-  overrideReason: {
-    id: "banking.money.overrideReason",
-    defaultMessage: "Reason (at least {min} characters)",
-    description: "Adviser's reason to take a bank or cash account below zero",
-  },
   saveSpend: {
     id: "banking.money.saveSpend",
     defaultMessage: "Record spend",

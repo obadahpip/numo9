@@ -920,3 +920,67 @@ class BankTransfer(AuditedModel, OrgOwnedModel):
         check_transfer(
             getattr(self, "from_account", None), getattr(self, "to_account", None), self.amount
         )
+
+
+# ---- negative-balance controls (F-07-T01) -------------------------------------------------------
+
+
+class CashControlAction(models.TextChoices):
+    """What happens when a posting would take an account below zero."""
+
+    ALLOW = "allow", _("Allow")
+    WARN = "warn", _("Warn — a reason is required")
+    BLOCK = "block", _("Block")
+
+
+#: The bank-account types a negative-balance policy applies to: the asset ones. Credit cards,
+#: lines of credit and loans are liabilities — a credit balance is what they are for.
+CONTROLLED_TYPES: tuple[str, ...] = (
+    BankAccountType.CHEQUING,
+    BankAccountType.SAVINGS,
+    BankAccountType.CASH,
+    BankAccountType.CLEARING,
+)
+
+
+class CashControlPolicy(AuditedModel, OrgOwnedModel):
+    """Per organisation and bank-account type (F-07-T01): what a posting that would take an
+    account of that type below zero meets — for people who aren't advisers
+    (``standard_action``) and for advisers (``adviser_action``; also anyone holding
+    ``accounting.banking.allow_negative``).
+
+    A missing row means the default (``numo9.banking.cash_controls.DEFAULTS``): Cash / petty
+    cash BLOCK for non-advisers and WARN for advisers; Chequing, Savings and Clearing WARN —
+    an overdraft is possible."""
+
+    account_type = models.CharField(
+        _("account type"), max_length=20, choices=BankAccountType.choices
+    )
+    standard_action = models.CharField(
+        _("for everyone else"), max_length=10, choices=CashControlAction.choices
+    )
+    adviser_action = models.CharField(
+        _("for advisers"), max_length=10, choices=CashControlAction.choices
+    )
+
+    class Meta:
+        ordering = ("account_type",)
+        verbose_name = _("negative-balance policy")
+        verbose_name_plural = _("negative-balance policies")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "account_type"], name="banking_cash_policy_unique"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(account_type__in=CONTROLLED_TYPES),
+                name="banking_cash_policy_asset_type",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(standard_action__in=CashControlAction.values)
+                & models.Q(adviser_action__in=CashControlAction.values),
+                name="banking_cash_policy_action_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.account_type}: {self.standard_action}/{self.adviser_action}"
