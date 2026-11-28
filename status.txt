@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 891   Remaining: 1896   Progress: 31.97%
+TOTAL ATOMIC TASKS: 2787   Completed: 892   Remaining: 1895   Progress: 32.01%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1128,7 +1128,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-02-T04 — Overdraft reclassification: overdrawn asset bank/cash shown in current liabilities with note
 ✅ K-02-T13 — UI: statement-specific defaults (BS as at today), toggles (codes, zero balances), notes on reclassification
 ✅ K-02-T14 — Statement PDF templates (Letter, inch margins, legal + display name) snapshot tests
-❌ K-02-T16 — Gap tests gap-54, gap-55, gap-56, gap-57, gap-58; i18n
+✅ K-02-T16 — Gap tests gap-54, gap-55, gap-56, gap-57, gap-58; i18n
 
 [F-01]
 ✅ F-01-T16 — Functional E2E for gap-27: new org → add chequing → spend money with no import/reconciliation → Balance Sheet shows it
