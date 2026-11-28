@@ -10979,3 +10979,15 @@ msgstr ""
 #, python-format
 msgid "Row %(row)s is already in this account (imported before, or from an overlapping statement). It won't be imported twice."
 msgstr ""
+
+#, python-format
+msgid "Some lines can't be read (%(count)s). Fix them in the file or on the Map step, or turn on “Skip errors and import valid lines”."
+msgstr ""
+
+#, python-format
+msgid "%(name)s was already imported (or is being imported). Upload the file again to re-import it."
+msgstr ""
+
+#, python-format
+msgid "The file of this import (%(name)s) is no longer available. Upload it again."
+msgstr ""

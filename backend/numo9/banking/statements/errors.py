@@ -149,6 +149,29 @@ OFX_SEVERAL_ACCOUNTS = define(
 )
 
 
+# ---- import problems ----------------------------------------------------------------------------
+IMPORT_HAS_ERRORS = define(
+    "banking.import.has_errors",
+    _(
+        "Some lines can't be read (%(count)s). Fix them in the file or on the Map step, or turn "
+        "on “Skip errors and import valid lines”."
+    ),
+)
+IMPORT_NOT_PENDING = define(
+    "banking.import.not_pending",
+    _(
+        "%(name)s was already imported (or is being imported). Upload the file again to "
+        "re-import it."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+IMPORT_FILE_MISSING = define(
+    "banking.import.file_missing",
+    _("The file of this import (%(name)s) is no longer available. Upload it again."),
+    status.HTTP_409_CONFLICT,
+)
+
+
 @dataclass(frozen=True)
 class LineProblem:
     """Why one line can't be imported: a catalogue key and the message's parameters."""

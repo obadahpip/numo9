@@ -12011,3 +12011,15 @@ msgstr "%(account)s (personnalisée)"
 #, python-format
 msgid "Row %(row)s is already in this account (imported before, or from an overlapping statement). It won't be imported twice."
 msgstr "La ligne %(row)s figure déjà dans ce compte (importée auparavant ou provenant d’un relevé qui chevauche celui-ci). Elle ne sera pas importée deux fois."
+
+#, python-format
+msgid "Some lines can't be read (%(count)s). Fix them in the file or on the Map step, or turn on “Skip errors and import valid lines”."
+msgstr "Certaines lignes sont illisibles (%(count)s). Corrigez-les dans le fichier ou à l’étape Correspondance, ou activez « Ignorer les erreurs et importer les lignes valides »."
+
+#, python-format
+msgid "%(name)s was already imported (or is being imported). Upload the file again to re-import it."
+msgstr "%(name)s a déjà été importé (ou est en cours d’importation). Téléversez de nouveau le fichier pour le réimporter."
+
+#, python-format
+msgid "The file of this import (%(name)s) is no longer available. Upload it again."
+msgstr "Le fichier de cette importation (%(name)s) n’est plus disponible. Téléversez-le de nouveau."
