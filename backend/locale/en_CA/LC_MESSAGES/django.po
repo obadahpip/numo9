@@ -10800,3 +10800,44 @@ msgstr ""
 
 msgid "statement of financial position"
 msgstr ""
+
+#, python-format
+msgid "Row %(row)s: the date is empty. Fill it in, or remove the row from the file."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: date '%(value)s' doesn't match %(format)s. Choose the date format your bank uses on the Map step, or correct the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: there's no amount. Map the amount column (or the withdrawal and deposit columns) on the Map step, or remove the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' isn't a number. Check the decimal separator on the Map step, or correct the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' is too large. Correct the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: both the withdrawal (%(debit)s) and the deposit (%(credit)s) columns have an amount. Keep only one of them in the row."
+msgstr ""
+
+msgid "Choose the column that holds the date."
+msgstr ""
+
+msgid "Choose the amount column, or the withdrawal and deposit columns."
+msgstr ""
+
+msgid "With separate withdrawal and deposit columns, choose both columns (or switch to a single amount column)."
+msgstr ""
+
+#, python-format
+msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the list."
+msgstr ""
+
+#, python-format
+msgid "The column mapping is incomplete: %(reason)s"
+msgstr ""

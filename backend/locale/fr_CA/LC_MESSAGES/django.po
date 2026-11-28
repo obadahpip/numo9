@@ -11832,3 +11832,44 @@ msgstr "Relevé des opérations"
 
 #~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
 #~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."
+
+#, python-format
+msgid "Row %(row)s: the date is empty. Fill it in, or remove the row from the file."
+msgstr "Ligne %(row)s : la date est vide. Inscrivez-la ou retirez la ligne du fichier."
+
+#, python-format
+msgid "Row %(row)s: date '%(value)s' doesn't match %(format)s. Choose the date format your bank uses on the Map step, or correct the row."
+msgstr "Ligne %(row)s : la date « %(value)s » ne correspond pas au format %(format)s. Choisissez le format de date de votre banque à l’étape Correspondance, ou corrigez la ligne."
+
+#, python-format
+msgid "Row %(row)s: there's no amount. Map the amount column (or the withdrawal and deposit columns) on the Map step, or remove the row."
+msgstr "Ligne %(row)s : il n’y a aucun montant. Associez la colonne du montant (ou les colonnes des retraits et des dépôts) à l’étape Correspondance, ou retirez la ligne."
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' isn't a number. Check the decimal separator on the Map step, or correct the row."
+msgstr "Ligne %(row)s : le montant « %(value)s » n’est pas un nombre. Vérifiez le séparateur décimal à l’étape Correspondance, ou corrigez la ligne."
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' is too large. Correct the row."
+msgstr "Ligne %(row)s : le montant « %(value)s » est trop élevé. Corrigez la ligne."
+
+#, python-format
+msgid "Row %(row)s: both the withdrawal (%(debit)s) and the deposit (%(credit)s) columns have an amount. Keep only one of them in the row."
+msgstr "Ligne %(row)s : les colonnes des retraits (%(debit)s) et des dépôts (%(credit)s) ont toutes deux un montant. N’en gardez qu’une dans la ligne."
+
+msgid "Choose the column that holds the date."
+msgstr "Choisissez la colonne qui contient la date."
+
+msgid "Choose the amount column, or the withdrawal and deposit columns."
+msgstr "Choisissez la colonne du montant, ou les colonnes des retraits et des dépôts."
+
+msgid "With separate withdrawal and deposit columns, choose both columns (or switch to a single amount column)."
+msgstr "Avec des colonnes distinctes pour les retraits et les dépôts, choisissez les deux colonnes (ou passez à une seule colonne de montant)."
+
+#, python-format
+msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the list."
+msgstr "« %(format)s » n’est pas un format de date connu de Numo9. Choisissez-en un dans la liste."
+
+#, python-format
+msgid "The column mapping is incomplete: %(reason)s"
+msgstr "La correspondance des colonnes est incomplète : %(reason)s"
