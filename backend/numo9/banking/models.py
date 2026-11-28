@@ -834,3 +834,89 @@ class BankRuleApplication(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.rule_id} → {self.statement_line_id} ({self.mode})"
+
+
+# ---- transfers (F-06-T02) -----------------------------------------------------------------------
+
+
+class BankTransferStatus(models.TextChoices):
+    POSTED = "posted", _("Posted")
+    VOIDED = "voided", _("Voided")
+
+
+class BankTransfer(AuditedModel, OrgOwnedModel):
+    """Money moved from one bank, card, line-of-credit, loan or cash account to another (F-06).
+
+    One transfer is **one** journal with two lines — Dr ``to_account`` / Cr ``from_account``, the
+    ``amount`` — posted by ``numo9.banking.transfers`` (F-06-T03); ``journal_entry`` is that
+    journal and voiding reverses it. ``clean()`` holds the rules (``transfer_problems``): two
+    different accounts, an amount above zero, both accounts active, the same currency (Phase 1;
+    cross-currency transfers arrive with R-02)."""
+
+    from_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.PROTECT,
+        related_name="transfers_out",
+        verbose_name=_("from account"),
+    )
+    to_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.PROTECT,
+        related_name="transfers_in",
+        verbose_name=_("to account"),
+    )
+    date = models.DateField(_("date"))
+    amount = models.DecimalField(_("amount"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    currency = models.CharField(_("currency"), max_length=3, default="CAD")
+    reference = models.CharField(_("reference"), max_length=255, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=BankTransferStatus.choices,
+        default=BankTransferStatus.POSTED,
+    )
+    journal_entry = models.OneToOneField(
+        "ledger.JournalEntry",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bank_transfer",
+        verbose_name=_("journal"),
+    )
+    voided_at = models.DateTimeField(_("voided at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-date", "-pk")
+        verbose_name = _("bank transfer")
+        verbose_name_plural = _("bank transfers")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=~models.Q(from_account=models.F("to_account")),
+                name="banking_transfer_distinct_accounts",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(amount__gt=0), name="banking_transfer_positive"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=BankTransferStatus.values),
+                name="banking_transfer_status_valid",
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=["organisation", "from_account", "date"], name="banking_transfer_from_idx"
+            ),
+            models.Index(
+                fields=["organisation", "to_account", "date"], name="banking_transfer_to_idx"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.from_account_id} → {self.to_account_id} {self.amount} {self.date:%Y-%m-%d}"
+
+    def clean(self) -> None:
+        from .transfers import check_transfer
+
+        check_transfer(
+            getattr(self, "from_account", None), getattr(self, "to_account", None), self.amount
+        )

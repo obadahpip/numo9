@@ -12300,3 +12300,28 @@ msgstr "Cette règle"
 
 msgid "This statement line wasn't coded by a rule."
 msgstr "Cette ligne de relevé n’a pas été imputée par une règle."
+
+msgid "bank transfer"
+msgstr "virement bancaire"
+
+msgid "bank transfers"
+msgstr "virements bancaires"
+
+msgid "from account"
+msgstr "compte de départ"
+
+msgid "to account"
+msgstr "compte d'arrivée"
+
+msgid "The amount to transfer must be more than 0.00."
+msgstr "Le montant à virer doit être supérieur à 0,00."
+
+msgid "Choose the account the money leaves and the account it goes to."
+msgstr "Choisissez le compte d'où part l'argent et le compte où il arrive."
+
+msgid "Choose two different accounts: money can't be transferred to the same account."
+msgstr "Choisissez deux comptes différents : on ne peut pas virer de l'argent vers le même compte."
+
+#, python-format
+msgid "%(from)s is in %(from_currency)s and %(to)s in %(to_currency)s: transfers between currencies arrive with multi-currency (R-02). For now, record them as a spend from one account and a receipt into the other."
+msgstr "%(from)s est en %(from_currency)s et %(to)s en %(to_currency)s : les virements entre devises arriveront avec la multidevise (R-02). Pour l'instant, inscrivez une dépense dans un compte et un encaissement dans l'autre."
