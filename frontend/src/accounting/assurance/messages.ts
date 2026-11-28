@@ -193,4 +193,257 @@ export const am = defineMessages({
     defaultMessage: "There's no entry to propose for this finding now.",
     description: "No proposal",
   },
+  // K-09-T22 — proposed-fix drawer
+  fixNarration: {
+    id: "assurance.fixNarration",
+    defaultMessage: "Narration",
+    description: "Narration field of the proposed entry",
+  },
+  fixDateLabel: {
+    id: "assurance.fixDateLabel",
+    defaultMessage: "Date",
+    description: "Date field of the proposed entry",
+  },
+  fixLines: {
+    id: "assurance.fixLines",
+    defaultMessage: "Lines of the draft journal",
+    description: "Caption of the editable grid",
+  },
+  description: {
+    id: "assurance.description",
+    defaultMessage: "Description",
+    description: "Column",
+  },
+  accountOfLine: {
+    id: "assurance.accountOfLine",
+    defaultMessage: "Account, line {line}",
+    description: "Accessible name of a line's account",
+  },
+  debitOfLine: {
+    id: "assurance.debitOfLine",
+    defaultMessage: "Debit, line {line}",
+    description: "Accessible name of a line's debit",
+  },
+  creditOfLine: {
+    id: "assurance.creditOfLine",
+    defaultMessage: "Credit, line {line}",
+    description: "Accessible name of a line's credit",
+  },
+  descriptionOfLine: {
+    id: "assurance.descriptionOfLine",
+    defaultMessage: "Description, line {line}",
+    description: "Accessible name of a line's description",
+  },
+  removeLine: {
+    id: "assurance.removeLine",
+    defaultMessage: "Remove line {line}",
+    description: "Remove a line of the proposed entry",
+  },
+  lineActions: {
+    id: "assurance.lineActions",
+    defaultMessage: "Line actions",
+    description: "Header of the remove-line column",
+  },
+  addLine: { id: "assurance.addLine", defaultMessage: "Add a line", description: "Button" },
+  chooseAccount: {
+    id: "assurance.chooseAccount",
+    defaultMessage: "Choose an account",
+    description: "Account placeholder",
+  },
+  balanced: {
+    id: "assurance.balanced",
+    defaultMessage: "Balanced",
+    description: "Debits equal credits",
+  },
+  outOfBalance: {
+    id: "assurance.outOfBalance",
+    defaultMessage: "Out of balance by {amount}",
+    description: "Debits differ from credits",
+  },
+  problem: {
+    id: "assurance.problem",
+    defaultMessage:
+      "{problem, select, amount {Amounts are positive numbers with at most two decimals.} lines {A journal needs at least two lines with an account and an amount.} other {Debits and credits must be equal and not zero.}}",
+    description: "Why the draft can't be created yet",
+  },
+  useAlternative: {
+    id: "assurance.useAlternative",
+    defaultMessage: "Use this option",
+    description: "Load another proposed entry into the grid",
+  },
+  draftNever: {
+    id: "assurance.draftNever",
+    defaultMessage: "The entry is saved as a draft: nothing is posted until you post it yourself.",
+    description: "Reassurance in the fix drawer",
+  },
+  openDraftTab: {
+    id: "assurance.openDraftTab",
+    defaultMessage: "See it in Journals › Draft",
+    description: "Link to the journals Draft tab",
+  },
+  recodeChanges: {
+    id: "assurance.recodeChanges",
+    defaultMessage: "Suggested change: {changes}",
+    description: "The change a recode fix proposes",
+  },
+  loadingFix: {
+    id: "assurance.loadingFix",
+    defaultMessage: "Working out the proposed entry…",
+    description: "While the fix loads",
+  },
+  // K-09-T23 — tabs and rule settings
+  tabs: { id: "assurance.tabs", defaultMessage: "Assurance views", description: "Tab list label" },
+  tabFindings: { id: "assurance.tabFindings", defaultMessage: "Findings", description: "Tab" },
+  tabRules: { id: "assurance.tabRules", defaultMessage: "Rule settings", description: "Tab" },
+  rulesIntro: {
+    id: "assurance.rulesIntro",
+    defaultMessage:
+      "Switch a rule off, change its severity or its parameters. Changes apply on the next run.",
+    description: "Text above the rule settings",
+  },
+  ruleColumn: { id: "assurance.ruleColumn", defaultMessage: "Rule", description: "Column" },
+  onColumn: { id: "assurance.onColumn", defaultMessage: "On", description: "Column" },
+  severityColumn: {
+    id: "assurance.severityColumn",
+    defaultMessage: "Severity",
+    description: "Column",
+  },
+  paramsColumn: {
+    id: "assurance.paramsColumn",
+    defaultMessage: "Parameters",
+    description: "Column",
+  },
+  ruleOn: {
+    id: "assurance.ruleOn",
+    defaultMessage: "{rule} is on",
+    description: "Accessible name of a rule's toggle",
+  },
+  severityOf: {
+    id: "assurance.severityOf",
+    defaultMessage: "Severity of {rule}",
+    description: "Accessible name of a rule's severity",
+  },
+  noParams: {
+    id: "assurance.noParams",
+    defaultMessage: "No parameters",
+    description: "A rule without parameters",
+  },
+  onPosting: {
+    id: "assurance.onPosting",
+    defaultMessage: "Also checked on posting",
+    description: "The rule runs incrementally",
+  },
+  codesHint: {
+    id: "assurance.codesHint",
+    defaultMessage: "Account codes, separated by commas",
+    description: "Hint of an account-codes parameter",
+  },
+  paramProblem: {
+    id: "assurance.paramProblem",
+    defaultMessage:
+      "{kind, select, whole {Enter a whole number.} number {Enter an amount with at most two decimals.} min {Enter at least {min}.} max {Enter at most {max}.} choice {Choose one of the options.} codes {Enter account codes separated by commas.} other {Enter a short text (100 characters at most).}}",
+    description: "Why a parameter can't be saved",
+  },
+  resetDefaults: {
+    id: "assurance.resetDefaults",
+    defaultMessage: "Reset to defaults",
+    description: "Button",
+  },
+  rulesSaved: {
+    id: "assurance.rulesSaved",
+    defaultMessage:
+      "{count, plural, one {# rule saved.} other {# rules saved.}} Changes apply on the next run.",
+    description: "After saving the rule settings",
+  },
+  rulesUnchanged: {
+    id: "assurance.rulesUnchanged",
+    defaultMessage: "Nothing to save.",
+    description: "Save with no change",
+  },
+  rulesFixErrors: {
+    id: "assurance.rulesFixErrors",
+    defaultMessage: "Correct the highlighted parameters before saving.",
+    description: "Save refused by validation",
+  },
+  rulesLoadFailed: {
+    id: "assurance.rulesLoadFailed",
+    defaultMessage: "The rule settings couldn't be loaded",
+    description: "Error state title",
+  },
+  changed: {
+    id: "assurance.changed",
+    defaultMessage: "Changed",
+    description: "Badge: unsaved change of a rule",
+  },
+  choice: {
+    id: "assurance.choice",
+    defaultMessage:
+      "{value, select, auto {Automatic} transfer {Transfer from a bank account} shareholder_loan {Shareholder loan} other {{value}}}",
+    description: "Option of a choice parameter",
+  },
+  // K-09-T24 — activity heatmap
+  tabActivity: { id: "assurance.tabActivity", defaultMessage: "Activity", description: "Tab" },
+  activityTitle: {
+    id: "assurance.activityTitle",
+    defaultMessage: "Activity in the last 12 months",
+    description: "Heatmap heading",
+  },
+  activityHelp: {
+    id: "assurance.activityHelp",
+    defaultMessage:
+      "Actions recorded in the audit log, per day in the organisation's time zone ({zone}). A dormant administrator stands out.",
+    description: "Text under the heatmap heading",
+  },
+  person: { id: "assurance.person", defaultMessage: "Person", description: "Person filter" },
+  everyone: { id: "assurance.everyone", defaultMessage: "Everyone", description: "No filter" },
+  heatSummary: {
+    id: "assurance.heatSummary",
+    defaultMessage:
+      "{total, plural, =0 {No actions} one {# action} other {# actions}} from {from} to {to}",
+    description: "Accessible summary of the calendar grid",
+  },
+  heatCell: {
+    id: "assurance.heatCell",
+    defaultMessage: "{date} · {count, plural, =0 {no actions} one {# action} other {# actions}}",
+    description: "Tooltip of a day of the heatmap",
+  },
+  less: { id: "assurance.less", defaultMessage: "Less", description: "Heatmap legend start" },
+  more: { id: "assurance.more", defaultMessage: "More", description: "Heatmap legend end" },
+  showTable: {
+    id: "assurance.showTable",
+    defaultMessage: "Show as table",
+    description: "Accessible table alternative of the heatmap",
+  },
+  hideTable: {
+    id: "assurance.hideTable",
+    defaultMessage: "Hide the table",
+    description: "Hide the table alternative",
+  },
+  dayColumn: { id: "assurance.dayColumn", defaultMessage: "Date", description: "Column" },
+  actionsColumn: {
+    id: "assurance.actionsColumn",
+    defaultMessage: "Actions",
+    description: "Column",
+  },
+  lastColumn: {
+    id: "assurance.lastColumn",
+    defaultMessage: "Last activity",
+    description: "Column",
+  },
+  peopleTitle: { id: "assurance.peopleTitle", defaultMessage: "People", description: "Heading" },
+  noActivity: {
+    id: "assurance.noActivity",
+    defaultMessage: "No activity in this period.",
+    description: "Empty heatmap",
+  },
+  activityFailed: {
+    id: "assurance.activityFailed",
+    defaultMessage: "The activity couldn't be loaded",
+    description: "Error state title",
+  },
+  weekday: {
+    id: "assurance.weekday",
+    defaultMessage: "{day, select, 0 {Mon} 1 {Tue} 2 {Wed} 3 {Thu} 4 {Fri} 5 {Sat} other {Sun}}",
+    description: "Short weekday name of a heatmap row",
+  },
 });

@@ -5,8 +5,10 @@
  * a status filter and a text search, then the findings grouped by rule with their plain-language
  * explanation and the actions View source / Propose fix / Acknowledge / Mark false positive.
  * *Run the rules* starts a full run in the background and refreshes the list after it. Propose fix
- * shows the proposed entry with its reasoning and turns it into a draft journal (the editable
- * drawer is K-09-T22); a recode fix opens Find & recode.
+ * opens the proposed-fix drawer (K-09-T22, `FixDrawer`): the reasoning and an editable draft
+ * journal that becomes a draft in Journals › Draft; a recode fix opens Find & recode. Tabs
+ * (`?tab=`): *Findings*, *Rule settings* (K-09-T23, `RuleSettings`) and *Activity* (K-09-T24,
+ * `ActivityHeatmap`); every summary loaded updates the nav badge (`announceSummary`).
  */
 import {
   Button,
@@ -14,28 +16,24 @@ import {
   EmptyState,
   ErrorState,
   INPUT_BASE,
+  Tabs,
   formatDate,
-  formatMoney,
-  sumDecimals,
   type AppLocale,
 } from "@numo9/ui";
-import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
 
-import {
-  assuranceApi,
-  type Finding,
-  type FindingStatus,
-  type Fix,
-  type Severity,
-  type Summary,
-} from "./api";
+import { assuranceApi, type Finding, type FindingStatus, type Severity, type Summary } from "./api";
 import { AssuranceFindings, ScoreCard, type FindingAction } from "./AssuranceFindings";
+import { announceSummary } from "./badge";
+import { FixDrawer } from "./FixDrawer";
+import { ActivityHeatmap } from "./Heatmap";
 import { groupFindings, SEVERITIES } from "./grouping";
 import { am } from "./messages";
+import { RuleSettings } from "./RuleSettings";
+import { isAssuranceTab, type AssuranceTab } from "./tabs";
 
 const STATUSES: readonly ("" | FindingStatus)[] = [
   "",
@@ -46,7 +44,13 @@ const STATUSES: readonly ("" | FindingStatus)[] = [
 ];
 const REFRESH_MS = 4000;
 
-export function AssuranceScreen({ org }: { org: string }) {
+export function AssuranceScreen({
+  org,
+  initialTab = "findings",
+}: {
+  org: string;
+  initialTab?: AssuranceTab;
+}) {
   const fm = useFormatMessage();
   const locale = useLocale() as AppLocale;
   const ids = useId();
@@ -62,8 +66,7 @@ export function AssuranceScreen({ org }: { org: string }) {
   const [falsePositive, setFalsePositive] = useState<Finding | null>(null);
   const [reason, setReason] = useState("");
   const [fixFor, setFixFor] = useState<Finding | null>(null);
-  const [fix, setFix] = useState<Fix | null | undefined>(undefined);
-  const [draft, setDraft] = useState<string | null>(null);
+  const [tab, setTab] = useState<AssuranceTab>(initialTab);
 
   const load = useCallback(async () => {
     const [s, f] = await Promise.all([
@@ -74,6 +77,7 @@ export function AssuranceScreen({ org }: { org: string }) {
     ]);
     if (s?.status === 200 && f?.status === 200) {
       setSummary(s.body);
+      announceSummary(org, s.body);
       setFindings(f.body.findings);
       setFailed(false);
     } else setFailed(true);
@@ -110,10 +114,6 @@ export function AssuranceScreen({ org }: { org: string }) {
     }
     if (action === "fix") {
       setFixFor(finding);
-      setFix(undefined);
-      setDraft(null);
-      const answer = await assuranceApi.fix(org, finding.id).catch(() => null);
-      setFix(answer?.status === 200 ? answer.body.fix : null);
       return;
     }
     const answer = await (
@@ -138,20 +138,6 @@ export function AssuranceScreen({ org }: { org: string }) {
     } else setError(answer?.body?.detail || fm(am.failed));
   };
 
-  const createDraft = async () => {
-    if (!fixFor) return;
-    setBusy(true);
-    const answer = await assuranceApi.createFix(org, fixFor.id).catch(() => null);
-    setBusy(false);
-    if (answer?.status === 201) {
-      setDraft(answer.body.draft.id);
-      setNotice(fm(am.draftCreated));
-      await load();
-    } else setError(answer?.body?.detail || fm(am.failed));
-  };
-
-  const money = (value: string) => formatMoney(value, { locale, currency: "CAD" });
-
   return (
     <div className="flex flex-col gap-4" data-assurance="">
       <header className="flex flex-wrap items-start justify-between gap-3">
@@ -170,87 +156,130 @@ export function AssuranceScreen({ org }: { org: string }) {
           {fm(am.run)}
         </Button>
       </header>
-      {error ? (
-        <p role="alert" className="text-sm text-fg-danger">
-          {error}
-        </p>
-      ) : null}
-      <p role="status" className="text-sm text-fg-success">
-        {notice}
-      </p>
-      {failed ? (
-        <ErrorState
-          title={fm(am.loadFailed)}
-          retryLabel={fm(am.retry)}
-          onRetry={() => void load()}
-        />
-      ) : null}
-      {summary ? <ScoreCard summary={summary} /> : null}
-      <div
-        role="group"
-        aria-label={fm(am.filters)}
-        className="flex flex-wrap items-end gap-3"
-        data-assurance-filters=""
-      >
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            aria-pressed={severities.length === 0}
-            className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
-            onClick={() => setSeverities([])}
-          >
-            {fm(am.allSeverities)}
-          </button>
-          {SEVERITIES.map((severity) => (
-            <button
-              key={severity}
-              type="button"
-              aria-pressed={severities.includes(severity)}
-              className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
-              onClick={() => toggle(severity)}
-              data-severity-chip={severity}
-            >
-              {summary
-                ? fm(am.count, { severity, count: summary.open[severity] })
-                : fm(am.severity, { severity })}
-            </button>
-          ))}
-        </div>
-        <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-status`}>
-          {fm(am.statusLabel)}
-          <select
-            id={`${ids}-status`}
-            className={`${INPUT_BASE} border-border`}
-            value={status}
-            onChange={(event) => setStatus(event.target.value as "" | FindingStatus)}
-          >
-            {STATUSES.map((value) => (
-              <option key={value || "active"} value={value}>
-                {fm(am.status, { status: value || "active" })}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-q`}>
-          {fm(am.search)}
-          <input
-            id={`${ids}-q`}
-            type="search"
-            className={`${INPUT_BASE} border-border`}
-            placeholder={fm(am.searchPlaceholder)}
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-          />
-        </label>
-      </div>
-      {findings && groups.length === 0 && !failed ? (
-        <EmptyState title={fm(am.emptyTitle)} body={fm(am.emptyBody)} />
-      ) : null}
-      <AssuranceFindings
-        org={org}
-        groups={groups}
-        locale={locale}
-        onAction={(action, finding) => void act(action, finding)}
+      <Tabs
+        label={fm(am.tabs)}
+        value={tab}
+        onValueChange={(value) => {
+          if (!isAssuranceTab(value)) return;
+          setTab(value);
+          const url = new URL(window.location.href);
+          if (value === "findings") url.searchParams.delete("tab");
+          else url.searchParams.set("tab", value);
+          window.history.replaceState(null, "", url.toString());
+          if (value === "findings") void load();
+        }}
+        items={[
+          {
+            value: "findings",
+            label: fm(am.tabFindings),
+            content: (
+              <div className="flex flex-col gap-4 pt-4">
+                {error ? (
+                  <p role="alert" className="text-sm text-fg-danger">
+                    {error}
+                  </p>
+                ) : null}
+                <p role="status" className="text-sm text-fg-success">
+                  {notice}
+                </p>
+                {failed ? (
+                  <ErrorState
+                    title={fm(am.loadFailed)}
+                    retryLabel={fm(am.retry)}
+                    onRetry={() => void load()}
+                  />
+                ) : null}
+                {summary ? <ScoreCard summary={summary} /> : null}
+                <div
+                  role="group"
+                  aria-label={fm(am.filters)}
+                  className="flex flex-wrap items-end gap-3"
+                  data-assurance-filters=""
+                >
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      aria-pressed={severities.length === 0}
+                      className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
+                      onClick={() => setSeverities([])}
+                    >
+                      {fm(am.allSeverities)}
+                    </button>
+                    {SEVERITIES.map((severity) => (
+                      <button
+                        key={severity}
+                        type="button"
+                        aria-pressed={severities.includes(severity)}
+                        className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
+                        onClick={() => toggle(severity)}
+                        data-severity-chip={severity}
+                      >
+                        {summary
+                          ? fm(am.count, { severity, count: summary.open[severity] })
+                          : fm(am.severity, { severity })}
+                      </button>
+                    ))}
+                  </div>
+                  <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-status`}>
+                    {fm(am.statusLabel)}
+                    <select
+                      id={`${ids}-status`}
+                      className={`${INPUT_BASE} border-border`}
+                      value={status}
+                      onChange={(event) => setStatus(event.target.value as "" | FindingStatus)}
+                    >
+                      {STATUSES.map((value) => (
+                        <option key={value || "active"} value={value}>
+                          {fm(am.status, { status: value || "active" })}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-q`}>
+                    {fm(am.search)}
+                    <input
+                      id={`${ids}-q`}
+                      type="search"
+                      className={`${INPUT_BASE} border-border`}
+                      placeholder={fm(am.searchPlaceholder)}
+                      value={text}
+                      onChange={(event) => setText(event.target.value)}
+                    />
+                  </label>
+                </div>
+                {findings && groups.length === 0 && !failed ? (
+                  <EmptyState title={fm(am.emptyTitle)} body={fm(am.emptyBody)} />
+                ) : null}
+                <AssuranceFindings
+                  org={org}
+                  groups={groups}
+                  locale={locale}
+                  onAction={(action, finding) => void act(action, finding)}
+                />
+              </div>
+            ),
+          },
+          {
+            value: "rules",
+            label: fm(am.tabRules),
+            content:
+              tab === "rules" ? (
+                <div className="pt-4">
+                  <RuleSettings org={org} />
+                </div>
+              ) : null,
+          },
+          {
+            value: "activity",
+            label: fm(am.tabActivity),
+            content:
+              tab === "activity" ? (
+                <div className="pt-4">
+                  <ActivityHeatmap org={org} locale={locale} />
+                </div>
+              ) : null,
+          },
+        ]}
       />
       <Dialog
         open={falsePositive !== null}
@@ -284,96 +313,16 @@ export function AssuranceScreen({ org }: { org: string }) {
           />
         </label>
       </Dialog>
-      <Dialog
-        open={fixFor !== null}
-        onOpenChange={(open) => (open ? null : setFixFor(null))}
-        title={fm(am.fixTitle)}
-        closeLabel={fm(am.close)}
-        size="lg"
-        footer={
-          fix?.kind === "journal" && !draft ? (
-            <>
-              <Button variant="secondary" onClick={() => setFixFor(null)}>
-                {fm(am.cancel)}
-              </Button>
-              <Button variant="primary" disabled={busy} onClick={() => void createDraft()}>
-                {fm(am.createDraft)}
-              </Button>
-            </>
-          ) : null
-        }
-      >
-        {fix === null ? <p className="text-sm text-fg">{fm(am.noFix)}</p> : null}
-        {fix ? (
-          <div className="flex flex-col gap-3" data-fix-kind={fix.kind}>
-            <h3 className="text-sm font-semibold text-fg">{fm(am.fixWhy)}</h3>
-            <p className="text-sm text-fg">{fix.reasoning}</p>
-            {fix.kind === "journal" ? (
-              <>
-                {fix.date ? (
-                  <p className="text-sm text-fg-muted">
-                    {fm(am.fixDate, { date: formatDate(fix.date, { locale }) })}
-                  </p>
-                ) : null}
-                <table className="w-full text-sm" data-fix-lines="">
-                  <thead>
-                    <tr className="text-start text-fg-muted">
-                      <th scope="col" className="text-start">
-                        {fm(am.account)}
-                      </th>
-                      <th scope="col" className="text-end">
-                        {fm(am.debit)}
-                      </th>
-                      <th scope="col" className="text-end">
-                        {fm(am.credit)}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {fix.lines.map((line) => (
-                      <tr key={`${line.account}-${line.debit}-${line.credit}`}>
-                        <td>{line.label}</td>
-                        <td className="text-end tabular-nums">
-                          {Number(line.debit) ? money(line.debit) : ""}
-                        </td>
-                        <td className="text-end tabular-nums">
-                          {Number(line.credit) ? money(line.credit) : ""}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p className="text-sm text-fg-muted">
-                  {fm(am.totals, {
-                    debit: money(sumDecimals(fix.lines.map((l) => l.debit))),
-                    credit: money(sumDecimals(fix.lines.map((l) => l.credit))),
-                  })}
-                </p>
-                {fix.alternatives.map((alternative) => (
-                  <p key={alternative.reasoning} className="text-sm text-fg-muted">
-                    {fm(am.alternatives, { text: alternative.reasoning })}
-                  </p>
-                ))}
-                {draft ? (
-                  <Link
-                    href={`/o/${org}/accounting/journals/${draft}`}
-                    className="text-sm text-fg-accent-strong underline"
-                  >
-                    {fm(am.openDraft)}
-                  </Link>
-                ) : null}
-              </>
-            ) : (
-              <Link
-                href={`/o/${org}/accounting/recode`}
-                className="text-sm text-fg-accent-strong underline"
-              >
-                {fm(am.openRecode)}
-              </Link>
-            )}
-          </div>
-        ) : null}
-      </Dialog>
+      <FixDrawer
+        org={org}
+        locale={locale}
+        finding={fixFor}
+        onClose={() => setFixFor(null)}
+        onDrafted={() => {
+          setNotice(fm(am.draftCreated));
+          void load();
+        }}
+      />
     </div>
   );
 }

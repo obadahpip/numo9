@@ -123,6 +123,7 @@ nav:
   - Reference:
       - "Permission catalogue (generated)": reference/permission-catalogue.md
       - "Data dictionary": reference/data-dictionary.md
+      - "Assurance rules reference": reference/assurance-rules.md
   - Design:
       - "Brand tokens": design/brand-tokens.md
       - "Phase 0 wireframes": design/wireframes.md

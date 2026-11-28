@@ -74,3 +74,45 @@ the same 2-vCPU host.
 
     python backend/manage.py seed_report_books --lines 100000 --password "$SEED_PASSWORD"
     k6 run -e BASE_URL=http://127.0.0.1:8000 -e PASSWORD="$SEED_PASSWORD" tools/perf/k6/reports.js
+
+## Assurance engine — 2026-11-28 (K-09-T26)
+
+Measured by `backend/tests/test_assurance_performance.py` (pytest, PostgreSQL 16) in the shared
+2-vCPU development container while other builds were running (load average ≈ 4) — so these are upper bounds, not
+staging numbers.
+
+**Incremental run per posting batch** (budget < 2 s): an organisation with 100,000 posted lines
+(50,000 entries on two bank and five other accounts), a batch of 20 journals posted through
+`post_journal` with the on-posting hook on; each queued incremental job run as the worker runs it.
+
+| Measure | Result | Budget |
+|---|---:|---|
+| One posting's incremental run (20 runs) | mean 0.145 s, max 0.175 s | ✅ < 2 s |
+| The batch's whole scope in one run (20 journals, 5 accounts) | 0.270 s | ✅ < 2 s |
+
+**Nightly full run** (500 organisations within a 60-minute window; the job starts at 03:47
+Toronto): a scaled run of 41 organisations — 40 of the S-06 fixture practice with 500 posted lines
+each and the REFINED teardown organisation — every rule on, findings written, one transaction per
+organisation, projected linearly to 500 (the nightly job queues one job per organisation on the
+reports queue).
+
+| Night | 41 organisations | Per organisation (mean / p95 / max) | 500 organisations | Window |
+|---|---:|---|---|---|
+| First night (every finding created: each fixture journal is backdated and an expense without contact or receipt, ~600 findings per organisation) | 179.4 s | 4.38 s / 6.36 s / 7.81 s | ≈ 36.5 min on one worker | ✅ < 60 min |
+| Steady state (the findings refreshed) | 132.1 s | 3.22 s / 4.70 s / 5.24 s | ≈ 26.8 min on one worker | ✅ < 60 min |
+
+The time is in writing findings and their audit events, not in the rules: evaluating all 18 rules
+on a 500-line organisation takes about 1.1 s (`EXPENSE_JOURNAL_NO_CONTACT` 0.39 s, `BACKDATED`,
+`EXPENSE_JOURNAL_NO_ATTACHMENT`, `JOURNAL_TO_CASH` and `ROUND_AMOUNT` ~0.13 s each, the rest under
+0.02 s). The fixture is a worst case (every journal is a finding); real organisations have few
+findings. A second reports worker halves the window.
+
+Full scale on a scratch or staging database (`make perf-assurance` on the dev stack):
+
+    NUMO9_ALLOW_FIXTURES=1 python backend/manage.py make_fixture_practice --orgs 500 --lines 500 --scratch
+    python backend/manage.py assurance_timing --prefix Fixture --target-orgs 500 --workers 2 --check  # first night
+    python backend/manage.py assurance_timing --prefix Fixture --target-orgs 500 --workers 1 --check  # steady state
+
+`assurance_timing` runs every chosen organisation's full run for real, prints mean / p50 / p95 /
+max per organisation and the projection, and with `--check` fails when it doesn't fit
+`--window-minutes` (default 60).

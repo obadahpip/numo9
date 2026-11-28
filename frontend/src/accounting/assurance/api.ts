@@ -1,6 +1,7 @@
 /**
  * Assurance API client (K-09-T20): `/api/v1/o/<org>/assurance/` — summary, findings, workflow
- * (acknowledge, false positive, reopen), proposed fix and its draft, run, rules, heatmap.
+ * (acknowledge, false positive, reopen), proposed fix and its draft, run, rule settings
+ * (K-09-T23), heatmap (K-09-T24).
  */
 import { apiRequest, type ApiResult } from "@/auth/client";
 
@@ -56,6 +57,49 @@ export interface Fix {
   alternatives: Fix[];
 }
 
+export type ParamKind = "int" | "decimal" | "bool" | "choice" | "str" | "codes";
+
+/** One parameter of a rule's schema (K-09-T04 `Param.as_dict`). */
+export interface RuleParam {
+  name: string;
+  kind: ParamKind;
+  label: string;
+  default: unknown;
+  minimum: number | string | null;
+  maximum: number | string | null;
+  choices: string[];
+}
+
+/** A rule with its schema and the organisation's settings (`GET assurance/rules`). */
+export interface RuleSetting {
+  code: string;
+  name: string;
+  description: string;
+  default_severity: Severity;
+  incremental: boolean;
+  has_fix: boolean;
+  params: RuleParam[];
+  enabled: boolean;
+  severity: Severity;
+  values: Record<string, unknown>;
+}
+
+export interface RuleChanges {
+  enabled?: boolean;
+  severity?: Severity;
+  params?: Record<string, unknown>;
+}
+
+/** User activity per day and person from the audit log (`GET assurance/heatmap`, K-09-T19). */
+export interface Heatmap {
+  from: string;
+  to: string;
+  time_zone: string;
+  total: number;
+  days: { date: string; count: number }[];
+  people: { id: string; name: string; count: number; last: string | null }[];
+}
+
 export interface FindingQuery {
   severity?: Severity[];
   status?: FindingStatus[];
@@ -93,9 +137,28 @@ export const assuranceApi = {
   createFix: (
     org: string,
     id: string,
-    body: { lines?: Pick<FixLine, "account" | "debit" | "credit" | "description">[] } = {},
+    body: {
+      lines?: Pick<FixLine, "account" | "debit" | "credit" | "description">[];
+      date?: string;
+      narration?: string;
+    } = {},
   ): Result<{ draft: { id: string; status: string }; finding: Finding }> =>
     apiRequest(`${finding(org, id)}/fix`, { method: "POST", body }),
+  rules: (org: string): Result<{ rules: RuleSetting[] }> => apiRequest(`${base(org)}/rules`),
+  updateRule: (
+    org: string,
+    code: string,
+    changes: RuleChanges,
+  ): Result<RuleSetting & { param?: string }> =>
+    apiRequest(`${base(org)}/rules/${encodeURIComponent(code)}`, {
+      method: "PATCH",
+      body: changes,
+    }),
+  heatmap: (org: string, { days = 365, user = "" }: { days?: number; user?: string } = {}) => {
+    const params = new URLSearchParams({ days: String(days) });
+    if (user) params.set("user", user);
+    return apiRequest<Heatmap & { detail?: string }>(`${base(org)}/heatmap?${params.toString()}`);
+  },
   run: (org: string): Result<{ job: string }> =>
     apiRequest(`${base(org)}/run`, { method: "POST", body: {} }),
 };
