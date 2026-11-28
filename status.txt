@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 865   Remaining: 1922   Progress: 31.04%
+TOTAL ATOMIC TASKS: 2787   Completed: 866   Remaining: 1921   Progress: 31.07%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1163,7 +1163,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-04-T04 — Condition evaluator with all operators, case-insensitive with accent folding; regex with timeout guard
 ✅ F-04-T05 — Priority engine: ordered evaluation, first match wins; returns the winner plus shadowed matches
 ✅ F-04-T06 — Allocation calculator: fixed lines first, remainder by percentage, rounding to the last line, tax split per line
-❌ F-04-T07 — Apply service: codes a statement line into a draft bank transaction (F-01) with applied_rule link; auto-apply posts directly and flags auto_coded
+✅ F-04-T07 — Apply service: codes a statement line into a draft bank transaction (F-01) with applied_rule link; auto-apply posts directly and flags auto_coded
 ❌ F-04-T08 — History preview: runs a rule against the last N days (default 90) of lines without writing; returns matches and conflicts
 ❌ F-04-T09 — Reorder endpoint (atomic renumber) and API CRUD /api/v1/bank-rules; permissions; feature key
 ❌ F-04-T10 — Rules list UI with drag-to-reorder (dnd-kit), toggle, counters, search

@@ -12228,3 +12228,31 @@ msgstr "Les montants fixes (%(fixed)s) dépassent le montant de la ligne (%(amou
 #, python-format
 msgid "The fixed amounts (%(fixed)s) don't equal the line's amount (%(amount)s)."
 msgstr "Les montants fixes (%(fixed)s) ne correspondent pas au montant de la ligne (%(amount)s)."
+
+msgid "Suggested (draft to review)"
+msgstr "Suggérée (brouillon à réviser)"
+
+msgid "Auto-applied"
+msgstr "Appliquée automatiquement"
+
+msgid "reverted at"
+msgstr "annulée le"
+
+msgid "bank rule application"
+msgstr "application de règle bancaire"
+
+msgid "bank rule applications"
+msgstr "applications de règle bancaire"
+
+msgid "Only a draft transaction can be posted."
+msgstr "Seule une opération en brouillon peut être comptabilisée."
+
+msgid "A transfer rule needs another bank account than the line's own."
+msgstr "Une règle de virement exige un compte bancaire autre que celui de la ligne."
+
+#, python-format
+msgid "Rules don't change this statement line (%(reason)s)."
+msgstr "Les règles ne modifient pas cette ligne de relevé (%(reason)s)."
+
+msgid "This statement line has no draft coding to post."
+msgstr "Cette ligne de relevé n’a aucune imputation en brouillon à comptabiliser."

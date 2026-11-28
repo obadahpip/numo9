@@ -11196,3 +11196,31 @@ msgstr ""
 #, python-format
 msgid "The fixed amounts (%(fixed)s) don't equal the line's amount (%(amount)s)."
 msgstr ""
+
+msgid "Suggested (draft to review)"
+msgstr ""
+
+msgid "Auto-applied"
+msgstr ""
+
+msgid "reverted at"
+msgstr ""
+
+msgid "bank rule application"
+msgstr ""
+
+msgid "bank rule applications"
+msgstr ""
+
+msgid "Only a draft transaction can be posted."
+msgstr ""
+
+msgid "A transfer rule needs another bank account than the line's own."
+msgstr ""
+
+#, python-format
+msgid "Rules don't change this statement line (%(reason)s)."
+msgstr ""
+
+msgid "This statement line has no draft coding to post."
+msgstr ""

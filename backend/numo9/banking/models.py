@@ -791,3 +791,46 @@ class BankRuleAllocation(OrgOwnedModel):
     def __str__(self) -> str:
         share = f"{self.percent}%" if self.percent is not None else f"{self.fixed_amount}"
         return f"{self.account_id}: {share}"
+
+
+class RuleApplicationMode(models.TextChoices):
+    DRAFT = "draft", _("Suggested (draft to review)")
+    AUTO = "auto", _("Auto-applied")
+
+
+class BankRuleApplication(OrgOwnedModel):
+    """The log of every rule application (F-04-T07): which rule coded which statement line into
+    which transaction, as a draft or auto-applied, by whom and when; ``reverted_at`` once the
+    coding was reverted (F-04-T15)."""
+
+    rule = models.ForeignKey(
+        BankRule, on_delete=models.PROTECT, related_name="applications", verbose_name=_("rule")
+    )
+    statement_line = models.ForeignKey(
+        StatementLine,
+        on_delete=models.PROTECT,
+        related_name="rule_applications",
+        verbose_name=_("statement line"),
+    )
+    bank_transaction = models.ForeignKey(
+        BankTransaction,
+        on_delete=models.PROTECT,
+        related_name="rule_applications",
+        verbose_name=_("bank transaction"),
+    )
+    mode = models.CharField(_("mode"), max_length=5, choices=RuleApplicationMode.choices)
+    reverted_at = models.DateTimeField(_("reverted at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at", "-pk")
+        verbose_name = _("bank rule application")
+        verbose_name_plural = _("bank rule applications")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(mode__in=RuleApplicationMode.values),
+                name="banking_rule_application_mode_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.rule_id} → {self.statement_line_id} ({self.mode})"
