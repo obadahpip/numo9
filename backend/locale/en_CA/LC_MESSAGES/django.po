@@ -11309,3 +11309,9 @@ msgstr ""
 
 msgid "Pay credit card"
 msgstr ""
+
+msgid "That transfer doesn't exist."
+msgstr ""
+
+msgid "Record and void transfers between bank, credit card, loan and cash accounts"
+msgstr ""

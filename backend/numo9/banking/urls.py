@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import api, imports_api
+from . import api, imports_api, transfers_api
 from .rules import api as rules_api
 
 ORG = "o/<uuid:org>/"
@@ -106,5 +106,25 @@ urlpatterns = [
         f"{ORG}bank-rules/<uuid:public_id>",
         rules_api.BankRuleDetailView.as_view(),
         name="bank-rule",
+    ),
+    path(
+        f"{ORG}bank-transfers",
+        transfers_api.BankTransferListView.as_view(),
+        name="bank-transfers",
+    ),
+    path(
+        f"{ORG}bank-transfers/presets",
+        transfers_api.BankTransferPresetsView.as_view(),
+        name="bank-transfers-presets",
+    ),
+    path(
+        f"{ORG}bank-transfers/<uuid:public_id>",
+        transfers_api.BankTransferDetailView.as_view(),
+        name="bank-transfer",
+    ),
+    path(
+        f"{ORG}bank-transfers/<uuid:public_id>/void",
+        transfers_api.BankTransferVoidView.as_view(),
+        name="bank-transfer-void",
     ),
 ]

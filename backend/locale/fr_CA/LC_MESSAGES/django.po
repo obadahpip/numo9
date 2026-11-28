@@ -12341,3 +12341,9 @@ msgstr "Alimenter la petite caisse"
 
 msgid "Pay credit card"
 msgstr "Payer la carte de crédit"
+
+msgid "That transfer doesn't exist."
+msgstr "Ce virement n'existe pas."
+
+msgid "Record and void transfers between bank, credit card, loan and cash accounts"
+msgstr "Inscrire et annuler des virements entre comptes bancaires, cartes de crédit, prêts et caisses"
