@@ -254,14 +254,19 @@ export function JournalForm({ org, navigate, copyOf }: Readonly<JournalFormProps
       else window.location.assign(href);
       return;
     }
-    if (result.status === 409 && result.body.code === "ledger.journal.override_reason_required") {
+    // F-07-T04: a negative-balance warning without a reason is a 422 (409 before F-07).
+    if (
+      (result.status === 422 || result.status === 409) &&
+      result.body.code === "ledger.journal.override_reason_required"
+    ) {
       setOverrideOpen(true);
       setCheck((c) =>
         c ? { ...c, adviser: true, shortfalls: result.body.shortfalls ?? c.shortfalls } : c,
       );
       return;
     }
-    if (result.status === 400 || result.status === 409) setRefusal(result.body);
+    if (result.status === 400 || result.status === 409 || result.status === 422)
+      setRefusal(result.body);
     else setFailed(true);
   };
 

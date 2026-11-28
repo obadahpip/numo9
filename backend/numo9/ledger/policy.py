@@ -49,9 +49,9 @@ warned):
                                                 override): ``NegativeBalanceBlocked``, 409,
                                                 naming each account, amount and day
 ``ledger.journal.override_reason_required``     WARN: posted only with a reason of at least 10
-                                                characters (``NegativeBalanceWarning``, 409
-                                                without one), stored as a ``JournalOverride``
-                                                and audited
+                                                characters (``NegativeBalanceWarning``, 422
+                                                without one, F-07-T04), stored as a
+                                                ``JournalOverride`` and audited
 ==============================================  ================================================
 
 Documents posted by modules (invoices, bills, payroll) carry their own documents and contacts:

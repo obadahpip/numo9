@@ -29,7 +29,10 @@ Bank transactions (spend money / receive money, F-01-T05):
   journal and marks it voided.
 
 Errors: 400 ``{code, detail}`` for a refused rule; journal-rule problems as the journals API
-(``ledger.journal.invalid`` with ``errors``; 409 cash guard); 409 lock dates.
+(``ledger.journal.invalid`` with ``errors``; 409 when the negative-balance policy blocks it,
+422 ``ledger.journal.override_reason_required`` when it warns and no ``override_reason`` was
+sent — F-07); 409 lock dates. A transaction posted past a warning carries ``override``
+(``reason``, ``by``).
 
 Permissions ``accounting.banking.view`` / ``.manage`` / ``.transact``; features
 ``accounting.banking.read`` / ``.write`` (every package — banking is never gated, gap-27).
@@ -353,6 +356,14 @@ class VoidInputSerializer(serializers.Serializer[Any]):
     date = serializers.DateField(required=False, allow_null=True, default=None)
 
 
+def override_of(entry: JournalEntry | None) -> dict[str, Any] | None:
+    """F-07-T04: the reason and person that posted it past a negative-balance warning."""
+    if entry is None or not entry.override_reason:
+        return None
+    by = entry.override_by
+    return {"reason": entry.override_reason, "by": by.name if by is not None else ""}
+
+
 def transaction_row(txn: BankTransaction, *, lines: bool = False) -> dict[str, Any]:
     entry: JournalEntry | None = txn.journal_entry
     row: dict[str, Any] = {
@@ -374,6 +385,7 @@ def transaction_row(txn: BankTransaction, *, lines: bool = False) -> dict[str, A
         "status": txn.status,
         "voided_at": txn.voided_at,
         "journal": {"id": str(entry.public_id), "number": entry.number} if entry else None,
+        "override": override_of(entry),
     }
     if lines:
         row["lines"] = [

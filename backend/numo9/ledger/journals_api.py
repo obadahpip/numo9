@@ -14,8 +14,9 @@
 - ``POST journals/<id>/post`` — post a draft (``override_reason`` optional).
 
 Errors: 400 ``ledger.journal.invalid`` with every problem in ``errors`` (``code`` + ``message``,
-line and account named); 409 ``ledger.journal.negative_cash`` (someone who isn't an adviser) or
-``ledger.journal.override_reason_required`` (an adviser without a reason) with ``shortfalls``;
+line and account named); 409 ``ledger.journal.negative_cash`` (the negative-balance policy
+blocks it for the person) or 422 ``ledger.journal.override_reason_required`` (it warns: send
+``override_reason``, F-07-T04) with ``shortfalls``;
 409 ``lock.violation`` / ``ledger.period.closed`` from the period check.
 
 Permission ``accounting.journals.post``; feature ``accounting.journals.write`` (402 without it).
@@ -55,7 +56,14 @@ from .models import (
     LedgerError,
 )
 from .permissions import JOURNALS_POST
-from .policy import ALLOW, NegativeCash, assess_cash, check_policy, may_override
+from .policy import (
+    ALLOW,
+    NegativeBalanceWarning,
+    NegativeCash,
+    assess_cash,
+    check_policy,
+    may_override,
+)
 from .services import post_entry, post_journal, save_draft
 from .validation import JournalSpec, LineSpec, validate_journal
 
@@ -181,7 +189,11 @@ def _refused(error: LedgerError) -> Response:
                 "adviser": error.adviser,
                 "shortfalls": [p.as_dict() for p in error.projections],
             },
-            status=status.HTTP_409_CONFLICT,
+            # F-07-T04: a WARN without a reason is an incomplete request (422 — send it again
+            # with ``override_reason``); a BLOCK is a conflict with the books (409).
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY
+            if isinstance(error, NegativeBalanceWarning)
+            else status.HTTP_409_CONFLICT,
         )
     return Response(
         {

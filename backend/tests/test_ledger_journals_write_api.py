@@ -158,7 +158,7 @@ def test_cash_guard_blocks_the_owner_and_lets_an_adviser_post_with_a_reason(
     adviser = browser(books["adviser"])
     asked = send(adviser, url(org), body(books))
     assert (asked.status_code, asked.json()["code"]) == (
-        409,
+        422,  # F-07-T04: a warning without a reason
         "ledger.journal.override_reason_required",
     )
     posted = send(
