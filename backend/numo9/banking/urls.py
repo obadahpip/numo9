@@ -2,7 +2,7 @@
 
 from django.urls import path
 
-from . import api, imports_api, transfers_api
+from . import api, cash_policy_api, imports_api, transfers_api
 from .rules import api as rules_api
 
 ORG = "o/<uuid:org>/"
@@ -126,5 +126,10 @@ urlpatterns = [
         f"{ORG}bank-transfers/<uuid:public_id>/void",
         transfers_api.BankTransferVoidView.as_view(),
         name="bank-transfer-void",
+    ),
+    path(
+        f"{ORG}bank-settings/cash-policies",
+        cash_policy_api.CashPolicyView.as_view(),
+        name="bank-cash-policies",
     ),
 ]

@@ -72,3 +72,13 @@ BANKING_ALLOW_NEGATIVE = register(
         Risk.HIGH,
     )
 )
+
+#: F-07-T08: the Banking settings — the negative-balance policy per account type.
+BANKING_SETTINGS = register(
+    Permission(
+        "accounting.banking.settings",
+        _("Change banking settings: what happens when a posting would take an account below zero"),
+        "accounting",
+        Risk.HIGH,
+    )
+)

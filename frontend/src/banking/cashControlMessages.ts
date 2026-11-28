@@ -45,4 +45,96 @@ export const cash = defineMessages({
     defaultMessage: "Record money coming in",
     description: "Remedy button: open receive money for the account",
   },
+
+  settingsLink: {
+    id: "banking.cash.settingsLink",
+    defaultMessage: "Banking settings",
+    description: "Link from the banking home to the banking settings",
+  },
+  settingsTitle: {
+    id: "banking.cash.settingsTitle",
+    defaultMessage: "Banking settings",
+    description: "Heading of the banking settings page",
+  },
+  policyHeading: {
+    id: "banking.cash.policyHeading",
+    defaultMessage: "When a posting would take an account below zero",
+    description: "Section heading: the negative-balance policy",
+  },
+  policyIntro: {
+    id: "banking.cash.policyIntro",
+    defaultMessage:
+      "Numo9 checks every spend, payment, transfer, journal and payroll run before it is saved. Choose what happens for each type of account. Credit cards, lines of credit and loans are never checked: they are amounts you owe.",
+    description: "Explanation of the negative-balance policy",
+  },
+  colType: {
+    id: "banking.cash.colType",
+    defaultMessage: "Account type",
+    description: "Policy table column",
+  },
+  colStandard: {
+    id: "banking.cash.colStandard",
+    defaultMessage: "Everyone else",
+    description: "Policy table column: people who aren't advisers",
+  },
+  colAdviser: {
+    id: "banking.cash.colAdviser",
+    defaultMessage: "Advisers",
+    description: "Policy table column: the organisation's advisers",
+  },
+  standardFor: {
+    id: "banking.cash.standardFor",
+    defaultMessage: "{type}: everyone else",
+    description: "Accessible label of the select for people who aren't advisers",
+  },
+  adviserFor: {
+    id: "banking.cash.adviserFor",
+    defaultMessage: "{type}: advisers",
+    description: "Accessible label of the select for advisers",
+  },
+  actionAllow: {
+    id: "banking.cash.actionAllow",
+    defaultMessage: "Allow",
+    description: "Policy choice: post without asking",
+  },
+  actionWarn: {
+    id: "banking.cash.actionWarn",
+    defaultMessage: "Warn — ask for a reason",
+    description: "Policy choice: warn and ask for a reason",
+  },
+  actionBlock: {
+    id: "banking.cash.actionBlock",
+    defaultMessage: "Block",
+    description: "Policy choice: refuse",
+  },
+  defaultIs: {
+    id: "banking.cash.defaultIs",
+    defaultMessage: "Default: {standard} / {adviser}",
+    description: "The default actions of a type",
+  },
+  save: {
+    id: "banking.cash.save",
+    defaultMessage: "Save changes",
+    description: "Button: save the policy",
+  },
+  saved: {
+    id: "banking.cash.saved",
+    defaultMessage: "Saved. The next posting follows the new rule.",
+    description: "Status after saving the policy",
+  },
+  saveFailed: {
+    id: "banking.cash.saveFailed",
+    defaultMessage: "The settings couldn't be saved. Try again.",
+    description: "Error saving the policy",
+  },
+  loadFailed: {
+    id: "banking.cash.loadFailed",
+    defaultMessage: "The banking settings couldn't be loaded.",
+    description: "Error loading the policy",
+  },
+  retry: {
+    id: "banking.cash.retry",
+    defaultMessage: "Try again",
+    description: "Retry button",
+  },
 });

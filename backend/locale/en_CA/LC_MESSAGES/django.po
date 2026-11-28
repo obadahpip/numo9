@@ -11348,3 +11348,21 @@ msgstr ""
 
 msgid "Post a transaction that takes a bank or cash account below zero, with a reason"
 msgstr ""
+
+msgid "Cash on hand can't be negative: a negative petty cash means money was spent that was never put in. Blocked by default for everyone but your adviser."
+msgstr ""
+
+msgid "A chequing account can be overdrawn when you have an overdraft: by default you are warned and give a reason."
+msgstr ""
+
+msgid "Savings accounts rarely go below zero: by default you are warned and give a reason."
+msgstr ""
+
+msgid "Money in transit between accounts: by default you are warned and give a reason."
+msgstr ""
+
+msgid "Give each account type once."
+msgstr ""
+
+msgid "Change banking settings: what happens when a posting would take an account below zero"
+msgstr ""

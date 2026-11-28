@@ -48,6 +48,7 @@ class BankingConfig(AppConfig):
         SWEEP_FACTORIES["banking.BankRule"] = _sweep_bank_rule  # F-04-T09
         SWEEP_FACTORIES.setdefault("banking.StatementLine", _sweep_statement_line)
         SWEEP_FACTORIES["banking.BankTransfer"] = _sweep_bank_transfer
+        SWEEP_FACTORIES["banking.CashControlPolicy"] = _sweep_cash_policy
 
         # The posting pipeline's negative-balance policy (F-07-T03).
         from numo9.ledger.policy import CASH_POLICY
@@ -183,3 +184,14 @@ def _sweep_bank_transfer(organisation: Any) -> Any:
         organisation, type="cash", display_name=f"Sweep cash {uuid.uuid4().hex[:8]}"
     )
     return record_transfer(source, target, date=dt.date.today(), amount="10.00", user=None)
+
+
+def _sweep_cash_policy(organisation: Any) -> Any:
+    from numo9.tenancy.context import org_context
+
+    from .cash_controls import seed_cash_policies
+    from .models import CashControlPolicy
+
+    seed_cash_policies(organisation)
+    with org_context(organisation):
+        return CashControlPolicy.objects.get(account_type="cash")
