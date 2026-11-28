@@ -6,7 +6,7 @@ WAIT_TIMEOUT ?= 900
 PYTHON ?= python
 MAKEMESSAGES := python manage.py makemessages -l en_CA -l fr_CA --no-location --no-wrap
 
-.PHONY: help up down restart ps logs build clean images i18n i18n-check docs docs-serve perf-directory perf-dashboard perf-search perf-reports fixtures-phase1
+.PHONY: help up down restart ps logs build clean images i18n i18n-check docs docs-serve perf-directory perf-dashboard perf-search perf-reports perf-assurance fixtures-phase1
 
 help: ## List available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-10s %s\n", $$1, $$2}'
@@ -69,6 +69,13 @@ perf-search: ## k6: search p95 < 150 ms over 1,000,000 documents (A-09-T10; need
 perf-reports: ## k6: report runs p95 < 3 s over a 100,000-line ledger (K-01-T17; needs k6)
 	$(COMPOSE_DEV) exec -T backend python manage.py seed_report_books --lines 100000 --password "$${SEED_PASSWORD:?set SEED_PASSWORD}"
 	k6 run -e BASE_URL=$${BASE_URL:-http://127.0.0.1:8000} -e PASSWORD="$$SEED_PASSWORD" tools/perf/k6/reports.js
+
+perf-assurance: ## Nightly assurance run timed on 500 fixture orgs, must fit 60 min (K-09-T26; scratch DB)
+	$(COMPOSE_DEV) exec -T -e NUMO9_ALLOW_FIXTURES=1 backend python manage.py make_fixture_practice --orgs 500 --lines 500 --scratch
+	@echo "First night (every finding created), two report workers:"
+	$(COMPOSE_DEV) exec -T backend python manage.py assurance_timing --prefix Fixture --target-orgs 500 --workers 2 --window-minutes 60 --check
+	@echo "Steady state (findings refreshed), one report worker:"
+	$(COMPOSE_DEV) exec -T backend python manage.py assurance_timing --prefix Fixture --target-orgs 500 --workers 1 --window-minutes 60 --check
 
 fixtures-phase1: ## Load the Phase 1 fixtures: REFINED's teardown journals + negative-cash scenarios (C-03-T16)
 	$(COMPOSE_DEV) exec -T backend python manage.py load_phase1_fixtures
