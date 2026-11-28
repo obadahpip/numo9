@@ -39,7 +39,7 @@ ROW_AMOUNT_MISSING = define(
 ROW_AMOUNT_INVALID = define(
     "banking.statement.row.amount_invalid",
     _(
-        "Row %(row)s: amount '%(value)s' isn't a number. Check the decimal separator on the Map "
+        "Row %(row)s: amount '%(value)s' isn't a number. Review the decimal separator on the Map "
         "step, or correct the row."
     ),
 )
@@ -84,7 +84,7 @@ LAYOUT_DATE_FORMAT = define(
 )
 LAYOUT_INVALID = define(
     "banking.statement.layout.invalid",
-    _("The column mapping can't be used (%(reason)s). Check the columns on the Map step."),
+    _("The column mapping can't be used (%(reason)s). Review the columns on the Map step."),
 )
 
 
@@ -131,7 +131,7 @@ FILE_TOO_MANY_LINES = define(
 )
 FILE_TOO_MANY_COLUMNS = define(
     "banking.statement.file.too_many_columns",
-    _("%(name)s has more than %(max)s columns. Check that it is a bank statement."),
+    _("%(name)s has more than %(max)s columns. Verify that it is a bank statement."),
 )
 OFX_NO_STATEMENT = define(
     "banking.statement.file.no_statement",

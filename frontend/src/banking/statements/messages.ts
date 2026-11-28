@@ -116,13 +116,13 @@ export const imp = defineMessages({
   },
   mappingNone: {
     id: "banking.import.mappingNone",
-    defaultMessage: "No saved mapping fits this file. Check the columns below.",
+    defaultMessage: "No saved mapping fits this file. Review the columns below.",
     description: "Auto-detection found nothing: the columns were guessed",
   },
   dateAmbiguous: {
     id: "banking.import.dateAmbiguous",
     defaultMessage:
-      "These dates could be read as {formats}. Check the date format before you continue.",
+      "These dates could be read as {formats}. Review the date format before you continue.",
     description: "Warning: ambiguous dates such as 03/04/2026",
   },
   savedMapping: {

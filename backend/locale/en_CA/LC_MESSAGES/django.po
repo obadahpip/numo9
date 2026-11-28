@@ -10814,10 +10814,6 @@ msgid "Row %(row)s: there's no amount. Map the amount column (or the withdrawal 
 msgstr ""
 
 #, python-format
-msgid "Row %(row)s: amount '%(value)s' isn't a number. Check the decimal separator on the Map step, or correct the row."
-msgstr ""
-
-#, python-format
 msgid "Row %(row)s: amount '%(value)s' is too large. Correct the row."
 msgstr ""
 
@@ -10836,10 +10832,6 @@ msgstr ""
 
 #, python-format
 msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the list."
-msgstr ""
-
-#, python-format
-msgid "The column mapping can't be used (%(reason)s). Check the columns on the Map step."
 msgstr ""
 
 #, python-format
@@ -10868,10 +10860,6 @@ msgstr ""
 
 #, python-format
 msgid "%(name)s has more than %(max)s lines. Download a shorter period and try again."
-msgstr ""
-
-#, python-format
-msgid "%(name)s has more than %(max)s columns. Check that it is a bank statement."
 msgstr ""
 
 #, python-format
@@ -11009,9 +10997,6 @@ msgstr ""
 msgid "Import bank and credit-card statements, and undo an import"
 msgstr ""
 
-msgid "Check the dates (YYYY-MM-DD) and the page size."
-msgstr ""
-
 msgid "opening balance date"
 msgstr ""
 
@@ -11025,4 +11010,19 @@ msgid "Statement imported"
 msgstr ""
 
 msgid "Statement import undone"
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' isn't a number. Review the decimal separator on the Map step, or correct the row."
+msgstr ""
+
+#, python-format
+msgid "The column mapping can't be used (%(reason)s). Review the columns on the Map step."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has more than %(max)s columns. Verify that it is a bank statement."
+msgstr ""
+
+msgid "Review the dates (YYYY-MM-DD) and the page size."
 msgstr ""

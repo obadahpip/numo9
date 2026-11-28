@@ -36,7 +36,8 @@ BANKING = Path(__file__).resolve().parents[1] / "numo9" / "banking"
 LOCALE = Path(__file__).resolve().parents[1] / "locale"
 GETTEXT = {"_", "gettext", "gettext_lazy", "pgettext", "ngettext"}
 FIX_WORDS = re.compile(
-    r"\b(Choose|Fill|Map|Check|Correct|Keep|Download|Open|Fix|Upload|Undo|Remove|Split|turn on)\b",
+    r"\b(Choose|Fill|Map|Verify|Review|Correct|Keep|Download|Open|Fix|Upload|Undo|Remove|Split"
+    r"|turn on)\b",
     re.IGNORECASE,
 )
 #: Messages that report a fact rather than ask for something.

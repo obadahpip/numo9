@@ -11846,10 +11846,6 @@ msgid "Row %(row)s: there's no amount. Map the amount column (or the withdrawal 
 msgstr "Ligne %(row)s : il n’y a aucun montant. Associez la colonne du montant (ou les colonnes des retraits et des dépôts) à l’étape Correspondance, ou retirez la ligne."
 
 #, python-format
-msgid "Row %(row)s: amount '%(value)s' isn't a number. Check the decimal separator on the Map step, or correct the row."
-msgstr "Ligne %(row)s : le montant « %(value)s » n’est pas un nombre. Vérifiez le séparateur décimal à l’étape Correspondance, ou corrigez la ligne."
-
-#, python-format
 msgid "Row %(row)s: amount '%(value)s' is too large. Correct the row."
 msgstr "Ligne %(row)s : le montant « %(value)s » est trop élevé. Corrigez la ligne."
 
@@ -11897,10 +11893,6 @@ msgstr "%(name)s dépasse %(max)s Mo. Téléchargez une période plus courte, pu
 #, python-format
 msgid "%(name)s has more than %(max)s lines. Download a shorter period and try again."
 msgstr "%(name)s compte plus de %(max)s lignes. Téléchargez une période plus courte, puis réessayez."
-
-#, python-format
-msgid "%(name)s has more than %(max)s columns. Check that it is a bank statement."
-msgstr "%(name)s compte plus de %(max)s colonnes. Vérifiez qu’il s’agit bien d’un relevé bancaire."
 
 #, python-format
 msgid "%(name)s has no bank or credit-card statement in it. Download the account's statement (not an investment or tax file) and try again."
@@ -12037,9 +12029,6 @@ msgstr "Cette correspondance n’existe pas."
 msgid "Import bank and credit-card statements, and undo an import"
 msgstr "Importer des relevés bancaires et de carte de crédit, et annuler une importation"
 
-msgid "Check the dates (YYYY-MM-DD) and the page size."
-msgstr "Vérifiez les dates (AAAA-MM-JJ) et la taille de la page."
-
 msgid "opening balance date"
 msgstr "date du solde d’ouverture"
 
@@ -12049,12 +12038,23 @@ msgstr "solde de clôture"
 msgid "closing balance date"
 msgstr "date du solde de clôture"
 
-#, python-format
-msgid "The column mapping can't be used (%(reason)s). Check the columns on the Map step."
-msgstr "La correspondance des colonnes est inutilisable (%(reason)s). Vérifiez les colonnes à l’étape Correspondance."
-
 msgid "Statement imported"
 msgstr "Relevé importé"
 
 msgid "Statement import undone"
 msgstr "Importation de relevé annulée"
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' isn't a number. Review the decimal separator on the Map step, or correct the row."
+msgstr "Ligne %(row)s : le montant « %(value)s » n’est pas un nombre. Vérifiez le séparateur décimal à l’étape Correspondance, ou corrigez la ligne."
+
+#, python-format
+msgid "%(name)s has more than %(max)s columns. Verify that it is a bank statement."
+msgstr "%(name)s compte plus de %(max)s colonnes. Vérifiez qu’il s’agit bien d’un relevé bancaire."
+
+msgid "Review the dates (YYYY-MM-DD) and the page size."
+msgstr "Vérifiez les dates (AAAA-MM-JJ) et la taille de la page."
+
+#, python-format
+msgid "The column mapping can't be used (%(reason)s). Review the columns on the Map step."
+msgstr "La correspondance des colonnes est inutilisable (%(reason)s). Vérifiez les colonnes à l’étape Correspondance."

@@ -490,7 +490,7 @@ class StatementLineListView(APIView):
             offset = max(int(params.get("offset", 0)), 0)
         except ValueError:
             raise serializers.ValidationError(
-                {"filters": [_("Check the dates (YYYY-MM-DD) and the page size.")]}
+                {"filters": [_("Review the dates (YYYY-MM-DD) and the page size.")]}
             ) from None
         if params.get("import"):
             lines = lines.filter(statement_import__public_id=params["import"])
