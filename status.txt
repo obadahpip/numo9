@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 844   Remaining: 1943   Progress: 30.28%
+TOTAL ATOMIC TASKS: 2787   Completed: 845   Remaining: 1942   Progress: 30.32%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1132,7 +1132,7 @@ Phase 1 Core Books  (572 atomic tasks)
 
 [F-01]
 ✅ F-01-T16 — Functional E2E for gap-27: new org → add chequing → spend money with no import/reconciliation → Balance Sheet shows it
-❌ F-01-T17 — User-guide section "Bank accounts without feeds" plus the ADR note that the bank never depends on a feed
+✅ F-01-T17 — User-guide section "Bank accounts without feeds" plus the ADR note that the bank never depends on a feed
 
 [F-02]
 ❌ F-02-T02 — StatementImport (batch: file, mapping, counts, status, created_by) and StatementLine (bank_account, date, amount, description, payee, reference, fitid, fingerprint, status UNCODED/CODED/MATCHED/IGNORED, import FK) models; unique index on (bank_account, fingerprint)
