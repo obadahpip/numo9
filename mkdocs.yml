@@ -69,6 +69,7 @@ nav:
       - "ADR-0004 — Entitlement resolution and caching": adr/0004-entitlement-resolution-and-caching.md
       - "ADR-0005 — Partitioning strategy": adr/0005-partitioning-strategy.md
       - "ADR-0006 — Invoice revisions": adr/0006-invoice-revisions.md
+      - "ADR-0007 — Bank accounts never depend on a feed": adr/0007-bank-accounts-never-depend-on-a-feed.md
       - ADR template: adr/template.md
   - Architecture:
       - "Tenancy model": architecture/tenancy.md
@@ -118,6 +119,7 @@ nav:
       - "Entering conversion balances": user-guide/conversion-balances.md
       - "Closing periods and the fiscal year": user-guide/period-close-and-year-end.md
       - "Finding and recoding transactions": user-guide/find-and-recode.md
+      - "Bank accounts without feeds": user-guide/bank-accounts-without-feeds.md
   - Developer guides:
       - "Feature keys": dev/feature-keys.md
   - Reference:
