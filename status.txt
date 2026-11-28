@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 875   Remaining: 1912   Progress: 31.40%
+TOTAL ATOMIC TASKS: 2787   Completed: 879   Remaining: 1908   Progress: 31.54%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1152,10 +1152,10 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-02-T16 — Regression suite: idempotent re-import, overlapping ranges, BOM, accents, empty file
 
 [F-06]
-❌ F-06-T02 — BankTransfer model (from_account, to_account, date, amount, reference, journal FK) with validators
-❌ F-06-T03 — Transfer posting service: one JE Dr to / Cr from, source TRANSFER; void reverses
-❌ F-06-T05 — Presets: "Fund petty cash" (chequing → cash), "Pay credit card" (chequing → card)
-❌ F-06-T06 — API /api/v1/bank-transfers; permission; feature key
+✅ F-06-T02 — BankTransfer model (from_account, to_account, date, amount, reference, journal FK) with validators
+✅ F-06-T03 — Transfer posting service: one JE Dr to / Cr from, source TRANSFER; void reverses
+✅ F-06-T05 — Presets: "Fund petty cash" (chequing → cash), "Pay credit card" (chequing → card)
+✅ F-06-T06 — API /api/v1/bank-transfers; permission; feature key
 
 [F-04]
 ✅ F-04-T02 — BankRule model (type, name, match_mode ANY/ALL, priority, scope_accounts M2M, contact_strategy, contact FK, reference_template, auto_apply, active) and BankRuleCondition (field, operator, value, value_to)

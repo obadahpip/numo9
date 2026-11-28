@@ -625,6 +625,7 @@ class JournalType(models.TextChoices):
     ADJUSTMENT = "adjustment", _("Adjustment")
     REVERSAL = "reversal", _("Reversal")
     BANK = "bank", _("Bank transaction")
+    TRANSFER = "transfer", _("Transfer")
 
 
 class JournalCategory(models.TextChoices):

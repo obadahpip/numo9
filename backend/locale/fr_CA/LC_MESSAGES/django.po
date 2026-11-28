@@ -12300,3 +12300,50 @@ msgstr "Cette règle"
 
 msgid "This statement line wasn't coded by a rule."
 msgstr "Cette ligne de relevé n’a pas été imputée par une règle."
+
+msgid "bank transfer"
+msgstr "virement bancaire"
+
+msgid "bank transfers"
+msgstr "virements bancaires"
+
+msgid "from account"
+msgstr "compte de départ"
+
+msgid "to account"
+msgstr "compte d'arrivée"
+
+msgid "The amount to transfer must be more than 0.00."
+msgstr "Le montant à virer doit être supérieur à 0,00."
+
+msgid "Choose the account the money leaves and the account it goes to."
+msgstr "Choisissez le compte d'où part l'argent et le compte où il arrive."
+
+msgid "Choose two different accounts: money can't be transferred to the same account."
+msgstr "Choisissez deux comptes différents : on ne peut pas virer de l'argent vers le même compte."
+
+#, python-format
+msgid "%(from)s is in %(from_currency)s and %(to)s in %(to_currency)s: transfers between currencies arrive with multi-currency (R-02). For now, record them as a spend from one account and a receipt into the other."
+msgstr "%(from)s est en %(from_currency)s et %(to)s en %(to_currency)s : les virements entre devises arriveront avec la multidevise (R-02). Pour l'instant, inscrivez une dépense dans un compte et un encaissement dans l'autre."
+
+#, python-format
+msgid "Transfer from %(from)s to %(to)s"
+msgstr "Virement de %(from)s vers %(to)s"
+
+msgid "Both accounts must belong to the organisation."
+msgstr "Les deux comptes doivent appartenir à l'organisation."
+
+msgid "This transfer is already voided."
+msgstr "Ce virement est déjà annulé."
+
+msgid "Fund petty cash"
+msgstr "Alimenter la petite caisse"
+
+msgid "Pay credit card"
+msgstr "Payer la carte de crédit"
+
+msgid "That transfer doesn't exist."
+msgstr "Ce virement n'existe pas."
+
+msgid "Record and void transfers between bank, credit card, loan and cash accounts"
+msgstr "Inscrire et annuler des virements entre comptes bancaires, cartes de crédit, prêts et caisses"

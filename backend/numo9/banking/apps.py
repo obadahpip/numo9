@@ -47,6 +47,7 @@ class BankingConfig(AppConfig):
         SWEEP_FACTORIES["banking.StatementImport"] = _sweep_statement_import
         SWEEP_FACTORIES["banking.BankRule"] = _sweep_bank_rule  # F-04-T09
         SWEEP_FACTORIES.setdefault("banking.StatementLine", _sweep_statement_line)
+        SWEEP_FACTORIES["banking.BankTransfer"] = _sweep_bank_transfer
 
 
 def _sweep_bank_account(organisation: Any) -> Any:
@@ -144,3 +145,17 @@ def _sweep_statement_line(organisation: Any) -> Any:
             description="Sweep",
             fingerprint=uuid.uuid4().hex,
         )
+
+
+def _sweep_bank_transfer(organisation: Any) -> Any:
+    import datetime as dt
+    import uuid
+
+    from .services import create_bank_account
+    from .transfers import record_transfer
+
+    source = _sweep_bank_account(organisation)
+    target = create_bank_account(
+        organisation, type="cash", display_name=f"Sweep cash {uuid.uuid4().hex[:8]}"
+    )
+    return record_transfer(source, target, date=dt.date.today(), amount="10.00", user=None)

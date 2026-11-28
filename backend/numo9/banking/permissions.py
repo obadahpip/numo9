@@ -51,3 +51,13 @@ BANKING_RULES = register(
         Risk.MEDIUM,
     )
 )
+
+
+BANKING_TRANSFER = register(
+    Permission(
+        "accounting.banking.transfer",
+        _("Record and void transfers between bank, credit card, loan and cash accounts"),
+        "accounting",
+        Risk.MEDIUM,
+    )
+)

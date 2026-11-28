@@ -11268,3 +11268,50 @@ msgstr ""
 
 msgid "This statement line wasn't coded by a rule."
 msgstr ""
+
+msgid "bank transfer"
+msgstr ""
+
+msgid "bank transfers"
+msgstr ""
+
+msgid "from account"
+msgstr ""
+
+msgid "to account"
+msgstr ""
+
+msgid "The amount to transfer must be more than 0.00."
+msgstr ""
+
+msgid "Choose the account the money leaves and the account it goes to."
+msgstr ""
+
+msgid "Choose two different accounts: money can't be transferred to the same account."
+msgstr ""
+
+#, python-format
+msgid "%(from)s is in %(from_currency)s and %(to)s in %(to_currency)s: transfers between currencies arrive with multi-currency (R-02). For now, record them as a spend from one account and a receipt into the other."
+msgstr ""
+
+#, python-format
+msgid "Transfer from %(from)s to %(to)s"
+msgstr ""
+
+msgid "Both accounts must belong to the organisation."
+msgstr ""
+
+msgid "This transfer is already voided."
+msgstr ""
+
+msgid "Fund petty cash"
+msgstr ""
+
+msgid "Pay credit card"
+msgstr ""
+
+msgid "That transfer doesn't exist."
+msgstr ""
+
+msgid "Record and void transfers between bank, credit card, loan and cash accounts"
+msgstr ""
