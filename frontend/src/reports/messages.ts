@@ -224,6 +224,47 @@ export const runner = defineMessages({
     defaultMessage: "Show zero rows",
     description: "Switch: show accounts with no activity",
   },
+  orderBy: {
+    id: "reports.runner.orderBy",
+    defaultMessage: "Order by",
+    description: "Select: the journal report's order (K-02-T11)",
+  },
+  orderNumber: {
+    id: "reports.runner.orderNumber",
+    defaultMessage: "Journal number",
+    description: "Order option",
+  },
+  orderDate: {
+    id: "reports.runner.orderDate",
+    defaultMessage: "Date",
+    description: "Order option",
+  },
+  direction: {
+    id: "reports.runner.direction",
+    defaultMessage: "Direction",
+    description: "Select: ascending or descending order (gap-58)",
+  },
+  ascending: {
+    id: "reports.runner.ascending",
+    defaultMessage: "Ascending (oldest first)",
+    description: "Direction option",
+  },
+  descending: {
+    id: "reports.runner.descending",
+    defaultMessage: "Descending (newest first)",
+    description: "Direction option",
+  },
+  showCodes: {
+    id: "reports.runner.showCodes",
+    defaultMessage: "Show account codes",
+    description: "Switch: show the account code before each account name (K-02-T13)",
+  },
+  reclassified: {
+    id: "reports.runner.reclassified",
+    defaultMessage:
+      "Overdrawn bank or cash accounts are shown under current liabilities as bank overdrafts — see the note below them.",
+    description: "Notice above a balance sheet with a reclassified overdraft (K-02-T04)",
+  },
   runFinancialYear: {
     id: "reports.runner.runFinancialYear",
     defaultMessage: "Run this financial year",

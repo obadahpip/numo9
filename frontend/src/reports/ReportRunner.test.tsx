@@ -4,8 +4,15 @@ import { vi } from "vitest";
 
 import { renderWithIntl } from "@/test/intl";
 
-import { BODY, CATALOGUE, ORG, serveJson } from "./fixtures";
-import { initialParams, ReportRunner, runQuery } from "./ReportRunner";
+import { BODY, CATALOGUE, ORG, serveJson, summary } from "./fixtures";
+import {
+  initialParams,
+  localToday,
+  ReportRunner,
+  runQuery,
+  toTableRows,
+  withoutCode,
+} from "./ReportRunner";
 
 /**
  * K-01-T13 — runner: the parameter bar from the report's schema (preset or custom dates, book
@@ -138,4 +145,44 @@ it("an integrity failure is a red banner above the statement (K-02-T05)", async 
   const banner = await screen.findByRole("alert");
   expect(banner).toHaveTextContent("doesn't balance by 12.34");
   expect(banner).toHaveAttribute("data-report-alert", "reports.integrity.unbalanced");
+});
+
+describe("K-02-T13: statement defaults and toggles", () => {
+  const balanceSheet = summary({
+    id: "balance_sheet",
+    slug: "balance-sheet",
+    name: "Balance sheet",
+  });
+
+  it("a balance sheet opens as at today; a date in the URL wins", () => {
+    expect(initialParams(balanceSheet, undefined, "2026-11-28")).toEqual({
+      as_of: "2026-11-28",
+      book: "accounting",
+    });
+    expect(initialParams(balanceSheet, new URLSearchParams("as_of=2026-03-31"))).toMatchObject({
+      as_of: "2026-03-31",
+    });
+    expect(localToday(new Date(2026, 5, 3, 23, 59))).toBe("2026-06-03");
+  });
+
+  it("hides account codes on account rows only", () => {
+    expect(withoutCode("1000 · Chequing")).toBe("Chequing");
+    expect(withoutCode("Bank overdraft — Petty Cash")).toBe("Bank overdraft — Petty Cash");
+    const body = {
+      ...BODY,
+      rows: [
+        { ...BODY.rows[0]!, key: "account:1000", label: "1000 · Chequing" },
+        { ...BODY.rows[0]!, key: "overdraft:1010", label: "Bank overdraft — Petty Cash" },
+      ],
+      totals: [],
+    };
+    expect(toTableRows(body, { codes: false }).map((r) => r.label)).toEqual([
+      "Chequing",
+      "Bank overdraft — Petty Cash",
+    ]);
+    expect(toTableRows(body).map((r) => r.label)).toEqual([
+      "1000 · Chequing",
+      "Bank overdraft — Petty Cash",
+    ]);
+  });
 });
