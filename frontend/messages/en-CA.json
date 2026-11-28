@@ -583,7 +583,7 @@
     },
     "intro": "Rules code statement lines for you. They run top to bottom and the first rule that matches wins — drag a rule to change its priority.",
     "loadFailed": "Rules couldn't be loaded",
-    "loadFailedBody": "Check your connection and try again. Nothing else is blocked.",
+    "loadFailedBody": "Verify your connection and try again. Nothing else is blocked.",
     "loading": "Loading rules…",
     "moved": "{name} is now priority {priority}.",
     "neverApplied": "Not applied yet",

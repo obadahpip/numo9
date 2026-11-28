@@ -28,6 +28,8 @@ class BankingConfig(AppConfig):
 
         # A posted spend / receive keeps its contact, like its journal lines (C-02-T04).
         register_reference("banking.BankTransaction", "contact", "keep", _("bank transactions"))
+        # A bank rule's fixed contact is a setting: it follows the surviving contact (F-04-T02).
+        register_reference("banking.BankRule", "contact", "move", _("bank rules"))
 
         from .search import register_banking_search
 

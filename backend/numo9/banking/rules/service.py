@@ -7,6 +7,12 @@ for receive), a transfer's other bank account (required, active; transfers have 
 lines), a fixed contact — then writes the rule, its conditions and allocations in one
 transaction. A new rule takes the **next priority** of its type; the type is fixed once created.
 
+**Audit** (F-04-T16): the rule's own fields are audited by ``AuditedModel``
+(``banking.bankrule.created`` / ``.updated`` / ``.deleted``); a change of its conditions or
+allocations writes ``banking.bankrule.conditions_changed`` with both versions; a reorder writes
+``banking.rule.reordered`` with each moved rule's old and new priority. Applying, confirming and
+reverting are audited by the apply service.
+
 ``delete_rule`` soft-deletes it, gives its priority up and closes the gap. ``reorder(type, ids)``
 renumbers every rule of the type 1…n in the given order **atomically**: the list must hold each
 of the type's rules exactly once, otherwise nothing changes (``banking.rule.reorder_mismatch``);
@@ -197,6 +203,8 @@ def save_rule(
         rule.transfer_account = definition.transfer_account if is_transfer else None
         rule.auto_apply = definition.auto_apply
         rule.active = definition.active
+        adding = rule.pk is None
+        before = None if adding else _parts(rule)
         rule.save()
         rule.scope_accounts.set(list(definition.scope_accounts))
         rule.conditions.all().delete()
@@ -227,7 +235,34 @@ def save_rule(
                 )
                 for number, a in enumerate(definition.allocations)
             )
+        after = _parts(rule)
+        if before is not None and before != after:
+            audit(
+                "banking.bankrule.conditions_changed",
+                obj=rule,
+                changes={
+                    key: [before[key], after[key]] for key in after if before[key] != after[key]
+                },
+                actor=user,
+            )
         return rule
+
+
+def _parts(rule: BankRule) -> dict[str, Any]:
+    """The rule's conditions, allocations and scope in words, for the audit trail."""
+    return {
+        "conditions": [
+            " ".join(filter(None, [c.field, c.operator, c.value, c.value_to]))
+            for c in rule.conditions.order_by("order", "pk")
+        ],
+        "allocations": [
+            f"{a.account.code} {a.percent.normalize():f}% {a.tax_code}".strip()
+            if a.percent is not None
+            else f"{a.account.code} {a.fixed_amount} {a.tax_code}".strip()
+            for a in rule.allocations.select_related("account").order_by("order", "pk")
+        ],
+        "scope_accounts": sorted(a.display_name for a in rule.scope_accounts.all()),
+    }
 
 
 def _compact(rule_type: str) -> None:

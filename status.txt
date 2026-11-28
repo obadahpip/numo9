@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 874   Remaining: 1913   Progress: 31.36%
+TOTAL ATOMIC TASKS: 2787   Completed: 875   Remaining: 1912   Progress: 31.40%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1172,7 +1172,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-04-T13 — Preview panel listing affected historical lines and shadowing rules
 ✅ F-04-T14 — "Create rule from line" action on statement lines, pre-filling the payee/description condition
 ✅ F-04-T15 — Revert auto-coded line (reverse JE, line back to UNCODED) with an audit entry
-❌ F-04-T16 — i18n, audit hooks and gap-28 functional test (regex, not-contains, range, priority, preview)
+✅ F-04-T16 — i18n, audit hooks and gap-28 functional test (regex, not-contains, range, priority, preview)
 
 [F-07]
 ❌ F-07-T01 — CashControlPolicy per org and bank-account type (ALLOW/WARN/BLOCK, adviser level) with defaults seeded

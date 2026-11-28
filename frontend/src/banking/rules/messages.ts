@@ -113,7 +113,7 @@ export const m = defineMessages({
   },
   loadFailedBody: {
     id: "bankRules.loadFailedBody",
-    defaultMessage: "Check your connection and try again. Nothing else is blocked.",
+    defaultMessage: "Verify your connection and try again. Nothing else is blocked.",
     description: "Error body",
   },
   retry: { id: "bankRules.retry", defaultMessage: "Try again", description: "Button" },
