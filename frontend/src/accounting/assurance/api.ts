@@ -90,6 +90,16 @@ export interface RuleChanges {
   params?: Record<string, unknown>;
 }
 
+/** User activity per day and person from the audit log (`GET assurance/heatmap`, K-09-T19). */
+export interface Heatmap {
+  from: string;
+  to: string;
+  time_zone: string;
+  total: number;
+  days: { date: string; count: number }[];
+  people: { id: string; name: string; count: number; last: string | null }[];
+}
+
 export interface FindingQuery {
   severity?: Severity[];
   status?: FindingStatus[];
@@ -144,6 +154,11 @@ export const assuranceApi = {
       method: "PATCH",
       body: changes,
     }),
+  heatmap: (org: string, { days = 365, user = "" }: { days?: number; user?: string } = {}) => {
+    const params = new URLSearchParams({ days: String(days) });
+    if (user) params.set("user", user);
+    return apiRequest<Heatmap & { detail?: string }>(`${base(org)}/heatmap?${params.toString()}`);
+  },
   run: (org: string): Result<{ job: string }> =>
     apiRequest(`${base(org)}/run`, { method: "POST", body: {} }),
 };

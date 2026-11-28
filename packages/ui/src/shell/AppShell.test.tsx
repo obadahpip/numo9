@@ -70,6 +70,32 @@ describe("AppShell regions (A-10-T05)", () => {
     expect(await screen.findByRole("tooltip")).toHaveTextContent(locked.label);
   });
 
+  it("shows a navigation item's attention badge, read out, hidden at zero (K-09-T24)", () => {
+    const badge = { count: 3, label: "3 assurance findings need attention" };
+    const { rerender } = render(
+      <AppShell
+        {...sampleShell}
+        nav={sampleShell.nav.map((item) => (item.id === "contacts" ? { ...item, badge } : item))}
+      >
+        <h1>Home</h1>
+      </AppShell>,
+    );
+    const main = screen.getByRole("navigation", { name: "Main" });
+    const link = within(main).getByRole("link", { name: /Contacts ?3 assurance findings/ });
+    expect(link.querySelector("[data-nav-badge]")).toHaveTextContent("3");
+    rerender(
+      <AppShell
+        {...sampleShell}
+        nav={sampleShell.nav.map((item) =>
+          item.id === "contacts" ? { ...item, badge: { ...badge, count: 0 } } : item,
+        )}
+      >
+        <h1>Home</h1>
+      </AppShell>,
+    );
+    expect(document.querySelector("[data-nav-badge]")).toBeNull();
+  });
+
   it("renders the banner slot under the top navigation", () => {
     renderShell({ banner: <p role="status">Read-only</p> });
     const slot = document.querySelector('[data-shell="banner"]');

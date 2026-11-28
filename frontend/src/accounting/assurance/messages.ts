@@ -381,4 +381,69 @@ export const am = defineMessages({
       "{value, select, auto {Automatic} transfer {Transfer from a bank account} shareholder_loan {Shareholder loan} other {{value}}}",
     description: "Option of a choice parameter",
   },
+  // K-09-T24 — activity heatmap
+  tabActivity: { id: "assurance.tabActivity", defaultMessage: "Activity", description: "Tab" },
+  activityTitle: {
+    id: "assurance.activityTitle",
+    defaultMessage: "Activity in the last 12 months",
+    description: "Heatmap heading",
+  },
+  activityHelp: {
+    id: "assurance.activityHelp",
+    defaultMessage:
+      "Actions recorded in the audit log, per day in the organisation's time zone ({zone}). A dormant administrator stands out.",
+    description: "Text under the heatmap heading",
+  },
+  person: { id: "assurance.person", defaultMessage: "Person", description: "Person filter" },
+  everyone: { id: "assurance.everyone", defaultMessage: "Everyone", description: "No filter" },
+  heatSummary: {
+    id: "assurance.heatSummary",
+    defaultMessage:
+      "{total, plural, =0 {No actions} one {# action} other {# actions}} from {from} to {to}",
+    description: "Accessible summary of the calendar grid",
+  },
+  heatCell: {
+    id: "assurance.heatCell",
+    defaultMessage: "{date} · {count, plural, =0 {no actions} one {# action} other {# actions}}",
+    description: "Tooltip of a day of the heatmap",
+  },
+  less: { id: "assurance.less", defaultMessage: "Less", description: "Heatmap legend start" },
+  more: { id: "assurance.more", defaultMessage: "More", description: "Heatmap legend end" },
+  showTable: {
+    id: "assurance.showTable",
+    defaultMessage: "Show as table",
+    description: "Accessible table alternative of the heatmap",
+  },
+  hideTable: {
+    id: "assurance.hideTable",
+    defaultMessage: "Hide the table",
+    description: "Hide the table alternative",
+  },
+  dayColumn: { id: "assurance.dayColumn", defaultMessage: "Date", description: "Column" },
+  actionsColumn: {
+    id: "assurance.actionsColumn",
+    defaultMessage: "Actions",
+    description: "Column",
+  },
+  lastColumn: {
+    id: "assurance.lastColumn",
+    defaultMessage: "Last activity",
+    description: "Column",
+  },
+  peopleTitle: { id: "assurance.peopleTitle", defaultMessage: "People", description: "Heading" },
+  noActivity: {
+    id: "assurance.noActivity",
+    defaultMessage: "No activity in this period.",
+    description: "Empty heatmap",
+  },
+  activityFailed: {
+    id: "assurance.activityFailed",
+    defaultMessage: "The activity couldn't be loaded",
+    description: "Error state title",
+  },
+  weekday: {
+    id: "assurance.weekday",
+    defaultMessage: "{day, select, 0 {Mon} 1 {Tue} 2 {Wed} 3 {Thu} 4 {Fri} 5 {Sat} other {Sun}}",
+    description: "Short weekday name of a heatmap row",
+  },
 });

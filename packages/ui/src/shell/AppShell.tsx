@@ -37,6 +37,26 @@ export interface ShellNavItem {
    * drawer). The link still opens the module, which shows its locked panel — never hidden.
    */
   locked?: { label: string };
+  /**
+   * A count that needs attention (K-09-T24: open critical + warning assurance findings): shown
+   * as a pill after the label, `label` read out by screen readers ("3 findings need attention").
+   * Hidden when the count is 0.
+   */
+  badge?: { count: number; label: string };
+}
+
+/** The attention pill of a navigation item (hidden at 0). */
+function NavBadge({ badge }: { badge?: { count: number; label: string } }) {
+  if (!badge || badge.count <= 0) return null;
+  return (
+    <span
+      data-nav-badge={badge.count}
+      className="ms-1 inline-flex min-w-5 items-center justify-center rounded-full bg-surface-danger-subtle px-1.5 text-xs font-bold text-fg-danger tabular-nums"
+    >
+      <span aria-hidden="true">{badge.count > 99 ? "99+" : badge.count}</span>
+      <span className="sr-only">{badge.label}</span>
+    </span>
+  );
 }
 
 export interface ShellNavGroup {
@@ -206,6 +226,7 @@ export function AppShell({
                     }
                   >
                     {item.label}
+                    <NavBadge badge={item.badge} />
                     {item.locked ? (
                       <>
                         <span className="sr-only">: {item.locked.label}</span>
@@ -354,7 +375,10 @@ function DrawerList({
               }
             >
               <span className="flex flex-col py-1">
-                <span>{item.label}</span>
+                <span>
+                  {item.label}
+                  <NavBadge badge={item.badge} />
+                </span>
                 {/* Touch users don't hover: the explanation is written out in the drawer. */}
                 {item.locked ? (
                   <span className="text-xs font-normal text-fg-muted">{item.locked.label}</span>

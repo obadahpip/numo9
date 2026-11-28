@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 839   Remaining: 1948   Progress: 30.10%
+TOTAL ATOMIC TASKS: 2787   Completed: 840   Remaining: 1947   Progress: 30.14%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1116,7 +1116,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ K-09-T21 — Assurance page UI: score, filters, grouped findings, plain-language explanation, actions
 ✅ K-09-T22 — Proposed-fix drawer with editable draft journal grid and reasoning text
 ✅ K-09-T23 — Rule settings page (toggle, severity, parameters with validation)
-❌ K-09-T24 — Heatmap tab (calendar grid, accessible table alternative) and nav badge
+✅ K-09-T24 — Heatmap tab (calendar grid, accessible table alternative) and nav badge
 ❌ K-09-T25 — Teardown migration fixture (REFINED-like org) test: all issues flagged (negative petty cash, journal-only expenses, all-exempt, no BN, no lock date, 0 GIFI, backdated journal, dormant admin)
 ❌ K-09-T26 — Performance: incremental run < 2 s per posting batch; nightly full run 500 orgs within window
 ❌ K-09-T27 — i18n (rule names and explanations en/fr), docs "Assurance rules reference"

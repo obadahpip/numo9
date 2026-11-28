@@ -24,7 +24,7 @@ export default async function AssurancePage({
   const { tab } = await searchParams;
   if (!ORG_SLUG.test(org)) notFound();
   return (
-    <AppShell org={org} modulePath="accounting/journals">
+    <AppShell org={org} modulePath="accounting/assurance">
       <AssuranceScreen org={org} initialTab={isAssuranceTab(tab) ? tab : "findings"} />
     </AppShell>
   );

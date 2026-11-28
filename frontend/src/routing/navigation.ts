@@ -124,7 +124,12 @@ export interface NavLink {
   current: boolean;
   /** The module isn't in the package: lock glyph + this tooltip (U-03-T11). */
   locked?: { label: string };
+  /** Attention count shown on the item (K-09-T24: open critical + warning findings). */
+  badge?: { count: number; label: string };
 }
+
+/** Badges by navigation item id (`accounting` → the assurance attention count). */
+export type NavBadges = Partial<Record<string, { count: number; label: string }>>;
 
 /** Decision for a feature key (the entitlement store's `decide`). */
 export type FeatureLookup = (feature: string) => FeatureDecision;
@@ -138,6 +143,7 @@ export function primaryNav(
   org: string,
   currentPath?: string,
   feature?: FeatureLookup,
+  badges: NavBadges = {},
 ): NavLink[] {
   const current = currentPath === undefined ? undefined : navEntryFor(currentPath);
   return PRIMARY_NAV.map((entry) => {
@@ -147,6 +153,8 @@ export function primaryNav(
       href: orgModuleUrl(org, entry.modulePath),
       current: entry === current,
     };
+    const badge = badges[entry.id];
+    if (badge && badge.count > 0) link.badge = badge;
     const key = findOrgModule(entry.modulePath)?.feature ?? CORE;
     const decision = feature && key !== CORE ? feature(key) : undefined;
     if (decision?.state === "gated") {

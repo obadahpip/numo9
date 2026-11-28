@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
+import { useAssuranceAttention } from "@/accounting/assurance/badge";
 import { CORE } from "@/catalogue/features";
 import { Gated } from "@/catalogue/Gated";
 import { OrgSwitcher } from "@/components/OrgSwitcher";
@@ -36,6 +37,13 @@ import { SearchSlot } from "@/search/SearchSlot";
 import { ModuleSettingsLink } from "@/settings/ModuleSettingsLink";
 
 const messages = defineMessages({
+  assuranceBadge: {
+    id: "shell.nav.assuranceBadge",
+    defaultMessage:
+      "{count, plural, one {# assurance finding needs attention} other {# assurance findings need attention}}",
+    description:
+      "Screen-reader text of the Accounting item's badge (open critical + warning, K-09)",
+  },
   skipToContent: {
     id: "shell.skipToContent",
     defaultMessage: "Skip to content",
@@ -134,6 +142,11 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
   const fm = useFormatMessage();
   const entitlements = useEntitlements();
   const unread = useUnreadCount(org);
+  // K-09-T24: open critical + warning assurance findings on the Accounting item.
+  const attention = useAssuranceAttention(
+    org,
+    Boolean(org) && decide(entitlements, "accounting.assurance.read").state === "allowed",
+  );
   const pathname = usePathname();
   const [centreOpen, setCentreOpen] = useState(false);
   const entry = modulePath === undefined ? undefined : findOrgModule(modulePath);
@@ -162,7 +175,11 @@ function ShellFrame({ org, modulePath, section, practice, children }: Readonly<A
       brand={{ label: fm(messages.brandHome), href: homeHref }}
       nav={
         org
-          ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key))
+          ? primaryNav(fm, org, modulePath, (key) => decide(entitlements, key), {
+              accounting: attention
+                ? { count: attention, label: fm(messages.assuranceBadge, { count: attention }) }
+                : undefined,
+            })
           : practice
             ? practiceNav(fm, practice, pathname ?? "")
             : []

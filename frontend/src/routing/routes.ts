@@ -36,6 +36,11 @@ const labels = defineMessages({
     defaultMessage: "Conversion balances",
     description: "Module name (Accounting, C-05)",
   },
+  assurance: {
+    id: "routes.assurance",
+    defaultMessage: "Assurance",
+    description: "Module name (Accounting, K-09: exceptions engine)",
+  },
   documents: { id: "routes.documents", defaultMessage: "Documents", description: "Module name" },
   banking: { id: "routes.banking", defaultMessage: "Banking", description: "Module name" },
   reports: { id: "routes.reports", defaultMessage: "Reports", description: "Module name (K-01)" },
@@ -277,6 +282,13 @@ export const ORG_MODULES: readonly OrgModule[] = [
       "opening-balances",
       "setup/welcome/editconversionbalances.aspx",
     ],
+  },
+  {
+    // K-09-T24: the exceptions engine — findings, rule settings, activity.
+    path: "accounting/assurance",
+    feature: "accounting.assurance.read",
+    label: labels.assurance,
+    aliases: ["assurance", "exceptions", "gl-exceptions"],
   },
   {
     path: "banking",

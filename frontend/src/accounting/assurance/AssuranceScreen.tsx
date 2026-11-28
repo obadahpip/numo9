@@ -7,7 +7,8 @@
  * *Run the rules* starts a full run in the background and refreshes the list after it. Propose fix
  * opens the proposed-fix drawer (K-09-T22, `FixDrawer`): the reasoning and an editable draft
  * journal that becomes a draft in Journals › Draft; a recode fix opens Find & recode. Tabs
- * (`?tab=`): *Findings* and *Rule settings* (K-09-T23, `RuleSettings`).
+ * (`?tab=`): *Findings*, *Rule settings* (K-09-T23, `RuleSettings`) and *Activity* (K-09-T24,
+ * `ActivityHeatmap`); every summary loaded updates the nav badge (`announceSummary`).
  */
 import {
   Button,
@@ -26,7 +27,9 @@ import { useFormatMessage } from "@/i18n";
 
 import { assuranceApi, type Finding, type FindingStatus, type Severity, type Summary } from "./api";
 import { AssuranceFindings, ScoreCard, type FindingAction } from "./AssuranceFindings";
+import { announceSummary } from "./badge";
 import { FixDrawer } from "./FixDrawer";
+import { ActivityHeatmap } from "./Heatmap";
 import { groupFindings, SEVERITIES } from "./grouping";
 import { am } from "./messages";
 import { RuleSettings } from "./RuleSettings";
@@ -74,6 +77,7 @@ export function AssuranceScreen({
     ]);
     if (s?.status === 200 && f?.status === 200) {
       setSummary(s.body);
+      announceSummary(org, s.body);
       setFindings(f.body.findings);
       setFailed(false);
     } else setFailed(true);
@@ -262,6 +266,16 @@ export function AssuranceScreen({
               tab === "rules" ? (
                 <div className="pt-4">
                   <RuleSettings org={org} />
+                </div>
+              ) : null,
+          },
+          {
+            value: "activity",
+            label: fm(am.tabActivity),
+            content:
+              tab === "activity" ? (
+                <div className="pt-4">
+                  <ActivityHeatmap org={org} locale={locale} />
                 </div>
               ) : null,
           },
