@@ -32,6 +32,7 @@ import {
 
 import { accountsApi, type Account } from "@/accounts/api";
 import { pickerAccount } from "@/accounts/picker";
+import { NegativeBalanceNotice, negativeState } from "@/banking/NegativeBalanceNotice";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useDocumentLinesLabels } from "@/documents/labels";
 import { useDebounced } from "@/directory/useDebounced";
@@ -287,8 +288,15 @@ export function JournalForm({ org, navigate, copyOf }: Readonly<JournalFormProps
   const used = lines.some((line) => Number(line.debit) > 0 || Number(line.credit) > 0);
   const unbalanced = off !== 0 || !used;
   const shortfalls = refusal?.shortfalls ?? check?.shortfalls ?? [];
-  const adviser = refusal?.adviser ?? check?.adviser ?? false;
-  const blocked = shortfalls.length > 0 && !adviser;
+  // F-07: the organisation's negative-balance policy — a refusal says warn or block; a check
+  // gives each shortfall's action and whether the person may override a warning.
+  const refused = negativeState(refusal?.code);
+  const adviser = refused
+    ? refused === "warn"
+    : (check?.may_override ?? refusal?.adviser ?? check?.adviser ?? false);
+  const blocked =
+    shortfalls.length > 0 &&
+    (refused === "block" || !adviser || shortfalls.some((s) => s.action === "block"));
   const flagged = lines.some(
     (line) => (accounts ?? []).find((a) => a.id === line.account)?.require_attachment,
   );
@@ -568,10 +576,15 @@ export function JournalForm({ org, navigate, copyOf }: Readonly<JournalFormProps
           </ul>
         </section>
       ) : null}
-      {blocked ? (
-        <p role="alert" className="text-sm font-medium text-fg-danger" data-blocked="">
-          {fm(wm.blocked)}
-        </p>
+      {shortfalls.length > 0 ? (
+        // F-07-T07: the inline negative-balance panel (the reason is asked in the post dialog)
+        <div data-blocked={blocked ? "" : undefined}>
+          <NegativeBalanceNotice
+            state={blocked ? "block" : "warn"}
+            shortfalls={shortfalls}
+            detail={blocked ? fm(wm.blocked) : undefined}
+          />
+        </div>
       ) : null}
       {failed ? (
         <p role="alert" className="text-sm text-fg-danger">

@@ -12,6 +12,7 @@
 import {
   Button,
   DocumentLines,
+  reasonIsEnough,
   DocumentTotals,
   ErrorState,
   Input,
@@ -44,7 +45,9 @@ import {
   type Refusal,
   type TaxMode,
 } from "./api";
+import { cash } from "./cashControlMessages";
 import { money as mm } from "./messages";
+import { NegativeBalanceNotice, negativeState } from "./NegativeBalanceNotice";
 
 const today = () => new Date().toISOString().slice(0, 10);
 /** The shortest reason an adviser may give to take the account below zero (C-03-T08). */
@@ -277,7 +280,9 @@ export function MoneyForm({ org, kind, account: initial, navigate }: Readonly<Mo
       />
     );
 
-  const overrideNeeded = refusal?.code === "ledger.journal.override_reason_required";
+  // F-07-T07: a negative-balance refusal shows the inline panel (warn: with the reason field).
+  const negative = negativeState(refusal?.code);
+  const overrideNeeded = negative === "warn";
   const problems = refusal?.errors ?? [];
 
   return (
@@ -429,7 +434,29 @@ export function MoneyForm({ org, kind, account: initial, navigate }: Readonly<Mo
         />
       </div>
 
-      {refusal ? (
+      {negative && refusal ? (
+        <NegativeBalanceNotice
+          state={negative}
+          shortfalls={refusal.shortfalls ?? []}
+          remedies={
+            kind === "spend" && bank
+              ? [
+                  {
+                    id: "receive",
+                    label: fm(cash.receiveInto),
+                    onSelect: () => {
+                      const href = `/o/${org}/banking/receive?account=${bank}`;
+                      if (navigate) navigate(href);
+                      else window.location.assign(href);
+                    },
+                  },
+                ]
+              : []
+          }
+          reason={reason}
+          onReasonChange={negative === "warn" ? setReason : undefined}
+        />
+      ) : refusal ? (
         <section
           role="alert"
           className="rounded-md border border-border-danger p-3 text-sm"
@@ -445,25 +472,15 @@ export function MoneyForm({ org, kind, account: initial, navigate }: Readonly<Mo
               ))}
             </ul>
           ) : null}
-          {overrideNeeded ? (
-            <label className="mt-3 flex flex-col gap-1 font-medium text-fg">
-              {fm(mm.overrideReason, { min: MIN_REASON })}
-              <textarea
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-                rows={3}
-                minLength={MIN_REASON}
-                className="rounded-md border border-border bg-surface p-2 text-sm text-fg"
-              />
-            </label>
-          ) : null}
         </section>
       ) : null}
 
       <div className="flex flex-wrap gap-3">
         <Button
           type="submit"
-          disabled={!ready || busy || (overrideNeeded && reason.trim().length < MIN_REASON)}
+          disabled={
+            !ready || busy || negative === "block" || (overrideNeeded && !reasonIsEnough(reason))
+          }
         >
           {busy ? fm(mm.saving) : fm(kind === "spend" ? mm.saveSpend : mm.saveReceive)}
         </Button>

@@ -115,6 +115,9 @@ export interface Refusal {
   detail?: string;
   count?: number;
   errors?: { code: string; message: string }[];
+  /** F-07: the accounts a posting would take below zero (negative-balance refusals). */
+  shortfalls?: { account: { id: string; label: string }; message: string; action?: string }[];
+  adviser?: boolean;
 }
 
 export type AccountStatusFilter = "active" | "archived" | "all";

@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 885   Remaining: 1902   Progress: 31.75%
+TOTAL ATOMIC TASKS: 2787   Completed: 886   Remaining: 1901   Progress: 31.79%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1180,7 +1180,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-07-T03 — Pre-post hook in C-02 posting pipeline: evaluates the policy for every bank/cash line of any source; raises NegativeBalanceWarning / NegativeBalanceBlocked
 ✅ F-07-T04 — Reason capture: override_reason and override_by on the JE; required to post past a WARN
 ✅ F-07-T05 — Concurrency safety: select_for_update on the bank account row during the check+post
-❌ F-07-T07 — Inline warning/block panel component (design system) with remedy buttons and reason field; used by spend, transfer, journal and payment forms
+✅ F-07-T07 — Inline warning/block panel component (design system) with remedy buttons and reason field; used by spend, transfer, journal and payment forms
 ❌ F-07-T08 — Policy settings UI in Banking settings (per account type, with an explanation)
 ❌ F-07-T09 — BS presentation hook: flag overdrawn asset bank accounts for K-02 reclassification
 ❌ F-07-T11 — Teardown fixture: two journals crediting Petty Cash (417.22 on 3 Jun, 576.95 on 15 Jun) → blocked for a non-adviser and warned for an adviser

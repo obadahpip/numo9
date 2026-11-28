@@ -45,6 +45,9 @@ export interface Shortfall {
   lowest: string;
   lowest_on: string;
   message: string;
+  /** F-07: what the organisation's negative-balance policy says for the person. */
+  action?: "allow" | "warn" | "block";
+  account_type?: string;
 }
 
 export interface CheckResult {
@@ -52,6 +55,8 @@ export interface CheckResult {
   errors: Problem[];
   shortfalls: Shortfall[];
   adviser: boolean;
+  /** F-07: may post past a warning with a reason (an adviser or allowed to approve). */
+  may_override?: boolean;
   needs: { attachment: boolean; contact_lines: number[] };
 }
 
