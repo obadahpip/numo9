@@ -12023,3 +12023,11 @@ msgstr "%(name)s a déjà été importé (ou est en cours d’importation). Tél
 #, python-format
 msgid "The file of this import (%(name)s) is no longer available. Upload it again."
 msgstr "Le fichier de cette importation (%(name)s) n’est plus disponible. Téléversez-le de nouveau."
+
+#, python-format
+msgid "This import can't be undone: %(count)s of its lines are already coded or matched. Undo the coding or matching of those lines first, then undo the import."
+msgstr "Impossible d’annuler cette importation : %(count)s de ses lignes sont déjà codées ou rapprochées. Annulez d’abord le codage ou le rapprochement de ces lignes, puis annulez l’importation."
+
+#, python-format
+msgid "%(name)s isn't an import that can be undone: it was never committed or is already undone."
+msgstr "%(name)s n’est pas une importation qu’on peut annuler : elle n’a jamais été confirmée ou elle est déjà annulée."

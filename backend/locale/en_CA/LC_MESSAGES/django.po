@@ -10991,3 +10991,11 @@ msgstr ""
 #, python-format
 msgid "The file of this import (%(name)s) is no longer available. Upload it again."
 msgstr ""
+
+#, python-format
+msgid "This import can't be undone: %(count)s of its lines are already coded or matched. Undo the coding or matching of those lines first, then undo the import."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't an import that can be undone: it was never committed or is already undone."
+msgstr ""

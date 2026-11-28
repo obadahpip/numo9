@@ -1,4 +1,5 @@
-"""Statement import services: dry-run preview (F-02-T08), commit and background job (F-02-T09).
+"""Statement import services: dry-run preview (F-02-T08), commit and background job (F-02-T09),
+undo (F-02-T10).
 
 ``build_preview(bank, source)`` reads every line of a ``BankStatementSource`` and says what an
 import would do with each one — **without writing anything**:
@@ -36,6 +37,7 @@ from ..models import (
     StatementImport,
     StatementImportStatus,
     StatementLine,
+    StatementLineStatus,
     StatementMapping,
 )
 from . import errors
@@ -269,3 +271,43 @@ def start_commit(
             user_id=person.pk if person else None,
         )
     return locked, run
+
+
+# ---- undo (F-02-T10) ----------------------------------------------------------------------------
+
+
+class ImportInUse(StatementError):
+    """Undo refused: some of the import's lines are coded or matched (``lines``, date order)."""
+
+    def __init__(self, lines: list[StatementLine]) -> None:
+        super().__init__(errors.IMPORT_IN_USE, count=len(lines))
+        self.lines = lines
+
+
+def undo_import(batch: StatementImport, *, user: Any = None) -> StatementImport:
+    """Remove every line of a committed import — only while none of them is coded or matched.
+
+    The import's lines are locked first (a line being coded or matched at the same moment waits,
+    then counts). Lines still uncoded or ignored are deleted — not soft-deleted: they were never
+    postings, and the same file can then be imported again. The batch stays in the history as
+    ``undone``."""
+    with transaction.atomic():
+        locked = StatementImport._base_manager.select_for_update().get(pk=batch.pk)
+        if locked.status != StatementImportStatus.COMMITTED:
+            raise StatementError(errors.IMPORT_NOT_COMMITTED, name=locked.file_name)
+        lines = StatementLine.objects.select_for_update().filter(statement_import=locked)
+        statuses = dict(lines.values_list("pk", "status"))
+        in_use = [pk for pk, status in statuses.items() if status in IN_USE]
+        if in_use:
+            raise ImportInUse(
+                list(StatementLine.objects.filter(pk__in=in_use).order_by("date", "pk"))
+            )
+        StatementLine.objects.filter(statement_import=locked).delete()
+        locked.status = StatementImportStatus.UNDONE
+        locked.undone_at = timezone.now()
+        locked.save(update_fields=["status", "undone_at", "updated_at"])
+    batch.refresh_from_db()
+    return batch
+
+
+IN_USE = frozenset({StatementLineStatus.CODED, StatementLineStatus.MATCHED})

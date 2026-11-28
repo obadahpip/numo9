@@ -171,6 +171,20 @@ IMPORT_FILE_MISSING = define(
     status.HTTP_409_CONFLICT,
 )
 
+IMPORT_IN_USE = define(
+    "banking.import.in_use",
+    _(
+        "This import can't be undone: %(count)s of its lines are already coded or matched. Undo "
+        "the coding or matching of those lines first, then undo the import."
+    ),
+    status.HTTP_409_CONFLICT,
+)
+IMPORT_NOT_COMMITTED = define(
+    "banking.import.not_committed",
+    _("%(name)s isn't an import that can be undone: it was never committed or is already undone."),
+    status.HTTP_409_CONFLICT,
+)
+
 
 @dataclass(frozen=True)
 class LineProblem:
