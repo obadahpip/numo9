@@ -624,6 +624,15 @@
     "priority": "Priorité {priority}",
     "reorderFailed": "Le nouvel ordre n’a pas pu être enregistré. L’ordre précédent est rétabli.",
     "retry": "Réessayer",
+    "revert": {
+      "action": "Annuler l’imputation automatique",
+      "confirm": "Annuler l’imputation faite par {rule}? L’écriture est contrepassée et la ligne redevient non imputée.",
+      "confirmUnnamed": "Annuler cette imputation? L’écriture est contrepassée et la ligne redevient non imputée.",
+      "done": "Annulée : la ligne est de nouveau non imputée.",
+      "failed": "L’imputation n’a pas pu être annulée.",
+      "no": "La conserver",
+      "yes": "Annuler l’imputation"
+    },
     "search": "Rechercher des règles",
     "searchHint": "Effacez la recherche pour changer l’ordre.",
     "sentence": {

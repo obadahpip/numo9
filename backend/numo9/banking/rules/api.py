@@ -17,6 +17,8 @@
   the conditions are checked (the builder previews before the allocations are complete).
 - ``POST bank-rules/apply`` ``{bank_account?}`` — runs the rules on the Uncoded lines (F-04-T07).
 - ``POST bank-rules/lines/<line id>/confirm`` — posts the draft a rule left on the line.
+- ``POST bank-rules/lines/<line id>/revert`` — undoes a rule's coding (F-04-T15): the journal is
+  reversed (a draft discarded), the line is Uncoded again, with an audit entry.
 
 Errors: 400 ``{code, detail, field}`` (``field`` = the part at fault, e.g. ``conditions.0``).
 Permissions: ``accounting.banking.view`` to read and preview, ``accounting.banking.rules`` to
@@ -56,7 +58,7 @@ from ..models import (
     StatementLine,
 )
 from ..permissions import BANKING_RULES, BANKING_TRANSACT, BANKING_VIEW
-from .apply import apply_rules, confirm_line, uncoded_lines
+from .apply import apply_rules, confirm_line, revert_line, uncoded_lines
 from .conditions import Condition
 from .engine import RuleSpec, rule_spec, rule_warnings, rules_queryset
 from .preview import DEFAULT_DAYS, MAX_ROWS, preview_rule
@@ -521,6 +523,32 @@ class StatementLineConfirmView(APIView):
         return Response({"line": str(line.public_id), "transaction": str(txn.public_id)})
 
 
+class StatementLineRevertView(APIView):
+    """``POST bank-rules/lines/<line id>/revert`` (F-04-T15) — undo a rule's coding: the journal
+    is reversed (a draft discarded) and the line is Uncoded again."""
+
+    queryset = StatementLine._base_manager.none()
+
+    @requires_permission(BANKING_TRANSACT.key)
+    @requires_feature(WRITE)
+    @extend_schema(operation_id="bank_rules_line_revert", request=None, responses={200: dict})
+    def post(self, request: Request, org: Any, public_id: Any) -> Response:
+        line = statement_line(public_id)
+        try:
+            revert_line(line, user=acting_user())
+        except (DjangoValidationError, LedgerError, TaxError) as error:
+            return refused(error)
+        line.refresh_from_db()
+        return Response(
+            {
+                "line": str(line.public_id),
+                "status": line.status,
+                "auto_coded": line.auto_coded,
+                "applied_rule": None,
+            }
+        )
+
+
 __all__ = [
     "BankRuleApplyView",
     "BankRuleDetailView",
@@ -528,5 +556,6 @@ __all__ = [
     "BankRulePreviewView",
     "BankRuleReorderView",
     "StatementLineConfirmView",
+    "StatementLineRevertView",
     "rule_spec",
 ]

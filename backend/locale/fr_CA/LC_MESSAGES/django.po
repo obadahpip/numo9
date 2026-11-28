@@ -12297,3 +12297,6 @@ msgstr "Cette ligne de relevé n’existe pas."
 
 msgid "This rule"
 msgstr "Cette règle"
+
+msgid "This statement line wasn't coded by a rule."
+msgstr "Cette ligne de relevé n’a pas été imputée par une règle."

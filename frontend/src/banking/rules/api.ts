@@ -182,7 +182,17 @@ export const rulesApi = {
       method: "POST",
       body: { rule, id: options.id ?? null, days: options.days ?? null },
     }),
+  /** Undo a rule's coding of a statement line (F-04-T15): journal reversed, line Uncoded. */
+  revertLine: (org: string, line: string): Promise<ApiResult<RevertResult & RuleRefusal>> =>
+    apiRequest(`${base(org)}/lines/${line}/revert`, { method: "POST", body: {} }),
 };
+
+export interface RevertResult {
+  line: string;
+  status: "uncoded";
+  auto_coded: false;
+  applied_rule: null;
+}
 
 /** `/o/:org/banking/rules` — the rules list (F-04-T10). */
 export function rulesUrl(org: string, type?: RuleType): string {

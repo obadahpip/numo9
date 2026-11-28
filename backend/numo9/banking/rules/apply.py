@@ -21,6 +21,12 @@ transaction, or that is dated in a locked period (Bank or GL lock, A-05) — tho
 skipped with the reason. **Every application is logged**: the rule on the line
 (``applied_rule``), a ``BankRuleApplication`` row, the audit event ``banking.rule.applied`` and the
 rule's counters (``applied_count``, ``last_applied_at``).
+
+**Revert** (F-04-T15): ``revert_line`` undoes a rule's coding — a posted transaction is voided
+(its journal reversed on the same date, so the ledger nets to 0), a draft is discarded — and the
+line goes back to Uncoded without the rule link; the application is marked reverted and the audit
+event ``banking.rule.reverted`` is written. The rule that was reverted on a line is **not applied
+to that line again** (``reverted_rules``), by apply and preview alike.
 """
 
 from __future__ import annotations
@@ -59,7 +65,13 @@ from ..models import (
     StatementLineStatus,
     TaxMode,
 )
-from ..transactions import MoneyLine, MoneySpec, post_draft_transaction, record_bank_transaction
+from ..transactions import (
+    MoneyLine,
+    MoneySpec,
+    post_draft_transaction,
+    record_bank_transaction,
+    void_bank_transaction,
+)
 from .allocation import Share, allocate, money_spec
 from .conditions import LineFacts
 from .engine import RuleSpec, choose, load_rules
@@ -218,6 +230,9 @@ def apply_rules(
         if outcome.winner is None:
             result.skipped.append((line, "no_match"))
             continue
+        if outcome.winner.id in reverted_rules(line):
+            result.skipped.append((line, "reverted"))
+            continue
         rule = outcome.winner.model or BankRule.objects.get(pk=outcome.winner.id)
         try:
             with transaction.atomic():
@@ -264,3 +279,63 @@ def confirm_line(line: StatementLine, *, user: Any = ACTING) -> BankTransaction:
         )
         line.refresh_from_db()
         return posted
+
+
+def reverted_rules(line: StatementLine) -> set[int]:
+    """The rules whose coding of ``line`` was reverted: they don't code it again."""
+    return set(
+        BankRuleApplication.objects.filter(
+            statement_line_id=line.pk, reverted_at__isnull=False
+        ).values_list("rule_id", flat=True)
+    )
+
+
+def revert_line(line: StatementLine, *, user: Any = ACTING) -> StatementLine:
+    """Undo a rule's coding of ``line`` (module docstring)."""
+    with org_context(line.organisation), transaction.atomic():
+        locked = (
+            StatementLine._base_manager.select_for_update(of=("self",))
+            .select_related("applied_rule", "bank_transaction")
+            .get(pk=line.pk)
+        )
+        txn = locked.bank_transaction
+        if locked.applied_rule_id is None or txn is None:
+            raise ValidationError(
+                _("This statement line wasn't coded by a rule."),
+                code="banking.rule.not_rule_coded",
+            )
+        person = None if user is ACTING else user
+        was = {"status": locked.status, "auto_coded": locked.auto_coded}
+        if txn.status == BankTransactionStatus.POSTED:
+            void_bank_transaction(txn, date=txn.date, user=user)
+        elif txn.status == BankTransactionStatus.DRAFT:
+            BankTransaction.objects.filter(pk=txn.pk).update(
+                status=BankTransactionStatus.VOIDED, voided_at=timezone.now()
+            )
+        rule = locked.applied_rule
+        BankRuleApplication.objects.filter(
+            statement_line=locked, bank_transaction=txn, reverted_at__isnull=True
+        ).update(reverted_at=timezone.now())
+        locked.status = StatementLineStatus.UNCODED
+        locked.bank_transaction = None
+        locked.applied_rule = None
+        locked.auto_coded = False
+        locked.save(
+            update_fields=["status", "bank_transaction", "applied_rule", "auto_coded", "updated_at"]
+        )
+        audit(
+            "banking.rule.reverted",
+            obj=locked,
+            changes={
+                "status": [str(was["status"]), str(StatementLineStatus.UNCODED)],
+                "auto_coded": [was["auto_coded"], False],
+            },
+            meta={
+                "rule": str(rule.public_id) if rule else "",
+                "rule_name": rule.name if rule else "",
+                "transaction": str(txn.public_id),
+            },
+            actor=person,
+        )
+        line.refresh_from_db()
+        return line

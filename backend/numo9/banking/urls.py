@@ -98,6 +98,11 @@ urlpatterns = [
         name="bank-rules-line-confirm",
     ),
     path(
+        f"{ORG}bank-rules/lines/<uuid:public_id>/revert",
+        rules_api.StatementLineRevertView.as_view(),
+        name="bank-rules-line-revert",
+    ),
+    path(
         f"{ORG}bank-rules/<uuid:public_id>",
         rules_api.BankRuleDetailView.as_view(),
         name="bank-rule",

@@ -624,6 +624,15 @@
     "priority": "Priority {priority}",
     "reorderFailed": "The new order couldn't be saved. The previous order is back.",
     "retry": "Try again",
+    "revert": {
+      "action": "Revert auto-coding",
+      "confirm": "Revert the coding by {rule}? The journal is reversed and the line goes back to Uncoded.",
+      "confirmUnnamed": "Revert this coding? The journal is reversed and the line goes back to Uncoded.",
+      "done": "Reverted: the line is uncoded again.",
+      "failed": "The coding couldn't be reverted.",
+      "no": "Keep it",
+      "yes": "Revert"
+    },
     "search": "Search rules",
     "searchHint": "Clear the search to change the order.",
     "sentence": {

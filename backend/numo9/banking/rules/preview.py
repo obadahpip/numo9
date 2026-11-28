@@ -22,7 +22,7 @@ from typing import Any
 from django.utils import timezone
 
 from ..models import StatementLine, StatementLineStatus
-from .apply import skip_reason
+from .apply import reverted_rules, skip_reason
 from .conditions import LineFacts
 from .engine import RuleSpec, choose, load_rules
 
@@ -81,6 +81,8 @@ def preview_rule(
         if skip_reason(line, user) is not None:
             continue
         outcome = choose(rules, facts)
+        if outcome.winner is not None and outcome.winner.id in reverted_rules(line):
+            continue  # a reverted rule never codes that line again (apply skips it too)
         if outcome.winner is candidate:
             row = PreviewRow(line, "applies", also_matches=outcome.shadowed)
         else:

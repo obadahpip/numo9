@@ -7,3 +7,8 @@ export {
   type CreateRuleFromLineActionProps,
 } from "./CreateRuleFromLineAction";
 export { prefillDraft, ruleFromLineHref, type StatementLineLike } from "./fromLine";
+export {
+  RevertAutoCodedAction,
+  type RevertAutoCodedActionProps,
+  type RevertableLine,
+} from "./RevertAutoCodedAction";

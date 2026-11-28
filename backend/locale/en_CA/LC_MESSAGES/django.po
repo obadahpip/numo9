@@ -11265,3 +11265,6 @@ msgstr ""
 
 msgid "This rule"
 msgstr ""
+
+msgid "This statement line wasn't coded by a rule."
+msgstr ""
