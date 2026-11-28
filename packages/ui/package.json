@@ -31,7 +31,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.1",
     "@storybook/addon-a11y": "8.6.19",
     "@storybook/addon-essentials": "8.6.19",
     "@storybook/blocks": "8.6.19",
@@ -40,15 +40,15 @@
     "@tailwindcss/vite": "4.3.5",
     "@testing-library/jest-dom": "6.10.0",
     "@testing-library/react": "16.3.3",
-    "@testing-library/user-event": "14.6.1",
+    "@testing-library/user-event": "14.6.13",
     "@types/node": "22.20.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "5.2.0",
-    "axe-core": "4.14.0",
+    "axe-core": "4.14.1",
     "jsdom": "26.1.0",
-    "react": "19.1.10",
-    "react-dom": "19.1.10",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "storybook": "8.6.19",
     "tailwindcss": "4.3.5",
     "typescript": "5.9.3",
@@ -69,7 +69,7 @@
     "@radix-ui/react-tooltip": "1.4.1",
     "@tanstack/react-table": "8.21.3",
     "@tanstack/react-virtual": "3.14.26",
-    "react-hook-form": "7.91.0",
+    "react-hook-form": "7.92.0",
     "zod": "4.6.7"
   }
 }
