@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 879   Remaining: 1908   Progress: 31.54%
+TOTAL ATOMIC TASKS: 2787   Completed: 880   Remaining: 1907   Progress: 31.58%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1175,7 +1175,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-04-T16 — i18n, audit hooks and gap-28 functional test (regex, not-contains, range, priority, preview)
 
 [F-07]
-❌ F-07-T01 — CashControlPolicy per org and bank-account type (ALLOW/WARN/BLOCK, adviser level) with defaults seeded
+✅ F-07-T01 — CashControlPolicy per org and bank-account type (ALLOW/WARN/BLOCK, adviser level) with defaults seeded
 ❌ F-07-T02 — Minimum-running-balance projector: given an account, a date and a delta, returns the minimum balance from that date onward (windowed SQL)
 ❌ F-07-T03 — Pre-post hook in C-02 posting pipeline: evaluates the policy for every bank/cash line of any source; raises NegativeBalanceWarning / NegativeBalanceBlocked
 ❌ F-07-T04 — Reason capture: override_reason and override_by on the JE; required to post past a WARN

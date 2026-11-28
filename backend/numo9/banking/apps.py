@@ -49,6 +49,22 @@ class BankingConfig(AppConfig):
         SWEEP_FACTORIES.setdefault("banking.StatementLine", _sweep_statement_line)
         SWEEP_FACTORIES["banking.BankTransfer"] = _sweep_bank_transfer
 
+        # Every new organisation starts with the default negative-balance policies (F-07-T01).
+        from django.db.models.signals import post_save
+
+        from numo9.tenancy.models import Organisation
+
+        post_save.connect(
+            _seed_new_organisation, sender=Organisation, dispatch_uid="banking_seed_cash_policies"
+        )
+
+
+def _seed_new_organisation(sender: Any, instance: Any, created: bool, **kwargs: Any) -> None:
+    if created and not kwargs.get("raw"):
+        from .cash_controls import seed_cash_policies
+
+        seed_cash_policies(instance)
+
 
 def _sweep_bank_account(organisation: Any) -> Any:
     import uuid

@@ -11315,3 +11315,21 @@ msgstr ""
 
 msgid "Record and void transfers between bank, credit card, loan and cash accounts"
 msgstr ""
+
+msgid "Allow"
+msgstr ""
+
+msgid "Warn — a reason is required"
+msgstr ""
+
+msgid "for everyone else"
+msgstr ""
+
+msgid "for advisers"
+msgstr ""
+
+msgid "negative-balance policy"
+msgstr ""
+
+msgid "negative-balance policies"
+msgstr ""
