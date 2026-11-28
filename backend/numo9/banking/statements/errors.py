@@ -54,6 +54,13 @@ ROW_TWO_AMOUNTS = define(
         "an amount. Keep only one of them in the row."
     ),
 )
+ROW_DUPLICATE = define(
+    "banking.statement.row.duplicate",
+    _(
+        "Row %(row)s is already in this account (imported before, or from an overlapping "
+        "statement). It won't be imported twice."
+    ),
+)
 
 # ---- layout problems (how the columns are read) -------------------------------------------------
 LAYOUT_NO_DATE = define(

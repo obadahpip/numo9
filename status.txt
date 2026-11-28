@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 851   Remaining: 1936   Progress: 30.53%
+TOTAL ATOMIC TASKS: 2787   Completed: 852   Remaining: 1935   Progress: 30.57%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1141,7 +1141,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-02-T05 — StatementMapping model and seed mappings for 9 Canadian banks plus a generic layout (column roles, date format, sign convention, skip rows)
 ✅ F-02-T06 — Mapping auto-detection: header similarity scoring picks the best saved mapping; user override saved per bank account
 ✅ F-02-T07 — Fingerprinting and duplicate detection, with a same-day identical-line sequence counter
-❌ F-02-T08 — Dry-run preview service: returns new/duplicate/error lines with reasons, without writing
+✅ F-02-T08 — Dry-run preview service: returns new/duplicate/error lines with reasons, without writing
 ❌ F-02-T09 — Commit service (atomic batch insert) plus a Celery job for files > 2,000 lines with progress
 ❌ F-02-T10 — Undo import: deletes the batch's lines only if none are CODED/MATCHED; otherwise refused with a list
 ❌ F-02-T11 — API /api/v1/bank-accounts/{id}/imports (upload, preview, commit, undo, history); feature key; permissions

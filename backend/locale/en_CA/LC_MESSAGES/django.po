@@ -10975,3 +10975,7 @@ msgstr ""
 #, python-format
 msgid "%(account)s (custom)"
 msgstr ""
+
+#, python-format
+msgid "Row %(row)s is already in this account (imported before, or from an overlapping statement). It won't be imported twice."
+msgstr ""

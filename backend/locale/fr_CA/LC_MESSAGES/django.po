@@ -12007,3 +12007,7 @@ msgstr "correspondance enregistrée"
 #, python-format
 msgid "%(account)s (custom)"
 msgstr "%(account)s (personnalisée)"
+
+#, python-format
+msgid "Row %(row)s is already in this account (imported before, or from an overlapping statement). It won't be imported twice."
+msgstr "La ligne %(row)s figure déjà dans ce compte (importée auparavant ou provenant d’un relevé qui chevauche celui-ci). Elle ne sera pas importée deux fois."
