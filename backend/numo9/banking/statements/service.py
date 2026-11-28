@@ -44,7 +44,7 @@ from . import errors
 from .errors import LineProblem, StatementError
 from .fingerprint import account_key, existing_fingerprints, fingerprint_lines
 from .layout import Layout, RawLine
-from .mappings import remember_mapping
+from .mappings import Detection, detect_mapping, ensure_builtin_mappings, remember_mapping
 from .source import BankStatementSource, FileStatementSource, StatementBalances
 
 
@@ -131,8 +131,9 @@ Progress = Callable[[int, int], None]
 def file_bytes(batch: StatementImport) -> bytes:
     """The uploaded file of an import (A-06 storage)."""
     from numo9.files import storage
+    from numo9.files.models import DocumentStatus
 
-    if batch.file is None:
+    if batch.file is None or batch.file.status == DocumentStatus.INFECTED:
         raise StatementError(errors.IMPORT_FILE_MISSING, name=batch.file_name)
     with storage.open_object(batch.file.file_key) as handle:
         data: bytes = handle.read()
@@ -311,3 +312,70 @@ def undo_import(batch: StatementImport, *, user: Any = None) -> StatementImport:
 
 
 IN_USE = frozenset({StatementLineStatus.CODED, StatementLineStatus.MATCHED})
+
+
+# ---- upload (F-02-T11) --------------------------------------------------------------------------
+
+
+#: The A-06 document types that are statements.
+STATEMENT_EXTENSIONS = frozenset({"csv", "xlsx", "ofx", "qfx", "qbo"})
+
+
+@dataclass(frozen=True)
+class Upload:
+    """A new import as the wizard's first step shows it."""
+
+    statement_import: StatementImport
+    source: FileStatementSource
+    detection: Detection | None  # CSV / XLSX only
+    mappings: tuple[StatementMapping, ...]
+
+
+def create_import(bank: BankAccount, data: bytes, filename: str, *, user: Any = None) -> Upload:
+    """Check, store and read an uploaded statement; the import starts ``pending``.
+
+    The file is checked as every upload is (A-06: accepted type and name, 25 MB, content matching
+    the extension), then read as a statement — a file that isn't one is refused before anything is
+    stored. It is kept in the document store (the background job reads it again); a CSV / XLSX
+    file gets the mapping the auto-detection chose (F-02-T06), the bank account's own first."""
+    from numo9.files.filetypes import detect, extension_of
+    from numo9.files.models import DocumentSource
+    from numo9.files.services import check_name_and_size, store_received
+    from numo9.i18n import errors as catalogue
+    from numo9.i18n.errors import api_error
+
+    name = " ".join((filename or "").split()) or "statement.csv"
+    check_name_and_size(name, len(data))
+    if extension_of(name) not in STATEMENT_EXTENSIONS:  # a PDF or a photo is a document, not this
+        raise StatementError(errors.FILE_TYPE, name=name)
+    detected = detect(name, data)
+    if not detected.ok:
+        raise api_error(catalogue.FILES_TYPE_MISMATCH, name=name, detected=detected.detected)
+    source = FileStatementSource(data, name, last4=bank.account_last4 or "")
+    parsed = source.parsed  # refuses a file that isn't a statement
+    detection: Detection | None = None
+    mappings: tuple[StatementMapping, ...] = ()
+    if parsed.table is not None:
+        organisation = bank.organisation
+        mappings = tuple(ensure_builtin_mappings(organisation))
+        preferred = next((m for m in mappings if m.pk == bank.statement_mapping_id), None)
+        detection = detect_mapping(parsed.table, mappings, preferred)
+        source = source.with_layout(detection.layout)
+        total = len(parsed.table.header_and_data(detection.layout)[1])
+    else:
+        total = len(parsed.lines or ())
+    document = store_received(bank.organisation, name, data, source=DocumentSource.UPLOAD)
+    batch = StatementImport(
+        organisation_id=bank.organisation_id,
+        bank_account=bank,
+        file=document,
+        file_name=name,
+        source_name=source.source_name,
+        file_format=parsed.format,
+        mapping=detection.layout.as_dict() if detection else {},
+        statement_mapping=detection.mapping if detection else None,
+        lines_total=total,
+        created_by=user if getattr(user, "is_authenticated", False) else None,
+    )
+    batch.save()
+    return Upload(batch, source, detection, mappings)

@@ -12031,3 +12031,12 @@ msgstr "Impossible d’annuler cette importation : %(count)s de ses lignes sont 
 #, python-format
 msgid "%(name)s isn't an import that can be undone: it was never committed or is already undone."
 msgstr "%(name)s n’est pas une importation qu’on peut annuler : elle n’a jamais été confirmée ou elle est déjà annulée."
+
+msgid "That statement import doesn't exist."
+msgstr "Cette importation de relevé n’existe pas."
+
+msgid "That mapping doesn't exist."
+msgstr "Cette correspondance n’existe pas."
+
+msgid "Import bank and credit-card statements, and undo an import"
+msgstr "Importer des relevés bancaires et de carte de crédit, et annuler une importation"

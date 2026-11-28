@@ -1,8 +1,8 @@
-"""Banking routes (F-01-T07), under /api/v1/."""
+"""Banking routes (F-01-T07; statement imports F-02-T11), under /api/v1/."""
 
 from django.urls import path
 
-from . import api
+from . import api, imports_api
 
 ORG = "o/<uuid:org>/"
 
@@ -27,6 +27,31 @@ urlpatterns = [
         f"{ORG}bank-accounts/<uuid:public_id>/register",
         api.BankAccountRegisterView.as_view(),
         name="bank-account-register",
+    ),
+    path(
+        f"{ORG}bank-accounts/<uuid:public_id>/imports",
+        imports_api.StatementImportListView.as_view(),
+        name="bank-account-imports",
+    ),
+    path(
+        f"{ORG}bank-accounts/<uuid:account_public_id>/imports/<uuid:public_id>",
+        imports_api.StatementImportDetailView.as_view(),
+        name="bank-account-import",
+    ),
+    path(
+        f"{ORG}bank-accounts/<uuid:account_public_id>/imports/<uuid:public_id>/preview",
+        imports_api.StatementImportPreviewView.as_view(),
+        name="bank-account-import-preview",
+    ),
+    path(
+        f"{ORG}bank-accounts/<uuid:account_public_id>/imports/<uuid:public_id>/commit",
+        imports_api.StatementImportCommitView.as_view(),
+        name="bank-account-import-commit",
+    ),
+    path(
+        f"{ORG}bank-accounts/<uuid:account_public_id>/imports/<uuid:public_id>/undo",
+        imports_api.StatementImportUndoView.as_view(),
+        name="bank-account-import-undo",
     ),
     path(
         f"{ORG}bank-transactions",

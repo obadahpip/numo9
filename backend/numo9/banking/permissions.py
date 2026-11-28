@@ -32,3 +32,12 @@ BANKING_TRANSACT = register(
         Risk.MEDIUM,
     )
 )
+
+BANKING_IMPORT = register(
+    Permission(
+        "accounting.banking.import",
+        _("Import bank and credit-card statements, and undo an import"),
+        "accounting",
+        Risk.MEDIUM,
+    )
+)

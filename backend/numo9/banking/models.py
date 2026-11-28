@@ -345,6 +345,11 @@ class StatementImport(AuditedModel, OrgOwnedModel):
     def __str__(self) -> str:
         return f"{self.file_name or self.source_name} → {self.bank_account_id}"
 
+    @property
+    def account_public_id(self) -> Any:
+        """The bank account's public id (the ``bank-accounts/<id>/imports/<id>`` routes)."""
+        return self.bank_account.public_id
+
 
 class StatementLineStatus(models.TextChoices):
     """A statement line is not a ledger posting until it is coded (F-04, spend/receive) or matched

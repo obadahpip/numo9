@@ -211,6 +211,9 @@ def path_for(declaration: Declaration, world: World) -> str:
         "period_id": "00000000-0000-4000-8000-000000000000",
         # Report drill-down (K-01-T05): a report that exists.
         "report": "trial-balance",
+        # Statement imports (F-02-T11): an account that doesn't exist — allowed members get past
+        # the permission check to its 404.
+        "account_public_id": "00000000-0000-4000-8000-000000000000",
     }
     acting = Practice.objects.filter(name="Matrix Practice").first()
     if acting is not None:

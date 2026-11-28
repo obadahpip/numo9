@@ -10999,3 +10999,12 @@ msgstr ""
 #, python-format
 msgid "%(name)s isn't an import that can be undone: it was never committed or is already undone."
 msgstr ""
+
+msgid "That statement import doesn't exist."
+msgstr ""
+
+msgid "That mapping doesn't exist."
+msgstr ""
+
+msgid "Import bank and credit-card statements, and undo an import"
+msgstr ""
