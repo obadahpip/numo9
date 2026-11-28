@@ -11122,3 +11122,34 @@ msgstr ""
 
 msgid "transfer account"
 msgstr ""
+
+msgid "fixed amount"
+msgstr ""
+
+msgid "percentage"
+msgstr ""
+
+msgid "bank rule allocation"
+msgstr ""
+
+msgid "bank rule allocations"
+msgstr ""
+
+msgid "Add at least one allocation line."
+msgstr ""
+
+#, python-format
+msgid "The percentages total %(total)s %%: they must total 100 %%."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: give a fixed amount or a percentage, not both."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the fixed amount must be more than 0.00."
+msgstr ""
+
+#, python-format
+msgid "Line %(line)d: the percentage is more than 0 and at most 100."
+msgstr ""

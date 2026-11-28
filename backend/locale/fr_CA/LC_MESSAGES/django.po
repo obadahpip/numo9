@@ -12154,3 +12154,34 @@ msgstr "règle appliquée"
 
 msgid "transfer account"
 msgstr "compte de virement"
+
+msgid "fixed amount"
+msgstr "montant fixe"
+
+msgid "percentage"
+msgstr "pourcentage"
+
+msgid "bank rule allocation"
+msgstr "ventilation de règle bancaire"
+
+msgid "bank rule allocations"
+msgstr "ventilations de règle bancaire"
+
+msgid "Add at least one allocation line."
+msgstr "Ajoutez au moins une ligne de ventilation."
+
+#, python-format
+msgid "The percentages total %(total)s %%: they must total 100 %%."
+msgstr "Les pourcentages totalisent %(total)s %% : ils doivent totaliser 100 %%."
+
+#, python-format
+msgid "Line %(line)d: give a fixed amount or a percentage, not both."
+msgstr "Ligne %(line)d : indiquez un montant fixe ou un pourcentage, pas les deux."
+
+#, python-format
+msgid "Line %(line)d: the fixed amount must be more than 0.00."
+msgstr "Ligne %(line)d : le montant fixe doit être supérieur à 0,00."
+
+#, python-format
+msgid "Line %(line)d: the percentage is more than 0 and at most 100."
+msgstr "Ligne %(line)d : le pourcentage doit être supérieur à 0 et d’au plus 100."

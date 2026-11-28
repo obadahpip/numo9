@@ -737,3 +737,57 @@ class BankRuleCondition(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.field} {self.operator} {self.value}"
+
+
+class BankRuleAllocation(OrgOwnedModel):
+    """Where a rule codes the money (F-04-T03): a ledger account, an optional tax code (the code's
+    stable key, as on a bank-transaction line), a description, and **either** a fixed amount
+    **or** a percentage of what remains after the fixed lines. The percentages of a rule total
+    100 % when it has any (``validate_allocations``); rounding goes to the last percentage line
+    (F-04-T06)."""
+
+    rule = models.ForeignKey(
+        BankRule, on_delete=models.CASCADE, related_name="allocations", verbose_name=_("rule")
+    )
+    order = models.PositiveSmallIntegerField(_("order"), default=0)
+    account = models.ForeignKey(
+        "ledger.Account",
+        on_delete=models.PROTECT,
+        related_name="bank_rule_allocations",
+        verbose_name=_("account"),
+    )
+    tax_code = models.CharField(_("tax code"), max_length=60, blank=True)
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    fixed_amount = models.DecimalField(
+        _("fixed amount"),
+        max_digits=MONEY_DIGITS,
+        decimal_places=MONEY_PLACES,
+        null=True,
+        blank=True,
+    )
+    percent = models.DecimalField(
+        _("percentage"), max_digits=7, decimal_places=4, null=True, blank=True
+    )
+
+    class Meta:
+        ordering = ("rule", "order", "pk")
+        verbose_name = _("bank rule allocation")
+        verbose_name_plural = _("bank rule allocations")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(fixed_amount__isnull=False, percent__isnull=True, fixed_amount__gt=0)
+                    | models.Q(
+                        fixed_amount__isnull=True,
+                        percent__isnull=False,
+                        percent__gt=0,
+                        percent__lte=100,
+                    )
+                ),
+                name="banking_rule_alloc_fixed_or_percent",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        share = f"{self.percent}%" if self.percent is not None else f"{self.fixed_amount}"
+        return f"{self.account_id}: {share}"
