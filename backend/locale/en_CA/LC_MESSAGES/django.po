@@ -11293,3 +11293,13 @@ msgstr ""
 #, python-format
 msgid "%(from)s is in %(from_currency)s and %(to)s in %(to_currency)s: transfers between currencies arrive with multi-currency (R-02). For now, record them as a spend from one account and a receipt into the other."
 msgstr ""
+
+#, python-format
+msgid "Transfer from %(from)s to %(to)s"
+msgstr ""
+
+msgid "Both accounts must belong to the organisation."
+msgstr ""
+
+msgid "This transfer is already voided."
+msgstr ""

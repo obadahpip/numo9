@@ -12325,3 +12325,13 @@ msgstr "Choisissez deux comptes différents : on ne peut pas virer de l'argent v
 #, python-format
 msgid "%(from)s is in %(from_currency)s and %(to)s in %(to_currency)s: transfers between currencies arrive with multi-currency (R-02). For now, record them as a spend from one account and a receipt into the other."
 msgstr "%(from)s est en %(from_currency)s et %(to)s en %(to_currency)s : les virements entre devises arriveront avec la multidevise (R-02). Pour l'instant, inscrivez une dépense dans un compte et un encaissement dans l'autre."
+
+#, python-format
+msgid "Transfer from %(from)s to %(to)s"
+msgstr "Virement de %(from)s vers %(to)s"
+
+msgid "Both accounts must belong to the organisation."
+msgstr "Les deux comptes doivent appartenir à l'organisation."
+
+msgid "This transfer is already voided."
+msgstr "Ce virement est déjà annulé."

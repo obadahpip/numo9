@@ -17,18 +17,41 @@ code                                   when
 
 Any two bank-account types may be paired: chequing → petty cash (fund the float), chequing →
 credit card (pay the card), loan → chequing (a draw)…
+
+**Posting** (F-06-T03) — ``record_transfer(...)`` writes the ``BankTransfer`` and posts, in the
+same transaction, **one** journal through the posting service (C-02): type ``transfer``, lock
+module Bank, ``source_type`` ``banking.banktransfer`` / ``source_id`` the transfer's public id,
+two lines:
+
+=====================================  ===========
+Dr the to-account's ledger account     amount
+Cr the from-account's ledger account   amount
+=====================================  ===========
+
+so the movement across both accounts nets to zero. The cash rules apply as on any posting (the
+from-account going below zero: C-03, F-07). ``void_transfer`` reverses the journal (both sides,
+``reverse``) and marks the transfer Voided; voiding twice is refused.
 """
 
 from __future__ import annotations
 
+import datetime as dt
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
+from django.db import transaction
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from numo9.ledger.models import LedgerError
+from numo9.ledger.models import JournalType, LedgerError
+from numo9.ledger.services import ACTING, post_journal, reverse
+from numo9.ledger.validation import JournalSpec, LineSpec
+from numo9.orgsettings.models import LockModule
+from numo9.tenancy.context import org_context
 
-from .models import BankAccount
+from .models import BankAccount, BankTransfer, BankTransferStatus
+
+SOURCE_TYPE = "banking.banktransfer"
 
 ZERO = Decimal("0.00")
 CENT = Decimal("0.01")
@@ -96,3 +119,93 @@ def check_transfer(
             },
         )
     return value
+
+
+def transfer_lines(transfer: BankTransfer) -> list[LineSpec]:
+    """Dr to / Cr from, the amount (module docstring)."""
+    reference = transfer.reference
+    return [
+        LineSpec(transfer.to_account.gl_account, debit=transfer.amount, description=reference),
+        LineSpec(transfer.from_account.gl_account, credit=transfer.amount, description=reference),
+    ]
+
+
+def _narration(transfer: BankTransfer) -> str:
+    text = _("Transfer from %(from)s to %(to)s") % {
+        "from": transfer.from_account.display_name,
+        "to": transfer.to_account.display_name,
+    }
+    return f"{text}: {transfer.reference}" if transfer.reference else text
+
+
+def record_transfer(
+    from_account: BankAccount,
+    to_account: BankAccount,
+    *,
+    date: dt.date,
+    amount: Any,
+    reference: str = "",
+    user: Any = ACTING,
+    override_reason: str = "",
+) -> BankTransfer:
+    """Write and post a transfer (module docstring) — all or nothing."""
+    organisation = from_account.organisation
+    if to_account.organisation_id != from_account.organisation_id:
+        raise LedgerError(
+            _("Both accounts must belong to the organisation."),
+            code="banking.transfer.account_required",
+        )
+    with org_context(organisation), transaction.atomic():
+        value = check_transfer(from_account, to_account, amount)
+        person = None if user is ACTING else user
+        by = person if getattr(person, "is_authenticated", False) else None
+        transfer = BankTransfer(
+            organisation=organisation,
+            from_account=from_account,
+            to_account=to_account,
+            date=date,
+            amount=value,
+            currency=from_account.currency.upper(),
+            reference=" ".join((reference or "").split())[:255],
+            created_by=by,
+        )
+        transfer.save()
+        entry = post_journal(
+            JournalSpec(
+                date=date,
+                lines=transfer_lines(transfer),
+                type=JournalType.TRANSFER,
+                narration=_narration(transfer),
+                source_type=SOURCE_TYPE,
+                source_id=str(transfer.public_id),
+            ),
+            organisation=organisation,
+            user=user,
+            module=LockModule.BANK,
+            override_reason=override_reason,
+        )
+        transfer.journal_entry = entry
+        transfer.save(update_fields=["journal_entry", "updated_at"])
+        return transfer
+
+
+def void_transfer(
+    transfer: BankTransfer, *, date: dt.date | None = None, user: Any = ACTING
+) -> BankTransfer:
+    """Void: reverse the journal (both sides at once) and mark the transfer Voided."""
+    with org_context(transfer.organisation), transaction.atomic():
+        locked = BankTransfer._base_manager.select_for_update().get(pk=transfer.pk)
+        if locked.status == BankTransferStatus.VOIDED:
+            raise LedgerError(_("This transfer is already voided."), code="banking.transfer.voided")
+        if locked.journal_entry is not None:
+            reverse(
+                locked.journal_entry,
+                date=date or locked.date,
+                narration=_("Void: %(label)s") % {"label": _narration(locked)},
+                user=user,
+                module=LockModule.BANK,
+            )
+        locked.status = BankTransferStatus.VOIDED
+        locked.voided_at = timezone.now()
+        locked.save(update_fields=["status", "voided_at", "updated_at"])
+        return locked
