@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 872   Remaining: 1915   Progress: 31.29%
+TOTAL ATOMIC TASKS: 2787   Completed: 873   Remaining: 1914   Progress: 31.32%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1170,7 +1170,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-04-T11 — Sentence-style rule builder with operator-aware inputs (amount range shows two fields; regex shows a tester)
 ✅ F-04-T12 — Allocation grid with running % total, red/green validation, tax picker filtered by rule type
 ✅ F-04-T13 — Preview panel listing affected historical lines and shadowing rules
-❌ F-04-T14 — "Create rule from line" action on statement lines, pre-filling the payee/description condition
+✅ F-04-T14 — "Create rule from line" action on statement lines, pre-filling the payee/description condition
 ❌ F-04-T15 — Revert auto-coded line (reverse JE, line back to UNCODED) with an audit entry
 ❌ F-04-T16 — i18n, audit hooks and gap-28 functional test (regex, not-contains, range, priority, preview)
 

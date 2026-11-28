@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import type { RuleType } from "@/banking/rules/api";
+import { hasPrefill, prefillDraft } from "@/banking/rules/fromLine";
 import { RuleEditor } from "@/banking/rules/RuleEditor";
 import { AppShell } from "@/components/AppShell";
 import { ORG_SLUG } from "@/routing/routes";
@@ -11,7 +12,10 @@ interface Params {
 
 const TYPES: readonly string[] = ["spend", "receive", "transfer"];
 
-/** New bank rule (F-04-T11), `/o/:org/banking/rules/new?type=spend|receive|transfer`. */
+/**
+ * New bank rule (F-04-T11), `/o/:org/banking/rules/new?type=spend|receive|transfer`; pre-filled
+ * from a statement line with `from_line`, `payee`, `description`, `bank_account` (F-04-T14).
+ */
 export default async function NewBankRulePage({
   params,
   searchParams,
@@ -25,7 +29,11 @@ export default async function NewBankRulePage({
   const type = (query.type && TYPES.includes(query.type) ? query.type : "spend") as RuleType;
   return (
     <AppShell org={org} modulePath="banking">
-      <RuleEditor org={org} type={type} />
+      <RuleEditor
+        org={org}
+        type={type}
+        initial={hasPrefill(query) ? prefillDraft(query) : undefined}
+      />
     </AppShell>
   );
 }

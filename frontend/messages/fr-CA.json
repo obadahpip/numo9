@@ -577,6 +577,10 @@
       "payee": "Bénéficiaire",
       "reference": "Référence"
     },
+    "fromLine": {
+      "label": "Créer une règle à partir de cette ligne",
+      "named": "Créer une règle à partir de {line}"
+    },
     "intro": "Les règles imputent les lignes de relevé à votre place. Elles s’appliquent de haut en bas et la première règle qui correspond l’emporte — faites glisser une règle pour changer sa priorité.",
     "loadFailed": "Les règles n’ont pas pu être chargées",
     "loadFailedBody": "Vérifiez votre connexion et réessayez. Rien d’autre n’est bloqué.",
@@ -825,6 +829,7 @@
       "colNew": "Nouvelles",
       "colReference": "Référence",
       "colStatus": "Statut",
+      "createRule": "Créer une règle à partir de cette ligne",
       "empty": "Aucune ligne de relevé pour l’instant",
       "emptyBody": "Importez un relevé pour voir ses lignes ici. Elles ne figurent pas dans les livres tant que vous ne les avez pas codées ou rapprochées.",
       "failed": "Impossible de charger les lignes de relevé. Rechargez la page pour réessayer.",

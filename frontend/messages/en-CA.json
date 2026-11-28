@@ -577,6 +577,10 @@
       "payee": "Payee",
       "reference": "Reference"
     },
+    "fromLine": {
+      "label": "Create rule from this line",
+      "named": "Create a rule from {line}"
+    },
     "intro": "Rules code statement lines for you. They run top to bottom and the first rule that matches wins — drag a rule to change its priority.",
     "loadFailed": "Rules couldn't be loaded",
     "loadFailedBody": "Check your connection and try again. Nothing else is blocked.",
@@ -825,6 +829,7 @@
       "colNew": "New",
       "colReference": "Reference",
       "colStatus": "Status",
+      "createRule": "Create rule from this line",
       "empty": "No statement lines yet",
       "emptyBody": "Import a statement to see its lines here. They're not in the books until you code or match them.",
       "failed": "The statement lines couldn't be loaded. Reload the page to try again.",

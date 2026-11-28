@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { expectAccessible, jsonBody } from "./auth-helpers";
+import { ruleFromLineHref } from "../src/banking/rules/fromLine";
 import { mockBuilderData, ORG, previewLine } from "./bank-rules-fixtures";
 
 /**
@@ -54,4 +55,40 @@ test("preview panel lists affected lines and the shadowing rule", async ({ page 
     rule: { conditions: [{ field: "description", operator: "contains", value: "PETRO" }] },
   });
   await expectAccessible(page);
+});
+
+/**
+ * F-04-T14 — "Create rule from line": the action's link (``ruleFromLineHref``, what
+ * ``CreateRuleFromLineAction`` renders on a statement line) opens the builder pre-filled with the
+ * payee / description condition, the line's type and bank account.
+ */
+test("create rule from a statement line opens the builder pre-filled", async ({ page }) => {
+  await mockBuilderData(page);
+  await page.route("**/api/v1/o/acme/bank-rules/preview", (route) =>
+    route.fulfill({
+      json: { since: "", days: 90, applies: 1, shadowed: 0, truncated: false, rows: [] },
+    }),
+  );
+  const href = ruleFromLineHref(ORG, {
+    id: "line-1",
+    amount: "-45.10",
+    payee: "",
+    description: "PETRO-CANADA #1234 TORONTO",
+    bank_account: "b1",
+  });
+  await page.goto(href);
+  await expect(page.getByRole("heading", { name: "New bank rule", level: 1 })).toBeVisible();
+  await expect(page.getByLabel("Rule name")).toHaveValue("PETRO-CANADA TORONTO");
+  await expect(page.getByLabel("Rule type")).toHaveValue("spend");
+  await expect(page.getByLabel("Condition 1: field")).toHaveValue("description");
+  await expect(page.getByLabel("Condition 1: comparison")).toHaveValue("contains");
+  await expect(page.getByLabel("Condition 1: value")).toHaveValue("PETRO-CANADA TORONTO");
+  await expect(page.getByRole("checkbox", { name: "TD Business Chequing" })).toBeChecked();
+
+  await page.goto(
+    ruleFromLineHref(ORG, { amount: "250.00", payee: "Shopify Payments", description: "DEP" }),
+  );
+  await expect(page.getByLabel("Rule type")).toHaveValue("receive");
+  await expect(page.getByLabel("Condition 1: field")).toHaveValue("payee");
+  await expect(page.getByLabel("Condition 1: value")).toHaveValue("Shopify Payments");
 });
