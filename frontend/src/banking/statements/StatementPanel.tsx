@@ -13,10 +13,12 @@
  *   its lines is coded or matched (the API refuses with the lines otherwise).
  */
 import { Badge, Button, formatDate, formatMoney, type AppLocale } from "@numo9/ui";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useEffect, useId, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
+import { ruleFromLineHref } from "@/banking/rules/fromLine";
 
 import { refusalText, statementLinesApi, importsApi, type StatementImport } from "./api";
 import type { StatementLine, StatementLineCounts, StatementLineStatus } from "./api";
@@ -29,7 +31,14 @@ const FILTERS: (StatementLineStatus | "all")[] = ["all", "uncoded", "coded", "ma
 export interface StatementLineAction {
   id: string;
   label: (fm: ReturnType<typeof useFormatMessage>) => string;
-  run: (line: StatementLine, panel: { showImport: (id: string, name: string) => void }) => void;
+  run: (line: StatementLine, panel: StatementLinePanel) => void;
+}
+
+/** What an action can ask of the panel. */
+export interface StatementLinePanel {
+  showImport: (id: string, name: string) => void;
+  /** Open the rule builder pre-filled from the line (F-04-T14). */
+  createRule: (line: StatementLine) => void;
 }
 
 export const statementLineActions: StatementLineAction[] = [
@@ -39,6 +48,11 @@ export const statementLineActions: StatementLineAction[] = [
     run: (line, panel) => {
       if (line.import) panel.showImport(line.import.id, line.import.file_name);
     },
+  },
+  {
+    id: "create-rule",
+    label: (fm) => fm(msg.createRule),
+    run: (line, panel) => panel.createRule(line),
   },
 ];
 
@@ -120,7 +134,12 @@ export function StatementPanel({
     setRefresh((n) => n + 1);
   };
 
-  const panel = {
+  const router = useRouter();
+  const panel: StatementLinePanel = {
+    createRule: (line: StatementLine) => {
+      setOpen(null);
+      router.push(ruleFromLineHref(org, { ...line, bank_account: account }));
+    },
     showImport: (id: string, name: string) => {
       setFromImport({ id, name });
       setStatus("all");

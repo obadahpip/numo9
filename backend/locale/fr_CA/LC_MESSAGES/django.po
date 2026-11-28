@@ -12058,3 +12058,245 @@ msgstr "Vérifiez les dates (AAAA-MM-JJ) et la taille de la page."
 #, python-format
 msgid "The column mapping can't be used (%(reason)s). Review the columns on the Map step."
 msgstr "La correspondance des colonnes est inutilisable (%(reason)s). Vérifiez les colonnes à l’étape Correspondance."
+
+msgid "auto-coded"
+msgstr "codée automatiquement"
+
+msgid "Transfer"
+msgstr "Virement"
+
+msgid "All conditions"
+msgstr "Toutes les conditions"
+
+msgid "Any condition"
+msgstr "N’importe quelle condition"
+
+msgid "No contact"
+msgstr "Aucun contact"
+
+msgid "Set this contact"
+msgstr "Attribuer ce contact"
+
+msgid "Contact named like the payee"
+msgstr "Contact portant le nom du bénéficiaire"
+
+msgid "match"
+msgstr "correspondance"
+
+msgid "priority"
+msgstr "priorité"
+
+msgid "auto-apply"
+msgstr "application automatique"
+
+msgid "times applied"
+msgstr "nombre d’applications"
+
+msgid "last applied"
+msgstr "dernière application"
+
+msgid "bank rule"
+msgstr "règle bancaire"
+
+msgid "bank rules"
+msgstr "règles bancaires"
+
+msgid "Payee"
+msgstr "Bénéficiaire"
+
+msgid "Any text field"
+msgstr "N’importe quel champ texte"
+
+msgid "equals"
+msgstr "est égal à"
+
+msgid "contains"
+msgstr "contient"
+
+msgid "does not contain"
+msgstr "ne contient pas"
+
+msgid "starts with"
+msgstr "commence par"
+
+msgid "ends with"
+msgstr "se termine par"
+
+msgid "matches the pattern"
+msgstr "correspond au motif"
+
+msgid "is blank"
+msgstr "est vide"
+
+msgid "is between"
+msgstr "est entre"
+
+msgid "is greater than"
+msgstr "est supérieur à"
+
+msgid "is less than"
+msgstr "est inférieur à"
+
+msgid "field"
+msgstr "champ"
+
+msgid "operator"
+msgstr "opérateur"
+
+msgid "bank rule condition"
+msgstr "condition de règle bancaire"
+
+msgid "bank rule conditions"
+msgstr "conditions de règle bancaire"
+
+msgid "applied rule"
+msgstr "règle appliquée"
+
+msgid "transfer account"
+msgstr "compte de virement"
+
+msgid "fixed amount"
+msgstr "montant fixe"
+
+msgid "percentage"
+msgstr "pourcentage"
+
+msgid "bank rule allocation"
+msgstr "ventilation de règle bancaire"
+
+msgid "bank rule allocations"
+msgstr "ventilations de règle bancaire"
+
+msgid "Add at least one allocation line."
+msgstr "Ajoutez au moins une ligne de ventilation."
+
+#, python-format
+msgid "The percentages total %(total)s %%: they must total 100 %%."
+msgstr "Les pourcentages totalisent %(total)s %% : ils doivent totaliser 100 %%."
+
+#, python-format
+msgid "Line %(line)d: give a fixed amount or a percentage, not both."
+msgstr "Ligne %(line)d : indiquez un montant fixe ou un pourcentage, pas les deux."
+
+#, python-format
+msgid "Line %(line)d: the fixed amount must be more than 0.00."
+msgstr "Ligne %(line)d : le montant fixe doit être supérieur à 0,00."
+
+#, python-format
+msgid "Line %(line)d: the percentage is more than 0 and at most 100."
+msgstr "Ligne %(line)d : le pourcentage doit être supérieur à 0 et d’au plus 100."
+
+msgid "Enter a pattern."
+msgstr "Saisissez un motif."
+
+#, python-format
+msgid "A pattern has at most %(max)d characters."
+msgstr "Un motif compte au plus %(max)d caractères."
+
+msgid "Choose what the condition looks at."
+msgstr "Choisissez le champ que la condition examine."
+
+msgid "Choose how to compare."
+msgstr "Choisissez la façon de comparer."
+
+msgid "This comparison applies to amounts only."
+msgstr "Cette comparaison s’applique aux montants seulement."
+
+msgid "Enter the text to look for."
+msgstr "Saisissez le texte à rechercher."
+
+#, python-format
+msgid "This pattern isn't valid: %(error)s."
+msgstr "Ce motif n’est pas valide : %(error)s."
+
+msgid "This comparison doesn't apply to an amount."
+msgstr "Cette comparaison ne s’applique pas à un montant."
+
+msgid "Enter an amount (0 or more)."
+msgstr "Saisissez un montant (0 ou plus)."
+
+msgid "This pattern takes too long to run on some texts (catastrophic backtracking). Simplify it, for example without nested repeats."
+msgstr "Ce motif prend trop de temps à s’exécuter sur certains textes (retour arrière catastrophique). Simplifiez-le, par exemple sans répétitions imbriquées."
+
+msgid "Enter the upper amount, at least the lower one."
+msgstr "Saisissez le montant supérieur, au moins égal au montant inférieur."
+
+#, python-format
+msgid "The fixed amounts (%(fixed)s) are more than the line's amount (%(amount)s)."
+msgstr "Les montants fixes (%(fixed)s) dépassent le montant de la ligne (%(amount)s)."
+
+#, python-format
+msgid "The fixed amounts (%(fixed)s) don't equal the line's amount (%(amount)s)."
+msgstr "Les montants fixes (%(fixed)s) ne correspondent pas au montant de la ligne (%(amount)s)."
+
+msgid "Suggested (draft to review)"
+msgstr "Suggérée (brouillon à réviser)"
+
+msgid "Auto-applied"
+msgstr "Appliquée automatiquement"
+
+msgid "reverted at"
+msgstr "annulée le"
+
+msgid "bank rule application"
+msgstr "application de règle bancaire"
+
+msgid "bank rule applications"
+msgstr "applications de règle bancaire"
+
+msgid "Only a draft transaction can be posted."
+msgstr "Seule une opération en brouillon peut être comptabilisée."
+
+msgid "A transfer rule needs another bank account than the line's own."
+msgstr "Une règle de virement exige un compte bancaire autre que celui de la ligne."
+
+#, python-format
+msgid "Rules don't change this statement line (%(reason)s)."
+msgstr "Les règles ne modifient pas cette ligne de relevé (%(reason)s)."
+
+msgid "This statement line has no draft coding to post."
+msgstr "Cette ligne de relevé n’a aucune imputation en brouillon à comptabiliser."
+
+msgid "Create, edit, reorder and delete bank rules"
+msgstr "Créer, modifier, réordonner et supprimer des règles bancaires"
+
+msgid "Give the rule a name."
+msgstr "Donnez un nom à la règle."
+
+msgid "Add at least one condition."
+msgstr "Ajoutez au moins une condition."
+
+msgid "Choose the contact to set."
+msgstr "Choisissez le contact à attribuer."
+
+msgid "A rule's type can't change: create a new rule instead."
+msgstr "Le type d’une règle ne peut pas changer : créez plutôt une nouvelle règle."
+
+msgid "Choose the other bank account of the transfer."
+msgstr "Choisissez l’autre compte bancaire du virement."
+
+msgid "A transfer can't go to the account it comes from."
+msgstr "Un virement ne peut pas aller vers le compte dont il provient."
+
+#, python-format
+msgid "%(account)s is archived: choose another account."
+msgstr "%(account)s est archivé : choisissez un autre compte."
+
+#, python-format
+msgid "The tax code %(code)s doesn't apply to this kind of rule."
+msgstr "Le code de taxe %(code)s ne s’applique pas à ce type de règle."
+
+msgid "The new order must list every rule of this type exactly once."
+msgstr "Le nouvel ordre doit inclure chaque règle de ce type exactement une fois."
+
+msgid "That bank rule doesn't exist."
+msgstr "Cette règle bancaire n’existe pas."
+
+msgid "That statement line doesn't exist."
+msgstr "Cette ligne de relevé n’existe pas."
+
+msgid "This rule"
+msgstr "Cette règle"
+
+msgid "This statement line wasn't coded by a rule."
+msgstr "Cette ligne de relevé n’a pas été imputée par une règle."

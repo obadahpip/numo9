@@ -3,6 +3,7 @@
 from django.urls import path
 
 from . import api, imports_api
+from .rules import api as rules_api
 
 ORG = "o/<uuid:org>/"
 
@@ -77,5 +78,33 @@ urlpatterns = [
         f"{ORG}bank-transactions/<uuid:public_id>/void",
         api.BankTransactionVoidView.as_view(),
         name="bank-transaction-void",
+    ),
+    # Bank rules (F-04-T09)
+    path(f"{ORG}bank-rules", rules_api.BankRuleListView.as_view(), name="bank-rules"),
+    path(
+        f"{ORG}bank-rules/reorder",
+        rules_api.BankRuleReorderView.as_view(),
+        name="bank-rules-reorder",
+    ),
+    path(
+        f"{ORG}bank-rules/preview",
+        rules_api.BankRulePreviewView.as_view(),
+        name="bank-rules-preview",
+    ),
+    path(f"{ORG}bank-rules/apply", rules_api.BankRuleApplyView.as_view(), name="bank-rules-apply"),
+    path(
+        f"{ORG}bank-rules/lines/<uuid:public_id>/confirm",
+        rules_api.StatementLineConfirmView.as_view(),
+        name="bank-rules-line-confirm",
+    ),
+    path(
+        f"{ORG}bank-rules/lines/<uuid:public_id>/revert",
+        rules_api.StatementLineRevertView.as_view(),
+        name="bank-rules-line-revert",
+    ),
+    path(
+        f"{ORG}bank-rules/<uuid:public_id>",
+        rules_api.BankRuleDetailView.as_view(),
+        name="bank-rule",
     ),
 ]

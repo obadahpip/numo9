@@ -31,6 +31,11 @@ collected is always owed: GST/HST payable, PST payable, QST payable), and debits
 total. Example: spend 113.00 tax inclusive with HST 13.00 → Dr Office supplies 100.00, Dr ITC
 13.00, Cr Chequing 113.00.
 
+**Drafts** (F-04-T07): ``record_bank_transaction(spec, draft=True)`` writes the header and lines
+checked the same way but posts nothing — status Draft, no journal: a bank rule's coding of a
+statement line waiting for review. ``post_draft_transaction(txn)`` posts it later from its
+stored lines (one balanced journal, as above) and marks it Posted.
+
 Archived and deleted bank accounts can't be used (``banking.account.archived``); the contact,
 attachment, journal-type and cash rules of C-03 apply as on any journal.
 """
@@ -289,8 +294,10 @@ def record_bank_transaction(
     user: Any = ACTING,
     attachments: Sequence[Any] = (),
     override_reason: str = "",
+    draft: bool = False,
 ) -> BankTransaction:
-    """Write and post a spend / receive (module docstring) — all or nothing."""
+    """Write and post a spend / receive (module docstring) — all or nothing. ``draft`` writes it
+    without posting (status Draft)."""
     organisation = spec.bank_account.organisation
     with org_context(organisation), transaction.atomic():
         _check_header(spec)
@@ -314,6 +321,7 @@ def record_bank_transaction(
             tax_total=tax_total,
             total=total,
             created_by=by,
+            status=BankTransactionStatus.DRAFT if draft else BankTransactionStatus.POSTED,
         )
         txn.save()
         BankTransactionLine.objects.bulk_create(
@@ -338,25 +346,91 @@ def record_bank_transaction(
             )
             for number, line in enumerate(lines, start=1)
         )
-        label = BankTransactionKind(spec.kind).label
-        entry = post_journal(
-            JournalSpec(
-                date=spec.date,
-                lines=journal_lines(spec, lines, total),
-                type=JournalType.BANK,
-                narration=f"{label}: {txn.reference}" if txn.reference else str(label),
-                source_type=SOURCE_TYPE,
-                source_id=str(txn.public_id),
-            ),
-            organisation=organisation,
+        if draft:
+            return txn
+        _post(
+            txn,
+            spec,
+            lines,
+            total,
             user=user,
-            module=LockModule.BANK,
             attachments=attachments,
             override_reason=override_reason,
         )
-        txn.journal_entry = entry
-        txn.save(update_fields=["journal_entry", "updated_at"])
         return txn
+
+
+def _post(
+    txn: BankTransaction,
+    spec: MoneySpec,
+    lines: list[_Line],
+    total: Decimal,
+    *,
+    user: Any,
+    attachments: Sequence[Any] = (),
+    override_reason: str = "",
+) -> None:
+    organisation = spec.bank_account.organisation
+    label = BankTransactionKind(spec.kind).label
+    entry = post_journal(
+        JournalSpec(
+            date=spec.date,
+            lines=journal_lines(spec, lines, total),
+            type=JournalType.BANK,
+            narration=f"{label}: {txn.reference}" if txn.reference else str(label),
+            source_type=SOURCE_TYPE,
+            source_id=str(txn.public_id),
+        ),
+        organisation=organisation,
+        user=user,
+        module=LockModule.BANK,
+        attachments=attachments,
+        override_reason=override_reason,
+    )
+    txn.journal_entry = entry
+    txn.status = BankTransactionStatus.POSTED
+    txn.save(update_fields=["journal_entry", "status", "updated_at"])
+
+
+def stored_spec(txn: BankTransaction) -> MoneySpec:
+    """The spend / receive as written: its header and stored lines with their tax portions."""
+    return MoneySpec(
+        kind=txn.kind,
+        bank_account=txn.bank_account,
+        date=txn.date,
+        contact=txn.contact,
+        reference=txn.reference,
+        tax_mode=txn.tax_mode,
+        lines=[
+            MoneyLine(
+                line.account,
+                line.amount,
+                description=line.description,
+                tax_code=line.tax_code,
+                taxes=[
+                    TaxPortion(p["role"], Decimal(p["amount"]), bool(p.get("recoverable", True)))
+                    for p in line.taxes
+                ],
+            )
+            for line in txn.lines.select_related("account").order_by("line_no")
+        ],
+    )
+
+
+def post_draft_transaction(txn: BankTransaction, *, user: Any = ACTING) -> BankTransaction:
+    """Post a draft (F-04-T07): one balanced journal from its stored lines; status Posted.
+    Anything but a draft is refused (``banking.transaction.not_draft``)."""
+    with org_context(txn.organisation), transaction.atomic():
+        locked = BankTransaction._base_manager.select_for_update().get(pk=txn.pk)
+        if locked.status != BankTransactionStatus.DRAFT:
+            raise LedgerError(
+                _("Only a draft transaction can be posted."), code="banking.transaction.not_draft"
+            )
+        spec = stored_spec(locked)
+        _check_header(spec)
+        lines = _lines(spec)
+        _post(locked, spec, lines, locked.total, user=user)
+        return locked
 
 
 def void_bank_transaction(

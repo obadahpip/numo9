@@ -28,6 +28,8 @@ class BankingConfig(AppConfig):
 
         # A posted spend / receive keeps its contact, like its journal lines (C-02-T04).
         register_reference("banking.BankTransaction", "contact", "keep", _("bank transactions"))
+        # A bank rule's fixed contact is a setting: it follows the surviving contact (F-04-T02).
+        register_reference("banking.BankRule", "contact", "move", _("bank rules"))
 
         from .search import register_banking_search
 
@@ -43,6 +45,8 @@ class BankingConfig(AppConfig):
         SWEEP_FACTORIES["banking.BankAccount"] = _sweep_bank_account
         SWEEP_FACTORIES["banking.BankTransaction"] = _sweep_bank_transaction
         SWEEP_FACTORIES["banking.StatementImport"] = _sweep_statement_import
+        SWEEP_FACTORIES["banking.BankRule"] = _sweep_bank_rule  # F-04-T09
+        SWEEP_FACTORIES.setdefault("banking.StatementLine", _sweep_statement_line)
 
 
 def _sweep_bank_account(organisation: Any) -> Any:
@@ -99,4 +103,44 @@ def _sweep_statement_import(organisation: Any) -> Any:
     with org_context(organisation):
         return StatementImport.objects.create(
             organisation=organisation, bank_account=bank, file_name="sweep.csv"
+        )
+
+
+def _sweep_bank_rule(organisation: Any) -> Any:
+    import uuid
+
+    from numo9.tenancy.context import org_context
+
+    from .rules.conditions import Condition
+    from .rules.service import RuleDefinition, save_rule
+
+    with org_context(organisation):
+        return save_rule(
+            RuleDefinition(
+                type="transfer",
+                name=f"Sweep {uuid.uuid4().hex[:8]}",
+                conditions=[Condition("description", "contains", "sweep")],
+                transfer_account=_sweep_bank_account(organisation),
+            )
+        )
+
+
+def _sweep_statement_line(organisation: Any) -> Any:
+    import datetime as dt
+    import uuid
+    from decimal import Decimal
+
+    from numo9.tenancy.context import org_context
+
+    from .models import BankAccount, StatementLine
+
+    with org_context(organisation):
+        bank = BankAccount.objects.pickable().first() or _sweep_bank_account(organisation)
+        return StatementLine.objects.create(
+            organisation=organisation,
+            bank_account=bank,
+            date=dt.date.today(),
+            amount=Decimal("-10.00"),
+            description="Sweep",
+            fingerprint=uuid.uuid4().hex,
         )

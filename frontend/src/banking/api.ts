@@ -95,7 +95,8 @@ export interface BankTransaction {
   subtotal: string;
   tax_total: string;
   total: string;
-  status: "posted" | "voided";
+  /** `draft`: a bank rule's coding of a statement line waiting for review (F-04-T07). */
+  status: "draft" | "posted" | "voided";
   voided_at: string | null;
   journal: { id: string; number: number | null } | null;
   lines?: {
@@ -123,7 +124,7 @@ const base = (org: string) => `/api/v1/o/${encodeURIComponent(org)}`;
 export interface TransactionFilters {
   bank_account?: string;
   kind?: BankTransactionKind;
-  status?: "posted" | "voided";
+  status?: "draft" | "posted" | "voided";
   from?: string;
   to?: string;
 }

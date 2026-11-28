@@ -8,6 +8,9 @@ import type { RegisterRow } from "./api";
 import { BankAccountDetail } from "./BankAccountDetail";
 import { bankAccount, ORG, serveJson as serveAll } from "./fixtures";
 
+// The statement-lines panel (F-02-T13) opens the bank rule builder with the router (F-04-T14).
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+
 /** The account page also loads its statement lines and import history (F-02-T13): none here. */
 const serveJson: typeof serveAll = (handler) =>
   serveAll((url, init) => {

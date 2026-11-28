@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 860   Remaining: 1927   Progress: 30.86%
+TOTAL ATOMIC TASKS: 2787   Completed: 875   Remaining: 1912   Progress: 31.40%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1158,21 +1158,21 @@ Phase 1 Core Books  (572 atomic tasks)
 ❌ F-06-T06 — API /api/v1/bank-transfers; permission; feature key
 
 [F-04]
-❌ F-04-T02 — BankRule model (type, name, match_mode ANY/ALL, priority, scope_accounts M2M, contact_strategy, contact FK, reference_template, auto_apply, active) and BankRuleCondition (field, operator, value, value_to)
-❌ F-04-T03 — BankRuleAllocation (account, tax_code, description, fixed_amount or percent, order) with validator: percentages total 100 when present
-❌ F-04-T04 — Condition evaluator with all operators, case-insensitive with accent folding; regex with timeout guard
-❌ F-04-T05 — Priority engine: ordered evaluation, first match wins; returns the winner plus shadowed matches
-❌ F-04-T06 — Allocation calculator: fixed lines first, remainder by percentage, rounding to the last line, tax split per line
-❌ F-04-T07 — Apply service: codes a statement line into a draft bank transaction (F-01) with applied_rule link; auto-apply posts directly and flags auto_coded
-❌ F-04-T08 — History preview: runs a rule against the last N days (default 90) of lines without writing; returns matches and conflicts
-❌ F-04-T09 — Reorder endpoint (atomic renumber) and API CRUD /api/v1/bank-rules; permissions; feature key
-❌ F-04-T10 — Rules list UI with drag-to-reorder (dnd-kit), toggle, counters, search
-❌ F-04-T11 — Sentence-style rule builder with operator-aware inputs (amount range shows two fields; regex shows a tester)
-❌ F-04-T12 — Allocation grid with running % total, red/green validation, tax picker filtered by rule type
-❌ F-04-T13 — Preview panel listing affected historical lines and shadowing rules
-❌ F-04-T14 — "Create rule from line" action on statement lines, pre-filling the payee/description condition
-❌ F-04-T15 — Revert auto-coded line (reverse JE, line back to UNCODED) with an audit entry
-❌ F-04-T16 — i18n, audit hooks and gap-28 functional test (regex, not-contains, range, priority, preview)
+✅ F-04-T02 — BankRule model (type, name, match_mode ANY/ALL, priority, scope_accounts M2M, contact_strategy, contact FK, reference_template, auto_apply, active) and BankRuleCondition (field, operator, value, value_to)
+✅ F-04-T03 — BankRuleAllocation (account, tax_code, description, fixed_amount or percent, order) with validator: percentages total 100 when present
+✅ F-04-T04 — Condition evaluator with all operators, case-insensitive with accent folding; regex with timeout guard
+✅ F-04-T05 — Priority engine: ordered evaluation, first match wins; returns the winner plus shadowed matches
+✅ F-04-T06 — Allocation calculator: fixed lines first, remainder by percentage, rounding to the last line, tax split per line
+✅ F-04-T07 — Apply service: codes a statement line into a draft bank transaction (F-01) with applied_rule link; auto-apply posts directly and flags auto_coded
+✅ F-04-T08 — History preview: runs a rule against the last N days (default 90) of lines without writing; returns matches and conflicts
+✅ F-04-T09 — Reorder endpoint (atomic renumber) and API CRUD /api/v1/bank-rules; permissions; feature key
+✅ F-04-T10 — Rules list UI with drag-to-reorder (dnd-kit), toggle, counters, search
+✅ F-04-T11 — Sentence-style rule builder with operator-aware inputs (amount range shows two fields; regex shows a tester)
+✅ F-04-T12 — Allocation grid with running % total, red/green validation, tax picker filtered by rule type
+✅ F-04-T13 — Preview panel listing affected historical lines and shadowing rules
+✅ F-04-T14 — "Create rule from line" action on statement lines, pre-filling the payee/description condition
+✅ F-04-T15 — Revert auto-coded line (reverse JE, line back to UNCODED) with an audit entry
+✅ F-04-T16 — i18n, audit hooks and gap-28 functional test (regex, not-contains, range, priority, preview)
 
 [F-07]
 ❌ F-07-T01 — CashControlPolicy per org and bank-account type (ALLOW/WARN/BLOCK, adviser level) with defaults seeded

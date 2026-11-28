@@ -8,6 +8,9 @@ import { ORG, serveJson } from "../fixtures";
 import type { StatementImport, StatementLine } from "./api";
 import { StatementPanel, type StatementLineAction } from "./StatementPanel";
 
+const push = vi.fn();
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
+
 /**
  * F-02-T13 — statement lines and import history on the account page: the "Uncoded" badge equals
  * the API's count of UNCODED lines; the status filters ask the server; each row has an actions
@@ -130,6 +133,19 @@ it("each row has an actions menu that features can add to", async () => {
   await user.click(screen.getByRole("button", { name: "Show the lines of this import" }));
   expect(await screen.findByText("Showing the lines of rbc.csv.")).toBeVisible();
   expect(urls.some((u) => u.includes("import=imp1"))).toBe(true);
+});
+
+it("the default menu opens the bank rule builder pre-filled from the line (F-04-T14)", async () => {
+  serve([], { undone: false });
+  const user = userEvent.setup();
+  renderWithIntl(<StatementPanel org={ORG} account={ID} currency="CAD" />);
+  await user.click(await screen.findByRole("button", { name: /Actions for .* TIM HORTONS 1/ }));
+  await user.click(screen.getByRole("button", { name: "Create rule from this line" }));
+  expect(push).toHaveBeenCalledTimes(1);
+  const href = String(push.mock.calls[0]![0]);
+  expect(href).toContain(`/o/${ORG}/banking/rules/new?`);
+  expect(href).toContain("from_line=1");
+  expect(href).toContain(`bank_account=${ID}`);
 });
 
 it("undo an import from the history", async () => {

@@ -482,6 +482,11 @@ export const lines = defineMessages({
     defaultMessage: "Show the lines of this import",
     description: "Statement line action",
   },
+  createRule: {
+    id: "banking.lines.createRule",
+    defaultMessage: "Create rule from this line",
+    description: "Statement line action: open the bank rule builder pre-filled from the line",
+  },
   historyTitle: {
     id: "banking.lines.historyTitle",
     defaultMessage: "Import history",
