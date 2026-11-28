@@ -58,6 +58,14 @@ class BankingConfig(AppConfig):
         if assess not in CASH_POLICY:
             CASH_POLICY.append(assess)
 
+        # The balance sheet learns which asset bank/cash accounts are overdrawn (F-07-T09).
+        from numo9.reports.statements import OVERDRAFT_HOOKS
+
+        from .presentation import overdrawn_accounts
+
+        if overdrawn_accounts not in OVERDRAFT_HOOKS:
+            OVERDRAFT_HOOKS.append(overdrawn_accounts)
+
         # Every new organisation starts with the default negative-balance policies (F-07-T01).
         from django.db.models.signals import post_save
 
