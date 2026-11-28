@@ -14,7 +14,8 @@ commit (F-02-T07 – T09) never care where a line came from:
   row and the fix). A source never drops a line silently: an unreadable line is returned with
   its problems and the preview reports it;
 - ``balances()`` — the statement's opening and closing balance when the source knows them
-  (F-02-T14), else ``StatementBalances()``.
+  (F-02-T14: OFX ``LEDGERBAL``, or a CSV / XLSX running-balance column), else
+  ``StatementBalances()``.
 
 ``FileStatementSource(data, filename, layout=None)`` reads an uploaded file. The file's format
 is recognised from its content (``parse_statement``, F-02-T04: OFX / QFX / QBO, CSV, XLSX).
@@ -33,7 +34,7 @@ from decimal import Decimal
 from functools import cached_property
 from typing import ClassVar
 
-from .layout import Layout, RawLine, Table, apply_layout
+from .layout import Layout, RawLine, Role, Table, apply_layout
 
 __all__ = [
     "Balance",
@@ -84,6 +85,24 @@ class ParsedStatement:
     @property
     def is_tabular(self) -> bool:
         return self.table is not None
+
+
+def running_balances(lines: list[RawLine]) -> StatementBalances:
+    """Opening / closing balance from a running-balance column (lines without one are skipped)."""
+    known = [line for line in lines if line.ok and line.balance is not None and line.date]
+    if not known:
+        return StatementBalances()
+    descending = (
+        known[0].date is not None
+        and known[-1].date is not None
+        and (known[0].date > known[-1].date)
+    )
+    first, last = (known[-1], known[0]) if descending else (known[0], known[-1])
+    assert first.balance is not None and last.balance is not None  # noqa: S101 - filtered above
+    return StatementBalances(
+        opening=Balance(first.balance - (first.amount or Decimal(0)), first.date),
+        closing=Balance(last.balance, last.date),
+    )
 
 
 class LayoutRequired(LookupError):
@@ -139,6 +158,7 @@ class FileStatementSource(BankStatementSource):
         self.filename = filename
         self.layout = layout
         self.last4 = last4  # an OFX file with several accounts: the one ending with these
+        self._lines: list[RawLine] | None = None
 
     @cached_property
     def parsed(self) -> ParsedStatement:
@@ -162,7 +182,19 @@ class FileStatementSource(BankStatementSource):
             return list(parsed.lines)
         if self.layout is None or parsed.table is None:
             raise LayoutRequired(self.filename)
-        return list(apply_layout(parsed.table, self.layout))
+        if self._lines is None:  # read once per layout (preview, balances and commit share it)
+            self._lines = list(apply_layout(parsed.table, self.layout))
+        return list(self._lines)
 
     def balances(self) -> StatementBalances:
-        return self.parsed.balances
+        """The file's balances: OFX ``LEDGERBAL``; for CSV / XLSX, the running-balance column
+        (F-02-T14) — closing = the balance after the latest line, opening = the balance before
+        the earliest one, whichever order the bank lists them in."""
+        parsed = self.parsed
+        if (
+            parsed.lines is not None
+            or self.layout is None
+            or Role.BALANCE not in self.layout.columns
+        ):
+            return parsed.balances
+        return running_balances(self.fetch_lines())

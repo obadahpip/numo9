@@ -11008,3 +11008,15 @@ msgstr ""
 
 msgid "Import bank and credit-card statements, and undo an import"
 msgstr ""
+
+msgid "Check the dates (YYYY-MM-DD) and the page size."
+msgstr ""
+
+msgid "opening balance date"
+msgstr ""
+
+msgid "closing balance"
+msgstr ""
+
+msgid "closing balance date"
+msgstr ""

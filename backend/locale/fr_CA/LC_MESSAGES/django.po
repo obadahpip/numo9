@@ -12040,3 +12040,15 @@ msgstr "Cette correspondance n’existe pas."
 
 msgid "Import bank and credit-card statements, and undo an import"
 msgstr "Importer des relevés bancaires et de carte de crédit, et annuler une importation"
+
+msgid "Check the dates (YYYY-MM-DD) and the page size."
+msgstr "Vérifiez les dates (AAAA-MM-JJ) et la taille de la page."
+
+msgid "opening balance date"
+msgstr "date du solde d’ouverture"
+
+msgid "closing balance"
+msgstr "solde de clôture"
+
+msgid "closing balance date"
+msgstr "date du solde de clôture"

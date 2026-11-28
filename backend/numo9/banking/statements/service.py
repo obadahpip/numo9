@@ -187,7 +187,9 @@ def commit_import(
     against what the account holds now — exactly the preview's rule — and the new ones are
     inserted in batches of ``INSERT_BATCH``. Lines with errors refuse the import unless
     ``skip_errors``; the batch ends ``committed`` with its counts, its layout and saved mapping;
-    the layout becomes the bank account's choice (``remember_mapping``)."""
+    the layout becomes the bank account's choice (``remember_mapping``). The statement's opening
+    and closing balances are kept on the batch, and the closing one becomes the account's
+    statement balance and date unless the account shows a later one (F-02-T14)."""
     bank = BankAccount._base_manager.get(pk=batch.bank_account_id)
     lines = source.fetch_lines()
     prints = fingerprint_lines(account_key(bank), lines)
@@ -218,6 +220,8 @@ def commit_import(
         locked.lines_new = counts["new"]
         locked.lines_duplicate = counts["duplicate"]
         locked.lines_error = counts["error"]
+        _keep_balances(locked, preview.balances)
+        _update_statement_balance(bank, locked)
         if layout is not None:
             locked.mapping = layout.as_dict()
             headers = _headers(source, layout)
@@ -227,6 +231,52 @@ def commit_import(
         progress(steps, steps)
     batch.refresh_from_db()
     return batch
+
+
+def _keep_balances(batch: StatementImport, balances: StatementBalances) -> None:
+    opening, closing = balances.opening, balances.closing
+    batch.opening_balance = opening.amount if opening else None
+    batch.opening_balance_date = opening.date if opening else None
+    batch.closing_balance = closing.amount if closing else None
+    batch.closing_balance_date = closing.date if closing else None
+
+
+def _update_statement_balance(bank: BankAccount, batch: StatementImport) -> None:
+    """The statement's closing balance becomes the account's statement balance (F-02-T14) —
+    unless the account already shows a later one (importing an older statement afterwards)."""
+    if batch.closing_balance is None or batch.closing_balance_date is None:
+        return
+    current = bank.statement_balance_date
+    if current is not None and current > batch.closing_balance_date:
+        return
+    bank.statement_balance = batch.closing_balance
+    bank.statement_balance_date = batch.closing_balance_date
+    bank.save(update_fields=["statement_balance", "statement_balance_date", "updated_at"])
+
+
+def _restore_statement_balance(bank: BankAccount, batch: StatementImport) -> None:
+    """Undo: the account's statement balance came from this import → the latest other committed
+    import's closing balance, or none. A balance set otherwise (by hand, a later import) stays."""
+    if (
+        batch.closing_balance is None
+        or bank.statement_balance != batch.closing_balance
+        or bank.statement_balance_date != batch.closing_balance_date
+    ):
+        return
+    previous = (
+        StatementImport.objects.filter(
+            bank_account=bank,
+            status=StatementImportStatus.COMMITTED,
+            closing_balance__isnull=False,
+            closing_balance_date__isnull=False,
+        )
+        .exclude(pk=batch.pk)
+        .order_by("-closing_balance_date", "-committed_at", "-pk")
+        .first()
+    )
+    bank.statement_balance = previous.closing_balance if previous else None
+    bank.statement_balance_date = previous.closing_balance_date if previous else None
+    bank.save(update_fields=["statement_balance", "statement_balance_date", "updated_at"])
 
 
 def _headers(source: BankStatementSource, layout: Layout) -> list[str]:
@@ -291,8 +341,11 @@ def undo_import(batch: StatementImport, *, user: Any = None) -> StatementImport:
     The import's lines are locked first (a line being coded or matched at the same moment waits,
     then counts). Lines still uncoded or ignored are deleted — not soft-deleted: they were never
     postings, and the same file can then be imported again. The batch stays in the history as
-    ``undone``."""
+    ``undone``. A statement balance this import set goes back to the previous import's (F-02-T14).
+    """
     with transaction.atomic():
+        # The account first, then the batch — the commit's order, so the two never deadlock.
+        bank = BankAccount._base_manager.select_for_update().get(pk=batch.bank_account_id)
         locked = StatementImport._base_manager.select_for_update().get(pk=batch.pk)
         if locked.status != StatementImportStatus.COMMITTED:
             raise StatementError(errors.IMPORT_NOT_COMMITTED, name=locked.file_name)
@@ -304,6 +357,7 @@ def undo_import(batch: StatementImport, *, user: Any = None) -> StatementImport:
                 list(StatementLine.objects.filter(pk__in=in_use).order_by("date", "pk"))
             )
         StatementLine.objects.filter(statement_import=locked).delete()
+        _restore_statement_balance(bank, locked)
         locked.status = StatementImportStatus.UNDONE
         locked.undone_at = timezone.now()
         locked.save(update_fields=["status", "undone_at", "updated_at"])

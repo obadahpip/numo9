@@ -330,6 +330,24 @@ class StatementImport(AuditedModel, OrgOwnedModel):
     lines_error = models.PositiveIntegerField(_("lines with errors"), default=0)
     committed_at = models.DateTimeField(_("committed at"), null=True, blank=True)
     undone_at = models.DateTimeField(_("undone at"), null=True, blank=True)
+    #: The statement's balances when the file gives them (F-02-T14: OFX ``LEDGERBAL``, or a
+    #: running-balance column).
+    opening_balance = models.DecimalField(
+        _("opening balance"),
+        max_digits=MONEY_DIGITS,
+        decimal_places=MONEY_PLACES,
+        null=True,
+        blank=True,
+    )
+    opening_balance_date = models.DateField(_("opening balance date"), null=True, blank=True)
+    closing_balance = models.DecimalField(
+        _("closing balance"),
+        max_digits=MONEY_DIGITS,
+        decimal_places=MONEY_PLACES,
+        null=True,
+        blank=True,
+    )
+    closing_balance_date = models.DateField(_("closing balance date"), null=True, blank=True)
 
     class Meta:
         ordering = ("-created_at", "-pk")

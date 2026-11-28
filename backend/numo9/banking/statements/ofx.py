@@ -24,7 +24,9 @@ header and a few ``INTU.*`` elements:
 - **lines**: ``DTPOSTED`` (``DTUSER`` when missing; ``20260603``, ``20260603120000.000[-5:EST]``),
   ``TRNAMT``, ``NAME`` / ``PAYEE.NAME`` (payee; the description is the name and the memo),
   ``MEMO``, ``CHECKNUM`` / ``REFNUM`` (reference) and ``FITID``. A line whose date or amount can't
-  be read is kept with its problem.
+  be read is kept with its problem;
+- **balances** (F-02-T14): the closing balance is ``LEDGERBAL`` (``BALAMT`` on ``DTASOF``); the
+  opening balance is the closing one minus the statement's lines, on ``DTSTART``.
 """
 
 from __future__ import annotations
@@ -39,7 +41,7 @@ from decimal import Decimal
 from . import errors
 from .errors import LineProblem, StatementError
 from .layout import AmountError, RawLine, clean_text, parse_amount
-from .source import ParsedStatement
+from .source import Balance, ParsedStatement, StatementBalances
 
 _TAG = re.compile(r"<\s*(/?)\s*([A-Za-z0-9_.]+)[^>]*>")
 _OFX_START = re.compile(rb"<\s*OFX\s*>", re.IGNORECASE)
@@ -185,6 +187,25 @@ def transaction_line(row: int, node: Node) -> RawLine:
     )
 
 
+def statement_balances(statement: Node, lines: tuple[RawLine, ...]) -> StatementBalances:
+    """Closing balance = ``LEDGERBAL`` (amount, ``DTASOF``); opening = closing minus the
+    statement's lines, dated ``DTSTART`` — only when every line was read (F-02-T14)."""
+    ledger = statement.child("LEDGERBAL")
+    if ledger is None:
+        return StatementBalances()
+    amount, readable = _amount(ledger.text("BALAMT"))
+    if not readable or amount is None:
+        return StatementBalances()
+    closing = Balance(amount, ofx_date(ledger.text("DTASOF")))
+    opening: Balance | None = None
+    if all(line.ok for line in lines):
+        moved = sum((line.amount or Decimal(0) for line in lines), Decimal(0))
+        transactions = statement.child("BANKTRANLIST")
+        start = ofx_date(transactions.text("DTSTART")) if transactions else None
+        opening = Balance(amount - moved, start)
+    return StatementBalances(opening=opening, closing=closing)
+
+
 def _account_id(statement: Node) -> str:
     for holder in ("BANKACCTFROM", "CCACCTFROM"):
         account = statement.child(holder)
@@ -216,6 +237,7 @@ def parse_ofx(data: bytes, filename: str, file_format: str, *, last4: str = "") 
     nodes = [n for n in (transactions.children if transactions else []) if n.name == "STMTTRN"]
     lines = tuple(transaction_line(row, node) for row, node in enumerate(nodes, start=1))
     return ParsedStatement(
+        balances=statement_balances(chosen, lines),
         format=file_format,
         encoding=encoding,
         lines=lines,

@@ -104,6 +104,10 @@ def _refused(error: StatementError) -> Response:
     return Response(body, status=error.status_code)
 
 
+def _balance(amount: Any, date: Any) -> dict[str, Any] | None:
+    return None if amount is None else {"amount": _money(amount), "date": date}
+
+
 def import_row(batch: StatementImport, in_use: int | None = None) -> dict[str, Any]:
     person = batch.created_by
     row: dict[str, Any] = {
@@ -132,6 +136,10 @@ def import_row(batch: StatementImport, in_use: int | None = None) -> dict[str, A
         "created_by": {"name": person.name or person.email} if person is not None else None,
         "committed_at": batch.committed_at,
         "undone_at": batch.undone_at,
+        "balances": {
+            "opening": _balance(batch.opening_balance, batch.opening_balance_date),
+            "closing": _balance(batch.closing_balance, batch.closing_balance_date),
+        },
     }
     if in_use is not None:
         row["in_use"] = in_use
