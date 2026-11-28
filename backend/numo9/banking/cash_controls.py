@@ -31,6 +31,9 @@ everyone else). ``numo9.ledger.policy.cash_rule`` turns them into ``NegativeBala
 (BLOCK, or WARN for someone without ``accounting.banking.allow_negative``) or
 ``NegativeBalanceWarning`` (WARN without a reason). Liabilities (cards, lines of credit, loans)
 are never sub-type Bank assets, so never checked.
+
+**Concurrency** (F-07-T05) — ``assess`` locks the bank account rows first (``lock_accounts``):
+the check and the post are serialised per account.
 """
 
 from __future__ import annotations
@@ -137,6 +140,34 @@ def _changes(checked: Any) -> dict[int, tuple[Any, Decimal]]:
     return changes
 
 
+def lock_accounts(organisation: Any, ledger_ids: list[int]) -> dict[int, str]:
+    """F-07-T05: ``SELECT … FOR UPDATE`` on the bank account rows (the ledger account's row for
+    a bank account without a profile) of the accounts a posting takes money out of, in id order
+    (no deadlock between two postings on the same accounts). The posting service runs the check
+    and the insert in one transaction, so the lock is held until the posting commits: a second
+    posting on the account waits, then projects with the first one's lines — two concurrent
+    spends can't both pass a BLOCK. Returns ``{ledger account id: bank-account type}``."""
+    from numo9.ledger.models import Account
+
+    with org_context(organisation):
+        banks = list(
+            BankAccount._base_manager.select_for_update()
+            .filter(organisation_id=organisation.pk, gl_account_id__in=ledger_ids)
+            .order_by("pk")
+            .values_list("gl_account_id", "type")
+        )
+        types = dict(banks)
+        loose = [pk for pk in ledger_ids if pk not in types]
+        if loose:
+            list(
+                Account._base_manager.select_for_update()
+                .filter(organisation_id=organisation.pk, pk__in=loose)
+                .order_by("pk")
+                .values_list("pk", flat=True)
+            )
+    return types
+
+
 def assess(checked: Any, organisation: Any, person: Any, today: dt.date) -> list[Any]:
     """The posting's bank/cash accounts that go below zero, with the policy's action
     (``numo9.ledger.cash_guard.Projection`` with ``action`` and ``account_type``)."""
@@ -147,12 +178,7 @@ def assess(checked: Any, organisation: Any, person: Any, today: dt.date) -> list
     taken = {pk: v for pk, v in _changes(checked).items() if v[1] < 0}
     if not taken:
         return []
-    with org_context(organisation):
-        types = dict(
-            BankAccount._base_manager.filter(gl_account_id__in=sorted(taken)).values_list(
-                "gl_account_id", "type"
-            )
-        )
+    types = lock_accounts(organisation, sorted(taken))
     policies = effective_policies(organisation)
     level = level_of(person, organisation)
     date = checked.spec.date
