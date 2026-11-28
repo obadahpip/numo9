@@ -6,7 +6,22 @@ import { renderWithIntl } from "@/test/intl";
 
 import type { RegisterRow } from "./api";
 import { BankAccountDetail } from "./BankAccountDetail";
-import { bankAccount, ORG, serveJson } from "./fixtures";
+import { bankAccount, ORG, serveJson as serveAll } from "./fixtures";
+
+/** The account page also loads its statement lines and import history (F-02-T13): none here. */
+const serveJson: typeof serveAll = (handler) =>
+  serveAll((url, init) => {
+    if (url.includes("/statement-lines"))
+      return {
+        body: {
+          counts: { all: 0, uncoded: 0, coded: 0, matched: 0, ignored: 0 },
+          count: 0,
+          results: [],
+        },
+      };
+    if (url.endsWith("/imports")) return { body: { results: [] } };
+    return handler(url, init);
+  });
 
 /**
  * F-01-T11 — account detail: running balance of the last row = ledger balance; filters sent to

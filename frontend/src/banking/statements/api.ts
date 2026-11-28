@@ -206,3 +206,49 @@ export function layoutComplete(layout: Layout): boolean {
 export function padColumns(columns: Role[], width: number): Role[] {
   return Array.from({ length: Math.max(width, columns.length) }, (_, i) => columns[i] ?? "ignore");
 }
+
+// ---- statement lines (F-02-T13) ----------------------------------------------------------------
+
+export type StatementLineStatus = "uncoded" | "coded" | "matched" | "ignored";
+
+export interface StatementLine {
+  id: string;
+  date: string;
+  amount: string;
+  description: string;
+  payee: string;
+  reference: string;
+  fitid: string;
+  status: StatementLineStatus;
+  status_label: string;
+  import: { id: string; file_name: string } | null;
+}
+
+export type StatementLineCounts = Record<StatementLineStatus | "all", number>;
+
+export interface StatementLineFilters {
+  status?: StatementLineStatus;
+  import?: string;
+  from?: string;
+  to?: string;
+  q?: string;
+  limit?: number;
+}
+
+export const statementLinesApi = {
+  list: (
+    org: string,
+    account: string,
+    filters: StatementLineFilters = {},
+  ): Promise<
+    ApiResult<{ counts: StatementLineCounts; count: number; results: StatementLine[] }>
+  > => {
+    const params = new URLSearchParams(
+      Object.entries(filters)
+        .filter((entry) => entry[1] !== undefined && entry[1] !== "")
+        .map(([key, value]) => [key, String(value)]),
+    );
+    const query = params.toString();
+    return apiRequest(`${base(org, account)}/statement-lines${query ? `?${query}` : ""}`);
+  },
+};

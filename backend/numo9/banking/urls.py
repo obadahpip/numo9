@@ -54,6 +54,11 @@ urlpatterns = [
         name="bank-account-import-undo",
     ),
     path(
+        f"{ORG}bank-accounts/<uuid:public_id>/statement-lines",
+        imports_api.StatementLineListView.as_view(),
+        name="bank-account-statement-lines",
+    ),
+    path(
         f"{ORG}bank-transactions",
         api.BankTransactionListView.as_view(),
         name="bank-transactions",

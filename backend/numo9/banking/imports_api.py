@@ -22,6 +22,9 @@ The wizard's steps — Upload → Map → Preview → Confirm — and the histor
 - ``POST imports/<id>/undo`` — 200 with the undone import, or 409 ``banking.import.in_use`` with
   ``lines`` (the coded or matched lines: id, date, amount, description, status).
 
+Statement lines (F-02-T13): ``GET statement-lines`` with status / import / date / text filters
+and the count of lines per status (the account page's "Uncoded" badge).
+
 Errors: ``{code, detail}`` (``detail`` names the row or file and the fix); layout problems 400
 ``banking.statement.layout.*``; a file that isn't a statement 400/415 ``banking.statement.file.*``;
 file checks as A-06 (``files.*``).
@@ -32,6 +35,7 @@ commit and undo; features ``accounting.banking.read`` / ``.write`` (every packag
 
 from __future__ import annotations
 
+import datetime as dt
 from typing import Any
 
 from django.db.models import Count, Q, QuerySet
@@ -51,7 +55,14 @@ from numo9.orgsettings.locks import acting_user
 from numo9.rbac.drf import requires_permission
 
 from .api import READ, WRITE, _bank, _money
-from .models import BankAccount, StatementImport, StatementImportStatus, StatementMapping
+from .models import (
+    BankAccount,
+    StatementImport,
+    StatementImportStatus,
+    StatementLine,
+    StatementLineStatus,
+    StatementMapping,
+)
 from .permissions import BANKING_IMPORT, BANKING_VIEW
 from .statements.errors import StatementError
 from .statements.layout import DATE_FORMATS, Layout, Role, Sign
@@ -422,3 +433,82 @@ class StatementImportUndoView(APIView):
         except StatementError as error:
             return _refused(error)
         return Response({"import": import_row(undone, 0)})
+
+
+# ---- statement lines (F-02-T13) -----------------------------------------------------------------
+
+LINE_STATUSES = [s.value for s in StatementLineStatus]
+
+
+def statement_line_row(line: StatementLine) -> dict[str, Any]:
+    batch = line.statement_import
+    return {
+        "id": str(line.public_id),
+        "date": line.date,
+        "amount": _money(line.amount),
+        "description": line.description,
+        "payee": line.payee,
+        "reference": line.reference,
+        "fitid": line.fitid,
+        "status": line.status,
+        "status_label": str(StatementLineStatus(line.status).label),
+        "import": {"id": str(batch.public_id), "file_name": batch.file_name} if batch else None,
+    }
+
+
+class StatementLineListView(APIView):
+    """``GET bank-accounts/<id>/statement-lines`` — the account's statement lines, newest first:
+    ``?status=uncoded|coded|matched|ignored``, ``import=<id>``, ``from`` / ``to`` (dates), ``q``
+    (description, payee or reference), ``limit`` (≤ 500) / ``offset``. ``counts`` — lines per
+    status over the other filters (the "Uncoded" badge is ``counts.uncoded``)."""
+
+    queryset = BankAccount._base_manager.none()
+
+    @requires_permission(BANKING_VIEW.key)
+    @requires_feature(READ)
+    @extend_schema(
+        operation_id="bank_account_statement_lines", responses={200: OpenApiTypes.OBJECT}
+    )
+    def get(self, request: Request, org: Any, public_id: Any) -> Response:
+        bank = _bank(public_id)
+        params = request.query_params
+        lines: QuerySet[StatementLine] = StatementLine.objects.filter(bank_account=bank)
+        try:
+            if params.get("from"):
+                lines = lines.filter(date__gte=dt.date.fromisoformat(params["from"]))
+            if params.get("to"):
+                lines = lines.filter(date__lte=dt.date.fromisoformat(params["to"]))
+            limit = min(max(int(params.get("limit", 100)), 1), 500)
+            offset = max(int(params.get("offset", 0)), 0)
+        except ValueError:
+            raise serializers.ValidationError(
+                {"filters": [_("Check the dates (YYYY-MM-DD) and the page size.")]}
+            ) from None
+        if params.get("import"):
+            lines = lines.filter(statement_import__public_id=params["import"])
+        if params.get("q"):
+            text = params["q"].strip()
+            lines = lines.filter(
+                Q(description__icontains=text)
+                | Q(payee__icontains=text)
+                | Q(reference__icontains=text)
+            )
+        counts = dict.fromkeys(LINE_STATUSES, 0)
+        for row in lines.values("status").annotate(n=Count("pk")).order_by():
+            counts[row["status"]] = row["n"]
+        wanted = params.get("status")
+        if wanted:
+            if wanted not in LINE_STATUSES:
+                raise serializers.ValidationError({"status": [_("Unknown status.")]})
+            lines = lines.filter(status=wanted)
+        total = lines.count()
+        page = lines.select_related("statement_import").order_by("-date", "-pk")[
+            offset : offset + limit
+        ]
+        return Response(
+            {
+                "counts": {"all": sum(counts.values()), **counts},
+                "count": total,
+                "results": [statement_line_row(line) for line in page],
+            }
+        )

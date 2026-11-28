@@ -384,3 +384,146 @@ export const statusLabels: Record<LineStatus, MessageDescriptor> = defineMessage
     description: "Preview tab",
   },
 });
+
+/** Statement lines and import history on the account page (F-02-T13). */
+export const lines = defineMessages({
+  title: {
+    id: "banking.lines.title",
+    defaultMessage: "Statement lines",
+    description: "Heading on the bank account page",
+  },
+  uncodedBadge: {
+    id: "banking.lines.uncodedBadge",
+    defaultMessage: "Uncoded: {count}",
+    description: "Badge: number of statement lines not coded yet",
+  },
+  filter: {
+    id: "banking.lines.filter",
+    defaultMessage: "Filter statement lines by status",
+    description: "Group of status filter buttons",
+  },
+  filterItem: {
+    id: "banking.lines.filterItem",
+    defaultMessage: "{label} ({count})",
+    description: "Status filter button with its count",
+  },
+  all: { id: "banking.lines.all", defaultMessage: "All", description: "Status filter" },
+  uncoded: { id: "banking.lines.uncoded", defaultMessage: "Uncoded", description: "Status filter" },
+  coded: { id: "banking.lines.coded", defaultMessage: "Coded", description: "Status filter" },
+  matched: { id: "banking.lines.matched", defaultMessage: "Matched", description: "Status filter" },
+  ignored: { id: "banking.lines.ignored", defaultMessage: "Ignored", description: "Status filter" },
+  showingImport: {
+    id: "banking.lines.showingImport",
+    defaultMessage: "Showing the lines of {file}.",
+    description: "The list is filtered to one import",
+  },
+  allLines: {
+    id: "banking.lines.allLines",
+    defaultMessage: "Show all lines",
+    description: "Button: clear the import filter",
+  },
+  loading: {
+    id: "banking.lines.loading",
+    defaultMessage: "Loading statement lines…",
+    description: "Status",
+  },
+  failed: {
+    id: "banking.lines.failed",
+    defaultMessage: "The statement lines couldn't be loaded. Reload the page to try again.",
+    description: "Error",
+  },
+  empty: {
+    id: "banking.lines.empty",
+    defaultMessage: "No statement lines yet",
+    description: "Empty state title",
+  },
+  emptyBody: {
+    id: "banking.lines.emptyBody",
+    defaultMessage:
+      "Import a statement to see its lines here. They're not in the books until you code or match them.",
+    description: "Empty state text",
+  },
+  noMatch: {
+    id: "banking.lines.noMatch",
+    defaultMessage: "No line has this status.",
+    description: "Filtered list is empty",
+  },
+  more: {
+    id: "banking.lines.more",
+    defaultMessage: "Showing {shown} of {total} lines.",
+    description: "The list shows a page of lines",
+  },
+  colDate: { id: "banking.lines.colDate", defaultMessage: "Date", description: "Column" },
+  colDescription: {
+    id: "banking.lines.colDescription",
+    defaultMessage: "Description",
+    description: "Column",
+  },
+  colReference: {
+    id: "banking.lines.colReference",
+    defaultMessage: "Reference",
+    description: "Column",
+  },
+  colAmount: { id: "banking.lines.colAmount", defaultMessage: "Amount", description: "Column" },
+  colStatus: { id: "banking.lines.colStatus", defaultMessage: "Status", description: "Column" },
+  colActions: { id: "banking.lines.colActions", defaultMessage: "Actions", description: "Column" },
+  actions: {
+    id: "banking.lines.actions",
+    defaultMessage: "Actions",
+    description: "Row menu button",
+  },
+  actionsFor: {
+    id: "banking.lines.actionsFor",
+    defaultMessage: "Actions for {date} {description}",
+    description: "Accessible name of a statement line's actions button",
+  },
+  showImport: {
+    id: "banking.lines.showImport",
+    defaultMessage: "Show the lines of this import",
+    description: "Statement line action",
+  },
+  historyTitle: {
+    id: "banking.lines.historyTitle",
+    defaultMessage: "Import history",
+    description: "Heading on the bank account page",
+  },
+  historyEmpty: {
+    id: "banking.lines.historyEmpty",
+    defaultMessage: "No statement imported yet.",
+    description: "Empty import history",
+  },
+  colFile: { id: "banking.lines.colFile", defaultMessage: "File", description: "Column" },
+  colImported: {
+    id: "banking.lines.colImported",
+    defaultMessage: "Imported",
+    description: "Column",
+  },
+  colNew: { id: "banking.lines.colNew", defaultMessage: "New", description: "Column" },
+  colDuplicates: {
+    id: "banking.lines.colDuplicates",
+    defaultMessage: "Duplicates",
+    description: "Column",
+  },
+  colErrors: { id: "banking.lines.colErrors", defaultMessage: "Errors", description: "Column" },
+  undo: { id: "banking.lines.undo", defaultMessage: "Undo", description: "Button: undo an import" },
+  undoFile: {
+    id: "banking.lines.undoFile",
+    defaultMessage: "Undo the import of {file}",
+    description: "Accessible name of the Undo button of an import",
+  },
+  undoBlocked: {
+    id: "banking.lines.undoBlocked",
+    defaultMessage: "Some lines of this import are coded or matched: undo that first.",
+    description: "Why Undo is disabled",
+  },
+  undone: {
+    id: "banking.lines.undone",
+    defaultMessage: "{file} undone: its lines were removed.",
+    description: "After undo",
+  },
+  undoRefused: {
+    id: "banking.lines.undoRefused",
+    defaultMessage: "{file} can't be undone: {reason}",
+    description: "Undo refused",
+  },
+});
