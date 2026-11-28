@@ -255,3 +255,146 @@ class BankTransactionLine(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.line_no}: {self.net}"
+
+
+# ---- statement import (F-02-T02) ----------------------------------------------------------------
+
+
+class StatementImportStatus(models.TextChoices):
+    """``pending`` (uploaded, not yet committed) → ``processing`` (a large file in a background job)
+    → ``committed``; ``undone`` once the batch's lines are removed (F-02-T10); ``failed``."""
+
+    PENDING = "pending", _("Pending")
+    PROCESSING = "processing", _("Processing")
+    COMMITTED = "committed", _("Committed")
+    UNDONE = "undone", _("Undone")
+    FAILED = "failed", _("Failed")
+
+
+class StatementImport(AuditedModel, OrgOwnedModel):
+    """One statement file imported into one bank account — the batch its lines belong to.
+
+    ``file`` is the uploaded file (A-06 document store); ``source_name`` the statement source that
+    read it (``file`` for uploads, W-02 adds Numo9's banking app); ``file_format`` what the parser
+    found (``ofx``, ``qfx``, ``qbo``, ``csv``, ``xlsx``); ``mapping`` the column mapping used, as it
+    was at import time (F-02-T05 adds the saved-mapping link). The counts are those of the commit:
+    ``lines_total`` read from the file = ``lines_new`` + ``lines_duplicate`` + ``lines_error``."""
+
+    bank_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.PROTECT,
+        related_name="statement_imports",
+        verbose_name=_("bank account"),
+    )
+    file = models.ForeignKey(
+        "files.Document",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="statement_imports",
+        verbose_name=_("file"),
+    )
+    file_name = models.CharField(_("file name"), max_length=255, blank=True)
+    source_name = models.CharField(_("source"), max_length=40, default="file")
+    file_format = models.CharField(_("format"), max_length=10, blank=True)
+    mapping = models.JSONField(_("mapping"), default=dict, blank=True)
+    status = models.CharField(
+        _("status"),
+        max_length=12,
+        choices=StatementImportStatus.choices,
+        default=StatementImportStatus.PENDING,
+    )
+    lines_total = models.PositiveIntegerField(_("lines read"), default=0)
+    lines_new = models.PositiveIntegerField(_("new lines"), default=0)
+    lines_duplicate = models.PositiveIntegerField(_("duplicate lines"), default=0)
+    lines_error = models.PositiveIntegerField(_("lines with errors"), default=0)
+    committed_at = models.DateTimeField(_("committed at"), null=True, blank=True)
+    undone_at = models.DateTimeField(_("undone at"), null=True, blank=True)
+
+    class Meta:
+        ordering = ("-created_at", "-pk")
+        verbose_name = _("statement import")
+        verbose_name_plural = _("statement imports")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(status__in=StatementImportStatus.values),
+                name="banking_import_status_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.file_name or self.source_name} → {self.bank_account_id}"
+
+
+class StatementLineStatus(models.TextChoices):
+    """A statement line is not a ledger posting until it is coded (F-04, spend/receive) or matched
+    to a ledger transaction (F-05); ``ignored`` lines are kept but never coded."""
+
+    UNCODED = "uncoded", _("Uncoded")
+    CODED = "coded", _("Coded")
+    MATCHED = "matched", _("Matched")
+    IGNORED = "ignored", _("Ignored")
+
+
+class StatementLine(OrgOwnedModel):
+    """One line of a bank statement, as the bank reported it.
+
+    ``amount`` is signed from the account holder's side: positive = money in (deposit, card
+    refund), negative = money out. ``fingerprint`` identifies the line across imports (F-02-T07:
+    account + date + amount + normalised description + bank reference/FITID, plus a sequence for
+    identical lines on the same day) and is unique per bank account, so the same file imported
+    twice adds no line."""
+
+    bank_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.PROTECT,
+        related_name="statement_lines",
+        verbose_name=_("bank account"),
+    )
+    statement_import = models.ForeignKey(
+        StatementImport,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="lines",
+        verbose_name=_("import"),
+    )
+    date = models.DateField(_("date"))
+    amount = models.DecimalField(_("amount"), max_digits=MONEY_DIGITS, decimal_places=MONEY_PLACES)
+    description = models.CharField(_("description"), max_length=500, blank=True)
+    payee = models.CharField(_("payee"), max_length=255, blank=True)
+    reference = models.CharField(_("reference"), max_length=255, blank=True)
+    fitid = models.CharField(_("bank transaction ID"), max_length=255, blank=True)
+    fingerprint = models.CharField(_("fingerprint"), max_length=64)
+    status = models.CharField(
+        _("status"),
+        max_length=10,
+        choices=StatementLineStatus.choices,
+        default=StatementLineStatus.UNCODED,
+    )
+
+    class Meta:
+        ordering = ("bank_account", "-date", "-pk")
+        verbose_name = _("statement line")
+        verbose_name_plural = _("statement lines")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["bank_account", "fingerprint"], name="banking_stmt_line_fingerprint"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(status__in=StatementLineStatus.values),
+                name="banking_stmt_line_status_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(fingerprint=""), name="banking_stmt_line_fingerprint_required"
+            ),
+        ]
+        indexes: ClassVar[list[models.Index]] = [
+            models.Index(
+                fields=["organisation", "bank_account", "status", "date"],
+                name="banking_stmt_line_status_idx",
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.date:%Y-%m-%d} {self.amount} {self.description}"
