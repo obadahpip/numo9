@@ -232,7 +232,7 @@ msgid "Critical"
 msgstr "Critique"
 
 msgid "Open"
-msgstr ""
+msgstr "Ouvert"
 
 msgid "Acknowledged"
 msgstr "Pris en compte"
@@ -292,7 +292,7 @@ msgid "finished at"
 msgstr "terminée le"
 
 msgid "scope"
-msgstr ""
+msgstr "portée"
 
 msgid "rules run"
 msgstr "règles exécutées"
@@ -340,7 +340,7 @@ msgid "reason"
 msgstr "raison"
 
 msgid "last run"
-msgstr ""
+msgstr "dernière exécution"
 
 msgid "fix journal"
 msgstr "écriture de correction"
@@ -551,7 +551,7 @@ msgid "Days back"
 msgstr "Jours en arrière"
 
 msgid "Accounts not mapped to GIFI"
-msgstr "Comptes non associés à la IGRF"
+msgstr "Comptes non associés à l'IGRF"
 
 msgid "Active accounts without a GIFI code: the T2 financial statements can't be prepared from the ledger as it is."
 msgstr "Des comptes actifs n'ont pas de code IGRF : les états financiers de la T2 ne peuvent pas être préparés à partir du grand livre tel quel."
@@ -590,7 +590,7 @@ msgid "Conversion balances incomplete or unbalanced"
 msgstr "Soldes de conversion incomplets ou déséquilibrés"
 
 msgid "The opening balances brought over from the previous system are empty, don't balance or have no equity."
-msgstr "Les soldes d'ouverture repris de l'ancien système sont vides, ne s'équilibrent pas ou n'ont aucun capitaux propres."
+msgstr "Les soldes d'ouverture repris de l'ancien système sont vides, ne s'équilibrent pas ou n'ont pas de capitaux propres."
 
 #, python-format
 msgid "The conversion at %(conversion_date)s: %(problem)s. Opening balances are where the balance sheet starts — debits %(debit)s, credits %(credit)s."
