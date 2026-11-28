@@ -12185,3 +12185,38 @@ msgstr "Ligne %(line)d : le montant fixe doit être supérieur à 0,00."
 #, python-format
 msgid "Line %(line)d: the percentage is more than 0 and at most 100."
 msgstr "Ligne %(line)d : le pourcentage doit être supérieur à 0 et d’au plus 100."
+
+msgid "Enter a pattern."
+msgstr "Saisissez un motif."
+
+#, python-format
+msgid "A pattern has at most %(max)d characters."
+msgstr "Un motif compte au plus %(max)d caractères."
+
+msgid "Choose what the condition looks at."
+msgstr "Choisissez le champ que la condition examine."
+
+msgid "Choose how to compare."
+msgstr "Choisissez la façon de comparer."
+
+msgid "This comparison applies to amounts only."
+msgstr "Cette comparaison s’applique aux montants seulement."
+
+msgid "Enter the text to look for."
+msgstr "Saisissez le texte à rechercher."
+
+#, python-format
+msgid "This pattern isn't valid: %(error)s."
+msgstr "Ce motif n’est pas valide : %(error)s."
+
+msgid "This comparison doesn't apply to an amount."
+msgstr "Cette comparaison ne s’applique pas à un montant."
+
+msgid "Enter an amount (0 or more)."
+msgstr "Saisissez un montant (0 ou plus)."
+
+msgid "This pattern takes too long to run on some texts (catastrophic backtracking). Simplify it, for example without nested repeats."
+msgstr "Ce motif prend trop de temps à s’exécuter sur certains textes (retour arrière catastrophique). Simplifiez-le, par exemple sans répétitions imbriquées."
+
+msgid "Enter the upper amount, at least the lower one."
+msgstr "Saisissez le montant supérieur, au moins égal au montant inférieur."

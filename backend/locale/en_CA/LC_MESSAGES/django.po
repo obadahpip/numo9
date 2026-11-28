@@ -11153,3 +11153,38 @@ msgstr ""
 #, python-format
 msgid "Line %(line)d: the percentage is more than 0 and at most 100."
 msgstr ""
+
+msgid "Enter a pattern."
+msgstr ""
+
+#, python-format
+msgid "A pattern has at most %(max)d characters."
+msgstr ""
+
+msgid "Choose what the condition looks at."
+msgstr ""
+
+msgid "Choose how to compare."
+msgstr ""
+
+msgid "This comparison applies to amounts only."
+msgstr ""
+
+msgid "Enter the text to look for."
+msgstr ""
+
+#, python-format
+msgid "This pattern isn't valid: %(error)s."
+msgstr ""
+
+msgid "This comparison doesn't apply to an amount."
+msgstr ""
+
+msgid "Enter an amount (0 or more)."
+msgstr ""
+
+msgid "This pattern takes too long to run on some texts (catastrophic backtracking). Simplify it, for example without nested repeats."
+msgstr ""
+
+msgid "Enter the upper amount, at least the lower one."
+msgstr ""

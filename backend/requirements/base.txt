@@ -58,3 +58,5 @@ pillow-heif==1.8.1
 pypdfium2==5.15.2
 # Recurring journal schedules: RFC 5545 RRULE parsing and occurrences (C-04-T04, T05)
 python-dateutil==2.9.0.post0
+# Regex conditions of bank rules with a timeout guard against catastrophic backtracking (F-04-T04)
+regex==2026.11.25
