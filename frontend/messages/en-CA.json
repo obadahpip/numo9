@@ -485,6 +485,65 @@
       "verifiedTitle": "Your email is verified"
     }
   },
+  "bankRules": {
+    "and": "and",
+    "applied": "{count, plural, one {Applied # time} other {Applied # times}} · last {date}",
+    "autoApply": "Auto-apply",
+    "back": "Back to bank rules",
+    "disabledWarning": "Disabled: it uses an archived account. Edit the rule or restore the account.",
+    "dragHandle": "Move {name}",
+    "dragInstructions": "To move a rule with the keyboard, press Space on its handle, use the arrow keys, then press Space again.",
+    "emptyBody": "Create a rule such as “When the description contains PETRO, code it to Fuel” and test it against your history before turning it on.",
+    "emptyTitle": "No rules yet",
+    "field": {
+      "amount": "Amount",
+      "anyText": "Any text",
+      "description": "Description",
+      "payee": "Payee",
+      "reference": "Reference"
+    },
+    "intro": "Rules code statement lines for you. They run top to bottom and the first rule that matches wins — drag a rule to change its priority.",
+    "loadFailed": "Rules couldn't be loaded",
+    "loadFailedBody": "Check your connection and try again. Nothing else is blocked.",
+    "loading": "Loading rules…",
+    "moved": "{name} is now priority {priority}.",
+    "neverApplied": "Not applied yet",
+    "newRule": "New rule",
+    "noMatch": "No rule matches “{search}”.",
+    "off": "Off",
+    "op": {
+      "between": "is between",
+      "contains": "contains",
+      "endsWith": "ends with",
+      "equals": "is",
+      "gt": "is more than",
+      "isBlank": "is blank",
+      "lt": "is less than",
+      "notContains": "does not contain",
+      "regex": "matches the pattern",
+      "startsWith": "starts with"
+    },
+    "or": "or",
+    "priority": "Priority {priority}",
+    "reorderFailed": "The new order couldn't be saved. The previous order is back.",
+    "retry": "Try again",
+    "search": "Search rules",
+    "searchHint": "Clear the search to change the order.",
+    "sentence": {
+      "condition": "{field} {operator} “{value}”",
+      "conditionBlank": "{field} {operator}",
+      "conditionRange": "{field} {operator} {low} and {high}"
+    },
+    "title": "Bank rules",
+    "toggle": "{name} on",
+    "toggleFailed": "{name} couldn't be turned on or off. Try again.",
+    "type": {
+      "receive": "Receive money",
+      "spend": "Spend money",
+      "transfer": "Transfer"
+    },
+    "typeTabs": "Rule type"
+  },
   "banking": {
     "add": {
       "cancel": "Cancel",

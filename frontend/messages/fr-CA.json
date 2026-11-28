@@ -485,6 +485,65 @@
       "verifiedTitle": "Votre courriel est vérifié"
     }
   },
+  "bankRules": {
+    "and": "et",
+    "applied": "{count, plural, one {Appliquée # fois} other {Appliquée # fois}} · dernière fois le {date}",
+    "autoApply": "Application automatique",
+    "back": "Retour aux règles bancaires",
+    "disabledWarning": "Désactivée : elle utilise un compte archivé. Modifiez la règle ou restaurez le compte.",
+    "dragHandle": "Déplacer {name}",
+    "dragInstructions": "Pour déplacer une règle au clavier, appuyez sur Espace sur sa poignée, utilisez les flèches, puis appuyez de nouveau sur Espace.",
+    "emptyBody": "Créez une règle comme « Quand la description contient PETRO, imputer à Carburant » et testez-la sur votre historique avant de l’activer.",
+    "emptyTitle": "Aucune règle pour l’instant",
+    "field": {
+      "amount": "Montant",
+      "anyText": "N’importe quel texte",
+      "description": "Description",
+      "payee": "Bénéficiaire",
+      "reference": "Référence"
+    },
+    "intro": "Les règles imputent les lignes de relevé à votre place. Elles s’appliquent de haut en bas et la première règle qui correspond l’emporte — faites glisser une règle pour changer sa priorité.",
+    "loadFailed": "Les règles n’ont pas pu être chargées",
+    "loadFailedBody": "Vérifiez votre connexion et réessayez. Rien d’autre n’est bloqué.",
+    "loading": "Chargement des règles…",
+    "moved": "{name} est maintenant en priorité {priority}.",
+    "neverApplied": "Pas encore appliquée",
+    "newRule": "Nouvelle règle",
+    "noMatch": "Aucune règle ne correspond à « {search} ».",
+    "off": "Désactivée",
+    "op": {
+      "between": "est entre",
+      "contains": "contient",
+      "endsWith": "se termine par",
+      "equals": "est",
+      "gt": "est supérieur à",
+      "isBlank": "est vide",
+      "lt": "est inférieur à",
+      "notContains": "ne contient pas",
+      "regex": "correspond au motif",
+      "startsWith": "commence par"
+    },
+    "or": "ou",
+    "priority": "Priorité {priority}",
+    "reorderFailed": "Le nouvel ordre n’a pas pu être enregistré. L’ordre précédent est rétabli.",
+    "retry": "Réessayer",
+    "search": "Rechercher des règles",
+    "searchHint": "Effacez la recherche pour changer l’ordre.",
+    "sentence": {
+      "condition": "{field} {operator} « {value} »",
+      "conditionBlank": "{field} {operator}",
+      "conditionRange": "{field} {operator} {low} et {high}"
+    },
+    "title": "Règles bancaires",
+    "toggle": "{name} activée",
+    "toggleFailed": "{name} n’a pas pu être activée ou désactivée. Réessayez.",
+    "type": {
+      "receive": "Recevoir de l’argent",
+      "spend": "Dépenser de l’argent",
+      "transfer": "Virement"
+    },
+    "typeTabs": "Type de règle"
+  },
   "banking": {
     "add": {
       "cancel": "Cancel",
