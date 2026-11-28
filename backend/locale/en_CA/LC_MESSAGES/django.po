@@ -11303,3 +11303,9 @@ msgstr ""
 
 msgid "This transfer is already voided."
 msgstr ""
+
+msgid "Fund petty cash"
+msgstr ""
+
+msgid "Pay credit card"
+msgstr ""
