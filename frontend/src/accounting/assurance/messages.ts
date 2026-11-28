@@ -291,4 +291,94 @@ export const am = defineMessages({
     defaultMessage: "Working out the proposed entry…",
     description: "While the fix loads",
   },
+  // K-09-T23 — tabs and rule settings
+  tabs: { id: "assurance.tabs", defaultMessage: "Assurance views", description: "Tab list label" },
+  tabFindings: { id: "assurance.tabFindings", defaultMessage: "Findings", description: "Tab" },
+  tabRules: { id: "assurance.tabRules", defaultMessage: "Rule settings", description: "Tab" },
+  rulesIntro: {
+    id: "assurance.rulesIntro",
+    defaultMessage:
+      "Switch a rule off, change its severity or its parameters. Changes apply on the next run.",
+    description: "Text above the rule settings",
+  },
+  ruleColumn: { id: "assurance.ruleColumn", defaultMessage: "Rule", description: "Column" },
+  onColumn: { id: "assurance.onColumn", defaultMessage: "On", description: "Column" },
+  severityColumn: {
+    id: "assurance.severityColumn",
+    defaultMessage: "Severity",
+    description: "Column",
+  },
+  paramsColumn: {
+    id: "assurance.paramsColumn",
+    defaultMessage: "Parameters",
+    description: "Column",
+  },
+  ruleOn: {
+    id: "assurance.ruleOn",
+    defaultMessage: "{rule} is on",
+    description: "Accessible name of a rule's toggle",
+  },
+  severityOf: {
+    id: "assurance.severityOf",
+    defaultMessage: "Severity of {rule}",
+    description: "Accessible name of a rule's severity",
+  },
+  noParams: {
+    id: "assurance.noParams",
+    defaultMessage: "No parameters",
+    description: "A rule without parameters",
+  },
+  onPosting: {
+    id: "assurance.onPosting",
+    defaultMessage: "Also checked on posting",
+    description: "The rule runs incrementally",
+  },
+  codesHint: {
+    id: "assurance.codesHint",
+    defaultMessage: "Account codes, separated by commas",
+    description: "Hint of an account-codes parameter",
+  },
+  paramProblem: {
+    id: "assurance.paramProblem",
+    defaultMessage:
+      "{kind, select, whole {Enter a whole number.} number {Enter an amount with at most two decimals.} min {Enter at least {min}.} max {Enter at most {max}.} choice {Choose one of the options.} codes {Enter account codes separated by commas.} other {Enter a short text (100 characters at most).}}",
+    description: "Why a parameter can't be saved",
+  },
+  resetDefaults: {
+    id: "assurance.resetDefaults",
+    defaultMessage: "Reset to defaults",
+    description: "Button",
+  },
+  rulesSaved: {
+    id: "assurance.rulesSaved",
+    defaultMessage:
+      "{count, plural, one {# rule saved.} other {# rules saved.}} Changes apply on the next run.",
+    description: "After saving the rule settings",
+  },
+  rulesUnchanged: {
+    id: "assurance.rulesUnchanged",
+    defaultMessage: "Nothing to save.",
+    description: "Save with no change",
+  },
+  rulesFixErrors: {
+    id: "assurance.rulesFixErrors",
+    defaultMessage: "Correct the highlighted parameters before saving.",
+    description: "Save refused by validation",
+  },
+  rulesLoadFailed: {
+    id: "assurance.rulesLoadFailed",
+    defaultMessage: "The rule settings couldn't be loaded",
+    description: "Error state title",
+  },
+  changed: {
+    id: "assurance.changed",
+    defaultMessage: "Changed",
+    description: "Badge: unsaved change of a rule",
+  },
+  choice: {
+    id: "assurance.choice",
+    defaultMessage:
+      "{value, select, auto {Automatic} transfer {Transfer from a bank account} shareholder_loan {Shareholder loan} other {{value}}}",
+    description: "Option of a choice parameter",
+  },
 });

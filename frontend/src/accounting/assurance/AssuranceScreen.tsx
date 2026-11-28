@@ -6,7 +6,8 @@
  * explanation and the actions View source / Propose fix / Acknowledge / Mark false positive.
  * *Run the rules* starts a full run in the background and refreshes the list after it. Propose fix
  * opens the proposed-fix drawer (K-09-T22, `FixDrawer`): the reasoning and an editable draft
- * journal that becomes a draft in Journals › Draft; a recode fix opens Find & recode.
+ * journal that becomes a draft in Journals › Draft; a recode fix opens Find & recode. Tabs
+ * (`?tab=`): *Findings* and *Rule settings* (K-09-T23, `RuleSettings`).
  */
 import {
   Button,
@@ -14,6 +15,7 @@ import {
   EmptyState,
   ErrorState,
   INPUT_BASE,
+  Tabs,
   formatDate,
   type AppLocale,
 } from "@numo9/ui";
@@ -27,6 +29,8 @@ import { AssuranceFindings, ScoreCard, type FindingAction } from "./AssuranceFin
 import { FixDrawer } from "./FixDrawer";
 import { groupFindings, SEVERITIES } from "./grouping";
 import { am } from "./messages";
+import { RuleSettings } from "./RuleSettings";
+import { isAssuranceTab, type AssuranceTab } from "./tabs";
 
 const STATUSES: readonly ("" | FindingStatus)[] = [
   "",
@@ -37,7 +41,13 @@ const STATUSES: readonly ("" | FindingStatus)[] = [
 ];
 const REFRESH_MS = 4000;
 
-export function AssuranceScreen({ org }: { org: string }) {
+export function AssuranceScreen({
+  org,
+  initialTab = "findings",
+}: {
+  org: string;
+  initialTab?: AssuranceTab;
+}) {
   const fm = useFormatMessage();
   const locale = useLocale() as AppLocale;
   const ids = useId();
@@ -53,6 +63,7 @@ export function AssuranceScreen({ org }: { org: string }) {
   const [falsePositive, setFalsePositive] = useState<Finding | null>(null);
   const [reason, setReason] = useState("");
   const [fixFor, setFixFor] = useState<Finding | null>(null);
+  const [tab, setTab] = useState<AssuranceTab>(initialTab);
 
   const load = useCallback(async () => {
     const [s, f] = await Promise.all([
@@ -141,87 +152,120 @@ export function AssuranceScreen({ org }: { org: string }) {
           {fm(am.run)}
         </Button>
       </header>
-      {error ? (
-        <p role="alert" className="text-sm text-fg-danger">
-          {error}
-        </p>
-      ) : null}
-      <p role="status" className="text-sm text-fg-success">
-        {notice}
-      </p>
-      {failed ? (
-        <ErrorState
-          title={fm(am.loadFailed)}
-          retryLabel={fm(am.retry)}
-          onRetry={() => void load()}
-        />
-      ) : null}
-      {summary ? <ScoreCard summary={summary} /> : null}
-      <div
-        role="group"
-        aria-label={fm(am.filters)}
-        className="flex flex-wrap items-end gap-3"
-        data-assurance-filters=""
-      >
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            aria-pressed={severities.length === 0}
-            className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
-            onClick={() => setSeverities([])}
-          >
-            {fm(am.allSeverities)}
-          </button>
-          {SEVERITIES.map((severity) => (
-            <button
-              key={severity}
-              type="button"
-              aria-pressed={severities.includes(severity)}
-              className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
-              onClick={() => toggle(severity)}
-              data-severity-chip={severity}
-            >
-              {summary
-                ? fm(am.count, { severity, count: summary.open[severity] })
-                : fm(am.severity, { severity })}
-            </button>
-          ))}
-        </div>
-        <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-status`}>
-          {fm(am.statusLabel)}
-          <select
-            id={`${ids}-status`}
-            className={`${INPUT_BASE} border-border`}
-            value={status}
-            onChange={(event) => setStatus(event.target.value as "" | FindingStatus)}
-          >
-            {STATUSES.map((value) => (
-              <option key={value || "active"} value={value}>
-                {fm(am.status, { status: value || "active" })}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-q`}>
-          {fm(am.search)}
-          <input
-            id={`${ids}-q`}
-            type="search"
-            className={`${INPUT_BASE} border-border`}
-            placeholder={fm(am.searchPlaceholder)}
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-          />
-        </label>
-      </div>
-      {findings && groups.length === 0 && !failed ? (
-        <EmptyState title={fm(am.emptyTitle)} body={fm(am.emptyBody)} />
-      ) : null}
-      <AssuranceFindings
-        org={org}
-        groups={groups}
-        locale={locale}
-        onAction={(action, finding) => void act(action, finding)}
+      <Tabs
+        label={fm(am.tabs)}
+        value={tab}
+        onValueChange={(value) => {
+          if (!isAssuranceTab(value)) return;
+          setTab(value);
+          const url = new URL(window.location.href);
+          if (value === "findings") url.searchParams.delete("tab");
+          else url.searchParams.set("tab", value);
+          window.history.replaceState(null, "", url.toString());
+          if (value === "findings") void load();
+        }}
+        items={[
+          {
+            value: "findings",
+            label: fm(am.tabFindings),
+            content: (
+              <div className="flex flex-col gap-4 pt-4">
+                {error ? (
+                  <p role="alert" className="text-sm text-fg-danger">
+                    {error}
+                  </p>
+                ) : null}
+                <p role="status" className="text-sm text-fg-success">
+                  {notice}
+                </p>
+                {failed ? (
+                  <ErrorState
+                    title={fm(am.loadFailed)}
+                    retryLabel={fm(am.retry)}
+                    onRetry={() => void load()}
+                  />
+                ) : null}
+                {summary ? <ScoreCard summary={summary} /> : null}
+                <div
+                  role="group"
+                  aria-label={fm(am.filters)}
+                  className="flex flex-wrap items-end gap-3"
+                  data-assurance-filters=""
+                >
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      aria-pressed={severities.length === 0}
+                      className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
+                      onClick={() => setSeverities([])}
+                    >
+                      {fm(am.allSeverities)}
+                    </button>
+                    {SEVERITIES.map((severity) => (
+                      <button
+                        key={severity}
+                        type="button"
+                        aria-pressed={severities.includes(severity)}
+                        className="rounded-full border border-border px-3 py-1 text-sm aria-pressed:bg-surface-accent-subtle"
+                        onClick={() => toggle(severity)}
+                        data-severity-chip={severity}
+                      >
+                        {summary
+                          ? fm(am.count, { severity, count: summary.open[severity] })
+                          : fm(am.severity, { severity })}
+                      </button>
+                    ))}
+                  </div>
+                  <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-status`}>
+                    {fm(am.statusLabel)}
+                    <select
+                      id={`${ids}-status`}
+                      className={`${INPUT_BASE} border-border`}
+                      value={status}
+                      onChange={(event) => setStatus(event.target.value as "" | FindingStatus)}
+                    >
+                      {STATUSES.map((value) => (
+                        <option key={value || "active"} value={value}>
+                          {fm(am.status, { status: value || "active" })}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-1 text-sm text-fg" htmlFor={`${ids}-q`}>
+                    {fm(am.search)}
+                    <input
+                      id={`${ids}-q`}
+                      type="search"
+                      className={`${INPUT_BASE} border-border`}
+                      placeholder={fm(am.searchPlaceholder)}
+                      value={text}
+                      onChange={(event) => setText(event.target.value)}
+                    />
+                  </label>
+                </div>
+                {findings && groups.length === 0 && !failed ? (
+                  <EmptyState title={fm(am.emptyTitle)} body={fm(am.emptyBody)} />
+                ) : null}
+                <AssuranceFindings
+                  org={org}
+                  groups={groups}
+                  locale={locale}
+                  onAction={(action, finding) => void act(action, finding)}
+                />
+              </div>
+            ),
+          },
+          {
+            value: "rules",
+            label: fm(am.tabRules),
+            content:
+              tab === "rules" ? (
+                <div className="pt-4">
+                  <RuleSettings org={org} />
+                </div>
+              ) : null,
+          },
+        ]}
       />
       <Dialog
         open={falsePositive !== null}
