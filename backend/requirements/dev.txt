@@ -15,6 +15,6 @@ django-stubs[compatible-mypy]==6.1.2
 djangorestframework-stubs==3.18.1
 # Types of python-dateutil (recurring journal schedules, C-04-T05)
 types-python-dateutil==2.9.0.20261122
-pypdf==6.21.4
+pypdf==7.1.1
 # Local S3 API for the document tests (A-06): moto in server mode
 moto[s3,server]==5.2.5
