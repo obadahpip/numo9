@@ -277,7 +277,8 @@ class StatementImport(AuditedModel, OrgOwnedModel):
     ``file`` is the uploaded file (A-06 document store); ``source_name`` the statement source that
     read it (``file`` for uploads, W-02 adds Numo9's banking app); ``file_format`` what the parser
     found (``ofx``, ``qfx``, ``qbo``, ``csv``, ``xlsx``); ``mapping`` the column mapping used, as it
-    was at import time (F-02-T05 adds the saved-mapping link). The counts are those of the commit:
+    was at import time, and ``statement_mapping`` the saved mapping it started from (F-02-T05).
+    The counts are those of the commit:
     ``lines_total`` read from the file = ``lines_new`` + ``lines_duplicate`` + ``lines_error``."""
 
     bank_account = models.ForeignKey(
@@ -298,6 +299,14 @@ class StatementImport(AuditedModel, OrgOwnedModel):
     source_name = models.CharField(_("source"), max_length=40, default="file")
     file_format = models.CharField(_("format"), max_length=10, blank=True)
     mapping = models.JSONField(_("mapping"), default=dict, blank=True)
+    statement_mapping = models.ForeignKey(
+        "banking.StatementMapping",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="imports",
+        verbose_name=_("saved mapping"),
+    )
     status = models.CharField(
         _("status"),
         max_length=12,
@@ -398,3 +407,86 @@ class StatementLine(OrgOwnedModel):
 
     def __str__(self) -> str:
         return f"{self.date:%Y-%m-%d} {self.amount} {self.description}"
+
+
+# ---- statement mappings (F-02-T05) -------------------------------------------------------------
+
+
+class StatementMapping(AuditedModel, OrgOwnedModel):
+    """How an organisation's CSV / XLSX statements of one layout are read — a saved mapping.
+
+    The fields are those of ``statements.layout.Layout``: ``columns`` (the role of each column by
+    position: date, description, payee, reference, fitid, amount, debit, credit, balance,
+    ignore), ``date_format``, ``sign`` (signed / inverted / debit_credit), ``has_header``,
+    ``skip_rows`` and ``decimal_separator``. ``headers`` is the header row the mapping was made
+    from (empty for files without a header): the auto-detection (F-02-T06) scores a new file's
+    header against it.
+
+    ``builtin_key`` marks the built-in layouts of the Canadian banks (``statements.mappings
+    .BUILTIN``: RBC, TD, Scotiabank, BMO, CIBC, Desjardins, National Bank, Tangerine, a generic
+    credit union and a generic layout), seeded into each organisation on first use and never
+    edited — a person who changes the columns saves their own mapping. ``use_count`` /
+    ``last_used_at`` are bumped by each import that uses it."""
+
+    name = models.CharField(_("name"), max_length=120)
+    institution = models.CharField(_("institution"), max_length=120, blank=True)
+    builtin_key = models.CharField(_("built-in layout"), max_length=40, blank=True)
+    headers = models.JSONField(_("header row"), default=list, blank=True)
+    columns = models.JSONField(_("column roles"), default=list)
+    date_format = models.CharField(_("date format"), max_length=20, default="YYYY-MM-DD")
+    sign = models.CharField(_("sign convention"), max_length=20, default="signed")
+    has_header = models.BooleanField(_("has a header row"), default=True)
+    skip_rows = models.PositiveSmallIntegerField(_("rows to skip"), default=0)
+    decimal_separator = models.CharField(_("decimal separator"), max_length=1, default=".")
+    use_count = models.PositiveIntegerField(_("times used"), default=0)
+    last_used_at = models.DateTimeField(_("last used"), null=True, blank=True)
+
+    audit_exclude: ClassVar[frozenset[str]] = frozenset({"use_count", "last_used_at"})
+
+    class Meta:
+        ordering = ("name", "pk")
+        verbose_name = _("statement mapping")
+        verbose_name_plural = _("statement mappings")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                "organisation",
+                Lower("name"),
+                condition=models.Q(deleted_at__isnull=True),
+                name="banking_stmt_mapping_name_unique",
+            ),
+            models.UniqueConstraint(
+                fields=["organisation", "builtin_key"],
+                condition=models.Q(deleted_at__isnull=True) & ~models.Q(builtin_key=""),
+                name="banking_stmt_mapping_builtin_unique",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(sign__in=["signed", "inverted", "debit_credit"]),
+                name="banking_stmt_mapping_sign_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(decimal_separator__in=[".", ","]),
+                name="banking_stmt_mapping_decimal_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+    @property
+    def is_builtin(self) -> bool:
+        return bool(self.builtin_key)
+
+    def layout(self) -> Any:
+        """The mapping as a ``statements.layout.Layout``."""
+        from .statements.layout import Layout
+
+        return Layout.from_dict(
+            {
+                "columns": self.columns,
+                "date_format": self.date_format,
+                "sign": self.sign,
+                "has_header": self.has_header,
+                "skip_rows": self.skip_rows,
+                "decimal_separator": self.decimal_separator,
+            }
+        )

@@ -11913,3 +11913,93 @@ msgstr "%(name)s ne contient aucun relevé bancaire ni de carte de crédit. Tél
 #, python-format
 msgid "The file holds %(count)s accounts; only account %(account)s is imported. Download one file per account to import the others."
 msgstr "Le fichier contient %(count)s comptes; seul le compte %(account)s est importé. Téléchargez un fichier par compte pour importer les autres."
+
+msgid "Credit union (generic)"
+msgstr "Caisse populaire / coopérative de crédit (générique)"
+
+msgid "Generic (date, description, amount)"
+msgstr "Générique (date, description, montant)"
+
+msgid "Processing"
+msgstr "En traitement"
+
+msgid "Committed"
+msgstr "Importé"
+
+msgid "format"
+msgstr "format"
+
+msgid "lines read"
+msgstr "lignes lues"
+
+msgid "new lines"
+msgstr "nouvelles lignes"
+
+msgid "duplicate lines"
+msgstr "lignes en double"
+
+msgid "lines with errors"
+msgstr "lignes avec erreurs"
+
+msgid "committed at"
+msgstr "importé le"
+
+msgid "statement import"
+msgstr "importation de relevé"
+
+msgid "statement imports"
+msgstr "importations de relevés"
+
+msgid "Uncoded"
+msgstr "Non codée"
+
+msgid "Coded"
+msgstr "Codée"
+
+msgid "Matched"
+msgstr "Rapprochée"
+
+msgid "Ignored"
+msgstr "Ignorée"
+
+msgid "bank transaction ID"
+msgstr "identifiant d’opération bancaire"
+
+msgid "statement line"
+msgstr "ligne de relevé"
+
+msgid "statement lines"
+msgstr "lignes de relevé"
+
+msgid "built-in layout"
+msgstr "disposition intégrée"
+
+msgid "header row"
+msgstr "ligne d’en-tête"
+
+msgid "column roles"
+msgstr "rôles des colonnes"
+
+msgid "date format"
+msgstr "format de date"
+
+msgid "sign convention"
+msgstr "convention de signe"
+
+msgid "has a header row"
+msgstr "comporte une ligne d’en-tête"
+
+msgid "rows to skip"
+msgstr "lignes à ignorer"
+
+msgid "decimal separator"
+msgstr "séparateur décimal"
+
+msgid "statement mapping"
+msgstr "correspondance de relevé"
+
+msgid "statement mappings"
+msgstr "correspondances de relevé"
+
+msgid "saved mapping"
+msgstr "correspondance enregistrée"

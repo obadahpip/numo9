@@ -10881,3 +10881,93 @@ msgstr ""
 #, python-format
 msgid "The file holds %(count)s accounts; only account %(account)s is imported. Download one file per account to import the others."
 msgstr ""
+
+msgid "Credit union (generic)"
+msgstr ""
+
+msgid "Generic (date, description, amount)"
+msgstr ""
+
+msgid "Processing"
+msgstr ""
+
+msgid "Committed"
+msgstr ""
+
+msgid "format"
+msgstr ""
+
+msgid "lines read"
+msgstr ""
+
+msgid "new lines"
+msgstr ""
+
+msgid "duplicate lines"
+msgstr ""
+
+msgid "lines with errors"
+msgstr ""
+
+msgid "committed at"
+msgstr ""
+
+msgid "statement import"
+msgstr ""
+
+msgid "statement imports"
+msgstr ""
+
+msgid "Uncoded"
+msgstr ""
+
+msgid "Coded"
+msgstr ""
+
+msgid "Matched"
+msgstr ""
+
+msgid "Ignored"
+msgstr ""
+
+msgid "bank transaction ID"
+msgstr ""
+
+msgid "statement line"
+msgstr ""
+
+msgid "statement lines"
+msgstr ""
+
+msgid "built-in layout"
+msgstr ""
+
+msgid "header row"
+msgstr ""
+
+msgid "column roles"
+msgstr ""
+
+msgid "date format"
+msgstr ""
+
+msgid "sign convention"
+msgstr ""
+
+msgid "has a header row"
+msgstr ""
+
+msgid "rows to skip"
+msgstr ""
+
+msgid "decimal separator"
+msgstr ""
+
+msgid "statement mapping"
+msgstr ""
+
+msgid "statement mappings"
+msgstr ""
+
+msgid "saved mapping"
+msgstr ""
