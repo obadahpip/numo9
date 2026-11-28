@@ -5,8 +5,10 @@
 1. **validate** — ``validate_journal`` (C-02-T06): every rule, every problem listed;
 2. **period** — ``assert_can_post`` (C-02-T07): lock dates (the module's and the GL's) and
    closed periods, for the entry's date and the person;
-2b. **rules** — ``check_policy`` (C-03): journal types, account flags, expense-journal rules,
-   the cash-balance guard;
+2b. **rules** — ``check_policy`` (C-03): journal types, account flags, expense-journal rules;
+   then the **pre-post cash hook** ``cash_rule`` (C-03-T08, F-07-T03): every bank/cash line of
+   any source (journal, spend, transfer, payment, payroll…) against the organisation's
+   negative-balance policy — ``NegativeBalanceBlocked`` / ``NegativeBalanceWarning``;
 3. **insert** — the entry as a draft, then its lines (``bulk_create``; the append-only trigger
    allows lines only while the entry is a draft, C-02-T04);
 4. **sequence** — the organisation's next journal number (``allocate_journal_number``,
@@ -226,8 +228,8 @@ def post_journal(
         if reversal_of is None:
             auto_reverse_rule(spec, organisation, person)
         overridden = (
-            cash_rule(checked, organisation, person, override_reason)
-            if reversal_of is None and caller is None
+            cash_rule(checked, organisation, person, override_reason, caller=caller)
+            if reversal_of is None
             else []
         )
         entry = JournalEntry(
@@ -474,9 +476,7 @@ def post_entry(
             organisation=organisation,
         )
         auto_reverse_rule(spec, organisation, person)
-        overridden = (
-            cash_rule(checked, organisation, person, override_reason) if caller is None else []
-        )
+        overridden = cash_rule(checked, organisation, person, override_reason, caller=caller)
         if entry.book_scope != checked.book_scope:
             JournalEntry._base_manager.filter(pk=entry.pk).update(book_scope=checked.book_scope)
             entry.book_scope = checked.book_scope

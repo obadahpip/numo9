@@ -20,17 +20,32 @@ the strictest — which is also what the C-03 journal guard did for every bank a
 ``effective_policies(organisation)`` — the action pair for every controlled type (row or
 default); ``seed_cash_policies(organisation)`` writes the default rows — for every new
 organisation (``post_save``) and, by the data migration, every existing one (idempotent).
+
+**Pre-post hook** (F-07-T03) — ``assess(checked, organisation, person, today)`` is the posting
+pipeline's cash policy (registered in ``numo9.ledger.policy.CASH_POLICY`` by the banking app):
+for every bank/cash account (asset, sub-type Bank, accounting view) a posting of **any source**
+takes money out of, the projector's lowest balance from the posting's date on (F-07-T02 — the
+worst of that date, every later day and today) and, when it goes below zero, the action of the
+account type's policy for the person's level (``adviser`` for advisers, ``standard`` for
+everyone else). ``numo9.ledger.policy.cash_rule`` turns them into ``NegativeBalanceBlocked``
+(BLOCK, or WARN for someone without ``accounting.banking.allow_negative``) or
+``NegativeBalanceWarning`` (WARN without a reason). Liabilities (cards, lines of credit, loans)
+are never sub-type Bank assets, so never checked.
 """
 
 from __future__ import annotations
 
+import datetime as dt
 from dataclasses import dataclass
+from dataclasses import replace as _replace
+from decimal import Decimal
 from typing import Any
 
 from numo9.tenancy.context import org_context
 
 from .models import (
     CONTROLLED_TYPES,
+    BankAccount,
     BankAccountType,
     CashControlAction,
     CashControlPolicy,
@@ -102,3 +117,64 @@ def seed_cash_policies(organisation: Any, model: Any = None) -> int:
     if rows:
         model._base_manager.bulk_create(rows, ignore_conflicts=True)
     return len(rows)
+
+
+def level_of(person: Any, organisation: Any) -> str:
+    from numo9.orgsettings.locks import is_adviser
+
+    return ADVISER if is_adviser(person, organisation) else STANDARD
+
+
+def _changes(checked: Any) -> dict[int, tuple[Any, Decimal]]:
+    from numo9.ledger.cash_guard import ACCOUNTING_VIEW, is_cash
+
+    changes: dict[int, tuple[Any, Decimal]] = {}
+    for line in checked.lines:
+        if line.book not in ACCOUNTING_VIEW or not is_cash(line.account):
+            continue
+        account, change = changes.get(line.account.pk, (line.account, Decimal("0.00")))
+        changes[line.account.pk] = (account, change + line.debit - line.credit)
+    return changes
+
+
+def assess(checked: Any, organisation: Any, person: Any, today: dt.date) -> list[Any]:
+    """The posting's bank/cash accounts that go below zero, with the policy's action
+    (``numo9.ledger.cash_guard.Projection`` with ``action`` and ``account_type``)."""
+    from numo9.ledger.cash_guard import Projection
+
+    from .projector import minimum_running_balance
+
+    taken = {pk: v for pk, v in _changes(checked).items() if v[1] < 0}
+    if not taken:
+        return []
+    with org_context(organisation):
+        types = dict(
+            BankAccount._base_manager.filter(gl_account_id__in=sorted(taken)).values_list(
+                "gl_account_id", "type"
+            )
+        )
+    policies = effective_policies(organisation)
+    level = level_of(person, organisation)
+    date = checked.spec.date
+    found: list[Any] = []
+    for pk, (account, change) in taken.items():
+        kind = types.get(pk, UNPROFILED_TYPE)
+        if not is_controlled(kind):
+            continue
+        projected = minimum_running_balance(account, date, change, today=today)
+        if not projected.goes_negative:
+            continue
+        projection = Projection(
+            account,
+            change,
+            projected.at_date,
+            date,
+            projected.at_today,
+            today,
+            projected.lowest,
+            projected.lowest_on,
+        )
+        found.append(
+            _replace(projection, action=policies[kind].for_level(level), account_type=kind)
+        )
+    return found

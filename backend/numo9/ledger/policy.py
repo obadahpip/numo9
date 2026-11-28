@@ -37,15 +37,21 @@ organisation's settings ask for it (C-03-T05):
                                                 expense line without a contact
 ==============================================  ================================================
 
-**Cash below zero** (C-03-T08) — a journal posted by a person (not a system job) that drives a
-bank or cash account below zero (``cash_guard``, C-03-T07):
+**Cash below zero** (C-03-T08, generalised by F-07-T03 to every posting source: journals, spend
+and receive money, transfers, payments, payroll) — a posting by a person (not a system job) that
+drives a bank or cash account below zero (``cash_guard`` / the F-07 projector), as the
+organisation's negative-balance policy says for the account's type and the person (F-07-T01:
+``ALLOW`` / ``WARN`` / ``BLOCK``; by default Cash blocked for non-advisers, everything else
+warned):
 
 ==============================================  ================================================
-``ledger.journal.negative_cash``                someone who isn't an adviser: blocked (409),
+``ledger.journal.negative_cash``                BLOCK (or WARN for someone who may not
+                                                override): ``NegativeBalanceBlocked``, 409,
                                                 naming each account, amount and day
-``ledger.journal.override_reason_required``     an adviser: posted only with a reason of at
-                                                least 10 characters, stored as a
-                                                ``JournalOverride`` and audited
+``ledger.journal.override_reason_required``     WARN: posted only with a reason of at least 10
+                                                characters (``NegativeBalanceWarning``, 409
+                                                without one), stored as a ``JournalOverride``
+                                                and audited
 ==============================================  ================================================
 
 Documents posted by modules (invoices, bills, payroll) carry their own documents and contacts:
@@ -228,9 +234,24 @@ def check_policy(
 
 MIN_OVERRIDE_REASON = 10
 
+#: Postings the cash rule never stops: the re-post of a recode (C-07-T05, an entry that posted
+#: already), the year-end close (no bank lines) and conversion balances (C-05: the balances the
+#: books had). Reversals aren't checked either (a correction must always be possible) — NEG_CASH
+#: (K-09) reports what they leave below zero.
+EXEMPT_CALLERS = frozenset({"recode", "year_end", "conversion"})
+
+#: F-07-T03: the negative-balance policy, set by the banking app (``numo9.banking.cash_controls``
+#: ``assess``): ``assess(checked, organisation, person, today) -> list[Projection]`` — every bank
+#: or cash account the posting would take below zero, each with the policy's ``action`` for the
+#: person (``allow`` / ``warn`` / ``block``). Unset, the C-03 rule applies: block for people who
+#: aren't advisers, warn for advisers.
+CASH_POLICY: list[Any] = []
+
+ALLOW, WARN, BLOCK = "allow", "warn", "block"
+
 
 class NegativeCash(JournalRuleError):
-    """The journal would drive a bank or cash account below zero (C-03-T08)."""
+    """The posting would drive a bank or cash account below zero (C-03-T08, F-07-T03)."""
 
     def __init__(self, message: Any, *, code: str, projections: list[Any], adviser: bool) -> None:
         super().__init__(message, code=code)
@@ -238,40 +259,102 @@ class NegativeCash(JournalRuleError):
         self.adviser = adviser
 
 
+class NegativeBalanceBlocked(NegativeCash):
+    """F-07-T03: the policy blocks it for this person (``ledger.journal.negative_cash``)."""
+
+
+class NegativeBalanceWarning(NegativeCash):
+    """F-07-T03: the policy warns — the posting goes through only with a reason
+    (``ledger.journal.override_reason_required``)."""
+
+
+def _c03_assess(checked: ValidatedJournal, organisation: Any, person: Any, today: Any) -> list[Any]:
+    from dataclasses import replace
+
+    from numo9.orgsettings.locks import is_adviser
+
+    from .cash_guard import shortfalls
+
+    action = WARN if is_adviser(person, organisation) else BLOCK
+    return [replace(p, action=action) for p in shortfalls(checked, organisation, today=today)]
+
+
+def assess_cash(checked: ValidatedJournal, organisation: Any, person: Any) -> list[Any]:
+    """The shortfalls of a posting with the policy's action for ``person`` (``CASH_POLICY``)."""
+    from numo9.orgsettings.locks import local_date
+
+    today = local_date(organisation, timezone.now())
+    assess = CASH_POLICY[0] if CASH_POLICY else _c03_assess
+    return list(assess(checked, organisation, person, today))
+
+
+def may_override(person: Any, organisation: Any) -> bool:
+    """Who may post past a WARN: an adviser, or someone holding
+    ``accounting.banking.allow_negative`` (F-07; every role with the books gets it)."""
+    from numo9.orgsettings.locks import is_adviser
+
+    if is_adviser(person, organisation):
+        return True
+    if not CASH_POLICY:
+        return False
+    from numo9.rbac.catalogue import UnknownPermission
+    from numo9.rbac.resolver import has_perm
+
+    try:
+        return has_perm(person, organisation, "accounting.banking.allow_negative")
+    except UnknownPermission:
+        return False
+
+
 def cash_rule(
     checked: ValidatedJournal,
     organisation: Any,
     person: Any,
     override_reason: str = "",
+    *,
+    caller: str | None = None,
 ) -> list[Any]:
-    """C-03-T08: the shortfalls an adviser overrides (``[]`` when cash stays at zero or more);
-    raises ``NegativeCash`` for anyone else, or for an adviser without a reason."""
-    from numo9.orgsettings.locks import is_adviser, local_date
-
-    from .cash_guard import shortfalls
-
+    """C-03-T08 / F-07-T03, before anything is written: the shortfalls overridden with a reason
+    (``[]`` when nothing goes below zero, or only on accounts the policy allows); raises
+    ``NegativeBalanceBlocked`` when the policy blocks one for this person (or it warns and they
+    may not override), ``NegativeBalanceWarning`` when it warns and no reason is given."""
+    if caller in EXEMPT_CALLERS:
+        return []
     if not getattr(person, "is_authenticated", False):
         return []  # a system job (imports, scheduled postings) answers to its own process
-    found = shortfalls(checked, organisation, today=local_date(organisation, timezone.now()))
+    found = [p for p in assess_cash(checked, organisation, person) if p.action != ALLOW]
     if not found:
         return []
     named = "; ".join(p.message() for p in found)
-    if not is_adviser(person, organisation):
-        raise NegativeCash(
-            _(
-                "%(shortfalls)s. A journal can't take a bank or cash account below zero — "
-                "record the money coming in first, or ask your adviser."
+    overrides = may_override(person, organisation)
+    blocked = [p for p in found if p.action == BLOCK]
+    if blocked or not overrides:
+        from numo9.orgsettings.locks import is_adviser
+
+        adviser = is_adviser(person, organisation)
+        if adviser:
+            text = _(
+                "%(shortfalls)s. This organisation's negative-balance policy blocks it for "
+                "advisers too — change it in Banking settings, or record the money coming in "
+                "first."
             )
-            % {"shortfalls": named},
+        else:
+            text = _(
+                "%(shortfalls)s. A posting can't take this bank or cash account below zero — "
+                "record the money coming in first (for example a transfer), or ask your adviser "
+                "(or someone allowed to approve negative balances) to post it."
+            )
+        raise NegativeBalanceBlocked(
+            text % {"shortfalls": "; ".join(p.message() for p in blocked or found)},
             code="ledger.journal.negative_cash",
-            projections=found,
-            adviser=False,
+            projections=blocked or found,
+            adviser=adviser,
         )
     if len((override_reason or "").strip()) < MIN_OVERRIDE_REASON:
-        raise NegativeCash(
+        raise NegativeBalanceWarning(
             _(
-                "%(shortfalls)s. As an adviser you may post it anyway: give the reason (at least "
-                "%(min)d characters)."
+                "%(shortfalls)s. You may post it anyway: give the reason (at least %(min)d "
+                "characters)."
             )
             % {"shortfalls": named, "min": MIN_OVERRIDE_REASON},
             code="ledger.journal.override_reason_required",

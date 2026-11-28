@@ -49,6 +49,14 @@ class BankingConfig(AppConfig):
         SWEEP_FACTORIES.setdefault("banking.StatementLine", _sweep_statement_line)
         SWEEP_FACTORIES["banking.BankTransfer"] = _sweep_bank_transfer
 
+        # The posting pipeline's negative-balance policy (F-07-T03).
+        from numo9.ledger.policy import CASH_POLICY
+
+        from .cash_controls import assess
+
+        if assess not in CASH_POLICY:
+            CASH_POLICY.append(assess)
+
         # Every new organisation starts with the default negative-balance policies (F-07-T01).
         from django.db.models.signals import post_save
 

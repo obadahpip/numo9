@@ -12365,3 +12365,18 @@ msgstr "règle de solde négatif"
 
 msgid "negative-balance policies"
 msgstr "règles de solde négatif"
+
+#, python-format
+msgid "%(shortfalls)s. This organisation's negative-balance policy blocks it for advisers too — change it in Banking settings, or record the money coming in first."
+msgstr "%(shortfalls)s. La règle de solde négatif de cette organisation le bloque aussi pour les conseillers — modifiez-la dans les paramètres Banque, ou inscrivez d'abord l'argent qui entre."
+
+#, python-format
+msgid "%(shortfalls)s. A posting can't take this bank or cash account below zero — record the money coming in first (for example a transfer), or ask your adviser (or someone allowed to approve negative balances) to post it."
+msgstr "%(shortfalls)s. Une écriture ne peut pas rendre ce compte bancaire ou cette caisse négatif — inscrivez d'abord l'argent qui entre (par exemple un virement), ou demandez à votre conseiller (ou à une personne autorisée à approuver les soldes négatifs) de l'inscrire."
+
+#, python-format
+msgid "%(shortfalls)s. You may post it anyway: give the reason (at least %(min)d characters)."
+msgstr "%(shortfalls)s. Vous pouvez l'inscrire quand même : indiquez la raison (au moins %(min)d caractères)."
+
+msgid "Post a transaction that takes a bank or cash account below zero, with a reason"
+msgstr "Inscrire une opération qui rend un compte bancaire ou une caisse négatif, avec une raison"

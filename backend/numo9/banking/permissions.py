@@ -61,3 +61,14 @@ BANKING_TRANSFER = register(
         Risk.MEDIUM,
     )
 )
+
+#: F-07: post past a negative-balance WARN with a reason ("bank.allow_negative" in the plan).
+#: Advisers always may; every role that keeps the books gets it (not critical).
+BANKING_ALLOW_NEGATIVE = register(
+    Permission(
+        "accounting.banking.allow_negative",
+        _("Post a transaction that takes a bank or cash account below zero, with a reason"),
+        "accounting",
+        Risk.HIGH,
+    )
+)

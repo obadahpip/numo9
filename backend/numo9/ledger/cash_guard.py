@@ -69,6 +69,11 @@ class Projection:
     today: dt.date
     lowest: Decimal
     lowest_on: dt.date
+    #: F-07-T03: what the organisation's negative-balance policy says for this account and the
+    #: person (``allow`` / ``warn`` / ``block``; "" before the policy is applied) and the bank
+    #: account type it was read for.
+    action: str = ""
+    account_type: str = ""
 
     @property
     def goes_negative(self) -> bool:
@@ -92,6 +97,7 @@ class Projection:
             "lowest": f"{self.lowest:.2f}",
             "lowest_on": self.lowest_on.isoformat(),
             "message": self.message(),
+            **({"action": self.action, "account_type": self.account_type} if self.action else {}),
         }
 
 

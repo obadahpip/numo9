@@ -11333,3 +11333,18 @@ msgstr ""
 
 msgid "negative-balance policies"
 msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. This organisation's negative-balance policy blocks it for advisers too — change it in Banking settings, or record the money coming in first."
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. A posting can't take this bank or cash account below zero — record the money coming in first (for example a transfer), or ask your adviser (or someone allowed to approve negative balances) to post it."
+msgstr ""
+
+#, python-format
+msgid "%(shortfalls)s. You may post it anyway: give the reason (at least %(min)d characters)."
+msgstr ""
+
+msgid "Post a transaction that takes a bank or cash account below zero, with a reason"
+msgstr ""
