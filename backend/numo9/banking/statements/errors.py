@@ -84,7 +84,7 @@ LAYOUT_DATE_FORMAT = define(
 )
 LAYOUT_INVALID = define(
     "banking.statement.layout.invalid",
-    _("The column mapping is incomplete: %(reason)s"),
+    _("The column mapping can't be used (%(reason)s). Check the columns on the Map step."),
 )
 
 

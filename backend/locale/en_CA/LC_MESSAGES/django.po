@@ -10839,7 +10839,7 @@ msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the lis
 msgstr ""
 
 #, python-format
-msgid "The column mapping is incomplete: %(reason)s"
+msgid "The column mapping can't be used (%(reason)s). Check the columns on the Map step."
 msgstr ""
 
 #, python-format
@@ -11019,4 +11019,10 @@ msgid "closing balance"
 msgstr ""
 
 msgid "closing balance date"
+msgstr ""
+
+msgid "Statement imported"
+msgstr ""
+
+msgid "Statement import undone"
 msgstr ""

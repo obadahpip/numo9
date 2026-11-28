@@ -4848,7 +4848,7 @@ msgid "imported at"
 msgstr ""
 
 msgid "import"
-msgstr ""
+msgstr "importation"
 
 msgid "imports"
 msgstr ""
@@ -11871,10 +11871,6 @@ msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the lis
 msgstr "« %(format)s » n’est pas un format de date connu de Numo9. Choisissez-en un dans la liste."
 
 #, python-format
-msgid "The column mapping is incomplete: %(reason)s"
-msgstr "La correspondance des colonnes est incomplète : %(reason)s"
-
-#, python-format
 msgid "%(name)s has no statement lines. Download the statement again for a period with transactions."
 msgstr "%(name)s ne contient aucune ligne de relevé. Téléchargez de nouveau le relevé pour une période qui comporte des opérations."
 
@@ -12052,3 +12048,13 @@ msgstr "solde de clôture"
 
 msgid "closing balance date"
 msgstr "date du solde de clôture"
+
+#, python-format
+msgid "The column mapping can't be used (%(reason)s). Check the columns on the Map step."
+msgstr "La correspondance des colonnes est inutilisable (%(reason)s). Vérifiez les colonnes à l’étape Correspondance."
+
+msgid "Statement imported"
+msgstr "Relevé importé"
+
+msgid "Statement import undone"
+msgstr "Importation de relevé annulée"

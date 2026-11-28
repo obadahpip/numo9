@@ -29,6 +29,7 @@ from typing import Any
 from django.db import transaction
 from django.utils import timezone
 
+from numo9.audit import service as audit
 from numo9.jobs.models import JobRun
 from numo9.jobs.runtime import start_job
 
@@ -189,7 +190,9 @@ def commit_import(
     ``skip_errors``; the batch ends ``committed`` with its counts, its layout and saved mapping;
     the layout becomes the bank account's choice (``remember_mapping``). The statement's opening
     and closing balances are kept on the batch, and the closing one becomes the account's
-    statement balance and date unless the account shows a later one (F-02-T14)."""
+    statement balance and date unless the account shows a later one (F-02-T14). The audit log
+    gets ``banking.statementimport.committed`` with the file, the counts and the person
+    (F-02-T15)."""
     bank = BankAccount._base_manager.get(pk=batch.bank_account_id)
     lines = source.fetch_lines()
     prints = fingerprint_lines(account_key(bank), lines)
@@ -227,6 +230,19 @@ def commit_import(
             headers = _headers(source, layout)
             locked.statement_mapping = remember_mapping(bank, layout, mapping, headers, user=user)
         locked.save()
+        audit.record(
+            "banking.statementimport.committed",
+            obj=locked,
+            actor=user,
+            meta={
+                "bank_account": str(bank.public_id),
+                "file_name": locked.file_name,
+                "format": locked.file_format,
+                "lines": counts,
+                "mapping": locked.statement_mapping.name if locked.statement_mapping else "",
+                "skip_errors": skip_errors,
+            },
+        )
     if progress:
         progress(steps, steps)
     batch.refresh_from_db()
@@ -342,7 +358,7 @@ def undo_import(batch: StatementImport, *, user: Any = None) -> StatementImport:
     then counts). Lines still uncoded or ignored are deleted — not soft-deleted: they were never
     postings, and the same file can then be imported again. The batch stays in the history as
     ``undone``. A statement balance this import set goes back to the previous import's (F-02-T14).
-    """
+    The audit log gets ``banking.statementimport.undone`` with the lines removed (F-02-T15)."""
     with transaction.atomic():
         # The account first, then the batch — the commit's order, so the two never deadlock.
         bank = BankAccount._base_manager.select_for_update().get(pk=batch.bank_account_id)
@@ -356,11 +372,21 @@ def undo_import(batch: StatementImport, *, user: Any = None) -> StatementImport:
             raise ImportInUse(
                 list(StatementLine.objects.filter(pk__in=in_use).order_by("date", "pk"))
             )
-        StatementLine.objects.filter(statement_import=locked).delete()
+        removed, _by_model = StatementLine.objects.filter(statement_import=locked).delete()
         _restore_statement_balance(bank, locked)
         locked.status = StatementImportStatus.UNDONE
         locked.undone_at = timezone.now()
         locked.save(update_fields=["status", "undone_at", "updated_at"])
+        audit.record(
+            "banking.statementimport.undone",
+            obj=locked,
+            actor=user,
+            meta={
+                "bank_account": str(bank.public_id),
+                "file_name": locked.file_name,
+                "lines_removed": removed,
+            },
+        )
     batch.refresh_from_db()
     return batch
 
