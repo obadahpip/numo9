@@ -12398,3 +12398,10 @@ msgstr "Indiquez chaque type de compte une seule fois."
 
 msgid "Change banking settings: what happens when a posting would take an account below zero"
 msgstr "Modifier les paramètres Banque : ce qui se passe quand une écriture rendrait un compte négatif"
+
+msgid "Overdrawn bank and cash accounts are presented as current liabilities (ASPE 1510)."
+msgstr "Les comptes bancaires et les caisses à découvert sont présentés dans les passifs à court terme (NCECF 1510)."
+
+#, python-format
+msgid "Bank overdraft — %(name)s"
+msgstr "Découvert bancaire — %(name)s"

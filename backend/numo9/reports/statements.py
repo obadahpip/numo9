@@ -8,6 +8,10 @@
   empty organisation), contra accounts (accumulated amortization) directly under their asset,
   retained earnings (the account + every revenue and expense before the financial year) and
   **current year earnings** computed, as at a date (today by default) and comparatives;
+  **overdrafts** (K-02-T04): an asset bank or cash account overdrawn at a date (the F-07-T09
+  hook) leaves current assets in that column and shows in current liabilities as "Bank
+  overdraft — <name>" for the amount owed, with the note row ``note:overdraft`` (ASPE 1510) and
+  an ``info`` alert ``reports.bs.overdraft_reclassified`` naming the accounts;
 - ``integrity(organisation, as_of, book)`` (K-02-T05) — assets = liabilities + equity and net
   income = Δ retained earnings + Δ current-year earnings; a failure is a red banner on the run
   (``ReportResult.alerts``) and a ``reports.integrity_failed`` event for monitoring (S-04).
@@ -291,6 +295,13 @@ def balance_figures(
     return BalanceData(dates, accounts, balances, retained, current, overdrawn)
 
 
+def overdraft_note() -> str:
+    """K-02-T04: the note under current liabilities when an overdraft was reclassified."""
+    return str(
+        _("Overdrawn bank and cash accounts are presented as current liabilities (ASPE 1510).")
+    )
+
+
 def _ordered_non_current(accounts: list[Any]) -> list[Any]:
     """Each contra account directly after its asset: after the parent it sits under, or after the
     last of that parent's other sub-accounts ("Equipment — cost"); unparented contras after the
@@ -343,20 +354,37 @@ class BalanceSheetReport(ReportDefinition):
             values = data.balances.get(account.pk, [ZERO] * width)
             return [sign * v for v in values]
 
+        # K-02-T04: overdrawn asset bank/cash accounts (F-07-T09) leave current assets in the
+        # columns where they are overdrawn and show in current liabilities as what is owed.
+        owed: dict[int, list[Decimal]] = {}
+        overdrawn_accounts: dict[int, Any] = {}
+        for found in data.overdrawn:
+            owed.setdefault(found.account.pk, [ZERO] * width)[found.column] = -found.balance
+            overdrawn_accounts[found.account.pk] = found.account
+
+        def shown_figures(account: Any, sign: int, key: str) -> list[Decimal]:
+            values = figures(account, sign)
+            if key == "current_assets" and account.pk in owed:
+                return [ZERO if o else v for v, o in zip(values, owed[account.pk], strict=True)]
+            return values
+
         def group(
             key: str, label: Any, subtypes: tuple[str, ...], sign: int, level: int = 1
         ) -> list[Decimal]:
             members = [a for a in data.accounts if a.subtype in subtypes]
             if key == "non_current_assets":
                 members = _ordered_non_current(members)
-            shown = [a for a in members if any(figures(a, sign))]
+            shown = [a for a in members if any(shown_figures(a, sign, key))]
             rows.append(ReportRow(f"group:{key}", str(label), "section", level=level))
+            lines: list[list[Decimal]] = []
             for account in shown:
+                values = shown_figures(account, sign, key)
+                lines.append(values)
                 rows.append(
                     ReportRow(
                         f"account:{account.code}",
                         _label(account),
-                        values=_v(figures(account, sign)),
+                        values=_v(values),
                         level=level + (2 if account.subtype == "accumulated_amortisation" else 1),
                         drill={
                             "account": account.code,
@@ -365,7 +393,24 @@ class BalanceSheetReport(ReportDefinition):
                         },
                     )
                 )
-            total = _sum([figures(a, sign) for a in shown], width)
+            if key == "current_liabilities":
+                for pk, values in owed.items():
+                    account = overdrawn_accounts[pk]
+                    lines.append(values)
+                    rows.append(
+                        ReportRow(
+                            f"overdraft:{account.code}",
+                            _("Bank overdraft — %(name)s") % {"name": account.name},
+                            values=_v(values),
+                            level=level + 1,
+                            drill={
+                                "account": account.code,
+                                "book": params["book"],
+                                "columns": drill_columns,
+                            },
+                        )
+                    )
+            total = _sum(lines, width)
             rows.append(
                 ReportRow(
                     f"total:{key}",
@@ -375,6 +420,8 @@ class BalanceSheetReport(ReportDefinition):
                     level=level,
                 )
             )
+            if key == "current_liabilities" and owed:
+                rows.append(ReportRow("note:overdraft", overdraft_note(), "text", level=level))
             return total
 
         rows.append(ReportRow("section:assets", _("Assets"), "section"))
