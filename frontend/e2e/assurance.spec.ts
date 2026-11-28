@@ -96,7 +96,7 @@ test("propose fix shows the draft entry and creates it", async ({ page }) => {
     .click();
   const dialog = page.getByRole("dialog", { name: "Proposed fix" });
   await expect(dialog.locator("[data-fix-lines] tbody tr")).toHaveCount(2);
-  await expect(dialog).toContainText("2900 · Shareholder Loan");
+  await expect(dialog).toContainText("the owner most likely paid personally");
   await dialog.getByRole("button", { name: "Create draft journal" }).click();
   await expect(dialog.getByRole("link", { name: "Open the draft" })).toBeVisible();
   expect(sent.map((s) => s.url)).toEqual(["fix"]);
@@ -113,5 +113,6 @@ test("mark false positive asks for a reason", async ({ page }) => {
   await expect(dialog.getByRole("button", { name: "Save" })).toBeDisabled();
   await dialog.getByLabel("Reason").fill("Imported from Xero");
   await dialog.getByRole("button", { name: "Save" }).click();
+  await expect(dialog).toBeHidden();
   expect(sent[0]).toEqual({ url: "false-positive", body: { reason: "Imported from Xero" } });
 });

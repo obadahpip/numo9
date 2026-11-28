@@ -93,7 +93,11 @@ export const assuranceApi = {
   createFix: (
     org: string,
     id: string,
-    body: { lines?: Pick<FixLine, "account" | "debit" | "credit" | "description">[] } = {},
+    body: {
+      lines?: Pick<FixLine, "account" | "debit" | "credit" | "description">[];
+      date?: string;
+      narration?: string;
+    } = {},
   ): Result<{ draft: { id: string; status: string }; finding: Finding }> =>
     apiRequest(`${finding(org, id)}/fix`, { method: "POST", body }),
   run: (org: string): Result<{ job: string }> =>

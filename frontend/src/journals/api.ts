@@ -58,3 +58,46 @@ export const journalsUrl = (org: string, suffix = "") =>
 
 export const getJournal = (org: string, id: string): Promise<ApiResult<Journal>> =>
   apiRequest<Journal>(journalsUrl(org, `/${encodeURIComponent(id)}`));
+
+/** One row of the journals list (`GET journals?status=`, C-02-T15). */
+export interface JournalSummary {
+  id: string;
+  number: string;
+  date: string;
+  type: string;
+  journal_type: string;
+  journal_type_label: string;
+  status: JournalStatus;
+  narration: string;
+  total: string;
+  lines: number;
+}
+
+export interface JournalPage {
+  results: JournalSummary[];
+  count: number;
+  next_offset: number | null;
+}
+
+/** The journals list's tabs (K-09-T22; Phase 1 journals list: All / Draft / Awaiting / Posted / Reversed). */
+export const JOURNAL_TABS = ["all", "draft", "awaiting_approval", "posted", "reversed"] as const;
+export type JournalTab = (typeof JOURNAL_TABS)[number];
+
+export const isJournalTab = (value: unknown): value is JournalTab =>
+  typeof value === "string" && (JOURNAL_TABS as readonly string[]).includes(value);
+
+/** The `status` query of a tab: "all" asks for every status (the API alone answers posted and reversed). */
+export function tabStatuses(tab: JournalTab): string {
+  return tab === "all" ? "draft,awaiting_approval,posted,reversed" : tab;
+}
+
+export const listJournals = (
+  org: string,
+  tab: JournalTab,
+  { q = "", offset = 0 }: { q?: string; offset?: number } = {},
+): Promise<ApiResult<JournalPage>> => {
+  const params = new URLSearchParams({ status: tabStatuses(tab), limit: "50" });
+  if (q.trim()) params.set("q", q.trim());
+  if (offset) params.set("offset", String(offset));
+  return apiRequest<JournalPage>(journalsUrl(org, `?${params.toString()}`));
+};

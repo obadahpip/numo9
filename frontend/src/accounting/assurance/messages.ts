@@ -193,4 +193,102 @@ export const am = defineMessages({
     defaultMessage: "There's no entry to propose for this finding now.",
     description: "No proposal",
   },
+  // K-09-T22 — proposed-fix drawer
+  fixNarration: {
+    id: "assurance.fixNarration",
+    defaultMessage: "Narration",
+    description: "Narration field of the proposed entry",
+  },
+  fixDateLabel: {
+    id: "assurance.fixDateLabel",
+    defaultMessage: "Date",
+    description: "Date field of the proposed entry",
+  },
+  fixLines: {
+    id: "assurance.fixLines",
+    defaultMessage: "Lines of the draft journal",
+    description: "Caption of the editable grid",
+  },
+  description: {
+    id: "assurance.description",
+    defaultMessage: "Description",
+    description: "Column",
+  },
+  accountOfLine: {
+    id: "assurance.accountOfLine",
+    defaultMessage: "Account, line {line}",
+    description: "Accessible name of a line's account",
+  },
+  debitOfLine: {
+    id: "assurance.debitOfLine",
+    defaultMessage: "Debit, line {line}",
+    description: "Accessible name of a line's debit",
+  },
+  creditOfLine: {
+    id: "assurance.creditOfLine",
+    defaultMessage: "Credit, line {line}",
+    description: "Accessible name of a line's credit",
+  },
+  descriptionOfLine: {
+    id: "assurance.descriptionOfLine",
+    defaultMessage: "Description, line {line}",
+    description: "Accessible name of a line's description",
+  },
+  removeLine: {
+    id: "assurance.removeLine",
+    defaultMessage: "Remove line {line}",
+    description: "Remove a line of the proposed entry",
+  },
+  lineActions: {
+    id: "assurance.lineActions",
+    defaultMessage: "Line actions",
+    description: "Header of the remove-line column",
+  },
+  addLine: { id: "assurance.addLine", defaultMessage: "Add a line", description: "Button" },
+  chooseAccount: {
+    id: "assurance.chooseAccount",
+    defaultMessage: "Choose an account",
+    description: "Account placeholder",
+  },
+  balanced: {
+    id: "assurance.balanced",
+    defaultMessage: "Balanced",
+    description: "Debits equal credits",
+  },
+  outOfBalance: {
+    id: "assurance.outOfBalance",
+    defaultMessage: "Out of balance by {amount}",
+    description: "Debits differ from credits",
+  },
+  problem: {
+    id: "assurance.problem",
+    defaultMessage:
+      "{problem, select, amount {Amounts are positive numbers with at most two decimals.} lines {A journal needs at least two lines with an account and an amount.} other {Debits and credits must be equal and not zero.}}",
+    description: "Why the draft can't be created yet",
+  },
+  useAlternative: {
+    id: "assurance.useAlternative",
+    defaultMessage: "Use this option",
+    description: "Load another proposed entry into the grid",
+  },
+  draftNever: {
+    id: "assurance.draftNever",
+    defaultMessage: "The entry is saved as a draft: nothing is posted until you post it yourself.",
+    description: "Reassurance in the fix drawer",
+  },
+  openDraftTab: {
+    id: "assurance.openDraftTab",
+    defaultMessage: "See it in Journals › Draft",
+    description: "Link to the journals Draft tab",
+  },
+  recodeChanges: {
+    id: "assurance.recodeChanges",
+    defaultMessage: "Suggested change: {changes}",
+    description: "The change a recode fix proposes",
+  },
+  loadingFix: {
+    id: "assurance.loadingFix",
+    defaultMessage: "Working out the proposed entry…",
+    description: "While the fix loads",
+  },
 });

@@ -5,8 +5,8 @@
  * a status filter and a text search, then the findings grouped by rule with their plain-language
  * explanation and the actions View source / Propose fix / Acknowledge / Mark false positive.
  * *Run the rules* starts a full run in the background and refreshes the list after it. Propose fix
- * shows the proposed entry with its reasoning and turns it into a draft journal (the editable
- * drawer is K-09-T22); a recode fix opens Find & recode.
+ * opens the proposed-fix drawer (K-09-T22, `FixDrawer`): the reasoning and an editable draft
+ * journal that becomes a draft in Journals › Draft; a recode fix opens Find & recode.
  */
 import {
   Button,
@@ -15,25 +15,16 @@ import {
   ErrorState,
   INPUT_BASE,
   formatDate,
-  formatMoney,
-  sumDecimals,
   type AppLocale,
 } from "@numo9/ui";
-import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
 
 import { useFormatMessage } from "@/i18n";
 
-import {
-  assuranceApi,
-  type Finding,
-  type FindingStatus,
-  type Fix,
-  type Severity,
-  type Summary,
-} from "./api";
+import { assuranceApi, type Finding, type FindingStatus, type Severity, type Summary } from "./api";
 import { AssuranceFindings, ScoreCard, type FindingAction } from "./AssuranceFindings";
+import { FixDrawer } from "./FixDrawer";
 import { groupFindings, SEVERITIES } from "./grouping";
 import { am } from "./messages";
 
@@ -62,8 +53,6 @@ export function AssuranceScreen({ org }: { org: string }) {
   const [falsePositive, setFalsePositive] = useState<Finding | null>(null);
   const [reason, setReason] = useState("");
   const [fixFor, setFixFor] = useState<Finding | null>(null);
-  const [fix, setFix] = useState<Fix | null | undefined>(undefined);
-  const [draft, setDraft] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const [s, f] = await Promise.all([
@@ -110,10 +99,6 @@ export function AssuranceScreen({ org }: { org: string }) {
     }
     if (action === "fix") {
       setFixFor(finding);
-      setFix(undefined);
-      setDraft(null);
-      const answer = await assuranceApi.fix(org, finding.id).catch(() => null);
-      setFix(answer?.status === 200 ? answer.body.fix : null);
       return;
     }
     const answer = await (
@@ -137,20 +122,6 @@ export function AssuranceScreen({ org }: { org: string }) {
       await load();
     } else setError(answer?.body?.detail || fm(am.failed));
   };
-
-  const createDraft = async () => {
-    if (!fixFor) return;
-    setBusy(true);
-    const answer = await assuranceApi.createFix(org, fixFor.id).catch(() => null);
-    setBusy(false);
-    if (answer?.status === 201) {
-      setDraft(answer.body.draft.id);
-      setNotice(fm(am.draftCreated));
-      await load();
-    } else setError(answer?.body?.detail || fm(am.failed));
-  };
-
-  const money = (value: string) => formatMoney(value, { locale, currency: "CAD" });
 
   return (
     <div className="flex flex-col gap-4" data-assurance="">
@@ -284,96 +255,16 @@ export function AssuranceScreen({ org }: { org: string }) {
           />
         </label>
       </Dialog>
-      <Dialog
-        open={fixFor !== null}
-        onOpenChange={(open) => (open ? null : setFixFor(null))}
-        title={fm(am.fixTitle)}
-        closeLabel={fm(am.close)}
-        size="lg"
-        footer={
-          fix?.kind === "journal" && !draft ? (
-            <>
-              <Button variant="secondary" onClick={() => setFixFor(null)}>
-                {fm(am.cancel)}
-              </Button>
-              <Button variant="primary" disabled={busy} onClick={() => void createDraft()}>
-                {fm(am.createDraft)}
-              </Button>
-            </>
-          ) : null
-        }
-      >
-        {fix === null ? <p className="text-sm text-fg">{fm(am.noFix)}</p> : null}
-        {fix ? (
-          <div className="flex flex-col gap-3" data-fix-kind={fix.kind}>
-            <h3 className="text-sm font-semibold text-fg">{fm(am.fixWhy)}</h3>
-            <p className="text-sm text-fg">{fix.reasoning}</p>
-            {fix.kind === "journal" ? (
-              <>
-                {fix.date ? (
-                  <p className="text-sm text-fg-muted">
-                    {fm(am.fixDate, { date: formatDate(fix.date, { locale }) })}
-                  </p>
-                ) : null}
-                <table className="w-full text-sm" data-fix-lines="">
-                  <thead>
-                    <tr className="text-start text-fg-muted">
-                      <th scope="col" className="text-start">
-                        {fm(am.account)}
-                      </th>
-                      <th scope="col" className="text-end">
-                        {fm(am.debit)}
-                      </th>
-                      <th scope="col" className="text-end">
-                        {fm(am.credit)}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {fix.lines.map((line) => (
-                      <tr key={`${line.account}-${line.debit}-${line.credit}`}>
-                        <td>{line.label}</td>
-                        <td className="text-end tabular-nums">
-                          {Number(line.debit) ? money(line.debit) : ""}
-                        </td>
-                        <td className="text-end tabular-nums">
-                          {Number(line.credit) ? money(line.credit) : ""}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <p className="text-sm text-fg-muted">
-                  {fm(am.totals, {
-                    debit: money(sumDecimals(fix.lines.map((l) => l.debit))),
-                    credit: money(sumDecimals(fix.lines.map((l) => l.credit))),
-                  })}
-                </p>
-                {fix.alternatives.map((alternative) => (
-                  <p key={alternative.reasoning} className="text-sm text-fg-muted">
-                    {fm(am.alternatives, { text: alternative.reasoning })}
-                  </p>
-                ))}
-                {draft ? (
-                  <Link
-                    href={`/o/${org}/accounting/journals/${draft}`}
-                    className="text-sm text-fg-accent-strong underline"
-                  >
-                    {fm(am.openDraft)}
-                  </Link>
-                ) : null}
-              </>
-            ) : (
-              <Link
-                href={`/o/${org}/accounting/recode`}
-                className="text-sm text-fg-accent-strong underline"
-              >
-                {fm(am.openRecode)}
-              </Link>
-            )}
-          </div>
-        ) : null}
-      </Dialog>
+      <FixDrawer
+        org={org}
+        locale={locale}
+        finding={fixFor}
+        onClose={() => setFixFor(null)}
+        onDrafted={() => {
+          setNotice(fm(am.draftCreated));
+          void load();
+        }}
+      />
     </div>
   );
 }
