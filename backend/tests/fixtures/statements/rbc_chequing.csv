@@ -1,0 +1,6 @@
+"Account Type","Account Number","Transaction Date","Cheque Number","Description 1","Description 2","CAD$","USD$"
+Chequing,01234-5678901,6/3/2026,,"Tim Hortons #1234","Toronto ON",-4.25,
+Chequing,01234-5678901,6/3/2026,,"Tim Hortons #1234","Toronto ON",-4.25,
+Chequing,01234-5678901,6/5/2026,,"PAYROLL DEPOSIT","ACME INC",2500.00,
+Chequing,01234-5678901,6/10/2026,123,"CHEQUE","",-800.00,
+Chequing,01234-5678901,6/15/2026,,"Hydro One","Bill payment",-132.48,

@@ -7,6 +7,8 @@
  * keep true balances; with no filter the last row's balance is the ledger balance). Filters: date
  * range, contact, amount range, status. The grid's column chooser hides columns; Export CSV /
  * Excel downloads the filtered rows. **History** opens the account's audit trail (F-01-T14).
+ * **Import a statement** opens the statement import wizard (F-02-T12); below the register, the
+ * statement lines (with the "Uncoded" badge) and the import history (F-02-T13).
  */
 import {
   Badge,
@@ -38,6 +40,8 @@ import {
 import { spendUrl } from "./BankingHome";
 import { balanceLabel } from "./BankingHomeScreen";
 import { m, reg, typeLabels } from "./messages";
+import { imp } from "./statements/messages";
+import { StatementPanel } from "./statements/StatementPanel";
 
 const TIME_ZONE = "America/Toronto";
 
@@ -251,6 +255,13 @@ export function BankAccountDetail({ org, account: id }: { org: string; account: 
         >
           {fm(m.receiveMoney)}
         </Link>
+        <Link
+          href={`/o/${org}/banking/${id}/import`}
+          className="rounded-md border border-border px-4 py-2 text-sm font-semibold text-fg"
+          data-import-statement=""
+        >
+          {fm(imp.importStatement)}
+        </Link>
       </div>
       <form
         aria-label={fm(reg.filters)}
@@ -368,6 +379,8 @@ export function BankAccountDetail({ org, account: id }: { org: string; account: 
         }
         height={560}
       />
+      {/* F-02-T13: statement lines with the "Uncoded" badge, and the import history. */}
+      <StatementPanel org={org} account={id} currency={currency} />
     </div>
   );
 }

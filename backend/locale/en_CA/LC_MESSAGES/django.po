@@ -10800,3 +10800,229 @@ msgstr ""
 
 msgid "statement of financial position"
 msgstr ""
+
+#, python-format
+msgid "Row %(row)s: the date is empty. Fill it in, or remove the row from the file."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: date '%(value)s' doesn't match %(format)s. Choose the date format your bank uses on the Map step, or correct the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: there's no amount. Map the amount column (or the withdrawal and deposit columns) on the Map step, or remove the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' is too large. Correct the row."
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: both the withdrawal (%(debit)s) and the deposit (%(credit)s) columns have an amount. Keep only one of them in the row."
+msgstr ""
+
+msgid "Choose the column that holds the date."
+msgstr ""
+
+msgid "Choose the amount column, or the withdrawal and deposit columns."
+msgstr ""
+
+msgid "With separate withdrawal and deposit columns, choose both columns (or switch to a single amount column)."
+msgstr ""
+
+#, python-format
+msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the list."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has no statement lines. Download the statement again for a period with transactions."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't a statement file Numo9 can read. Download the statement from your bank as CSV, Excel (.xlsx), OFX, QFX or QBO and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is an old Excel (.xls) file. Open it in Excel and save it as .xlsx or .csv, or download the statement as CSV, then try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s can't be opened: it may be damaged or password-protected. Download it again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is malformed near row %(row)s (%(reason)s). Download the statement again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is larger than %(max)s MB. Download a shorter period and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has more than %(max)s lines. Download a shorter period and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has no bank or credit-card statement in it. Download the account's statement (not an investment or tax file) and try again."
+msgstr ""
+
+#, python-format
+msgid "The file holds %(count)s accounts; only account %(account)s is imported. Download one file per account to import the others."
+msgstr ""
+
+msgid "Credit union (generic)"
+msgstr ""
+
+msgid "Generic (date, description, amount)"
+msgstr ""
+
+msgid "Processing"
+msgstr ""
+
+msgid "Committed"
+msgstr ""
+
+msgid "format"
+msgstr ""
+
+msgid "lines read"
+msgstr ""
+
+msgid "new lines"
+msgstr ""
+
+msgid "duplicate lines"
+msgstr ""
+
+msgid "lines with errors"
+msgstr ""
+
+msgid "committed at"
+msgstr ""
+
+msgid "statement import"
+msgstr ""
+
+msgid "statement imports"
+msgstr ""
+
+msgid "Uncoded"
+msgstr ""
+
+msgid "Coded"
+msgstr ""
+
+msgid "Matched"
+msgstr ""
+
+msgid "Ignored"
+msgstr ""
+
+msgid "bank transaction ID"
+msgstr ""
+
+msgid "statement line"
+msgstr ""
+
+msgid "statement lines"
+msgstr ""
+
+msgid "built-in layout"
+msgstr ""
+
+msgid "header row"
+msgstr ""
+
+msgid "column roles"
+msgstr ""
+
+msgid "date format"
+msgstr ""
+
+msgid "sign convention"
+msgstr ""
+
+msgid "has a header row"
+msgstr ""
+
+msgid "rows to skip"
+msgstr ""
+
+msgid "decimal separator"
+msgstr ""
+
+msgid "statement mapping"
+msgstr ""
+
+msgid "statement mappings"
+msgstr ""
+
+msgid "saved mapping"
+msgstr ""
+
+#, python-format
+msgid "%(account)s (custom)"
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s is already in this account (imported before, or from an overlapping statement). It won't be imported twice."
+msgstr ""
+
+#, python-format
+msgid "Some lines can't be read (%(count)s). Fix them in the file or on the Map step, or turn on “Skip errors and import valid lines”."
+msgstr ""
+
+#, python-format
+msgid "%(name)s was already imported (or is being imported). Upload the file again to re-import it."
+msgstr ""
+
+#, python-format
+msgid "The file of this import (%(name)s) is no longer available. Upload it again."
+msgstr ""
+
+#, python-format
+msgid "This import can't be undone: %(count)s of its lines are already coded or matched. Undo the coding or matching of those lines first, then undo the import."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't an import that can be undone: it was never committed or is already undone."
+msgstr ""
+
+msgid "That statement import doesn't exist."
+msgstr ""
+
+msgid "That mapping doesn't exist."
+msgstr ""
+
+msgid "Import bank and credit-card statements, and undo an import"
+msgstr ""
+
+msgid "opening balance date"
+msgstr ""
+
+msgid "closing balance"
+msgstr ""
+
+msgid "closing balance date"
+msgstr ""
+
+msgid "Statement imported"
+msgstr ""
+
+msgid "Statement import undone"
+msgstr ""
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' isn't a number. Review the decimal separator on the Map step, or correct the row."
+msgstr ""
+
+#, python-format
+msgid "The column mapping can't be used (%(reason)s). Review the columns on the Map step."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has more than %(max)s columns. Verify that it is a bank statement."
+msgstr ""
+
+msgid "Review the dates (YYYY-MM-DD) and the page size."
+msgstr ""

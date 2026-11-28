@@ -4848,7 +4848,7 @@ msgid "imported at"
 msgstr ""
 
 msgid "import"
-msgstr ""
+msgstr "importation"
 
 msgid "imports"
 msgstr ""
@@ -11832,3 +11832,229 @@ msgstr "Relevé des opérations"
 
 #~ msgid "Letters, digits, dots, hyphens and underscores, e.g. billing."
 #~ msgstr "Lettres, chiffres, points, traits d’union et traits de soulignement, p. ex. facturation."
+
+#, python-format
+msgid "Row %(row)s: the date is empty. Fill it in, or remove the row from the file."
+msgstr "Ligne %(row)s : la date est vide. Inscrivez-la ou retirez la ligne du fichier."
+
+#, python-format
+msgid "Row %(row)s: date '%(value)s' doesn't match %(format)s. Choose the date format your bank uses on the Map step, or correct the row."
+msgstr "Ligne %(row)s : la date « %(value)s » ne correspond pas au format %(format)s. Choisissez le format de date de votre banque à l’étape Correspondance, ou corrigez la ligne."
+
+#, python-format
+msgid "Row %(row)s: there's no amount. Map the amount column (or the withdrawal and deposit columns) on the Map step, or remove the row."
+msgstr "Ligne %(row)s : il n’y a aucun montant. Associez la colonne du montant (ou les colonnes des retraits et des dépôts) à l’étape Correspondance, ou retirez la ligne."
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' is too large. Correct the row."
+msgstr "Ligne %(row)s : le montant « %(value)s » est trop élevé. Corrigez la ligne."
+
+#, python-format
+msgid "Row %(row)s: both the withdrawal (%(debit)s) and the deposit (%(credit)s) columns have an amount. Keep only one of them in the row."
+msgstr "Ligne %(row)s : les colonnes des retraits (%(debit)s) et des dépôts (%(credit)s) ont toutes deux un montant. N’en gardez qu’une dans la ligne."
+
+msgid "Choose the column that holds the date."
+msgstr "Choisissez la colonne qui contient la date."
+
+msgid "Choose the amount column, or the withdrawal and deposit columns."
+msgstr "Choisissez la colonne du montant, ou les colonnes des retraits et des dépôts."
+
+msgid "With separate withdrawal and deposit columns, choose both columns (or switch to a single amount column)."
+msgstr "Avec des colonnes distinctes pour les retraits et les dépôts, choisissez les deux colonnes (ou passez à une seule colonne de montant)."
+
+#, python-format
+msgid "“%(format)s” isn't a date format Numo9 knows. Choose one from the list."
+msgstr "« %(format)s » n’est pas un format de date connu de Numo9. Choisissez-en un dans la liste."
+
+#, python-format
+msgid "%(name)s has no statement lines. Download the statement again for a period with transactions."
+msgstr "%(name)s ne contient aucune ligne de relevé. Téléchargez de nouveau le relevé pour une période qui comporte des opérations."
+
+#, python-format
+msgid "%(name)s isn't a statement file Numo9 can read. Download the statement from your bank as CSV, Excel (.xlsx), OFX, QFX or QBO and try again."
+msgstr "%(name)s n’est pas un fichier de relevé que Numo9 peut lire. Téléchargez le relevé de votre banque en format CSV, Excel (.xlsx), OFX, QFX ou QBO, puis réessayez."
+
+#, python-format
+msgid "%(name)s is an old Excel (.xls) file. Open it in Excel and save it as .xlsx or .csv, or download the statement as CSV, then try again."
+msgstr "%(name)s est un ancien fichier Excel (.xls). Ouvrez-le dans Excel et enregistrez-le en .xlsx ou en .csv, ou téléchargez le relevé en CSV, puis réessayez."
+
+#, python-format
+msgid "%(name)s can't be opened: it may be damaged or password-protected. Download it again."
+msgstr "Impossible d’ouvrir %(name)s : il est peut-être endommagé ou protégé par un mot de passe. Téléchargez-le de nouveau."
+
+#, python-format
+msgid "%(name)s is malformed near row %(row)s (%(reason)s). Download the statement again."
+msgstr "%(name)s est mal formé près de la ligne %(row)s (%(reason)s). Téléchargez de nouveau le relevé."
+
+#, python-format
+msgid "%(name)s is larger than %(max)s MB. Download a shorter period and try again."
+msgstr "%(name)s dépasse %(max)s Mo. Téléchargez une période plus courte, puis réessayez."
+
+#, python-format
+msgid "%(name)s has more than %(max)s lines. Download a shorter period and try again."
+msgstr "%(name)s compte plus de %(max)s lignes. Téléchargez une période plus courte, puis réessayez."
+
+#, python-format
+msgid "%(name)s has no bank or credit-card statement in it. Download the account's statement (not an investment or tax file) and try again."
+msgstr "%(name)s ne contient aucun relevé bancaire ni de carte de crédit. Téléchargez le relevé du compte (et non un fichier de placements ou d’impôt), puis réessayez."
+
+#, python-format
+msgid "The file holds %(count)s accounts; only account %(account)s is imported. Download one file per account to import the others."
+msgstr "Le fichier contient %(count)s comptes; seul le compte %(account)s est importé. Téléchargez un fichier par compte pour importer les autres."
+
+msgid "Credit union (generic)"
+msgstr "Caisse populaire / coopérative de crédit (générique)"
+
+msgid "Generic (date, description, amount)"
+msgstr "Générique (date, description, montant)"
+
+msgid "Processing"
+msgstr "En traitement"
+
+msgid "Committed"
+msgstr "Importé"
+
+msgid "format"
+msgstr "format"
+
+msgid "lines read"
+msgstr "lignes lues"
+
+msgid "new lines"
+msgstr "nouvelles lignes"
+
+msgid "duplicate lines"
+msgstr "lignes en double"
+
+msgid "lines with errors"
+msgstr "lignes avec erreurs"
+
+msgid "committed at"
+msgstr "importé le"
+
+msgid "statement import"
+msgstr "importation de relevé"
+
+msgid "statement imports"
+msgstr "importations de relevés"
+
+msgid "Uncoded"
+msgstr "Non codée"
+
+msgid "Coded"
+msgstr "Codée"
+
+msgid "Matched"
+msgstr "Rapprochée"
+
+msgid "Ignored"
+msgstr "Ignorée"
+
+msgid "bank transaction ID"
+msgstr "identifiant d’opération bancaire"
+
+msgid "statement line"
+msgstr "ligne de relevé"
+
+msgid "statement lines"
+msgstr "lignes de relevé"
+
+msgid "built-in layout"
+msgstr "disposition intégrée"
+
+msgid "header row"
+msgstr "ligne d’en-tête"
+
+msgid "column roles"
+msgstr "rôles des colonnes"
+
+msgid "date format"
+msgstr "format de date"
+
+msgid "sign convention"
+msgstr "convention de signe"
+
+msgid "has a header row"
+msgstr "comporte une ligne d’en-tête"
+
+msgid "rows to skip"
+msgstr "lignes à ignorer"
+
+msgid "decimal separator"
+msgstr "séparateur décimal"
+
+msgid "statement mapping"
+msgstr "correspondance de relevé"
+
+msgid "statement mappings"
+msgstr "correspondances de relevé"
+
+msgid "saved mapping"
+msgstr "correspondance enregistrée"
+
+#, python-format
+msgid "%(account)s (custom)"
+msgstr "%(account)s (personnalisée)"
+
+#, python-format
+msgid "Row %(row)s is already in this account (imported before, or from an overlapping statement). It won't be imported twice."
+msgstr "La ligne %(row)s figure déjà dans ce compte (importée auparavant ou provenant d’un relevé qui chevauche celui-ci). Elle ne sera pas importée deux fois."
+
+#, python-format
+msgid "Some lines can't be read (%(count)s). Fix them in the file or on the Map step, or turn on “Skip errors and import valid lines”."
+msgstr "Certaines lignes sont illisibles (%(count)s). Corrigez-les dans le fichier ou à l’étape Correspondance, ou activez « Ignorer les erreurs et importer les lignes valides »."
+
+#, python-format
+msgid "%(name)s was already imported (or is being imported). Upload the file again to re-import it."
+msgstr "%(name)s a déjà été importé (ou est en cours d’importation). Téléversez de nouveau le fichier pour le réimporter."
+
+#, python-format
+msgid "The file of this import (%(name)s) is no longer available. Upload it again."
+msgstr "Le fichier de cette importation (%(name)s) n’est plus disponible. Téléversez-le de nouveau."
+
+#, python-format
+msgid "This import can't be undone: %(count)s of its lines are already coded or matched. Undo the coding or matching of those lines first, then undo the import."
+msgstr "Impossible d’annuler cette importation : %(count)s de ses lignes sont déjà codées ou rapprochées. Annulez d’abord le codage ou le rapprochement de ces lignes, puis annulez l’importation."
+
+#, python-format
+msgid "%(name)s isn't an import that can be undone: it was never committed or is already undone."
+msgstr "%(name)s n’est pas une importation qu’on peut annuler : elle n’a jamais été confirmée ou elle est déjà annulée."
+
+msgid "That statement import doesn't exist."
+msgstr "Cette importation de relevé n’existe pas."
+
+msgid "That mapping doesn't exist."
+msgstr "Cette correspondance n’existe pas."
+
+msgid "Import bank and credit-card statements, and undo an import"
+msgstr "Importer des relevés bancaires et de carte de crédit, et annuler une importation"
+
+msgid "opening balance date"
+msgstr "date du solde d’ouverture"
+
+msgid "closing balance"
+msgstr "solde de clôture"
+
+msgid "closing balance date"
+msgstr "date du solde de clôture"
+
+msgid "Statement imported"
+msgstr "Relevé importé"
+
+msgid "Statement import undone"
+msgstr "Importation de relevé annulée"
+
+#, python-format
+msgid "Row %(row)s: amount '%(value)s' isn't a number. Review the decimal separator on the Map step, or correct the row."
+msgstr "Ligne %(row)s : le montant « %(value)s » n’est pas un nombre. Vérifiez le séparateur décimal à l’étape Correspondance, ou corrigez la ligne."
+
+#, python-format
+msgid "%(name)s has more than %(max)s columns. Verify that it is a bank statement."
+msgstr "%(name)s compte plus de %(max)s colonnes. Vérifiez qu’il s’agit bien d’un relevé bancaire."
+
+msgid "Review the dates (YYYY-MM-DD) and the page size."
+msgstr "Vérifiez les dates (AAAA-MM-JJ) et la taille de la page."
+
+#, python-format
+msgid "The column mapping can't be used (%(reason)s). Review the columns on the Map step."
+msgstr "La correspondance des colonnes est inutilisable (%(reason)s). Vérifiez les colonnes à l’étape Correspondance."

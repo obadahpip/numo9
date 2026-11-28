@@ -33,8 +33,16 @@ class BankingConfig(AppConfig):
 
         register_banking_search()  # bank accounts and transactions in the global search (F-01-T13)
 
+        from numo9.audit.presenter import ACTION_LABELS
+
+        # Statement imports in the audit log (F-02-T15).
+        ACTION_LABELS.setdefault("banking.statementimport.committed", _("Statement imported"))
+        ACTION_LABELS.setdefault("banking.statementimport.undone", _("Statement import undone"))
+        from .statements import errors as _statement_errors  # noqa: F401 - catalogue entries
+
         SWEEP_FACTORIES["banking.BankAccount"] = _sweep_bank_account
         SWEEP_FACTORIES["banking.BankTransaction"] = _sweep_bank_transaction
+        SWEEP_FACTORIES["banking.StatementImport"] = _sweep_statement_import
 
 
 def _sweep_bank_account(organisation: Any) -> Any:
@@ -80,3 +88,15 @@ def _sweep_bank_transaction(organisation: Any) -> Any:
         ),
         user=None,
     )
+
+
+def _sweep_statement_import(organisation: Any) -> Any:
+    from numo9.tenancy.context import org_context
+
+    from .models import StatementImport
+
+    bank = _sweep_bank_account(organisation)
+    with org_context(organisation):
+        return StatementImport.objects.create(
+            organisation=organisation, bank_account=bank, file_name="sweep.csv"
+        )
