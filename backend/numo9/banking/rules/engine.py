@@ -3,9 +3,10 @@
 ``choose(rules, line)`` evaluates the rules that can code the line — a **spend** rule a line of
 money out (negative amount), a **receive** rule money in (positive), a **transfer** rule either;
 a rule scoped to some bank accounts only their lines — in priority order (1 first; between types
-with the same number, spend / receive before transfer) and returns an ``Outcome``: the
-``winner`` (the first rule whose conditions match) and the ``shadowed`` rules — the later rules
-that match the line too and lose to the winner (the preview shows them, F-04-T08).
+with the same number, spend / receive before transfer, saved rules before an unsaved one) and
+returns an ``Outcome``: the ``winner`` (the first rule whose conditions match) and the
+``shadowed`` rules — the later rules that match the line too and lose to the winner (the preview
+shows them, F-04-T08).
 
 ``load_rules()`` reads the organisation's **active** rules (deleted ones excluded) as
 ``RuleSpec``s. A rule that points at an archived ledger account or bank account is **disabled
@@ -63,7 +64,10 @@ class Outcome:
 
 
 def ordered(rules: Iterable[RuleSpec]) -> list[RuleSpec]:
-    return sorted(rules, key=lambda r: (r.priority, TYPE_ORDER.get(r.type, 9), r.id or 0, r.name))
+    return sorted(
+        rules,
+        key=lambda r: (r.priority, TYPE_ORDER.get(r.type, 9), r.id is None, r.id or 0, r.name),
+    )
 
 
 def choose(rules: Sequence[RuleSpec], line: LineFacts) -> Outcome:
