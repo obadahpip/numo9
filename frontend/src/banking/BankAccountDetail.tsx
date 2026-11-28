@@ -7,6 +7,7 @@
  * keep true balances; with no filter the last row's balance is the ledger balance). Filters: date
  * range, contact, amount range, status. The grid's column chooser hides columns; Export CSV /
  * Excel downloads the filtered rows. **History** opens the account's audit trail (F-01-T14).
+ * **Import a statement** opens the statement import wizard (F-02-T12).
  */
 import {
   Badge,
@@ -38,6 +39,7 @@ import {
 import { spendUrl } from "./BankingHome";
 import { balanceLabel } from "./BankingHomeScreen";
 import { m, reg, typeLabels } from "./messages";
+import { imp } from "./statements/messages";
 
 const TIME_ZONE = "America/Toronto";
 
@@ -250,6 +252,13 @@ export function BankAccountDetail({ org, account: id }: { org: string; account: 
           className="rounded-md border border-border px-4 py-2 text-sm font-semibold text-fg"
         >
           {fm(m.receiveMoney)}
+        </Link>
+        <Link
+          href={`/o/${org}/banking/${id}/import`}
+          className="rounded-md border border-border px-4 py-2 text-sm font-semibold text-fg"
+          data-import-statement=""
+        >
+          {fm(imp.importStatement)}
         </Link>
       </div>
       <form

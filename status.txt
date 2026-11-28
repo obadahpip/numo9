@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 855   Remaining: 1932   Progress: 30.68%
+TOTAL ATOMIC TASKS: 2787   Completed: 856   Remaining: 1931   Progress: 30.71%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1145,7 +1145,7 @@ Phase 1 Core Books  (572 atomic tasks)
 ✅ F-02-T09 — Commit service (atomic batch insert) plus a Celery job for files > 2,000 lines with progress
 ✅ F-02-T10 — Undo import: deletes the batch's lines only if none are CODED/MATCHED; otherwise refused with a list
 ✅ F-02-T11 — API /api/v1/bank-accounts/{id}/imports (upload, preview, commit, undo, history); feature key; permissions
-❌ F-02-T12 — Wizard UI: upload with drag-and-drop, encoding/format detection message, mapping grid, preview tabs, confirm
+✅ F-02-T12 — Wizard UI: upload with drag-and-drop, encoding/format detection message, mapping grid, preview tabs, confirm
 ❌ F-02-T13 — Import history and statement-lines list on the account page with status filters and an "Uncoded" count badge
 ❌ F-02-T14 — Capture statement opening/closing balance from file (OFX LEDGERBAL); update statement_balance on the account
 ❌ F-02-T15 — i18n keys, audit hooks (import, undo), error-message catalogue (e.g. "Row 14: date '13/25/2026' doesn't match DD/MM/YYYY")
