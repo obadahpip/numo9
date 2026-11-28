@@ -12256,3 +12256,41 @@ msgstr "Les règles ne modifient pas cette ligne de relevé (%(reason)s)."
 
 msgid "This statement line has no draft coding to post."
 msgstr "Cette ligne de relevé n’a aucune imputation en brouillon à comptabiliser."
+
+msgid "Create, edit, reorder and delete bank rules"
+msgstr "Créer, modifier, réordonner et supprimer des règles bancaires"
+
+msgid "Give the rule a name."
+msgstr "Donnez un nom à la règle."
+
+msgid "Add at least one condition."
+msgstr "Ajoutez au moins une condition."
+
+msgid "Choose the contact to set."
+msgstr "Choisissez le contact à attribuer."
+
+msgid "A rule's type can't change: create a new rule instead."
+msgstr "Le type d’une règle ne peut pas changer : créez plutôt une nouvelle règle."
+
+msgid "Choose the other bank account of the transfer."
+msgstr "Choisissez l’autre compte bancaire du virement."
+
+msgid "A transfer can't go to the account it comes from."
+msgstr "Un virement ne peut pas aller vers le compte dont il provient."
+
+#, python-format
+msgid "%(account)s is archived: choose another account."
+msgstr "%(account)s est archivé : choisissez un autre compte."
+
+#, python-format
+msgid "The tax code %(code)s doesn't apply to this kind of rule."
+msgstr "Le code de taxe %(code)s ne s’applique pas à ce type de règle."
+
+msgid "The new order must list every rule of this type exactly once."
+msgstr "Le nouvel ordre doit inclure chaque règle de ce type exactement une fois."
+
+msgid "That bank rule doesn't exist."
+msgstr "Cette règle bancaire n’existe pas."
+
+msgid "That statement line doesn't exist."
+msgstr "Cette ligne de relevé n’existe pas."

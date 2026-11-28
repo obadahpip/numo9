@@ -41,3 +41,13 @@ BANKING_IMPORT = register(
         Risk.MEDIUM,
     )
 )
+
+
+BANKING_RULES = register(
+    Permission(
+        "accounting.banking.rules",
+        _("Create, edit, reorder and delete bank rules"),
+        "accounting",
+        Risk.MEDIUM,
+    )
+)

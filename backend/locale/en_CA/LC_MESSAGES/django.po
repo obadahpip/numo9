@@ -11224,3 +11224,41 @@ msgstr ""
 
 msgid "This statement line has no draft coding to post."
 msgstr ""
+
+msgid "Create, edit, reorder and delete bank rules"
+msgstr ""
+
+msgid "Give the rule a name."
+msgstr ""
+
+msgid "Add at least one condition."
+msgstr ""
+
+msgid "Choose the contact to set."
+msgstr ""
+
+msgid "A rule's type can't change: create a new rule instead."
+msgstr ""
+
+msgid "Choose the other bank account of the transfer."
+msgstr ""
+
+msgid "A transfer can't go to the account it comes from."
+msgstr ""
+
+#, python-format
+msgid "%(account)s is archived: choose another account."
+msgstr ""
+
+#, python-format
+msgid "The tax code %(code)s doesn't apply to this kind of rule."
+msgstr ""
+
+msgid "The new order must list every rule of this type exactly once."
+msgstr ""
+
+msgid "That bank rule doesn't exist."
+msgstr ""
+
+msgid "That statement line doesn't exist."
+msgstr ""
