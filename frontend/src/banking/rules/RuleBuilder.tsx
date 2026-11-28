@@ -4,15 +4,18 @@
  * Rule builder (F-04-T11): the rule's name and type, the sentence-style conditions
  * (``ConditionBuilder``), then what it does — contact strategy, reference template, the other
  * bank account of a transfer, the bank accounts it runs on, auto-apply (off by default) and
- * on/off. Save is disabled until the rule is complete; a refusal from the server is shown with
+ * on/off, and (F-04-T12) the allocation grid. Save is disabled until the rule is complete — for
+ * spend and receive rules until the allocation percentages total 100 %; a refusal from the server is shown with
  * the part at fault. The type of a saved rule is fixed.
  */
 import { Button, Checkbox, INPUT_BASE, Input, Switch } from "@numo9/ui";
 import Link from "next/link";
 import { useEffect, useId, useMemo, useState, type FormEvent } from "react";
 
+import { accountsApi, type Account } from "@/accounts/api";
 import { contactsApi, type ContactSummary } from "@/contacts/api";
 import { useFormatMessage } from "@/i18n";
+import { taxApi, type TaxCode } from "@/tax/api";
 
 import { bankingApi, type BankAccount } from "../api";
 import {
@@ -24,6 +27,7 @@ import {
   type RuleRefusal,
   type RuleType,
 } from "./api";
+import { AllocationGrid, allocationsValid } from "./AllocationGrid";
 import { builder } from "./builderMessages";
 import { ConditionBuilder, conditionComplete } from "./ConditionBuilder";
 import { draftOf, newDraft, toInput, type RuleDraft } from "./draft";
@@ -47,7 +51,7 @@ export function ruleComplete(draft: RuleDraft): boolean {
   if (!draft.conditions.every(conditionComplete)) return false;
   if (draft.contact_strategy === "fixed" && !draft.contact) return false;
   if (draft.type === "transfer") return Boolean(draft.transfer_account);
-  return true;
+  return allocationsValid(draft.allocations);
 }
 
 export function RuleBuilder({ org, rule, initial, navigate }: RuleBuilderProps) {
@@ -58,6 +62,8 @@ export function RuleBuilder({ org, rule, initial, navigate }: RuleBuilderProps) 
   );
   const [banks, setBanks] = useState<BankAccount[]>([]);
   const [contacts, setContacts] = useState<ContactSummary[]>([]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [taxCodes, setTaxCodes] = useState<TaxCode[]>([]);
   const [busy, setBusy] = useState(false);
   const [refusal, setRefusal] = useState<RuleRefusal | null>(null);
 
@@ -70,6 +76,14 @@ export function RuleBuilder({ org, rule, initial, navigate }: RuleBuilderProps) 
       .list(org, { status: "active" })
       .then((result) => setContacts(result.status === 200 ? result.body.results : []))
       .catch(() => setContacts([]));
+    accountsApi
+      .list(org, "active")
+      .then((result) => setAccounts(result.status === 200 ? result.body.results : []))
+      .catch(() => setAccounts([]));
+    taxApi
+      .codes(org)
+      .then((result) => setTaxCodes(result.status === 200 ? result.body.results : []))
+      .catch(() => setTaxCodes([]));
   }, [org]);
 
   const complete = useMemo(() => ruleComplete(draft), [draft]);
@@ -160,6 +174,16 @@ export function RuleBuilder({ org, rule, initial, navigate }: RuleBuilderProps) 
         onChange={(conditions) => change({ conditions })}
         onMatchModeChange={(match_mode) => change({ match_mode })}
       />
+
+      {draft.type !== "transfer" ? (
+        <AllocationGrid
+          type={draft.type}
+          rows={draft.allocations}
+          accounts={accounts}
+          taxCodes={taxCodes}
+          onChange={(allocations) => change({ allocations })}
+        />
+      ) : null}
 
       <section className="flex flex-col gap-4" aria-labelledby={`${id}-then`}>
         <h2 id={`${id}-then`} className="text-lg font-semibold text-fg">
