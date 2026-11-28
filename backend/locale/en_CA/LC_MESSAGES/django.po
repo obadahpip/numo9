@@ -11188,3 +11188,11 @@ msgstr ""
 
 msgid "Enter the upper amount, at least the lower one."
 msgstr ""
+
+#, python-format
+msgid "The fixed amounts (%(fixed)s) are more than the line's amount (%(amount)s)."
+msgstr ""
+
+#, python-format
+msgid "The fixed amounts (%(fixed)s) don't equal the line's amount (%(amount)s)."
+msgstr ""

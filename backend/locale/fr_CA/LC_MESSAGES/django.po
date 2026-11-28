@@ -12220,3 +12220,11 @@ msgstr "Ce motif prend trop de temps à s’exécuter sur certains textes (retou
 
 msgid "Enter the upper amount, at least the lower one."
 msgstr "Saisissez le montant supérieur, au moins égal au montant inférieur."
+
+#, python-format
+msgid "The fixed amounts (%(fixed)s) are more than the line's amount (%(amount)s)."
+msgstr "Les montants fixes (%(fixed)s) dépassent le montant de la ligne (%(amount)s)."
+
+#, python-format
+msgid "The fixed amounts (%(fixed)s) don't equal the line's amount (%(amount)s)."
+msgstr "Les montants fixes (%(fixed)s) ne correspondent pas au montant de la ligne (%(amount)s)."
