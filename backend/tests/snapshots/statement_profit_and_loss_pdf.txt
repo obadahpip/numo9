@@ -1,0 +1,29 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+REFINED
+Refined Interiors Inc.
+Profit and loss
+1 May 2026 to 31 Jul 2026
+Basis: Accrual (organisation default) · Accounting book
+1 MAY 2026 TO 31 JUL 2026
+Revenue
+4000 · Sales $6,200.00
+Total revenue $6,200.00
+Cost of sales
+Total cost of sales $0.00
+Gross profit $6,200.00
+Operating expenses
+5400 · Rent $2,400.00
+6100 · Office supplies $1,144.17
+Total operating expenses $3,544.17
+Operating income $2,655.83
+Other income
+Total other income $0.00
+Other expenses
+Total other expenses $0.00
+Income before income taxes $2,655.83
+Income taxes
+Total income taxes $0.00
+Net income $2,655.83
+Prepared with Numo9 Page 1 of 1

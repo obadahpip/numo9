@@ -1,0 +1,30 @@
+NUMO9
+Numbers build a brighter tomorrow
+Refined Interiors Inc.
+REFINED
+Refined Interiors Inc.
+Balance sheet
+As at 30 Jun 2026
+Basis: Accrual (organisation default) · Accounting book
+30 JUN 2026
+Assets
+Current assets
+1000 · Chequing $2,450.00
+Total current assets $2,450.00
+Non-current assets
+Total non-current assets $0.00
+Total assets $2,450.00
+Liabilities
+Current liabilities
+Bank overdraft — Petty Cash $994.17
+Total current liabilities $994.17
+Overdrawn bank and cash accounts are presented as current liabilities (ASPE 1510).
+Long-term liabilities
+Total long-term liabilities $0.00
+Total liabilities $994.17
+Equity
+Retained earnings $0.00
+Current year earnings $1,455.83
+Total equity $1,455.83
+Total liabilities and equity $2,450.00
+Prepared with Numo9 Page 1 of 1
