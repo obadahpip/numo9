@@ -11262,3 +11262,6 @@ msgstr ""
 
 msgid "That statement line doesn't exist."
 msgstr ""
+
+msgid "This rule"
+msgstr ""

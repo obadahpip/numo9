@@ -70,3 +70,54 @@ export async function mockRules(page: Page, initial: Rule[]) {
   });
   return state;
 }
+
+const FUEL = {
+  id: "61006100-0000-4000-8000-000000000005",
+  code: "5100",
+  name: "Fuel",
+  is_bank: false,
+  type: "expense",
+  status: "active",
+  archived_at: null,
+};
+
+export const PURCHASE_HST = {
+  id: "cccc0001-0000-4000-8000-000000000001",
+  code: "purchase.ON.standard",
+  name: "HST 13 % (purchases)",
+  side: "purchase",
+  archived_at: null,
+  expired: false,
+};
+
+/** What the builder loads besides rules: bank accounts, contacts, ledger accounts, tax codes. */
+export async function mockBuilderData(page: Page) {
+  await mockCsrf(page);
+  await page.route("**/api/v1/o/acme/bank-accounts?*", (r) =>
+    r.fulfill({
+      json: { results: [{ id: "b1", display_name: "TD Business Chequing", ledger_account: {} }] },
+    }),
+  );
+  await page.route("**/api/v1/o/acme/contacts?*", (r) =>
+    r.fulfill({ json: { results: [], count: 0 } }),
+  );
+  await page.route("**/api/v1/o/acme/accounts?*", (r) =>
+    r.fulfill({ json: { results: [FUEL], count: 1 } }),
+  );
+  await page.route("**/api/v1/o/acme/tax/codes*", (r) =>
+    r.fulfill({ json: { results: [PURCHASE_HST] } }),
+  );
+  return { fuel: FUEL };
+}
+
+export function previewLine(id: string, description: string, amount: string, payee = "") {
+  return {
+    id,
+    date: "2026-06-10",
+    amount,
+    payee,
+    description,
+    reference: "",
+    bank_account: { id: "b1", name: "TD Business Chequing" },
+  };
+}

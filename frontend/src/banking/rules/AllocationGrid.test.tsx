@@ -112,9 +112,14 @@ it("the builder's Save is disabled until the total is 100 %", async () => {
     "fetch",
     vi.fn(
       serveJson((url, init) => {
-        if (url.includes("/bank-rules") && init?.method === "POST") {
+        if (url.endsWith("/bank-rules") && init?.method === "POST") {
           posted.push(JSON.parse(String(init.body)));
           return { status: 201, body: { id: "new" } };
+        }
+        if (url.endsWith("/bank-rules/preview")) {
+          return {
+            body: { since: "", days: 90, applies: 0, shadowed: 0, truncated: false, rows: [] },
+          };
         }
         if (url.includes("/accounts?")) return { body: { results: ACCOUNTS, count: 3 } };
         if (url.includes("/tax/codes")) return { body: { results: CODES } };

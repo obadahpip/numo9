@@ -4,7 +4,7 @@
  * Rule builder (F-04-T11): the rule's name and type, the sentence-style conditions
  * (``ConditionBuilder``), then what it does — contact strategy, reference template, the other
  * bank account of a transfer, the bank accounts it runs on, auto-apply (off by default) and
- * on/off, and (F-04-T12) the allocation grid. Save is disabled until the rule is complete — for
+ * on/off, (F-04-T12) the allocation grid and (F-04-T13) the history preview panel. Save is disabled until the rule is complete — for
  * spend and receive rules until the allocation percentages total 100 %; a refusal from the server is shown with
  * the part at fault. The type of a saved rule is fixed.
  */
@@ -32,6 +32,7 @@ import { builder } from "./builderMessages";
 import { ConditionBuilder, conditionComplete } from "./ConditionBuilder";
 import { draftOf, newDraft, toInput, type RuleDraft } from "./draft";
 import { m, typeLabels } from "./messages";
+import { PreviewPanel } from "./PreviewPanel";
 
 export interface RuleBuilderProps {
   org: string;
@@ -280,6 +281,13 @@ export function RuleBuilder({ org, rule, initial, navigate }: RuleBuilderProps) 
           onCheckedChange={(active) => change({ active })}
         />
       </section>
+
+      <PreviewPanel
+        org={org}
+        rule={toInput(draft)}
+        ruleId={rule?.id ?? null}
+        ready={draft.conditions.length > 0 && draft.conditions.every(conditionComplete)}
+      />
 
       {refusal ? (
         <div role="alert" className="rounded-lg border border-border bg-surface-danger-subtle p-4">

@@ -12294,3 +12294,6 @@ msgstr "Cette règle bancaire n’existe pas."
 
 msgid "That statement line doesn't exist."
 msgstr "Cette ligne de relevé n’existe pas."
+
+msgid "This rule"
+msgstr "Cette règle"

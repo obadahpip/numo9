@@ -183,11 +183,17 @@ def test_preview_apply_confirm(org: Organisation, owner: Client, fuel: Any) -> N
         statement_line(org, bank, "-45.00", "PETRO-CANADA 12", payee="Petro", date=today)
         statement_line(org, bank, "-300.00", "PETRO big", date=today)
         statement_line(org, bank, "-45.00", "PETRO old", date=today - dt.timedelta(days=120))
-    preview = send(owner, url(org, "bank-rules/preview"), {"rule": payload(fuel)})
+    unfinished = payload(fuel, name="", allocations=[])
+    preview = send(owner, url(org, "bank-rules/preview"), {"rule": unfinished})
     assert preview.status_code == 200, preview.json()
     body = preview.json()
     assert (body["days"], body["applies"], body["shadowed"]) == (90, 1, 0)
     assert body["rows"][0]["line"]["description"] == "PETRO-CANADA 12"
+    slow = {"field": "description", "operator": "regex", "value": "(a|aa)+$"}
+    refused = send(
+        owner, url(org, "bank-rules/preview"), {"rule": payload(fuel, conditions=[slow])}
+    )
+    assert (refused.status_code, refused.json()["code"]) == (400, "banking.rule.regex_slow")
     made = send(owner, url(org, "bank-rules"), payload(fuel)).json()
     wider = send(
         owner,

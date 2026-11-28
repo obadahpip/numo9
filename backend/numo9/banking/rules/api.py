@@ -13,7 +13,8 @@
 - ``POST bank-rules/reorder`` ``{type, order: [ids]}`` — renumbers the type's rules 1…n
   atomically (every rule exactly once, else 400 ``banking.rule.reorder_mismatch``).
 - ``POST bank-rules/preview`` ``{rule: {…definition…}, id?, days?}`` — the history preview
-  (F-04-T08) of a saved rule (``id``) or of the builder's unsaved form; nothing is written.
+  (F-04-T08) of a saved rule (``id``) or of the builder's unsaved form; nothing is written. Only
+  the conditions are checked (the builder previews before the allocations are complete).
 - ``POST bank-rules/apply`` ``{bank_account?}`` — runs the rules on the Uncoded lines (F-04-T07).
 - ``POST bank-rules/lines/<line id>/confirm`` — posts the draft a rule left on the line.
 
@@ -67,7 +68,7 @@ from .service import (
     next_priority,
     reorder,
     save_rule,
-    validate_definition,
+    validate_conditions,
 )
 
 READ = "accounting.banking.read"
@@ -376,8 +377,14 @@ class BankRuleReorderView(APIView):
         return Response({"results": [rule_row(r) for r in rules]})
 
 
+class PreviewRuleSerializer(RuleInputSerializer):
+    """A rule being built: the name may still be empty."""
+
+    name = serializers.CharField(max_length=120, required=False, allow_blank=True, default="")
+
+
 class PreviewSerializer(serializers.Serializer[Any]):
-    rule = RuleInputSerializer()
+    rule = PreviewRuleSerializer()
     id = serializers.UUIDField(required=False, allow_null=True, default=None)
     days = serializers.IntegerField(required=False, min_value=1, max_value=730, default=None)
 
@@ -416,7 +423,7 @@ class BankRulePreviewView(APIView):
         saved = _rule(values["id"]) if values.get("id") else None
         try:
             definition = definition_from(dict(values["rule"]))
-            validate_definition(definition)
+            validate_conditions(definition)
         except RuleInvalid as error:
             return refused(error)
         if saved is not None and saved.type == definition.type and saved.priority:
@@ -424,7 +431,7 @@ class BankRulePreviewView(APIView):
         else:
             priority = next_priority(definition.type)
         candidate = RuleSpec(
-            name=definition.name,
+            name=definition.name or _("This rule"),
             type=definition.type,
             priority=priority,
             match_mode=definition.match_mode,

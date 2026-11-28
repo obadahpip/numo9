@@ -82,12 +82,9 @@ def _side(rule_type: str) -> str:
     return TaxSide.PURCHASE if rule_type == BankRuleType.SPEND else TaxSide.SALES
 
 
-def validate_definition(definition: RuleDefinition) -> None:
-    """Every check of the module docstring; raises ``RuleInvalid``."""
-    if not " ".join(definition.name.split()):
-        raise RuleInvalid(
-            ValidationError(_("Give the rule a name."), code="banking.rule.name_required"), "name"
-        )
+def validate_conditions(definition: RuleDefinition) -> None:
+    """The conditions' checks only — what the history preview needs (F-04-T13: the builder
+    previews before the allocations are complete)."""
     if not definition.conditions:
         raise RuleInvalid(
             ValidationError(
@@ -100,6 +97,15 @@ def validate_definition(definition: RuleDefinition) -> None:
             validate_condition(condition)
         except ValidationError as error:
             raise RuleInvalid(error, f"conditions.{number}") from error
+
+
+def validate_definition(definition: RuleDefinition) -> None:
+    """Every check of the module docstring; raises ``RuleInvalid``."""
+    if not " ".join(definition.name.split()):
+        raise RuleInvalid(
+            ValidationError(_("Give the rule a name."), code="banking.rule.name_required"), "name"
+        )
+    validate_conditions(definition)
     if definition.contact_strategy == ContactStrategy.FIXED and definition.contact is None:
         raise RuleInvalid(
             ValidationError(_("Choose the contact to set."), code="banking.rule.contact_required"),
