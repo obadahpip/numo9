@@ -81,6 +81,67 @@ LAYOUT_INVALID = define(
 )
 
 
+# ---- file problems (the whole file is refused) --------------------------------------------------
+FILE_EMPTY = define(
+    "banking.statement.file.empty",
+    _(
+        "%(name)s has no statement lines. Download the statement again for a period with "
+        "transactions."
+    ),
+)
+FILE_TYPE = define(
+    "banking.statement.file.type",
+    _(
+        "%(name)s isn't a statement file Numo9 can read. Download the statement from your bank "
+        "as CSV, Excel (.xlsx), OFX, QFX or QBO and try again."
+    ),
+    status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+)
+FILE_LEGACY_XLS = define(
+    "banking.statement.file.legacy_xls",
+    _(
+        "%(name)s is an old Excel (.xls) file. Open it in Excel and save it as .xlsx or .csv, or "
+        "download the statement as CSV, then try again."
+    ),
+    status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+)
+FILE_UNREADABLE = define(
+    "banking.statement.file.unreadable",
+    _("%(name)s can't be opened: it may be damaged or password-protected. Download it again."),
+)
+FILE_MALFORMED = define(
+    "banking.statement.file.malformed",
+    _("%(name)s is malformed near row %(row)s (%(reason)s). Download the statement again."),
+)
+FILE_TOO_LARGE = define(
+    "banking.statement.file.too_large",
+    _("%(name)s is larger than %(max)s MB. Download a shorter period and try again."),
+    status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+)
+FILE_TOO_MANY_LINES = define(
+    "banking.statement.file.too_many_lines",
+    _("%(name)s has more than %(max)s lines. Download a shorter period and try again."),
+)
+FILE_TOO_MANY_COLUMNS = define(
+    "banking.statement.file.too_many_columns",
+    _("%(name)s has more than %(max)s columns. Check that it is a bank statement."),
+)
+OFX_NO_STATEMENT = define(
+    "banking.statement.file.no_statement",
+    _(
+        "%(name)s has no bank or credit-card statement in it. Download the account's statement "
+        "(not an investment or tax file) and try again."
+    ),
+)
+OFX_SEVERAL_ACCOUNTS = define(
+    "banking.statement.file.several_accounts",
+    _(
+        "The file holds %(count)s accounts; only account %(account)s is imported. Download one "
+        "file per account to import the others."
+    ),
+)
+
+
 @dataclass(frozen=True)
 class LineProblem:
     """Why one line can't be imported: a catalogue key and the message's parameters."""

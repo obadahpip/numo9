@@ -1,0 +1,6 @@
+﻿Following data is valid as of 20260630201500 (Year/Month/Day/Hour/Minute/Second)
+
+First Bank Card,Transaction Type,Date Posted, Transaction Amount,Description
+'5191230000001234',DEBIT,20260603,-4.25,[DN]TIM HORTONS #1234
+'5191230000001234',CREDIT,20260605,2500.00,[DP]PAYROLL ACME
+'5191230000001234',DEBIT,20260611,-60.00,[CW]ATM WITHDRAWAL

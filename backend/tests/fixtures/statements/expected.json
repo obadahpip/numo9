@@ -1,0 +1,947 @@
+{
+ "bmo_preamble_bom.csv": {
+  "delimiter": ",",
+  "encoding": "utf-8-sig",
+  "format": "csv",
+  "layout": {
+   "columns": [
+    "ignore",
+    "ignore",
+    "date",
+    "amount",
+    "description"
+   ],
+   "date_format": "YYYYMMDD",
+   "skip_rows": 1
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "[DN]TIM HORTONS #1234",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 4
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "[DP]PAYROLL ACME",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 5
+   },
+   {
+    "amount": "-60.00",
+    "balance": null,
+    "date": "2026-06-11",
+    "description": "[CW]ATM WITHDRAWAL",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 6
+   }
+  ]
+ },
+ "cc_visa.qfx": {
+  "encoding": "utf-8",
+  "format": "qfx",
+  "lines": [
+   {
+    "amount": "-61.20",
+    "balance": null,
+    "date": "2026-06-09",
+    "description": "PETRO-CANADA",
+    "fitid": "V1",
+    "payee": "PETRO-CANADA",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   }
+  ]
+ },
+ "credit_card.qbo": {
+  "encoding": "utf-8",
+  "format": "qbo",
+  "lines": [
+   {
+    "amount": "-19.99",
+    "balance": null,
+    "date": "2026-06-02",
+    "description": "NETFLIX.COM",
+    "fitid": "Q1",
+    "payee": "NETFLIX.COM",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "19.99",
+    "balance": null,
+    "date": "2026-06-25",
+    "description": "NETFLIX.COM REFUND",
+    "fitid": "Q2",
+    "payee": "NETFLIX.COM REFUND",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ },
+ "creditcard.ofx": {
+  "encoding": "utf-8",
+  "format": "ofx",
+  "lines": [
+   {
+    "amount": "-9.99",
+    "balance": null,
+    "date": "2026-06-08",
+    "description": "AMAZON.CA",
+    "fitid": "CC1",
+    "payee": "AMAZON.CA",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "500.00",
+    "balance": null,
+    "date": "2026-06-20",
+    "description": "PAYMENT - THANK YOU",
+    "fitid": "CC2",
+    "payee": "PAYMENT - THANK YOU",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ },
+ "crlf.qbo": {
+  "encoding": "utf-8",
+  "format": "qbo",
+  "lines": [
+   {
+    "amount": "-132.48",
+    "balance": null,
+    "date": "2026-06-15",
+    "description": "HYDRO ONE Bill payment",
+    "fitid": "202606150001",
+    "payee": "HYDRO ONE",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   }
+  ]
+ },
+ "empty_list.qbo": {
+  "encoding": "utf-8",
+  "format": "qbo",
+  "lines": []
+ },
+ "entities_checknum.ofx": {
+  "encoding": "utf-8",
+  "format": "ofx",
+  "lines": [
+   {
+    "amount": "-800.00",
+    "balance": null,
+    "date": "2026-06-10",
+    "description": "LANDLORD & CO",
+    "fitid": "CHQ123",
+    "payee": "LANDLORD & CO",
+    "problems": [],
+    "reference": "123",
+    "row": 1
+   },
+   {
+    "amount": "-25.00",
+    "balance": null,
+    "date": "2026-06-18",
+    "description": "J. SMITH",
+    "fitid": "REF1",
+    "payee": "J. SMITH",
+    "problems": [],
+    "reference": "E-TR-7781",
+    "row": 2
+   },
+   {
+    "amount": null,
+    "balance": null,
+    "date": "2026-06-19",
+    "description": "BROKEN LINE",
+    "fitid": "BAD1",
+    "payee": "BROKEN LINE",
+    "problems": [
+     "banking.statement.row.amount_invalid"
+    ],
+    "reference": "",
+    "row": 3
+   }
+  ]
+ },
+ "generic_dates.xlsx": {
+  "format": "xlsx",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "amount"
+   ],
+   "date_format": "DD/MM/YYYY"
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   },
+   {
+    "amount": "-132.48",
+    "balance": null,
+    "date": "2026-06-15",
+    "description": "HYDRO ONE",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 4
+   }
+  ]
+ },
+ "hidden_first_sheet.xlsx": {
+  "format": "xlsx",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "amount"
+   ],
+   "sign": "inverted"
+  },
+  "lines": [
+   {
+    "amount": "-9.99",
+    "balance": null,
+    "date": "2026-06-08",
+    "description": "AMAZON.CA",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "500.00",
+    "balance": null,
+    "date": "2026-06-20",
+    "description": "PAYMENT THANK YOU",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   }
+  ]
+ },
+ "intuit_header.qbo": {
+  "encoding": "utf-8-sig",
+  "format": "qbo",
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "202606030001",
+    "payee": "TIM HORTONS #1234",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC Direct deposit",
+    "fitid": "202606050001",
+    "payee": "PAYROLL ACME INC",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ },
+ "national_bank_fr_cp1252.csv": {
+  "delimiter": ";",
+  "encoding": "cp1252",
+  "format": "csv",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "ignore",
+    "debit",
+    "credit",
+    "balance"
+   ],
+   "decimal_separator": ",",
+   "sign": "debit_credit"
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": "1245.75",
+    "date": "2026-06-03",
+    "description": "Café Dépôt Montréal",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "2500.00",
+    "balance": "3745.75",
+    "date": "2026-06-05",
+    "description": "Dépôt de paie",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   },
+   {
+    "amount": "-87.13",
+    "balance": "3658.62",
+    "date": "2026-06-12",
+    "description": "Épicerie Métro",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 4
+   }
+  ]
+ },
+ "rbc_chequing.csv": {
+  "delimiter": ",",
+  "encoding": "utf-8",
+  "format": "csv",
+  "layout": {
+   "columns": [
+    "ignore",
+    "ignore",
+    "date",
+    "reference",
+    "description",
+    "description",
+    "amount",
+    "ignore"
+   ],
+   "date_format": "MM/DD/YYYY"
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "Tim Hortons #1234 Toronto ON",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "Tim Hortons #1234 Toronto ON",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL DEPOSIT ACME INC",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 4
+   },
+   {
+    "amount": "-800.00",
+    "balance": null,
+    "date": "2026-06-10",
+    "description": "CHEQUE",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "123",
+    "row": 5
+   },
+   {
+    "amount": "-132.48",
+    "balance": null,
+    "date": "2026-06-15",
+    "description": "Hydro One Bill payment",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 6
+   }
+  ]
+ },
+ "rbc_dtuser.qfx": {
+  "encoding": "utf-8",
+  "format": "qfx",
+  "lines": [
+   {
+    "amount": "-15.00",
+    "balance": null,
+    "date": "2026-06-07",
+    "description": "PRESTO",
+    "fitid": "U1",
+    "payee": "PRESTO",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "-132.48",
+    "balance": null,
+    "date": "2026-06-15",
+    "description": "HYDRO ONE Bill payment",
+    "fitid": "202606150001",
+    "payee": "HYDRO ONE",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ },
+ "scotiabank.xlsx": {
+  "format": "xlsx",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "description",
+    "ignore",
+    "ignore",
+    "amount"
+   ]
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "POS PURCHASE TIM HORTONS #1234",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL DEP. ACME INC",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   }
+  ]
+ },
+ "sgml_chequing_cp1252.ofx": {
+  "encoding": "cp1252",
+  "format": "ofx",
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "202606030001",
+    "payee": "TIM HORTONS #1234",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "-12.50",
+    "balance": null,
+    "date": "2026-06-04",
+    "description": "CAFÉ DÉPÔT MONTRÉAL",
+    "fitid": "202606040001",
+    "payee": "CAFÉ DÉPÔT MONTRÉAL",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC Direct deposit",
+    "fitid": "202606050001",
+    "payee": "PAYROLL ACME INC",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   }
+  ]
+ },
+ "sloppy_sgml.ofx": {
+  "encoding": "utf-8",
+  "format": "ofx",
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "202606030001",
+    "payee": "TIM HORTONS #1234",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "-60.00",
+    "balance": null,
+    "date": "2026-06-11",
+    "description": "ATM WITHDRAWAL",
+    "fitid": "ATM1",
+    "payee": "ATM WITHDRAWAL",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ },
+ "tangerine_quoted.csv": {
+  "delimiter": ",",
+  "encoding": "utf-8",
+  "format": "csv",
+  "layout": {
+   "columns": [
+    "date",
+    "ignore",
+    "description",
+    "description",
+    "amount"
+   ],
+   "date_format": "MM/DD/YYYY"
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "Tim Hortons, Toronto Purchase",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "0.87",
+    "balance": null,
+    "date": "2026-06-04",
+    "description": "Interest Paid",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   },
+   {
+    "amount": "-9.99",
+    "balance": null,
+    "date": "2026-06-08",
+    "description": "Amazon.ca \"Prime\" Multi line memo",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 4
+   },
+   {
+    "amount": "1250.00",
+    "balance": null,
+    "date": "2026-06-09",
+    "description": "EFT Deposit from ACME Payroll",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 5
+   },
+   {
+    "amount": "-1.00",
+    "balance": null,
+    "date": null,
+    "description": "Bad date",
+    "fitid": "",
+    "payee": "",
+    "problems": [
+     "banking.statement.row.date_format"
+    ],
+    "reference": "",
+    "row": 6
+   }
+  ]
+ },
+ "td_chequing.csv": {
+  "delimiter": ",",
+  "encoding": "utf-8",
+  "format": "csv",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "debit",
+    "credit",
+    "balance"
+   ],
+   "date_format": "MM/DD/YYYY",
+   "has_header": false,
+   "sign": "debit_credit"
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": "1245.75",
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "2500.00",
+    "balance": "3745.75",
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "-800.00",
+    "balance": "2945.75",
+    "date": "2026-06-10",
+    "description": "CHQ#00123",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   },
+   {
+    "amount": "-132.48",
+    "balance": "2813.27",
+    "date": "2026-06-15",
+    "description": "HYDRO ONE BPY",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 4
+   },
+   {
+    "amount": "50.00",
+    "balance": "2863.27",
+    "date": "2026-06-20",
+    "description": "E-TRANSFER, J. SMITH",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 5
+   }
+  ]
+ },
+ "td_web.qfx": {
+  "encoding": "utf-8",
+  "format": "qfx",
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "202606030001",
+    "payee": "TIM HORTONS #1234",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "202606030002",
+    "payee": "TIM HORTONS #1234",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC Direct deposit",
+    "fitid": "202606050001",
+    "payee": "PAYROLL ACME INC",
+    "problems": [],
+    "reference": "",
+    "row": 3
+   }
+  ]
+ },
+ "text_dates_and_rounding.xlsx": {
+  "format": "xlsx",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "amount",
+    "reference"
+   ],
+   "date_format": "DD/MM/YYYY"
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "COFFEE",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "R-1",
+    "row": 2
+   },
+   {
+    "amount": "100.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "DEPOSIT",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "7781",
+    "row": 3
+   },
+   {
+    "amount": "-1.00",
+    "balance": null,
+    "date": null,
+    "description": "BAD DATE",
+    "fitid": "",
+    "payee": "",
+    "problems": [
+     "banking.statement.row.date_format"
+    ],
+    "reference": "",
+    "row": 4
+   }
+  ]
+ },
+ "title_rows.xlsx": {
+  "format": "xlsx",
+  "layout": {
+   "columns": [
+    "date",
+    "description",
+    "debit",
+    "credit"
+   ],
+   "sign": "debit_credit",
+   "skip_rows": 2
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "Café Dépôt",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 5
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "Paie — Acmé",
+    "fitid": "",
+    "payee": "",
+    "problems": [],
+    "reference": "",
+    "row": 6
+   }
+  ]
+ },
+ "two_accounts.qfx": {
+  "encoding": "utf-8",
+  "format": "qfx",
+  "last4": {
+   "4321": [
+    {
+     "amount": "2500.00",
+     "balance": null,
+     "date": "2026-06-05",
+     "description": "PAYROLL ACME INC Direct deposit",
+     "fitid": "202606050001",
+     "payee": "PAYROLL ACME INC",
+     "problems": [],
+     "reference": "",
+     "row": 1
+    },
+    {
+     "amount": "-132.48",
+     "balance": null,
+     "date": "2026-06-15",
+     "description": "HYDRO ONE Bill payment",
+     "fitid": "202606150001",
+     "payee": "HYDRO ONE",
+     "problems": [],
+     "reference": "",
+     "row": 2
+    }
+   ]
+  },
+  "lines": [
+   {
+    "amount": "-4.25",
+    "balance": null,
+    "date": "2026-06-03",
+    "description": "TIM HORTONS #1234",
+    "fitid": "202606030001",
+    "payee": "TIM HORTONS #1234",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   }
+  ],
+  "warnings": 1
+ },
+ "xml.qbo": {
+  "encoding": "utf-8",
+  "format": "qbo",
+  "lines": [
+   {
+    "amount": "-42.00",
+    "balance": null,
+    "date": "2026-06-14",
+    "description": "RESTAURANT L’ÉRABLE",
+    "fitid": "R1",
+    "payee": "RESTAURANT L’ÉRABLE",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   }
+  ]
+ },
+ "xml.qfx": {
+  "encoding": "utf-8",
+  "format": "qfx",
+  "lines": [
+   {
+    "amount": "-132.48",
+    "balance": null,
+    "date": "2026-06-15",
+    "description": "HYDRO ONE Bill payment",
+    "fitid": "202606150001",
+    "payee": "HYDRO ONE",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC Direct deposit",
+    "fitid": "202606050001",
+    "payee": "PAYROLL ACME INC",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ },
+ "xml_v220.ofx": {
+  "encoding": "utf-8",
+  "format": "ofx",
+  "lines": [
+   {
+    "amount": "2500.00",
+    "balance": null,
+    "date": "2026-06-05",
+    "description": "PAYROLL ACME INC Direct deposit",
+    "fitid": "202606050001",
+    "payee": "PAYROLL ACME INC",
+    "problems": [],
+    "reference": "",
+    "row": 1
+   },
+   {
+    "amount": "-87.13",
+    "balance": null,
+    "date": "2026-06-12",
+    "description": "ÉPICERIE MÉTRO Carte 1234",
+    "fitid": "X3",
+    "payee": "ÉPICERIE MÉTRO",
+    "problems": [],
+    "reference": "",
+    "row": 2
+   }
+  ]
+ }
+}

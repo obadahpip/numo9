@@ -2,7 +2,7 @@ NUMO9 — ATOMIC TASK STATUS
 Legend: ✅ = completed (acceptance criteria verified) · ❌ = not completed
 Source: docs/phase_plans (Phases 0–8 + Hypercare)
 
-TOTAL ATOMIC TASKS: 2787   Completed: 847   Remaining: 1940   Progress: 30.39%
+TOTAL ATOMIC TASKS: 2787   Completed: 848   Remaining: 1939   Progress: 30.43%
 
 ORDER: tasks are listed in the order to work them — dependencies first (the Depends column of
 docs/phase_plans), then each phase plan's execution order; [ID] headers repeat when the order
@@ -1137,7 +1137,7 @@ Phase 1 Core Books  (572 atomic tasks)
 [F-02]
 ✅ F-02-T02 — StatementImport (batch: file, mapping, counts, status, created_by) and StatementLine (bank_account, date, amount, description, payee, reference, fitid, fingerprint, status UNCODED/CODED/MATCHED/IGNORED, import FK) models; unique index on (bank_account, fingerprint)
 ✅ F-02-T03 — BankStatementSource interface (fetch_lines(), source_name) and FileStatementSource implementation
-❌ F-02-T04 — Parsers: OFX/QFX (ofxparse), QBO (OFX variant with header stripping), CSV (encoding sniff via charset-normalizer, delimiter sniff), XLSX (openpyxl)
+✅ F-02-T04 — Parsers: OFX/QFX (ofxparse), QBO (OFX variant with header stripping), CSV (encoding sniff via charset-normalizer, delimiter sniff), XLSX (openpyxl)
 ❌ F-02-T05 — StatementMapping model and seed mappings for 9 Canadian banks plus a generic layout (column roles, date format, sign convention, skip rows)
 ❌ F-02-T06 — Mapping auto-detection: header similarity scoring picks the best saved mapping; user override saved per bank account
 ❌ F-02-T07 — Fingerprinting and duplicate detection, with a same-day identical-line sequence counter

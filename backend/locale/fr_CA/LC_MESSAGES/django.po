@@ -11873,3 +11873,43 @@ msgstr "« %(format)s » n’est pas un format de date connu de Numo9. Choisisse
 #, python-format
 msgid "The column mapping is incomplete: %(reason)s"
 msgstr "La correspondance des colonnes est incomplète : %(reason)s"
+
+#, python-format
+msgid "%(name)s has no statement lines. Download the statement again for a period with transactions."
+msgstr "%(name)s ne contient aucune ligne de relevé. Téléchargez de nouveau le relevé pour une période qui comporte des opérations."
+
+#, python-format
+msgid "%(name)s isn't a statement file Numo9 can read. Download the statement from your bank as CSV, Excel (.xlsx), OFX, QFX or QBO and try again."
+msgstr "%(name)s n’est pas un fichier de relevé que Numo9 peut lire. Téléchargez le relevé de votre banque en format CSV, Excel (.xlsx), OFX, QFX ou QBO, puis réessayez."
+
+#, python-format
+msgid "%(name)s is an old Excel (.xls) file. Open it in Excel and save it as .xlsx or .csv, or download the statement as CSV, then try again."
+msgstr "%(name)s est un ancien fichier Excel (.xls). Ouvrez-le dans Excel et enregistrez-le en .xlsx ou en .csv, ou téléchargez le relevé en CSV, puis réessayez."
+
+#, python-format
+msgid "%(name)s can't be opened: it may be damaged or password-protected. Download it again."
+msgstr "Impossible d’ouvrir %(name)s : il est peut-être endommagé ou protégé par un mot de passe. Téléchargez-le de nouveau."
+
+#, python-format
+msgid "%(name)s is malformed near row %(row)s (%(reason)s). Download the statement again."
+msgstr "%(name)s est mal formé près de la ligne %(row)s (%(reason)s). Téléchargez de nouveau le relevé."
+
+#, python-format
+msgid "%(name)s is larger than %(max)s MB. Download a shorter period and try again."
+msgstr "%(name)s dépasse %(max)s Mo. Téléchargez une période plus courte, puis réessayez."
+
+#, python-format
+msgid "%(name)s has more than %(max)s lines. Download a shorter period and try again."
+msgstr "%(name)s compte plus de %(max)s lignes. Téléchargez une période plus courte, puis réessayez."
+
+#, python-format
+msgid "%(name)s has more than %(max)s columns. Check that it is a bank statement."
+msgstr "%(name)s compte plus de %(max)s colonnes. Vérifiez qu’il s’agit bien d’un relevé bancaire."
+
+#, python-format
+msgid "%(name)s has no bank or credit-card statement in it. Download the account's statement (not an investment or tax file) and try again."
+msgstr "%(name)s ne contient aucun relevé bancaire ni de carte de crédit. Téléchargez le relevé du compte (et non un fichier de placements ou d’impôt), puis réessayez."
+
+#, python-format
+msgid "The file holds %(count)s accounts; only account %(account)s is imported. Download one file per account to import the others."
+msgstr "Le fichier contient %(count)s comptes; seul le compte %(account)s est importé. Téléchargez un fichier par compte pour importer les autres."

@@ -1,0 +1,7 @@
+Transaction date,Transaction,Name,Memo,Amount
+6/3/2026,DEBIT,"Tim Hortons, Toronto","Purchase",-4.25
+6/4/2026,OTHER,"Interest Paid","",0.87
+6/8/2026,DEBIT,"Amazon.ca ""Prime""","Multi
+line memo",-9.99
+6/9/2026,CREDIT,"EFT Deposit from ACME","Payroll",1250.00
+13/9/2026,DEBIT,Bad date,,-1.00

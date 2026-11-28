@@ -117,9 +117,13 @@ def set_parser(parser: Parser | None) -> Parser | None:
     return previous
 
 
-def _parse(data: bytes, filename: str) -> ParsedStatement:
+def _parse(data: bytes, filename: str, last4: str = "") -> ParsedStatement:
     if _parser is None:
-        raise LookupError("No statement file parser is installed (F-02-T04).")
+        from . import parsers  # noqa: F401 - installs parsers.parse_statement
+
+    assert _parser is not None  # noqa: S101 - parsers installs it on import
+    if last4:
+        return _parser(data, filename, last4=last4)  # type: ignore[call-arg]
     return _parser(data, filename)
 
 
@@ -128,15 +132,18 @@ class FileStatementSource(BankStatementSource):
 
     source_name = "file"
 
-    def __init__(self, data: bytes, filename: str, layout: Layout | None = None) -> None:
+    def __init__(
+        self, data: bytes, filename: str, layout: Layout | None = None, *, last4: str = ""
+    ) -> None:
         self.data = data
         self.filename = filename
         self.layout = layout
+        self.last4 = last4  # an OFX file with several accounts: the one ending with these
 
     @cached_property
     def parsed(self) -> ParsedStatement:
         """The parsed file (raises the parser's ``StatementError`` for a file it refuses)."""
-        return _parse(self.data, self.filename)
+        return _parse(self.data, self.filename, self.last4)
 
     @property
     def format(self) -> str:
@@ -144,7 +151,7 @@ class FileStatementSource(BankStatementSource):
 
     def with_layout(self, layout: Layout | None) -> FileStatementSource:
         """The same file read with another layout (parsed once)."""
-        other = FileStatementSource(self.data, self.filename, layout)
+        other = FileStatementSource(self.data, self.filename, layout, last4=self.last4)
         if "parsed" in self.__dict__:
             other.__dict__["parsed"] = self.parsed
         return other

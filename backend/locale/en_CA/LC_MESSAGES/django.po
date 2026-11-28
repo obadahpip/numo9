@@ -10841,3 +10841,43 @@ msgstr ""
 #, python-format
 msgid "The column mapping is incomplete: %(reason)s"
 msgstr ""
+
+#, python-format
+msgid "%(name)s has no statement lines. Download the statement again for a period with transactions."
+msgstr ""
+
+#, python-format
+msgid "%(name)s isn't a statement file Numo9 can read. Download the statement from your bank as CSV, Excel (.xlsx), OFX, QFX or QBO and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is an old Excel (.xls) file. Open it in Excel and save it as .xlsx or .csv, or download the statement as CSV, then try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s can't be opened: it may be damaged or password-protected. Download it again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is malformed near row %(row)s (%(reason)s). Download the statement again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s is larger than %(max)s MB. Download a shorter period and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has more than %(max)s lines. Download a shorter period and try again."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has more than %(max)s columns. Check that it is a bank statement."
+msgstr ""
+
+#, python-format
+msgid "%(name)s has no bank or credit-card statement in it. Download the account's statement (not an investment or tax file) and try again."
+msgstr ""
+
+#, python-format
+msgid "The file holds %(count)s accounts; only account %(account)s is imported. Download one file per account to import the others."
+msgstr ""
