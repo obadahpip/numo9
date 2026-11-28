@@ -24,6 +24,7 @@ from __future__ import annotations
 from typing import Any, ClassVar
 
 from django.db import models
+from django.db.models import Deferrable
 from django.db.models.functions import Lower
 from django.utils.translation import gettext_lazy as _
 
@@ -152,6 +153,10 @@ class TaxMode(models.TextChoices):
 
 
 class BankTransactionStatus(models.TextChoices):
+    """``draft`` — written but not posted: a bank rule's suggested coding of a statement line,
+    waiting for review (F-04-T07); it has no journal until it is posted."""
+
+    DRAFT = "draft", _("Draft")
     POSTED = "posted", _("Posted")
     VOIDED = "voided", _("Voided")
 
@@ -415,6 +420,27 @@ class StatementLine(OrgOwnedModel):
         choices=StatementLineStatus.choices,
         default=StatementLineStatus.UNCODED,
     )
+    #: The spend / receive the line was coded into (F-04-T07): a draft while a rule's suggestion
+    #: waits for review, posted once coded.
+    bank_transaction = models.ForeignKey(
+        BankTransaction,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="statement_lines",
+        verbose_name=_("bank transaction"),
+    )
+    #: The bank rule that coded the line (every application is logged, F-04).
+    applied_rule = models.ForeignKey(
+        "banking.BankRule",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="coded_lines",
+        verbose_name=_("applied rule"),
+    )
+    #: Coded and posted by an auto-apply rule without review — can be reviewed and reverted.
+    auto_coded = models.BooleanField(_("auto-coded"), default=False, db_default=False)
 
     class Meta:
         ordering = ("bank_account", "-date", "-pk")
@@ -524,3 +550,190 @@ class StatementMapping(AuditedModel, OrgOwnedModel):
                 "decimal_separator": self.decimal_separator,
             }
         )
+
+
+# ---- bank rules (F-04-T02) ----------------------------------------------------------------------
+
+
+class BankRuleType(models.TextChoices):
+    """What a rule codes a line into: money out (spend), money in (receive), or a transfer to or
+    from another bank account (either sign)."""
+
+    SPEND = "spend", _("Spend money")
+    RECEIVE = "receive", _("Receive money")
+    TRANSFER = "transfer", _("Transfer")
+
+
+class MatchMode(models.TextChoices):
+    ALL = "all", _("All conditions")
+    ANY = "any", _("Any condition")
+
+
+class ContactStrategy(models.TextChoices):
+    """``none`` — no contact; ``fixed`` — the rule's contact; ``match_payee`` — the contact whose
+    name is the line's payee (no contact when none is found)."""
+
+    NONE = "none", _("No contact")
+    FIXED = "fixed", _("Set this contact")
+    MATCH_PAYEE = "match_payee", _("Contact named like the payee")
+
+
+class BankRule(AuditedModel, OrgOwnedModel):
+    """An ordered, testable rule that codes statement lines (F-04).
+
+    ``priority`` orders the rules of one type: 1 is evaluated first and the first match wins
+    (F-04-T05). It is unique per organisation and type — **deferred** to the end of the
+    transaction, so a reorder renumbers every rule at once (F-04-T09); a deleted rule gives its
+    number up (``priority`` null). ``scope_accounts`` empty = every bank account.
+
+    ``reference_template`` builds the transaction's reference from the line: ``{payee}``,
+    ``{description}``, ``{reference}``, ``{date}``, ``{amount}``. ``auto_apply`` (off by default)
+    posts the coding without review and flags the line *auto-coded*; otherwise the rule leaves a
+    draft transaction to review. ``transfer_account`` is the other bank account of a transfer rule.
+    ``applied_count`` / ``last_applied_at`` are the list's counters."""
+
+    type = models.CharField(_("type"), max_length=10, choices=BankRuleType.choices)
+    name = models.CharField(_("name"), max_length=120)
+    match_mode = models.CharField(
+        _("match"), max_length=3, choices=MatchMode.choices, default=MatchMode.ALL
+    )
+    priority = models.PositiveIntegerField(_("priority"), null=True, blank=True)
+    scope_accounts = models.ManyToManyField(
+        BankAccount, blank=True, related_name="bank_rules", verbose_name=_("bank accounts")
+    )
+    contact_strategy = models.CharField(
+        _("contact"),
+        max_length=12,
+        choices=ContactStrategy.choices,
+        default=ContactStrategy.NONE,
+    )
+    contact = models.ForeignKey(
+        "contacts.Contact",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bank_rules",
+        verbose_name=_("contact"),
+    )
+    reference_template = models.CharField(_("reference"), max_length=255, blank=True)
+    transfer_account = models.ForeignKey(
+        BankAccount,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="transfer_rules",
+        verbose_name=_("transfer account"),
+    )
+    auto_apply = models.BooleanField(_("auto-apply"), default=False, db_default=False)
+    active = models.BooleanField(_("active"), default=True, db_default=True)
+    applied_count = models.PositiveIntegerField(_("times applied"), default=0, db_default=0)
+    last_applied_at = models.DateTimeField(_("last applied"), null=True, blank=True)
+
+    audit_exclude: ClassVar[frozenset[str]] = frozenset({"applied_count", "last_applied_at"})
+
+    class Meta:
+        ordering = ("type", "priority", "pk")
+        verbose_name = _("bank rule")
+        verbose_name_plural = _("bank rules")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.UniqueConstraint(
+                fields=["organisation", "type", "priority"],
+                name="banking_rule_priority_unique",
+                deferrable=Deferrable.DEFERRED,
+            ),
+            models.CheckConstraint(
+                condition=models.Q(type__in=BankRuleType.values), name="banking_rule_type_valid"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(match_mode__in=MatchMode.values),
+                name="banking_rule_match_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(contact_strategy__in=ContactStrategy.values),
+                name="banking_rule_contact_strategy_valid",
+            ),
+            models.CheckConstraint(
+                condition=~models.Q(contact_strategy=ContactStrategy.FIXED)
+                | models.Q(contact__isnull=False),
+                name="banking_rule_fixed_contact_required",
+            ),
+            models.CheckConstraint(condition=~models.Q(name=""), name="banking_rule_name_required"),
+        ]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class ConditionField(models.TextChoices):
+    PAYEE = "payee", _("Payee")
+    DESCRIPTION = "description", _("Description")
+    REFERENCE = "reference", _("Reference")
+    ANY_TEXT = "any_text", _("Any text field")
+    AMOUNT = "amount", _("Amount")
+
+
+class ConditionOperator(models.TextChoices):
+    EQUALS = "equals", _("equals")
+    CONTAINS = "contains", _("contains")
+    NOT_CONTAINS = "not_contains", _("does not contain")
+    STARTS_WITH = "starts_with", _("starts with")
+    ENDS_WITH = "ends_with", _("ends with")
+    REGEX = "regex", _("matches the pattern")
+    IS_BLANK = "is_blank", _("is blank")
+    BETWEEN = "between", _("is between")
+    GREATER_THAN = "gt", _("is greater than")
+    LESS_THAN = "lt", _("is less than")
+
+
+#: The operators each kind of field accepts (F-04-T04).
+TEXT_OPERATORS: frozenset[str] = frozenset(
+    {
+        ConditionOperator.EQUALS,
+        ConditionOperator.CONTAINS,
+        ConditionOperator.NOT_CONTAINS,
+        ConditionOperator.STARTS_WITH,
+        ConditionOperator.ENDS_WITH,
+        ConditionOperator.REGEX,
+        ConditionOperator.IS_BLANK,
+    }
+)
+AMOUNT_OPERATORS: frozenset[str] = frozenset(
+    {
+        ConditionOperator.EQUALS,
+        ConditionOperator.BETWEEN,
+        ConditionOperator.GREATER_THAN,
+        ConditionOperator.LESS_THAN,
+    }
+)
+
+
+class BankRuleCondition(OrgOwnedModel):
+    """One condition of a rule: ``field`` ``operator`` ``value`` (and ``value_to``, the upper
+    bound of *amount between*). Amount conditions compare the line's amount without its sign."""
+
+    rule = models.ForeignKey(
+        BankRule, on_delete=models.CASCADE, related_name="conditions", verbose_name=_("rule")
+    )
+    order = models.PositiveSmallIntegerField(_("order"), default=0)
+    field = models.CharField(_("field"), max_length=12, choices=ConditionField.choices)
+    operator = models.CharField(_("operator"), max_length=12, choices=ConditionOperator.choices)
+    value = models.CharField(_("value"), max_length=500, blank=True)
+    value_to = models.CharField(_("to"), max_length=40, blank=True)
+
+    class Meta:
+        ordering = ("rule", "order", "pk")
+        verbose_name = _("bank rule condition")
+        verbose_name_plural = _("bank rule conditions")
+        constraints: ClassVar[list[models.BaseConstraint]] = [
+            models.CheckConstraint(
+                condition=models.Q(field__in=ConditionField.values),
+                name="banking_rule_cond_field_valid",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(operator__in=ConditionOperator.values),
+                name="banking_rule_cond_operator_valid",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.field} {self.operator} {self.value}"

@@ -11026,3 +11026,99 @@ msgstr ""
 
 msgid "Review the dates (YYYY-MM-DD) and the page size."
 msgstr ""
+
+msgid "auto-coded"
+msgstr ""
+
+msgid "Transfer"
+msgstr ""
+
+msgid "All conditions"
+msgstr ""
+
+msgid "Any condition"
+msgstr ""
+
+msgid "No contact"
+msgstr ""
+
+msgid "Set this contact"
+msgstr ""
+
+msgid "Contact named like the payee"
+msgstr ""
+
+msgid "match"
+msgstr ""
+
+msgid "priority"
+msgstr ""
+
+msgid "auto-apply"
+msgstr ""
+
+msgid "times applied"
+msgstr ""
+
+msgid "last applied"
+msgstr ""
+
+msgid "bank rule"
+msgstr ""
+
+msgid "bank rules"
+msgstr ""
+
+msgid "Payee"
+msgstr ""
+
+msgid "Any text field"
+msgstr ""
+
+msgid "equals"
+msgstr ""
+
+msgid "contains"
+msgstr ""
+
+msgid "does not contain"
+msgstr ""
+
+msgid "starts with"
+msgstr ""
+
+msgid "ends with"
+msgstr ""
+
+msgid "matches the pattern"
+msgstr ""
+
+msgid "is blank"
+msgstr ""
+
+msgid "is between"
+msgstr ""
+
+msgid "is greater than"
+msgstr ""
+
+msgid "is less than"
+msgstr ""
+
+msgid "field"
+msgstr ""
+
+msgid "operator"
+msgstr ""
+
+msgid "bank rule condition"
+msgstr ""
+
+msgid "bank rule conditions"
+msgstr ""
+
+msgid "applied rule"
+msgstr ""
+
+msgid "transfer account"
+msgstr ""

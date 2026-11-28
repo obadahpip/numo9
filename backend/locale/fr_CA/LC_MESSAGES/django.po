@@ -12058,3 +12058,99 @@ msgstr "Vérifiez les dates (AAAA-MM-JJ) et la taille de la page."
 #, python-format
 msgid "The column mapping can't be used (%(reason)s). Review the columns on the Map step."
 msgstr "La correspondance des colonnes est inutilisable (%(reason)s). Vérifiez les colonnes à l’étape Correspondance."
+
+msgid "auto-coded"
+msgstr "codée automatiquement"
+
+msgid "Transfer"
+msgstr "Virement"
+
+msgid "All conditions"
+msgstr "Toutes les conditions"
+
+msgid "Any condition"
+msgstr "N’importe quelle condition"
+
+msgid "No contact"
+msgstr "Aucun contact"
+
+msgid "Set this contact"
+msgstr "Attribuer ce contact"
+
+msgid "Contact named like the payee"
+msgstr "Contact portant le nom du bénéficiaire"
+
+msgid "match"
+msgstr "correspondance"
+
+msgid "priority"
+msgstr "priorité"
+
+msgid "auto-apply"
+msgstr "application automatique"
+
+msgid "times applied"
+msgstr "nombre d’applications"
+
+msgid "last applied"
+msgstr "dernière application"
+
+msgid "bank rule"
+msgstr "règle bancaire"
+
+msgid "bank rules"
+msgstr "règles bancaires"
+
+msgid "Payee"
+msgstr "Bénéficiaire"
+
+msgid "Any text field"
+msgstr "N’importe quel champ texte"
+
+msgid "equals"
+msgstr "est égal à"
+
+msgid "contains"
+msgstr "contient"
+
+msgid "does not contain"
+msgstr "ne contient pas"
+
+msgid "starts with"
+msgstr "commence par"
+
+msgid "ends with"
+msgstr "se termine par"
+
+msgid "matches the pattern"
+msgstr "correspond au motif"
+
+msgid "is blank"
+msgstr "est vide"
+
+msgid "is between"
+msgstr "est entre"
+
+msgid "is greater than"
+msgstr "est supérieur à"
+
+msgid "is less than"
+msgstr "est inférieur à"
+
+msgid "field"
+msgstr "champ"
+
+msgid "operator"
+msgstr "opérateur"
+
+msgid "bank rule condition"
+msgstr "condition de règle bancaire"
+
+msgid "bank rule conditions"
+msgstr "conditions de règle bancaire"
+
+msgid "applied rule"
+msgstr "règle appliquée"
+
+msgid "transfer account"
+msgstr "compte de virement"
