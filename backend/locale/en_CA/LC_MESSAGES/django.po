@@ -10971,3 +10971,7 @@ msgstr ""
 
 msgid "saved mapping"
 msgstr ""
+
+#, python-format
+msgid "%(account)s (custom)"
+msgstr ""

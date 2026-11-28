@@ -90,6 +90,17 @@ class BankAccount(AuditedModel, OrgOwnedModel):
         _("reconciliation tracked"), default=False, db_default=False
     )
     archived_at = models.DateTimeField(_("archived at"), null=True, blank=True)
+    #: The statement mapping last chosen for this account's CSV / XLSX files (F-02-T06).
+    statement_mapping = models.ForeignKey(
+        "banking.StatementMapping",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("statement mapping"),
+    )
+
+    audit_exclude: ClassVar[frozenset[str]] = frozenset({"statement_mapping"})
 
     class Meta:
         ordering = ("display_name", "pk")

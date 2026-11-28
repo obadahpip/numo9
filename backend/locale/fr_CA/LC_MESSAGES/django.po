@@ -12003,3 +12003,7 @@ msgstr "correspondances de relevé"
 
 msgid "saved mapping"
 msgstr "correspondance enregistrée"
+
+#, python-format
+msgid "%(account)s (custom)"
+msgstr "%(account)s (personnalisée)"
